@@ -6,10 +6,9 @@ body {
   margin: 0;
 }
 
-#root {
-  padding: 0;
+:root {
+  background-color: #F9FAFB;
 }
-
 /*:root {*/
 /*  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;*/
   /*line-height: 1.5;*/

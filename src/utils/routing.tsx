@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import CourseList from '@/pages/CourseList';
+import Dashboard from '@/pages/Dashboard.tsx';
 import App from '@/App';
 
 const router = createBrowserRouter([
@@ -9,7 +9,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/courses',
-    element: <CourseList />,
+    element: <Dashboard />,
   },
 ]);
 
