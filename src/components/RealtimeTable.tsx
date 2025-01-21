@@ -36,9 +36,9 @@ const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable)
           </select>
         )}
       </div>
-      <table className="w-full bg-white shadow-sm rounded-lg">
+      <table className="w-full bg-white rounded-lg">
         <thead>
-        <tr className="bg-gray-100">
+        <tr className="bg-gray-50">
           {TableHeadTitles.map(({title}) => (
             <th key={title} className="px-4 py-2">{title}</th>
           ))}
@@ -56,7 +56,7 @@ const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable)
 
 function SubjectRow({subject}: {subject: any}) {
   return (
-    <tr>
+    <tr className="border-t border-gray-200">
       {TableHeadTitles.map(({key}) =>
         key == 'seats' ? (
         <td key={key} className="px-4 py-2 text-center">
@@ -72,7 +72,7 @@ function SubjectRow({subject}: {subject: any}) {
   );
 }
 
-function seatColor(seats: number) {
+export function seatColor(seats: number) {
   if (seats > 5)
     return 'text-green-500 bg-green-100';
   if (seats > 0)
