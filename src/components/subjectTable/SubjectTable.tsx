@@ -1,3 +1,5 @@
+import PinIcon from '@/components/svgs/PinIcon.tsx';
+
 const TableHeadTitles = [
   {title: '핀', key: 'pin'},
   {title: '과목코드', key: 'code'},
@@ -37,8 +39,8 @@ function TableRow({subject} : {subject: any}) {
   return (
     <tr className="border-t border-gray-200 text-black">
       <td className="px-4 py-2 text-center">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-lg cursor-pointer" disabled={true}>
-          핀
+        <button className="cursor-pointer" disabled={true}>
+          <PinIcon disabled/>
         </button>
       </td>
       <td className="px-4 py-2 text-center">{subject.code}</td>

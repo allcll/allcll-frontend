@@ -19,6 +19,11 @@ const DummyTableData = [
   {code: 'HU303', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 10},
   {code: 'HU304', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 9},
   {code: 'HU305', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 3},
+  {code: 'HU301', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 20},
+  {code: 'HU302', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 15},
+  {code: 'HU303', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 10},
+  {code: 'HU304', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 9},
+  {code: 'HU305', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 3},
 ];
 
 const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable) => {

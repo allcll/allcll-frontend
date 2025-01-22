@@ -23,7 +23,7 @@ function Footer() {
       </div>
 
       <p className="mt-16">
-        © 2024 수강신청 시스템. All rights reserved.
+        © 2025 ALLCLL. All rights reserved.
       </p>
     </footer>
   );

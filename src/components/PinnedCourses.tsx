@@ -1,4 +1,5 @@
 import {Link} from 'react-router-dom';
+import PinIcon from './svgs/PinIcon';
 
 export interface Course {
   id: number;
@@ -13,6 +14,8 @@ const dummyCourses: Course[] = [
   {id: 1, code: 'CS101', name: '프로그래밍 기초', professor: '김교수', credits: 3, seats: 2},
   {id: 2, code: 'BA201', name: '경영학원론', professor: '이교수', credits: 3, seats: 0},
   {id: 3, code: 'CS201', name: '자료구조', professor: '박교수', credits: 3, seats: 5},
+  {id: 4, code: 'BA201', name: '경영학원론', professor: '이교수', credits: 3, seats: 0},
+  {id: 5, code: 'CS201', name: '자료구조', professor: '박교수', credits: 3, seats: 5},
 ];
 
 const PinnedCourses = () => {
@@ -31,12 +34,15 @@ const PinnedCourses = () => {
   );
 };
 
+
 function PinCard({ course }: { course: Course }) {
   return (
     <div className="bg-gray-50 shadow-sm rounded-lg p-4">
       <div className="flex justify-between mb-2">
         <h3 className="font-bold">{course.name}</h3>
-        <button area-label='핀 제거'>핀 제거</button>
+        <button area-label='핀 제거'>
+          <PinIcon/>
+        </button>
       </div>
       <p className="text-sm text-gray-500">{course.code} | {course.professor}</p>
       <p className={`text-sm ${seatColor(course.seats)}`}>여석: {course.seats}</p>
