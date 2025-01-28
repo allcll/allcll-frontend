@@ -1,3 +1,5 @@
+import {Link} from 'react-router-dom';
+
 function Footer() {
   return (
     <footer className="bg-white text-center text-sm text-gray-500 px-4 py-12">
@@ -12,13 +14,16 @@ function Footer() {
         <div>
           <h5 className="font-bold mb-4">고객지원</h5>
           <ul>
-            <li>문의하기</li>
-            <li>피드백</li>
+            <li>
+              <Link className="hover:text-blue-500 hover:underline hover:font-bold" to="/survey">
+                문의하기
+              </Link>
+            </li>
           </ul>
         </div>
         <div>
           <h5 className="font-bold mb-4">문의</h5>
-          <p>support@example.com</p>
+          <p>allcllclla@google.com</p>
         </div>
       </div>
 

@@ -1,9 +1,31 @@
 import Navbar from '@/components/Navbar.tsx';
 import SubjectTable from '@/components/subjectTable/SubjectTable.tsx';
 import CardWrap from '@/components/CardWrap.tsx';
+import useMobile from '@/hooks/useMobile.ts';
+import SubjectCards from '@/components/subjectTable/SubjectCards.tsx';
+import {Subject} from '@/utils/types..ts';
+
+
+const TableHeadTitles = [
+  {title: '핀', key: 'pin'},
+  {title: '과목코드', key: 'code'},
+  {title: '과목명', key: 'name'},
+  {title: '담당교수', key: 'professor'},
+  {title: '학점', key: 'credits'}
+];
+
+const DummyTableData: Subject[] = [
+  {id: 1, code: 'HU301', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 20},
+  {id: 2, code: 'HU302', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 15},
+  {id: 3, code: 'HU303', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 10},
+  {id: 4, code: 'HU304', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 9},
+  {id: 5, code: 'HU305', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 3},
+];
 
 
 const SearchCourses = () => {
+  const isMobile = useMobile();
+
   return (
     <div className="max-w-screen-xl mx-auto p-2 mb-8">
       <div className="container p-4 mx-auto">
@@ -28,7 +50,11 @@ const SearchCourses = () => {
 
         {/* Course List */}
         <CardWrap>
-          <SubjectTable/>
+          {isMobile ? (
+            <SubjectCards subjects={DummyTableData}/>
+          ) : (
+            <SubjectTable titles={TableHeadTitles} subjects={DummyTableData}/>
+          )}
         </CardWrap>
       </div>
     </div>

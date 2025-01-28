@@ -1,33 +1,28 @@
 import PinIcon from '@/components/svgs/PinIcon.tsx';
+import {Subject} from '@/utils/types..ts';
 
-const TableHeadTitles = [
-  {title: '핀', key: 'pin'},
-  {title: '과목코드', key: 'code'},
-  {title: '과목명', key: 'name'},
-  {title: '담당교수', key: 'professor'},
-  {title: '학점', key: 'credits'}
-];
+export interface ITableHead {
+  title: string;
+  key: string;
+}
 
-const DummyTableData = [
-  {code: 'HU301', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 20},
-  {code: 'HU302', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 15},
-  {code: 'HU303', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 10},
-  {code: 'HU304', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 9},
-  {code: 'HU305', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 3},
-];
+interface ISubjectTable {
+  titles: ITableHead[];
+  subjects: Subject[];
+}
 
-function SubjectTable() {
+function SubjectTable({titles, subjects} : ISubjectTable) {
   return (
     <table className="w-full bg-white rounded-lg">
       <thead>
       <tr className="bg-gray-50">
-        {TableHeadTitles.map(({title}) => (
+        {titles.map(({title}) => (
           <th key={title} className="px-4 py-2">{title}</th>
         ))}
       </tr>
       </thead>
       <tbody>
-      {DummyTableData.map((subject) => (
+      {subjects.map((subject) => (
         <TableRow key={`${subject.code} ${subject.name} ${subject.professor}`} subject={subject}/>
       ))}
       </tbody>

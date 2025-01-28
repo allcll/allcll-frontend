@@ -3,6 +3,7 @@ import MainLayout from '@/layouts/MainLayout.tsx';
 import Landing from '@/pages/Landing.tsx';
 import Dashboard from '@/pages/Dashboard.tsx';
 import SearchCourses from '@/pages/SearchCourses.tsx';
+import CustomerService from '@/pages/CustomerService.tsx';
 
 
 const router = createBrowserRouter([
@@ -21,7 +22,11 @@ const router = createBrowserRouter([
       {
         path: '/search',
         element: <SearchCourses/>,
-      }
+      },
+      {
+        path: '/survey',
+        element: <CustomerService />,
+      },
     ],
   },
   {
