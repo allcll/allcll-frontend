@@ -10,6 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "lucide-react": "^0.474.0"
+    "@allcll/common": "workspace:^",
+    "@svgr/webpack": "^8.1.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@allcll/mock-server": "workspace:^",
+    "vite-plugin-svgr": "^4.3.0"
   }
 }
