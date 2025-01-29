@@ -1,10 +1,9 @@
 import {Link} from 'react-router-dom';
 import PinCard from '@/components/subjectTable/PinCard.tsx';
-import usePined from '@/store/usePined.ts';
-
+import {usePinned} from '@/store/usePinned.ts';
 
 const PinnedCourses = () => {
-  const {pined} = usePined();
+  const {data, isPending, isError} = usePinned();
 
   return (
     <div>
@@ -18,9 +17,15 @@ const PinnedCourses = () => {
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {pined.map((subject) => (
-          <PinCard key={subject.id} subject={subject}/>
-        ))}
+        {isPending ? (
+          <div className="text-center">로딩중...</div>
+        ) : isError ? (
+          <div className="text-center">에러 발생</div>
+        ) : (
+          data.map((subject) => (
+            <PinCard key={`${subject.subjectId}_${subject.subjectCode}_${subject.professorName}`} subject={subject} seats={-1}/>
+        )))}
+
       </div>
     </div>
   );

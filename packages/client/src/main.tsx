@@ -4,17 +4,21 @@ import {RouterProvider} from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { server } from "@allcll/mock-server";
 import router from '@/utils/routing.tsx';
 import './index.css'
 
 const queryClient = new QueryClient();
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <DndProvider backend={HTML5Backend}>
-        <RouterProvider router={router}/>
-      </DndProvider>
-    </QueryClientProvider>
-  </StrictMode>,
-)
+//mock server
+server.start().then(() => {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <DndProvider backend={HTML5Backend}>
+          <RouterProvider router={router}/>
+        </DndProvider>
+      </QueryClientProvider>
+    </StrictMode>,
+  )
+});

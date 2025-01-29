@@ -21,4 +21,8 @@ export default defineConfig({
       }
     },
   },
+  publicDir: 'public', // Ensure this line is present
+  optimizeDeps: {
+    include: ['msw']
+  }
 })

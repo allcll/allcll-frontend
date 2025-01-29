@@ -9,8 +9,7 @@
   "private": true,
   "scripts": {
     "client": "pnpm --filter @allcll/client run dev",
-    "admin": "pnpm --filter @allcll/admin run dev",
-    "common": "pnpm --filter @allcll/common run dev"
+    "admin": "pnpm --filter @allcll/admin run dev"
   },
   "packageManager": "pnpm@9.15.4",
   "dependencies": {
@@ -36,5 +35,11 @@
     "postcss": "^8.5.1",
     "autoprefixer": "^10.4.20",
     "vite-plugin-windicss": "^1.9.4"
+  },
+  "msw": {
+    "workerDirectory": [
+      "..\\..\\..\\..\\packages\\mock-server",
+      "public"
+    ]
   }
 }

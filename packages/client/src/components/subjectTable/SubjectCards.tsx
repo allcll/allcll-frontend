@@ -9,7 +9,7 @@ function SubjectCards({subjects}: ISubjectCards) {
   return (
     <div className="flex flex-col gap-2">
       {subjects.map((subject) => (
-        <PinCard key={`${subject.code} ${subject.name} ${subject.professor}`} subject={subject}/>
+        <PinCard key={`${subject.subjectCode} ${subject.subjectId} ${subject.professorName}`} subject={subject} seats={-1}/>
       ))}
     </div>
   )

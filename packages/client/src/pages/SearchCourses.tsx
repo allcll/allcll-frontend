@@ -1,9 +1,10 @@
+import {useState} from "react";
 import Navbar from '@/components/Navbar.tsx';
 import SubjectTable from '@/components/subjectTable/SubjectTable.tsx';
 import CardWrap from '@/components/CardWrap.tsx';
-import useMobile from '@/hooks/useMobile.ts';
 import SubjectCards from '@/components/subjectTable/SubjectCards.tsx';
-import {Subject} from '@/utils/types..ts';
+import useMobile from '@/hooks/useMobile.ts';
+import {useSearchSubject} from '@/store/useSearchSubject.ts';
 
 
 const TableHeadTitles = [
@@ -14,17 +15,23 @@ const TableHeadTitles = [
   {title: '학점', key: 'credits'}
 ];
 
-const DummyTableData: Subject[] = [
-  {id: 1, code: 'HU301', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 20},
-  {id: 2, code: 'HU302', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 15},
-  {id: 3, code: 'HU303', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 10},
-  {id: 4, code: 'HU304', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 9},
-  {id: 5, code: 'HU305', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 3},
+const SearchOptions = [
+  {name: '과목명', value: 'subjectName'},
+  {name: '교수명', value: 'professorName'},
+  {name: '학점', value: 'credits'},
 ];
 
+type ISubjectSearch = Record<string, string>
 
 const SearchCourses = () => {
   const isMobile = useMobile();
+
+  const [search, setSearch] = useState<ISubjectSearch>({searchOption: SearchOptions[0].value, searchKeyword: ''});
+  const {data: searchedData, isPending} = useSearchSubject(search);
+
+  const onSearch = (searchOption: string, searchKeyword: string) => {
+    setSearch({[searchOption]: searchKeyword});
+  }
 
   return (
     <div className="max-w-screen-xl mx-auto p-2 mb-8">
@@ -33,32 +40,57 @@ const SearchCourses = () => {
 
         {/* Search Section */}
         <CardWrap>
-          <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
-            <select className="border border-gray-300 rounded-lg p-2 w-full md:w-1/4">
-              <option>과목명</option>
-              <option>교수명</option>
-              <option>학점</option>
-            </select>
-            <input
-              type="text"
-              placeholder="검색어를 입력하세요"
-              className="flex-1 border border-gray-300 rounded-lg p-2"
-            />
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">검색</button>
-          </div>
+          <SubjectSearchInputs onSearch={onSearch}/>
         </CardWrap>
 
         {/* Course List */}
         <CardWrap>
-          {isMobile ? (
-            <SubjectCards subjects={DummyTableData}/>
+          {isPending ? (
+            <p>Loading...</p>
+          ) : isMobile ? (
+            searchedData && <SubjectCards subjects={searchedData}/>
           ) : (
-            <SubjectTable titles={TableHeadTitles} subjects={DummyTableData}/>
+            searchedData && <SubjectTable titles={TableHeadTitles} subjects={searchedData}/>
           )}
         </CardWrap>
       </div>
     </div>
   );
 };
+
+interface ISubjectSearchInputs {
+  onSearch: (searchOption: string, searchKeyword: string) => void;
+}
+
+function SubjectSearchInputs({onSearch}: ISubjectSearchInputs) {
+  const [searchOption, setSearchOption] = useState<string>(SearchOptions[0].value);
+  const [searchKeyword, setSearchKeyword] = useState<string>('');
+
+  function search() {
+    onSearch(searchOption, searchKeyword);
+  }
+
+  return (
+    <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+      <select className="border border-gray-300 rounded-lg p-2 w-full md:w-1/4"
+              value={searchOption}
+              onChange={(e) => setSearchOption(e.target.value)}>
+        { SearchOptions.map(({name, value}) => (
+          <option key={value} value={value}>{name}</option>
+        ))
+        }
+      </select>
+      <input
+        type="text"
+        placeholder="검색어를 입력하세요"
+        className="flex-1 border border-gray-300 rounded-lg p-2"
+        value={searchKeyword}
+        onChange={(e) => setSearchKeyword(e.target.value)}
+      />
+      <button className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+              onClick={search}>검색</button>
+    </div>
+  );
+}
 
 export default SearchCourses;
