@@ -1,50 +1,89 @@
-# React + TypeScript + Vite
+# ALLCLL - 수강 여석 확인 서비스
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ALLCLL은 학생들이 수강 신청 기간 동안 과목의 여석을 쉽게 확인할 수 있도록 도와주는 웹 애플리케이션입니다. 수강 여석 확인에서 오는 피로감을 줄이고, 실시간 업데이트와 알림 기능을 제공합니다.
 
-Currently, two official plugins are available:
+## 기능
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 실시간 여석 확인
+- **여석이 많은 교양 과목 TOP 10**
+    - 여석이 가장 많은 교양 과목 10개를 실시간으로 표시합니다.
+- **여석이 많은 전공 과목 TOP 10**
+    - 여석이 가장 많은 전공 과목 10개를 실시간으로 표시합니다.
+- **대시보드 형태의 실시간 업데이트**
+    - 실시간 여석 정보를 대시보드 형태로 제공하며, 핀 기능은 제공하지 않습니다.
+- **테이블 형태의 여석 정보**
+    - 여석 정보를 테이블 형태로 표시합니다.
+- **학과 선택 기능**
+    - 사전 신청 후 학과 선택 기능을 사용할 수 있습니다.
 
-## Expanding the ESLint configuration
+### 과목 핀 기능
+- **과목 검색 및 핀 기능**
+    - 사용자가 과목을 검색하고 핀할 수 있는 기능을 제공합니다.
+    - 검색 탭에서는 남은 여석 수를 표시하지 않습니다.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### 알림 기능
+- **웹 푸시 및 익스텐션 알림**
+    - 과목 여석에 대한 알림을 사용자에게 전송합니다.
 
-- Configure the top-level `parserOptions` property like this:
+## 타겟층
+- 수강 신청에 실패하여 채워야 하는 학점을 못 채운 모든 학생들.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 페인포인트 해결
+- 타학과 학생들은 수강 신청에 실패했을 경우 교양 과목을 잡아야 하는 번거로움을 해결합니다.
+- 소융대 학생들은 전공 과목을 포함하여 어떤 과목이든 잡아야 하는 번거로움을 해결합니다.
+- 모든 과목을 일일이 클릭하여 여석을 확인해야 하는 번거로움을 해결합니다.
+
+# 프로젝트 구조
+
+이 프로젝트는 메인 애플리케이션과 관리자 페이지를 포함하는 monorepo 형태로 구성되어 있습니다.
+
+```plaintext
+packages/
+├── admin/          # 관리자 페이지
+├── client/         # 메인 애플리케이션
+├── common/         # 공통 모듈
+├── nginx/          # Nginx 설정 파일
+└── main/           # 메인 애플리케이션
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+각 프로젝트는 다음과 같은 공통된 구조를 가집니다:  
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```plaintext
+public/             # 정적 파일
+src/                # 소스 코드
+package.json        # 프로젝트 설정 및 의존성 관리
+README.md           # 프로젝트 설명
 ```
+
+## 시작하기
+
+### 사전 준비
+- Node.js (^18.0.0)
+- npm, pnpm
+
+### 설치
+1. 레포지토리를 클론합니다:
+   ```sh
+   git clone https://github.com/allcll/frontend.git
+   cd frontend
+   ```
+2. 의존성을 설치합니다:  
+    ```sh
+    pnpm install
+    ```
+
+### 실행
+1. 일반 사용자 페이지를 실행합니다:
+    ```sh
+    pnpm run client
+    ```
+2. 관리자 페이지를 실행합니다:
+    ```sh
+    pnpm run admin
+   ```
+
+## 기여하기
+기여를 환영합니다! 자세한 내용은 기여 가이드라인을 참조하세요.  
+
+## 라이선스
+이 프로젝트는 MIT 라이선스를 따릅니다. 자세한 내용은 LICENSE 파일을 참조하세요

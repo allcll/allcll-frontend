@@ -1,50 +1,80 @@
-# React + TypeScript + Vite
+# Admin Page - ALLCLL
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ALLCLL의 관리자 페이지는 관리자들이 수강 여석 데이터를 관리하고 업데이트할 수 있도록 도와줍니다. 이 프로젝트는 ALLCLL monorepo의 일부입니다.
 
-Currently, two official plugins are available:
+## 기능
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 수강 여석 데이터 관리
+- 과목 정보 업데이트
+- 실시간 데이터 동기화
 
-## Expanding the ESLint configuration
+## 프로젝트 구조
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```plaintext
+admin/
+├── public/             # 정적 파일
+├── src/                # 소스 코드
+│   ├── components/     # React 컴포넌트
+│   ├── pages/          # 페이지 컴포넌트
+│   ├── services/       # API 서비스
+│   ├── App.tsx         # 메인 App 컴포넌트
+│   ├── index.tsx       # 진입점
+├── tests/              # 테스트 파일
+├── package.json        # 프로젝트 설정 및 의존성 관리 파일
+└── README.md           # 프로젝트 설명 파일
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 사용 기술
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- **프론트엔드**: React, TypeScript
+- **백엔드**: Node.js, Express
+- **빌드 도구**: Vite
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+## 시작하기
+
+### 사전 준비
+
+- Node.js (^18.0.0)
+- npm 또는 pnpm
+
+### 설치
+
+1. 레포지토리를 클론합니다:
+   ```sh
+   git clone https://github.com/allcll/frontend.git
+   cd ALLCLL/packages/admin
+   ```
+
+2. 의존성을 설치합니다:
+   ```sh
+   pnpm install
+   ```
+
+### 개발 서버 실행
+
+개발 서버를 시작합니다:
+```sh
+pnpm run dev
 ```
+
+### 프로덕션 빌드
+
+프로덕션 빌드를 수행합니다:
+```sh
+pnpm run build
+```
+
+### 테스트 실행
+
+테스트를 실행합니다:
+```sh
+pnpm run test
+```
+
+## 기여하기
+
+기여를 환영합니다! 자세한 내용은 [기여 가이드라인](../CONTRIBUTING.md)을 참조하세요.
+
+## 라이선스
+
+이 프로젝트는 MIT 라이선스를 따릅니다. 자세한 내용은 [LICENSE](../LICENSE) 파일을 참조하세요.
