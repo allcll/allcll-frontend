@@ -40,7 +40,8 @@
     "workerDirectory": [
       "..\\..\\..\\..\\packages\\mock-server",
       "public",
-      "..\\..\\..\\..\\packages\\admin"
+      "..\\..\\..\\..\\packages\\admin",
+      "..\\..\\..\\..\\packages\\client"
     ]
   }
 }

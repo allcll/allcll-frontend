@@ -14,6 +14,7 @@ export const useAddPinned = () => {
   const queryClient = useQueryClient();
 
   // Todo: Add a mutation to add a pinned subject
+  // Todo: 요청 전에 검사하는 기능 필요
   return useMutation({
     mutationFn: addPinnedSubject,
     onMutate: async (subjectId) => {
@@ -37,8 +38,13 @@ export const useAddPinned = () => {
       queryClient.invalidateQueries({ queryKey: ['pinnedSubjects'] });
     },
     onError: (error) => {
-      console.error('Error adding pinned subject:', error);
-      alert(`핀 고정된 과목은 최대 ${PinLimit}개까지만 가능합니다.`);
+      try {
+        const e = JSON.parse(error.message)
+        alert(e.message);
+      }
+      catch {
+        alert('Error adding pinned subject');
+      }
     },
   });
 };
@@ -75,7 +81,7 @@ const fetchPinnedSubjects = async (): Promise<Subject[]> => {
     },
   });
   if (!response.ok) {
-    throw new Error('Failed to fetch pinned subjects');
+    throw new Error(await response.text());
   }
   return response.json();
 };
@@ -88,7 +94,7 @@ const addPinnedSubject = async (subjectId: number): Promise<void> => {
     },
   });
   if (!response.ok) {
-    throw new Error('Failed to add pinned subject');
+    throw new Error(await response.text());
   }
 };
 
@@ -100,6 +106,6 @@ const removePinnedSubject = async (subjectId: number): Promise<void> => {
     },
   });
   if (!response.ok) {
-    throw new Error('Failed to remove pinned subject');
+    throw new Error(await response.text());
   }
 };
