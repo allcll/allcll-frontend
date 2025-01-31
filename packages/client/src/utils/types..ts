@@ -9,3 +9,9 @@ export interface Subject {
 export interface SubjectList {
   data: Subject[];
 }
+
+export interface PinnedSeats {
+  subjectId: number;
+  seat: number;
+  queryTime: string;
+}

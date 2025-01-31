@@ -1,5 +1,6 @@
 import {http, HttpResponse} from 'msw'
 import {handlers as pinHandlers} from "../api/pin.ts";
+import {handlers as sseHandlers} from "../api/sse.ts";
 import {getRandomSubjects, subjects as SubjectDummies} from "../data/subjects.ts";
 
 
@@ -32,4 +33,5 @@ export const handlers = [
   }),
 
   ...pinHandlers,
+  ...sseHandlers
 ]

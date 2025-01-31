@@ -3,14 +3,13 @@ import {getRandomSubjects, getSubjectById} from "../data/subjects.ts";
 import {MaxPinedSubjectsError, NotPinedSubjectError, SubjectNotFoundError} from "../data/errorJson.ts";
 
 const MaxPinedSubjects = 6;
-let pinedSubjects = getRandomSubjects(MaxPinedSubjects-1);
-
+export let pinedSubjects = getRandomSubjects(MaxPinedSubjects-1);
 
 export const handlers = [
   // POST /api/pin
   http.post('/api/pin', (req) => {
-    const json = req.request.json();
-    const {subjectId} = json as unknown as {subjectId: number};
+    const queryString = new URLSearchParams(req.request.url.split('?')[1]);
+    const subjectId = Number(queryString.get('subjectId'));
 
     // Pin the subject and return a response
     if (pinedSubjects.length >= MaxPinedSubjects)
@@ -23,7 +22,7 @@ export const handlers = [
     }
 
     pinedSubjects.push(subject);
-    return HttpResponse.json(null, {status: 204});
+    return new HttpResponse(null, {status: 204});
   }),
 
   // DELETE /api/pin/{subjectId}
