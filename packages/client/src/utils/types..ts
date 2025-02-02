@@ -15,3 +15,25 @@ export interface PinnedSeats {
   seat: number;
   queryTime: string;
 }
+
+export interface Wishlist {
+  Baskets: Wishes[];
+}
+
+interface Wishes {
+  subjectId: number;
+  subjectName: string;
+  departmentName: string;
+  departmentCode: string;
+  subjectCode: string;
+  classCode: string;
+  professorName: string;
+  totalCount: number;
+  DepartmentRegisters: WishRegister[];
+}
+
+interface WishRegister {
+  subjectId: number;
+  departmentCode: string;
+  classCode: string;
+}

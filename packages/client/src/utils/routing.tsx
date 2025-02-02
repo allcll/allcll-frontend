@@ -1,32 +1,47 @@
-import { createBrowserRouter } from 'react-router-dom';
+import {createBrowserRouter} from 'react-router-dom';
 import MainLayout from '@/layouts/MainLayout.tsx';
 import Landing from '@/pages/Landing.tsx';
 import Dashboard from '@/pages/Dashboard.tsx';
 import SearchCourses from '@/pages/SearchCourses.tsx';
 import CustomerService from '@/pages/CustomerService.tsx';
-
+import WishTable from '@/pages/wishlist/WishTable.tsx';
+import WishesDetail from '@/pages/wishlist/WishesDetail.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <MainLayout />,
+    element: <MainLayout/>,
     children: [
       {
         path: '/',
-        element: <Landing />,
+        element: <Landing/>,
       },
       {
-        path: '/courses',
-        element: <Dashboard />,
+        path: 'courses',
+        element: <Dashboard/>,
       },
       {
-        path: '/search',
+        path: 'search',
         element: <SearchCourses/>,
       },
       {
-        path: '/survey',
-        element: <CustomerService />,
+        path: 'survey',
+        element: <CustomerService/>,
       },
+    ],
+  },
+  {
+    path: 'wishes',
+    element: <MainLayout/>,
+    children: [
+      {
+        path: '',
+        element: <WishTable/>,
+      },
+      {
+        path: ':id',
+        element: <WishesDetail/>,
+      }
     ],
   },
   {
