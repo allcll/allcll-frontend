@@ -20,7 +20,7 @@ export interface Wishlist {
   Baskets: Wishes[];
 }
 
-interface Wishes {
+export interface Wishes {
   subjectId: number;
   subjectName: string;
   departmentName: string;
@@ -33,7 +33,7 @@ interface Wishes {
 }
 
 interface WishRegister {
-  subjectId: number;
-  departmentCode: string;
-  classCode: string;
+  studentBelong: string;
+  registerDepartment: string;
+  eachCount: number;
 }

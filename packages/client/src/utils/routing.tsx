@@ -17,14 +17,6 @@ const router = createBrowserRouter([
         element: <Landing/>,
       },
       {
-        path: 'courses',
-        element: <Dashboard/>,
-      },
-      {
-        path: 'search',
-        element: <SearchCourses/>,
-      },
-      {
         path: 'survey',
         element: <CustomerService/>,
       },
@@ -41,6 +33,20 @@ const router = createBrowserRouter([
       {
         path: ':id',
         element: <WishesDetail/>,
+      }
+    ],
+  },
+  {
+    path: 'live',
+    element: <MainLayout/>,
+    children: [
+      {
+        path: '',
+        element: <Dashboard/>,
+      },
+      {
+        path: 'search',
+        element: <SearchCourses/>,
       }
     ],
   },

@@ -19,6 +19,8 @@ function useWishes() {
   return useQuery({
     queryKey: ['wishlist'],
     queryFn: fetchWishesData,
+    staleTime: Infinity,
+    select: (data) => data.Baskets,
   });
 }
 

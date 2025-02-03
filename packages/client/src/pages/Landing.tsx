@@ -25,7 +25,8 @@ function Landing() {
             <p className="text-gray-700 mb-6">
               원하는 과목의 여석을 실시간으로 확인하고 알림을 받아보세요. 로그인 없이 바로 시작할 수 있습니다.
             </p>
-            <Link to='courses' className="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-600">
+            <Link to='/live'
+                  className="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-600">
               무료로 시작하기
             </Link>
           </div>
