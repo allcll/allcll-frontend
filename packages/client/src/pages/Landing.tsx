@@ -37,7 +37,7 @@ function Landing() {
 
       {/* 고민 Section */}
       <section className="text-center px-6 md:px-16 py-24 bg-white">
-        <h2 className="text-2xl font-semibold">우리의 이야기</h2>
+        <h2 className="text-2xl font-semibold">우리가 겪는 어려움</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
           {[
             {icon: <ClockBlueSvg className="w-6 h-6"/>, title: '6학점밖에 못 들었던 수강 신청 날...', text: "원하는 강의를 신청하지 못해 졸업이 늦춰질까 걱정했던 순간들"},
