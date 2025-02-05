@@ -1,4 +1,4 @@
-name: SideMatch CI/CD
+name: ALLCLL CI/CD
 on:
   push:
     branches: [ main ]
@@ -47,7 +47,7 @@ jobs:
           cp pnpm-lock.yaml ./build/pnpm-lock.yaml
         env:
           CI: ""
-          # SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         working-directory: ${{env.working-directory}}
 
       #    - name: Run tests
@@ -58,19 +58,19 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: production-files
-          path: ${{env.working-directory}}/build
+          path: ${{env.project-directory}}/build
 
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: production-files
-          path: ${{env.working-directory}}/build
+          path: ./build
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GIT_TOKEN }}
-          publish_dir: ./build
+          publish_dir: ${{env.project-directory}}/build
 
   Deploy:
     runs-on: ubuntu-latest
