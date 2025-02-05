@@ -9,9 +9,20 @@ import router from '@/utils/routing.tsx';
 import './index.css'
 
 const queryClient = new QueryClient();
+const UsingMockServer = true;
+const isProduction = process.env.NODE_ENV === 'production';
 
-//mock server
-server.start().then(() => {
+if (isProduction || !UsingMockServer) {
+  loadApp();
+}
+else {
+  // load mock server
+  server.start().then(() => {
+    loadApp();
+  });
+}
+
+function loadApp() {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
@@ -21,4 +32,4 @@ server.start().then(() => {
       </QueryClientProvider>
     </StrictMode>,
   )
-});
+}

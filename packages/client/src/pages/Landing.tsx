@@ -1,83 +1,129 @@
-import {Link} from 'react-router-dom';
+import {Link} from "react-router-dom";
+import {Doughnut} from 'react-chartjs-2';
+import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
+import RightArrowSvg from "@/assets/right-arrow.svg?react";
+import ClockBlueSvg from "@/assets/clock-blue.svg?react";
+import DisabledBlueSvg from "@/assets/disabled-blue.svg?react";
+import ReloadBlueSvg from "@/assets/reload-blue.svg?react";
+import LinkBlue from "@/assets/link-blue.svg?react";
 
-const Features = [
-  {title: "실시간 여석 확인 및 알림", content: "원하는 과목의 여석이 생기면 즉시 알림을 받아보세요."},
-  {title: "로그인 없이 즉시 시작", content: "별도의 회원가입 없이 바로 서비스를 이용할 수 있습니다."},
-  {title: "관심 과목 핀 기능", content: "원하는 과목을 한눈에 관리하고 모니터링할 수 있습니다."}
-]
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
-const StartPassages = [
-  {title: "시작하기", content: "버튼 클릭 한 번으로 바로 시작"},
-  {title: "과목 검색", content: "원하는 과목을 쉽게 찾기"},
-  {title: "관심 과목 파악하기", content: "모니터링할 과목 선택"},
-  {title: "자동 알림 받기", content: "여석 발생 시 즉시 알림"}
-];
+const doughnut = {
+  labels: ["컴퓨터공학과", "정보통신공학과", "소프트웨어학과", "기타"],
+  datasets: [
+    {
+      data: [40, 25, 20, 15],
+      backgroundColor: ["#3B82F6", "#FACC15", "#22C55E", "#EF4444"],
+    },
+  ],
+}
 
 function Landing() {
   return (
-    <div className="font-sans">
-
+    <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gray-50 sm:px-4 py-20 px-20">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-10 items-center">
-          <div>
-            <h2 className="text-3xl font-bold mb-4">수강 기회를 놓치지 마세요!</h2>
-            <p className="text-gray-700 mb-6">
-              원하는 과목의 여석을 실시간으로 확인하고 알림을 받아보세요. 로그인 없이 바로 시작할 수 있습니다.
-            </p>
-            <Link to='/live'
-                  className="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-600">
-              무료로 시작하기
-            </Link>
-          </div>
-          <div className="rounded-lg shadow-md">
-            <img src="/hero-image.png" alt="Dashboard preview" />
-          </div>
+      <section className="flex flex-col md:flex-row items-center justify-between px-6 md:px-16 py-16 bg-blue-50">
+        <div className="max-w-lg">
+          <h1 className="text-3xl md:text-5xl font-bold">수강 신청, <br/> 매번 어렵고 <br/>번거롭지 않나요?</h1>
+          <p className="text-gray-600 mt-4">올클과 함께라면 더 쉽게 원하는 강의를 찾을 수 있습니다!</p>
+          <button className=" mt-6 bg-blue-600 text-white px-6 py-3 rounded-md flex items-center gap-2">
+            관심과목 분석하기
+            <RightArrowSvg className="w-4 h-4"/>
+          </button>
+        </div>
+        <img src="/hero-illustration.png" alt="Illustration" className="w-80 md:w-96 mt-6 md:mt-0" />
+      </section>
+
+      {/* 고민 Section */}
+      <section className="text-center px-6 md:px-16 py-24 bg-white">
+        <h2 className="text-2xl font-semibold">우리의 이야기</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+          {[
+            {icon: <ClockBlueSvg className="w-6 h-6"/>, title: '6학점밖에 못 들었던 수강 신청 날...', text: "원하는 강의를 신청하지 못해 졸업이 늦춰질까 걱정했던 순간들"},
+            {icon: <DisabledBlueSvg className="w-6 h-6"/>, title: "전과하려 했지만, 원하던 강의는 전부 마감...", text: "꿈꾸던 학과로의 전과, 미리 수강하려고 했지만 수강신청의 벽은 높았습니다"},
+            {icon: <ReloadBlueSvg className="w-6 h-6"/>, title: "하루 종일 F5를 누르며 여석을 기다렸던 시간들...", text: "수강신청 버튼만 수백 번, 그래도 원하는 강의는 잡지 못했습니다"}
+          ].map(({icon, title, text}, index) => (
+            <div key={index} className="flex flex-col gap-4 p-6 rounded-md bg-gray-50 text-left">
+              {icon}
+              <h3 className="font-extrabold">{title}</h3>
+              <p className="text-xs text-gray-500">{text}</p>
+            </div>
+          ))}
+        </div>
+        <div className="text-gray-900 text-xs mt-16">
+          <p>그래서 우리는 올클을 만들었습니다.</p>
+          <p>같은 고민을 했던 우리이기에, 진짜 도움이 되는 서비스를 만들고 싶었습니다. </p>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="bg-white py-16 px-16 sm:px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h3 className="text-2xl font-bold mb-8">주요 기능</h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            {Features.map((feature, index) => (
-              <div key={index} className="border border-gray-200 p-6 rounded-lg">
-                <h4 className="text-lg font-bold mb-2">{feature.title}</h4>
-                <p className="text-gray-600">
-                  {feature.content}
-                </p>
+      {/* 관심과목 분석 Section */}
+      <section className="px-6 md:px-16 py-10">
+        <div className="flex items-center gap-2">
+          <h2 className="text-2xl font-semibold">관심과목 분석</h2>
+          <Link to="/wishes">
+            <LinkBlue className="w-4 h-4"/>
+          </Link>
+        </div>
+
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          {/* 검색 창 */}
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-lg font-semibold mb-2">학과별 관심도</h2>
+            <Doughnut data={doughnut} />
+          </div>
+
+          {/* 대체 과목 추천 */}
+          <div className="bg-white p-6 shadow-md rounded-md">
+            <h3 className="text-lg font-semibold">대체 과목 추천</h3>
+            {[
+              { name: "데이터베이스개론", dept: "데이터베이스 시스템", status: "30명" },
+              { name: "알고리즘분석", dept: "고급알고리즘", status: "14명" }
+            ].map((course, index) => (
+              <div key={index} className="mt-4 flex justify-between p-2 rounded-md cursor-pointer hover:bg-gray-100">
+                <div>
+                  <p className="font-semibold">{course.name}</p>
+                  <p className="text-sm text-gray-500">{course.dept}</p>
+                </div>
+                <span className="text-yellow-500">{course.status}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Steps Section */}
-      <section className="bg-gray-50 py-16 px-16 sm:px-4">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-10 items-center">
-          <div>
-            <h3 className="text-2xl font-bold mb-8">간단한 4단계로 시작하세요</h3>
-            <ul>
-              {StartPassages.map(({title, content}, index) => (
-                <li key={index} className="flex items-center gap-4 p-6 text-left">
-                  <div className="bg-blue-500 text-white rounded-full size-12 flex justify-center items-center">{index+1}</div>
-                  <div>
-                    <h4 className="text-lg font-bold mb-2">{title}</h4>
-                    <p className="text-gray-500">{content}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
+      {/* COMING SOON Section */}
+      <section className="px-6 md:px-16 py-24 text-center bg-blue-950 text-white">
+        <h2 className="text-2xl font-bold">실시간 수강 여석 확인</h2>
+        <h3 className="text-2xl font-bold text-blue-500">(COMING SOON!)</h3>
+        <div className="text-center text-gray-300 mt-8">
+          <p className="mt-4">강의 여석을 확인하려면 계속 새로고침해야 하나요?</p>
+          <p className="mt-2">올클이 더 쉽고 빠른 방법을 준비하고 있어요!</p>
+          <p className="mt-2">이제 수강 신청을 기다리는 시간이 줄어듭니다.</p>
+          <p className="mt-2">더 나은 서비스로 돌아올게요.</p>
+        </div>
+      </section>
 
-          <div className="h-0 invisible lg:visible lg:h-auto">
-            <img src="/feature-image.png" alt="Dashboard preview" className="rounded-lg shadow-md" />
-          </div>
+      {/* 사용자 후기 */}
+      <section className="px-6 md:px-16 py-24 text-center bg-white">
+        <h2 className="text-2xl font-semibold">올클을 써보신 분들의 한마디!</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+          {[
+            {review: '대체과목 추천 덕분에 금방 대체 과목을 찾아서 너무 편했어요!', origin: '(컴퓨터공학과 2학년)'},
+            {review: "실시간으로 관심도를 볼 수 있어서 수강신청 전략을 세울 수 있었어요!", origin: "(컴퓨터공학과 4학년)"},
+            {review: "수강신청이 이렇게 편해질 수 있다니 놀랍네요!", origin: "(컴퓨터공학과 3학년)"}
+          ].map(({review, origin}, index) => (
+            <div key={index} className="flex flex-col gap-4 p-6 rounded-md bg-gray-50 text-left text-sm">
+              <p className="text-gray-500">"{review}"</p>
+              <p className="font-bold">{origin}</p>
+            </div>
+          ))}
         </div>
       </section>
     </div>
   );
 }
+
 
 export default Landing;

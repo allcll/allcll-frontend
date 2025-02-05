@@ -7,8 +7,12 @@ function Footer() {
         <div>
           <h5 className="font-bold mb-4">서비스</h5>
           <ul>
-            <li>이용안내</li>
-            <li>자주 묻는 질문</li>
+            <li>
+              <a href="https://gleaming-clock-379.notion.site/ALLCLL-191802357b238006b813dc9792c1ce9d?pvs=4"
+                 className="hover:text-blue-500 hover:underline hover:font-bold">
+                ALLCLL 소개
+              </a>
+            </li>
           </ul>
         </div>
         <div>

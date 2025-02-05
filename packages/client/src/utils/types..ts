@@ -6,10 +6,6 @@ export interface Subject {
   subjectName: string; // 과목명
 }
 
-export interface SubjectList {
-  data: Subject[];
-}
-
 export interface PinnedSeats {
   subjectId: number;
   seat: number;
@@ -17,7 +13,7 @@ export interface PinnedSeats {
 }
 
 export interface Wishlist {
-  Baskets: Wishes[];
+  baskets: Wishes[];
 }
 
 export interface Wishes {
@@ -27,12 +23,11 @@ export interface Wishes {
   departmentCode: string;
   subjectCode: string;
   classCode: string;
-  professorName: string;
+  professorName: string | null;
   totalCount: number;
-  DepartmentRegisters: WishRegister[];
 }
 
-interface WishRegister {
+export interface WishRegister {
   studentBelong: string;
   registerDepartment: string;
   eachCount: number;

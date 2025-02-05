@@ -1,35 +1,20 @@
-import {useState, useEffect, ChangeEvent} from 'react';
-import SearchSvg from '@/assets/search.svg?react';
-import StarSvg from '@/assets/star.svg?react';
+import {useState, useEffect} from 'react';
 import useWishes from '@/hooks/server/useWishes.ts';
+import Table, {TableHeaders} from '@/components/wishTable/Table.tsx';
+import Searches, {WishSearchParams} from '@/components/dashboard/Searches.tsx';
 import {Wishes} from '@/utils/types..ts';
-import Table from '@/components/wishTable/Table.tsx';
+import useFavorites from '@/store/useFavorites.ts';
+import SkeletonTable from '@/components/skeletons/SkeletonTable.tsx';
 
 function WishTable() {
-  const [selectedDepartment, setSelectedDepartment] = useState('전체 학과');
-  const [searchInput, setSearchInput] = useState('');
+  const [filterParams, setFilterParams] = useState<WishSearchParams>({searchInput: '', selectedDepartment: '', isFavorite: false});
   const [filteredData, setFilteredData] = useState<Wishes[]>([]);
-  const {data, isPending} = useWishes();
+  const pickedFavorites = useFavorites(state => state.isFavorite);
+  const {data: wishes, isPending} = useWishes();
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      if (data) {
-        setFilteredData(filterData(data, searchInput, selectedDepartment));
-      }
-    }, 700);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [data, searchInput, selectedDepartment]);
-
-  const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(event.target.value);
-  };
-
-  const handleDepartmentChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedDepartment(event.target.value);
-  };
+    setFilteredData(filterData(wishes, pickedFavorites, filterParams));
+  }, [filterParams, wishes]);
 
   return (
     <div className="max-w-screen-xl mx-auto p-2 mb-8">
@@ -40,32 +25,12 @@ function WishTable() {
           <h1 className="text-2xl font-bold">수강신청 관심과목 분석</h1>
 
           {/* Search and Filter */}
-          <div className="flex flex-col md:flex-row md:items-center mt-4 space-y-4 md:space-y-0 md:space-x-4">
-            <div className="relative w-full md:w-1/2">
-              <SearchSvg className="absolute left-3 top-3 text-gray-500"/>
-              <input type="text"
-                     placeholder="과목명 또는 교수명 검색"
-                     className="pl-10 pr-4 py-2 border rounded-md w-full"
-                     onChange={handleSearchInputChange}/>
-            </div>
-            <select
-              className="border px-4 py-2 rounded-md"
-              onChange={handleDepartmentChange}
-            >
-              <option>전체 학과</option>
-              <option>컴퓨터공학과</option>
-            </select>
-            <button className="border px-4 py-2 rounded-md flex items-center">
-              <StarSvg className="w-4 h-4 mr-1"/> 즐겨찾기만 보기
-            </button>
-          </div>
+          <Searches setSearches={setFilterParams}/>
 
           {/* Course Table */}
           <div className="bg-white mt-6 shadow-md rounded-lg overflow-x-auto">
             {isPending ? (
-              <div className="min-h-screen bg-gray-50 flex justify-center items-center">
-                <h1 className="text-2xl font-bold">Loading...</h1>
-              </div>
+              <SkeletonTable headerNames={TableHeaders.map(({name})=> name)}/>
             ) : (
               filteredData && <Table data={filteredData}/>
             )}
@@ -76,15 +41,16 @@ function WishTable() {
   );
 }
 
-function filterData(data: Wishes[]|undefined, searchInput: string, selectedDepartment: string) {
+function filterData(data: Wishes[]|undefined, pickedFavorites: (id: number)=>boolean, {searchInput, selectedDepartment, isFavorite}: WishSearchParams): Wishes[] {
   if (!data) return [];
 
   return data.filter(item => {
-    const matchesProfessor = item.professorName.toLowerCase().includes(searchInput.toLowerCase());
+    const matchesProfessor = !!item.professorName && item.professorName.toLowerCase().includes(searchInput.toLowerCase());
     const matchesSubject = item.subjectName.toLowerCase().includes(searchInput.toLowerCase());
-    const matchesDepartment = selectedDepartment === '전체 학과' || item.departmentName === selectedDepartment;
+    const matchesDepartment = selectedDepartment === "" || item.departmentCode === selectedDepartment;
+    const matchesFavorite = isFavorite ? pickedFavorites(item.subjectId) : true;
 
-    return (matchesProfessor || matchesSubject) && matchesDepartment;
+    return (matchesProfessor || matchesSubject) && matchesDepartment && matchesFavorite;
   });
 }
 

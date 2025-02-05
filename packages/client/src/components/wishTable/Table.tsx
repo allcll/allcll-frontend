@@ -1,13 +1,13 @@
 import {Link} from 'react-router-dom';
 import {Wishes} from '@/utils/types..ts';
-import StarSvg from '@/assets/star.svg?react';
-import {useState} from 'react';
+import useFavorites from '@/store/useFavorites.ts';
+import StarIcon from '@/components/svgs/StarIcon.tsx';
 
 interface ITable {
   data: Wishes[];
 }
 
-const TableHeaders = [
+export const TableHeaders = [
   {name: '즐겨찾기', key: ''},
   {name: '학수번호', key: 'subjectCode'},
   {name: '분반', key: 'classCode'},
@@ -15,12 +15,9 @@ const TableHeaders = [
   {name: '과목명', key: 'subjectName'},
   {name: '교수명', key: 'professorName'},
   {name: '관심', key: 'totalCount'},
-  {name: '시간', key: ''},
 ]
 
 function Table({data}: ITable) {
-  const [favorite, setFavorite] = useState([98765432]);
-
   return (
     <table className="w-full bg-white rounded-lg">
       <thead>
@@ -63,40 +60,54 @@ function Table({data}: ITable) {
         //     </td>
         //     <td className="p-3">시간표</td>
         //   </tr>
-        ))
+      ))
       }
       </tbody>
     </table>
   );
 }
 
-function TableRow({data} : {data: Wishes[]}) {
-  const [favorite, setFavorite] = useState([98765432]);
+function TableRow({data}: { data: Wishes }) {
+  const isFavorite = useFavorites(state => state.isFavorite);
+  const toggleFavorite = useFavorites(state => state.toggleFavorite);
 
   return (
     <tr className="border-t border-gray-200 text-black hover:bg-gray-100">
       <td className="px-4 py-2 text-center">
-        <button>
-          <StarSvg
-            className={`w-5 h-5 ${favorite.includes(data.subjectId) ? 'text-yellow-500 fill-yellow-500' : 'text-gray-400'}`}/>
+        <button onClick={() => toggleFavorite(data.subjectId)}>
+          <StarIcon disabled={!isFavorite(data.subjectId)}/>
         </button>
       </td>
 
-      {TableHeaders.slice(1, 10).map(({key}) =>
-      key === '' ? (
+      {TableHeaders.slice(1, 10).map(({key}) => (
         <td className="px-4 py-2 text-center" key={key}>
           <Link to={`/wishes/${data.subjectId}`}>
-            시간표
-          </Link>
-        </td>
-      ) : (
-        <td className="px-4 py-2 text-center" key={key}>
-          <Link to={`/wishes/${data.subjectId}`}>
-            {data[key]}
+            {key === '' ? '시간표' :
+              key === 'totalCount' ? (
+                <ColoredText wishCount={data.totalCount}/>
+              ) : (
+                data[key as keyof Wishes]?.toString()
+              )}
           </Link>
         </td>
       ))}
     </tr>
+  );
+}
+
+function ColoredText({wishCount}: { wishCount: number }) {
+  let style = 'text-green-500 bg-green-100';
+
+  if (wishCount >= 100) {
+    style = 'text-red-500 bg-red-100';
+  } else if (wishCount >= 50) {
+    style = 'text-yellow-500 bg-yellow-100';
+  }
+
+  return (
+    <span className={`px-3 py-1 rounded-full text-xs font-bold ${style}`}>
+    {wishCount}
+  </span>
   );
 }
 

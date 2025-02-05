@@ -5,8 +5,9 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScal
 import CardWrap from "@/components/CardWrap";
 import BlurComponents from "@/components/BlurComponents";
 import Table from "@/components/wishTable/Table";
-import useDetailWishes, {getDoughnutData} from '@/hooks/server/useDetailWishes.ts';
-import useRecommendWishes from '@/hooks/server/useRecommendWishes.ts';
+import useDetailWishes from '@/hooks/server/useDetailWishes';
+import useRecommendWishes from '@/hooks/server/useRecommendWishes';
+import useDetailRegisters, {getDoughnutData} from '@/hooks/server/useDetailRegisters';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -24,10 +25,11 @@ const gradeData = {
 function WishesDetail() {
   const params = useParams();
   const [selectedFilter, setSelectedFilter] = useState("전공/비전공");
-  const {data, isPending} = useDetailWishes(params.id);
+  const {data, isPending} = useDetailWishes(params.id ?? "-1");
+  const {data: registers} = useDetailRegisters(params.id ?? "-1");
 
-  const doughnut = useMemo(() => getDoughnutData(data), [data, params]);
-  const {data: recommend} = useRecommendWishes(data?.subjectCode)
+  const doughnut = useMemo(() => getDoughnutData(registers), [registers, params]);
+  const {data: recommend} = useRecommendWishes(data?.subjectCode ?? "")
 
   // Todo: 대체 과목 추천
   // Todo: 에브리타임 수강평 보기 - 링크 크롤링
@@ -41,6 +43,7 @@ function WishesDetail() {
       </div>
     );
   }
+  //data.everytimeLink
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -51,7 +54,7 @@ function WishesDetail() {
           <h1 className="text-2xl font-bold">{data.subjectName}</h1>
           <p className="text-gray-600">{data.subjectCode}-{data.classCode} | {data.departmentName} | {data.professorName}</p>
           <a className="inline-block mt-4 bg-blue-500 text-white px-4 py-2 rounded-md"
-             href={data.everytimeLink} target="_blank">
+             href="#" target="_blank">
             📘 에브리타임 수강평 보기
           </a>
 
@@ -88,7 +91,7 @@ function WishesDetail() {
           <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-lg font-semibold">대체과목 추천</h2>
 
-            <Table data={recommend}/>
+            <Table data={recommend ?? []}/>
           </div>
       </CardWrap>
       </div>

@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import {Wishlist} from '@/utils/types..ts';
 
 const fetchWishesData = async (): Promise<Wishlist> => {
-  const response = await fetch('/api/cart', {
+  const response = await fetch('/api/baskets', {
     headers: {
       'Cookie': `sessionId=${document.cookie.split('=')[1]}`,
     },
@@ -20,7 +20,7 @@ function useWishes() {
     queryKey: ['wishlist'],
     queryFn: fetchWishesData,
     staleTime: Infinity,
-    select: (data) => data.Baskets,
+    select: (data) => data.baskets,
   });
 }
 
