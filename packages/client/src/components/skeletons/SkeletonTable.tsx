@@ -21,13 +21,11 @@ function SkeletonTable({headerNames}: SkeletonTableProps) {
   );
 }
 
-function SkeletonRow({length}: {length: number}) {
+export function SkeletonRow({length}: {length: number}) {
   return (
-    <tr className="animate-pulse">
+    <tr className="animate-pulse border-t border-gray-200 h-10">
       {Array.from({ length }).map((_, index) => (
-        <td className="" key={index}>
-          <div className="h-4 bg-gray-300 rounded"></div>
-        </td>
+        <td className="bg-gray-300" key={index} colSpan={-1}></td>
       ))}
     </tr>
   );

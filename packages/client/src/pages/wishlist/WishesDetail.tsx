@@ -1,4 +1,4 @@
-import {useMemo, useState} from 'react';
+import { useState } from 'react';
 import { useParams } from "react-router-dom";
 import { Bar, Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from "chart.js";
@@ -7,7 +7,7 @@ import BlurComponents from "@/components/BlurComponents";
 import Table from "@/components/wishTable/Table";
 import useDetailWishes from '@/hooks/server/useDetailWishes';
 import useRecommendWishes from '@/hooks/server/useRecommendWishes';
-import useDetailRegisters, {getDoughnutData} from '@/hooks/server/useDetailRegisters';
+import useDetailRegisters, { getDoughnutData } from '@/hooks/server/useDetailRegisters';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -28,10 +28,9 @@ function WishesDetail() {
   const {data, isPending} = useDetailWishes(params.id ?? "-1");
   const {data: registers} = useDetailRegisters(params.id ?? "-1");
 
-  const doughnut = useMemo(() => getDoughnutData(registers), [registers, params]);
+  const doughnut = getDoughnutData(registers);
   const {data: recommend} = useRecommendWishes(data?.subjectCode ?? "")
 
-  // Todo: 대체 과목 추천
   // Todo: 에브리타임 수강평 보기 - 링크 크롤링
   // Todo: 전공/비전공, 단과대 보기 -> 소속 학과 알아내기
   // Todo: 색상 선정 및 알고리즘 개발
@@ -75,8 +74,10 @@ function WishesDetail() {
 
             {/* Competition Analysis */}
             <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-lg font-semibold">관심과목 경쟁률 예상</h2>
-              <p className="text-red-500 font-bold text-xl">총 {data.totalCount}명</p>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg font-semibold">관심과목 경쟁률 예상</h2>
+                <p className="text-red-500 font-bold text-xl">총 {data.totalCount}명</p>
+              </div>
 
               <BlurComponents>
                 <p className="text-sm text-gray-500">작년 대비 관심도 20% 증가 → 경쟁 치열할 가능성 높음</p>

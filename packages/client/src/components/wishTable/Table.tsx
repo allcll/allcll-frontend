@@ -1,10 +1,13 @@
+import {useEffect, useRef, useState, memo} from 'react';
 import {Link} from 'react-router-dom';
 import {Wishes} from '@/utils/types..ts';
 import useFavorites from '@/store/useFavorites.ts';
 import StarIcon from '@/components/svgs/StarIcon.tsx';
+import {SkeletonRow} from '@/components/skeletons/SkeletonTable.tsx';
 
 interface ITable {
-  data: Wishes[];
+  data: Wishes[] | undefined;
+  isPending?: boolean;
 }
 
 export const TableHeaders = [
@@ -15,59 +18,67 @@ export const TableHeaders = [
   {name: '과목명', key: 'subjectName'},
   {name: '교수명', key: 'professorName'},
   {name: '관심', key: 'totalCount'},
-]
+];
 
-function Table({data}: ITable) {
+function Table({data, isPending=false}: ITable) {
+  const [visibleRows, setVisibleRows] = useState(200);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleRows((prev) => prev + 200);
+          }
+        });
+      },
+      { root: null, rootMargin: '0px', threshold: 1.0 }
+    );
+
+    observerRef.current = observer;
+
+    const targets = document.querySelectorAll('.load-more-trigger');
+    targets.forEach((target) => observer.observe(target));
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, []);
+
+
   return (
-    <table className="w-full bg-white rounded-lg">
+    <table className="w-full bg-white rounded-lg relative">
       <thead>
-      <tr className="bg-gray-50">
+      <tr className="bg-gray-50 sticky top-0 z-10">
         {TableHeaders.map(({name}) => (
           <th key={name} className="px-4 py-2">{name}</th>
         ))}
       </tr>
       </thead>
       <tbody>
-      {data.map((course: Wishes) => (
+      {isPending || !data ? (
+        Array.from({length: 5}).map((_, index) => (
+          <SkeletonRow key={index} length={TableHeaders.length}/>
+        ))
+      ) :
+        data.slice(0, visibleRows).map((course: Wishes) => (
         <TableRow key={course.subjectId} data={course}/>
-
-        // <tr key={course.subjectId}
-        //     className="border-t border-gray-200 text-black hover:bg-gray-100">
-        //   <td className="px-4 py-2 text-center">
-        //       <button onClick={() =>
-        //         setFavorite((prev) =>
-        //           prev.includes(course.subjectId) ? prev.filter(id => id !== course.subjectId) : [...prev, course.subjectId]
-        //         )
-        //       }>
-        //         <StarSvg
-        //           className={`w-5 h-5 ${favorite.includes(course.subjectId) ? 'text-yellow-500 fill-yellow-500' : 'text-gray-400'}`}/>
-        //       </button>
-        //     </td>
-        //     <td className="p-3">{course.subjectCode}</td>
-        //     <td className="p-3">{course.classCode}</td>
-        //     <td className="p-3">{course.departmentCode}</td>
-        //     <td className="p-3">
-        //       <Link to={`/wishes/${course.subjectId}`}>
-        //         {course.subjectName}
-        //       </Link>
-        //     </td>
-        //     <td className="p-3">{course.professorName}</td>
-        //     <td className="p-3">
-        //             <span
-        //               className={`px-3 py-1 rounded-full text-white text-xs ${course.totalCount >= 40 ? 'bg-red-500' : 'bg-yellow-500'}`}>
-        //               {course.totalCount}
-        //             </span>
-        //     </td>
-        //     <td className="p-3">시간표</td>
-        //   </tr>
       ))
       }
+      <tr className="load-more-trigger"></tr>
       </tbody>
     </table>
   );
 }
 
-function TableRow({data}: { data: Wishes }) {
+interface TableRowProps {
+  data: Wishes;
+}
+
+const TableRow = ({data}: TableRowProps) => {
   const isFavorite = useFavorites(state => state.isFavorite);
   const toggleFavorite = useFavorites(state => state.toggleFavorite);
 
@@ -79,10 +90,19 @@ function TableRow({data}: { data: Wishes }) {
         </button>
       </td>
 
+      <MemoTableRow data={data}/>
+    </tr>
+  );
+}
+
+const equalComponent = (prevProps: TableRowProps, nextProps: TableRowProps) => prevProps.data.subjectId === nextProps.data.subjectId;
+const MemoTableRow = memo(({data}: TableRowProps) => {
+  return (
+    <>
       {TableHeaders.slice(1, 10).map(({key}) => (
         <td className="px-4 py-2 text-center" key={key}>
           <Link to={`/wishes/${data.subjectId}`}>
-            {key === '' ? '시간표' :
+            { key === '' ? '시간표' :
               key === 'totalCount' ? (
                 <ColoredText wishCount={data.totalCount}/>
               ) : (
@@ -91,9 +111,9 @@ function TableRow({data}: { data: Wishes }) {
           </Link>
         </td>
       ))}
-    </tr>
-  );
-}
+    </>
+  )
+}, equalComponent);
 
 function ColoredText({wishCount}: { wishCount: number }) {
   let style = 'text-green-500 bg-green-100';
@@ -106,8 +126,8 @@ function ColoredText({wishCount}: { wishCount: number }) {
 
   return (
     <span className={`px-3 py-1 rounded-full text-xs font-bold ${style}`}>
-    {wishCount}
-  </span>
+      {wishCount}
+    </span>
   );
 }
 

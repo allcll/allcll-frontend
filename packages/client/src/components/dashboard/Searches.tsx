@@ -35,6 +35,11 @@ function Searches({setSearches}: SearchesProps) {
     };
   }, [searchInput, selectedDepartment]);
 
+  useEffect(() => {
+    setSearches({searchInput, selectedDepartment, isFavorite});
+  }, [selectedDepartment, isFavorite]);
+
+
   const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchInput(event.target.value);
   };
@@ -48,7 +53,7 @@ function Searches({setSearches}: SearchesProps) {
   }
 
   return (
-    <div className="flex flex-col md:flex-row md:items-center mt-4 space-y-4 md:space-y-0 md:space-x-4">
+    <div className="flex flex-col md:flex-row md:items-center mt-4 space-y-4 md:space-y-0 md:space-x-4 text-sm">
       <div className="relative w-full md:w-1/2">
         <SearchSvg className="absolute left-3 top-3 text-gray-500"/>
         <input type="text"
@@ -66,8 +71,8 @@ function Searches({setSearches}: SearchesProps) {
           </option>
         ))}
       </select>
-      <button className="border px-4 py-2 rounded-md flex items-center text-nowrap hover:bg-white"
-              onChange={handleFavoriteChange}>
+      <button className="border px-4 py-2 rounded-md flex gap-2 items-center text-nowrap hover:bg-white"
+              onClick={handleFavoriteChange}>
         <StarIcon disabled={!isFavorite}/> 즐겨찾기
       </button>
     </div>

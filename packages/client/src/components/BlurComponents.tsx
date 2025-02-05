@@ -6,7 +6,7 @@ interface BlurProps {
 
 function BlurComponents({children}: BlurProps) {
   return (
-    <div className="relative">
+    <div className="relative max-h-screen overflow-hidden">
       <div style={{filter: "blur(4px"}}>
         {children}
       </div>
