@@ -23,7 +23,7 @@ function Landing() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="flex flex-col md:flex-row items-center justify-between px-6 md:px-16 py-16 bg-blue-50">
+      <Section className="flex flex-col md:flex-row items-center justify-between" bgColor="bg-blue-50">
         <div className="max-w-lg">
           <h1 className="text-3xl md:text-5xl font-bold">수강 신청, <br/> 매번 어렵고 <br/>번거롭지 않나요?</h1>
           <p className="text-gray-600 mt-4">올클과 함께라면 더 쉽게 원하는 강의를 찾을 수 있습니다!</p>
@@ -33,10 +33,10 @@ function Landing() {
           </Link>
         </div>
         <img src="/hero-illustration.png" alt="Illustration" className="w-80 md:w-96 mt-6 md:mt-0" />
-      </section>
+      </Section>
 
       {/* 고민 Section */}
-      <section className="text-center px-6 md:px-16 py-24 bg-white">
+      <Section className="text-center" bgColor="bg-white">
         <h2 className="text-2xl font-semibold">우리가 겪는 어려움</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
           {[
@@ -55,10 +55,10 @@ function Landing() {
           <p>그래서 우리는 올클을 만들었습니다.</p>
           <p>같은 고민을 했던 우리이기에, 진짜 도움이 되는 서비스를 만들고 싶었습니다. </p>
         </div>
-      </section>
+      </Section>
 
       {/* 관심과목 분석 Section */}
-      <section className="px-6 md:px-16 py-10">
+      <Section>
         <div className="flex items-center gap-2">
           <h2 className="text-2xl font-semibold">관심과목 분석</h2>
           <Link to="/wishes">
@@ -91,10 +91,10 @@ function Landing() {
             ))}
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* COMING SOON Section */}
-      <section className="px-6 md:px-16 py-24 text-center bg-blue-950 text-white">
+      <Section className="text-center text-white" bgColor="bg-blue-950">
         <h2 className="text-2xl font-bold">실시간 수강 여석 확인</h2>
         <h3 className="text-2xl font-bold text-blue-500">(COMING SOON!)</h3>
         <div className="text-center text-gray-300 mt-8">
@@ -103,10 +103,10 @@ function Landing() {
           <p className="mt-2">이제 수강 신청을 기다리는 시간이 줄어듭니다.</p>
           <p className="mt-2">더 나은 서비스로 돌아올게요.</p>
         </div>
-      </section>
+      </Section>
 
       {/* 사용자 후기 */}
-      <section className="px-6 md:px-16 py-24 text-center bg-white">
+      <Section className="text-center" bgColor="bg-white">
         <h2 className="text-2xl font-semibold">올클을 써보신 분들의 한마디!</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
           {[
@@ -120,8 +120,26 @@ function Landing() {
             </div>
           ))}
         </div>
-      </section>
+      </Section>
     </div>
+  );
+}
+
+interface SectionProps {
+  bgColor?: string;
+  className?: string;
+  children: React.ReactNode;
+}
+
+function Section({bgColor, className, children}: SectionProps) {
+  const additionalStyle = bgColor ? bgColor : "";
+  const additionalClass = className ? ` ${className}` : '';
+  return (
+    <section className={additionalStyle}>
+      <div className={`mx-auto max-w-7xl px-4 md:px-16 py-24 ${additionalClass}`}>
+        {children}
+      </div>
+    </section>
   );
 }
 

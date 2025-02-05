@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {Wishes} from '@/utils/types..ts';
 import useFavorites from '@/store/useFavorites.ts';
 import StarIcon from '@/components/svgs/StarIcon.tsx';
+import SearchSvg from '@/assets/search.svg?react';
 import {SkeletonRow} from '@/components/skeletons/SkeletonTable.tsx';
 
 interface ITable {
@@ -63,6 +64,16 @@ function Table({data, isPending=false}: ITable) {
         Array.from({length: 5}).map((_, index) => (
           <SkeletonRow key={index} length={TableHeaders.length}/>
         ))
+      ) : !data.length ? (
+        <tr>
+          <td colSpan={TableHeaders.length} className="text-center py-4">
+            <div className="flex flex-col items-center">
+              <SearchSvg className="w-12 h-12"/>
+              <p className="text-gray-500 font-bold mt-4">검색된 과목이 없습니다.</p>
+              <p className="text-gray-400 text-xs mt-1">다른 검색어로 다시 시도해보세요.</p>
+            </div>
+          </td>
+        </tr>
       ) :
         data.slice(0, visibleRows).map((course: Wishes) => (
         <TableRow key={course.subjectId} data={course}/>

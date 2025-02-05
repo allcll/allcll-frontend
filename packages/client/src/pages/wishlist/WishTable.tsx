@@ -1,10 +1,9 @@
 import {useState, useEffect} from 'react';
 import useWishes from '@/hooks/server/useWishes.ts';
-import Table, {TableHeaders} from '@/components/wishTable/Table.tsx';
+import Table from '@/components/wishTable/Table.tsx';
 import Searches, {WishSearchParams} from '@/components/dashboard/Searches.tsx';
 import {Wishes} from '@/utils/types..ts';
 import useFavorites from '@/store/useFavorites.ts';
-import SkeletonTable from '@/components/skeletons/SkeletonTable.tsx';
 
 function WishTable() {
   const [filterParams, setFilterParams] = useState<WishSearchParams>({searchInput: '', selectedDepartment: '', isFavorite: false});
@@ -17,24 +16,17 @@ function WishTable() {
   }, [filterParams, wishes]);
 
   return (
-    <div className="max-w-screen-xl mx-auto p-2 mb-8">
-      <div className="container p-4 mx-auto">
+    <div className="mx-auto max-w-7xl px-4 md:px-16 mb-8">
+      {/* Header */}
+      <div className="py-12 px-2">
+        <h1 className="text-2xl font-bold">수강신청 관심과목 분석</h1>
 
-        {/* Header */}
-        <div className="p-6">
-          <h1 className="text-2xl font-bold">수강신청 관심과목 분석</h1>
+        {/* Search and Filter */}
+        <Searches setSearches={setFilterParams}/>
 
-          {/* Search and Filter */}
-          <Searches setSearches={setFilterParams}/>
-
-          {/* Course Table */}
-          <div className="bg-white mt-6 shadow-md rounded-lg overflow-x-auto">
-            {isPending ? (
-              <SkeletonTable headerNames={TableHeaders.map(({name})=> name)}/>
-            ) : (
-              filteredData && <Table data={filteredData}/>
-            )}
-          </div>
+        {/* Course Table */}
+        <div className="bg-white mt-6 shadow-md rounded-lg overflow-x-auto">
+          <Table data={filteredData} isPending={isPending}/>
         </div>
       </div>
     </div>
