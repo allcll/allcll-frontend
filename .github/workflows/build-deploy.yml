@@ -19,7 +19,8 @@ jobs:
     name: build
     runs-on: ubuntu-latest
     env:
-      working-directory: ./packages/client
+      working-directory: ./
+      project-directory: ./packages/client
 
     steps:
       - name: Checkout code
@@ -38,7 +39,8 @@ jobs:
 
       - name: Build Client project
         run: |
-          pnpm run build
+          pnpm run build-client
+          cd ${{env.project-directory}}
           mkdir -p ./build
           cp -r dist ./build
           cp package.json ./build/package.json
@@ -56,13 +58,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: production-files
-          path: ./build
+          path: ${{env.working-directory}}/build
 
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: production-files
-          path: ./build
+          path: ${{env.working-directory}}/build
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
