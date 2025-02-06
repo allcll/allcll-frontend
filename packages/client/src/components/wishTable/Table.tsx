@@ -12,7 +12,7 @@ interface ITable {
 }
 
 export const TableHeaders = [
-  {name: '즐겨찾기', key: ''},
+  {name: '', key: ''},
   {name: '학수번호', key: 'subjectCode'},
   {name: '분반', key: 'classCode'},
   {name: '개설 학과', key: 'departmentName'},
@@ -51,9 +51,9 @@ function Table({data, isPending=false}: ITable) {
 
 
   return (
-    <table className="w-full bg-white rounded-lg relative">
+    <table className="w-full bg-white rounded-lg relative text-sm">
       <thead>
-      <tr className="bg-gray-50 sticky top-0 z-10">
+      <tr className="bg-gray-50 sticky top-0 z-10 text-nowrap">
         {TableHeaders.map(({name}) => (
           <th key={name} className="px-4 py-2">{name}</th>
         ))}
@@ -90,14 +90,20 @@ interface TableRowProps {
 }
 
 const TableRow = ({data}: TableRowProps) => {
-  const isFavorite = useFavorites(state => state.isFavorite);
+  const getIsFavorite = useFavorites(state => state.isFavorite);
   const toggleFavorite = useFavorites(state => state.toggleFavorite);
+  const [isFavorite, setIsFavorite] = useState(getIsFavorite(data.subjectId));
+
+  const handleFavorite = () => {
+    setIsFavorite(prevState => !prevState);
+    toggleFavorite(data.subjectId);
+  }
 
   return (
     <tr className="border-t border-gray-200 text-black hover:bg-gray-100">
       <td className="px-4 py-2 text-center">
-        <button onClick={() => toggleFavorite(data.subjectId)}>
-          <StarIcon disabled={!isFavorite(data.subjectId)}/>
+        <button onClick={handleFavorite}>
+          <StarIcon disabled={!isFavorite}/>
         </button>
       </td>
 
