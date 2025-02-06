@@ -15,7 +15,7 @@ export const TableHeaders = [
   {name: '즐겨찾기', key: ''},
   {name: '학수번호', key: 'subjectCode'},
   {name: '분반', key: 'classCode'},
-  {name: '개설 학과', key: 'departmentCode'},
+  {name: '개설 학과', key: 'departmentName'},
   {name: '과목명', key: 'subjectName'},
   {name: '교수명', key: 'professorName'},
   {name: '관심', key: 'totalCount'},

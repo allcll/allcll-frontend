@@ -4,9 +4,7 @@ function useRecommendWishes(subjectCode: string) {
   const {data} = useWishes();
 
   if (!data)
-    return {
-      isPending: true,
-    }
+    return { isPending: true }
 
   const detail = data.filter((basket) => basket.subjectCode === subjectCode);
 

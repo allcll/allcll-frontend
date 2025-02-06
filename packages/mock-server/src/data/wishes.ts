@@ -1,7 +1,7 @@
 // 학과 랜덤으로 몇개 뽑아서 totalCount에 합계가 맞도록 넣어주기
 export const getDepartmentRegister = (totalCount: number) => {
   return {
-    departmentRegisters: [
+    eachDepartmentRegisters: [
       {
         studentBelong: '본교생',
         registerDepartment: '컴퓨터공학과',

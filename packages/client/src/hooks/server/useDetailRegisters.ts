@@ -2,7 +2,7 @@ import {useQuery} from '@tanstack/react-query';
 import {WishRegister} from '@/utils/types..ts';
 
 interface DetailRegistersResponse {
-  departmentRegisters: WishRegister[];
+  eachDepartmentRegisters: WishRegister[];
 }
 
 function useDetailRegisters(id: string) {
@@ -10,7 +10,7 @@ function useDetailRegisters(id: string) {
     queryKey: ['detail-registers', id],
     queryFn: () => fetchDetailRegisters(id),
     staleTime: Infinity,
-    select: (data) => data.departmentRegisters,
+    select: (data) => data.eachDepartmentRegisters,
   });
 }
 

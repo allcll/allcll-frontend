@@ -69,14 +69,22 @@ function WishesDetail() {
                   <option>전공/비전공</option>
                 </select>
               </div>
-              <Doughnut data={doughnut} />
+              {!data.totalCount ? (
+                <div className="flex justify-center items-center h-48">
+                  <p className="text-center text-gray-500 font-semibold">
+                    데이터가 없습니다.
+                  </p>
+                </div>
+              ) : (
+                <Doughnut data={doughnut} />
+              )}
             </div>
 
             {/* Competition Analysis */}
             <div className="bg-white p-6 rounded-lg shadow-md">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold">관심과목 경쟁률 예상</h2>
-                <p className="text-red-500 font-bold text-xl">총 {data.totalCount}명</p>
+                <p className={`${getTextColor(data.totalCount)} font-bold text-xl`}>총 {data.totalCount}명</p>
               </div>
 
               <BlurComponents>
@@ -99,6 +107,12 @@ function WishesDetail() {
 
     </div>
   );
+}
+
+function getTextColor(totalCount: number) {
+  if (totalCount >= 100) return "text-red-500";
+  if (totalCount >= 50) return "text-yellow-500";
+  return "text-green-500";
 }
 
 export default WishesDetail;

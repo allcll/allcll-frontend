@@ -8,7 +8,7 @@ import svgr from 'vite-plugin-svgr';
 export default ({mode}: ConfigEnv) => {
   const env = loadEnv(mode, process.cwd());
   const TargetHost = env.VITE_TARGET_HOST ?? 'localhost:8080';
-  const TargetServer = `https://${TargetHost}`;
+  const TargetServer = `http://${TargetHost}`;
 
   return defineConfig({
     plugins: [react(), tsconfigPaths(), WindiCSS(), svgr()],
