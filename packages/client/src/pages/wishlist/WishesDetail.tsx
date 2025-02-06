@@ -98,9 +98,11 @@ function WishesDetail() {
 
           {/* Alternative Course Table */}
           <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold">대체과목 추천</h2>
+            <h2 className="text-lg font-semibold mb-4">대체과목 추천</h2>
 
-            <Table data={recommend ?? []}/>
+            <div className="overflow-x-auto">
+              <Table data={recommend ?? []}/>
+            </div>
           </div>
       </CardWrap>
       </div>

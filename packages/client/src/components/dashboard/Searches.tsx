@@ -62,7 +62,7 @@ function Searches({setSearches}: SearchesProps) {
                onChange={handleSearchInputChange}/>
       </div>
       <select
-        className="border px-4 py-2 rounded-md"
+        className="border pl-2 pr-4 py-2 rounded-md"
         onChange={handleDepartmentChange}
       >
         {departmentsList.map(({departmentName, departmentCode}) => (
