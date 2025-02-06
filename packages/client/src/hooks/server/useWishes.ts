@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import {Wishlist} from '@/utils/types..ts';
+import {Wishlist} from '@/utils/types.ts';
 
 const fetchWishesData = async (): Promise<Wishlist> => {
   const response = await fetch('/baskets.json', { // /api/baskets

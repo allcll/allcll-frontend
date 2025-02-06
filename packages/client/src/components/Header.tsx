@@ -1,5 +1,6 @@
 import {Link, NavLink} from 'react-router-dom';
 import LogoSvg from '@public/ci.svg?react';
+import LogoName from '@public/logo-name.svg?react';
 
 function Header() {
   return (
@@ -7,8 +8,9 @@ function Header() {
       <div className="container py-4 mb-1 flex items-center justify-between mx-auto max-w-7xl px-4 md:px-16">
         <div className="flex items-center space-x-4">
           <Link to="/" className="flex items-center space-x-2">
+            <h1 className="hidden">ALLCLL</h1>
             <LogoSvg className="w-8"/>
-            <h1 className="text-2xl font-bold text-blue-500 hidden sm:inline-block">ALLCLL</h1>
+            <LogoName className="h-5 hidden sm:inline-block"/>
           </Link>
 
           <ul className="flex space-x-4 text-sm sm:text-base">

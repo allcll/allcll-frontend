@@ -1,4 +1,4 @@
-import {Subject} from "@/utils/types..ts";
+import {Subject} from "@/utils/types.ts";
 import {useQuery} from "@tanstack/react-query";
 
 export function useSearchSubject(searchOption: SubjectOption) {

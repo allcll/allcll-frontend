@@ -1,13 +1,13 @@
-import { useState } from 'react';
 import { useParams } from "react-router-dom";
-import { Bar, Doughnut } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from "chart.js";
 import CardWrap from "@/components/CardWrap";
 import BlurComponents from "@/components/BlurComponents";
 import Table from "@/components/wishTable/Table";
 import useDetailWishes from '@/hooks/server/useDetailWishes';
 import useRecommendWishes from '@/hooks/server/useRecommendWishes';
-import useDetailRegisters, { getDoughnutData } from '@/hooks/server/useDetailRegisters';
+import useDetailRegisters from '@/hooks/server/useDetailRegisters.ts';
+import DepartmentDoughnut from '@/components/wishTable/DepartmentDoughnut.tsx';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -24,14 +24,10 @@ const gradeData = {
 
 function WishesDetail() {
   const params = useParams();
-  const [selectedFilter, setSelectedFilter] = useState("전공/비전공");
   const {data, isPending} = useDetailWishes(params.id ?? "-1");
   const {data: registers} = useDetailRegisters(params.id ?? "-1");
+  const {data: recommend} = useRecommendWishes(data?.subjectCode ?? "", data?.subjectId ? [data.subjectId] : []);
 
-  const doughnut = getDoughnutData(registers);
-  const {data: recommend} = useRecommendWishes(data?.subjectCode ?? "")
-
-  // Todo: 에브리타임 수강평 보기 - 링크 크롤링
   // Todo: 전공/비전공, 단과대 보기 -> 소속 학과 알아내기
   // Todo: 색상 선정 및 알고리즘 개발
 
@@ -60,25 +56,8 @@ function WishesDetail() {
           {/* Analytics Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             {/* Doughnut Chart */}
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="flex justify-between items-center">
-                <h2 className="text-lg font-semibold">학과별 관심도</h2>
-                <select className="border px-3 py-1 rounded-md"
-                        value={selectedFilter}
-                        onChange={(e) => setSelectedFilter(e.target.value)}>
-                  <option>전공/비전공</option>
-                </select>
-              </div>
-              {!data.totalCount ? (
-                <div className="flex justify-center items-center h-48">
-                  <p className="text-center text-gray-500 font-semibold">
-                    데이터가 없습니다.
-                  </p>
-                </div>
-              ) : (
-                <Doughnut data={doughnut} />
-              )}
-            </div>
+            <DepartmentDoughnut data={registers} majorName={data.departmentName}/>
+
 
             {/* Competition Analysis */}
             <div className="bg-white p-6 rounded-lg shadow-md">

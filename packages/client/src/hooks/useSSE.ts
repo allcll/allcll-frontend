@@ -1,7 +1,7 @@
 import {QueryClient, useQuery, useQueryClient} from '@tanstack/react-query';
 import { useCallback } from 'react';
 import {onChangePinned} from "@/hooks/useNotification.ts";
-import {PinnedSeats} from "@/utils/types..ts";
+import {PinnedSeats} from "@/utils/types.ts";
 
 const fetchSSEData = (queryClient: QueryClient) => {
   return new Promise((resolve, reject) => {

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import {PinnedSeats} from "@/utils/types..ts";
+import {PinnedSeats} from "@/utils/types.ts";
 
 const tableData = [
   { name: 'Math', seats: 0 },
