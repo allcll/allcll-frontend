@@ -1,5 +1,5 @@
 import PinIcon from '@/components/svgs/PinIcon.tsx';
-import {Subject} from '@/utils/types..ts';
+import {Subject} from '@/utils/types.ts';
 import {usePinned, useAddPinned, useRemovePinned} from "@/store/usePinned.ts";
 
 interface IPinCard {

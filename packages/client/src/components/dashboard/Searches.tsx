@@ -24,7 +24,6 @@ function Searches({setSearches}: SearchesProps) {
     ...(departments ?? [])
   ];
 
-
   useEffect(() => {
     const handler = setTimeout(() => {
       setSearches({searchInput, selectedDepartment, isFavorite});

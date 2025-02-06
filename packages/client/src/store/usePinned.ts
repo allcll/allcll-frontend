@@ -1,4 +1,4 @@
-import {Subject} from '@/utils/types..ts';
+import {Subject} from '@/utils/types.ts';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const PinLimit = 5;

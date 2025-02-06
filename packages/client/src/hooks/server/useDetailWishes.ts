@@ -1,5 +1,5 @@
 import useWishes from '@/hooks/server/useWishes.ts';
-import {Wishes} from '@/utils/types..ts';
+import {Wishes} from '@/utils/types.ts';
 
 interface DetailWishes {
   isPending: boolean;

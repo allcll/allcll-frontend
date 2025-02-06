@@ -1,5 +1,5 @@
 import PinCard from '@/components/subjectTable/PinCard.tsx';
-import {Subject} from '@/utils/types..ts';
+import {Subject} from '@/utils/types.ts';
 
 interface ISubjectCards {
   subjects: Subject[];

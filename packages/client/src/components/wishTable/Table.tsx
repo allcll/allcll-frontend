@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState, memo} from 'react';
 import {Link} from 'react-router-dom';
-import {Wishes} from '@/utils/types..ts';
+import {Wishes} from '@/utils/types.ts';
 import useFavorites from '@/store/useFavorites.ts';
 import StarIcon from '@/components/svgs/StarIcon.tsx';
 import SearchSvg from '@/assets/search.svg?react';
@@ -26,6 +26,10 @@ function Table({data, isPending=false}: ITable) {
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
+    setVisibleRows(200);
+  }, [data]);
+
+  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -48,7 +52,6 @@ function Table({data, isPending=false}: ITable) {
       }
     };
   }, []);
-
 
   return (
     <table className="w-full bg-white rounded-lg relative text-sm">
