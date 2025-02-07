@@ -79,8 +79,6 @@ export const useDepartmentDict = (departments?: Department[]): DepartmentDict =>
     }
   });
 
-  console.log('collegeDict', collegeDict);
-
   return {universityDict, collegeDict};
 }
 

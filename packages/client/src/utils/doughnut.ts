@@ -23,12 +23,19 @@ export function getDoughnutData(data?: WishRegister[]): DoughnutData {
   if (!data)
     return DefaultDoughnutData;
 
+  const dict: Record<string, number> = {};
+  data.forEach((department) => {
+    if (!dict[department.registerDepartment ?? ''])
+      dict[department.registerDepartment ?? ''] = 0;
+    dict[department.registerDepartment ?? ''] += Number(department.eachCount);
+  });
+
   return {
-    labels: data.map((department) => department.registerDepartment),
+    labels: data.map((department) => department.registerDepartment ?? ''),
     datasets: [
       {
-        data: data.map((department) => department.eachCount),
-        backgroundColor: ["#3B82F6", "#FACC15", "#22C55E", "#EF4444"],
+        data: data.map((department) => Number(department.eachCount)),
+        backgroundColor: ["#EF4444", "#3B82F6", "#FACC15", "#22C55E"],
       },
     ],
   };
@@ -51,8 +58,8 @@ export function getMajorDoughnutData(majorName: string, data?: WishRegister[]): 
   }
 
   data.forEach((department) => {
-    const dictName = isMajor(department.registerDepartment) ? 'major' : 'non-major';
-    dict[dictName] += department.eachCount;
+    const dictName = isMajor(department.registerDepartment ?? '') ? 'major' : 'non-major';
+    dict[dictName] += Number(department.eachCount);
   });
 
   const names = {
@@ -78,11 +85,11 @@ export function getUniversityDoughnutData(data?: WishRegister[], UniversityDict?
   let dict: Record<string, number> = {};
 
   data.forEach((department) => {
-    const university = searchFromUniversity(department.registerDepartment, UniversityDict);
+    const university = searchFromUniversity(department.registerDepartment ?? '', UniversityDict);
 
     if (!dict[university])
       dict[university] = 0;
-    dict[university] += department.eachCount;
+    dict[university] += Number(department.eachCount);
   });
 
   return {
@@ -103,11 +110,11 @@ export function getCollegeDoughnutData(data?: WishRegister[], collegeDict?: Reco
   let dict: Record<string, number> = {};
 
   data.forEach((department) => {
-    const college = searchFromCollege(department.registerDepartment, collegeDict);
+    const college = searchFromCollege(department.registerDepartment ?? '', collegeDict);
 
     if (!dict[college])
       dict[college] = 0;
-    dict[college] += department.eachCount;
+    dict[college] += Number(department.eachCount);
   });
 
   return {
@@ -125,5 +132,5 @@ export function getDoughnutTotalCount(data?: WishRegister[]): number {
   if (!data)
     return -1;
 
-  return data.reduce((acc, cur) => acc + cur.eachCount, 0);
+  return data.reduce((acc, cur) => acc + Number(cur.eachCount), 0);
 }
