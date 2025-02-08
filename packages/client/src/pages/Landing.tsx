@@ -27,7 +27,7 @@ function Landing() {
         <div className="max-w-lg">
           <h1 className="text-3xl/[1.2] md:text-5xl/[1.2] font-bold">수강 신청, <br/> 매번 어렵고 <br/>번거롭지 않나요?</h1>
           <p className="text-gray-600 mt-4">세종대 수강신청을 더 쉽고 빠르게 도와드랄게요!</p>
-          <Link to="/wishes" className="bg-blue-600 text-white rounded-md px-6 py-3 mt-6 flex items-center gap-2 w-fit">
+          <Link to="/wishes" className="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-6 py-3 mt-6 flex items-center gap-2 w-fit">
             관심과목 분석하기
             <RightArrowSvg className="w-4 h-4"/>
           </Link>

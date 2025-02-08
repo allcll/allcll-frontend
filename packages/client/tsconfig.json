@@ -29,6 +29,6 @@
     }
   },
   "include": [
-    "src", "vite.config.ts", "svg.d.ts"
+    "src", "vite.config.ts", "svg.d.ts", "tailwind.config.ts"
   ]
 }
