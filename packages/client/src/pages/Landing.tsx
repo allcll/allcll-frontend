@@ -25,8 +25,8 @@ function Landing() {
       {/* Hero Section */}
       <Section className="flex flex-col md:flex-row items-center justify-between" bgColor="bg-blue-50">
         <div className="max-w-lg">
-          <h1 className="text-3xl md:text-5xl font-bold">수강 신청, <br/> 매번 어렵고 <br/>번거롭지 않나요?</h1>
-          <p className="text-gray-600 mt-4">올클과 함께라면 더 쉽게 원하는 강의를 찾을 수 있습니다!</p>
+          <h1 className="text-3xl/[1.2] md:text-5xl/[1.2] font-bold">수강 신청, <br/> 매번 어렵고 <br/>번거롭지 않나요?</h1>
+          <p className="text-gray-600 mt-4">세종대 수강신청을 더 쉽고 빠르게 도와드랄게요!</p>
           <Link to="/wishes" className="bg-blue-600 text-white rounded-md px-6 py-3 mt-6 flex items-center gap-2 w-fit">
             관심과목 분석하기
             <RightArrowSvg className="w-4 h-4"/>
@@ -51,7 +51,7 @@ function Landing() {
             </div>
           ))}
         </div>
-        <div className="text-gray-900 text-xs mt-16">
+        <div className="text-gray-900 mt-16">
           <p>그래서 우리는 올클을 만들었습니다.</p>
           <p>같은 고민을 했던 우리이기에, 진짜 도움이 되는 서비스를 만들고 싶었습니다. </p>
         </div>
@@ -71,7 +71,9 @@ function Landing() {
           {/* 검색 창 */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-lg font-semibold mb-2">학과별 관심도</h2>
-            <Doughnut data={doughnut} />
+            <div className="flex aligh-center justify-center max-h-96">
+              <Doughnut data={doughnut} />
+            </div>
           </div>
 
           {/* 대체 과목 추천 */}
@@ -81,7 +83,7 @@ function Landing() {
               { name: "데이터베이스개론", dept: "데이터베이스 시스템", status: "30명" },
               { name: "알고리즘분석", dept: "고급알고리즘", status: "14명" }
             ].map((course, index) => (
-              <div key={index} className="mt-4 flex justify-between p-2 rounded-md cursor-pointer hover:bg-gray-100">
+              <div key={index} className="mt-4 flex justify-between p-2 rounded-md border border-gray-200">
                 <div>
                   <p className="font-semibold">{course.name}</p>
                   <p className="text-sm text-gray-500">{course.dept}</p>
