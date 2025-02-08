@@ -1,4 +1,8 @@
 import CardWrap from '@/components/CardWrap.tsx';
+import useSoyungDepartments from '@/hooks/server/useSoyungDepartments.ts';
+import {SSEType, useSseData} from '@/hooks/useSSE.ts';
+import {QueryClient} from '@tanstack/react-query';
+import useWishes from '@/hooks/server/useWishes.ts';
 
 interface IRealtimeTable {
   title: string;
@@ -9,26 +13,35 @@ const TableHeadTitles = [
   {title: '과목코드', key: 'code'},
   {title: '과목명', key: 'name'},
   {title: '담당교수', key: 'professor'},
-  {title: '학점', key: 'credits'},
   {title: '여석', key: 'seats'}
 ];
 
-const DummyTableData = [
-  {code: 'HU301', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 20},
-  {code: 'HU302', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 15},
-  {code: 'HU303', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 10},
-  {code: 'HU304', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 9},
-  {code: 'HU305', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 3},
-  {code: 'HU301', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 20},
-  {code: 'HU302', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 15},
-  {code: 'HU303', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 10},
-  {code: 'HU304', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 9},
-  {code: 'HU305', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 3},
-];
+// const DummyTableData = [
+//   {code: 'HU301', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 20},
+//   {code: 'HU302', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 15},
+//   {code: 'HU303', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 10},
+//   {code: 'HU304', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 9},
+//   {code: 'HU305', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 3},
+//   {code: 'HU301', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 20},
+//   {code: 'HU302', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 15},
+//   {code: 'HU303', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 10},
+//   {code: 'HU304', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 9},
+//   {code: 'HU305', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 3},
+// ];
 
 const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable) => {
   // major list API fetch
   // subject list SSE API fetch
+  const {data: departments} = useSoyungDepartments();
+  const sseType = title === '교양과목' ? SSEType.NON_MAJOR : SSEType.MAJOR;
+  const {data: subjectIds} = useSseData(new QueryClient(), sseType);
+  const {data: subjectData} = useWishes();
+
+  const tableData = subjectIds?.map((subject) => {
+    const {subjectId, seat} = subject;
+    const {subjectName, subjectCode, professorName} = subjectData?.find((subject) => subject.subjectId === subjectId) || {};
+    return {code: subjectCode, name: subjectName, professor: professorName, seat};
+  }) ?? [];
 
   return (
     <CardWrap>
@@ -36,8 +49,9 @@ const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable)
         <h2 className="font-bold text-lg p-2">{title} 실시간</h2>
         {showSelect && (
           <select className="border border-gray-300 rounded px-4 py-2">
-            <option>컴퓨터공학과</option>
-            <option>경영학과</option>
+            {departments && departments.map((department) => (
+              <option key={department.departmentId}>{department.departmentName}</option>
+            ))}
           </select>
         )}
       </div>
@@ -50,7 +64,7 @@ const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable)
         </tr>
         </thead>
         <tbody>
-        {DummyTableData.map((subject, index) => (
+        {tableData.map((subject, index) => (
           <SubjectRow key={index} subject={subject}/>
         ))}
         </tbody>

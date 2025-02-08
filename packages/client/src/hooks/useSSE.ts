@@ -57,4 +57,19 @@ const useSSE = () => {
   });
 };
 
+export enum SSEType {
+  NON_MAJOR = 'non-major',
+  MAJOR = 'major',
+  PINNED = 'pinned',
+}
+
+export const useSseData = (queryClient: QueryClient, type: SSEType) => {
+  return useQuery<PinnedSeats[]>({
+    queryKey: [type as string],
+    queryFn: () => new Promise((resolve) => {
+      resolve(queryClient.getQueryData([type as string]) ?? []);
+    }),
+  });
+};
+
 export default useSSE;

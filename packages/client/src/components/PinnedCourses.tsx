@@ -1,9 +1,19 @@
 import {Link} from 'react-router-dom';
 import PinCard from '@/components/subjectTable/PinCard.tsx';
 import {usePinned} from '@/store/usePinned.ts';
+import {SSEType, useSseData} from '@/hooks/useSSE.ts';
+import {QueryClient} from '@tanstack/react-query';
 
 const PinnedCourses = () => {
   const {data, isPending, isError} = usePinned();
+  const {data: pinnedSeats} = useSseData(new QueryClient(), SSEType.PINNED);
+
+  const getSeats = (subjectId: number) => {
+    if (!pinnedSeats) return -1;
+
+    const pinned = pinnedSeats?.find((pinnedSeat) => pinnedSeat.subjectId === subjectId);
+    return pinned?.seat ?? -1;
+  }
 
   return (
     <div>
@@ -23,7 +33,9 @@ const PinnedCourses = () => {
           <div className="text-center">에러 발생</div>
         ) : (
           data.map((subject) => (
-            <PinCard key={`${subject.subjectId}_${subject.subjectCode}_${subject.professorName}`} subject={subject} seats={-1}/>
+            <PinCard key={`${subject.subjectId}_${subject.subjectCode}_${subject.professorName}`}
+                     subject={subject}
+                     seats={getSeats(subject.subjectId)}/>
         )))}
 
       </div>

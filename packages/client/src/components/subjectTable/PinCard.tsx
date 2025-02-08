@@ -33,7 +33,7 @@ function PinCard({ subject, seats }: IPinCard) {
       </div>
       <div className="flex justify-between">
         <p className="text-sm text-gray-500">{subject.subjectCode} | {subject.professorName}</p>
-        <p className={`text-sm ${seatColor(seats)}`}>여석: {seats < 0 ? "???" : seats}</p>
+        <p className={`text-sm font-bold ${seatColor(seats)}`}>여석: {seats < 0 ? "???" : seats}</p>
       </div>
     </div>
   );
