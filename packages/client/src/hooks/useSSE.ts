@@ -3,23 +3,29 @@ import { useCallback } from 'react';
 import {onChangePinned} from "@/hooks/useNotification.ts";
 import {PinnedSeats} from "@/utils/types.ts";
 
+export enum SSEType {
+  NON_MAJOR = 'non-major',
+  MAJOR = 'major',
+  PINNED = 'pinned',
+}
+
 const fetchSSEData = (queryClient: QueryClient) => {
   return new Promise((resolve, reject) => {
     const eventSource = new EventSource('/api/connect');
 
     eventSource.addEventListener('non-major', (event) => {
       // queryClient.invalidateQueries({ queryKey: ['nonMajor'] });
-      queryClient.setQueryData(['nonMajor'], JSON.parse(event.data));
+      queryClient.setQueryData([SSEType.NON_MAJOR as string], JSON.parse(event.data));
     });
 
     eventSource.addEventListener('major', (event) => {
       // queryClient.invalidateQueries({ queryKey: ['major'] });
-      queryClient.setQueryData(['major'], JSON.parse(event.data));
+      queryClient.setQueryData([SSEType.MAJOR as string], JSON.parse(event.data));
     });
 
     eventSource.addEventListener('pinned', (event) => {
       // queryClient.invalidateQueries({ queryKey: ['pinned'] });
-      queryClient.setQueryData(['pinned'], (prev: PinnedSeats[]) => {
+      queryClient.setQueryData([SSEType.PINNED as string], (prev: PinnedSeats[]) => {
         const now: PinnedSeats[] = JSON.parse(event.data);
         onChangePinned(prev, now);
 
@@ -56,12 +62,6 @@ const useSSE = () => {
     refetchInterval: false
   });
 };
-
-export enum SSEType {
-  NON_MAJOR = 'non-major',
-  MAJOR = 'major',
-  PINNED = 'pinned',
-}
 
 export const useSseData = (queryClient: QueryClient, type: SSEType) => {
   return useQuery<PinnedSeats[]>({

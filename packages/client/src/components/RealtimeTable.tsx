@@ -43,12 +43,30 @@ const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable)
     return {code: subjectCode, name: subjectName, professor: professorName, seat};
   }) ?? [];
 
+  const setMajor = (departmentId: number) => {
+    fetch('/api/set-major', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({departmentId}),
+    }).then();
+  }
+
+  const onChangeDepartment = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const departmentId = e.target.value;
+    if (departmentId) {
+      setMajor(Number(departmentId));
+    }
+  }
+
   return (
     <CardWrap>
       <div className="flex justify-between items-center mb-4">
         <h2 className="font-bold text-lg p-2">{title} 실시간</h2>
         {showSelect && (
-          <select className="border border-gray-300 rounded px-4 py-2">
+          <select className="border border-gray-300 rounded px-4 py-2"
+                  onChange={onChangeDepartment}>
             {departments && departments.map((department) => (
               <option key={department.departmentId}>{department.departmentName}</option>
             ))}
