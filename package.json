@@ -36,7 +36,8 @@
     "tailwindcss": "^4.0.4",
     "postcss": "^8.5.1",
     "autoprefixer": "^10.4.20",
-    "vite-plugin-windicss": "^1.9.4"
+    "vite-plugin-windicss": "^1.9.4",
+    "@tailwindcss/vite": "^4.0.4"
   },
   "msw": {
     "workerDirectory": [
