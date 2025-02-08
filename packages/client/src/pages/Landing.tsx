@@ -6,6 +6,7 @@ import ClockBlueSvg from "@/assets/clock-blue.svg?react";
 import DisabledBlueSvg from "@/assets/disabled-blue.svg?react";
 import ReloadBlueSvg from "@/assets/reload-blue.svg?react";
 import LinkBlue from "@/assets/link-blue.svg?react";
+import {DoughnutColors} from '@/utils/doughnut.ts';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -14,7 +15,7 @@ const doughnut = {
   datasets: [
     {
       data: [40, 25, 20, 15],
-      backgroundColor: ["#3B82F6", "#FACC15", "#22C55E", "#EF4444"],
+      backgroundColor: DoughnutColors,
     },
   ],
 }

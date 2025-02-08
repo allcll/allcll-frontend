@@ -48,6 +48,7 @@ jobs:
         env:
           CI: ""
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          VITE_GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
         working-directory: ${{env.working-directory}}
 
       #    - name: Run tests

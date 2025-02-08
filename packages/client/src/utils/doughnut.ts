@@ -19,7 +19,7 @@ const DefaultDoughnutData: DoughnutData = {
   ],
 };
 
-const colors = ["#F97316", "#3B82F6", "#FACC15", "#22C55E", "#60B6D4"];
+export const DoughnutColors = ["#F97316", "#3B82F6", "#FACC15", "#22C55E", "#60B6D4"];
 // ["#3B82F6", "#FACC15", "#22C55E", "#EF4444"]
 
 export function getDoughnutData(data?: WishRegister[]): DoughnutData {
@@ -38,7 +38,7 @@ export function getDoughnutData(data?: WishRegister[]): DoughnutData {
     datasets: [
       {
         data: data.map((department) => Number(department.eachCount)),
-        backgroundColor: colors,
+        backgroundColor: DoughnutColors,
       },
     ],
   };
@@ -75,7 +75,7 @@ export function getMajorDoughnutData(majorName: string, data?: WishRegister[]): 
     datasets: [
       {
         data: Object.values(dict),
-        backgroundColor: colors,
+        backgroundColor: DoughnutColors,
       },
     ],
   };
@@ -100,7 +100,7 @@ export function getUniversityDoughnutData(data?: WishRegister[], UniversityDict?
     datasets: [
       {
         data: Object.values(dict),
-        backgroundColor: colors,
+        backgroundColor: DoughnutColors,
       },
     ],
   };
@@ -125,7 +125,7 @@ export function getCollegeDoughnutData(data?: WishRegister[], collegeDict?: Reco
     datasets: [
       {
         data: Object.values(dict),
-        backgroundColor: colors,
+        backgroundColor: DoughnutColors,
       },
     ],
   };
