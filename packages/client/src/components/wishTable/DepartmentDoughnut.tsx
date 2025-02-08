@@ -29,7 +29,7 @@ function DepartmentDoughnut({data, majorName}: { data?: WishRegister[], majorNam
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <div className="flex justify-between items-center">
-        <h2 className="text-lg font-semibold">학과별 관심도</h2>
+        <h2 className="text-lg font-semibold">관심과목 현황</h2>
         <select className="border px-3 py-1 rounded-md"
                 value={selectedFilter}
                 onChange={(e) => setSelectedFilter(e.target.value as DoughnutSelectType)}>
@@ -52,7 +52,7 @@ function DepartmentDoughnut({data, majorName}: { data?: WishRegister[], majorNam
 }
 
 function useDoughnutData(data: WishRegister[] | undefined, departmentDict: DepartmentDict, majorName:string, selectedFilter: DoughnutSelectType) {
-  let doughnutData = null;
+  let doughnutData;
   let {universityDict, collegeDict} = departmentDict;
 
   switch (selectedFilter) {
