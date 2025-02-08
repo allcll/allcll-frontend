@@ -1,13 +1,14 @@
+import React from 'react';
 import {Link} from "react-router-dom";
 import {Doughnut} from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
+import {DoughnutColors} from '@/utils/doughnut.ts';
 import RightArrowSvg from "@/assets/right-arrow.svg?react";
 import ClockBlueSvg from "@/assets/clock-blue.svg?react";
 import DisabledBlueSvg from "@/assets/disabled-blue.svg?react";
 import ReloadBlueSvg from "@/assets/reload-blue.svg?react";
 import LinkBlue from "@/assets/link-blue.svg?react";
 import ProfileSvg from "@/assets/profile.svg?react";
-import {DoughnutColors} from '@/utils/doughnut.ts';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -28,7 +29,7 @@ function Landing() {
       <Section className="flex flex-col md:flex-row items-center justify-between" bgColor="bg-blue-50">
         <div className="max-w-lg">
           <h1 className="text-3xl/[1.2] md:text-5xl/[1.2] font-bold">수강 신청, <br/> 매번 어렵고 <br/>번거롭지 않나요?</h1>
-          <p className="text-gray-600 mt-4">세종대 수강신청을 더 쉽고 빠르게 도와드랄게요!</p>
+          <p className="text-gray-600 mt-4">세종대 수강신청을 더 쉽고 빠르게 도와드릴게요!</p>
           <Link to="/wishes" className="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-6 py-3 mt-6 flex items-center gap-2 w-fit">
             관심과목 분석하기
             <RightArrowSvg className="w-4 h-4"/>
