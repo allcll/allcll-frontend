@@ -1,7 +1,7 @@
 name: ALLCLL CI/CD
 on:
   push:
-    branches: [ main ]
+    branches: [ develop ]
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -81,9 +81,9 @@ jobs:
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.MAIN_SERVER_HOST }}
+          host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.MAIN_SERVER_SSH_KEY }}
+          key: ${{ secrets.SSH_KEY }}
           #passphrase: ${{ secrets.PASSPHRASE }}
           port: 22
           script: |
