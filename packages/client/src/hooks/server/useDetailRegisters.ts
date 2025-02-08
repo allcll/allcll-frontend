@@ -3,14 +3,14 @@ import {WishRegister} from '@/utils/types.ts';
 
 interface DetailRegistersResponse {
   eachDepartmentRegisters: WishRegister[];
+  everytimeLectureId: number;
 }
 
 function useDetailRegisters(id: string) {
   return useQuery({
     queryKey: ['detail-registers', id],
     queryFn: () => fetchDetailRegisters(id),
-    staleTime: Infinity,
-    select: (data) => data.eachDepartmentRegisters,
+    staleTime: Infinity
   });
 }
 

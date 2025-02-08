@@ -49,14 +49,14 @@ function WishesDetail() {
           <h1 className="text-2xl font-bold">{data.subjectName}</h1>
           <p className="text-gray-600">{data.subjectCode}-{data.classCode} | {data.departmentName} | {data.professorName}</p>
           <a className="inline-block mt-4 bg-blue-500 text-white px-4 py-2 rounded-md"
-             href="#" target="_blank">
+             href={`https://everytime.kr/lecture/view/${registers?.everytimeLectureId}`} target="_blank">
             📘 에브리타임 수강평 보기
           </a>
 
           {/* Analytics Section */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             {/* Doughnut Chart */}
-            <DepartmentDoughnut data={registers} majorName={data.departmentName}/>
+            <DepartmentDoughnut data={registers?.eachDepartmentRegisters ?? []} majorName={data.departmentName}/>
 
 
             {/* Competition Analysis */}
