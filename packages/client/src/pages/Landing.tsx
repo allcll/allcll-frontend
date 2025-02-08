@@ -6,6 +6,7 @@ import ClockBlueSvg from "@/assets/clock-blue.svg?react";
 import DisabledBlueSvg from "@/assets/disabled-blue.svg?react";
 import ReloadBlueSvg from "@/assets/reload-blue.svg?react";
 import LinkBlue from "@/assets/link-blue.svg?react";
+import ProfileSvg from "@/assets/profile.svg?react";
 import {DoughnutColors} from '@/utils/doughnut.ts';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
@@ -113,13 +114,19 @@ function Landing() {
         <h2 className="text-2xl font-semibold">올클을 써보신 분들의 한마디!</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
           {[
-            {review: '대체과목 추천 덕분에 금방 대체 과목을 찾아서 너무 편했어요!', origin: '(컴퓨터공학과 2학년)'},
-            {review: "실시간으로 관심도를 볼 수 있어서 수강신청 전략을 세울 수 있었어요!", origin: "(컴퓨터공학과 4학년)"},
-            {review: "수강신청이 이렇게 편해질 수 있다니 놀랍네요!", origin: "(컴퓨터공학과 3학년)"}
-          ].map(({review, origin}, index) => (
+            {name: '김O수', department: '컴퓨터공학과 2학년', review: '대체과목 추천 덕분에 금방 대체 과목을 찾아서 너무 편했어요!'},
+            {name: '김O민', department: "컴퓨터공학과 4학년", review: "실시간으로 관심도를 볼 수 있어서 수강신청 전략을 세울 수 있었어요!"},
+            {name: '김O환', department: "컴퓨터공학과 3학년", review: "수강신청이 이렇게 편해질 수 있다니 놀랍네요!"}
+          ].map(({name, department, review}, index) => (
             <div key={index} className="flex flex-col gap-4 p-6 rounded-md bg-gray-50 text-left text-sm">
-              <p className="text-gray-500">"{review}"</p>
-              <p className="font-bold">{origin}</p>
+              <div className="flex gap-4 items-center">
+                <ProfileSvg className="w-6 h-6"/>
+                <div>
+                  <p className="font-bold">{name}</p>
+                  <p className="text-xs text-gray-500">{department}</p>
+                </div>
+              </div>
+              <p className="text-gray-950">"{review}"</p>
             </div>
           ))}
         </div>
