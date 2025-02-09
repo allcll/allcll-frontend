@@ -27,7 +27,7 @@ const fetchSSEData = (queryClient: QueryClient) => {
       // queryClient.invalidateQueries({ queryKey: ['pinned'] });
       queryClient.setQueryData([SSEType.PINNED as string], (prev: PinnedSeats[]) => {
         const now: PinnedSeats[] = JSON.parse(event.data);
-        onChangePinned(prev, now);
+        onChangePinned(prev, now, queryClient);
 
         return now;
       });

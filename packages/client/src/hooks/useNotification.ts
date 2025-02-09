@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import {PinnedSeats} from "@/utils/types.ts";
+import {PinnedSeats, Wishes} from '@/utils/types.ts';
+import {QueryClient} from '@tanstack/react-query';
 
 // const tableData = [
 //   { name: 'Math', seats: 0 },
@@ -14,7 +15,7 @@ function requestNotificationPermission() {
   }
 }
 
-export function onChangePinned(prev: Array<PinnedSeats>, newPin: Array<PinnedSeats>) {
+export function onChangePinned(prev: Array<PinnedSeats>, newPin: Array<PinnedSeats>, queryClient: QueryClient) {
   if (!prev || !newPin) {
     return;
   }
@@ -23,9 +24,20 @@ export function onChangePinned(prev: Array<PinnedSeats>, newPin: Array<PinnedSea
   for (const pin of newPin) {
     const hasSeat = prev.some(p => p.subjectId === pin.subjectId && p.seat === 0 && pin.seat > 0);
     if (hasSeat) {
-      new Notification(`Seats available for ${pin.subjectId}`);
+      const wishes = getWishes(queryClient, pin.subjectId);
+
+      if (wishes) {
+        new Notification(`Seats available for ${wishes.subjectCode}-${wishes.classCode} ${wishes.subjectName}`);
+      }
+
+      new Notification(`Seats available for unknown subject`);
     }
   }
+}
+
+function getWishes(queryClient: QueryClient, subjectId: number) {
+  const wishes = queryClient.getQueryData<Wishes[]>(['wishlist']);
+  return wishes?.find(wish => wish.subjectId === subjectId);
 }
 
 function useNotification() {
