@@ -1,6 +1,7 @@
 import PinIcon from '@/components/svgs/PinIcon.tsx';
 import {Subject} from '@/utils/types.ts';
 import {useAddPinned, usePinned, useRemovePinned} from "@/store/usePinned.ts";
+import useInfScroll from '@/hooks/useInfScroll.ts';
 
 export interface ITableHead {
   title: string;
@@ -13,6 +14,8 @@ interface ISubjectTable {
 }
 
 function SubjectTable({titles, subjects} : ISubjectTable) {
+  const {visibleRows} = useInfScroll(subjects);
+
   return (
     <table className="w-full bg-white rounded-lg">
       <thead>
@@ -23,9 +26,10 @@ function SubjectTable({titles, subjects} : ISubjectTable) {
       </tr>
       </thead>
       <tbody>
-      {subjects && subjects.map((subject) => (
+      {subjects && subjects.slice(0, visibleRows).map((subject) => (
         <TableRow key={`${subject.subjectCode} ${subject.subjectId} ${subject.professorName}`} subject={subject}/>
       ))}
+      <tr className="load-more-trigger"></tr>
       </tbody>
     </table>
   )

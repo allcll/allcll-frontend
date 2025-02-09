@@ -1,10 +1,11 @@
-import {useState} from "react";
+import {useEffect, useState} from 'react';
 import Navbar from '@/components/Navbar.tsx';
 import SubjectTable from '@/components/subjectTable/SubjectTable.tsx';
 import CardWrap from '@/components/CardWrap.tsx';
 import SubjectCards from '@/components/subjectTable/SubjectCards.tsx';
 import useMobile from '@/hooks/useMobile.ts';
-import {useSearchSubject} from '@/store/useSearchSubject.ts';
+import {Subject, Wishes} from '@/utils/types.ts';
+import useWishes from '@/hooks/server/useWishes.ts';
 
 
 const TableHeadTitles = [
@@ -17,8 +18,7 @@ const TableHeadTitles = [
 
 const SearchOptions = [
   {name: '과목명', value: 'subjectName'},
-  {name: '교수명', value: 'professorName'},
-  {name: '학점', value: 'credits'},
+  {name: '교수명', value: 'professorName'}
 ];
 
 type ISubjectSearch = Record<string, string>
@@ -27,11 +27,34 @@ const SearchCourses = () => {
   const isMobile = useMobile();
 
   const [search, setSearch] = useState<ISubjectSearch>({searchOption: SearchOptions[0].value, searchKeyword: ''});
-  const {data: searchedData, isPending} = useSearchSubject(search);
+
+  const [filteredData, setFilteredData] = useState<Subject[]>([]);
+  const {data: wishes, isPending} = useWishes();
+
+  useEffect(() => {
+    const filtered = wishes?.filter((wish) => {
+      return (wish[search.searchOption as keyof Wishes] ?? "").toString().includes(search.searchKeyword);
+    }) ?? [];
+
+    const subjects: Subject[] = filtered.map((wishes) => {
+      return {
+        subjectId: wishes.subjectId,
+        subjectCode: wishes.subjectCode,
+        classCode: wishes.classCode,
+        professorName: wishes.professorName ?? '',
+        subjectName: wishes.subjectName,
+      }
+    });
+
+    console.log(subjects);
+
+    setFilteredData(subjects);
+  }, [wishes, search]);
 
   const onSearch = (searchOption: string, searchKeyword: string) => {
-    setSearch({[searchOption]: searchKeyword});
+    setSearch({searchOption, searchKeyword});
   }
+
 
   return (
     <div className="max-w-screen-xl mx-auto p-2 mb-8">
@@ -45,12 +68,12 @@ const SearchCourses = () => {
 
         {/* Course List */}
         <CardWrap>
-          {isPending || !searchedData ? (
+          {isPending || !filteredData ? (
             <p>Loading...</p>
           ) : isMobile ? (
-            searchedData && <SubjectCards subjects={searchedData}/>
+            filteredData && <SubjectCards subjects={filteredData}/>
           ) : (
-            searchedData && <SubjectTable titles={TableHeadTitles} subjects={searchedData}/>
+            filteredData && <SubjectTable titles={TableHeadTitles} subjects={filteredData}/>
           )}
         </CardWrap>
       </div>
