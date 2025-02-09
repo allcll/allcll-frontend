@@ -4,8 +4,13 @@ import {useQuery} from "@tanstack/react-query";
 export function useSearchSubject(searchOption: SubjectOption) {
   return useQuery({
     queryKey: ['searchedSubjects', searchOption],
-    queryFn: () => searchSubject(searchOption)
+    queryFn: () => searchSubject(searchOption),
+    select: (data) => data?.subjectResponses,
   });
+}
+
+interface SubjectResponse {
+  subjectResponses: Subject[];
 }
 
 interface SubjectOption {
@@ -16,7 +21,7 @@ interface SubjectOption {
   professorName?: string;
 }
 
-const searchSubject = async (searchOption: SubjectOption): Promise<Subject[]> => {
+const searchSubject = async (searchOption: SubjectOption): Promise<SubjectResponse> => {
   const query = Object.entries(searchOption)
     .filter(([, value]) => value)
     .map(([key, value]) => `${key}=${value}`)

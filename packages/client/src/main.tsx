@@ -11,7 +11,7 @@ import router from '@/utils/routing.tsx';
 import './index.css'
 
 const queryClient = new QueryClient();
-const UsingMockServer = true;
+const UsingMockServer = false;
 const isProduction = process.env.NODE_ENV === 'production';
 
 
@@ -21,26 +21,27 @@ if (!isProduction && UsingMockServer) {
     loadApp();
   });
 }
+else {
+  // Sentry
+  Sentry.init({
+    dsn: "https://e9f254e66aacba9bfb5a6901063e0009@o4508692782907392.ingest.us.sentry.io/4508782708326400",
+    integrations: [
+      Sentry.browserTracingIntegration(),
+      Sentry.replayIntegration(),
+    ],
+    // Tracing
+    tracesSampleRate: 1.0, //  Capture 100% of the transactions
+    // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
+    tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
+    // Session Replay
+    replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
+    replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
+  });
 
-// Sentry
-Sentry.init({
-  dsn: "https://e9f254e66aacba9bfb5a6901063e0009@o4508692782907392.ingest.us.sentry.io/4508782708326400",
-  integrations: [
-    Sentry.browserTracingIntegration(),
-    Sentry.replayIntegration(),
-  ],
-  // Tracing
-  tracesSampleRate: 1.0, //  Capture 100% of the transactions
-  // Set 'tracePropagationTargets' to control for which URLs distributed tracing should be enabled
-  tracePropagationTargets: ["localhost", /^https:\/\/yourserver\.io\/api/],
-  // Session Replay
-  replaysSessionSampleRate: 0.1, // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
-  replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
-});
+  ReactGA.initialize(import.meta.env.VITE_GOOGLE_ANALYTICS_ID);
 
-ReactGA.initialize(import.meta.env.VITE_GOOGLE_ANALYTICS_ID);
-
-loadApp();
+  loadApp();
+}
 
 
 function loadApp() {

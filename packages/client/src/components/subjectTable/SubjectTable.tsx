@@ -23,7 +23,7 @@ function SubjectTable({titles, subjects} : ISubjectTable) {
       </tr>
       </thead>
       <tbody>
-      {subjects.map((subject) => (
+      {subjects && subjects.map((subject) => (
         <TableRow key={`${subject.subjectCode} ${subject.subjectId} ${subject.professorName}`} subject={subject}/>
       ))}
       </tbody>
@@ -57,7 +57,7 @@ function TableRow({subject} : {subject: Subject}) {
       <td className="px-4 py-2 text-center">{subject.subjectCode}</td>
       <td className="px-4 py-2 text-center">{subject.subjectName}</td>
       <td className="px-4 py-2 text-center">{subject.professorName}</td>
-      <td className="px-4 py-2 text-center">{-1}</td>
+      {/*<td className="px-4 py-2 text-center">{-1}</td>*/}
     </tr>
   )
 }

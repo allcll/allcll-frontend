@@ -12,7 +12,7 @@ const TableHeadTitles = [
   {title: '과목코드', key: 'code'},
   {title: '과목명', key: 'name'},
   {title: '담당교수', key: 'professor'},
-  {title: '학점', key: 'credits'}
+  // {title: '학점', key: 'credits'}
 ];
 
 const SearchOptions = [
@@ -45,7 +45,7 @@ const SearchCourses = () => {
 
         {/* Course List */}
         <CardWrap>
-          {isPending ? (
+          {isPending || !searchedData ? (
             <p>Loading...</p>
           ) : isMobile ? (
             searchedData && <SubjectCards subjects={searchedData}/>
