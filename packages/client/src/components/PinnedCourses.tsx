@@ -28,12 +28,11 @@ const PinnedCourses = () => {
         <span className="text-red-500 font-bold">* 탭을 닫으면 알림이 울리지 않아요</span>
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className={"grid grid-cols-1 md:grid-cols-3 gap-4"}>
         {isPending ? (
-          <div className="animate-pulse">
+          <div className="animate-pulse grid grid-cols-1 md:grid-cols-3 gap-4">
             {[0, 0, 0].map((_, idx) => (
-              <div key={idx} className="bg-gray-50 shadow-sm rounded-lg p-4 h-24">
-              </div>
+              <div key={idx} className="bg-gray-300 shadow-sm rounded-lg p-4 h-24"> </div>
             ))};
           </div>
         ) : isError ? (
