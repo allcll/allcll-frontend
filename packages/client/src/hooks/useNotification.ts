@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import {PinnedSeats, Wishes} from '@/utils/types.ts';
+import {PinnedSeats, Wishlist} from '@/utils/types.ts';
 import {QueryClient} from '@tanstack/react-query';
 
 // const tableData = [
@@ -27,17 +27,17 @@ export function onChangePinned(prev: Array<PinnedSeats>, newPin: Array<PinnedSea
       const wishes = getWishes(queryClient, pin.subjectId);
 
       if (wishes) {
-        new Notification(`Seats available for ${wishes.subjectCode}-${wishes.classCode} ${wishes.subjectName}`);
+        new Notification(`${wishes.subjectCode}-${wishes.classCode} ${wishes.subjectName} 여석이 생겼습니다`);
+        return;
       }
 
-      new Notification(`Seats available for unknown subject`);
+      new Notification(`unknown subject의 여석이 생겼습니다`);
     }
   }
 }
 
 function getWishes(queryClient: QueryClient, subjectId: number) {
-  const wishes = queryClient.getQueryData<Wishes[]>(['wishlist']) ?? [];
-  console.log('wishes', wishes);
+  const wishes = queryClient.getQueryData<Wishlist>(['wishlist'])?.baskets ?? [];
   return wishes.find(wish => wish.subjectId === subjectId);
 }
 
