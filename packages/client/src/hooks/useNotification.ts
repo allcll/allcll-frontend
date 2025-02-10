@@ -36,8 +36,9 @@ export function onChangePinned(prev: Array<PinnedSeats>, newPin: Array<PinnedSea
 }
 
 function getWishes(queryClient: QueryClient, subjectId: number) {
-  const wishes = queryClient.getQueryData<Wishes[]>(['wishlist']);
-  return wishes?.find(wish => wish.subjectId === subjectId);
+  const wishes = queryClient.getQueryData<Wishes[]>(['wishlist']) ?? [];
+  console.log('wishes', wishes);
+  return wishes.find(wish => wish.subjectId === subjectId);
 }
 
 function useNotification() {

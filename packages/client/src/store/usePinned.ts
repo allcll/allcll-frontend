@@ -20,7 +20,7 @@ export const useAddPinned = () => {
     mutationFn: addPinnedSubject,
     onMutate: async (subjectId) => {
       await queryClient.cancelQueries({ queryKey: ['pinnedSubjects'] })
-      const previousPined = queryClient.getQueryData<Subject[]>(['pinnedSubjects'])
+      const previousPined = queryClient.getQueryData<PinnedSubjectResponse>(['pinnedSubjects'])?.subjects ?? [];
 
       if (previousPined && previousPined.length >= PinLimit) {
         throw new Error(`핀 고정된 과목은 최대 ${PinLimit}개까지만 가능합니다.`);
@@ -29,7 +29,9 @@ export const useAddPinned = () => {
       if (previousPined) {
         const newPin = { ...previousPined[0], subjectId };
 
-        queryClient.setQueryData<Subject[]>(['users'], [...previousPined, newPin]);
+        queryClient.setQueryData<PinnedSubjectResponse>(['pinnedSubjects'], {
+          subjects: [...previousPined, newPin]
+        });
         previousPined.push(newPin);
       }
 
@@ -57,7 +59,7 @@ export const useRemovePinned = () => {
     mutationFn: removePinnedSubject,
     onMutate: async (subjectId: number) => {
       await queryClient.cancelQueries({ queryKey: ['pinnedSubjects'] });
-      const previousPined = queryClient.getQueryData<Subject[]>(['pinnedSubjects']);
+      const previousPined = queryClient.getQueryData<PinnedSubjectResponse>(['pinnedSubjects'])?.subjects ?? [];
 
       if (previousPined) {
         queryClient.setQueryData<Subject[]>(['pinnedSubjects'], previousPined.filter((subject) => subject.subjectId !== subjectId));

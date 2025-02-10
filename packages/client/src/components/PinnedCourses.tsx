@@ -3,9 +3,11 @@ import PinCard from '@/components/subjectTable/PinCard.tsx';
 import {usePinned} from '@/store/usePinned.ts';
 import {SSEType, useSseData} from '@/hooks/useSSE.ts';
 import {QueryClient} from '@tanstack/react-query';
+import NetworkError from "@/components/dashboard/errors/NetworkError.tsx";
+import ZeroPinError from "@/components/dashboard/errors/ZeroPinError.tsx";
 
 const PinnedCourses = () => {
-  const {data, isPending, isError} = usePinned();
+  const {data, isPending, isError, refetch} = usePinned();
   const {data: pinnedSeats} = useSseData(new QueryClient(), SSEType.PINNED);
 
   const getSeats = (subjectId: number) => {
@@ -28,9 +30,16 @@ const PinnedCourses = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {isPending ? (
-          <div className="text-center">로딩중...</div>
+          <div className="animate-pulse">
+            {[0, 0, 0].map((_, idx) => (
+              <div key={idx} className="bg-gray-50 shadow-sm rounded-lg p-4 h-24">
+              </div>
+            ))};
+          </div>
         ) : isError ? (
-          <div className="text-center">에러 발생</div>
+          <NetworkError onReload={refetch}/>
+        ) : !data || data.length === 0 ? (
+          <ZeroPinError/>
         ) : (
           data.map((subject) => (
             <PinCard key={`${subject.subjectId}_${subject.subjectCode}_${subject.professorName}`}

@@ -15,7 +15,7 @@ import useSSEData from "@/hooks/useSSE.ts";
 
 function Dashboard() {
   useNotification();
-  const {data} = useSSEData();
+  const {data, isError, refetch} = useSSEData();
   console.log(data);
 
   // const [boards, setBoards] = useState(initialBoards);
@@ -46,9 +46,10 @@ function Dashboard() {
           <PinnedCourses/>
         </CardWrap>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-4 mb-4">
-          <RealtimeTable title='교양과목'/>
-          <RealtimeTable title='전공과목' showSelect/>
+        {/* lg:grid-cols-2 */}
+        <div className="grid grid-cols-1 gap-x-4 mb-4">
+          <RealtimeTable title='교양과목' isError={isError} refetch={refetch}/>
+          {/*<RealtimeTable title='전공과목' isError={isError} refetch={refetch} showSelect/>*/}
         </div>
       </div>
     </div>

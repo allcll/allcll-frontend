@@ -1,12 +1,16 @@
-import CardWrap from '@/components/CardWrap.tsx';
-import useSoyungDepartments from '@/hooks/server/useSoyungDepartments.ts';
-import {SSEType, useSseData} from '@/hooks/useSSE.ts';
 import {QueryClient} from '@tanstack/react-query';
 import useWishes from '@/hooks/server/useWishes.ts';
+import {SSEType, useSseData} from '@/hooks/useSSE.ts';
+import useSoyungDepartments from '@/hooks/server/useSoyungDepartments.ts';
+import CardWrap from '@/components/CardWrap.tsx';
+import {SkeletonRow} from "@/components/skeletons/SkeletonTable.tsx";
+import NetworkError from "@/components/dashboard/errors/NetworkError.tsx";
 
 interface IRealtimeTable {
   title: string;
   showSelect?: boolean;
+  isError: boolean;
+  refetch: () => void;
 }
 
 const TableHeadTitles = [
@@ -23,7 +27,7 @@ interface ITableData {
   seats?: number;
 }
 
-const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable) => {
+const RealtimeTable = ({title='교양과목', showSelect=false, isError, refetch}: IRealtimeTable) => {
   // major list API fetch
   // subject list SSE API fetch
   const {data: departments} = useSoyungDepartments();
@@ -76,9 +80,21 @@ const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable)
         </tr>
         </thead>
         <tbody>
-        {tableData.map((subject, index) => (
+        {isError ? (
+          <tr>
+            <td colSpan={TableHeadTitles.length}>
+              <NetworkError onReload={refetch}/>
+            </td>
+          </tr>
+        ) :
+          !tableData || !tableData.length ? (
+          Array.from({length: 5}).map((_, i) => (
+            <SkeletonRow key={i} length={TableHeadTitles.length}/>
+          ))
+        ) : (
+          tableData.map((subject, index) => (
           <SubjectRow key={index} subject={subject}/>
-        ))}
+        )))}
         </tbody>
       </table>
     </CardWrap>
