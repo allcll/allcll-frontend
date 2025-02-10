@@ -6,6 +6,7 @@ import SubjectCards from '@/components/subjectTable/SubjectCards.tsx';
 import useMobile from '@/hooks/useMobile.ts';
 import {Subject, Wishes} from '@/utils/types.ts';
 import useWishes from '@/hooks/server/useWishes.ts';
+import useSSEData from "@/hooks/useSSE.ts";
 
 
 const TableHeadTitles = [
@@ -25,6 +26,8 @@ type ISubjectSearch = Record<string, string>
 
 const SearchCourses = () => {
   const isMobile = useMobile();
+  const {data} = useSSEData();
+  console.log(data);
 
   const [search, setSearch] = useState<ISubjectSearch>({searchOption: SearchOptions[0].value, searchKeyword: ''});
 
@@ -45,8 +48,6 @@ const SearchCourses = () => {
         subjectName: wishes.subjectName,
       }
     });
-
-    console.log(subjects);
 
     setFilteredData(subjects);
   }, [wishes, search]);

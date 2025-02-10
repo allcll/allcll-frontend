@@ -1,5 +1,5 @@
 import {QueryClient, useQuery, useQueryClient} from '@tanstack/react-query';
-import { useCallback } from 'react';
+import {useCallback} from 'react';
 import {onChangePinned} from "@/hooks/useNotification.ts";
 import {PinnedSeats} from "@/utils/types.ts";
 
@@ -54,12 +54,29 @@ const useSSE = () => {
   const queryClient = useQueryClient();
 
   const connect = useCallback(
-    () => fetchSSEData(queryClient), [queryClient]);
+    () => fetchSSEData(queryClient).finally(()=> connect), [queryClient]);
+
+  // useEffect(() => {
+  //   let intervalId: number;
+  //
+  //   const fetchInBackground = () => {
+  //     connect();
+  //     intervalId = window.setTimeout(fetchInBackground, 2000);
+  //   };
+  //
+  //   fetchInBackground();
+  //
+  //   return () => {
+  //     clearTimeout(intervalId);
+  //   };
+  // }, [connect]);
 
   return useQuery({
     queryKey: ['sseData'],
     queryFn: connect,
-    refetchInterval: false
+    refetchInterval: false,
+    refetchIntervalInBackground: true,
+
   });
 };
 
