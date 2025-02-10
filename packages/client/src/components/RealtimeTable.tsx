@@ -16,18 +16,12 @@ const TableHeadTitles = [
   {title: '여석', key: 'seats'}
 ];
 
-// const DummyTableData = [
-//   {code: 'HU301', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 20},
-//   {code: 'HU302', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 15},
-//   {code: 'HU303', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 10},
-//   {code: 'HU304', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 9},
-//   {code: 'HU305', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 3},
-//   {code: 'HU301', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 20},
-//   {code: 'HU302', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 15},
-//   {code: 'HU303', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 10},
-//   {code: 'HU304', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 9},
-//   {code: 'HU305', name: '현대문학의 이해', professor: '박교수', credits: 2, seats: 3},
-// ];
+interface ITableData {
+  code?: string;
+  name?: string;
+  professor?: string | null;
+  seats?: number;
+}
 
 const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable) => {
   // major list API fetch
@@ -37,7 +31,7 @@ const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable)
   const {data: subjectIds} = useSseData(new QueryClient(), sseType);
   const {data: subjectData} = useWishes();
 
-  const tableData = subjectIds?.map((subject) => {
+  const tableData: ITableData[] = subjectIds?.map((subject) => {
     const {subjectId, seat} = subject;
     const {subjectName, subjectCode, professorName} = subjectData?.find((subject) => subject.subjectId === subjectId) || {};
     return {code: subjectCode, name: subjectName, professor: professorName, seat};
@@ -91,18 +85,18 @@ const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable)
   );
 };
 
-function SubjectRow({subject}: {subject: any}) {
+function SubjectRow({subject}: {subject: ITableData}) {
   return (
     <tr className="border-t border-gray-200">
       {TableHeadTitles.map(({key}) =>
         key == 'seats' ? (
         <td key={key} className="px-4 py-2 text-center">
-          <p className={'rounded-full ' + seatColor(subject[key])}>
+          <p className={'rounded-full ' + seatColor(subject.seats ?? -1)}>
             {subject[key]}
           </p>
         </td>
       ) : (
-          <td key={key} className="px-4 py-2 text-center">{subject[key]}</td>
+          <td key={key} className="px-4 py-2 text-center">{subject[key as keyof ITableData]}</td>
         )
       )}
     </tr>

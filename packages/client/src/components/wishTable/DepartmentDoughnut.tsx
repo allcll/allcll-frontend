@@ -53,7 +53,7 @@ function DepartmentDoughnut({data, majorName}: { data?: WishRegister[], majorNam
 
 function useDoughnutData(data: WishRegister[] | undefined, departmentDict: DepartmentDict, majorName:string, selectedFilter: DoughnutSelectType) {
   let doughnutData;
-  let {universityDict, collegeDict} = departmentDict;
+  const {universityDict, collegeDict} = departmentDict;
 
   switch (selectedFilter) {
     case DoughnutSelectType.MAJOR:

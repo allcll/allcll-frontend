@@ -7,6 +7,7 @@ export function usePinned() {
   return useQuery({
     queryKey: ['pinnedSubjects'],
     queryFn: fetchPinnedSubjects,
+    select: (data) => data.subjects,
   });
 }
 
@@ -73,8 +74,11 @@ export const useRemovePinned = () => {
   });
 };
 
+interface PinnedSubjectResponse {
+  subjects: Subject[];
+}
 
-const fetchPinnedSubjects = async (): Promise<Subject[]> => {
+const fetchPinnedSubjects = async (): Promise<PinnedSubjectResponse> => {
   const response = await fetch('/api/pins', {
     headers: {
       'Cookie': `sessionId=${document.cookie.split('=')[1]}`,

@@ -28,9 +28,6 @@ function WishesDetail() {
   const {data: registers} = useDetailRegisters(params.id ?? "-1");
   const {data: recommend} = useRecommendWishes(data?.subjectCode ?? "", data?.subjectId ? [data.subjectId] : []);
 
-  // Todo: 전공/비전공, 단과대 보기 -> 소속 학과 알아내기
-  // Todo: 색상 선정 및 알고리즘 개발
-
   if (isPending || !data) {
     return (
       <div className="min-h-screen bg-gray-50 flex justify-center items-center">

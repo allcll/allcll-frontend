@@ -48,7 +48,7 @@ export function getMajorDoughnutData(majorName: string, data?: WishRegister[]): 
   if (!data)
     return DefaultDoughnutData;
 
-  let dict: Record<string, number> = {
+  const dict: Record<string, number> = {
     'major': 0,
     'non-major': 0,
   };
@@ -85,7 +85,7 @@ export function getUniversityDoughnutData(data?: WishRegister[], UniversityDict?
   if (!data || !UniversityDict)
     return DefaultDoughnutData;
 
-  let dict: Record<string, number> = {};
+  const dict: Record<string, number> = {};
 
   data.forEach((department) => {
     const university = searchFromUniversity(department.registerDepartment ?? '', UniversityDict);
@@ -110,7 +110,7 @@ export function getCollegeDoughnutData(data?: WishRegister[], collegeDict?: Reco
   if (!data || !collegeDict)
     return DefaultDoughnutData;
 
-  let dict: Record<string, number> = {};
+  const dict: Record<string, number> = {};
 
   data.forEach((department) => {
     const college = searchFromCollege(department.registerDepartment ?? '', collegeDict);

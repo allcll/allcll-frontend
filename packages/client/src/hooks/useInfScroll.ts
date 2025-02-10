@@ -1,7 +1,8 @@
 import {useEffect, useRef, useState} from 'react';
+import {Subject, Wishes} from "@/utils/types.ts";
 
 // .load-more-trigger 인 항목 추가
-function useInfScroll(data: any) {
+function useInfScroll(data: Wishes[] | Subject[]) {
   const [visibleRows, setVisibleRows] = useState(200);
   const observerRef = useRef<IntersectionObserver | null>(null);
 

@@ -46,8 +46,8 @@ export const useDepartmentDict = (departments?: Department[]): DepartmentDict =>
   if (!departments)
     return {universityDict: {}, collegeDict: {}};
 
-  let universityDict: Record<string, string[]> = {};
-  let collegeDict: Record<string, string[]> = {};
+  const universityDict: Record<string, string[]> = {};
+  const collegeDict: Record<string, string[]> = {};
 
   departments.forEach((departments) => {
     const [universityName, collegeName, departmentName] = departments.departmentName.split(' ');
@@ -55,7 +55,7 @@ export const useDepartmentDict = (departments?: Department[]): DepartmentDict =>
     const college = collegeName?.trim();
     const department = departmentName?.trim();
 
-    if (!!college) {
+    if (college) {
       if (!universityDict[university]) {
         universityDict[university] = [];
       }
@@ -66,7 +66,7 @@ export const useDepartmentDict = (departments?: Department[]): DepartmentDict =>
       }
     }
 
-    if (!!department) {
+    if (department) {
       if (!universityDict[university]) {
         universityDict[university] = [];
       }

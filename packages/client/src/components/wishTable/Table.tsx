@@ -23,7 +23,7 @@ export const TableHeaders = [
 ];
 
 function Table({data, isPending=false}: ITable) {
-  const {visibleRows} = useInfScroll(data);
+  const {visibleRows} = useInfScroll(data ?? []);
 
   return (
     <table className="w-full bg-white rounded-lg relative text-sm">
