@@ -5,6 +5,7 @@ import useSoyungDepartments from '@/hooks/server/useSoyungDepartments.ts';
 import CardWrap from '@/components/CardWrap.tsx';
 import {SkeletonRow} from "@/components/skeletons/SkeletonTable.tsx";
 import NetworkError from "@/components/dashboard/errors/NetworkError.tsx";
+import ZeroListError from "@/components/dashboard/errors/ZeroListError.tsx";
 
 interface IRealtimeTable {
   title: string;
@@ -86,11 +87,16 @@ const RealtimeTable = ({title='교양과목', showSelect=false, isError, refetch
               <NetworkError onReload={refetch}/>
             </td>
           </tr>
-        ) :
-          !tableData || !tableData.length ? (
+        ) : !tableData ? (
           Array.from({length: 5}).map((_, i) => (
             <SkeletonRow key={i} length={TableHeadTitles.length}/>
           ))
+        ) : !tableData.length ? (
+          <tr>
+            <td colSpan={TableHeadTitles.length} className="text-center">
+              <ZeroListError/>
+            </td>
+          </tr>
         ) : (
           tableData.map((subject, index) => (
           <SubjectRow key={index} subject={subject}/>
