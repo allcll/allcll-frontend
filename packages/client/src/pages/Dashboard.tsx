@@ -3,8 +3,9 @@ import Navbar from '@/components/Navbar.tsx';
 import RealtimeTable from '@/components/RealtimeTable.tsx';
 import PinnedCourses from '@/components/PinnedCourses.tsx';
 import CardWrap from '@/components/CardWrap.tsx';
+import BlurComponents from "@/components/BlurComponents.tsx";
 // import DragCardWrap from '@/components/dashboard/DragCardWrap.tsx';
-import useNotification from '@/hooks/useNotification.ts';
+// import useNotification from '@/hooks/useNotification.ts';
 
 // const initialBoards = [
 //   { id: '1', content: <PinnedCourses /> },
@@ -13,7 +14,7 @@ import useNotification from '@/hooks/useNotification.ts';
 // ];
 
 function Dashboard() {
-  useNotification();
+  // useNotification();
 
   // const [boards, setBoards] = useState(initialBoards);
 
@@ -27,27 +28,29 @@ function Dashboard() {
   return (
     <div className="max-w-screen-xl mx-auto p-2 mb-8">
       <div className="container p-4 mx-auto">
-        <Navbar/>
+        <BlurComponents>
+          <Navbar/>
 
 
-        {/*{boards.map((board, index) => (*/}
-        {/*  <DragCardWrap key={board.id} id={board.id} index={index} moveCard={moveCard}>*/}
-        {/*    <CardWrap>*/}
-        {/*      {board.content}*/}
-        {/*    </CardWrap>*/}
-        {/*  </DragCardWrap>*/}
-        {/*))}*/}
+          {/*{boards.map((board, index) => (*/}
+          {/*  <DragCardWrap key={board.id} id={board.id} index={index} moveCard={moveCard}>*/}
+          {/*    <CardWrap>*/}
+          {/*      {board.content}*/}
+          {/*    </CardWrap>*/}
+          {/*  </DragCardWrap>*/}
+          {/*))}*/}
 
 
-        <CardWrap>
-          <PinnedCourses/>
-        </CardWrap>
+          <CardWrap>
+            <PinnedCourses/>
+          </CardWrap>
 
-        {/* lg:grid-cols-2 */}
-        <div className="grid grid-cols-1 gap-x-4 mb-4">
-          <RealtimeTable title='교양과목'/>
-          {/*<RealtimeTable title='전공과목' showSelect/>*/}
-        </div>
+          {/* lg:grid-cols-2 */}
+          <div className="grid grid-cols-1 gap-x-4 mb-4">
+            <RealtimeTable title='교양과목'/>
+            {/*<RealtimeTable title='전공과목' showSelect/>*/}
+          </div>
+        </BlurComponents>
       </div>
     </div>
   );
