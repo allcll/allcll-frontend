@@ -5,7 +5,6 @@ import PinnedCourses from '@/components/PinnedCourses.tsx';
 import CardWrap from '@/components/CardWrap.tsx';
 // import DragCardWrap from '@/components/dashboard/DragCardWrap.tsx';
 import useNotification from '@/hooks/useNotification.ts';
-import useSSEData from "@/hooks/useSSE.ts";
 
 // const initialBoards = [
 //   { id: '1', content: <PinnedCourses /> },
@@ -15,8 +14,6 @@ import useSSEData from "@/hooks/useSSE.ts";
 
 function Dashboard() {
   useNotification();
-  const {data, isError, refetch} = useSSEData();
-  console.log(data);
 
   // const [boards, setBoards] = useState(initialBoards);
 
@@ -48,8 +45,8 @@ function Dashboard() {
 
         {/* lg:grid-cols-2 */}
         <div className="grid grid-cols-1 gap-x-4 mb-4">
-          <RealtimeTable title='교양과목' isError={isError} refetch={refetch}/>
-          {/*<RealtimeTable title='전공과목' isError={isError} refetch={refetch} showSelect/>*/}
+          <RealtimeTable title='교양과목'/>
+          {/*<RealtimeTable title='전공과목' showSelect/>*/}
         </div>
       </div>
     </div>

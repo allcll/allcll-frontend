@@ -1,14 +1,13 @@
 import {Link} from 'react-router-dom';
 import PinCard from '@/components/subjectTable/PinCard.tsx';
 import {usePinned} from '@/store/usePinned.ts';
-import {SSEType, useSseData} from '@/hooks/useSSE.ts';
-import {QueryClient} from '@tanstack/react-query';
+import {SSEType, useSseData} from '@/hooks/useSSEManager.ts';
 import NetworkError from "@/components/dashboard/errors/NetworkError.tsx";
 import ZeroPinError from "@/components/dashboard/errors/ZeroPinError.tsx";
 
 const PinnedCourses = () => {
   const {data, isPending, isError, refetch} = usePinned();
-  const {data: pinnedSeats} = useSseData(new QueryClient(), SSEType.PINNED);
+  const {data: pinnedSeats} = useSseData(SSEType.PINNED);
 
   const getSeats = (subjectId: number) => {
     if (!pinnedSeats) return -1;

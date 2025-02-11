@@ -1,6 +1,5 @@
-import {QueryClient} from '@tanstack/react-query';
 import useWishes from '@/hooks/server/useWishes.ts';
-import {SSEType, useSseData} from '@/hooks/useSSE.ts';
+import {SSEType, useSseData} from '@/hooks/useSSEManager.ts';
 import useSoyungDepartments from '@/hooks/server/useSoyungDepartments.ts';
 import CardWrap from '@/components/CardWrap.tsx';
 import {SkeletonRow} from "@/components/skeletons/SkeletonTable.tsx";
@@ -10,8 +9,6 @@ import ZeroListError from "@/components/dashboard/errors/ZeroListError.tsx";
 interface IRealtimeTable {
   title: string;
   showSelect?: boolean;
-  isError: boolean;
-  refetch: () => void;
 }
 
 const TableHeadTitles = [
@@ -28,12 +25,12 @@ interface ITableData {
   seats?: number;
 }
 
-const RealtimeTable = ({title='교양과목', showSelect=false, isError, refetch}: IRealtimeTable) => {
+const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable) => {
   // major list API fetch
   // subject list SSE API fetch
   const {data: departments} = useSoyungDepartments();
   const sseType = title === '교양과목' ? SSEType.NON_MAJOR : SSEType.MAJOR;
-  const {data: subjectIds} = useSseData(new QueryClient(), sseType);
+  const {data: subjectIds, isError, refetch} = useSseData(sseType);
   const {data: subjectData} = useWishes();
 
   const tableData: ITableData[] = subjectIds?.map((subject) => {
