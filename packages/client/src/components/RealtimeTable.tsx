@@ -15,14 +15,14 @@ const TableHeadTitles = [
   {title: '과목코드', key: 'code'},
   {title: '과목명', key: 'name'},
   {title: '담당교수', key: 'professor'},
-  {title: '여석', key: 'seats'}
+  {title: '여석', key: 'seat'}
 ];
 
 interface ITableData {
   code?: string;
   name?: string;
   professor?: string | null;
-  seats?: number;
+  seat?: number;
 }
 
 const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable) => {
@@ -69,9 +69,9 @@ const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable)
           </select>
         )}
       </div>
-      <table className="w-full bg-white rounded-lg">
+      <table className="w-full bg-white rounded-lg text-sm">
         <thead>
-        <tr className="bg-gray-50">
+        <tr className="bg-gray-50 sticky top-0 z-10 text-nowrap">
           {TableHeadTitles.map(({title}) => (
             <th key={title} className="px-4 py-2">{title}</th>
           ))}
@@ -106,13 +106,13 @@ const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable)
 
 function SubjectRow({subject}: {subject: ITableData}) {
   return (
-    <tr className="border-t border-gray-200">
+    <tr className="border-t border-gray-200 text-black">
       {TableHeadTitles.map(({key}) =>
-        key == 'seats' ? (
+        key == 'seat' ? (
         <td key={key} className="px-4 py-2 text-center">
-          <p className={'rounded-full ' + seatColor(subject.seats ?? -1)}>
+          <span className={'px-3 py-1 rounded-full text-xs font-bold ' + seatColor(subject.seat ?? -1)}>
             {subject[key]}
-          </p>
+          </span>
         </td>
       ) : (
           <td key={key} className="px-4 py-2 text-center">{subject[key as keyof ITableData]}</td>

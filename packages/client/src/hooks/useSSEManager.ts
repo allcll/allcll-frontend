@@ -103,6 +103,7 @@ export const useSseData = (type: SSEType) => {
 
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      console.log('delete visibilityChange event');
     };
   }, [addNeedCount, deleteNeedCount]);
   
