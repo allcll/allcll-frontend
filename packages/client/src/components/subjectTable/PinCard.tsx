@@ -1,9 +1,9 @@
 import PinIcon from '@/components/svgs/PinIcon.tsx';
-import {Subject} from '@/utils/types.ts';
+import {Subject, Wishes} from '@/utils/types.ts';
 import {usePinned, useAddPinned, useRemovePinned} from "@/store/usePinned.ts";
 
 interface IPinCard {
-  subject: Subject;
+  subject: Subject | Wishes;
   seats: number;
 }
 

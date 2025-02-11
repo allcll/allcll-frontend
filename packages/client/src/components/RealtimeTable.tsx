@@ -35,8 +35,8 @@ const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable)
 
   const tableData: ITableData[] = subjectIds?.map((subject) => {
     const {subjectId, seatCount} = subject;
-    const {subjectName, subjectCode, professorName} = subjectData?.find((subject) => subject.subjectId === subjectId) || {};
-    return {code: subjectCode, name: subjectName, professor: professorName, seat: seatCount};
+    const {subjectName, subjectCode, classCode, professorName} = subjectData?.find((subject) => subject.subjectId === subjectId) || {};
+    return {code: `${subjectCode}-${classCode}`, name: subjectName, professor: professorName, seat: seatCount};
   }) ?? [];
 
   const setMajor = (departmentId: number) => {
@@ -69,37 +69,39 @@ const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable)
           </select>
         )}
       </div>
-      <table className="w-full bg-white rounded-lg text-sm">
-        <thead>
-        <tr className="bg-gray-50 sticky top-0 z-10 text-nowrap">
-          {TableHeadTitles.map(({title}) => (
-            <th key={title} className="px-4 py-2">{title}</th>
-          ))}
-        </tr>
-        </thead>
-        <tbody>
-        {isError ? (
-          <tr>
-            <td colSpan={TableHeadTitles.length}>
-              <NetworkError onReload={refetch}/>
-            </td>
+      <div className="overflow-x-auto">
+        <table className="w-full bg-white rounded-lg text-sm">
+          <thead>
+          <tr className="bg-gray-50 sticky top-0 z-10 text-nowrap">
+            {TableHeadTitles.map(({title}) => (
+              <th key={title} className="px-4 py-2">{title}</th>
+            ))}
           </tr>
-        ) : !tableData ? (
-          Array.from({length: 5}).map((_, i) => (
-            <SkeletonRow key={i} length={TableHeadTitles.length}/>
-          ))
-        ) : !tableData.length ? (
-          <tr>
-            <td colSpan={TableHeadTitles.length} className="text-center">
-              <ZeroListError/>
-            </td>
-          </tr>
-        ) : (
-          tableData.map((subject, index) => (
-          <SubjectRow key={index} subject={subject}/>
-        )))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+          {isError ? (
+            <tr>
+              <td colSpan={TableHeadTitles.length}>
+                <NetworkError onReload={refetch}/>
+              </td>
+            </tr>
+          ) : !tableData ? (
+            Array.from({length: 5}).map((_, i) => (
+              <SkeletonRow key={i} length={TableHeadTitles.length}/>
+            ))
+          ) : !tableData.length ? (
+            <tr>
+              <td colSpan={TableHeadTitles.length} className="text-center">
+                <ZeroListError/>
+              </td>
+            </tr>
+          ) : (
+            tableData.map((subject, index) => (
+              <SubjectRow key={index} subject={subject}/>
+            )))}
+          </tbody>
+        </table>
+      </div>
     </CardWrap>
   );
 };

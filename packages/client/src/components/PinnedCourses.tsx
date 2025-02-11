@@ -1,13 +1,22 @@
+import {useEffect} from "react";
 import {Link} from 'react-router-dom';
 import PinCard from '@/components/subjectTable/PinCard.tsx';
-import {usePinned} from '@/store/usePinned.ts';
-import {SSEType, useSseData} from '@/hooks/useSSEManager.ts';
 import NetworkError from "@/components/dashboard/errors/NetworkError.tsx";
 import ZeroPinError from "@/components/dashboard/errors/ZeroPinError.tsx";
+import {usePinned} from '@/store/usePinned.ts';
+import useFindWishes from "@/hooks/useFindWishes.ts";
+import {SSEType, useSseData} from '@/hooks/useSSEManager.ts';
+import useSSECondition from "@/store/useSSECondition.ts";
 
 const PinnedCourses = () => {
   const {data, isPending, isError, refetch} = usePinned();
   const {data: pinnedSeats} = useSseData(SSEType.PINNED);
+  const pinnedWishes = useFindWishes(data?.map(pinned => pinned.subjectId) ?? []);
+  const setAlwaysReload = useSSECondition(state => state.setAlwaysReload);
+
+  useEffect(() => {
+    setAlwaysReload(true);
+  }, [setAlwaysReload]);
 
   const getSeats = (subjectId: number) => {
     if (!pinnedSeats) return -1;
@@ -36,11 +45,11 @@ const PinnedCourses = () => {
           </div>
         ) : isError ? (
           <NetworkError onReload={refetch}/>
-        ) : !data || data.length === 0 ? (
+        ) : !pinnedWishes || pinnedWishes.length === 0 ? (
           <ZeroPinError/>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {data.map((subject) => (
+            {pinnedWishes.map((subject) => (
               <PinCard key={`${subject.subjectId}_${subject.subjectCode}_${subject.professorName}`}
                        subject={subject}
                        seats={getSeats(subject.subjectId)}/>

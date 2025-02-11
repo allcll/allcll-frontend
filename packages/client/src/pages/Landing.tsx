@@ -139,34 +139,36 @@ function Landing() {
           <div className="bg-white p-6 shadow-md rounded-md">
             <h3 className="text-lg font-semibold">여석 수 TOP 10</h3>
             <p className="text-gray-500 mb-4">여석이 많은 과목을 놓치지 마세요!</p>
-            <table className="w-full bg-white rounded-lg">
-              <thead>
-              <tr className="bg-gray-50">
-                <th className="px-4 py-2">학수번호</th>
-                <th className="px-4 py-2">과목명</th>
-                <th className="px-4 py-2">교수명</th>
-                <th className="px-4 py-2">여석</th>
-              </tr>
-              </thead>
-              <tbody>
-              {[
-                { id: '004310-004', name: "운영체제", prof: "이수정", seats: 22 },
-                { id: '003281-001', name: "컴퓨터그래픽스", prof: "최수미", seats: 15 },
-                { id: '004118-007', name: "디지털시스템", prof: "Rajendra Dhakal", seats: 6 },
-                { id: '009912-006', name: "C프로그래밍및실습", prof: "김도년", seats: 5 },
-                { id: '007330-001', name: "확률및통계", prof: "김해광", seats: 4 },
-              ].map(({id, name, prof, seats}, index) => (
-                <tr key={index} className="border-t border-gray-200">
-                  <td className="px-4 py-2 text-center">{id}</td>
-                  <td className="px-4 py-2 text-center">{name}</td>
-                  <td className="px-4 py-2 text-center">{prof}</td>
-                  <td className="px-4 py-2 text-center font-bold">
-                    <p className={`rounded-full ${seatColor(seats)}`}>{seats}</p>
-                  </td>
+            <div className="overflow-x-auto">
+              <table className="w-full bg-white rounded-lg text-sm">
+                <thead>
+                <tr className="bg-gray-50 z-10 text-nowrap">
+                  <th className="px-4 py-2">학수번호</th>
+                  <th className="px-4 py-2">과목명</th>
+                  <th className="px-4 py-2">교수명</th>
+                  <th className="px-4 py-2">여석</th>
                 </tr>
-              ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                {[
+                  { id: '004310-004', name: "운영체제", prof: "이수정", seats: 22 },
+                  { id: '003281-001', name: "컴퓨터그래픽스", prof: "최수미", seats: 15 },
+                  { id: '004118-007', name: "디지털시스템", prof: "Rajendra Dhakal", seats: 6 },
+                  { id: '009912-006', name: "C프로그래밍및실습", prof: "김도년", seats: 5 },
+                  { id: '007330-001', name: "확률및통계", prof: "김해광", seats: 4 },
+                ].map(({id, name, prof, seats}, index) => (
+                  <tr key={index} className="border-t border-gray-200 text-black">
+                    <td className="px-4 py-2 text-center">{id}</td>
+                    <td className="px-4 py-2 text-center">{name}</td>
+                    <td className="px-4 py-2 text-center">{prof}</td>
+                    <td className="px-4 py-2 text-center font-bold">
+                      <p className={`px-3 py-1 rounded-full text-xs font-bold ${seatColor(seats)}`}>{seats}</p>
+                    </td>
+                  </tr>
+                ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </Section>

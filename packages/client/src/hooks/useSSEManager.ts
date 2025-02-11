@@ -21,7 +21,6 @@ const useSSEManager = () => {
   // connection
   useEffect(() => {
     const reload = alwaysReload || needCount > 0;
-    console.log('needReconnect', alwaysReload, needCount, reload);
 
     if (isConnected || !reload) {
       return;
@@ -77,16 +76,6 @@ export const useSseData = (type: SSEType) => {
   const queryClient = useQueryClient();
   const addNeedCount = useSSECondition((state) => state.addNeedCount);
   const deleteNeedCount = useSSECondition((state) => state.deleteNeedCount);
-
-  
-
-  useEffect(() => {
-
-    addNeedCount();
-    return () => {
-      deleteNeedCount();
-    };
-  }, [addNeedCount, deleteNeedCount]);
   
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -98,12 +87,13 @@ export const useSseData = (type: SSEType) => {
         deleteNeedCount();
       }
     };
-    
+
+    addNeedCount();
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
+      deleteNeedCount();
       document.removeEventListener('visibilitychange', handleVisibilityChange);
-      console.log('delete visibilityChange event');
     };
   }, [addNeedCount, deleteNeedCount]);
   

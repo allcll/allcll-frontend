@@ -1,4 +1,3 @@
-import {Subject} from '@/utils/types.ts';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const PinLimit = 5;
@@ -14,8 +13,6 @@ export function usePinned() {
 export const useAddPinned = () => {
   const queryClient = useQueryClient();
 
-  // Todo: Add a mutation to add a pinned subject
-  // Todo: 요청 전에 검사하는 기능 필요
   return useMutation({
     mutationFn: addPinnedSubject,
     onMutate: async (subjectId) => {
@@ -62,7 +59,7 @@ export const useRemovePinned = () => {
       const previousPined = queryClient.getQueryData<PinnedSubjectResponse>(['pinnedSubjects'])?.subjects ?? [];
 
       if (previousPined) {
-        queryClient.setQueryData<Subject[]>(['pinnedSubjects'], previousPined.filter((subject) => subject.subjectId !== subjectId));
+        queryClient.setQueryData<PinnedSubject[]>(['pinnedSubjects'], previousPined.filter((subject) => subject.subjectId !== subjectId));
       }
 
       return { previousPined };
@@ -76,8 +73,12 @@ export const useRemovePinned = () => {
   });
 };
 
+interface PinnedSubject {
+  subjectId: number;
+}
+
 interface PinnedSubjectResponse {
-  subjects: Subject[];
+  subjects: PinnedSubject[];
 }
 
 const fetchPinnedSubjects = async (): Promise<PinnedSubjectResponse> => {
