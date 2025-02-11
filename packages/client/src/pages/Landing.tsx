@@ -121,7 +121,7 @@ function Landing() {
                 {name: '컴퓨터그래픽스', prof: "003281 | 최수미"},
                 {name: '운영체제', prof: "004310 | LEE KANGWON"},
               ].map(({name, prof}) => (
-                <div className="bg-gray-50 shadow-sm rounded-lg p-4 w-full">
+                <div key={prof} className="bg-gray-50 shadow-sm rounded-lg p-4 w-full">
                   <div className="flex justify-between mb-2">
                     <h3 className="font-bold">{name}</h3>
                     <PinIcon/>

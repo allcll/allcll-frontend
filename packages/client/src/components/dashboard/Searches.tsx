@@ -1,7 +1,8 @@
-import useDepartments from '@/hooks/server/useDepartments.ts';
+import {ChangeEvent, useEffect} from 'react';
 import SearchSvg from '@/assets/search.svg?react';
-import {ChangeEvent, useEffect, useState} from 'react';
 import StarIcon from '@/components/svgs/StarIcon.tsx';
+import useDepartments from '@/hooks/server/useDepartments.ts';
+import useWishSearchStore from "@/store/useWishSearchStore.ts";
 
 export interface WishSearchParams {
   searchInput: string;
@@ -9,14 +10,15 @@ export interface WishSearchParams {
   isFavorite: boolean;
 }
 
-interface SearchesProps {
-  setSearches: (searches: WishSearchParams) => void;
-}
+function Searches() {
+  const selectedDepartment = useWishSearchStore(state => state.selectedDepartment);
+  const searchInput = useWishSearchStore(state => state.searchInput);
+  const isFavorite = useWishSearchStore(state => state.isFavorite);
+  const setSearchInput = useWishSearchStore(state => state.setSearchInput);
+  const setSelectedDepartment = useWishSearchStore(state => state.setSelectedDepartment);
+  const setToggleFavorite = useWishSearchStore(state => state.setToggleFavorite);
+  const setSearchParams = useWishSearchStore(state => state.setSearchParams);
 
-function Searches({setSearches}: SearchesProps) {
-  const [selectedDepartment, setSelectedDepartment] = useState('');
-  const [searchInput, setSearchInput] = useState('');
-  const [isFavorite, setIsFavorite] = useState(false);
   const {data: departments} = useDepartments();
 
   const departmentsList = [
@@ -26,7 +28,7 @@ function Searches({setSearches}: SearchesProps) {
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      setSearches({searchInput, selectedDepartment, isFavorite});
+      setSearchParams({searchInput, selectedDepartment, isFavorite});
     }, 700);
 
     return () => {
@@ -35,7 +37,7 @@ function Searches({setSearches}: SearchesProps) {
   }, [searchInput, selectedDepartment]);
 
   useEffect(() => {
-    setSearches({searchInput, selectedDepartment, isFavorite});
+    setSearchParams({searchInput, selectedDepartment, isFavorite});
   }, [selectedDepartment, isFavorite]);
 
 
@@ -48,7 +50,7 @@ function Searches({setSearches}: SearchesProps) {
   };
 
   const handleFavoriteChange = () => {
-    setIsFavorite(prevState => !prevState);
+    setToggleFavorite();
   }
 
   return (
@@ -57,11 +59,13 @@ function Searches({setSearches}: SearchesProps) {
         <SearchSvg className="absolute left-3 top-3 text-gray-500"/>
         <input type="text"
                placeholder="과목명 또는 교수명 검색"
-               className="pl-10 pr-4 py-2 border rounded-md w-full"
+               className="pl-10 pr-4 py-2 rounded-md w-full bg-white border border-gray-400"
+               value={searchInput}
                onChange={handleSearchInputChange}/>
       </div>
       <select
-        className="border pl-2 pr-4 py-2 rounded-md"
+        className="pl-2 pr-4 py-2 rounded-md bg-white border border-gray-400"
+        value={selectedDepartment}
         onChange={handleDepartmentChange}
       >
         {departmentsList.map(({departmentName, departmentCode}) => (
@@ -70,7 +74,7 @@ function Searches({setSearches}: SearchesProps) {
           </option>
         ))}
       </select>
-      <button className="border px-4 py-2 rounded-md flex gap-2 items-center text-nowrap hover:bg-white"
+      <button className="px-4 py-2 rounded-md flex gap-2 items-center text-nowrap border border-gray-400 hover:bg-white"
               onClick={handleFavoriteChange}>
         <StarIcon disabled={!isFavorite}/> 즐겨찾기
       </button>

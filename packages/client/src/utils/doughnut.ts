@@ -34,10 +34,10 @@ export function getDoughnutData(data?: WishRegister[]): DoughnutData {
   });
 
   return {
-    labels: data.map((department) => department.registerDepartment ?? ''),
+    labels: Object.keys(dict).map((department) => department ? department : "기타"),
     datasets: [
       {
-        data: data.map((department) => Number(department.eachCount)),
+        data: Object.values(dict),
         backgroundColor: DoughnutColors,
       },
     ],

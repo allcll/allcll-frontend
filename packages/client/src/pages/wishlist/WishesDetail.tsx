@@ -74,7 +74,8 @@ function WishesDetail() {
 
           {/* Alternative Course Table */}
           <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-4">대체과목 추천</h2>
+            <h2 className="text-lg font-semibold">대체과목 추천</h2>
+            <p className="text-gray-500 text-sm mb-4">학수번호가 같은 과목을 알려드려요</p>
 
             <div className="overflow-x-auto">
               <Table data={recommend ?? []}/>

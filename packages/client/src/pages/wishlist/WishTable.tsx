@@ -4,9 +4,10 @@ import Table from '@/components/wishTable/Table.tsx';
 import Searches, {WishSearchParams} from '@/components/dashboard/Searches.tsx';
 import {Wishes} from '@/utils/types.ts';
 import useFavorites from '@/store/useFavorites.ts';
+import useWishSearchStore from "@/store/useWishSearchStore.ts";
 
 function WishTable() {
-  const [filterParams, setFilterParams] = useState<WishSearchParams>({searchInput: '', selectedDepartment: '', isFavorite: false});
+  const filterParams = useWishSearchStore(state => state.searchParams);
   const [filteredData, setFilteredData] = useState<Wishes[]>([]);
   const pickedFavorites = useFavorites(state => state.isFavorite);
   const {data: wishes, isPending} = useWishes();
@@ -21,11 +22,11 @@ function WishTable() {
       <div className="py-12 px-2">
         <h1 className="text-2xl font-bold">수강신청 관심과목 분석</h1>
         <p className="text-gray-500 mt-2">
-          올클은 세종대학교의 <span className="text-green-500 font-bold">실제 데이터</span>를 보여드립니다. 관심과목을 선택하여 분석해보세요.
+          올클은 세종대학교의 <span className="text-blue-500 font-bold">실제 데이터</span>를 보여드립니다. 관심과목을 선택하여 분석해보세요.
         </p>
 
         {/* Search and Filter */}
-        <Searches setSearches={setFilterParams}/>
+        <Searches />
 
         {/* Course Table */}
         <div className="bg-white mt-6 shadow-md rounded-lg overflow-x-auto">
