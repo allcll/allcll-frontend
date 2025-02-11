@@ -8,6 +8,7 @@ import useDetailWishes from '@/hooks/server/useDetailWishes';
 import useRecommendWishes from '@/hooks/server/useRecommendWishes';
 import useDetailRegisters from '@/hooks/server/useDetailRegisters.ts';
 import DepartmentDoughnut from '@/components/wishTable/DepartmentDoughnut.tsx';
+import LinkWhiteSvg from '@/assets/link-white.svg?react';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -45,9 +46,10 @@ function WishesDetail() {
       <CardWrap>
           <h1 className="text-2xl font-bold">{data.subjectName}</h1>
           <p className="text-gray-600">{data.subjectCode}-{data.classCode} | {data.departmentName} | {data.professorName}</p>
-          <a className="inline-block mt-4 bg-blue-500 text-white px-4 py-2 rounded-md"
+          <a className="flex items-center gap-2 w-fit mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
              href={`https://everytime.kr/lecture/view/${registers?.everytimeLectureId}`} target="_blank">
-            📘 에브리타임 수강평 보기
+            <LinkWhiteSvg className="w-4 h-4"/>
+            에브리타임 수강평 보기
           </a>
 
           {/* Analytics Section */}
