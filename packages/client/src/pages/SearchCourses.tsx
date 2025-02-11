@@ -1,25 +1,25 @@
 import {disassemble} from "es-hangul";
-import {useEffect, useState} from 'react';
-import Navbar from '@/components/Navbar.tsx';
-import CardWrap from '@/components/CardWrap.tsx';
-import SubjectTable from '@/components/subjectTable/SubjectTable.tsx';
-import SubjectCards from '@/components/subjectTable/SubjectCards.tsx';
-import useMobile from '@/hooks/useMobile.ts';
-import useWishes from '@/hooks/server/useWishes.ts';
-import {Subject, Wishes} from '@/utils/types.ts';
+import {useEffect, useState} from "react";
+import Navbar from "@/components/Navbar.tsx";
+import CardWrap from "@/components/CardWrap.tsx";
+import SubjectTable from "@/components/subjectTable/SubjectTable.tsx";
+import SubjectCards from "@/components/subjectTable/SubjectCards.tsx";
+import useMobile from "@/hooks/useMobile.ts";
+import useWishes from "@/hooks/server/useWishes.ts";
+import {Subject, Wishes} from "@/utils/types.ts";
 
 
 const TableHeadTitles = [
-  {title: '핀', key: 'pin'},
-  {title: '과목코드', key: 'code'},
-  {title: '과목명', key: 'name'},
-  {title: '담당교수', key: 'professor'},
-  // {title: '학점', key: 'credits'}
+  {title: "핀", key: "pin"},
+  {title: "과목코드", key: "code"},
+  {title: "과목명", key: "name"},
+  {title: "담당교수", key: "professor"},
+  // {title: "학점", key: "credits"}
 ];
 
 const SearchOptions = [
-  {name: '과목명', value: 'subjectName'},
-  {name: '교수명', value: 'professorName'}
+  {name: "과목명", value: "subjectName"},
+  {name: "교수명", value: "professorName"}
 ];
 
 type ISubjectSearch = Record<string, string>

@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
 import {Link} from "react-router-dom";
-import {Doughnut} from 'react-chartjs-2';
+import {Doughnut} from "react-chartjs-2";
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
-import {DoughnutColors} from '@/utils/doughnut.ts';
+import {DoughnutColors} from "@/utils/doughnut.ts";
 import RightArrowSvg from "@/assets/right-arrow.svg?react";
 import ClockBlueSvg from "@/assets/clock-blue.svg?react";
 import DisabledBlueSvg from "@/assets/disabled-blue.svg?react";
 import ReloadBlueSvg from "@/assets/reload-blue.svg?react";
 import LinkBlue from "@/assets/link-blue.svg?react";
 import ProfileSvg from "@/assets/profile.svg?react";
-// import PinIcon from '@/components/svgs/PinIcon.tsx';
-// import {seatColor} from '@/components/RealtimeTable.tsx';
+import PinIcon from "@/components/svgs/PinIcon.tsx";
+import {seatColor} from "@/components/RealtimeTable.tsx";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -45,7 +45,7 @@ function Landing() {
         <h2 className="text-2xl font-semibold">우리가 겪는 어려움</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
           {[
-            {icon: <ClockBlueSvg className="w-6 h-6"/>, title: '6학점밖에 못 들었던 수강 신청 날...', text: "원하는 강의를 신청하지 못해 졸업이 늦춰질까 걱정했던 순간들"},
+            {icon: <ClockBlueSvg className="w-6 h-6"/>, title: "6학점밖에 못 들었던 수강 신청 날...", text: "원하는 강의를 신청하지 못해 졸업이 늦춰질까 걱정했던 순간들"},
             {icon: <DisabledBlueSvg className="w-6 h-6"/>, title: "원하던 강의는 전부 마감...", text: "꿈꾸던 학과로의 전과, 미리 수강하려고 했지만 수강신청의 벽은 높았습니다"},
             {icon: <ReloadBlueSvg className="w-6 h-6"/>, title: "하루 종일 화면을 보며 여석을 기다렸던 시간들...", text: "수강신청 버튼만 수백 번, 그래도 원하는 강의는 잡지 못했습니다"}
           ].map(({icon, title, text}, index) => (
@@ -101,98 +101,98 @@ function Landing() {
       </Section>
 
       {/* 실시간 수강 여석 Section */}
-      {/*<Section bgColor="bg-white">*/}
-      {/*  <div className="flex items-center gap-2">*/}
-      {/*    <h2 className="text-2xl font-semibold">실시간 수강 여석 확인</h2>*/}
-      {/*    <Link to="/live">*/}
-      {/*      <LinkBlue className="w-4 h-4"/>*/}
-      {/*    </Link>*/}
-      {/*  </div>*/}
+      <Section bgColor="bg-white">
+        <div className="flex items-center gap-2">
+          <h2 className="text-2xl font-semibold">실시간 수강 여석 확인</h2>
+          <Link to="/live">
+            <LinkBlue className="w-4 h-4"/>
+          </Link>
+        </div>
 
-      {/*  <p className="text-gray-500">이제 여석이 나올 때 까지, 편하게 기다리세요</p>*/}
+        <p className="text-gray-500">이제 여석이 나올 때 까지, 편하게 기다리세요</p>
 
-      {/*  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">*/}
-      {/*    <div className="bg-white p-6 rounded-lg shadow-md">*/}
-      {/*      <h2 className="text-lg font-semibold mb-2">실시간 알림</h2>*/}
-      {/*      <p className="text-gray-500">핀 과목에 대해서, 여석이 생기면 <span className="text-green-500 font-bold">알림</span>을 드려요</p>*/}
-      {/*      <div className="flex flex-col gap-4 mt-4">*/}
-      {/*        /!* 실시간 수강 여석 차트 *!/*/}
-      {/*        {[*/}
-      {/*          {name: '컴퓨터그래픽스', prof: "003281 | 최수미"},*/}
-      {/*          {name: '운영체제', prof: "004310 | LEE KANGWON"},*/}
-      {/*        ].map(({name, prof}) => (*/}
-      {/*          <div key={prof} className="bg-gray-50 shadow-sm rounded-lg p-4 w-full">*/}
-      {/*            <div className="flex justify-between mb-2">*/}
-      {/*              <h3 className="font-bold">{name}</h3>*/}
-      {/*              <PinIcon/>*/}
-      {/*            </div>*/}
-      {/*            <div className="flex justify-between">*/}
-      {/*              <p className="text-sm text-gray-500">{prof}</p>*/}
-      {/*              <p className={`text-sm text-red-500 font-bold`}>여석: 0</p>*/}
-      {/*            </div>*/}
-      {/*          </div>*/}
-      {/*        ))}*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-lg font-semibold mb-2">실시간 알림</h2>
+            <p className="text-gray-500">핀 과목에 대해서, 여석이 생기면 <span className="text-green-500 font-bold">알림</span>을 드려요</p>
+            <div className="flex flex-col gap-4 mt-4">
+              {/* 실시간 수강 여석 차트 */}
+              {[
+                {name: "컴퓨터그래픽스", prof: "003281 | 최수미"},
+                {name: "운영체제", prof: "004310 | LEE KANGWON"},
+              ].map(({name, prof}) => (
+                <div key={prof} className="bg-gray-50 shadow-sm rounded-lg p-4 w-full">
+                  <div className="flex justify-between mb-2">
+                    <h3 className="font-bold">{name}</h3>
+                    <PinIcon/>
+                  </div>
+                  <div className="flex justify-between">
+                    <p className="text-sm text-gray-500">{prof}</p>
+                    <p className={`text-sm text-red-500 font-bold`}>여석: 0</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
-      {/*    /!* 여석 수 TOP 10 *!/*/}
-      {/*    <div className="bg-white p-6 shadow-md rounded-md">*/}
-      {/*      <h3 className="text-lg font-semibold">여석 수 TOP 10</h3>*/}
-      {/*      <p className="text-gray-500 mb-4">여석이 많은 과목을 놓치지 마세요!</p>*/}
-      {/*      <div className="overflow-x-auto">*/}
-      {/*        <table className="w-full bg-white rounded-lg text-sm">*/}
-      {/*          <thead>*/}
-      {/*          <tr className="bg-gray-50 z-10 text-nowrap">*/}
-      {/*            <th className="px-4 py-2">학수번호</th>*/}
-      {/*            <th className="px-4 py-2">과목명</th>*/}
-      {/*            <th className="px-4 py-2">교수명</th>*/}
-      {/*            <th className="px-4 py-2">여석</th>*/}
-      {/*          </tr>*/}
-      {/*          </thead>*/}
-      {/*          <tbody>*/}
-      {/*          {[*/}
-      {/*            { id: '004310-004', name: "운영체제", prof: "이수정", seats: 22 },*/}
-      {/*            { id: '003281-001', name: "컴퓨터그래픽스", prof: "최수미", seats: 15 },*/}
-      {/*            { id: '004118-007', name: "디지털시스템", prof: "Rajendra Dhakal", seats: 6 },*/}
-      {/*            { id: '009912-006', name: "C프로그래밍및실습", prof: "김도년", seats: 5 },*/}
-      {/*            { id: '007330-001', name: "확률및통계", prof: "김해광", seats: 4 },*/}
-      {/*          ].map(({id, name, prof, seats}, index) => (*/}
-      {/*            <tr key={index} className="border-t border-gray-200 text-black">*/}
-      {/*              <td className="px-4 py-2 text-center">{id}</td>*/}
-      {/*              <td className="px-4 py-2 text-center">{name}</td>*/}
-      {/*              <td className="px-4 py-2 text-center">{prof}</td>*/}
-      {/*              <td className="px-4 py-2 text-center font-bold">*/}
-      {/*                <p className={`px-3 py-1 rounded-full text-xs font-bold ${seatColor(seats)}`}>{seats}</p>*/}
-      {/*              </td>*/}
-      {/*            </tr>*/}
-      {/*          ))}*/}
-      {/*          </tbody>*/}
-      {/*        </table>*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-      {/*  </div>*/}
-      {/*</Section>*/}
-
-      {/* COMING SOON Section */}
-      <Section className="text-center text-white" bgColor="bg-blue-950">
-        <h2 className="text-2xl font-bold">실시간 수강 여석 확인</h2>
-        <h3 className="text-2xl font-bold text-blue-500">(COMING SOON!)</h3>
-        <div className="text-center text-gray-300 mt-8">
-          <p className="mt-4">강의 여석을 확인하려면 계속 새로고침해야 하나요?</p>
-          <p className="mt-2">올클이 더 쉽고 빠른 방법을 준비하고 있어요!</p>
-          <p className="mt-2">이제 수강 신청을 기다리는 시간이 줄어듭니다.</p>
-          <p className="mt-2">더 나은 서비스로 돌아올게요.</p>
+          {/* 여석 수 TOP 10 */}
+          <div className="bg-white p-6 shadow-md rounded-md">
+            <h3 className="text-lg font-semibold">여석 수 TOP 10</h3>
+            <p className="text-gray-500 mb-4">여석이 많은 과목을 놓치지 마세요!</p>
+            <div className="overflow-x-auto">
+              <table className="w-full bg-white rounded-lg text-sm">
+                <thead>
+                <tr className="bg-gray-50 z-10 text-nowrap">
+                  <th className="px-4 py-2">학수번호</th>
+                  <th className="px-4 py-2">과목명</th>
+                  <th className="px-4 py-2">교수명</th>
+                  <th className="px-4 py-2">여석</th>
+                </tr>
+                </thead>
+                <tbody>
+                {[
+                  { id: "004310-004", name: "운영체제", prof: "이수정", seats: 22 },
+                  { id: "003281-001", name: "컴퓨터그래픽스", prof: "최수미", seats: 15 },
+                  { id: "004118-007", name: "디지털시스템", prof: "Rajendra Dhakal", seats: 6 },
+                  { id: "009912-006", name: "C프로그래밍및실습", prof: "김도년", seats: 5 },
+                  { id: "007330-001", name: "확률및통계", prof: "김해광", seats: 4 },
+                ].map(({id, name, prof, seats}, index) => (
+                  <tr key={index} className="border-t border-gray-200 text-black">
+                    <td className="px-4 py-2 text-center">{id}</td>
+                    <td className="px-4 py-2 text-center">{name}</td>
+                    <td className="px-4 py-2 text-center">{prof}</td>
+                    <td className="px-4 py-2 text-center font-bold">
+                      <p className={`px-3 py-1 rounded-full text-xs font-bold ${seatColor(seats)}`}>{seats}</p>
+                    </td>
+                  </tr>
+                ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </Section>
+
+      {/* COMING SOON Section */}
+      {/*<Section className="text-center text-white" bgColor="bg-blue-950">*/}
+      {/*  <h2 className="text-2xl font-bold">실시간 수강 여석 확인</h2>*/}
+      {/*  <h3 className="text-2xl font-bold text-blue-500">(COMING SOON!)</h3>*/}
+      {/*  <div className="text-center text-gray-300 mt-8">*/}
+      {/*    <p className="mt-4">강의 여석을 확인하려면 계속 새로고침해야 하나요?</p>*/}
+      {/*    <p className="mt-2">올클이 더 쉽고 빠른 방법을 준비하고 있어요!</p>*/}
+      {/*    <p className="mt-2">이제 수강 신청을 기다리는 시간이 줄어듭니다.</p>*/}
+      {/*    <p className="mt-2">더 나은 서비스로 돌아올게요.</p>*/}
+      {/*  </div>*/}
+      {/*</Section>*/}
 
       {/* 사용자 후기 */}
       <Section className="text-center">
         <h2 className="text-2xl font-semibold">올클을 써보신 분들의 한마디!</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
           {[
-            {name: '김O수', department: '컴퓨터공학과 2학년', review: '대체과목 추천 덕분에 금방 대체 과목을 찾아서 너무 편했어요!'},
-            {name: '김O민', department: "컴퓨터공학과 4학년", review: "실시간으로 관심도를 볼 수 있어서 수강신청 전략을 세울 수 있었어요!"},
-            {name: '김O환', department: "컴퓨터공학과 3학년", review: "수강신청이 이렇게 편해질 수 있다니 놀랍네요!"}
+            {name: "김O수", department: "컴퓨터공학과 2학년", review: "대체과목 추천 덕분에 금방 대체 과목을 찾아서 너무 편했어요!"},
+            {name: "김O민", department: "컴퓨터공학과 4학년", review: "실시간으로 관심도를 볼 수 있어서 수강신청 전략을 세울 수 있었어요!"},
+            {name: "김O환", department: "컴퓨터공학과 3학년", review: "수강신청이 이렇게 편해질 수 있다니 놀랍네요!"}
           ].map(({name, department, review}, index) => (
             <div key={index} className="flex flex-col gap-4 p-6 rounded-md bg-white text-left text-sm">
               <div className="flex gap-4 items-center">
