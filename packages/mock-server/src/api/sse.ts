@@ -6,14 +6,16 @@ const SSE_INTERVAL = 2000;
 const SSE_MAX_CONNECTION_TIME = 30000;
 
 const getPinnedSeats = () => {
-   return pinedSubjects.map((subject) => {
+   const pins = pinedSubjects.map((subject) => {
     const randomSeats = Math.floor(Math.random() * 100);
     return {
       subjectId: subject.subjectId,
-      seat: randomSeats < 2 ? randomSeats : 0,
+      seatCount: randomSeats < 2 ? randomSeats : 0,
       queryTime: new Date().toISOString(),
     }
   });
+
+   return { seatResponses : pins }
 }
 
 export const handlers = [
@@ -21,13 +23,13 @@ export const handlers = [
     const stream = new ReadableStream({
       start(controller) {
         const json = JSON.stringify(getPinnedSeats());
-        controller.enqueue(encoder.encode(dataFrame('non-major', json, SSE_INTERVAL)));
+        controller.enqueue(encoder.encode(dataFrame('nonMajorSeats', json, SSE_INTERVAL)));
 
         const nonMajorInterval = setInterval(() => {
           const json = JSON.stringify(getPinnedSeats());
-          controller.enqueue(encoder.encode(dataFrame('non-major', json, SSE_INTERVAL)));
-          controller.enqueue(encoder.encode(dataFrame('major', json, SSE_INTERVAL)));
-          controller.enqueue(encoder.encode(dataFrame('pinned', json, SSE_INTERVAL)));
+          controller.enqueue(encoder.encode(dataFrame('nonMajorSeats', json, SSE_INTERVAL)));
+          controller.enqueue(encoder.encode(dataFrame('majorSeats', json, SSE_INTERVAL)));
+          controller.enqueue(encoder.encode(dataFrame('pinSeats', json, SSE_INTERVAL)));
         }, SSE_INTERVAL);
 
         // const majorInterval = setInterval(() => {

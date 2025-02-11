@@ -34,9 +34,9 @@ const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable)
   const {data: subjectData} = useWishes();
 
   const tableData: ITableData[] = subjectIds?.map((subject) => {
-    const {subjectId, seat} = subject;
+    const {subjectId, seatCount} = subject;
     const {subjectName, subjectCode, professorName} = subjectData?.find((subject) => subject.subjectId === subjectId) || {};
-    return {code: subjectCode, name: subjectName, professor: professorName, seat};
+    return {code: subjectCode, name: subjectName, professor: professorName, seat: seatCount};
   }) ?? [];
 
   const setMajor = (departmentId: number) => {

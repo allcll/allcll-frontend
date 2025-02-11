@@ -13,7 +13,7 @@ const PinnedCourses = () => {
     if (!pinnedSeats) return -1;
 
     const pinned = pinnedSeats?.find((pinnedSeat) => pinnedSeat.subjectId === subjectId);
-    return pinned?.seat ?? -1;
+    return pinned?.seatCount ?? -1;
   }
 
   return (

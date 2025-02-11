@@ -8,7 +8,7 @@ export interface Subject {
 
 export interface PinnedSeats {
   subjectId: number;
-  seat: number;
+  seatCount: number;
   queryTime: string;
 }
 

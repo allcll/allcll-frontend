@@ -22,7 +22,7 @@ export function onChangePinned(prev: Array<PinnedSeats>, newPin: Array<PinnedSea
 
   // Check if there are seats available for pinned subjects
   for (const pin of newPin) {
-    const hasSeat = prev.some(p => p.subjectId === pin.subjectId && p.seat === 0 && pin.seat > 0);
+    const hasSeat = prev.some(p => p.subjectId === pin.subjectId && p.seatCount === 0 && pin.seatCount > 0);
     if (hasSeat) {
       const wishes = getWishes(queryClient, pin.subjectId);
 
