@@ -1,3 +1,4 @@
+import {disassemble} from "es-hangul";
 import {useEffect, useState} from 'react';
 import Navbar from '@/components/Navbar.tsx';
 import CardWrap from '@/components/CardWrap.tsx';
@@ -33,7 +34,16 @@ const SearchCourses = () => {
 
   useEffect(() => {
     const filtered = wishes?.filter((wish) => {
-      return (wish[search.searchOption as keyof Wishes] ?? "").toString().includes(search.searchKeyword);
+      const target = wish[search.searchOption as keyof Wishes] ?? "";
+      const keyword = search.searchKeyword;
+
+      const cleanTarget = target.toString().replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '').toLowerCase();
+      const cleanKeyword = keyword.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '').toLowerCase();
+
+      const disassembledTarget = disassemble(cleanTarget);
+      const disassembledKeyword = disassemble(cleanKeyword);
+
+      return disassembledTarget.includes(disassembledKeyword);
     }) ?? [];
 
     const subjects: Subject[] = filtered.map((wishes) => {
@@ -66,12 +76,10 @@ const SearchCourses = () => {
 
         {/* Course List */}
         <CardWrap>
-          {isPending || !filteredData ? (
-            <p>Loading...</p>
-          ) : isMobile ? (
-            filteredData && <SubjectCards subjects={filteredData}/>
+          {isMobile ? (
+            <SubjectCards subjects={filteredData} isPending={isPending}/>
           ) : (
-            filteredData && <SubjectTable titles={TableHeadTitles} subjects={filteredData}/>
+            <SubjectTable titles={TableHeadTitles} subjects={filteredData} isPending={isPending}/>
           )}
         </CardWrap>
       </div>
@@ -86,10 +94,18 @@ interface ISubjectSearchInputs {
 function SubjectSearchInputs({onSearch}: ISubjectSearchInputs) {
   const [searchOption, setSearchOption] = useState<string>(SearchOptions[0].value);
   const [searchKeyword, setSearchKeyword] = useState<string>('');
+  
+  useEffect(() => {
+    if (!onSearch) return;
 
-  function search() {
-    onSearch(searchOption, searchKeyword);
-  }
+    const handler = setTimeout(() => {
+      onSearch(searchOption, searchKeyword);
+    }, 700);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchOption, searchKeyword, onSearch]);
 
   return (
     <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
@@ -108,8 +124,6 @@ function SubjectSearchInputs({onSearch}: ISubjectSearchInputs) {
         value={searchKeyword}
         onChange={(e) => setSearchKeyword(e.target.value)}
       />
-      <button className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-              onClick={search}>검색</button>
     </div>
   );
 }

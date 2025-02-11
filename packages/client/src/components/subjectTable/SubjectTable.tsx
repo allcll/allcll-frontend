@@ -2,6 +2,9 @@ import PinIcon from '@/components/svgs/PinIcon.tsx';
 import {Subject} from '@/utils/types.ts';
 import {useAddPinned, usePinned, useRemovePinned} from "@/store/usePinned.ts";
 import useInfScroll from '@/hooks/useInfScroll.ts';
+import {SkeletonRow} from "@/components/skeletons/SkeletonTable.tsx";
+import {TableHeaders} from "@/components/wishTable/Table.tsx";
+import SearchSvg from '@/assets/search.svg?react';
 
 export interface ITableHead {
   title: string;
@@ -11,9 +14,10 @@ export interface ITableHead {
 interface ISubjectTable {
   titles: ITableHead[];
   subjects: Subject[];
+  isPending?: boolean;
 }
 
-function SubjectTable({titles, subjects} : ISubjectTable) {
+function SubjectTable({titles, subjects, isPending=false} : ISubjectTable) {
   const {visibleRows} = useInfScroll(subjects);
 
   return (
@@ -26,7 +30,21 @@ function SubjectTable({titles, subjects} : ISubjectTable) {
       </tr>
       </thead>
       <tbody>
-      {subjects && subjects.slice(0, visibleRows).map((subject) => (
+      { isPending || !subjects ? (
+        Array.from({length: 5}, (_, i) => (
+          <SkeletonRow length={titles.length} key={i}/>
+        ))
+      ) : !subjects.length ? (
+        <tr>
+          <td colSpan={TableHeaders.length} className="text-center py-4">
+            <div className="flex flex-col items-center">
+              <SearchSvg className="w-12 h-12"/>
+              <p className="text-gray-500 font-bold mt-4">검색된 과목이 없습니다.</p>
+              <p className="text-gray-400 text-xs mt-1">다른 검색어로 다시 시도해보세요.</p>
+            </div>
+          </td>
+        </tr>
+      ) : subjects.slice(0, visibleRows).map((subject) => (
         <TableRow key={`${subject.subjectCode} ${subject.subjectId} ${subject.professorName}`} subject={subject}/>
       ))}
       <tr className="load-more-trigger"></tr>

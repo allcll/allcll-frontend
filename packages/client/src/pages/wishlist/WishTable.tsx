@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react';
+import {disassemble} from 'es-hangul';
 import useWishes from '@/hooks/server/useWishes.ts';
 import Table from '@/components/wishTable/Table.tsx';
 import Searches, {WishSearchParams} from '@/components/dashboard/Searches.tsx';
@@ -37,12 +38,20 @@ function WishTable() {
   );
 }
 
+// Todo: upgrade search function
 function filterData(data: Wishes[]|undefined, pickedFavorites: (id: number)=>boolean, {searchInput, selectedDepartment, isFavorite}: WishSearchParams): Wishes[] {
   if (!data) return [];
 
+  const cleanSearchInput = searchInput.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+  const disassembledSearchInput = disassemble(cleanSearchInput).toLowerCase();
+
   return data.filter(item => {
-    const matchesProfessor = !!item.professorName && item.professorName.toLowerCase().includes(searchInput.toLowerCase());
-    const matchesSubject = item.subjectName.toLowerCase().includes(searchInput.toLowerCase());
+    const disassembledProfessorName = item.professorName ? disassemble(item.professorName).toLowerCase() : '';
+    const cleanSubjectName = item.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+    const disassembledSubjectName = disassemble(cleanSubjectName).toLowerCase();
+
+    const matchesProfessor = disassembledProfessorName.includes(disassembledSearchInput);
+    const matchesSubject = disassembledSubjectName.includes(disassembledSearchInput);
     const matchesDepartment = selectedDepartment === "" || item.departmentCode === selectedDepartment;
     const matchesFavorite = isFavorite ? pickedFavorites(item.subjectId) : true;
 
