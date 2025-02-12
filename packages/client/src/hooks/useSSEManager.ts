@@ -47,16 +47,23 @@ const fetchSSEData = (queryClient: QueryClient) => {
     const eventSource = new EventSource('/api/connect');
 
     eventSource.addEventListener('nonMajorSeats', (event) => {
-      queryClient.setQueryData([SSEType.NON_MAJOR as string], JSON.parse(event.data).seatResponses);
+      const json = JSON.parse(event.data);
+      if (json)
+        queryClient.setQueryData([SSEType.NON_MAJOR as string], json.seatResponses);
     });
 
     eventSource.addEventListener('majorSeats', (event) => {
-      queryClient.setQueryData([SSEType.MAJOR as string], JSON.parse(event.data).seatResponses);
+      const json = JSON.parse(event.data);
+      if (json)
+        queryClient.setQueryData([SSEType.MAJOR as string], json.seatResponses);
     });
 
     eventSource.addEventListener('pinSeats', (event) => {
       queryClient.setQueryData([SSEType.PINNED as string], (prev: PinnedSeats[]) => {
-        const now: PinnedSeats[] = JSON.parse(event.data).seatResponses;
+        const json = JSON.parse(event.data);
+        if (!json) return prev;
+
+        const now: PinnedSeats[] = json.seatResponses;
         for (const pinned of prev) {
           const find = now.find((seat) => seat.subjectId === pinned.subjectId);
           if (!find)
