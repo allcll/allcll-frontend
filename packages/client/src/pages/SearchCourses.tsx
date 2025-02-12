@@ -6,12 +6,13 @@ import SubjectTable from "@/components/subjectTable/SubjectTable.tsx";
 import SubjectCards from "@/components/subjectTable/SubjectCards.tsx";
 import useMobile from "@/hooks/useMobile.ts";
 import useWishes from "@/hooks/server/useWishes.ts";
-import {Subject, Wishes} from "@/utils/types.ts";
+import {Wishes} from "@/utils/types.ts";
 
 
 const TableHeadTitles = [
   {title: "핀", key: "pin"},
   {title: "과목코드", key: "code"},
+  {title: "개설학과", key: "departmentName"},
   {title: "과목명", key: "name"},
   {title: "담당교수", key: "professor"},
   // {title: "학점", key: "credits"}
@@ -30,7 +31,7 @@ const SearchCourses = () => {
   const [search, setSearch] = useState<ISubjectSearch>({searchOption: SearchOptions[0].value, searchKeyword: ''});
 
   const {data: wishes, isPending} = useWishes();
-  const [filteredData, setFilteredData] = useState<Subject[]>([]);
+  const [filteredData, setFilteredData] = useState<Wishes[]>([]);
 
   useEffect(() => {
     const filtered = wishes?.filter((wish) => {
@@ -46,17 +47,7 @@ const SearchCourses = () => {
       return disassembledTarget.includes(disassembledKeyword);
     }) ?? [];
 
-    const subjects: Subject[] = filtered.map((wishes) => {
-      return {
-        subjectId: wishes.subjectId,
-        subjectCode: wishes.subjectCode,
-        classCode: wishes.classCode,
-        professorName: wishes.professorName ?? '',
-        subjectName: wishes.subjectName,
-      }
-    });
-
-    setFilteredData(subjects);
+    setFilteredData(filtered);
   }, [wishes, search]);
 
 
@@ -104,7 +95,7 @@ function SubjectSearchInputs({setSearch}: ISubjectSearchInputs) {
   }, [searchOption, searchKeyword, setSearch]);
 
   return (
-    <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+    <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 text-sm">
       <select className="border border-gray-300 rounded-lg p-2 w-full md:w-1/4"
               value={searchOption}
               onChange={(e) => setSearchOption(e.target.value)}>

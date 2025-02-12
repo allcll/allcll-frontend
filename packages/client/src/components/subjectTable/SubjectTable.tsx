@@ -1,5 +1,5 @@
 import PinIcon from '@/components/svgs/PinIcon.tsx';
-import {Subject} from '@/utils/types.ts';
+import {Wishes} from '@/utils/types.ts';
 import {useAddPinned, usePinned, useRemovePinned} from "@/store/usePinned.ts";
 import useInfScroll from '@/hooks/useInfScroll.ts';
 import {SkeletonRow} from "@/components/skeletons/SkeletonTable.tsx";
@@ -13,7 +13,7 @@ export interface ITableHead {
 
 interface ISubjectTable {
   titles: ITableHead[];
-  subjects: Subject[];
+  subjects: Wishes[];
   isPending?: boolean;
 }
 
@@ -21,9 +21,9 @@ function SubjectTable({titles, subjects, isPending=false} : ISubjectTable) {
   const {visibleRows} = useInfScroll(subjects);
 
   return (
-    <table className="w-full bg-white rounded-lg">
+    <table className="w-full bg-white rounded-lg relative text-sm">
       <thead>
-      <tr className="bg-gray-50">
+      <tr className="bg-gray-50 text-nowrap">
         {titles.map(({title}) => (
           <th key={title} className="px-4 py-2">{title}</th>
         ))}
@@ -53,7 +53,7 @@ function SubjectTable({titles, subjects, isPending=false} : ISubjectTable) {
   )
 }
 
-function TableRow({subject} : {subject: Subject}) {
+function TableRow({subject} : {subject: Wishes}) {
   const {data: pinnedSubjects} = usePinned();
   const {mutate: deletePin} = useRemovePinned();
   const {mutate: addPin} = useAddPinned();
@@ -76,9 +76,10 @@ function TableRow({subject} : {subject: Subject}) {
           <PinIcon disabled={!isPinned}/>
         </button>
       </td>
-      <td className="px-4 py-2 text-center">{subject.subjectCode}</td>
-      <td className="px-4 py-2 text-center">{subject.subjectName}</td>
-      <td className="px-4 py-2 text-center">{subject.professorName}</td>
+      <td className="px-2 py-2 text-center">{subject.subjectCode}-{subject.classCode}</td>
+      <td className="px-2 py-2 text-center">{subject.departmentName}</td>
+      <td className="px-2 py-2 text-center">{subject.subjectName}</td>
+      <td className="px-2 py-2 text-center">{subject.professorName}</td>
       {/*<td className="px-4 py-2 text-center">{-1}</td>*/}
     </tr>
   )

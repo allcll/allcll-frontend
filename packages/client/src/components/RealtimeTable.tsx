@@ -1,7 +1,8 @@
-import useWishes from '@/hooks/server/useWishes.ts';
-import {SSEType, useSseData} from '@/hooks/useSSEManager.ts';
-import useSoyungDepartments from '@/hooks/server/useSoyungDepartments.ts';
-import CardWrap from '@/components/CardWrap.tsx';
+import React from 'react';
+import useWishes from "@/hooks/server/useWishes.ts";
+import {SSEType, useSseData} from "@/hooks/useSSEManager.ts";
+import useSoyungDepartments from "@/hooks/server/useSoyungDepartments.ts";
+import CardWrap from "@/components/CardWrap.tsx";
 import {SkeletonRow} from "@/components/skeletons/SkeletonTable.tsx";
 import NetworkError from "@/components/dashboard/errors/NetworkError.tsx";
 import ZeroListError from "@/components/dashboard/errors/ZeroListError.tsx";
@@ -12,10 +13,11 @@ interface IRealtimeTable {
 }
 
 const TableHeadTitles = [
-  {title: '과목코드', key: 'code'},
-  {title: '과목명', key: 'name'},
-  {title: '담당교수', key: 'professor'},
-  {title: '여석', key: 'seat'}
+  {title: "과목코드", key: "code"},
+  {title: "과목명", key: "name"},
+  {title: "담당교수", key: "professor"},
+  {title: "여석", key: "seat"},
+  {title: "최근갱신", key: "queryTime"},
 ];
 
 interface ITableData {
@@ -23,27 +25,28 @@ interface ITableData {
   name?: string;
   professor?: string | null;
   seat?: number;
+  queryTime?: string;
 }
 
-const RealtimeTable = ({title='교양과목', showSelect=false}: IRealtimeTable) => {
+const RealtimeTable = ({title="교양과목", showSelect=false}: IRealtimeTable) => {
   // major list API fetch
   // subject list SSE API fetch
   const {data: departments} = useSoyungDepartments();
-  const sseType = title === '교양과목' ? SSEType.NON_MAJOR : SSEType.MAJOR;
+  const sseType = title === "교양과목" ? SSEType.NON_MAJOR : SSEType.MAJOR;
   const {data: subjectIds, isError, refetch} = useSseData(sseType);
   const {data: subjectData} = useWishes();
 
   const tableData: ITableData[] = subjectIds?.map((subject) => {
-    const {subjectId, seatCount} = subject;
+    const {subjectId, seatCount, queryTime} = subject;
     const {subjectName, subjectCode, classCode, professorName} = subjectData?.find((subject) => subject.subjectId === subjectId) || {};
-    return {code: `${subjectCode}-${classCode}`, name: subjectName, professor: professorName, seat: seatCount};
+    return {code: `${subjectCode}-${classCode}`, name: subjectName, professor: professorName, seat: seatCount, queryTime};
   }) ?? [];
 
   const setMajor = (departmentId: number) => {
-    fetch('/api/set-major', {
-      method: 'POST',
+    fetch("/api/set-major", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({departmentId}),
     }).then();
@@ -110,10 +113,16 @@ function SubjectRow({subject}: {subject: ITableData}) {
   return (
     <tr className="border-t border-gray-200 text-black">
       {TableHeadTitles.map(({key}) =>
-        key == 'seat' ? (
+        key == "seat" ? (
         <td key={key} className="px-4 py-2 text-center">
-          <span className={'px-3 py-1 rounded-full text-xs font-bold ' + seatColor(subject.seat ?? -1)}>
+          <span className={"px-3 py-1 rounded-full text-xs font-bold " + seatColor(subject.seat ?? -1)}>
             {subject[key]}
+          </span>
+        </td>
+      ) : key == "queryTime" ? (
+        <td key={key} className="px-4 py-2 text-center text-xs">
+          <span className="px-3 py-1 rounded-full text-gray-500">
+            {getTimeDiffString(subject.queryTime)}
           </span>
         </td>
       ) : (
@@ -124,13 +133,36 @@ function SubjectRow({subject}: {subject: ITableData}) {
   );
 }
 
+// Todo: 초당 갱신되는 컴포넌트 만들기
+export function getTimeDiffString(time?: string) {
+  if (!time)
+    return "알 수 없음";
+  
+  const now = new Date();
+  const date = new Date(time);
+  const diff = now.getTime() - date.getTime();
+
+  const sec = Math.floor(diff / 1000);
+  const min = Math.floor(sec / 60);
+  const hour = Math.floor(min / 60);
+
+  if (hour > 0)
+    return `${hour}시간 전`;
+  if (min > 0)
+    return `${min}분 전`;
+  if (sec > 0)
+    return `${sec}초 전`;
+
+  return "방금 전";
+}
+
 export function seatColor(seats: number) {
   if (seats > 5)
-    return 'text-green-500 bg-green-100';
+    return "text-green-500 bg-green-100";
   if (seats > 0)
-    return 'text-yellow-500 bg-yellow-100';
+    return "text-yellow-500 bg-yellow-100";
 
-  return 'text-red-500 bg-red-100';
+  return "text-red-500 bg-red-100";
 }
 
 export default RealtimeTable;

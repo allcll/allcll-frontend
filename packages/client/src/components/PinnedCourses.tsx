@@ -25,6 +25,13 @@ const PinnedCourses = () => {
     return pinned?.seatCount ?? -1;
   }
 
+  const getQueryTime = (subjectId: number) => {
+    if (!pinnedSeats) return "";
+
+    const pinned = pinnedSeats?.find((pinnedSeat) => pinnedSeat.subjectId === subjectId);
+    return pinned?.queryTime ?? "";
+  }
+
   return (
     <div>
       <div className="flex justify-between align-baseline">
@@ -52,7 +59,7 @@ const PinnedCourses = () => {
             {pinnedWishes.map((subject) => (
               <PinCard key={`${subject.subjectId}_${subject.subjectCode}_${subject.professorName}`}
                        subject={subject}
-                       seats={getSeats(subject.subjectId)}/>
+                       seats={getSeats(subject.subjectId)} queryTime={getQueryTime(subject.subjectId)}/>
             ))}
           </div>
         )}
