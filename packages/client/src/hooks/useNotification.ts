@@ -10,6 +10,10 @@ import {QueryClient} from '@tanstack/react-query';
 // ];
 
 function requestNotificationPermission() {
+if (!("Notification" in window)) {
+alert("해당 브라우저는 알림을 받을 수 없는 브라우저입니다. 다른 브라우저를 이용해주세요");
+return;
+}
   if (Notification.permission !== 'granted') {
     Notification.requestPermission();
   }
@@ -25,6 +29,8 @@ export function onChangePinned(prev: Array<PinnedSeats>, newPin: Array<PinnedSea
     const hasSeat = prev.some(p => p.subjectId === pin.subjectId && p.seatCount === 0 && pin.seatCount > 0);
     if (hasSeat) {
       const wishes = getWishes(queryClient, pin.subjectId);
+
+if (!("Notification" in window)) return;
 
       if (wishes) {
         new Notification(`${wishes.subjectCode}-${wishes.classCode} ${wishes.subjectName} 여석이 생겼습니다`);
