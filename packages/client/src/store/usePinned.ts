@@ -20,7 +20,9 @@ export const useAddPinned = () => {
       const previousPined = queryClient.getQueryData<PinnedSubjectResponse>(['pinnedSubjects'])?.subjects ?? [];
 
       if (previousPined && previousPined.length >= PinLimit) {
-        throw new Error(`핀 고정된 과목은 최대 ${PinLimit}개까지만 가능합니다.`);
+        throw new Error(JSON.stringify({
+          message: `핀 고정된 과목은 최대 ${PinLimit}개까지만 가능합니다.`
+        }));
       }
 
       if (previousPined) {
