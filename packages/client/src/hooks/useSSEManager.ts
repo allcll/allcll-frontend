@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import {QueryClient, useQuery, useQueryClient} from '@tanstack/react-query';
 import {onChangePinned} from "@/hooks/useNotification.ts";
 import {PinnedSeats} from "@/utils/types.ts";
-import useSSECondition from "@/store/useSSECondition.ts";
+import useSSECondition, {RELOAD_INTERVAL, RELOAD_MAX_COUNT} from '@/store/useSSECondition.ts';
 
 export enum SSEType {
   NON_MAJOR = 'nonMajorSeats',
@@ -16,6 +16,7 @@ const useSSEManager = () => {
   const needCount = useSSECondition((state) => state.needCount);
   const alwaysReload = useSSECondition((state) => state.alwaysReload);
   const forceReloadNumber = useSSECondition((state) => state.forceReloadNumber);
+  const errorCount = useSSECondition((state) => state.errorCount);
   const setError = useSSECondition((state) => state.setError);
 
   // connection
@@ -28,8 +29,15 @@ const useSSEManager = () => {
 
     setIsConnected(true);
     fetchSSEData(queryClient)
-      .catch(() => setError(true))
-      .finally(() => setIsConnected(false));
+      .then(() => {
+        setIsConnected(false);
+      })
+      .catch(() => {
+        setError();
+        setTimeout(() => {
+          if (errorCount < RELOAD_MAX_COUNT) setIsConnected(false);
+        }, RELOAD_INTERVAL);
+      })
   }, [alwaysReload, isConnected, needCount, queryClient, setError, forceReloadNumber]);
   // 조건이 바뀌었을 때, 연결이 끊어졌을 때 다시 연결
 }

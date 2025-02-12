@@ -6,6 +6,7 @@ import CardWrap from "@/components/CardWrap.tsx";
 import {SkeletonRow} from "@/components/skeletons/SkeletonTable.tsx";
 import NetworkError from "@/components/dashboard/errors/NetworkError.tsx";
 import ZeroListError from "@/components/dashboard/errors/ZeroListError.tsx";
+import useSSECondition from '@/store/useSSECondition.ts';
 
 interface IRealtimeTable {
   title: string;
@@ -33,7 +34,9 @@ const RealtimeTable = ({title="교양과목", showSelect=false}: IRealtimeTable)
   // subject list SSE API fetch
   const {data: departments} = useSoyungDepartments();
   const sseType = title === "교양과목" ? SSEType.NON_MAJOR : SSEType.MAJOR;
-  const {data: subjectIds, isError, refetch} = useSseData(sseType);
+  const isError = useSSECondition((state) => state.isError);
+  const setForceReload = useSSECondition((state) => state.setForceReload);
+  const {data: subjectIds} = useSseData(sseType);
   const {data: subjectData} = useWishes();
 
   const tableData: ITableData[] = subjectIds?.map((subject) => {
@@ -85,7 +88,7 @@ const RealtimeTable = ({title="교양과목", showSelect=false}: IRealtimeTable)
           {isError ? (
             <tr>
               <td colSpan={TableHeadTitles.length}>
-                <NetworkError onReload={refetch}/>
+                <NetworkError onReload={setForceReload}/>
               </td>
             </tr>
           ) : !tableData ? (
@@ -136,7 +139,7 @@ function SubjectRow({subject}: {subject: ITableData}) {
 // Todo: 초당 갱신되는 컴포넌트 만들기
 export function getTimeDiffString(time?: string) {
   if (!time)
-    return "알 수 없음";
+    return "검색 중";
   
   const now = new Date();
   const date = new Date(time);

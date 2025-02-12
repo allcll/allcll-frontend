@@ -32,20 +32,8 @@ export const handlers = [
           controller.enqueue(encoder.encode(dataFrame('pinSeats', json, SSE_INTERVAL)));
         }, SSE_INTERVAL);
 
-        // const majorInterval = setInterval(() => {
-        //   const json = JSON.stringify(getPinnedSeats());
-        // }, SSE_INTERVAL);
-        //
-        //  const pinnedInterval = setInterval(() => {
-        //   const json = JSON.stringify(getPinnedSeats());
-        // }, SSE_INTERVAL);
-
-
         setTimeout(() => {
           clearInterval(nonMajorInterval);
-          // clearInterval(majorInterval);
-          // clearInterval(pinnedInterval);
-
           controller.close();
         }, SSE_MAX_CONNECTION_TIME);
       },
