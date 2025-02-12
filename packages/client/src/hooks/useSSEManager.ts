@@ -23,7 +23,7 @@ const useSSEManager = () => {
   useEffect(() => {
     const reload = alwaysReload || needCount > 0;
 
-    if (isConnected || !reload) {
+    if (isConnected || !reload || errorCount >= RELOAD_MAX_COUNT) {
       return;
     }
 
@@ -35,7 +35,7 @@ const useSSEManager = () => {
       .catch(() => {
         setError();
         setTimeout(() => {
-          if (errorCount < RELOAD_MAX_COUNT) setIsConnected(false);
+          setIsConnected(false);
         }, RELOAD_INTERVAL);
       })
   }, [alwaysReload, isConnected, needCount, queryClient, setError, forceReloadNumber]);

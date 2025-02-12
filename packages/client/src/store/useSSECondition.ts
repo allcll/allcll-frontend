@@ -26,7 +26,7 @@ const useSSECondition = create<ISSECondition>((set) => ({
   addNeedCount: () => set((state) => ({ needCount: state.needCount + 1 })),
   deleteNeedCount: () => set((state) => ({ needCount: Math.max(0, state.needCount - 1) })),
   setAlwaysReload: (alwaysReload: boolean) => set({ alwaysReload }),
-  setForceReload: () => set((state) => ({ forceReloadNumber: state.forceReloadNumber + 1 })),
+  setForceReload: () => set((state) => ({ forceReloadNumber: state.forceReloadNumber + 1, errorCount: 0 })),
   setError: () => set(({errorCount}) => ({
     errorCount: errorCount + 1,
     isError: errorCount + 1 >= RELOAD_MAX_COUNT,
