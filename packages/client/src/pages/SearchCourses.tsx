@@ -1,5 +1,5 @@
 import {disassemble} from "es-hangul";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import Navbar from "@/components/Navbar.tsx";
 import CardWrap from "@/components/CardWrap.tsx";
 import SubjectTable from "@/components/subjectTable/SubjectTable.tsx";
@@ -29,8 +29,8 @@ const SearchCourses = () => {
 
   const [search, setSearch] = useState<ISubjectSearch>({searchOption: SearchOptions[0].value, searchKeyword: ''});
 
-  const [filteredData, setFilteredData] = useState<Subject[]>([]);
   const {data: wishes, isPending} = useWishes();
+  const [filteredData, setFilteredData] = useState<Subject[]>([]);
 
   useEffect(() => {
     const filtered = wishes?.filter((wish) => {
@@ -59,10 +59,6 @@ const SearchCourses = () => {
     setFilteredData(subjects);
   }, [wishes, search]);
 
-  const onSearch = (searchOption: string, searchKeyword: string) => {
-    setSearch({searchOption, searchKeyword});
-  }
-
 
   return (
     <div className="max-w-screen-xl mx-auto p-2 mb-8">
@@ -71,7 +67,7 @@ const SearchCourses = () => {
 
         {/* Search Section */}
         <CardWrap>
-          <SubjectSearchInputs onSearch={onSearch}/>
+          <SubjectSearchInputs setSearch={setSearch}/>
         </CardWrap>
 
         {/* Course List */}
@@ -88,24 +84,24 @@ const SearchCourses = () => {
 };
 
 interface ISubjectSearchInputs {
-  onSearch: (searchOption: string, searchKeyword: string) => void;
+  setSearch: React.Dispatch<React.SetStateAction<ISubjectSearch>>;
 }
 
-function SubjectSearchInputs({onSearch}: ISubjectSearchInputs) {
+function SubjectSearchInputs({setSearch}: ISubjectSearchInputs) {
   const [searchOption, setSearchOption] = useState<string>(SearchOptions[0].value);
   const [searchKeyword, setSearchKeyword] = useState<string>('');
   
   useEffect(() => {
-    if (!onSearch) return;
+    if (!setSearch) return;
 
     const handler = setTimeout(() => {
-      onSearch(searchOption, searchKeyword);
+      setSearch({searchOption, searchKeyword});
     }, 700);
 
     return () => {
       clearTimeout(handler);
     };
-  }, [searchOption, searchKeyword, onSearch]);
+  }, [searchOption, searchKeyword, setSearch]);
 
   return (
     <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">

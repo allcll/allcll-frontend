@@ -1,5 +1,5 @@
-import PinIcon from '@/components/svgs/PinIcon.tsx';
-import {Subject, Wishes} from '@/utils/types.ts';
+import PinIcon from "@/components/svgs/PinIcon.tsx";
+import {Subject, Wishes} from "@/utils/types.ts";
 import {usePinned, useAddPinned, useRemovePinned} from "@/store/usePinned.ts";
 
 interface IPinCard {
@@ -27,7 +27,7 @@ function PinCard({ subject, seats }: IPinCard) {
     <div className="bg-gray-50 shadow-sm rounded-lg p-4">
       <div className="flex justify-between mb-2">
         <h3 className="font-bold">{subject.subjectName}</h3>
-        <button area-label='핀 제거' onClick={handlePin}>
+        <button area-label="핀 제거" onClick={handlePin}>
           <PinIcon disabled={!isPinned}/>
         </button>
       </div>
@@ -41,13 +41,13 @@ function PinCard({ subject, seats }: IPinCard) {
 
 function seatColor(seats: number) {
   if (seats > 5)
-    return 'text-green-500';
+    return "text-green-500";
   if (seats > 0)
-    return 'text-yellow-500';
+    return "text-yellow-500";
   if (seats == 0)
-    return 'text-red-500';
+    return "text-red-500";
 
-  return 'text-gray-500';
+  return "text-gray-500";
 }
 
 export default PinCard;
