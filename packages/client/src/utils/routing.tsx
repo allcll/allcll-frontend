@@ -6,11 +6,14 @@ import SearchCourses from '@/pages/SearchCourses.tsx';
 import CustomerService from '@/pages/CustomerService.tsx';
 import WishTable from '@/pages/wishlist/WishTable.tsx';
 import WishesDetail from '@/pages/wishlist/WishesDetail.tsx';
+import ErrorPage from '@/pages/ErrorPage.tsx';
+import NotFound from '@/pages/NotFound.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout/>,
+    errorElement: <ErrorPage/>,
     children: [
       {
         path: '/',
@@ -25,6 +28,7 @@ const router = createBrowserRouter([
   {
     path: 'wishes',
     element: <MainLayout/>,
+    errorElement: <ErrorPage/>,
     children: [
       {
         path: '',
@@ -39,6 +43,7 @@ const router = createBrowserRouter([
   {
     path: 'live',
     element: <MainLayout/>,
+    errorElement: <ErrorPage/>,
     children: [
       {
         path: '',
@@ -52,7 +57,7 @@ const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <div>404 Not Found</div>,
+    element: <NotFound/>,
   }
 ]);
 
