@@ -37,6 +37,12 @@ function Dashboard() {
         {/*    </CardWrap>*/}
         {/*  </DragCardWrap>*/}
         {/*))}*/}
+        <p className="text-xs font-bold text-gray-500 mb-4">
+          아직 기능이 안정적이지 않을 수 있습니다.
+          오류 발생 시&nbsp;
+          <a href="/survey" className="text-blue-500 underline hover:text-blue-600">문의사항</a>
+          으로 연락주세요.
+        </p>
 
 
         <CardWrap>
