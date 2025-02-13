@@ -18,6 +18,7 @@ const useSSEManager = () => {
   const forceReloadNumber = useSSECondition((state) => state.forceReloadNumber);
   const errorCount = useSSECondition((state) => state.errorCount);
   const setError = useSSECondition((state) => state.setError);
+  const resetError = useSSECondition((state) => state.resetError);
 
   // connection
   useEffect(() => {
@@ -30,6 +31,7 @@ const useSSEManager = () => {
     setIsConnected(true);
     fetchSSEData(queryClient)
       .then(() => {
+        resetError();
         setIsConnected(false);
       })
       .catch(() => {
@@ -38,7 +40,7 @@ const useSSEManager = () => {
           setIsConnected(false);
         }, RELOAD_INTERVAL);
       })
-  }, [alwaysReload, isConnected, needCount, queryClient, setError, forceReloadNumber]);
+  }, [alwaysReload, isConnected, needCount, queryClient, setError, forceReloadNumber, resetError, errorCount]);
   // 조건이 바뀌었을 때, 연결이 끊어졌을 때 다시 연결
 }
 
@@ -100,8 +102,6 @@ export const useSseData = (type: SSEType) => {
   
   useEffect(() => {
     const handleVisibilityChange = () => {
-      console.log('visibilityChange', document.visibilityState);
-
       if (document.visibilityState === 'visible') {
         addNeedCount();
       } else {

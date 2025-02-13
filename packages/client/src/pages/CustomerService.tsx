@@ -1,11 +1,7 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 
 function CustomerService() {
   const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    console.log('loaded', isLoaded);
-  }, []);
 
   return (
     <div className="mx-auto flex justify-center bg-blue-100 pt-4">

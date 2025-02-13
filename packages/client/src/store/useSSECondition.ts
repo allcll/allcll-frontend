@@ -15,6 +15,7 @@ interface ISSECondition {
   setForceReload: () => void;
   errorCount: number;
   setError: () => void;
+  resetError: () => void;
 }
 
 const useSSECondition = create<ISSECondition>((set) => ({
@@ -31,6 +32,7 @@ const useSSECondition = create<ISSECondition>((set) => ({
     errorCount: errorCount + 1,
     isError: errorCount + 1 >= RELOAD_MAX_COUNT,
   })),
+  resetError: () => set({errorCount: 0, isError: false}),
 }));
 
 export default useSSECondition;
