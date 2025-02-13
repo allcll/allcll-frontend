@@ -22,7 +22,7 @@ function usePreRealSeats() {
 }
 
 async function fetchPreRealSeats(): Promise<IPreRealSeatsResponse> {
-  const res = await fetch("/api/preSeat");
+  const res = await fetch("/preSeat.json");
   return await res.json();
 }
 
