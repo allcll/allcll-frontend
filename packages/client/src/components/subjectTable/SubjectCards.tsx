@@ -1,10 +1,10 @@
 import PinCard from '@/components/subjectTable/PinCard.tsx';
 import useInfScroll from '@/hooks/useInfScroll.ts';
 import SearchSvg from '@/assets/search.svg?react';
-import {Wishes} from '@/utils/types.ts';
+import {WishesWithSeat} from "@/hooks/useWishesPreSeats.ts";
 
 interface ISubjectCards {
-  subjects: Wishes[];
+  subjects: WishesWithSeat[];
   isPending?: boolean;
 }
 
@@ -28,7 +28,7 @@ function SubjectCards({subjects, isPending=false}: ISubjectCards) {
           </div>
         </div>
       ) : subjects.slice(0, visibleRows).map((subject) => (
-        <PinCard key={subject.subjectId} subject={subject} seats={-1} disableSeat/>
+        <PinCard key={subject.subjectId} subject={subject} seats={subject.seat ?? -1} disableSeat={subject.seat === undefined}/>
       ))}
       <div className="load-more-trigger"></div>
     </div>

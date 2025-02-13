@@ -1,11 +1,11 @@
-import {disassemble} from "es-hangul";
 import React, {useEffect, useState} from "react";
+import {disassemble} from "es-hangul";
 import Navbar from "@/components/Navbar.tsx";
 import CardWrap from "@/components/CardWrap.tsx";
 import SubjectTable from "@/components/subjectTable/SubjectTable.tsx";
 import SubjectCards from "@/components/subjectTable/SubjectCards.tsx";
+import useWishesPreSeats from "@/hooks/useWishesPreSeats.ts";
 import useMobile from "@/hooks/useMobile.ts";
-import useWishes from "@/hooks/server/useWishes.ts";
 import {Wishes} from "@/utils/types.ts";
 
 
@@ -30,7 +30,8 @@ const SearchCourses = () => {
 
   const [search, setSearch] = useState<ISubjectSearch>({searchOption: SearchOptions[0].value, searchKeyword: ''});
 
-  const {data: wishes, isPending} = useWishes();
+  const {data: wishes, titles, isPending} = useWishesPreSeats(TableHeadTitles);
+
   const [filteredData, setFilteredData] = useState<Wishes[]>([]);
 
   useEffect(() => {
@@ -61,12 +62,16 @@ const SearchCourses = () => {
           <SubjectSearchInputs setSearch={setSearch}/>
         </CardWrap>
 
+        <p className="text-sm text-gray-600 mb-4 italic">
+          1학년과목은, 신입생 수강 여석이 아직 제외되지 않았을 수 있습니다! 이 점 양해하고 봐주세요
+        </p>
+
         {/* Course List */}
         <CardWrap>
           {isMobile ? (
             <SubjectCards subjects={filteredData} isPending={isPending}/>
           ) : (
-            <SubjectTable titles={TableHeadTitles} subjects={filteredData} isPending={isPending}/>
+            <SubjectTable titles={titles} subjects={filteredData} isPending={isPending}/>
           )}
         </CardWrap>
       </div>

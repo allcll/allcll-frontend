@@ -9,6 +9,7 @@ import useInfScroll from '@/hooks/useInfScroll.ts';
 
 interface ITable {
   data: Wishes[] | undefined;
+  titles: {title: string, key: string}[];
   isPending?: boolean;
 }
 
