@@ -2,7 +2,7 @@ import {http, HttpResponse} from "msw";
 import {pinedSubjects} from "./pin.ts";
 
 const encoder = new TextEncoder();
-const SSE_INTERVAL = 2000;
+const SSE_INTERVAL = 800;
 const SSE_MAX_CONNECTION_TIME = 30000;
 
 const getPinnedSeats = () => {

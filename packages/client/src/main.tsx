@@ -11,7 +11,7 @@ import router from '@/utils/routing.tsx';
 import './index.css'
 
 const queryClient = new QueryClient();
-const UsingMockServer = false;
+const UsingMockServer = true;
 const isProduction = process.env.NODE_ENV === 'production';
 
 if (isProduction) {

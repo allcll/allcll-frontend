@@ -9,8 +9,8 @@ import DisabledBlueSvg from "@/assets/disabled-blue.svg?react";
 import ReloadBlueSvg from "@/assets/reload-blue.svg?react";
 import LinkBlue from "@/assets/link-blue.svg?react";
 import ProfileSvg from "@/assets/profile.svg?react";
-import PinIcon from "@/components/svgs/PinIcon.tsx";
-import {seatColor} from "@/components/RealtimeTable.tsx";
+import AlarmIcon from "@/components/svgs/AlarmIcon.tsx";
+import {getSeatColor} from '@/utils/colors.ts';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -113,8 +113,8 @@ function Landing() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-2">실시간 알림</h2>
-            <p className="text-gray-500">핀 과목에 대해서, 여석이 생기면 <span className="text-green-500 font-bold">알림</span>을 드려요</p>
+            <h2 className="text-lg font-semibold mb-2">여석 과목 알림</h2>
+            <p className="text-gray-500">핀 과목에 대해서, 여석이 생기면 <span className="text-blue-500 font-bold">알림</span>을 드려요</p>
             <div className="flex flex-col gap-4 mt-4">
               {/* 실시간 수강 여석 차트 */}
               {[
@@ -124,7 +124,7 @@ function Landing() {
                 <div key={prof} className="bg-gray-50 shadow-sm rounded-lg p-4 w-full">
                   <div className="flex justify-between mb-2">
                     <h3 className="font-bold">{name}</h3>
-                    <PinIcon/>
+                    <AlarmIcon/>
                   </div>
                   <div className="flex justify-between">
                     <p className="text-sm text-gray-500">{prof}</p>
@@ -162,7 +162,7 @@ function Landing() {
                     <td className="px-4 py-2 text-center">{name}</td>
                     <td className="px-4 py-2 text-center">{prof}</td>
                     <td className="px-4 py-2 text-center font-bold">
-                      <p className={`px-3 py-1 rounded-full text-xs font-bold ${seatColor(seats)}`}>{seats}</p>
+                      <p className={`px-3 py-1 rounded-full text-xs font-bold ${getSeatColor(seats)}`}>{seats}</p>
                     </td>
                   </tr>
                 ))}

@@ -1,22 +1,21 @@
-import {useEffect} from "react";
 import {Link} from 'react-router-dom';
-import PinCard from '@/components/subjectTable/PinCard.tsx';
+import RealtimeCard from '@/components/subjectTable/RealtimeCard.tsx';
 import NetworkError from "@/components/dashboard/errors/NetworkError.tsx";
 import ZeroPinError from "@/components/dashboard/errors/ZeroPinError.tsx";
 import {usePinned} from '@/store/usePinned.ts';
 import useFindWishes from "@/hooks/useFindWishes.ts";
 import {SSEType, useSseData} from '@/hooks/useSSEManager.ts';
-import useSSECondition from "@/store/useSSECondition.ts";
+import useNotification from '@/hooks/useNotification.ts';
+import AlarmBlueIcon from '@/assets/alarm-blue.svg?react';
+import AlarmDisabledIcon from '@/assets/alarm-disabled.svg?react';
+import AddBlueIcon from '@/assets/add-blue.svg?react';
 
 const PinnedCourses = () => {
   const {data, isPending, isError, refetch} = usePinned();
   const {data: pinnedSeats} = useSseData(SSEType.PINNED);
   const pinnedWishes = useFindWishes(data?.map(pinned => pinned.subjectId) ?? []);
-  const setAlwaysReload = useSSECondition(state => state.setAlwaysReload);
 
-  useEffect(() => {
-    setAlwaysReload(true);
-  }, [setAlwaysReload]);
+  const {isAlarm, changeAlarm} = useNotification();
 
   const getSeats = (subjectId: number) => {
     if (!pinnedSeats) return -1;
@@ -34,9 +33,19 @@ const PinnedCourses = () => {
 
   return (
     <div>
-      <div className="flex justify-between align-baseline">
-        <h2 className="font-bold text-lg mb-4">핀 고정된 과목</h2>
-        <Link to="/live/search" className="text-blue-500 font-bold mt-4 hover:text-blue-600">+ 핀 과목 추가</Link>
+      <div className="flex justify-between align-top">
+        <h2 className="font-bold text-lg mb-4">여석 과목 알림</h2>
+        <div className="flex gap-1 items-center">
+          <button className="p-2 rounded-full hover:bg-blue-100"
+                  aria-label={isAlarm ? "알림 끄기" : "알림 켜기"}
+                  title={isAlarm ? "알림 끄기" : "알림 켜기"}
+                  onClick={changeAlarm}>
+            {isAlarm ? <AlarmBlueIcon className="w-5 h-5"/> : <AlarmDisabledIcon className="w-5 h-5"/>}
+          </button>
+          <Link to="/live/search" className="p-2 rounded-full hover:bg-blue-100" aria-label="여석 알림 과목 추가" title="여석 알림 과목 추가">
+            <AddBlueIcon className="w-5 h-5"/>
+          </Link>
+        </div>
       </div>
       <p className="text-sm text-gray-500 mb-2">
         여석이 생기면 알림을 보내드려요 <br/>
@@ -57,9 +66,9 @@ const PinnedCourses = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {pinnedWishes.map((subject) => (
-              <PinCard key={`${subject.subjectId}_${subject.subjectCode}_${subject.professorName}`}
-                       subject={subject}
-                       seats={getSeats(subject.subjectId)} queryTime={getQueryTime(subject.subjectId)}/>
+              <RealtimeCard key={`${subject.subjectId}_${subject.subjectCode}_${subject.professorName}`}
+                            subject={subject}
+                            seats={getSeats(subject.subjectId)} queryTime={getQueryTime(subject.subjectId)}/>
             ))}
           </div>
         )}

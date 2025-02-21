@@ -1,11 +1,11 @@
-import PinIcon from '@/components/svgs/PinIcon.tsx';
+import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
 import {useAddPinned, usePinned, useRemovePinned} from "@/store/usePinned.ts";
 import useInfScroll from '@/hooks/useInfScroll.ts';
 import {WishesWithSeat} from "@/hooks/useWishesPreSeats.ts";
 import {SkeletonRow} from "@/components/skeletons/SkeletonTable.tsx";
 import {TableHeaders} from "@/components/wishTable/Table.tsx";
 import SearchSvg from '@/assets/search.svg?react';
-import {seatColor} from "@/components/RealtimeTable.tsx";
+import {getSeatColor} from '@/utils/colors.ts';
 
 export interface ITableHead {
   title: string;
@@ -74,7 +74,7 @@ function TableRow({subject} : {subject: WishesWithSeat}) {
     <tr className="border-t border-gray-200 text-black">
       <td className="px-4 py-2 text-center">
         <button className="cursor-pointer" onClick={handlePin}>
-          <PinIcon disabled={!isPinned}/>
+          <AlarmIcon disabled={!isPinned}/>
         </button>
       </td>
       <td className="px-2 py-2 text-center">{subject.subjectCode}-{subject.classCode}</td>
@@ -85,7 +85,7 @@ function TableRow({subject} : {subject: WishesWithSeat}) {
       {subject.seat !== undefined ? (
         <td className="px-2 py-2 text-center">
           {subject.seat >= 0 ? (
-            <span className={`px-3 py-1 rounded-full text-xs font-bold ${seatColor(subject.seat)}`}>
+            <span className={`px-3 py-1 rounded-full text-xs font-bold ${getSeatColor(subject.seat)}`}>
               {subject.seat}
             </span>
           ) : (
