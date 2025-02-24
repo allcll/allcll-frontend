@@ -73,7 +73,7 @@ function TableRow({subject} : {subject: WishesWithSeat}) {
   return (
     <tr className="border-t border-gray-200 text-black">
       <td className="px-4 py-2 text-center">
-        <button className="cursor-pointer" onClick={handlePin}>
+        <button className="cursor-pointer" aria-label={isPinned ? '알림 과목 해제' : '알림 과목 등록'} onClick={handlePin}>
           <AlarmIcon disabled={!isPinned}/>
         </button>
       </td>

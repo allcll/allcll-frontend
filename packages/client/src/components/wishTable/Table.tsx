@@ -78,7 +78,7 @@ const TableRow = ({data}: TableRowProps) => {
   return (
     <tr className="border-t border-gray-200 text-black hover:bg-gray-100">
       <td className="px-4 py-2 text-center">
-        <button onClick={handleFavorite}>
+        <button onClick={handleFavorite} aria-label={isFavorite ? '관심목록에서 제거' : '관심목록에 추가'}>
           <StarIcon disabled={!isFavorite}/>
         </button>
       </td>

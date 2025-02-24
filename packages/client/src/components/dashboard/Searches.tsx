@@ -63,7 +63,9 @@ function Searches() {
                value={searchInput}
                onChange={handleSearchInputChange}/>
       </div>
+      <label htmlFor="department" className="hidden">학과</label>
       <select
+        id="department"
         className="pl-2 pr-4 py-2 rounded-md bg-white border border-gray-400"
         value={selectedDepartment}
         onChange={handleDepartmentChange}

@@ -101,7 +101,9 @@ function SubjectSearchInputs({setSearch}: ISubjectSearchInputs) {
 
   return (
     <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 text-sm">
+      <label className="hidden" htmlFor="searchOption">검색 옵션</label>
       <select className="border border-gray-300 rounded-lg p-2 w-full md:w-1/4"
+              id="searchOption"
               value={searchOption}
               onChange={(e) => setSearchOption(e.target.value)}>
         { SearchOptions.map(({name, value}) => (
