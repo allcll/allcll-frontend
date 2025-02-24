@@ -1,6 +1,6 @@
 import {useQuery} from '@tanstack/react-query';
 
-interface Department {
+export interface Department {
   departmentId: number;
   departmentName: string;
 }

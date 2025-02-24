@@ -1,7 +1,7 @@
 import React from 'react';
 import useWishes from "@/hooks/server/useWishes.ts";
 import {SSEType, useSseData} from "@/hooks/useSSEManager.ts";
-import useSoyungDepartments from "@/hooks/server/useSoyungDepartments.ts";
+import {Department} from '@/hooks/server/useSoyungDepartments.ts';
 import CardWrap from "@/components/CardWrap.tsx";
 import {SkeletonRow} from "@/components/skeletons/SkeletonTable.tsx";
 import NetworkError from "@/components/dashboard/errors/NetworkError.tsx";
@@ -33,7 +33,8 @@ interface ITableData {
 const RealtimeTable = ({title="교양과목", showSelect=false}: IRealtimeTable) => {
   // major list API fetch
   // subject list SSE API fetch
-  const {data: departments} = useSoyungDepartments();
+  // const {data: departments} = useSoyungDepartments();
+  const departments: Department[] = [];
   const sseType = title === "교양과목" ? SSEType.NON_MAJOR : SSEType.MAJOR;
   const isError = useSSECondition((state) => state.isError);
   const setForceReload = useSSECondition((state) => state.setForceReload);
