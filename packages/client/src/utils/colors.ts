@@ -10,12 +10,12 @@ export function getSeatColor(seats: number) {
 }
 
 export function getWishesColor(wishCount: number) {
-  if (wishCount > 5)
-    return "text-green-500 bg-green-100";
-  if (wishCount > 0)
-    return "text-yellow-500 bg-yellow-100";
-  if (wishCount == 0)
+  if (wishCount >= 100)
     return "text-red-500 bg-red-100";
+  if (wishCount >= 50)
+    return "text-yellow-500 bg-yellow-100";
+  if (wishCount >= 0)
+    return "text-green-500 bg-green-100";
 
   return "text-gray-500 bg-gray-100";
 }
