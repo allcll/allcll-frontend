@@ -3,12 +3,6 @@ import {PinnedSeats, Wishlist} from '@/utils/types.ts';
 import {QueryClient} from '@tanstack/react-query';
 import useSSECondition from '@/store/useSSECondition.ts';
 
-// const tableData = [
-//   { name: 'Math', seats: 0 },
-//   { name: 'Science', seats: 1 },
-//   { name: 'History', seats: 0 },
-//   { name: 'English', seats: 2 },
-// ];
 
 export function canNotify() {
   return 'Notification' in window;
@@ -39,6 +33,26 @@ export function requestNotificationPermission(callback?: (permission: Notificati
   }
 }
 
+function showNotification(message: string, tag?: string) {
+  navigator.serviceWorker.ready.then(function(registration) {
+    registration.showNotification(message, {
+      // icon: '/logo-name.svg',
+      badge: '/ci.svg',
+      tag
+    }).then();
+  });
+}
+
+function closeNotification(tag: string) {
+  navigator.serviceWorker.ready.then(function(registration) {
+    registration.getNotifications({ tag }).then(function(notifications) {
+      notifications.forEach(function(notification) {
+        notification.close();
+      });
+    });
+  });
+}
+
 export function onChangePinned(prev: Array<PinnedSeats>, newPin: Array<PinnedSeats>, queryClient: QueryClient) {
   const {alwaysReload} = useSSECondition.getState();
 
@@ -53,11 +67,11 @@ export function onChangePinned(prev: Array<PinnedSeats>, newPin: Array<PinnedSea
       const wishes = getWishes(queryClient, pin.subjectId);
 
       if (wishes) {
-        new Notification(`${wishes.subjectCode}-${wishes.classCode} ${wishes.subjectName} 여석이 생겼습니다`);
+        showNotification(`${wishes.subjectCode}-${wishes.classCode} ${wishes.subjectName} 여석이 생겼습니다`);
         return;
       }
 
-      new Notification(`unknown subject의 여석이 생겼습니다`);
+      showNotification(`unknown subject의 여석이 생겼습니다`);
     }
   }
 }
@@ -67,22 +81,18 @@ function getWishes(queryClient: QueryClient, subjectId: number) {
   return wishes.find(wish => wish.subjectId === subjectId);
 }
 
-let globalNotification: Notification | null = null;
+// let globalNotification: Notification | null = null;
 let globalNotificationTimeout: NodeJS.Timeout | null = null;
 
 // 알림 메세지 관련 Notification 은 한 개만 띄웁니다
 function setGlobalNotification(message: string) {
-  if (globalNotification) {
-    globalNotification.close();
-    globalNotification = null;
-  }
   if (globalNotificationTimeout) {
     clearTimeout(globalNotificationTimeout);
     globalNotificationTimeout = null;
   }
 
-  globalNotification = new Notification(message);
-  globalNotificationTimeout = setTimeout(() => globalNotification?.close(), 3000);
+  showNotification(message, 'global-notification');
+  globalNotificationTimeout = setTimeout(() => closeNotification('global-notification') /*globalNotification?.close()*/, 3000);
 }
 
 function useNotification() {
