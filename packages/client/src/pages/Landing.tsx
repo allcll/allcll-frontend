@@ -37,7 +37,7 @@ function Landing() {
             <RightArrowSvg className="w-4 h-4"/>
           </Link>
         </div>
-        <img src="/hero-illustration.png" alt="Illustration" className="w-80 md:w-96 mt-6 md:mt-0" />
+        <img src="/hero-illustration-min.png" alt="Illustration" className="w-80 md:w-96 mt-6 md:mt-0" />
       </Section>
 
       {/* 관심과목 분석 Section */}
