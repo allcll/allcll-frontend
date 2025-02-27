@@ -5,7 +5,6 @@ import RealtimeTable from '@/components/RealtimeTable.tsx';
 import PinnedCourses from '@/components/PinnedCourses.tsx';
 import CardWrap from '@/components/CardWrap.tsx';
 // import DragCardWrap from '@/components/dashboard/DragCardWrap.tsx';
-import useNotification from '@/hooks/useNotification.ts';
 
 // const initialBoards = [
 //   { id: '1', content: <PinnedCourses /> },
@@ -14,8 +13,6 @@ import useNotification from '@/hooks/useNotification.ts';
 // ];
 
 function Dashboard() {
-  useNotification();
-
   // const [boards, setBoards] = useState(initialBoards);
 
   // const moveCard = (dragIndex: number, hoverIndex: number) => {

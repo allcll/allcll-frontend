@@ -1,12 +1,13 @@
 import React from 'react';
 import useWishes from "@/hooks/server/useWishes.ts";
 import {SSEType, useSseData} from "@/hooks/useSSEManager.ts";
-import useSoyungDepartments from "@/hooks/server/useSoyungDepartments.ts";
+import {Department} from '@/hooks/server/useSoyungDepartments.ts';
 import CardWrap from "@/components/CardWrap.tsx";
 import {SkeletonRow} from "@/components/skeletons/SkeletonTable.tsx";
 import NetworkError from "@/components/dashboard/errors/NetworkError.tsx";
 import ZeroListError from "@/components/dashboard/errors/ZeroListError.tsx";
 import useSSECondition from '@/store/useSSECondition.ts';
+import {getSeatColor} from '@/utils/colors.ts';
 
 interface IRealtimeTable {
   title: string;
@@ -32,7 +33,8 @@ interface ITableData {
 const RealtimeTable = ({title="교양과목", showSelect=false}: IRealtimeTable) => {
   // major list API fetch
   // subject list SSE API fetch
-  const {data: departments} = useSoyungDepartments();
+  // const {data: departments} = useSoyungDepartments();
+  const departments: Department[] = [];
   const sseType = title === "교양과목" ? SSEType.NON_MAJOR : SSEType.MAJOR;
   const isError = useSSECondition((state) => state.isError);
   const setForceReload = useSSECondition((state) => state.setForceReload);
@@ -118,7 +120,7 @@ function SubjectRow({subject}: {subject: ITableData}) {
       {TableHeadTitles.map(({key}) =>
         key == "seat" ? (
         <td key={key} className="px-4 py-2 text-center">
-          <span className={"px-3 py-1 rounded-full text-xs font-bold " + seatColor(subject.seat ?? -1)}>
+          <span className={"px-3 py-1 rounded-full text-xs font-bold " + getSeatColor(subject.seat ?? -1)}>
             {subject[key]}
           </span>
         </td>
@@ -140,7 +142,7 @@ function SubjectRow({subject}: {subject: ITableData}) {
 export function getTimeDiffString(time?: string) {
   if (!time)
     return "검색 중";
-  
+
   const now = new Date();
   const date = new Date(time);
   const diff = now.getTime() - date.getTime();
@@ -148,7 +150,16 @@ export function getTimeDiffString(time?: string) {
   const sec = Math.floor(diff / 1000);
   const min = Math.floor(sec / 60);
   const hour = Math.floor(min / 60);
+  const day = Math.floor(hour / 24);
+  const month = Math.floor(day / 30);
+  const year = Math.floor(month / 12);
 
+  if (year > 0)
+    return `${year}년 전`;
+  if (month > 0)
+    return `${month}개월 전`;
+  if (day > 0)
+    return `${day}일 전`;
   if (hour > 0)
     return `${hour}시간 전`;
   if (min > 0)
@@ -157,15 +168,6 @@ export function getTimeDiffString(time?: string) {
     return `${sec}초 전`;
 
   return "방금 전";
-}
-
-export function seatColor(seats: number) {
-  if (seats > 5)
-    return "text-green-500 bg-green-100";
-  if (seats > 0)
-    return "text-yellow-500 bg-yellow-100";
-
-  return "text-red-500 bg-red-100";
 }
 
 export default RealtimeTable;

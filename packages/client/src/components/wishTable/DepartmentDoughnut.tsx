@@ -30,7 +30,9 @@ function DepartmentDoughnut({data, majorName}: { data?: WishRegister[], majorNam
     <div className="bg-white p-6 rounded-lg shadow-md">
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold">관심과목 현황</h2>
+        <label className="hidden" htmlFor="doughnut-select">필터</label>
         <select className="border px-3 py-1 rounded-md"
+                id="doughnut-select"
                 value={selectedFilter}
                 onChange={(e) => setSelectedFilter(e.target.value as DoughnutSelectType)}>
           {Object.values(DoughnutSelectType).map((type) => (

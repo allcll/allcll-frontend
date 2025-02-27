@@ -6,6 +6,7 @@ import StarIcon from '@/components/svgs/StarIcon.tsx';
 import SearchSvg from '@/assets/search.svg?react';
 import {SkeletonRow} from '@/components/skeletons/SkeletonTable.tsx';
 import useInfScroll from '@/hooks/useInfScroll.ts';
+import {getWishesColor} from '@/utils/colors.ts';
 
 interface ITable {
   data: Wishes[] | undefined;
@@ -77,7 +78,7 @@ const TableRow = ({data}: TableRowProps) => {
   return (
     <tr className="border-t border-gray-200 text-black hover:bg-gray-100">
       <td className="px-4 py-2 text-center">
-        <button onClick={handleFavorite}>
+        <button onClick={handleFavorite} aria-label={isFavorite ? '관심목록에서 제거' : '관심목록에 추가'}>
           <StarIcon disabled={!isFavorite}/>
         </button>
       </td>
@@ -108,13 +109,7 @@ const MemoTableRow = memo(({data}: TableRowProps) => {
 }, equalComponent);
 
 function ColoredText({wishCount}: { wishCount: number }) {
-  let style = 'text-green-500 bg-green-100';
-
-  if (wishCount >= 100) {
-    style = 'text-red-500 bg-red-100';
-  } else if (wishCount >= 50) {
-    style = 'text-yellow-500 bg-yellow-100';
-  }
+  const style = getWishesColor(wishCount);
 
   return (
     <span className={`px-3 py-1 rounded-full text-xs font-bold ${style}`}>

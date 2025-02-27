@@ -1,13 +1,14 @@
 import { useParams } from "react-router-dom";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from "chart.js";
+import Table from "@/components/wishTable/Table";
 import CardWrap from "@/components/CardWrap";
 import BlurComponents from "@/components/BlurComponents";
-import Table from "@/components/wishTable/Table";
+import DepartmentDoughnut from '@/components/wishTable/DepartmentDoughnut.tsx';
 import useDetailWishes from '@/hooks/server/useDetailWishes';
 import useRecommendWishes from '@/hooks/server/useRecommendWishes';
 import useDetailRegisters from '@/hooks/server/useDetailRegisters.ts';
-import DepartmentDoughnut from '@/components/wishTable/DepartmentDoughnut.tsx';
+import {getWishesColor} from '@/utils/colors.ts';
 import LinkWhiteSvg from '@/assets/link-white.svg?react';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
@@ -62,7 +63,7 @@ function WishesDetail() {
             <div className="bg-white p-6 rounded-lg shadow-md">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold">관심과목 경쟁률 예상</h2>
-                <p className={`${getTextColor(data.totalCount)} font-bold text-xl`}>총 {data.totalCount}명</p>
+                <p className={`${getWishesColor(data.totalCount)} font-bold text-xl`}>총 {data.totalCount}명</p>
               </div>
 
               <BlurComponents>
@@ -88,12 +89,6 @@ function WishesDetail() {
 
     </div>
   );
-}
-
-function getTextColor(totalCount: number) {
-  if (totalCount >= 100) return "text-red-500";
-  if (totalCount >= 50) return "text-yellow-500";
-  return "text-green-500";
 }
 
 export default WishesDetail;

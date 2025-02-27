@@ -11,7 +11,7 @@ import router from '@/utils/routing.tsx';
 import './index.css'
 
 const queryClient = new QueryClient();
-const UsingMockServer = false;
+const UsingMockServer = true;
 const isProduction = process.env.NODE_ENV === 'production';
 
 if (isProduction) {
@@ -53,5 +53,15 @@ function loadApp() {
         </DndProvider>
       </QueryClientProvider>
     </StrictMode>,
-  )
+  );
+
+  // index.js
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/serviceWorker.js')
+      .then(function(registration) {
+        console.log('Service Worker registered with scope:', registration.scope);
+      }).catch(function(error) {
+        console.log('Service Worker registration failed:', error);
+      });
+  }
 }
