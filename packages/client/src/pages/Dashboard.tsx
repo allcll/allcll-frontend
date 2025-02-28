@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar.tsx';
 import RealtimeTable from '@/components/RealtimeTable.tsx';
 import PinnedCourses from '@/components/PinnedCourses.tsx';
 import CardWrap from '@/components/CardWrap.tsx';
+import SystemChecking from '@/components/dashboard/errors/SystemChecking.tsx';
 // import DragCardWrap from '@/components/dashboard/DragCardWrap.tsx';
 
 // const initialBoards = [
@@ -22,6 +23,8 @@ function Dashboard() {
   //   setBoards(updatedBoards);
   // };
 
+  const isSystemChecking = true;
+
   return (
     <div className="max-w-screen-xl mx-auto p-2 mb-8">
       <div className="container p-4 mx-auto">
@@ -35,23 +38,31 @@ function Dashboard() {
         {/*    </CardWrap>*/}
         {/*  </DragCardWrap>*/}
         {/*))}*/}
-        <p className="text-xs font-bold text-gray-500 mb-4">
-          아직 기능이 안정적이지 않을 수 있습니다.
-          오류 발생 시&nbsp;
-          <Link to="/survey" className="text-blue-500 underline hover:text-blue-600">문의사항</Link>
-          으로 연락주세요.
-        </p>
 
+        {isSystemChecking ? (
+          <CardWrap>
+            <SystemChecking/>
+          </CardWrap>
+        ) : (
+          <>
+            <p className="text-xs font-bold text-gray-500 mb-4">
+              아직 기능이 안정적이지 않을 수 있습니다.
+              오류 발생 시&nbsp;
+              <Link to="/survey" className="text-blue-500 underline hover:text-blue-600">문의사항</Link>
+              으로 연락주세요.
+            </p>
 
-        <CardWrap>
-          <PinnedCourses/>
-        </CardWrap>
+            <CardWrap>
+              <PinnedCourses/>
+            </CardWrap>
 
-        {/* lg:grid-cols-2 */}
-        <div className="grid grid-cols-1 gap-x-4 mb-4">
-          <RealtimeTable title='교양과목'/>
-          {/*<RealtimeTable title='전공과목' showSelect/>*/}
-        </div>
+            {/* lg:grid-cols-2 */}
+            <div className="grid grid-cols-1 gap-x-4 mb-4">
+              <RealtimeTable title='교양과목'/>
+              {/*<RealtimeTable title='전공과목' showSelect/>*/}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
