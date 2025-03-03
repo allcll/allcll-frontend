@@ -15,8 +15,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: build
+  client-build:
+    name: client-build
     runs-on: ubuntu-latest
     env:
       working-directory: ./
@@ -75,7 +75,7 @@ jobs:
 
   Deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: client-build
 
     steps:
       - name: executing remote ssh commands using ssh key

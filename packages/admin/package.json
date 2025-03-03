@@ -11,8 +11,7 @@
   },
   "dependencies": {
     "@allcll/common": "workspace:^",
-    "@svgr/webpack": "^8.1.0",
-    "xlsx": "^0.18.5"
+    "@svgr/webpack": "^8.1.0"
   },
   "devDependencies": {
     "@allcll/mock-server": "workspace:^",

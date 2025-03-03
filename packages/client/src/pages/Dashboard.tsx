@@ -23,7 +23,7 @@ function Dashboard() {
   //   setBoards(updatedBoards);
   // };
 
-  const isSystemChecking = true;
+  const isSystemChecking = false;
 
   return (
     <div className="max-w-screen-xl mx-auto p-2 mb-8">
