@@ -1,5 +1,5 @@
-import {ChangeEvent, useRef, useState} from "react";
-import * as XLSX from 'xlsx';
+import {useRef, useState} from "react";
+// import * as XLSX from 'xlsx';
 import {Subject, TableHeaderNames, useSubjectTable} from "@/hooks/useSubjectTable.ts";
 import LogoutSvg from '@/assets/logout.svg?react';
 import SearchSvg from '@/assets/logout.svg?react';
@@ -17,30 +17,30 @@ interface ExcelData {
 function App() {
   const subjects = useSubjectTable();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [excelData, setExcelData] = useState<ExcelData[]>([]);
-  const [excelDataHeaders, setExcelDataHeaders] = useState<string[]>([]);
+  const [excelData] = useState<ExcelData[]>([]);
+  const [excelDataHeaders] = useState<string[]>([]);
 
-  const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const data = new Uint8Array(e.target?.result as ArrayBuffer);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const jsonData: Subject[] = XLSX.utils.sheet_to_json(worksheet);
-        setExcelData(jsonData as unknown as ExcelData[]);
-
-        if (jsonData.length > 0) {
-          setExcelDataHeaders(Object.keys(jsonData[0]));
-        }
-
-        console.log(jsonData);
-      };
-      reader.readAsArrayBuffer(file);
-    }
-  };
+  // const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    // const file = event.target.files?.[0];
+    // if (file) {
+    //   const reader = new FileReader();
+    //   reader.onload = (e) => {
+    //     const data = new Uint8Array(e.target?.result as ArrayBuffer);
+    //     const workbook = XLSX.read(data, { type: 'array' });
+    //     const sheetName = workbook.SheetNames[0];
+    //     const worksheet = workbook.Sheets[sheetName];
+    //     const jsonData: Subject[] = XLSX.utils.sheet_to_json(worksheet);
+    //     setExcelData(jsonData as unknown as ExcelData[]);
+    //
+    //     if (jsonData.length > 0) {
+    //       setExcelDataHeaders(Object.keys(jsonData[0]));
+    //     }
+    //
+    //     console.log(jsonData);
+    //   };
+    //   reader.readAsArrayBuffer(file);
+    // }
+  // };
 
   const uploadButtonClick = () => {
     fileInputRef.current?.click();
@@ -75,7 +75,7 @@ function App() {
                 type="file"
                 accept=".xlsx, .xls"
                 className="hidden"
-                onChange={handleFileUpload}
+                // onChange={handleFileUpload}
               />
               <Button className="bg-blue-500 text-white px-4 hover:bg-blue-600"
                       onClick={uploadButtonClick}>
