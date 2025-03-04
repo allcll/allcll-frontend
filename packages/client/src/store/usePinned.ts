@@ -58,16 +58,19 @@ export const useRemovePinned = () => {
     mutationFn: removePinnedSubject,
     onMutate: async (subjectId: number) => {
       await queryClient.cancelQueries({ queryKey: ['pinnedSubjects'] });
-      const previousPined = queryClient.getQueryData<PinnedSubjectResponse>(['pinnedSubjects'])?.subjects ?? [];
+      const previousData = queryClient.getQueryData<PinnedSubjectResponse>(['pinnedSubjects']);
 
-      if (previousPined) {
-        queryClient.setQueryData<PinnedSubject[]>(['pinnedSubjects'], previousPined.filter((subject) => subject.subjectId !== subjectId));
+      if (previousData) {
+        const updatedSubjects = previousData.subjects.filter(
+          (subject) => subject.subjectId !== subjectId
+        );
+        queryClient.setQueryData<PinnedSubjectResponse>(['pinnedSubjects'], { subjects: updatedSubjects });
       }
 
-      return { previousPined };
+      return { previousData };
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['pinnedSubjects'] });
+    onSettled: () => {
+      queryClient.invalidateQueries({queryKey: ['pinnedSubjects']});
     },
     onError: (error) => {
       console.error('Error removing pinned subject:', error);
