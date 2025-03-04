@@ -1,7 +1,7 @@
 import CloseIcon from "@/assets/x-gray.svg?react";
-import {getTimeDiffString} from '@/components/RealtimeTable.tsx';
 import useTick from "@/hooks/useTick.ts";
 import {useRemovePinned} from "@/store/usePinned.ts";
+import {getTimeDiffString} from '@/utils/stringFormats.ts'
 import {getSeatColor} from '@/utils/colors.ts';
 import {Subject, Wishes} from "@/utils/types.ts";
 

@@ -1,7 +1,7 @@
 import AlarmIcon from "@/components/svgs/AlarmIcon.tsx";
-import {Subject, Wishes} from "@/utils/types.ts";
 import {usePinned, useAddPinned, useRemovePinned} from "@/store/usePinned.ts";
-import {getTimeDiffString} from '@/components/RealtimeTable.tsx';
+import {getTimeDiffString} from "@/utils/stringFormats.ts";
+import {Subject, Wishes} from "@/utils/types.ts";
 import {getSeatColor} from '@/utils/colors.ts';
 
 interface IPinCard {
