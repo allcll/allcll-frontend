@@ -1,6 +1,7 @@
 import React from 'react';
 import useWishes from "@/hooks/server/useWishes.ts";
 import {SSEType, useSseData} from "@/hooks/useSSEManager.ts";
+import useTick from "@/hooks/useTick.ts";
 import {Department} from '@/hooks/server/useSoyungDepartments.ts';
 import CardWrap from "@/components/CardWrap.tsx";
 import {SkeletonRow} from "@/components/skeletons/SkeletonTable.tsx";
@@ -125,16 +126,24 @@ function SubjectRow({subject}: {subject: ITableData}) {
           </span>
         </td>
       ) : key == "queryTime" ? (
-        <td key={key} className="px-4 py-2 text-center text-xs">
-          <span className="px-3 py-1 rounded-full text-gray-500">
-            {getTimeDiffString(subject.queryTime)}
-          </span>
-        </td>
+        <QueryTimeTd key={key} queryTime={subject.queryTime} />
       ) : (
           <td key={key} className="px-4 py-2 text-center">{subject[key as keyof ITableData]}</td>
         )
       )}
     </tr>
+  );
+}
+
+function QueryTimeTd({queryTime}: {queryTime?: string}) {
+  useTick();
+
+  return (
+    <td className="px-4 py-2 text-center text-xs">
+      <span className="px-3 py-1 rounded-full text-gray-500">
+        {getTimeDiffString(queryTime)}
+      </span>
+    </td>
   );
 }
 

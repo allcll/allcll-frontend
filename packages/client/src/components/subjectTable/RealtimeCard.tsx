@@ -1,8 +1,9 @@
 import CloseIcon from "@/assets/x-gray.svg?react";
-import {Subject, Wishes} from "@/utils/types.ts";
-import {useRemovePinned} from "@/store/usePinned.ts";
 import {getTimeDiffString} from '@/components/RealtimeTable.tsx';
+import useTick from "@/hooks/useTick.ts";
+import {useRemovePinned} from "@/store/usePinned.ts";
 import {getSeatColor} from '@/utils/colors.ts';
+import {Subject, Wishes} from "@/utils/types.ts";
 
 interface IPinCard {
   subject: Subject | Wishes;
@@ -35,10 +36,18 @@ function RealtimeCard({ subject, seats, queryTime, disableSeat=false }: IPinCard
       { !disableSeat && (
         <div className="flex justify-between items-baseline">
           <p className={`px-2 py-1 rounded-full text-xs font-bold ${getSeatColor(seats)}`}>여석: {seats < 0 ? "???" : seats}</p>
-          <p className={`text-xs text-gray-500`}>{getTimeDiffString(queryTime)}</p>
+          <QueryTimeComponent queryTime={queryTime} />
         </div>
       )}
     </div>
+  );
+}
+
+function QueryTimeComponent({ queryTime }: { queryTime?: string }) {
+  useTick();
+
+  return (
+    <p className={`text-xs text-gray-500`}>{getTimeDiffString(queryTime)}</p>
   );
 }
 
