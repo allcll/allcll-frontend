@@ -10,6 +10,7 @@ interface ISSECondition {
   alwaysReload: boolean;
   forceReloadNumber: number;
   isError: boolean;
+  isPending: boolean;
   endInitialized: () => void;
   addNeedCount: () => void;
   deleteNeedCount: () => void;
@@ -27,16 +28,18 @@ const useSSECondition = create<ISSECondition>((set) => ({
   forceReloadNumber: 0,
   errorCount: 0,
   isError: false,
+  isPending: true,
   endInitialized: () => set({ isInitialized: true }),
   addNeedCount: () => set((state) => ({ needCount: state.needCount + 1 })),
   deleteNeedCount: () => set((state) => ({ needCount: Math.max(0, state.needCount - 1) })),
   setAlwaysReload: (alwaysReload: boolean) => set({ alwaysReload }),
   setForceReload: () => set((state) => ({ forceReloadNumber: state.forceReloadNumber + 1, errorCount: 0, isError: false })),
-  setError: () => set(({errorCount}) => ({
+  setError: () => set(({errorCount, isPending}) => ({
     errorCount: errorCount + 1,
     isError: errorCount + 1 >= RELOAD_MAX_COUNT,
+    isPending: isPending || errorCount > 1,
   })),
-  resetError: () => set({errorCount: 0, isError: false}),
+  resetError: () => set({errorCount: 0, isError: false, isPending: false}),
 }));
 
 export default useSSECondition;

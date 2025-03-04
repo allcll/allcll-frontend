@@ -37,6 +37,7 @@ const RealtimeTable = ({title="교양과목", showSelect=false}: IRealtimeTable)
   // const {data: departments} = useSoyungDepartments();
   const departments: Department[] = [];
   const sseType = title === "교양과목" ? SSEType.NON_MAJOR : SSEType.MAJOR;
+  const isPendingSSE = useSSECondition((state) => state.isPending);
   const isError = useSSECondition((state) => state.isError);
   const setForceReload = useSSECondition((state) => state.setForceReload);
   const {data: subjectIds} = useSseData(sseType);
@@ -47,6 +48,7 @@ const RealtimeTable = ({title="교양과목", showSelect=false}: IRealtimeTable)
     const {subjectName, subjectCode, classCode, professorName} = subjectData?.find((subject) => subject.subjectId === subjectId) || {};
     return {code: `${subjectCode}-${classCode}`, name: subjectName, professor: professorName, seat: seatCount, queryTime};
   }) ?? [];
+
 
   const setMajor = (departmentId: number) => {
     fetch("/api/set-major", {
@@ -94,7 +96,7 @@ const RealtimeTable = ({title="교양과목", showSelect=false}: IRealtimeTable)
                 <NetworkError onReload={setForceReload}/>
               </td>
             </tr>
-          ) : !tableData ? (
+          ) : isPendingSSE ? (
             Array.from({length: 5}).map((_, i) => (
               <SkeletonRow key={i} length={TableHeadTitles.length}/>
             ))

@@ -29,7 +29,7 @@ const useSSEManager = () => {
     }
 
     setIsConnected(true);
-    fetchSSEData(queryClient)
+    fetchSSEData(queryClient, resetError)
       .then(() => {
         resetError();
         setIsConnected(false);
@@ -44,7 +44,7 @@ const useSSEManager = () => {
   // 조건이 바뀌었을 때, 연결이 끊어졌을 때 다시 연결
 }
 
-const fetchSSEData = (queryClient: QueryClient) => {
+const fetchSSEData = (queryClient: QueryClient, resetError: () => void) => {
   return new Promise((resolve, reject) => {
     const eventSource = new EventSource('/api/connect');
 
@@ -78,6 +78,9 @@ const fetchSSEData = (queryClient: QueryClient) => {
       });
     });
 
+    eventSource.onopen = () => {
+      resetError();
+    }
 
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
