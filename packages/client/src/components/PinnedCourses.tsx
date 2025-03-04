@@ -9,6 +9,7 @@ import useNotification from '@/hooks/useNotification.ts';
 import AlarmBlueIcon from '@/assets/alarm-blue.svg?react';
 import AlarmDisabledIcon from '@/assets/alarm-disabled.svg?react';
 import AddBlueIcon from '@/assets/add-blue.svg?react';
+import Tooltip from "@/components/common/Tooltip.tsx";
 
 const PinnedCourses = () => {
   const {data, isPending, isError, refetch} = usePinned();
@@ -34,7 +35,15 @@ const PinnedCourses = () => {
   return (
     <div>
       <div className="flex justify-between align-top">
-        <h2 className="font-bold text-lg mb-4">여석 과목 알림</h2>
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <h2 className="font-bold text-lg">여석 과목 알림</h2>
+          <Tooltip>
+            <p className="text-sm">
+              여석이 생기면 알림을 보내드려요 <br/>
+              <span className="text-red-500">* 탭을 닫으면 알림이 울리지 않아요</span>
+            </p>
+          </Tooltip>
+        </div>
         <div className="flex gap-1 items-center">
           <button className="p-2 rounded-full hover:bg-blue-100"
                   aria-label={isAlarm ? "알림 끄기" : "알림 켜기"}
@@ -47,9 +56,10 @@ const PinnedCourses = () => {
           </Link>
         </div>
       </div>
+
       <p className="text-sm text-gray-500 mb-2">
-        여석이 생기면 알림을 보내드려요 <br/>
-        <span className="text-red-500 font-bold">* 탭을 닫으면 알림이 울리지 않아요</span>
+        검색중 표시는 최대 5분까지 나올 수 있어요. <br/>
+        만약 검색중이 계속 사라지지 않는다면 새로고침을 해주세요.
       </p>
 
 
