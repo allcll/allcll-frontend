@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom';
 const NavLinks = [
   {title: '실시간', path: '/live', end: true},
   {title: '과목 검색', path: '/live/search', end: false},
-]
+];
 
 const Navbar = () => {
   return (

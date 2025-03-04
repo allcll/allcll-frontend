@@ -39,7 +39,11 @@ function showNotification(message: string, tag?: string) {
       // icon: '/logo-name.svg',
       badge: '/ci.svg',
       tag
-    }).then();
+    })
+      .catch((err) => {
+        alert('알림을 보낼 수 없습니다.\nmac os 사용 중인 경우, 설정 > 알림에서 브라우저 알림을 허용해주세요');
+        console.error('알림을 보낼 수 없습니다', err);
+      });
   });
 }
 
@@ -83,16 +87,21 @@ function getWishes(queryClient: QueryClient, subjectId: number) {
 
 // let globalNotification: Notification | null = null;
 let globalNotificationTimeout: NodeJS.Timeout | null = null;
+let globalNotificationTagId = 1;
 
 // 알림 메세지 관련 Notification 은 한 개만 띄웁니다
 function setGlobalNotification(message: string) {
+  const nowTag = 'global-notification_'+globalNotificationTagId;
+  const nextTag = 'global-notification_'+(++globalNotificationTagId);
+
   if (globalNotificationTimeout) {
     clearTimeout(globalNotificationTimeout);
+    closeNotification(nowTag);
     globalNotificationTimeout = null;
   }
 
-  showNotification(message, 'global-notification');
-  globalNotificationTimeout = setTimeout(() => closeNotification('global-notification') /*globalNotification?.close()*/, 3000);
+  showNotification(message, nextTag);
+  globalNotificationTimeout = setTimeout(() => closeNotification(nextTag) /*globalNotification?.close()*/, 3000);
 }
 
 function useNotification() {
