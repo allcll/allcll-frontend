@@ -39,11 +39,7 @@ function showNotification(message: string, tag?: string) {
       // icon: '/logo-name.svg',
       badge: '/ci.svg',
       tag
-    })
-      .catch((err) => {
-        alert('알림을 보낼 수 없습니다.\nmac os 사용 중인 경우, 설정 > 알림에서 브라우저 알림을 허용해주세요');
-        console.error('알림을 보낼 수 없습니다', err);
-      });
+    });
   });
 }
 
@@ -104,6 +100,34 @@ function setGlobalNotification(message: string) {
   globalNotificationTimeout = setTimeout(() => closeNotification(nextTag) /*globalNotification?.close()*/, 3000);
 }
 
+const NotificationFoundDelay = 500;
+async function hasGlobalNotification() {
+  return await new Promise<void>((resolve, reject) => {
+    setTimeout(() => {
+      const tag = 'global-notification_'+globalNotificationTagId;
+
+      navigator.serviceWorker.ready.then(function(registration) {
+        registration.getNotifications({ tag }).then(function(notifications) {
+          notifications.forEach(function() {
+            return resolve();
+          });
+
+          reject();
+        });
+      });
+    }, NotificationFoundDelay);
+  });
+}
+
+// 맥에서 알림이 보이지 않을 때, 알림 권한을 확인합니다
+function checkSystemNotification() {
+  hasGlobalNotification().then()
+    .catch((error) => {
+      alert('알림이 보이지 않나요?\nmac os 사용 중인 경우, 설정 > 알림에서 브라우저 알림을 허용해주세요');
+      console.error(error);
+    });
+}
+
 function useNotification() {
   const isInitialized = useSSECondition(state => state.isInitialized);
   const setInitialized = useSSECondition(state => state.endInitialized);
@@ -124,6 +148,7 @@ function useNotification() {
       }
 
       setGlobalNotification('알림 기능이 활성화되었습니다. 여석이 생기면 이렇게 알림을 보내드려요');
+      checkSystemNotification();
       setAlwaysReload(true);
     });
 
@@ -144,6 +169,7 @@ function useNotification() {
     requestNotificationPermission(permission => {
       if (permission === 'granted') {
         setGlobalNotification('알림 기능이 활성화되었습니다');
+        checkSystemNotification();
         setAlwaysReload(true);
       }
       else if (permission === 'default') {
