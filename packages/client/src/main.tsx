@@ -5,6 +5,8 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import ReactGA from "react-ga4";
+import * as amplitude from '@amplitude/analytics-browser';
+import { sessionReplayPlugin } from '@amplitude/plugin-session-replay-browser';
 import * as Sentry from "@sentry/react";
 import { server } from "@allcll/mock-server";
 import router from '@/utils/routing.tsx';
@@ -31,6 +33,13 @@ if (isProduction) {
   });
 
   ReactGA.initialize(import.meta.env.VITE_GOOGLE_ANALYTICS_ID);
+
+  const sessionReplayTracking = sessionReplayPlugin({
+    forceSessionTracking: true, // Enable capture of Session Start and Session End events
+    sampleRate: 0.1, // 10% sample rate, should reduce for production traffic.
+  });
+  amplitude.add(sessionReplayTracking);
+  amplitude.init(import.meta.env.VITE_AMPLITUDE_API_KEY);
 }
 
 // load mock server
