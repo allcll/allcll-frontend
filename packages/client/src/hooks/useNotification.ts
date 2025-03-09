@@ -2,6 +2,10 @@ import {useEffect} from 'react';
 import {PinnedSeats, Wishlist} from '@/utils/types.ts';
 import {QueryClient} from '@tanstack/react-query';
 import useSSECondition from '@/store/useSSECondition.ts';
+import useBannerNotification, {ISetBanner} from '@/store/useBannerNotification.tsx';
+import AlarmBanner from '@/components/banner/AlarmBanner.tsx';
+import useToastNotification from '@/store/useToastNotification.ts';
+import useAlarmSettings from '@/store/useAlarmSettings.ts';
 
 
 export function canNotify() {
@@ -34,13 +38,21 @@ export function requestNotificationPermission(callback?: (permission: Notificati
 }
 
 function showNotification(message: string, tag?: string) {
-  navigator.serviceWorker.ready.then(function(registration) {
-    registration.showNotification(message, {
-      // icon: '/logo-name.svg',
-      badge: '/ci.svg',
-      tag
+  const isAlarmActivated = useAlarmSettings.getState().isAlarmActivated;
+
+  if (isAlarmActivated)
+    navigator.serviceWorker.ready.then(function(registration) {
+      registration.showNotification(message, {
+        // icon: '/logo-name.svg',
+        badge: '/ci.svg',
+        tag
+      });
     });
-  });
+
+  const addToast = useToastNotification.getState().addToast;
+  const isToastActivated = useAlarmSettings.getState().isToastActivated;
+  if (isToastActivated)
+    addToast(message, tag);
 }
 
 function closeNotification(tag: string) {
@@ -51,6 +63,9 @@ function closeNotification(tag: string) {
       });
     });
   });
+
+  const clearToast = useToastNotification.getState().clearToast;
+  clearToast(tag);
 }
 
 export function onChangePinned(prev: Array<PinnedSeats>, newPin: Array<PinnedSeats>, queryClient: QueryClient) {
@@ -100,32 +115,22 @@ function setGlobalNotification(message: string) {
   globalNotificationTimeout = setTimeout(() => closeNotification(nextTag) /*globalNotification?.close()*/, 3000);
 }
 
-const NotificationFoundDelay = 500;
-async function hasGlobalNotification() {
-  return await new Promise<void>((resolve, reject) => {
-    setTimeout(() => {
-      const tag = 'global-notification_'+globalNotificationTagId;
 
-      navigator.serviceWorker.ready.then(function(registration) {
-        registration.getNotifications({ tag }).then(function(notifications) {
-          notifications.forEach(function() {
-            return resolve();
-          });
-
-          reject();
-        });
-      });
-    }, NotificationFoundDelay);
-  });
-}
-
+const DAYS = 1000 * 60 * 60 * 24;
 // 맥에서 알림이 보이지 않을 때, 알림 권한을 확인합니다
-function checkSystemNotification() {
-  hasGlobalNotification().then()
-    .catch((error) => {
-      alert('알림이 보이지 않나요?\nmac os 사용 중인 경우, 설정 > 알림에서 브라우저 알림을 허용해주세요');
-      console.error(error);
+function checkSystemNotification(setBanner: ISetBanner) {
+  const ALARM_CHECK_TITLE = 'alarm-check';
+  const alarmDate = localStorage.getItem(ALARM_CHECK_TITLE);
+
+  if (alarmDate && Date.now() - Number(alarmDate) < 100 * DAYS) {
+    return;
+  }
+
+  setTimeout(() => {
+    setBanner(AlarmBanner(), () => {
+      localStorage.setItem(ALARM_CHECK_TITLE, Date.now().toString());
     });
+  }, 5000);
 }
 
 function useNotification() {
@@ -134,6 +139,7 @@ function useNotification() {
 
   const alwaysReload = useSSECondition(state => state.alwaysReload);
   const setAlwaysReload = useSSECondition(state => state.setAlwaysReload);
+  const setBanner = useBannerNotification(state => state.setBanner);
 
   const isAlarm = canNotify() && isGranted() && alwaysReload;
 
@@ -148,7 +154,7 @@ function useNotification() {
       }
 
       setGlobalNotification('알림 기능이 활성화되었습니다. 여석이 생기면 이렇게 알림을 보내드려요');
-      checkSystemNotification();
+      checkSystemNotification(setBanner);
       setAlwaysReload(true);
     });
 
@@ -169,7 +175,7 @@ function useNotification() {
     requestNotificationPermission(permission => {
       if (permission === 'granted') {
         setGlobalNotification('알림 기능이 활성화되었습니다');
-        checkSystemNotification();
+        checkSystemNotification(setBanner);
         setAlwaysReload(true);
       }
       else if (permission === 'default') {

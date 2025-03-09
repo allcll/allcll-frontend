@@ -1,4 +1,7 @@
+import {useState} from 'react';
 import {Link} from 'react-router-dom';
+import Tooltip from "@/components/common/Tooltip.tsx";
+import AlarmOptionModal from '@/components/toast/AlarmOptionModal.tsx';
 import RealtimeCard from '@/components/subjectTable/RealtimeCard.tsx';
 import NetworkError from "@/components/dashboard/errors/NetworkError.tsx";
 import ZeroPinError from "@/components/dashboard/errors/ZeroPinError.tsx";
@@ -9,12 +12,14 @@ import useNotification from '@/hooks/useNotification.ts';
 import AlarmBlueIcon from '@/assets/alarm-blue.svg?react';
 import AlarmDisabledIcon from '@/assets/alarm-disabled.svg?react';
 import AddBlueIcon from '@/assets/add-blue.svg?react';
-import Tooltip from "@/components/common/Tooltip.tsx";
+import SettingSvg from '@/assets/settings.svg?react';
+
 
 const PinnedCourses = () => {
   const {data, isPending, isError, refetch} = usePinned();
   const {data: pinnedSeats} = useSseData(SSEType.PINNED);
   const pinnedWishes = useFindWishes(data?.map(pinned => pinned.subjectId) ?? []);
+  const [isAlarmSettingOpen, setIsAlarmSettingOpen] = useState(false);
 
   const {isAlarm, changeAlarm} = useNotification();
 
@@ -33,34 +38,42 @@ const PinnedCourses = () => {
   }
 
   return (
-    <div>
-      <div className="flex justify-between align-top">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <h2 className="font-bold text-lg">여석 과목 알림</h2>
-          <Tooltip>
-            <p className="text-sm">
-              여석이 생기면 알림을 보내드려요 <br/>
-              <span className="text-red-500">* 탭을 닫으면 알림이 울리지 않아요</span>
-            </p>
-          </Tooltip>
+    <>
+      <AlarmOptionModal isOpen={isAlarmSettingOpen} close={() => setIsAlarmSettingOpen(false)}/>
+      <div>
+        <div className="flex justify-between align-top">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <h2 className="font-bold text-lg">여석 과목 알림</h2>
+            <Tooltip>
+              <p className="text-sm">
+                여석이 생기면 알림을 보내드려요 <br/>
+                <span className="text-red-500">* 탭을 닫으면 알림이 울리지 않아요</span>
+              </p>
+            </Tooltip>
+          </div>
+          <div className="flex gap-1 items-center">
+            <button className="p-2 rounded-full hover:bg-blue-100"
+                    aria-label="알림 설정"
+                    title="알림 설정"
+                    onClick={() => setIsAlarmSettingOpen(true)}>
+              <SettingSvg className="w-5 h-5"/>
+            </button>
+            <button className="p-2 rounded-full hover:bg-blue-100"
+                    aria-label={isAlarm ? "알림 끄기" : "알림 켜기"}
+                    title={isAlarm ? "알림 끄기" : "알림 켜기"}
+                    onClick={changeAlarm}>
+              {isAlarm ? <AlarmBlueIcon className="w-5 h-5"/> : <AlarmDisabledIcon className="w-5 h-5"/>}
+            </button>
+            <Link to="/live/search" className="p-2 rounded-full hover:bg-blue-100" aria-label="여석 알림 과목 추가" title="여석 알림 과목 추가">
+              <AddBlueIcon className="w-5 h-5"/>
+            </Link>
+          </div>
         </div>
-        <div className="flex gap-1 items-center">
-          <button className="p-2 rounded-full hover:bg-blue-100"
-                  aria-label={isAlarm ? "알림 끄기" : "알림 켜기"}
-                  title={isAlarm ? "알림 끄기" : "알림 켜기"}
-                  onClick={changeAlarm}>
-            {isAlarm ? <AlarmBlueIcon className="w-5 h-5"/> : <AlarmDisabledIcon className="w-5 h-5"/>}
-          </button>
-          <Link to="/live/search" className="p-2 rounded-full hover:bg-blue-100" aria-label="여석 알림 과목 추가" title="여석 알림 과목 추가">
-            <AddBlueIcon className="w-5 h-5"/>
-          </Link>
-        </div>
-      </div>
 
-      <p className="text-sm text-gray-500 mb-2">
-        검색중 표시는 최대 5분까지 나올 수 있어요. <br/>
-        만약 검색중이 계속 사라지지 않는다면 새로고침을 해주세요.
-      </p>
+        <p className="text-sm text-gray-500 mb-2">
+          검색중 표시는 최대 5분까지 나올 수 있어요. <br/>
+          만약 검색중이 계속 사라지지 않는다면 새로고침을 해주세요.
+        </p>
 
 
         {isPending ? (
@@ -82,7 +95,8 @@ const PinnedCourses = () => {
             ))}
           </div>
         )}
-    </div>
+      </div>
+    </>
   );
 };
 

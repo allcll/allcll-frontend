@@ -1,6 +1,7 @@
 import {useLocation} from 'react-router-dom';
 import {useEffect, useRef} from 'react';
 import useSSEManager from "@/hooks/useSSEManager.ts";
+import useAlarmSettings from '@/store/useAlarmSettings.ts';
 
 interface IHistory {
   key?: string;
@@ -26,6 +27,12 @@ function useGlobalEffect() {
 
   // SSEManager.ts
   useSSEManager();
+
+  // AlarmSettings.ts
+  const getSettings = useAlarmSettings((state) => state.getSettings);
+  useEffect(() => {
+    getSettings();
+  }, []);
 }
 
 export default useGlobalEffect;

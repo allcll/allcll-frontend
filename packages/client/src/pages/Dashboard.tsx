@@ -26,7 +26,7 @@ function Dashboard() {
   const isSystemChecking = false;
 
   return (
-    <div className="max-w-screen-xl mx-auto p-2 mb-8">
+    <div className="max-w-screen-xl mx-auto mb-8">
       <div className="container p-4 mx-auto">
         <Navbar/>
 

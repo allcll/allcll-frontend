@@ -8,6 +8,30 @@ body {
 :root {
   background-color: #F9FAFB;
 }
+
+.toast-enter {
+  opacity: 0;
+  transform: translateX(100%);
+}
+.toast-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+}
+.toast-move {
+  transform: translateY(100%);
+  transition: transform 300ms;
+}
+/*.toast-exit {*/
+/*  opacity: 1;*/
+/*  transform: translateX(100%) translateY(100%);*/
+/*}*/
+/*.toast-exit-active {*/
+/*  opacity: 0;*/
+/*  transform: translateX(100%);*/
+/*  transition: opacity 300ms , transform 300ms;*/
+/*}*/
+
 /*:root {*/
 /*  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;*/
   /*line-height: 1.5;*/
