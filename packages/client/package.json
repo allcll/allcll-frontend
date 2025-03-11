@@ -18,6 +18,8 @@
     "@amplitude/analytics-browser": "^2.11.13",
     "chart.js": "^4.4.7",
     "es-hangul": "^2.3.0",
+    "remark-gfm": "^4.0.1",
+    "react-markdown": "^10.1.0",
     "react-chartjs-2": "^5.3.0",
     "react-transition-group": "^4.4.5",
     "react-dnd": "^16.0.1",
@@ -29,6 +31,7 @@
     "@allcll/mock-server": "workspace:^",
     "@amplitude/plugin-session-replay-browser": "^1.13.5",
     "@types/react-transition-group": "^4.4.12",
+    "@tailwindcss/typography": "^0.5.16",
     "vite-plugin-svgr": "^4.3.0"
   }
 }

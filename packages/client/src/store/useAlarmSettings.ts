@@ -7,9 +7,13 @@ interface IUseAlarmSettings {
   getSettings: () => { isAlarmActivated: boolean; isToastActivated: boolean };
 }
 
+const isMobileDevice = () => {
+  return /Mobi|Android/i.test(navigator.userAgent);
+};
+
 const useAlarmSettings = create<IUseAlarmSettings>((set) => ({
-  isAlarmActivated: false,
-  isToastActivated: true,
+  isAlarmActivated: true,
+  isToastActivated: false,
   saveSettings: (settings) => {
     set(({ ...prev }) => {
       const newSettings = {...prev, settings};
@@ -27,7 +31,13 @@ const useAlarmSettings = create<IUseAlarmSettings>((set) => ({
       return settingJson;
     }
 
-    return { isAlarmActivated: true, isToastActivated: false };
+    const initSettings = {
+      isAlarmActivated: true,
+      isToastActivated: isMobileDevice(),
+    }
+    set(initSettings);
+
+    return initSettings;
   },
 }));
 
