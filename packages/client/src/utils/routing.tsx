@@ -1,5 +1,6 @@
 import {createBrowserRouter} from 'react-router-dom';
 import MainLayout from '@/layouts/MainLayout.tsx';
+import ServiceLayout from '@/layouts/ServiceLayout.tsx';
 import Landing from '@/pages/Landing.tsx';
 import Dashboard from '@/pages/Dashboard.tsx';
 import SearchCourses from '@/pages/SearchCourses.tsx';
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
   },
   {
     path: 'wishes',
-    element: <MainLayout/>,
+    element: <ServiceLayout/>,
     errorElement: <ErrorPage/>,
     children: [
       {
@@ -52,7 +53,7 @@ const router = createBrowserRouter([
   },
   {
     path: 'live',
-    element: <MainLayout/>,
+    element: <ServiceLayout/>,
     errorElement: <ErrorPage/>,
     children: [
       {
