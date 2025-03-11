@@ -8,6 +8,10 @@ export interface ServiceSemester {
   }
 }
 
+export interface ServiceSemesterWithPeriod extends ServiceSemester {
+  withinPeriod: boolean;
+}
+
 function useServiceSemester() {
   return useQuery({
     queryKey: ['departments'],
@@ -15,7 +19,7 @@ function useServiceSemester() {
     staleTime: Infinity,
     select: data => {
       if (!data) {
-        return {withinPeriod: false};
+        return null;
       }
 
       const now = new Date();

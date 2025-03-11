@@ -1,9 +1,9 @@
 import {Link} from 'react-router-dom';
-import {ServiceSemester} from '@/hooks/server/useServiceSemester.ts';
 import HomeSvg from "@/assets/home-white.svg?react";
+import {ServiceSemesterWithPeriod} from '@/hooks/server/useServiceSemester.ts';
 
 interface IServiceClosed {
-  data: ServiceSemester;
+  data: ServiceSemesterWithPeriod;
 }
 
 
