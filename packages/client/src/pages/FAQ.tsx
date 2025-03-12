@@ -1,3 +1,4 @@
+import {Helmet} from 'react-helmet';
 import { useState } from 'react';
 import remarkGfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
@@ -14,12 +15,18 @@ function FAQ() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 md:px-16 py-24">
-      <h1 className="text-3xl font-bold mb-6">자주 묻는 질문</h1>
-      {faqItems && faqItems.map((item, index) => (
-        <FaqComponent key={index} item={item} index={index} isOpen={openIndex === index} toggleAnswer={toggleAnswer}/>
-      ))}
-    </div>
+    <>
+      <Helmet>
+        <title>ALLCLL | 자주 묻는 질문</title>
+      </Helmet>
+
+      <div className="mx-auto max-w-7xl px-4 md:px-16 py-24">
+        <h1 className="text-3xl font-bold mb-6">자주 묻는 질문</h1>
+        {faqItems && faqItems.map((item, index) => (
+          <FaqComponent key={index} item={item} index={index} isOpen={openIndex === index} toggleAnswer={toggleAnswer}/>
+        ))}
+      </div>
+    </>
   );
 }
 

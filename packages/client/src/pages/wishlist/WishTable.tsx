@@ -1,3 +1,4 @@
+import {Helmet} from 'react-helmet';
 import {useState, useEffect} from 'react';
 import {disassemble} from 'es-hangul';
 import useWishes from '@/hooks/server/useWishes.ts';
@@ -18,23 +19,29 @@ function WishTable() {
   }, [filterParams, wishes]);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 md:px-16 mb-8">
-      {/* Header */}
-      <div className="py-12 px-2">
-        <h1 className="text-2xl font-bold">수강신청 관심과목 분석</h1>
-        <p className="text-gray-500 mt-2">
-          올클은 세종대학교의 <span className="text-blue-500 font-bold">실제 데이터</span>를 보여드립니다. 관심과목을 선택하여 분석해보세요.
-        </p>
+    <>
+      <Helmet>
+        <title>ALLCLL | 관심과목 분석</title>
+      </Helmet>
 
-        {/* Search and Filter */}
-        <Searches />
+      <div className="mx-auto max-w-7xl px-4 md:px-16 mb-8">
+        {/* Header */}
+        <div className="py-12 px-2">
+          <h1 className="text-2xl font-bold">관심과목 분석</h1>
+          <p className="text-gray-500 mt-2">
+            올클은 세종대학교의 <span className="text-blue-500 font-bold">실제 데이터</span>를 보여드립니다. 관심과목을 선택하여 분석해보세요.
+          </p>
 
-        {/* Course Table */}
-        <div className="bg-white mt-6 shadow-md rounded-lg overflow-x-auto">
-          <Table data={filteredData} isPending={isPending}/>
+          {/* Search and Filter */}
+          <Searches />
+
+          {/* Course Table */}
+          <div className="bg-white mt-6 shadow-md rounded-lg overflow-x-auto">
+            <Table data={filteredData} isPending={isPending}/>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

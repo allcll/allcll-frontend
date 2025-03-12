@@ -1,15 +1,16 @@
+import {Helmet} from 'react-helmet';
 import React, {useEffect, useState} from "react";
 import {disassemble} from "es-hangul";
 import Navbar from "@/components/Navbar.tsx";
 import CardWrap from "@/components/CardWrap.tsx";
 import SubjectTable from "@/components/subjectTable/SubjectTable.tsx";
 import SubjectCards from "@/components/subjectTable/SubjectCards.tsx";
+import SearchBox from "@/components/common/SearchBox.tsx";
+import AlarmIcon from "@/components/svgs/AlarmIcon.tsx";
 import useWishesPreSeats from "@/hooks/useWishesPreSeats.ts";
 import useMobile from "@/hooks/useMobile.ts";
 import {Wishes} from "@/utils/types.ts";
-import SearchBox from "@/components/common/SearchBox.tsx";
 import {usePinned} from "@/store/usePinned.ts";
-import AlarmIcon from "@/components/svgs/AlarmIcon.tsx";
 import useAlarmSearchStore from "@/store/useAlarmSearchStore.ts";
 
 
@@ -71,29 +72,35 @@ const SearchCourses = () => {
 
 
   return (
-    <div className="max-w-screen-xl mx-auto mb-8">
-      <div className="container p-4 mx-auto">
-        <Navbar/>
+    <>
+      <Helmet>
+        <title>ALLCLL | 알림 과목 검색</title>
+      </Helmet>
 
-        {/* Search Section */}
-        <CardWrap>
-          <SubjectSearchInputs setSearch={setSearch}/>
-        </CardWrap>
+      <div className="max-w-screen-xl mx-auto mb-8">
+        <div className="container p-4 mx-auto">
+          <Navbar/>
 
-        {/*<p className="text-sm text-gray-600 mb-4 italic">*/}
-        {/*  1학년과목은, 신입생 수강 여석이 아직 제외되지 않았을 수 있습니다! 이 점 양해하고 봐주세요*/}
-        {/*</p>*/}
+          {/* Search Section */}
+          <CardWrap>
+            <SubjectSearchInputs setSearch={setSearch}/>
+          </CardWrap>
 
-        {/* Course List */}
-        <CardWrap>
-          {isMobile ? (
-            <SubjectCards subjects={filteredData} isPending={isPending}/>
-          ) : (
-            <SubjectTable titles={titles} subjects={filteredData} isPending={isPending}/>
-          )}
-        </CardWrap>
+          {/*<p className="text-sm text-gray-600 mb-4 italic">*/}
+          {/*  1학년과목은, 신입생 수강 여석이 아직 제외되지 않았을 수 있습니다! 이 점 양해하고 봐주세요*/}
+          {/*</p>*/}
+
+          {/* Course List */}
+          <CardWrap>
+            {isMobile ? (
+              <SubjectCards subjects={filteredData} isPending={isPending}/>
+            ) : (
+              <SubjectTable titles={titles} subjects={filteredData} isPending={isPending}/>
+            )}
+          </CardWrap>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
