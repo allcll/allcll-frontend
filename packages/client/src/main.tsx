@@ -15,10 +15,11 @@ import './index.css'
 const queryClient = new QueryClient();
 const UsingMockServer = import.meta.env.VITE_USE_MOCK === 'true';
 const isProduction = process.env.NODE_ENV === 'production';
+const isDevServer = import.meta.env.VITE_DEV_SERVER === 'true';
 
-if (isProduction) {
+if (isProduction && !isDevServer) {
   Sentry.init({
-    dsn: "https://e9f254e66aacba9bfb5a6901063e0009@o4508692782907392.ingest.us.sentry.io/4508782708326400",
+    dsn: import.meta.env.VITE_SENTRY_DSN,
     integrations: [
       Sentry.browserTracingIntegration(),
       Sentry.replayIntegration(),
