@@ -54,7 +54,7 @@ function Searches() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row md:items-center mt-4 space-y-4 md:space-y-0 md:space-x-4 text-sm">
+    <div className="flex flex-col space-y-4 mt-4 text-sm lg:flex-row lg:items-center lg:space-y-0 lg:space-x-4">
       <SearchBox
         type="text"
         placeholder="과목명 또는 교수명 검색"

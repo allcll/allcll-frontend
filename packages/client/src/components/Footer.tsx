@@ -36,7 +36,7 @@ function Footer() {
             <h5 className="font-bold mb-4">{item.title}</h5>
             <ul>
               {item.children.map((child, index) => (
-                <li key={index}>
+                <li key={index} className="mb-1">
                   {!child.href ? (
                     <p>{child.title}</p>
                   ) : child.href.startsWith('http') ? (
