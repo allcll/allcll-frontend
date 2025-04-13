@@ -42,8 +42,8 @@ packages/
 ├── admin/          # 관리자 페이지
 ├── client/         # 메인 애플리케이션
 ├── common/         # 공통 모듈
-├── nginx/          # Nginx 설정 파일
-└── main/           # 메인 애플리케이션
+├── mock-server/    # msw mock 서버
+└── nginx/          # Nginx 설정 파일
 ```
 
 각 프로젝트는 다음과 같은 공통된 구조를 가집니다:  
