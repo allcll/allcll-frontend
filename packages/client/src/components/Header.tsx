@@ -3,8 +3,9 @@ import LogoSvg from '@public/ci.svg?react';
 import LogoName from '@public/logo-name.svg?react';
 
 const HeaderContents = [
-  { title: '관심과목 분석', path: '/wishes', end: false },
-  { title: '수강 여석 확인', path: '/live', end: true },
+  { title: '과목검색', path: '/wishes', end: false },
+  { title: '시뮬레이션', path: '/simulation', end: false },
+  { title: '실시간', path: '/live', end: true },
 ];
 
 const ButtonContents = [
@@ -18,7 +19,7 @@ function Header() {
 
   return (
     <header className="bg-white shadow-sm z-50 sticky top-0">
-      <div className="container mb-1 flex items-center justify-between mx-auto max-w-7xl px-4 md:px-16">
+      <div className="container flex items-center justify-between mx-auto max-w-7xl px-4 md:px-16">
         <div className="flex items-center space-x-4 py-4">
           <Link to="/" className="flex items-center space-x-2" aria-label="메인 페이지">
             <h1 className="hidden">ALLCLL</h1>
