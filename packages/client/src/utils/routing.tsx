@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from '@/layouts/MainLayout.tsx';
 import ServiceLayout from '@/layouts/ServiceLayout.tsx';
+import SimulationLayout from '@/layouts/SimulationLayout.tsx';
 import Landing from '@/pages/Landing.tsx';
 import Dashboard from '@/pages/Dashboard.tsx';
 import SearchCourses from '@/pages/SearchCourses.tsx';
@@ -10,6 +11,9 @@ import FAQ from '@/pages/FAQ.tsx';
 import WishTable from '@/pages/wishlist/WishTable.tsx';
 import WishesDetail from '@/pages/wishlist/WishesDetail.tsx';
 import ErrorPage from '@/pages/ErrorPage.tsx';
+import Simulation from '@/pages/simulation/Simulation.tsx';
+import SimulationDashboard from '@/pages/simulation/Dashboard.tsx';
+import SimulationDashboardDetail from '@/pages/simulation/DashboardDetail.tsx';
 import NotFound from '@/pages/NotFound.tsx';
 
 const router = createBrowserRouter([
@@ -63,6 +67,25 @@ const router = createBrowserRouter([
       {
         path: 'search',
         element: <SearchCourses />,
+      },
+    ],
+  },
+  {
+    path: 'simulation',
+    element: <SimulationLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: '',
+        element: <Simulation />,
+      },
+      {
+        path: 'logs',
+        element: <SimulationDashboard />,
+      },
+      {
+        path: 'logs/:runId',
+        element: <SimulationDashboardDetail />,
       },
     ],
   },

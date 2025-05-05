@@ -1,0 +1,119 @@
+function Simulation() {
+  return (
+    <>
+      <section className="border p-2 space-y-4 text-xs">
+        <div>
+          <div className="flex items-center gap-8 mb-4">
+            <div className="flex items-center gap-2">
+              <label className="font-bold">조직 분류</label>
+              <select className="border px-2 py-1 w-48 disabled:bg-gray-100" disabled>
+                <option></option>
+              </select>
+            </div>
+            <div className="flex items-center gap-2">
+              <label className="font-bold">년도/학기</label>
+              <select className="border px-2 py-1 w-48 disabled:bg-gray-100" disabled>
+                <option></option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-8 mb-2">
+            <div className="flex items-center gap-2">
+              <label className="font-bold">주전공(교직)</label>
+              <select className="border px-2 py-1 w-48">
+                <option>컴퓨터공학전공</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <label className="font-bold">복수전공(교직)</label>
+              <select className="border px-2 py-1 w-48">
+                <option>없음</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <label className="font-bold">학번</label>
+              <input className="border px-2 py-1 w-48" placeholder="2022123456"/>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-8">
+            <div className="flex items-center gap-2">
+              <label className="font-bold">검색구분</label>
+              <select className="border px-2 py-1 w-48 disabled:bg-gray-100" disabled>
+                <option>관심과목목록</option>
+              </select>
+            </div>
+            <div className="flex items-center gap-2">
+              <label className="font-bold">내학과</label>
+              <select className="border px-2 py-1 w-48">
+                <option>컴퓨터공학전공</option>
+              </select>
+            </div>
+            <div className="flex justify-end items-end">
+              <button className="bg-gray-700 text-white px-4 py-2 rounded">검색</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Results Table */}
+      <section className="overflow-x-auto">
+        <div className="font-semibold pl-2 mb-2 border-l-4 border-blue-500">수강 대상 교과목</div>
+        <table className="min-w-full text-center border border-gray-300 border-t-3 border-t-black text-xs">
+          <thead className="bg-gray-100">
+          <tr>
+            {[
+              '순번', '신청', '학수번호', '분반', '개설학과',
+              '교과목명', '수업계획서', '강의언어', '학점/이론/실습',
+              '이수', '학년', '시간표', '인원보기'
+            ].map((h, i) => (
+              <th key={i} className="border border-gray-300 px-2 py-1">{h}</th>
+            ))}
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td colSpan={13} className="text-gray-400 py-4">조회된 내역이 없습니다.</td>
+          </tr>
+          </tbody>
+        </table>
+      </section>
+
+      {/* 신청 내역 */}
+      <section className="overflow-x-auto">
+        <div className="flex items-center gap-2 mb-2">
+          <div className="flex items-baseline gap-2">
+            <span className="font-semibold pl-2 border-l-4 border-blue-500">수강 신청 내역</span>
+            <button className="text-xs bg-blue-500 text-white px-2 py-0.5 rounded">재조회</button>
+          </div>
+          <div className="text-xs font-bold text-black">
+            수강 가능 학점: 18 / <span className="text-blue-500">신청 과목수: 4 / 신청 학점수: 10.5</span>
+          </div>
+        </div>
+        <table className="min-w-full text-center border border-gray-300 border-t-3 border-t-black text-xs">
+          <thead className="bg-gray-100">
+          <tr>
+            {[
+              '순번', '신청', '학수번호', '분반', '개설학과',
+              '교과목명', '수업계획서', '강의언어', '학점/이론/실습',
+              '이수', '학년', '시간표', '인원보기'
+            ].map((h, i) => (
+              <th key={i} className="border border-gray-300 px-2 py-1">{h}</th>
+            ))}
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td colSpan={13} className="text-gray-400 py-4">조회된 내역이 없습니다.</td>
+          </tr>
+          </tbody>
+        </table>
+      </section>
+    </>
+  );
+}
+
+export default Simulation;
