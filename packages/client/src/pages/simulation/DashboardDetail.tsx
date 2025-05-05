@@ -1,6 +1,12 @@
+import { Helmet } from 'react-helmet';
+
 function DashboardDetail() {
   return (
     <>
+      <Helmet>
+        <title>ALLCLL | 대시보드 상세</title>
+      </Helmet>
+
       <h1 className="text-2xl font-bold mb-6">모의 수강 신청 로그</h1>
       {/* Top Grid: 능력분석 + 수강 신청자 리스트 */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">

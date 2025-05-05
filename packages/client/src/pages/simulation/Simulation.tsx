@@ -1,6 +1,12 @@
+import { Helmet } from 'react-helmet';
+
 function Simulation() {
   return (
     <>
+      <Helmet>
+        <title>ALLCLL | 시뮬레이션</title>
+      </Helmet>
+
       <section className="border p-2 space-y-4 text-xs">
         <div>
           <div className="flex items-center gap-8 mb-4">

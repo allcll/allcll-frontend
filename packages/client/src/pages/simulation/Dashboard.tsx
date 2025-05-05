@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 const Logs = [
   { id: 1, department: '컴퓨터공학과', name: '김민수', phone: '010-1234-5678', score: 98765 },
@@ -11,6 +12,10 @@ const Logs = [
 function Dashboard() {
   return (
     <>
+      <Helmet>
+        <title>ALLCLL | 대시보드</title>
+      </Helmet>
+
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold mb-6">모의 수강 신청 로그</h1>
         <div>
