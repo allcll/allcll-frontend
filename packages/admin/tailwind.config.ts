@@ -6,9 +6,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: '#007AFF',
+        primary: '#007aff',
         blue: {
-          500: '#007AFF',
+          500: '#007aff',
         },
       },
     },
