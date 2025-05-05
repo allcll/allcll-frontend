@@ -1,4 +1,4 @@
-import {useQuery} from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 export interface Department {
   departmentId: number;
@@ -12,13 +12,13 @@ interface DepartmentsResponse {
 function useSoyungDepartments() {
   return useQuery({
     queryKey: ['soyungDepartments'],
-    queryFn: async () :Promise<DepartmentsResponse> => {
+    queryFn: async (): Promise<DepartmentsResponse> => {
       const response = await fetch('/api/major');
       return response.json();
     },
     staleTime: Infinity,
-    select: (data: DepartmentsResponse) => data.departments
-  })
+    select: (data: DepartmentsResponse) => data.departments,
+  });
 }
 
 export default useSoyungDepartments;

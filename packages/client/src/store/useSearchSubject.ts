@@ -1,11 +1,11 @@
-import {Subject} from "@/utils/types.ts";
-import {useQuery} from "@tanstack/react-query";
+import { Subject } from '@/utils/types.ts';
+import { useQuery } from '@tanstack/react-query';
 
 export function useSearchSubject(searchOption: SubjectOption) {
   return useQuery({
     queryKey: ['searchedSubjects', searchOption],
     queryFn: () => searchSubject(searchOption),
-    select: (data) => data?.subjectResponses,
+    select: data => data?.subjectResponses,
   });
 }
 
@@ -29,11 +29,11 @@ const searchSubject = async (searchOption: SubjectOption): Promise<SubjectRespon
 
   const response = await fetch(`/api/subjects?${query}`, {
     headers: {
-      'Cookie': `sessionId=${document.cookie.split('=')[1]}`,
+      Cookie: `sessionId=${document.cookie.split('=')[1]}`,
     },
   });
   if (!response.ok) {
     throw new Error('Failed to fetch pinned subjects');
   }
   return response.json();
-}
+};

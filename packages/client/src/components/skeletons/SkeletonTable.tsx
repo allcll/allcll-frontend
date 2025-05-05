@@ -2,13 +2,15 @@ interface SkeletonTableProps {
   headerNames: string[];
 }
 
-function SkeletonTable({headerNames}: SkeletonTableProps) {
+function SkeletonTable({ headerNames }: SkeletonTableProps) {
   return (
     <table className="min-w-full bg-white">
       <thead>
         <tr>
-          { headerNames.map((name, index) => (
-            <th className="py-2" key={index}>{name}</th>
+          {headerNames.map((name, index) => (
+            <th className="py-2" key={index}>
+              {name}
+            </th>
           ))}
         </tr>
       </thead>
@@ -21,7 +23,7 @@ function SkeletonTable({headerNames}: SkeletonTableProps) {
   );
 }
 
-export function SkeletonRow({length}: {length: number}) {
+export function SkeletonRow({ length }: { length: number }) {
   return (
     <tr className="animate-pulse border-t border-gray-200 h-10">
       {Array.from({ length }).map((_, index) => (

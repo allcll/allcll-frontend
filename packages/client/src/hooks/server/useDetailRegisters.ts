@@ -1,5 +1,5 @@
-import {useQuery} from '@tanstack/react-query';
-import {WishRegister} from '@/utils/types.ts';
+import { useQuery } from '@tanstack/react-query';
+import { WishRegister } from '@/utils/types.ts';
 
 interface DetailRegistersResponse {
   eachDepartmentRegisters: WishRegister[];
@@ -10,14 +10,14 @@ function useDetailRegisters(id: string) {
   return useQuery({
     queryKey: ['detail-registers', id],
     queryFn: () => fetchDetailRegisters(id),
-    staleTime: Infinity
+    staleTime: Infinity,
   });
 }
 
 const fetchDetailRegisters = async (subjectId: string): Promise<DetailRegistersResponse> => {
   const response = await fetch(`/api/baskets/${subjectId}`, {
     headers: {
-      'Cookie': `sessionId=${document.cookie.split('=')[1]}`,
+      Cookie: `sessionId=${document.cookie.split('=')[1]}`,
     },
   });
 
@@ -26,6 +26,6 @@ const fetchDetailRegisters = async (subjectId: string): Promise<DetailRegistersR
   }
 
   return response.json();
-}
+};
 
 export default useDetailRegisters;

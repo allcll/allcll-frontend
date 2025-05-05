@@ -1,4 +1,4 @@
-import {Helmet} from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { useState } from 'react';
 
 function ServiceInfo() {
@@ -21,9 +21,7 @@ function ServiceInfo() {
           로드 중…
         </iframe>
         {!isLoaded && (
-          <div className="w-4xl mx-auto h-screen flex justify-center items-center text-3xl">
-            로딩 중...
-          </div>
+          <div className="w-4xl mx-auto h-screen flex justify-center items-center text-3xl">로딩 중...</div>
         )}
       </div>
     </>

@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 interface IFooterItem {
   title: string;
@@ -10,16 +10,16 @@ const FooterItems: IFooterItem[] = [
     title: '서비스',
     children: [
       { title: 'ALLCLL 소개', href: '/about' },
-      { title: '자주 묻는 질문', href: '/faq' }
-    ]
+      { title: '자주 묻는 질문', href: '/faq' },
+    ],
   },
   {
     title: '고객지원',
     children: [
       { title: '오류 및 제안', href: '/survey' },
-      { title: '오픈 채팅', href: 'https://open.kakao.com/o/g3MztXfh'},
-      { title: 'allcllclla@google.com' }
-    ]
+      { title: '오픈 채팅', href: 'https://open.kakao.com/o/g3MztXfh' },
+      { title: 'allcllclla@google.com' },
+    ],
   },
 ];
 
@@ -27,8 +27,8 @@ function Footer() {
   return (
     <footer className="bg-white text-center text-sm text-gray-500">
       <div className="mx-auto max-w-7xl px-4 md:px-16 py-12 grid md:grid-cols-3 gap-6 text-center md:text-left">
-        <div className='flex flex-col items-center md:items-start'>
-          <img src='/logo-name.svg' alt='logo' className="h-5 mb-4"/>
+        <div className="flex flex-col items-center md:items-start">
+          <img src="/logo-name.svg" alt="logo" className="h-5 mb-4" />
           <p>대학생들이 직접 만든 서비스로, 더 나은 수강신청 경험을 제공합니다. </p>
         </div>
         {FooterItems.map((item, index) => (
@@ -55,9 +55,7 @@ function Footer() {
         ))}
       </div>
 
-      <p className="pb-12">
-        © 2025 ALLCLL. All rights reserved.
-      </p>
+      <p className="pb-12">© 2025 ALLCLL. All rights reserved.</p>
     </footer>
   );
 }

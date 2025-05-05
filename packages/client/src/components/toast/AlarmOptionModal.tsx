@@ -1,5 +1,5 @@
 import CloseSvg from '@/assets/x-gray.svg?react';
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 import useAlarmSettings from '@/store/useAlarmSettings.ts';
 
 interface IAlarmOptionModal {
@@ -8,12 +8,12 @@ interface IAlarmOptionModal {
 }
 
 function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
-  const isAlarmActivated = useAlarmSettings((state) => state.isAlarmActivated);
-  const isToastActivated = useAlarmSettings((state) => state.isToastActivated);
-  const saveSettings = useAlarmSettings((state) => state.saveSettings);
+  const isAlarmActivated = useAlarmSettings(state => state.isAlarmActivated);
+  const isToastActivated = useAlarmSettings(state => state.isToastActivated);
+  const saveSettings = useAlarmSettings(state => state.saveSettings);
 
   function closeAndSave() {
-    saveSettings({isAlarmActivated, isToastActivated});
+    saveSettings({ isAlarmActivated, isToastActivated });
     close();
   }
 
@@ -40,10 +40,8 @@ function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
   }, []);
 
   return !isOpen ? null : (
-    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-contrast-50"
-         onClick={closeAndSave}>
-      <div className="bg-white p-4 rounded-lg w-96 shadow-lg"
-           onClick={e => e.stopPropagation()}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-contrast-50" onClick={closeAndSave}>
+      <div className="bg-white p-4 rounded-lg w-96 shadow-lg" onClick={e => e.stopPropagation()}>
         <div className="flex justify-between items-center mb-4">
           <h2 className="font-bold text-lg">알림 설정</h2>
           <button aria-label="close" onClick={closeAndSave} className="rounded-full p-2 hover:bg-blue-100">
@@ -53,18 +51,22 @@ function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
 
         <div>
           <label className="flex items-center space-x-2 cursor-pointer">
-            <input type="checkbox"
-                   checked={isAlarmActivated}
-                   onChange={e => saveSettings({isAlarmActivated: e.target.checked})}/>
+            <input
+              type="checkbox"
+              checked={isAlarmActivated}
+              onChange={e => saveSettings({ isAlarmActivated: e.target.checked })}
+            />
             <span className="flex items-center space-x-2">
               <span>브라우저 알림</span>
             </span>
           </label>
 
           <label className="flex items-center space-x-2 cursor-pointer">
-            <input type="checkbox"
-                   checked={isToastActivated}
-                   onChange={e => saveSettings({isToastActivated: e.target.checked})}/>
+            <input
+              type="checkbox"
+              checked={isToastActivated}
+              onChange={e => saveSettings({ isToastActivated: e.target.checked })}
+            />
             <span className="flex items-center space-x-2">
               <span>토스트 알림</span>
             </span>
@@ -72,7 +74,7 @@ function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default AlarmOptionModal;

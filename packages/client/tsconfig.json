@@ -28,7 +28,5 @@
       "@public/*": ["public/*"]
     }
   },
-  "include": [
-    "src", "vite.config.ts", "svg.d.ts", "tailwind.config.ts"
-  ]
+  "include": ["src", "vite.config.ts", "svg.d.ts", "tailwind.config.ts"]
 }

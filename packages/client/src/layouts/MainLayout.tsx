@@ -1,5 +1,5 @@
-import {Helmet} from "react-helmet";
-import {Outlet} from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import { Outlet } from 'react-router-dom';
 import Header from '@/components/Header.tsx';
 import BannerNotification from '@/components/banner/BannerNotification.tsx';
 import ToastNotification from '@/components/toast/ToastNotification.tsx';
@@ -15,11 +15,11 @@ function MainLayout() {
         <title>ALLCLL</title>
       </Helmet>
 
-      <ToastNotification/>
-      <Header/>
-      <BannerNotification/>
-      <Outlet/>
-      <Footer/>
+      <ToastNotification />
+      <Header />
+      <BannerNotification />
+      <Outlet />
+      <Footer />
     </>
   );
 }
