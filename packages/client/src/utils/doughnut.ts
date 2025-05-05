@@ -19,7 +19,7 @@ const DefaultDoughnutData: DoughnutData = {
   ],
 };
 
-export const DoughnutColors = ['#F97316', '#3B82F6', '#FACC15', '#22C55E', '#60B6D4'];
+export const DoughnutColors = ['#f97316', '#3b82f6', '#facc15', '#22c55e', '#60b6d4'];
 // ["#3B82F6", "#FACC15", "#22C55E", "#EF4444"]
 
 export function getDoughnutData(data?: WishRegister[]): DoughnutData {

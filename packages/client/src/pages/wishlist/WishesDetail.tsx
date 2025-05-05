@@ -20,7 +20,7 @@ const gradeData = {
   datasets: [
     {
       data: [50, 40, 25, 20],
-      backgroundColor: '#60A5FA',
+      backgroundColor: '#60a5fa',
     },
   ],
 };
