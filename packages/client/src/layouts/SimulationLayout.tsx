@@ -19,7 +19,6 @@ function SimulationLayout() {
         <>
           <BannerNotification />
           <div className="w-full bg-white text-sm text-gray-800 font-sans">
-
             <div className="flex">
               <AsideMenu />
 

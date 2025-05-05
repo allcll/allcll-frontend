@@ -35,7 +35,7 @@ function Simulation() {
 
             <div className="flex items-center gap-2">
               <label className="font-bold">학번</label>
-              <input className="border px-2 py-1 w-48" placeholder="2022123456"/>
+              <input className="border px-2 py-1 w-48" placeholder="2022123456" />
             </div>
           </div>
 
@@ -64,20 +64,34 @@ function Simulation() {
         <div className="font-semibold pl-2 mb-2 border-l-4 border-blue-500">수강 대상 교과목</div>
         <table className="min-w-full text-center border border-gray-300 border-t-3 border-t-black text-xs">
           <thead className="bg-gray-100">
-          <tr>
-            {[
-              '순번', '신청', '학수번호', '분반', '개설학과',
-              '교과목명', '수업계획서', '강의언어', '학점/이론/실습',
-              '이수', '학년', '시간표', '인원보기'
-            ].map((h, i) => (
-              <th key={i} className="border border-gray-300 px-2 py-1">{h}</th>
-            ))}
-          </tr>
+            <tr>
+              {[
+                '순번',
+                '신청',
+                '학수번호',
+                '분반',
+                '개설학과',
+                '교과목명',
+                '수업계획서',
+                '강의언어',
+                '학점/이론/실습',
+                '이수',
+                '학년',
+                '시간표',
+                '인원보기',
+              ].map((h, i) => (
+                <th key={i} className="border border-gray-300 px-2 py-1">
+                  {h}
+                </th>
+              ))}
+            </tr>
           </thead>
           <tbody>
-          <tr>
-            <td colSpan={13} className="text-gray-400 py-4">조회된 내역이 없습니다.</td>
-          </tr>
+            <tr>
+              <td colSpan={13} className="text-gray-400 py-4">
+                조회된 내역이 없습니다.
+              </td>
+            </tr>
           </tbody>
         </table>
       </section>
@@ -95,20 +109,34 @@ function Simulation() {
         </div>
         <table className="min-w-full text-center border border-gray-300 border-t-3 border-t-black text-xs">
           <thead className="bg-gray-100">
-          <tr>
-            {[
-              '순번', '신청', '학수번호', '분반', '개설학과',
-              '교과목명', '수업계획서', '강의언어', '학점/이론/실습',
-              '이수', '학년', '시간표', '인원보기'
-            ].map((h, i) => (
-              <th key={i} className="border border-gray-300 px-2 py-1">{h}</th>
-            ))}
-          </tr>
+            <tr>
+              {[
+                '순번',
+                '신청',
+                '학수번호',
+                '분반',
+                '개설학과',
+                '교과목명',
+                '수업계획서',
+                '강의언어',
+                '학점/이론/실습',
+                '이수',
+                '학년',
+                '시간표',
+                '인원보기',
+              ].map((h, i) => (
+                <th key={i} className="border border-gray-300 px-2 py-1">
+                  {h}
+                </th>
+              ))}
+            </tr>
           </thead>
           <tbody>
-          <tr>
-            <td colSpan={13} className="text-gray-400 py-4">조회된 내역이 없습니다.</td>
-          </tr>
+            <tr>
+              <td colSpan={13} className="text-gray-400 py-4">
+                조회된 내역이 없습니다.
+              </td>
+            </tr>
           </tbody>
         </table>
       </section>
