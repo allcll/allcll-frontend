@@ -9,7 +9,7 @@ function Navigation() {
           <li className="py-2 hover:text-blue-500 cursor-pointer">전공과목</li>
         </ul>
       </div>
-  </nav>
+    </nav>
   );
 }
 

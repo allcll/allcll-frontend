@@ -5,7 +5,7 @@ interface NoneLayoutProps {
   children?: React.ReactNode;
 }
 
-function NoneLayout({icon, title, description, children}: NoneLayoutProps) {
+function NoneLayout({ icon, title, description, children }: NoneLayoutProps) {
   return (
     <div className="flex flex-col items-center justify-center w-full bg-gray-50 rounded-md">
       <div className="flex flex-col items-center justify-center gap-2 p-12">

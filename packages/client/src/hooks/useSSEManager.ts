@@ -1,8 +1,8 @@
-import {useEffect, useState} from 'react';
-import {QueryClient, useQuery, useQueryClient} from '@tanstack/react-query';
-import {onChangePinned} from "@/hooks/useNotification.ts";
-import {PinnedSeats} from "@/utils/types.ts";
-import useSSECondition, {RELOAD_INTERVAL, RELOAD_MAX_COUNT} from '@/store/useSSECondition.ts';
+import { useEffect, useState } from 'react';
+import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
+import { onChangePinned } from '@/hooks/useNotification.ts';
+import { PinnedSeats } from '@/utils/types.ts';
+import useSSECondition, { RELOAD_INTERVAL, RELOAD_MAX_COUNT } from '@/store/useSSECondition.ts';
 
 export enum SSEType {
   NON_MAJOR = 'nonMajorSeats',
@@ -13,12 +13,12 @@ export enum SSEType {
 const useSSEManager = () => {
   const queryClient = useQueryClient();
   const [isConnected, setIsConnected] = useState(false);
-  const needCount = useSSECondition((state) => state.needCount);
-  const alwaysReload = useSSECondition((state) => state.alwaysReload);
-  const forceReloadNumber = useSSECondition((state) => state.forceReloadNumber);
-  const errorCount = useSSECondition((state) => state.errorCount);
-  const setError = useSSECondition((state) => state.setError);
-  const resetError = useSSECondition((state) => state.resetError);
+  const needCount = useSSECondition(state => state.needCount);
+  const alwaysReload = useSSECondition(state => state.alwaysReload);
+  const forceReloadNumber = useSSECondition(state => state.forceReloadNumber);
+  const errorCount = useSSECondition(state => state.errorCount);
+  const setError = useSSECondition(state => state.setError);
+  const resetError = useSSECondition(state => state.resetError);
 
   // connection
   useEffect(() => {
@@ -39,37 +39,34 @@ const useSSEManager = () => {
         setTimeout(() => {
           setIsConnected(false);
         }, RELOAD_INTERVAL);
-      })
+      });
   }, [alwaysReload, isConnected, needCount, queryClient, setError, forceReloadNumber, resetError, errorCount]);
   // 조건이 바뀌었을 때, 연결이 끊어졌을 때 다시 연결
-}
+};
 
 const fetchSSEData = (queryClient: QueryClient, resetError: () => void) => {
   return new Promise((resolve, reject) => {
     const eventSource = new EventSource('/api/connect');
 
-    eventSource.addEventListener('nonMajorSeats', (event) => {
+    eventSource.addEventListener('nonMajorSeats', event => {
       const json = JSON.parse(event.data);
-      if (json)
-        queryClient.setQueryData([SSEType.NON_MAJOR as string], json.seatResponses);
+      if (json) queryClient.setQueryData([SSEType.NON_MAJOR as string], json.seatResponses);
     });
 
-    eventSource.addEventListener('majorSeats', (event) => {
+    eventSource.addEventListener('majorSeats', event => {
       const json = JSON.parse(event.data);
-      if (json)
-        queryClient.setQueryData([SSEType.MAJOR as string], json.seatResponses);
+      if (json) queryClient.setQueryData([SSEType.MAJOR as string], json.seatResponses);
     });
 
-    eventSource.addEventListener('pinSeats', (event) => {
+    eventSource.addEventListener('pinSeats', event => {
       queryClient.setQueryData([SSEType.PINNED as string], (prev: PinnedSeats[]) => {
         const json = JSON.parse(event.data);
         if (!json) return prev;
 
         const now: PinnedSeats[] = json.seatResponses;
         for (const pinned of prev) {
-          const find = now.find((seat) => seat.subjectId === pinned.subjectId);
-          if (!find)
-            now.push(pinned);
+          const find = now.find(seat => seat.subjectId === pinned.subjectId);
+          if (!find) now.push(pinned);
         }
 
         onChangePinned(prev, now, queryClient);
@@ -80,14 +77,14 @@ const fetchSSEData = (queryClient: QueryClient, resetError: () => void) => {
 
     eventSource.onopen = () => {
       resetError();
-    }
+    };
 
-    eventSource.onmessage = (event) => {
+    eventSource.onmessage = event => {
       const data = JSON.parse(event.data);
       resolve(data);
     };
 
-    eventSource.onerror = (error) => {
+    eventSource.onerror = error => {
       eventSource.close();
       reject(error);
     };
@@ -100,9 +97,9 @@ const fetchSSEData = (queryClient: QueryClient, resetError: () => void) => {
 
 export const useSseData = (type: SSEType) => {
   const queryClient = useQueryClient();
-  const addNeedCount = useSSECondition((state) => state.addNeedCount);
-  const deleteNeedCount = useSSECondition((state) => state.deleteNeedCount);
-  
+  const addNeedCount = useSSECondition(state => state.addNeedCount);
+  const deleteNeedCount = useSSECondition(state => state.deleteNeedCount);
+
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
@@ -120,12 +117,13 @@ export const useSseData = (type: SSEType) => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [addNeedCount, deleteNeedCount]);
-  
+
   return useQuery<PinnedSeats[]>({
     queryKey: [type as string],
-    queryFn: () => new Promise((resolve) => {
-      resolve(queryClient.getQueryData([type as string]) ?? []);
-    }),
+    queryFn: () =>
+      new Promise(resolve => {
+        resolve(queryClient.getQueryData([type as string]) ?? []);
+      }),
   });
 };
 

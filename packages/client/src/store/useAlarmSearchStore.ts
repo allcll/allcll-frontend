@@ -1,4 +1,4 @@
-import {create} from "zustand";
+import { create } from 'zustand';
 
 interface IUseAlarmSearchStore {
   searchKeyword: string;
@@ -7,11 +7,11 @@ interface IUseAlarmSearchStore {
   toggleAlarmWish: () => void;
 }
 
-const useAlarmSearchStore = create<IUseAlarmSearchStore>((set) => ({
+const useAlarmSearchStore = create<IUseAlarmSearchStore>(set => ({
   searchKeyword: '',
   isAlarmWish: false,
-  setSearchKeyword: (searchKeyword) => set(() => ({searchKeyword})),
-  toggleAlarmWish: () => set(state => ({isAlarmWish: !state.isAlarmWish})),
+  setSearchKeyword: searchKeyword => set(() => ({ searchKeyword })),
+  toggleAlarmWish: () => set(state => ({ isAlarmWish: !state.isAlarmWish })),
 }));
 
 export default useAlarmSearchStore;

@@ -28,7 +28,7 @@ export interface Wishes {
 }
 
 export interface WishRegister {
-  studentBelong: string|null;
-  registerDepartment: string|null;
-  eachCount: number|null;
+  studentBelong: string | null;
+  registerDepartment: string | null;
+  eachCount: number | null;
 }

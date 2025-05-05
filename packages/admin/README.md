@@ -42,6 +42,7 @@ admin/
 ### 설치
 
 1. 레포지토리를 클론합니다:
+
    ```sh
    git clone https://github.com/allcll/frontend.git
    cd ALLCLL/packages/admin
@@ -55,6 +56,7 @@ admin/
 ### 개발 서버 실행
 
 개발 서버를 시작합니다:
+
 ```sh
 pnpm run dev
 ```
@@ -62,6 +64,7 @@ pnpm run dev
 ### 프로덕션 빌드
 
 프로덕션 빌드를 수행합니다:
+
 ```sh
 pnpm run build
 ```
@@ -69,6 +72,7 @@ pnpm run build
 ### 테스트 실행
 
 테스트를 실행합니다:
+
 ```sh
 pnpm run test
 ```

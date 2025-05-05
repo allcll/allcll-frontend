@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @config "../tailwind.config.ts";
 
 body {
@@ -6,7 +6,7 @@ body {
 }
 
 :root {
-  background-color: #F9FAFB;
+  background-color: #f9fafb;
 }
 
 .toast-enter {
@@ -16,7 +16,9 @@ body {
 .toast-enter-active {
   opacity: 1;
   transform: translateX(0);
-  transition: opacity 300ms, transform 300ms;
+  transition:
+    opacity 300ms,
+    transform 300ms;
 }
 .toast-move {
   transform: translateY(100%);
@@ -34,17 +36,17 @@ body {
 
 /*:root {*/
 /*  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;*/
-  /*line-height: 1.5;*/
-  /*font-weight: 400;*/
+/*line-height: 1.5;*/
+/*font-weight: 400;*/
 
-  /*color-scheme: light dark;*/
-  /*color: rgba(255, 255, 255, 0.87);*/
-  /*background-color: #242424;*/
+/*color-scheme: light dark;*/
+/*color: rgba(255, 255, 255, 0.87);*/
+/*background-color: #242424;*/
 
-  /*font-synthesis: none;*/
-  /*text-rendering: optimizeLegibility;*/
-  /*-webkit-font-smoothing: antialiased;*/
-  /*-moz-osx-font-smoothing: grayscale;*/
+/*font-synthesis: none;*/
+/*text-rendering: optimizeLegibility;*/
+/*-webkit-font-smoothing: antialiased;*/
+/*-moz-osx-font-smoothing: grayscale;*/
 /*}*/
 
 /*a {*/

@@ -1,12 +1,12 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from 'react';
 
 export const TableHeaderNames = [
-  { name: "id", key: "subjectId" },
-  { name: "과목코드", key: "subjectCode" },
-  { name: "과목명", key: "subjectName" },
-  { name: "분반", key: "classCode" },
-  { name: "담당교수", key: "professorName" },
-  { name: "학점", key: "credit" },
+  { name: 'id', key: 'subjectId' },
+  { name: '과목코드', key: 'subjectCode' },
+  { name: '과목명', key: 'subjectName' },
+  { name: '분반', key: 'classCode' },
+  { name: '담당교수', key: 'professorName' },
+  { name: '학점', key: 'credit' },
 ];
 
 export interface Subject {
@@ -21,12 +21,12 @@ export const useSubjectTable = () => {
   const [data, setData] = useState<Subject[]>([]);
 
   useEffect(() => {
-    fetch("/api/subjects")
-      .then((response) => response.json())
-      .then((data) => {
+    fetch('/api/subjects')
+      .then(response => response.json())
+      .then(data => {
         setData(data);
       });
   }, []);
 
   return data ?? [];
-}
+};

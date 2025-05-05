@@ -36,6 +36,7 @@ mock-server/
 ### 프로젝트에 설치
 
 1. 프로젝트에 `@allcll/mock-server` 패키지를 설치합니다.
+
    ```bash
    pnpm install @allcll/mock-server
    ```
@@ -44,21 +45,21 @@ mock-server/
    ```shell
    npx msw init /packages/<Project_Name>/public
    ```
-   
 3. `모킹 서버를 실행할 수 있도록 설정합니다. (모킹 서버가 정상적으로 시작된 후 js가 실행되어야 합니다)
+
    ```tsx
-   import { StrictMode } from 'react'
-   import { createRoot } from 'react-dom/client'
-   import { server } from "@allcll/mock-server";
-   import App from './App'
-   
+   import { StrictMode } from 'react';
+   import { createRoot } from 'react-dom/client';
+   import { server } from '@allcll/mock-server';
+   import App from './App';
+
    //mock server
    server.start().then(() => {
-      createRoot(document.getElementById('root')!).render(
-          <StrictMode>
-              <App />
-          </StrictMode>,
-      )
+     createRoot(document.getElementById('root')!).render(
+       <StrictMode>
+         <App />
+       </StrictMode>,
+     );
    });
    ```
 

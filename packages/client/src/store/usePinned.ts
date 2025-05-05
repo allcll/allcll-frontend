@@ -6,7 +6,7 @@ export function usePinned() {
   return useQuery({
     queryKey: ['pinnedSubjects'],
     queryFn: fetchPinnedSubjects,
-    select: (data) => data.subjects,
+    select: data => data.subjects,
   });
 }
 
@@ -15,36 +15,37 @@ export const useAddPinned = () => {
 
   return useMutation({
     mutationFn: addPinnedSubject,
-    onMutate: async (subjectId) => {
-      await queryClient.cancelQueries({ queryKey: ['pinnedSubjects'] })
+    onMutate: async subjectId => {
+      await queryClient.cancelQueries({ queryKey: ['pinnedSubjects'] });
       const previousPined = queryClient.getQueryData<PinnedSubjectResponse>(['pinnedSubjects'])?.subjects ?? [];
 
       if (previousPined && previousPined.length >= PinLimit) {
-        throw new Error(JSON.stringify({
-          message: `알림 과목은 최대 ${PinLimit}개까지만 가능합니다.`
-        }));
+        throw new Error(
+          JSON.stringify({
+            message: `알림 과목은 최대 ${PinLimit}개까지만 가능합니다.`,
+          }),
+        );
       }
 
       if (previousPined) {
         const newPin = { ...previousPined[0], subjectId };
 
         queryClient.setQueryData<PinnedSubjectResponse>(['pinnedSubjects'], {
-          subjects: [...previousPined, newPin]
+          subjects: [...previousPined, newPin],
         });
         previousPined.push(newPin);
       }
 
-      return { previousUsers: previousPined }
+      return { previousUsers: previousPined };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['pinnedSubjects'] });
     },
-    onError: (error) => {
+    onError: error => {
       try {
-        const e = JSON.parse(error.message)
+        const e = JSON.parse(error.message);
         alert(e.message);
-      }
-      catch {
+      } catch {
         alert('Error adding pinned subject');
       }
     },
@@ -61,18 +62,16 @@ export const useRemovePinned = () => {
       const previousData = queryClient.getQueryData<PinnedSubjectResponse>(['pinnedSubjects']);
 
       if (previousData) {
-        const updatedSubjects = previousData.subjects.filter(
-          (subject) => subject.subjectId !== subjectId
-        );
+        const updatedSubjects = previousData.subjects.filter(subject => subject.subjectId !== subjectId);
         queryClient.setQueryData<PinnedSubjectResponse>(['pinnedSubjects'], { subjects: updatedSubjects });
       }
 
       return { previousData };
     },
     onSettled: () => {
-      queryClient.invalidateQueries({queryKey: ['pinnedSubjects']});
+      queryClient.invalidateQueries({ queryKey: ['pinnedSubjects'] });
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Error removing pinned subject:', error);
     },
   });
@@ -89,7 +88,7 @@ interface PinnedSubjectResponse {
 const fetchPinnedSubjects = async (): Promise<PinnedSubjectResponse> => {
   const response = await fetch('/api/pins', {
     headers: {
-      'Cookie': `sessionId=${document.cookie.split('=')[1]}`,
+      Cookie: `sessionId=${document.cookie.split('=')[1]}`,
     },
   });
   if (!response.ok) {
@@ -102,7 +101,7 @@ const addPinnedSubject = async (subjectId: number): Promise<void> => {
   const response = await fetch(`/api/pin?subjectId=${subjectId}`, {
     method: 'POST',
     headers: {
-      'Cookie': `sessionId=${document.cookie.split('=')[1]}`,
+      Cookie: `sessionId=${document.cookie.split('=')[1]}`,
     },
   });
   if (!response.ok) {
@@ -114,7 +113,7 @@ const removePinnedSubject = async (subjectId: number): Promise<void> => {
   const response = await fetch(`/api/pin/${subjectId}`, {
     method: 'DELETE',
     headers: {
-      'Cookie': `sessionId=${document.cookie.split('=')[1]}`,
+      Cookie: `sessionId=${document.cookie.split('=')[1]}`,
     },
   });
   if (!response.ok) {

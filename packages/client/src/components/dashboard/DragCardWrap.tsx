@@ -34,7 +34,7 @@ const DragCardWrap = ({ id, index, moveCard, children }: CardWrapProps) => {
   const [{ isDragging }, drag, preview] = useDrag({
     type: ItemType,
     item: { id, index },
-    collect: (monitor) => ({
+    collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
   });
@@ -44,7 +44,9 @@ const DragCardWrap = ({ id, index, moveCard, children }: CardWrapProps) => {
   return (
     <div ref={ref} style={{ opacity: isDragging ? 0.5 : 1 }}>
       <div ref={preview}>
-        <button ref={drag} style={{ cursor: 'move' }}>Drag</button>
+        <button ref={drag} style={{ cursor: 'move' }}>
+          Drag
+        </button>
         {children}
       </div>
     </div>

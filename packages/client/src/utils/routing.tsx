@@ -1,4 +1,4 @@
-import {createBrowserRouter} from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from '@/layouts/MainLayout.tsx';
 import ServiceLayout from '@/layouts/ServiceLayout.tsx';
 import Landing from '@/pages/Landing.tsx';
@@ -15,61 +15,61 @@ import NotFound from '@/pages/NotFound.tsx';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <MainLayout/>,
-    errorElement: <ErrorPage/>,
+    element: <MainLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: '/',
-        element: <Landing/>,
+        element: <Landing />,
       },
       {
         path: 'survey',
-        element: <CustomerService/>,
+        element: <CustomerService />,
       },
       {
         path: 'about',
-        element: <ServiceInfo/>,
+        element: <ServiceInfo />,
       },
       {
         path: 'faq',
-        element: <FAQ />
-      }
+        element: <FAQ />,
+      },
     ],
   },
   {
     path: 'wishes',
-    element: <ServiceLayout/>,
-    errorElement: <ErrorPage/>,
+    element: <ServiceLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: '',
-        element: <WishTable/>,
+        element: <WishTable />,
       },
       {
         path: ':id',
-        element: <WishesDetail/>,
-      }
+        element: <WishesDetail />,
+      },
     ],
   },
   {
     path: 'live',
-    element: <ServiceLayout/>,
-    errorElement: <ErrorPage/>,
+    element: <ServiceLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: '',
-        element: <Dashboard/>,
+        element: <Dashboard />,
       },
       {
         path: 'search',
-        element: <SearchCourses/>,
-      }
+        element: <SearchCourses />,
+      },
     ],
   },
   {
     path: '*',
-    element: <NotFound/>,
-  }
+    element: <NotFound />,
+  },
 ]);
 
 export default router;

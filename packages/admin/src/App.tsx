@@ -1,14 +1,14 @@
-import {useRef, useState} from "react";
+import { useRef, useState } from 'react';
 // import * as XLSX from 'xlsx';
-import {Subject, TableHeaderNames, useSubjectTable} from "@/hooks/useSubjectTable.ts";
+import { Subject, TableHeaderNames, useSubjectTable } from '@/hooks/useSubjectTable.ts';
 import LogoutSvg from '@/assets/logout.svg?react';
 import SearchSvg from '@/assets/logout.svg?react';
 import ExcelSvg from '@/assets/excel.svg?react';
 import DownloadSvg from '@/assets/download.svg?react';
-import SideNavBar from "@/components/SideNavBar.tsx";
-import Button from "@/components/Button.tsx";
+import SideNavBar from '@/components/SideNavBar.tsx';
+import Button from '@/components/Button.tsx';
 
-const LogoutLink = "";
+const LogoutLink = '';
 
 interface ExcelData {
   [key: string]: string;
@@ -21,30 +21,30 @@ function App() {
   const [excelDataHeaders] = useState<string[]>([]);
 
   // const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
-    // const file = event.target.files?.[0];
-    // if (file) {
-    //   const reader = new FileReader();
-    //   reader.onload = (e) => {
-    //     const data = new Uint8Array(e.target?.result as ArrayBuffer);
-    //     const workbook = XLSX.read(data, { type: 'array' });
-    //     const sheetName = workbook.SheetNames[0];
-    //     const worksheet = workbook.Sheets[sheetName];
-    //     const jsonData: Subject[] = XLSX.utils.sheet_to_json(worksheet);
-    //     setExcelData(jsonData as unknown as ExcelData[]);
-    //
-    //     if (jsonData.length > 0) {
-    //       setExcelDataHeaders(Object.keys(jsonData[0]));
-    //     }
-    //
-    //     console.log(jsonData);
-    //   };
-    //   reader.readAsArrayBuffer(file);
-    // }
+  // const file = event.target.files?.[0];
+  // if (file) {
+  //   const reader = new FileReader();
+  //   reader.onload = (e) => {
+  //     const data = new Uint8Array(e.target?.result as ArrayBuffer);
+  //     const workbook = XLSX.read(data, { type: 'array' });
+  //     const sheetName = workbook.SheetNames[0];
+  //     const worksheet = workbook.Sheets[sheetName];
+  //     const jsonData: Subject[] = XLSX.utils.sheet_to_json(worksheet);
+  //     setExcelData(jsonData as unknown as ExcelData[]);
+  //
+  //     if (jsonData.length > 0) {
+  //       setExcelDataHeaders(Object.keys(jsonData[0]));
+  //     }
+  //
+  //     console.log(jsonData);
+  //   };
+  //   reader.readAsArrayBuffer(file);
+  // }
   // };
 
   const uploadButtonClick = () => {
     fileInputRef.current?.click();
-  }
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -60,8 +60,9 @@ function App() {
           <h1 className="text-xl font-bold">과목 관리</h1>
           <div className="flex space-x-4 items-center">
             <span className="text-gray-600">관리자</span>
-            <a className="flex items-center gap-2 rounded bg-gray-100 text-gray-600 px-4 py-2"
-               href={LogoutLink}><LogoutSvg/> 로그아웃</a>
+            <a className="flex items-center gap-2 rounded bg-gray-100 text-gray-600 px-4 py-2" href={LogoutLink}>
+              <LogoutSvg /> 로그아웃
+            </a>
           </div>
         </div>
 
@@ -77,8 +78,7 @@ function App() {
                 className="hidden"
                 // onChange={handleFileUpload}
               />
-              <Button className="bg-blue-500 text-white px-4 hover:bg-blue-600"
-                      onClick={uploadButtonClick}>
+              <Button className="bg-blue-500 text-white px-4 hover:bg-blue-600" onClick={uploadButtonClick}>
                 <ExcelSvg /> 엑셀 업로드
               </Button>
               <Button className="text-blue-500 px-4 py-2 rounded border border-blue-500 hover:bg-blue-50">
@@ -90,11 +90,7 @@ function App() {
           {/* Search Bar */}
           <div className="bg-white p-4 rounded-lg shadow flex items-center">
             <SearchSvg />
-            <input
-              type="text"
-              placeholder="과목명, 교수명으로 검색"
-              className="w-full outline-none"
-            />
+            <input type="text" placeholder="과목명, 교수명으로 검색" className="w-full outline-none" />
             <select className="ml-4 border px-3 py-2 rounded">
               <option>전체 학과</option>
             </select>
@@ -104,21 +100,25 @@ function App() {
           <div className="bg-white p-6 rounded-lg shadow">
             <table className="w-full text-left">
               <thead>
-              <tr className="border-b text-gray-600">
-                {/* Table Headers */}
-                {excelDataHeaders.map((name) => (
-                  <th key={name} className="py-2">{name}</th>
-                ))}
-              </tr>
-              </thead>
-              <tbody>
-              {excelData.slice(0, 10).map((subject, index) => (
-                <tr key={index} className="border-b">
-                  {excelDataHeaders.map((key) => (
-                    <td key={`${subject.subjectId}_${key}`} className="py-2">{subject[key as keyof Subject]}</td>
+                <tr className="border-b text-gray-600">
+                  {/* Table Headers */}
+                  {excelDataHeaders.map(name => (
+                    <th key={name} className="py-2">
+                      {name}
+                    </th>
                   ))}
                 </tr>
-              ))}
+              </thead>
+              <tbody>
+                {excelData.slice(0, 10).map((subject, index) => (
+                  <tr key={index} className="border-b">
+                    {excelDataHeaders.map(key => (
+                      <td key={`${subject.subjectId}_${key}`} className="py-2">
+                        {subject[key as keyof Subject]}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
               </tbody>
             </table>
 
@@ -142,21 +142,25 @@ function App() {
           <div className="bg-white p-6 rounded-lg shadow">
             <table className="w-full text-left">
               <thead>
-              <tr className="border-b text-gray-600">
-                {/* Table Headers */}
-                {TableHeaderNames.map(({name}) => (
-                  <th key={name} className="py-2">{name}</th>
-                ))}
-              </tr>
-              </thead>
-              <tbody>
-              {subjects.map((subject, index) => (
-                <tr key={index} className="border-b">
-                  {TableHeaderNames.map(({key}) => (
-                    <td key={`${subject.subjectId}_${key}`} className="py-2">{subject[key as keyof Subject]}</td>
+                <tr className="border-b text-gray-600">
+                  {/* Table Headers */}
+                  {TableHeaderNames.map(({ name }) => (
+                    <th key={name} className="py-2">
+                      {name}
+                    </th>
                   ))}
                 </tr>
-              ))}
+              </thead>
+              <tbody>
+                {subjects.map((subject, index) => (
+                  <tr key={index} className="border-b">
+                    {TableHeaderNames.map(({ key }) => (
+                      <td key={`${subject.subjectId}_${key}`} className="py-2">
+                        {subject[key as keyof Subject]}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
               </tbody>
             </table>
 
@@ -176,7 +180,6 @@ function App() {
             {/*</div>*/}
           </div>
         </div>
-
       </div>
     </div>
   );

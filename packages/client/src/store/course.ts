@@ -14,6 +14,6 @@ export const useCourses = () => {
     queryKey: ['courses'],
     queryFn: fetchCourses,
     initialPageParam: 1,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    getNextPageParam: lastPage => lastPage.nextCursor,
   });
 };
