@@ -80,3 +80,61 @@ export function initSimulationDB() {
     })),
   });
 }
+
+export interface InterestedSnapshot extends InterestedSnapshotData{
+  snapshot_id: number;
+}
+
+export interface InterestedSnapshotData {
+  user_id: string;
+  created_at: string;
+  simulated: boolean;
+}
+
+export interface InterestedSubject extends InterestedSubjectData {
+  interested_id: number;
+}
+
+export interface InterestedSubjectData {
+  snapshot_id: number;
+  subject_id: number;
+}
+
+export interface SimulationRun extends SimulationRunData {
+  simulation_run_id: number;
+}
+
+export interface SimulationRunData {
+  snapshot_id: number;
+  user_id: string;
+  success_subject_count: number;
+  subject_count: number;
+  accuracy: number;
+  score: number;
+  total_elapsed: number;
+  started_at: string;
+  ended_at: string;
+}
+
+export interface SimulationRunSelections extends SimulationRunSelectionsData{
+  run_selections_id: number;
+}
+
+export interface SimulationRunSelectionsData {
+  simulation_run_id: number;
+  interested_id: number;
+  selected_index: number;
+  status: string;
+  started_at: string;
+  ended_at: string;
+}
+
+export interface SimulationRunEvents extends SimulationRunEventsData {
+  event_id: number;
+}
+
+export interface SimulationRunEventsData {
+  simulation_section_id: number;
+  event_type: string;
+  timestamp: string;
+}
