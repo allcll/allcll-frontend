@@ -25,7 +25,7 @@ function SimulationLayout() {
               <div className="flex-auto">
                 <SimulationTabs />
 
-                <main className="flex-1 p-4 space-y-4 mx-auto max-w-screen-xl overflow-x-hidden">
+                <main className="flex-1 p-4 space-y-4 mx-auto max-w-screen-2xl overflow-x-hidden">
                   <Outlet />
                 </main>
               </div>
