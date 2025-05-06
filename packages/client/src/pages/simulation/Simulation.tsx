@@ -1,3 +1,4 @@
+import UserWishModal from '@/components/simulation/modal/UserWishModal';
 import { Helmet } from 'react-helmet';
 
 function Simulation() {
@@ -7,6 +8,7 @@ function Simulation() {
         <title>ALLCLL | 시뮬레이션</title>
       </Helmet>
 
+      <UserWishModal />
       <section className="border p-2 space-y-4 text-xs">
         <div>
           <div className="flex items-center gap-8 mb-4">
@@ -59,7 +61,9 @@ function Simulation() {
               </select>
             </div>
             <div className="flex justify-end items-end">
-              <button className="bg-gray-700 text-white px-4 py-2 rounded">검색</button>
+              <button onClick={() => {}} className="bg-gray-700 text-white px-4 py-2 rounded">
+                검색
+              </button>
             </div>
           </div>
         </div>
