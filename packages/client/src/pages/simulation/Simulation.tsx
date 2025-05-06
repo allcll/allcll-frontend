@@ -1,11 +1,25 @@
+import UserWishModal from '@/components/simulation/modal/UserWishModal';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 
 function Simulation() {
+  const [department, setDepartment] = useState('AI로봇학과');
+
+  const handleSearchClick = () => {
+    /*
+    1. 이름, 전화번호 POST 요청 보내기
+    2. 학과 상태 저장 후 모달에 전달하기
+    2번 먼저 구현 하기
+    */
+  };
+
   return (
     <>
       <Helmet>
         <title>ALLCLL | 시뮬레이션</title>
       </Helmet>
+
+      <UserWishModal department={department} />
 
       <section className="border p-2 space-y-4 text-xs">
         <div>
@@ -65,13 +79,19 @@ function Simulation() {
               </div>
               <div className="flex items-center gap-2">
                 <label className="font-bold">내학과</label>
-                <select className="border px-2 py-1 w-48">
-                  <option>컴퓨터공학전공</option>
+                <select
+                  className="border px-2 py-1 w-48"
+                  value={department}
+                  onChange={e => setDepartment(e.target.value)}
+                >
+                  <option>컴퓨터공학과</option>
+                  <option>전기전자공학부</option>
+                  <option>기계공학과</option>
                 </select>
               </div>
             </div>
             <div className="flex justify-end items-end">
-              <button onClick={() => {}} className="bg-gray-700 text-white px-4 py-2 rounded">
+              <button onClick={handleSearchClick} className="bg-gray-700 cursor-pointer text-white px-4 py-2 rounded">
                 검색
               </button>
             </div>

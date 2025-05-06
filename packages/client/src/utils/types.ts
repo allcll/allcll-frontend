@@ -32,3 +32,17 @@ export interface WishRegister {
   registerDepartment: string | null;
   eachCount: number | null;
 }
+
+export interface SimulationSubject {
+  id: number;
+  subjectCode: string;
+  classCode: string;
+  departmentName: string;
+  subjectName: string;
+  language: string;
+  subjectType: string;
+  semester_at: number;
+  lesn_time: string;
+  professorName: string;
+  lesn_room: string;
+}
