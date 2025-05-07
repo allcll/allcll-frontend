@@ -18,17 +18,21 @@
  * - 시뮬레이션 과목별 결과 Read
  * */
 
-// export type IndexDBGet<T extends Array<any>, V> = (...args: T) => IndexDBQuery<V>;
-// export type IndexDBSet<T extends Array<any>, V> = (...args: T) => IndexDBMutation<V>;
+import { useState } from 'react';
+import {
+  db,
+  SimulationRun,
+  SimulationRunEvents
+} from '@/utils/dbConfig';
 
 export interface IndexDBQuery<T> {
-  data: T|null;
+  data: T | null;
   isPending: boolean;
   isError: boolean;
 }
 
 export interface IndexDBMutation<T> {
-  mutate: (data: T) => void;
+  mutate: (data?: T) => void;
   isLoading: boolean;
   isError: boolean;
   isSuccess: boolean;
@@ -38,54 +42,92 @@ export interface IndexDBMutation<T> {
  * 시뮬레이션을 시작합니다.
  * @returns 시작 함수를 제공합니다.
  */
-export function useSimulationStart() {
+export function useSimulationStart(): IndexDBMutation<SimulationRun> {
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const startSimulation = async () => {
-    // API 요청 등을 통해 시뮬레이션 시작
+    setIsSuccess(false);
+    const recent = await db.interested_snapshot.orderBy('created_at').last();
+    if (!recent) throw new Error('No recent snapshot found');
+    const subjects = await db.interested_subject.toArray();
+    await db.simulation_run.add({
+      simulation_run_id: 0, // Todo: auto increment
+      snapshot_id: recent.snapshot_id,
+      user_id: 'Todo: user_id',
+      success_subject_count: 0,
+      subject_count: subjects.length,
+      accuracy: 0,
+      score: 0,
+      total_elapsed: 0,
+      started_at: new Date().toISOString(),
+      ended_at: ''
+    });
+    setIsSuccess(true);
   };
-  return { startSimulation };
+
+  return {
+    mutate: () => startSimulation().then(),
+    isLoading: !isSuccess,
+    isError: false,
+    isSuccess
+  };
 }
 
 /**
  * 시뮬레이션을 종료하고 결과를 업데이트합니다.
  * @returns 종료 함수를 제공합니다.
  */
-export function useSimulationEnd() {
+export function useSimulationEnd(): IndexDBMutation<SimulationRun> {
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const endSimulation = async () => {
-    // API 요청 등을 통해 시뮬레이션 종료 및 결과 저장
+    const runs = await db.simulation_run.toArray();
+    if (!runs.length) return;
+    const lastRun = runs.sort(
+      (a, b) => new Date(b.started_at).getTime() - new Date(a.started_at).getTime()
+    )[0];
+    lastRun.ended_at = new Date().toISOString();
+    await db.simulation_run.put(lastRun);
+    setIsSuccess(true);
   };
-  return { endSimulation };
+
+  return {
+    mutate: () => endSimulation().then(),
+    isLoading: !isSuccess,
+    isError: false,
+    isSuccess
+  };
 }
+
+// enum SimulationRunEventsType {
+//
+// }
 
 /**
  * 버튼 클릭 시 이벤트를 생성합니다.
  * @param eventType 이벤트 타입입니다.
  * @returns 이벤트 생성 함수를 제공합니다.
  */
-export function useButtonEvent() {
-  const createButtonEvent = async () => {
-    // ENUM 등을 통해 이벤트 생성
-  };
-  return { createButtonEvent };
-}
+export function useButtonEvent(): IndexDBMutation<SimulationRunEvents> {
+  const [isSuccess, setIsSuccess] = useState(false);
 
-/**
- * 시뮬레이션 리스트를 불러옵니다.
- * @returns 시뮬레이션 목록과 로딩 함수를 제공합니다.
- */
-export function useDashboardList() {
-  const loadSimulations = async () => {
-    // API 요청 등을 통해 시뮬레이션 리스트 읽기
+  const createButtonEvent = async (eventType: string) => {
+    await db.simulation_run_events.add({
+      event_id: 0, // Todo: auto increment
+      simulation_section_id: 0,
+      event_type: eventType,
+      timestamp: new Date().toISOString()
+    });
+    setIsSuccess(true);
   };
-  return { loadSimulations };
-}
 
-/**
- * 시뮬레이션 결과를 불러옵니다.
- * @returns 결과 및 로딩 함수를 제공합니다.
- */
-export function useDashboardResults() {
-  const loadResults = async () => {
-    // API 요청 등을 통해 시뮬레이션 결과 읽기
+  return {
+    mutate: (data?: SimulationRunEvents) => {
+      if (!data) return;
+      return createButtonEvent(data.event_type).then();
+    },
+    isLoading: !isSuccess,
+    isError: false,
+    isSuccess
   };
-  return { loadResults };
 }

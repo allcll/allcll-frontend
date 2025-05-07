@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import {useDashboardList} from '@/hooks/simulation/useSimulationDashboard.ts';
 
 const Logs = [
   { id: 1, department: '컴퓨터공학과', name: '김민수', phone: '010-1234-5678', score: 98765 },
@@ -10,6 +11,8 @@ const Logs = [
 ];
 
 function Dashboard() {
+  const { data: logs, isPending, isError } = useDashboardList();
+
   return (
     <>
       <Helmet>
@@ -24,7 +27,19 @@ function Dashboard() {
       </div>
 
       <section>
-        {Logs.map((log, index) => (
+        {isPending ? (
+          <div className="flex justify-center items-center h-64">
+            <span className="text-gray-500">로딩 중...</span>
+          </div>
+        ) : isError ? (
+          <div className="flex justify-center items-center h-64">
+            <span className="text-red-500">오류가 발생했습니다.</span>
+          </div>
+        ) : !logs?.length ? (
+          <div className="flex justify-center items-center h-64">
+            <span className="text-gray-500">로그가 없습니다.</span>
+          </div>
+        ) : (Logs.map((log, index) => (
           <Link
             key={index}
             to={`/simulation/logs/${log.id}`}
@@ -53,7 +68,7 @@ function Dashboard() {
               </div>
             </div>
           </Link>
-        ))}
+        )))}
       </section>
     </>
   );

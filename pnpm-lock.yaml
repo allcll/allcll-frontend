@@ -112,6 +112,9 @@ importers:
       chart.js:
         specifier: ^4.4.9
         version: 4.4.9
+      dexie:
+        specifier: ^4.0.11
+        version: 4.0.11
       es-hangul:
         specifier: ^2.3.3
         version: 2.3.3
@@ -130,9 +133,6 @@ importers:
       react-helmet:
         specifier: ^6.1.0
         version: 6.1.0(react@18.3.1)
-      react-indexed-db-hook:
-        specifier: ^1.0.14
-        version: 1.0.14(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-markdown:
         specifier: ^10.1.0
         version: 10.1.0(@types/react@18.3.20)(react@18.3.1)
@@ -1969,6 +1969,9 @@ packages:
   devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
 
+  dexie@4.0.11:
+    resolution: {integrity: sha512-SOKO002EqlvBYYKQSew3iymBoN2EQ4BDw/3yprjh7kAfFzjBYkaMNa/pZvcA7HSWlcKSQb9XhPe3wKyQ0x4A8A==}
+
   dnd-core@16.0.1:
     resolution: {integrity: sha512-HK294sl7tbw6F6IeuK16YSBUoorvHpY8RHO+9yFfaJyCDVb6n7PRcezrOEOa2SBCqiYpemh5Jx20ZcjKdFAVng==}
 
@@ -2989,12 +2992,6 @@ packages:
     resolution: {integrity: sha512-4uMzEY9nlDlgxr61NL3XbKRy1hEkXmKNXhjbAIOVw5vcFrsdYbH2FEwcNyWvWinl103nXgzYNlns9ca+8kFiWw==}
     peerDependencies:
       react: '>=16.3.0'
-
-  react-indexed-db-hook@1.0.14:
-    resolution: {integrity: sha512-tQ6rWofgXUCBhZp9pRpWzthzPbjqcll5uXMo07lbQTKl47VyL9nw9wfVswRxxzS5yj5Sq/VHUkNUjamWbA/M/w==}
-    peerDependencies:
-      react: ^18.2.0
-      react-dom: ^18.2.0
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -5534,6 +5531,8 @@ snapshots:
     dependencies:
       dequal: 2.0.3
 
+  dexie@4.0.11: {}
+
   dnd-core@16.0.1:
     dependencies:
       '@react-dnd/asap': 5.0.2
@@ -6752,11 +6751,6 @@ snapshots:
       react: 18.3.1
       react-fast-compare: 3.2.2
       react-side-effect: 2.1.2(react@18.3.1)
-
-  react-indexed-db-hook@1.0.14(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
 
   react-is@16.13.1: {}
 
