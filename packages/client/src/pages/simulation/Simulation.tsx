@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet';
 
 function Simulation() {
   const [department, setDepartment] = useState('AI로봇학과');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSearchClick = () => {
     /*
@@ -11,6 +12,7 @@ function Simulation() {
     2. 학과 상태 저장 후 모달에 전달하기
     2번 먼저 구현 하기
     */
+    setIsModalOpen(true);
   };
 
   return (
@@ -19,7 +21,7 @@ function Simulation() {
         <title>ALLCLL | 시뮬레이션</title>
       </Helmet>
 
-      <UserWishModal department={department} />
+      {isModalOpen && <UserWishModal setIsModalOpen={setIsModalOpen} department={department} />}
 
       <section className="border p-2 space-y-4 text-xs">
         <div>
@@ -85,8 +87,8 @@ function Simulation() {
                   onChange={e => setDepartment(e.target.value)}
                 >
                   <option>컴퓨터공학과</option>
-                  <option>전기전자공학부</option>
-                  <option>기계공학과</option>
+                  <option>패션디자인학과</option>
+                  <option>교육학과</option>
                 </select>
               </div>
             </div>

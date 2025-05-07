@@ -8,6 +8,7 @@ import { SimulationSubject } from '@/utils/types';
 
 interface UserWishModalIProp {
   department: string;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function getRandomItems<T>(arr: T[], count: number): T[] {
@@ -57,7 +58,7 @@ const GameTips = () => (
   </div>
 );
 
-function UserWishModal({ department }: UserWishModalIProp) {
+function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
   const [subjects, setSubjects] = useState<SimulationSubject[]>([]);
 
   const generateRandomSubjects = () => {
@@ -101,7 +102,12 @@ function UserWishModal({ department }: UserWishModalIProp) {
   return (
     <Modal>
       <div className="w-full max-w-3xl overflow-hidden bg-white rounded-lg border-2 border-gray-300">
-        <ModalHeader title="수강 신청 게임을 시작하시겠습니까?" onClose={() => {}} />
+        <ModalHeader
+          title="수강 신청 게임을 시작하시겠습니까?"
+          onClose={() => {
+            setIsModalOpen(false);
+          }}
+        />
 
         <div className="p-6">
           <div className="flex flex-row justify-between">
