@@ -34,15 +34,15 @@ export interface WishRegister {
 }
 
 export interface SimulationSubject {
-  id: number;
+  subjectId: number;
   subjectCode: string;
   classCode: string;
   departmentName: string;
   subjectName: string;
-  language: string;
+  language: string | null;
   subjectType: string;
   semester_at: number;
-  lesn_time: string;
-  professorName: string;
-  lesn_room: string;
+  lesn_time: string | null;
+  professorName: string | null;
+  lesn_room: string | null;
 }

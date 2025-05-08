@@ -1,9 +1,13 @@
 import UserWishModal from '@/components/simulation/modal/UserWishModal';
+import useDepartments from '@/hooks/server/useDepartments';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 
 function Simulation() {
-  const [department, setDepartment] = useState('AI로봇학과');
+  const [department, setDepartment] = useState({
+    departmentCode: '',
+    departmentName: '',
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSearchClick = () => {
@@ -13,6 +17,18 @@ function Simulation() {
     2번 먼저 구현 하기
     */
     setIsModalOpen(true);
+  };
+
+  const { data: departments } = useDepartments();
+
+  const handleChangeDepartment = (name: string) => {
+    const selected = departments?.find(department => department.departmentName === name);
+    if (selected) {
+      setDepartment({
+        departmentCode: selected.departmentCode,
+        departmentName: selected.departmentName,
+      });
+    }
   };
 
   return (
@@ -83,12 +99,14 @@ function Simulation() {
                 <label className="font-bold">내학과</label>
                 <select
                   className="border px-2 py-1 w-48"
-                  value={department}
-                  onChange={e => setDepartment(e.target.value)}
+                  value={department.departmentName}
+                  onChange={e => handleChangeDepartment(e.target.value)}
                 >
-                  <option>컴퓨터공학과</option>
-                  <option>패션디자인학과</option>
-                  <option>교육학과</option>
+                  {departments?.map(department => (
+                    <option key={department.departmentCode} value={department.departmentName}>
+                      {department.departmentName}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>

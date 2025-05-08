@@ -2,17 +2,18 @@ import Modal from '@/components/simulation/modal/Modal.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import CheckSvg from '@/assets/check.svg?react';
 import ResetSvg from '@/assets/reset.svg?react';
-import lecturesData from '@public/lectures.json';
 import { useEffect, useState } from 'react';
 import { SimulationSubject } from '@/utils/types';
+import { pickRandomsubjects } from '@/utils/subjectPicker';
+
+type Department = {
+  departmentCode: string;
+  departmentName: string;
+};
 
 interface UserWishModalIProp {
-  department: string;
+  department: Department;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function getRandomItems<T>(arr: T[], count: number): T[] {
-  return [...arr].sort(() => Math.random() - 0.5).slice(0, Math.min(count, arr.length));
 }
 
 const SubjectTable = ({ subjects }: { subjects: SimulationSubject[] }) => (
@@ -28,7 +29,7 @@ const SubjectTable = ({ subjects }: { subjects: SimulationSubject[] }) => (
     </thead>
     <tbody>
       {subjects.map(subject => (
-        <tr key={subject.id}>
+        <tr key={subject.subjectId}>
           <td className="px-4 py-2">{subject.subjectCode}</td>
           <td className="px-4 py-2">{subject.classCode}</td>
           <td className="px-4 py-2">{subject.departmentName}</td>
@@ -61,43 +62,29 @@ const GameTips = () => (
 function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
   const [subjects, setSubjects] = useState<SimulationSubject[]>([]);
 
-  const generateRandomSubjects = () => {
-    const departmentSubjects = lecturesData.subjects.filter(subject => subject.departmentName === department);
-    const humanitySubjects = lecturesData.subjects.filter(subject => subject.departmentName === '대양휴머니티칼리지');
+  const pickCollege = (department: string) => {
+    const splitDepartment = department.split(' ');
 
-    const uniqueDepartmentSubjects = Array.from(
-      new Map(departmentSubjects.map(subject => [subject.subjectCode, subject])).values(),
-    );
-    const uniqueHumanitySubjects = Array.from(
-      new Map(humanitySubjects.map(subject => [subject.subjectCode, subject])).values(),
-    );
+    const indexOfUniversity = splitDepartment.findIndex(part => part.includes('대학'));
 
-    const departmentRandomSubjects = getRandomItems(uniqueDepartmentSubjects, 3);
-    const humanityRandomSubjects = getRandomItems(uniqueHumanitySubjects, 2);
+    console.log(indexOfUniversity);
 
-    const allRandomSubjects = [...departmentRandomSubjects, ...humanityRandomSubjects];
-    const randomSubjects: SimulationSubject[] = getRandomItems(allRandomSubjects, allRandomSubjects.length).map(
-      (subject, idx) => ({
-        id: subject.subjectId || idx,
-        subjectCode: subject.subjectCode,
-        classCode: subject.classCode,
-        departmentName: subject.departmentName,
-        subjectName: subject.subjectName,
-        professorName: subject.professorName || '',
-        language: subject.language || '',
-        subjectType: subject.subjectType || '',
-        semester_at: typeof subject.semester_at === 'number' ? subject.semester_at : 0,
-        lesn_time: subject.lesn_time || '',
-        lesn_room: subject.lesn_room || '',
-      }),
-    );
+    if (indexOfUniversity !== -1) {
+      return splitDepartment.slice(1).join(' ').trim();
+    }
 
-    setSubjects(randomSubjects);
+    return department;
   };
 
   useEffect(() => {
-    generateRandomSubjects();
+    const randomSubjects = pickRandomsubjects(department);
+    setSubjects(randomSubjects);
   }, [department]);
+
+  const handleResetRandomSubjects = () => {
+    const randomSubjects = pickRandomsubjects(department);
+    setSubjects(randomSubjects);
+  };
 
   return (
     <Modal>
@@ -112,7 +99,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
         <div className="p-6">
           <div className="flex flex-row justify-between">
             <h2 className="text-left font-semibold mb-4">내 관심 과목 리스트</h2>
-            <button onClick={generateRandomSubjects} className="flex items-center gap-2 cursor-pointer">
+            <button onClick={handleResetRandomSubjects} className="flex items-center gap-2 cursor-pointer">
               랜덤 관심 과목 재생성
               <ResetSvg />
             </button>
