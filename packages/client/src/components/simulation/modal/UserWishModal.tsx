@@ -5,6 +5,8 @@ import ResetSvg from '@/assets/reset.svg?react';
 import { useEffect, useState } from 'react';
 import { SimulationSubject } from '@/utils/types';
 import { pickRandomsubjects } from '@/utils/subjectPicker';
+import useSimulation from '@/store/useSimulation';
+import { useSimulationModal } from '@/store/useSimulationModal';
 
 type Department = {
   departmentCode: string;
@@ -60,21 +62,9 @@ const GameTips = () => (
 );
 
 function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
-  const [subjects, setSubjects] = useState<SimulationSubject[]>([]);
-
-  const pickCollege = (department: string) => {
-    const splitDepartment = department.split(' ');
-
-    const indexOfUniversity = splitDepartment.findIndex(part => part.includes('대학'));
-
-    console.log(indexOfUniversity);
-
-    if (indexOfUniversity !== -1) {
-      return splitDepartment.slice(1).join(' ').trim();
-    }
-
-    return department;
-  };
+  const { subjects, setSubjects } = useSimulation();
+  const [isCheckedSubject, setIsCheckedSubject] = useState(false);
+  const { closeModal } = useSimulationModal();
 
   useEffect(() => {
     const randomSubjects = pickRandomsubjects(department);
@@ -84,6 +74,10 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
   const handleResetRandomSubjects = () => {
     const randomSubjects = pickRandomsubjects(department);
     setSubjects(randomSubjects);
+  };
+
+  const handleStartGame = () => {
+    closeModal('wish');
   };
 
   return (
@@ -99,7 +93,10 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
         <div className="p-6">
           <div className="flex flex-row justify-between">
             <h2 className="text-left font-semibold mb-4">내 관심 과목 리스트</h2>
-            <button onClick={handleResetRandomSubjects} className="flex items-center gap-2 cursor-pointer">
+            <button
+              onClick={handleResetRandomSubjects}
+              className="flex font-bold text-blue-600 items-center gap-2 cursor-pointer"
+            >
               랜덤 관심 과목 재생성
               <ResetSvg />
             </button>
@@ -108,7 +105,13 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
           <SubjectTable subjects={subjects} />
 
           <div className="mt-4 flex items-center">
-            <input type="checkbox" id="confirm" className="mr-2" />
+            <input
+              type="checkbox"
+              id="confirm"
+              className="mr-2"
+              checked={isCheckedSubject}
+              onChange={() => setIsCheckedSubject(true)}
+            />
             <label htmlFor="confirm" className="text-sm text-gray-700">
               관심과목을 확인하였습니다.
             </label>
@@ -118,8 +121,9 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
 
           <div className="pt-6 text-right">
             <button
-              onClick={() => {}}
-              className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600"
+              onClick={handleStartGame}
+              className={`px-6 py-2 bg-blue-500 cursor-pointer text-white font-semibold rounded-md hover:bg-blue-600 ${isCheckedSubject ? '' : 'opacity-50 cursor-not-allowed'}`} // 체크되지 않으면 비활성화
+              disabled={!isCheckedSubject}
             >
               시작하기
             </button>

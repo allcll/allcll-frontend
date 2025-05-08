@@ -1,5 +1,8 @@
 import UserWishModal from '@/components/simulation/modal/UserWishModal';
+import WaitingModal from '@/components/simulation/modal/WaitingModal';
+import SubjectsTable from '@/components/simulation/SubjectsTable';
 import useDepartments from '@/hooks/server/useDepartments';
+import { useSimulationModal } from '@/store/useSimulationModal';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -8,7 +11,7 @@ function Simulation() {
     departmentCode: '',
     departmentName: '',
   });
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { type, props, openModal, closeModal } = useSimulationModal();
 
   const handleSearchClick = () => {
     /*
@@ -16,7 +19,7 @@ function Simulation() {
     2. 학과 상태 저장 후 모달에 전달하기
     2번 먼저 구현 하기
     */
-    setIsModalOpen(true);
+    openModal('wish', { department });
   };
 
   const { data: departments } = useDepartments();
@@ -37,7 +40,8 @@ function Simulation() {
         <title>ALLCLL | 시뮬레이션</title>
       </Helmet>
 
-      {isModalOpen && <UserWishModal setIsModalOpen={setIsModalOpen} department={department} />}
+      {type === 'waiting' && <WaitingModal />}
+      {type === 'wish' && <UserWishModal department={props.department} setIsModalOpen={() => closeModal()} />}
 
       <section className="border p-2 space-y-4 text-xs">
         <div>
@@ -146,13 +150,8 @@ function Simulation() {
               ))}
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td colSpan={13} className="text-gray-400 py-4">
-                조회된 내역이 없습니다.
-              </td>
-            </tr>
-          </tbody>
+
+          <SubjectsTable />
         </table>
       </section>
 
@@ -191,13 +190,7 @@ function Simulation() {
               ))}
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td colSpan={13} className="text-gray-400 py-4">
-                조회된 내역이 없습니다.
-              </td>
-            </tr>
-          </tbody>
+          <tbody></tbody>
         </table>
       </section>
     </>
