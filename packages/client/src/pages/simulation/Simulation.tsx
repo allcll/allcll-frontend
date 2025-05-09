@@ -1,3 +1,5 @@
+import CaptchaInput from '@/components/simulation/modal/CaptchaInput';
+import ProcessingModal from '@/components/simulation/modal/Processing';
 import UserWishModal from '@/components/simulation/modal/UserWishModal';
 import WaitingModal from '@/components/simulation/modal/WaitingModal';
 import SubjectsTable from '@/components/simulation/SubjectsTable';
@@ -19,7 +21,7 @@ function Simulation() {
     2. 학과 상태 저장 후 모달에 전달하기
     2번 먼저 구현 하기
     */
-    openModal('wish', { department });
+    openModal('captcha', { department });
   };
 
   const { data: departments } = useDepartments();
@@ -41,6 +43,8 @@ function Simulation() {
       </Helmet>
 
       {type === 'waiting' && <WaitingModal />}
+      {type === 'processing' && <ProcessingModal />}
+      {type === 'captcha' && <CaptchaInput />}
       {type === 'wish' && <UserWishModal department={props.department} setIsModalOpen={() => closeModal()} />}
 
       <section className="border p-2 space-y-4 text-xs">

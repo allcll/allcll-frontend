@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import Modal from '@/components/simulation/modal/Modal';
 import ModalHeader from '@/components/simulation/modal/ModalHeader';
 import { drawCaptcha } from '@/utils/captcha';
+import { useSimulationModal } from '@/store/useSimulationModal';
 
 function generateNumericText() {
   return Math.floor(1000 + Math.random() * 9000).toString();
@@ -11,6 +12,8 @@ function CaptchaInput() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const codeRef = useRef<string>('');
+
+  const { closeModal } = useSimulationModal();
 
   function handleRefreshCaptcha() {
     const randomCaptchaCode = generateNumericText();
@@ -25,12 +28,9 @@ function CaptchaInput() {
   }, []);
 
   function handleConfirm() {
-    const inputValue = inputRef.current?.value;
-    if (inputValue === codeRef.current) {
-      alert('일치합니다!');
-    } else {
-      alert('코드가 일치하지 않습니다.');
-    }
+    /*const inputValue = inputRef.current?.value;
+    캡챠 TODO -> 캡
+  */
   }
 
   return (
@@ -68,12 +68,17 @@ function CaptchaInput() {
         </p>
 
         <div className="flex justify-end border-t px-6 py-4 gap-3 bg-gray-100 text-xs">
-          <button className="px-4 py-2 bg-white hover:bg-blue-50 rounded-xs border cursor-pointer">취소</button>
           <button
             onClick={handleConfirm}
-            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xs cursor-pointer"
+            className="px-4 py-2 bg-white hover:bg-blue-50 rounded-xs border cursor-pointer"
           >
-            확인
+            코드입력
+          </button>
+          <button
+            onClick={() => closeModal('captcha')}
+            className="px-4 py-2 bg-white hover:bg-blue-50 rounded-xs border cursor-pointer"
+          >
+            닫기
           </button>
         </div>
       </div>

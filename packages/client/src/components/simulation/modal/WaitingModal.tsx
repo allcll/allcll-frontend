@@ -38,10 +38,10 @@ function WaitingModal() {
   const [timer, setTimer] = useState(0);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const { closeModal } = useSimulationModal();
+  const { closeModal, openModal } = useSimulationModal();
 
   const unit = 0.2;
-  const clickTime = 4;
+  const clickTime = 1;
   const peoplePerUnit = 98;
   const processedPerUnit = 79;
 
@@ -94,6 +94,7 @@ function WaitingModal() {
         if (updated === 0 && intervalRef.current) {
           clearInterval(intervalRef.current);
           closeModal('waiting');
+          openModal('processing');
         }
         return updated;
       });
