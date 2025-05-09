@@ -5,6 +5,7 @@ import WaitingModal from '@/components/simulation/modal/WaitingModal';
 import SubjectsTable from '@/components/simulation/SubjectsTable';
 import useDepartments from '@/hooks/server/useDepartments';
 import { useSimulationModal } from '@/store/useSimulationModal';
+import { checkExistDepartment, makeValidateDepartment } from '@/utils/subjectPicker';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -21,10 +22,13 @@ function Simulation() {
     2. 학과 상태 저장 후 모달에 전달하기
     2번 먼저 구현 하기
     */
+
     openModal('captcha', { department });
   };
 
   const { data: departments } = useDepartments();
+  const notExistDepartments = checkExistDepartment(departments);
+  const newDepartments = makeValidateDepartment(departments, notExistDepartments);
 
   const handleChangeDepartment = (name: string) => {
     const selected = departments?.find(department => department.departmentName === name);
@@ -110,7 +114,7 @@ function Simulation() {
                   value={department.departmentName}
                   onChange={e => handleChangeDepartment(e.target.value)}
                 >
-                  {departments?.map(department => (
+                  {newDepartments?.map(department => (
                     <option key={department.departmentCode} value={department.departmentName}>
                       {department.departmentName}
                     </option>

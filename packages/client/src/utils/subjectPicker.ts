@@ -43,3 +43,27 @@ export const pickRandomsubjects = (department: Department) => {
 
   return allRandomSubjects;
 };
+
+export const checkExistDepartment = (departments: Department[] | undefined) => {
+  const arr: Department[] = [];
+  departments?.forEach(department => {
+    const randomSubject = pickRandomsubjects(department);
+
+    if (randomSubject.length === 2) {
+      arr.push(department);
+    }
+  });
+
+  return arr;
+};
+
+export const makeValidateDepartment = (
+  departments: Department[] | undefined,
+  notExistDepartment: Department[] | undefined,
+) => {
+  if (!departments) return [];
+  if (!notExistDepartment || notExistDepartment.length === 0) return departments;
+
+  const notExistIds = new Set(notExistDepartment.map(dep => dep.departmentCode));
+  return departments.filter(dep => !notExistIds.has(dep.departmentCode));
+};
