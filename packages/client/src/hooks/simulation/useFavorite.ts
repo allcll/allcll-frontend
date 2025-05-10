@@ -3,6 +3,7 @@ import { db, InterestedSnapshot, InterestedSubject } from '@/utils/dbConfig';
 
 /**
  * 최근 관심과목 스냅샷을 불러옵니다.
+ * @deprecated
  * @Todo: error 처리
  * @returns 스냅샷 데이터와 로딩 함수를 제공합니다.
  */
@@ -12,8 +13,10 @@ export function useRecentSnapshot() {
   const isError = snapshot === null && !isPending;
 
   useEffect(() => {
-    db.interested_snapshot.orderBy('created_at').last()
-      .then((recent) => setSnapshot(recent ?? null));
+    db.interested_snapshot
+      .orderBy('created_at')
+      .last()
+      .then(recent => setSnapshot(recent ?? null));
   }, []);
 
   return { data: snapshot, isPending, isError };
@@ -21,6 +24,7 @@ export function useRecentSnapshot() {
 
 /**
  * 새로운 스냅샷을 생성합니다.
+ * @deprecated
  * 시뮬레이션 되지 않은 스냅샷이 있다면, 그 스냅샷을 덮어씁니다.
  * @returns 스냅샷 생성 함수를 제공합니다.
  */
@@ -36,19 +40,17 @@ export function useSnapshotCreate(subjectIds: number[]) {
       recent && !recent.simulated
         ? recent.snapshot_id
         : await db.interested_snapshot.add({
-            snapshot_id: 0, // Todo: auto increment
             user_id: 'Todo: user_id',
-            created_at: new Date().toISOString(),
+            created_at: Date.now(),
             simulated: false,
           });
     await Promise.all(
-      subjectIds.map((subjectId) =>
+      subjectIds.map(subjectId =>
         db.interested_subject.add({
-          interested_id: subjectId, // Todo: auto increment
           snapshot_id: snapshotId,
           subject_id: subjectId,
-        })
-      )
+        }),
+      ),
     );
     setIsSuccess(true);
   };
@@ -63,6 +65,7 @@ export function useSnapshotCreate(subjectIds: number[]) {
 
 /**
  * 관심과목 리스트를 불러옵니다.
+ * @deprecated
  * @returns 관심과목 목록과 로딩 함수를 제공합니다.
  */
 export function useInterestedSubjectList() {
@@ -74,10 +77,7 @@ export function useInterestedSubjectList() {
     (async () => {
       const recent = await db.interested_snapshot.orderBy('created_at').last();
       if (!recent) return setSubjects([]);
-      const data = await db.interested_subject
-        .where('snapshot_id')
-        .equals(recent.snapshot_id)
-        .toArray();
+      const data = await db.interested_subject.where('snapshot_id').equals(recent.snapshot_id).toArray();
       setSubjects(data);
     })();
   }, []);
@@ -85,10 +85,9 @@ export function useInterestedSubjectList() {
   return { data: subjects, isPending, isError };
 }
 
-
-
 /**
  * 관심과목을 생성합니다.
+ * @deprecated
  * @param subject 생성할 과목명입니다.
  * @returns 생성 함수를 제공합니다.
  */
@@ -101,6 +100,7 @@ export function useInterestedSubjectList() {
 
 /**
  * 관심과목을 삭제합니다.
+ * @deprecated
  * @param subjectId 삭제할 과목 ID입니다.
  * @returns 삭제 함수를 제공합니다.
  */

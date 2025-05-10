@@ -19,18 +19,17 @@
  * */
 
 import { useState } from 'react';
-import {
-  db,
-  SimulationRun,
-  SimulationRunEvents
-} from '@/utils/dbConfig';
+import { db, SimulationRun, SimulationRunEvents } from '@/utils/dbConfig';
+import { BUTTON_EVENT } from '@/utils/simulation/simulation.ts';
 
+/** @deprecated*/
 export interface IndexDBQuery<T> {
   data: T | null;
   isPending: boolean;
   isError: boolean;
 }
 
+/** @deprecated*/
 export interface IndexDBMutation<T> {
   mutate: (data?: T) => void;
   isLoading: boolean;
@@ -40,6 +39,7 @@ export interface IndexDBMutation<T> {
 
 /**
  * 시뮬레이션을 시작합니다.
+ * @deprecated
  * @returns 시작 함수를 제공합니다.
  */
 export function useSimulationStart(): IndexDBMutation<SimulationRun> {
@@ -49,9 +49,9 @@ export function useSimulationStart(): IndexDBMutation<SimulationRun> {
     setIsSuccess(false);
     const recent = await db.interested_snapshot.orderBy('created_at').last();
     if (!recent) throw new Error('No recent snapshot found');
+
     const subjects = await db.interested_subject.toArray();
     await db.simulation_run.add({
-      simulation_run_id: 0, // Todo: auto increment
       snapshot_id: recent.snapshot_id,
       user_id: 'Todo: user_id',
       success_subject_count: 0,
@@ -59,8 +59,9 @@ export function useSimulationStart(): IndexDBMutation<SimulationRun> {
       accuracy: 0,
       score: 0,
       total_elapsed: 0,
-      started_at: new Date().toISOString(),
-      ended_at: ''
+      search_event_at: 0,
+      started_at: Date.now(),
+      ended_at: -1,
     });
     setIsSuccess(true);
   };
@@ -69,12 +70,13 @@ export function useSimulationStart(): IndexDBMutation<SimulationRun> {
     mutate: () => startSimulation().then(),
     isLoading: !isSuccess,
     isError: false,
-    isSuccess
+    isSuccess,
   };
 }
 
 /**
  * 시뮬레이션을 종료하고 결과를 업데이트합니다.
+ * @deprecated
  * @returns 종료 함수를 제공합니다.
  */
 export function useSimulationEnd(): IndexDBMutation<SimulationRun> {
@@ -83,10 +85,8 @@ export function useSimulationEnd(): IndexDBMutation<SimulationRun> {
   const endSimulation = async () => {
     const runs = await db.simulation_run.toArray();
     if (!runs.length) return;
-    const lastRun = runs.sort(
-      (a, b) => new Date(b.started_at).getTime() - new Date(a.started_at).getTime()
-    )[0];
-    lastRun.ended_at = new Date().toISOString();
+    const lastRun = runs.sort((a, b) => new Date(b.started_at).getTime() - new Date(a.started_at).getTime())[0];
+    lastRun.ended_at = Date.now();
     await db.simulation_run.put(lastRun);
     setIsSuccess(true);
   };
@@ -95,7 +95,7 @@ export function useSimulationEnd(): IndexDBMutation<SimulationRun> {
     mutate: () => endSimulation().then(),
     isLoading: !isSuccess,
     isError: false,
-    isSuccess
+    isSuccess,
   };
 }
 
@@ -105,18 +105,17 @@ export function useSimulationEnd(): IndexDBMutation<SimulationRun> {
 
 /**
  * 버튼 클릭 시 이벤트를 생성합니다.
- * @param eventType 이벤트 타입입니다.
+ * @deprecated
  * @returns 이벤트 생성 함수를 제공합니다.
  */
 export function useButtonEvent(): IndexDBMutation<SimulationRunEvents> {
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const createButtonEvent = async (eventType: string) => {
+  const createButtonEvent = async (eventType: BUTTON_EVENT) => {
     await db.simulation_run_events.add({
-      event_id: 0, // Todo: auto increment
       simulation_section_id: 0,
       event_type: eventType,
-      timestamp: new Date().toISOString()
+      timestamp: Date.now(),
     });
     setIsSuccess(true);
   };
@@ -128,6 +127,6 @@ export function useButtonEvent(): IndexDBMutation<SimulationRunEvents> {
     },
     isLoading: !isSuccess,
     isError: false,
-    isSuccess
+    isSuccess,
   };
 }

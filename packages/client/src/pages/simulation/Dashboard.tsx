@@ -1,17 +1,13 @@
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import {useDashboardList} from '@/hooks/simulation/useSimulationDashboard.ts';
-
-const Logs = [
-  { id: 1, department: '컴퓨터공학과', name: '김민수', phone: '010-1234-5678', score: 98765 },
-  { id: 2, department: '컴퓨터공학과', name: '이영희', phone: '010-2345-6789', score: 12345 },
-  { id: 3, department: '컴퓨터공학과', name: '박철수', phone: '010-3456-7890', score: 54321 },
-  { id: 4, department: '컴퓨터공학과', name: '최지은', phone: '010-4567-8901', score: 67890 },
-  { id: 5, department: '컴퓨터공학과', name: '정하늘', phone: '010-5678-9012', score: 23456 },
-];
+import { useLiveQuery } from 'dexie-react-hooks';
+import { getSimulationList } from '@/utils/simulation/result.ts';
+import { SimulationRun } from '@/utils/dbConfig.ts';
 
 function Dashboard() {
-  const { data: logs, isPending, isError } = useDashboardList();
+  const logs = useLiveQuery<{ snapshots: SimulationRun[] }>(getSimulationList);
+  const isPending = logs === undefined;
+  const isError = logs === null;
 
   return (
     <>
@@ -35,40 +31,42 @@ function Dashboard() {
           <div className="flex justify-center items-center h-64">
             <span className="text-red-500">오류가 발생했습니다.</span>
           </div>
-        ) : !logs?.length ? (
+        ) : !logs?.snapshots.length ? (
           <div className="flex justify-center items-center h-64">
             <span className="text-gray-500">로그가 없습니다.</span>
           </div>
-        ) : (Logs.map((log, index) => (
-          <Link
-            key={index}
-            to={`/simulation/logs/${log.id}`}
-            className="block bg-white p-6 rounded-2xl shadow-sm mb-2 hover:bg-gray-100"
-          >
-            <div className="flex items-center gap-8">
-              <div className="flex items-center gap-2">
-                <label className="font-bold">{log.id}</label>
-              </div>
+        ) : (
+          logs?.snapshots.map((log, index) => (
+            <Link
+              key={index}
+              to={`/simulation/logs/${log.simulation_run_id}`}
+              className="block bg-white p-6 rounded-2xl shadow-sm mb-2 hover:bg-gray-100"
+            >
+              <div className="flex items-center gap-8">
+                <div className="flex items-center gap-2">
+                  <label className="font-bold">{log.simulation_run_id}</label>
+                </div>
 
-              <div className="flex items-center gap-2">
-                <label className="font-bold">학과</label>
-                <span>{log.department}</span>
+                <div className="flex items-center gap-2">
+                  <label className="font-bold">학과</label>
+                  <span>Todo: department</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <label className="font-bold">이름</label>
+                  <span>{log.user_id}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <label className="font-bold">정확도</label>
+                  <span>{log.accuracy}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <label className="font-bold">점수</label>
+                  <span>{log.score}</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <label className="font-bold">이름</label>
-                <span>{log.name}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <label className="font-bold">전화번호</label>
-                <span>{log.phone}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <label className="font-bold">점수</label>
-                <span>{log.score}</span>
-              </div>
-            </div>
-          </Link>
-        )))}
+            </Link>
+          ))
+        )}
       </section>
     </>
   );
