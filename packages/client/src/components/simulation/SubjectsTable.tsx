@@ -8,7 +8,6 @@ const SubjectsTable = () => {
   const { currentSubjectId, setCurrentSubjectId, setSubjectStatus } = useSimulationSubjectStore();
   const { subjectsStatus, setSubjectsStatus } = useSimulationProcessStore();
 
-  const isDuplicate = true;
   const handleClickSubject = (subjectId: number) => {
     /**
      * TODO: 이미 신청 한 과목인지 확인
@@ -23,16 +22,16 @@ const SubjectsTable = () => {
      * 이미 수강 신청한 과목일 경우 DOUBLED로 상태 변경
      * 처음 수강 신청한 과목 : 캡챠 열기
      */
+
     if (doubledSubject?.subjectStatus === 'SUCCESS' || doubledSubject?.subjectStatus === 'DOUBLED') {
+      console.log(subjectsStatus);
       setSubjectStatus(currentSubjectId, 'DOUBLED');
       setSubjectsStatus(currentSubjectId, 'DOUBLED');
       openModal('simulation');
+    } else if (doubledSubject?.subjectStatus === 'PROGRESS' || doubledSubject?.subjectStatus === 'CAPTCHA_FAILED') {
+      openModal('captcha');
     } else {
       openModal('captcha');
-    }
-
-    if (isDuplicate) {
-      setSubjectStatus(currentSubjectId, 'DOUBLED');
     }
   };
 

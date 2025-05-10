@@ -21,8 +21,6 @@ function CaptchaInput() {
 
   const currentSubjectStatus = subjectsStatus.find(subject => subject.subjectId === currentSubjectId)?.subjectStatus;
 
-  const [isSame, setIsSame] = useState(false);
-
   function handleRefreshCaptcha() {
     const randomCaptchaCode = generateNumericText();
     codeRef.current = randomCaptchaCode;
@@ -39,13 +37,8 @@ function CaptchaInput() {
     const inputValue = inputRef.current?.value;
 
     if (inputValue === codeRef.current) {
-      setIsSame(true);
+      setSubjectsStatus(currentSubjectId, 'PROGRESS');
 
-      if (currentSubjectStatus === 'SUCCESS') {
-        setSubjectsStatus(currentSubjectId, 'DOUBLED');
-      } else {
-        setSubjectsStatus(currentSubjectId, 'PROGRESS');
-      }
       closeModal('captcha');
       openModal('simulation');
     } else {
@@ -54,7 +47,6 @@ function CaptchaInput() {
       setSubjectsStatus(currentSubjectId, 'PROGRESS', true);
       setSubjectStatus(currentSubjectId, 'CAPTCHA_FAILED');
 
-      console.log(subjectsStatus);
       closeModal('captcha');
       openModal('simulation');
     }

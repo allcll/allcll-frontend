@@ -16,6 +16,13 @@ function Simulation() {
   const { simulation, setSimulation } = useSimulationProcessStore();
   const { subjectStatusMap } = useSimulationSubjectStore();
 
+  useEffect(() => {
+    /**
+     * TODO: 진행 중인 시뮬레이션 있는지 확인하기
+     * 있다면 불러오기
+     */
+  }, []);
+
   const handleSearchClick = () => {
     /*
     TODO:
@@ -23,7 +30,6 @@ function Simulation() {
     2. 시뮬레이션 시작 Promise 
     */
     openModal('waiting');
-
     setSimulation({ simulationId: '1', simulationStatus: 'process' });
   };
 

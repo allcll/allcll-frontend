@@ -5,7 +5,6 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import { SubjectStatusType } from '@/utils/types';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
-import { useEffect, useState } from 'react';
 
 const SIMULATION_MODAL_CONTENTS = [
   {
@@ -64,6 +63,13 @@ function SimulationModal({ status }: ISimulationModalProps) {
         closeModal('simulation');
         openModal('simulation');
       }
+    } else if (currentSubjectStatus?.subjectStatus === 'CAPTCHA_FAILED') {
+      setSubjectStatus(currentSubjectId, 'CANCELED');
+      setSubjectsStatus(currentSubjectId, 'CANCELED');
+      console.log(subjectsStatus);
+      closeModal('simulation');
+    } else {
+      closeModal('simulation');
     }
   };
 
@@ -92,7 +98,7 @@ function SimulationModal({ status }: ISimulationModalProps) {
         </div>
 
         <div className="flex justify-end  px-6 py-4 gap-3 bg-gray-100 text-xs">
-          {modalData.status !== 'fail' && (
+          {modalData.status === 'PROGRESS' && (
             <button
               onClick={() => {
                 closeModal('simulation');
@@ -115,7 +121,3 @@ function SimulationModal({ status }: ISimulationModalProps) {
 }
 
 export default SimulationModal;
-
-function delay(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
