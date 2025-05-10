@@ -1,13 +1,94 @@
+import CaptchaInput from '@/components/simulation/modal/CaptchaInput';
+import SimulationModal from '@/components/simulation/modal/SimulationModal';
+import UserWishModal from '@/components/simulation/modal/UserWishModal';
+import WaitingModal from '@/components/simulation/modal/WaitingModal';
+import SubjectsTable from '@/components/simulation/SubjectsTable';
+import useDepartments from '@/hooks/server/useDepartments';
+import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
+import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
+import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
+import { checkExistDepartment, makeValidateDepartment } from '@/utils/subjectPicker';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 
 function Simulation() {
+  const { type, openModal, closeModal } = useSimulationModalStore();
+  const { simulation, setSimulation } = useSimulationProcessStore();
+  const { subjectStatusMap } = useSimulationSubjectStore();
+
+  useEffect(() => {
+    /**
+     * TODO: 진행 중인 시뮬레이션 있는지 확인하기
+     * 있다면 불러오기
+     */
+  }, []);
+
+  const handleSearchClick = () => {
+    /*
+    TODO:
+    1. 이름, 전화번호 POST 요청 보내기
+    2. 시뮬레이션 시작 Promise 
+    */
+    openModal('waiting');
+    setSimulation({ simulationId: '1', simulationStatus: 'process' });
+  };
+
+  const { data: departments } = useDepartments();
+  const notExistDepartments = checkExistDepartment(departments);
+  const newDepartments = makeValidateDepartment(departments, notExistDepartments);
+
+  const handleChangeDepartment = (name: string) => {
+    if (name === 'none') {
+      setSimulation({
+        department: {
+          departmentCode: '',
+          departmentName: '전체 학과',
+        },
+      });
+      return;
+    }
+
+    const selected = departments?.find(department => department.departmentName === name);
+    if (selected) {
+      setSimulation({
+        department: {
+          departmentCode: selected.departmentCode,
+          departmentName: selected.departmentName,
+        },
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (simulation.department.departmentName !== '전체 학과') {
+      openModal('wish', { department: simulation.department });
+    }
+  }, [simulation.department]);
+
+  const renderModal = () => {
+    switch (type) {
+      case 'waiting':
+        return <WaitingModal />;
+      case 'captcha':
+        return <CaptchaInput />;
+      case 'wish':
+        return <UserWishModal department={simulation.department} setIsModalOpen={() => closeModal()} />;
+      case 'simulation':
+        return <SimulationModal status={subjectStatusMap.status} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
       <Helmet>
         <title>ALLCLL | 시뮬레이션</title>
       </Helmet>
 
-      <section className="border p-2 space-y-4 text-xs">
+      {renderModal()}
+
+      <section className="border p-2  text-xs">
         <div>
           <div className="flex items-center gap-8 mb-4">
             <div className="flex items-center gap-2">
@@ -43,23 +124,46 @@ function Simulation() {
               <label className="font-bold">학번</label>
               <input className="border px-2 py-1 w-48" placeholder="2022123456" />
             </div>
+
+            <div className="flex items-center gap-2">
+              <label className="font-bold">이름</label>
+              <input className="border px-2 py-1 w-48" placeholder="홍길동" />
+            </div>
+
+            <div className="flex items-center gap-2">
+              <label className="font-bold">전화번호</label>
+              <input className="border px-2 py-1 w-48" placeholder="010-1234-5678" />
+            </div>
           </div>
 
-          <div className="flex items-center gap-8">
-            <div className="flex items-center gap-2">
-              <label className="font-bold">검색구분</label>
-              <select className="border px-2 py-1 w-48 disabled:bg-gray-100" disabled>
-                <option>관심과목목록</option>
-              </select>
-            </div>
-            <div className="flex items-center gap-2">
-              <label className="font-bold">내학과</label>
-              <select className="border px-2 py-1 w-48">
-                <option>컴퓨터공학전공</option>
-              </select>
+          <div className="flex items-center gap-8 justify-between">
+            <div className="flex flex-row gap-2">
+              <div className="flex items-center gap-2">
+                <label className="font-bold">검색구분</label>
+                <select className="border px-2 py-1 w-48 disabled:bg-gray-100" disabled>
+                  <option>관심과목목록</option>
+                </select>
+              </div>
+              <div className="flex items-center gap-2">
+                <label className="font-bold">내학과</label>
+                <select
+                  className="border px-2 py-1 w-48"
+                  value={simulation.department.departmentName}
+                  onChange={e => handleChangeDepartment(e.target.value)}
+                >
+                  <option value="none">전체 학과</option>
+                  {newDepartments?.map(department => (
+                    <option key={department.departmentCode} value={department.departmentName}>
+                      {department.departmentName}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
             <div className="flex justify-end items-end">
-              <button className="bg-gray-700 text-white px-4 py-2 rounded">검색</button>
+              <button onClick={handleSearchClick} className="bg-gray-700 cursor-pointer text-white px-4 py-2 rounded">
+                검색
+              </button>
             </div>
           </div>
         </div>
@@ -92,13 +196,8 @@ function Simulation() {
               ))}
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td colSpan={13} className="text-gray-400 py-4">
-                조회된 내역이 없습니다.
-              </td>
-            </tr>
-          </tbody>
+
+          {simulation.simulationStatus === 'process' && <SubjectsTable />}
         </table>
       </section>
 
@@ -137,13 +236,7 @@ function Simulation() {
               ))}
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td colSpan={13} className="text-gray-400 py-4">
-                조회된 내역이 없습니다.
-              </td>
-            </tr>
-          </tbody>
+          <tbody></tbody>
         </table>
       </section>
     </>
