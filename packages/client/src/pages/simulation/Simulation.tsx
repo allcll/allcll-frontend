@@ -1,29 +1,30 @@
 import CaptchaInput from '@/components/simulation/modal/CaptchaInput';
-import ProcessingModal from '@/components/simulation/modal/Processing';
+import SimulationModal from '@/components/simulation/modal/SimulationModal';
 import UserWishModal from '@/components/simulation/modal/UserWishModal';
 import WaitingModal from '@/components/simulation/modal/WaitingModal';
 import SubjectsTable from '@/components/simulation/SubjectsTable';
 import useDepartments from '@/hooks/server/useDepartments';
-import { useSimulationModal } from '@/store/useSimulationModal';
+import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
+import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
+import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import { checkExistDepartment, makeValidateDepartment } from '@/utils/subjectPicker';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 
 function Simulation() {
-  const [department, setDepartment] = useState({
-    departmentCode: '',
-    departmentName: '',
-  });
-  const { type, props, openModal, closeModal } = useSimulationModal();
+  const { type, openModal, closeModal } = useSimulationModalStore();
+  const { simulation, setSimulation } = useSimulationProcessStore();
+  const { subjectStatusMap } = useSimulationSubjectStore();
 
   const handleSearchClick = () => {
     /*
+    TODO:
     1. 이름, 전화번호 POST 요청 보내기
-    2. 학과 상태 저장 후 모달에 전달하기
-    2번 먼저 구현 하기
+    2. 시뮬레이션 시작 Promise 
     */
+    openModal('waiting');
 
-    openModal('captcha', { department });
+    setSimulation({ simulationId: '1', simulationStatus: 'process' });
   };
 
   const { data: departments } = useDepartments();
@@ -31,12 +32,45 @@ function Simulation() {
   const newDepartments = makeValidateDepartment(departments, notExistDepartments);
 
   const handleChangeDepartment = (name: string) => {
+    if (name === 'none') {
+      setSimulation({
+        department: {
+          departmentCode: '',
+          departmentName: '전체 학과',
+        },
+      });
+      return;
+    }
+
     const selected = departments?.find(department => department.departmentName === name);
     if (selected) {
-      setDepartment({
-        departmentCode: selected.departmentCode,
-        departmentName: selected.departmentName,
+      setSimulation({
+        department: {
+          departmentCode: selected.departmentCode,
+          departmentName: selected.departmentName,
+        },
       });
+    }
+  };
+
+  useEffect(() => {
+    if (simulation.department.departmentName !== '전체 학과') {
+      openModal('wish', { department: simulation.department });
+    }
+  }, [simulation.department]);
+
+  const renderModal = () => {
+    switch (type) {
+      case 'waiting':
+        return <WaitingModal />;
+      case 'captcha':
+        return <CaptchaInput />;
+      case 'wish':
+        return <UserWishModal department={simulation.department} setIsModalOpen={() => closeModal()} />;
+      case 'simulation':
+        return <SimulationModal status={subjectStatusMap.status} />;
+      default:
+        return null;
     }
   };
 
@@ -46,12 +80,9 @@ function Simulation() {
         <title>ALLCLL | 시뮬레이션</title>
       </Helmet>
 
-      {type === 'waiting' && <WaitingModal />}
-      {type === 'processing' && <ProcessingModal />}
-      {type === 'captcha' && <CaptchaInput />}
-      {type === 'wish' && <UserWishModal department={props.department} setIsModalOpen={() => closeModal()} />}
+      {renderModal()}
 
-      <section className="border p-2 space-y-4 text-xs">
+      <section className="border p-2  text-xs">
         <div>
           <div className="flex items-center gap-8 mb-4">
             <div className="flex items-center gap-2">
@@ -111,9 +142,10 @@ function Simulation() {
                 <label className="font-bold">내학과</label>
                 <select
                   className="border px-2 py-1 w-48"
-                  value={department.departmentName}
+                  value={simulation.department.departmentName}
                   onChange={e => handleChangeDepartment(e.target.value)}
                 >
+                  <option value="none">전체 학과</option>
                   {newDepartments?.map(department => (
                     <option key={department.departmentCode} value={department.departmentName}>
                       {department.departmentName}
@@ -159,7 +191,7 @@ function Simulation() {
             </tr>
           </thead>
 
-          <SubjectsTable />
+          {simulation.simulationStatus === 'process' && <SubjectsTable />}
         </table>
       </section>
 

@@ -5,8 +5,8 @@ import ResetSvg from '@/assets/reset.svg?react';
 import { useEffect, useState } from 'react';
 import { SimulationSubject } from '@/utils/types';
 import { pickRandomsubjects } from '@/utils/subjectPicker';
-import useSimulation from '@/store/useSimulation';
-import { useSimulationModal } from '@/store/useSimulationModal';
+import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
+import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 
 type Department = {
   departmentCode: string;
@@ -62,22 +62,26 @@ const GameTips = () => (
 );
 
 function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
-  const { subjects, setSubjects } = useSimulation();
+  const { simulation, setSimulation } = useSimulationProcessStore();
   const [isCheckedSubject, setIsCheckedSubject] = useState(false);
-  const { closeModal } = useSimulationModal();
+  const { closeModal } = useSimulationModalStore();
 
   useEffect(() => {
     const randomSubjects = pickRandomsubjects(department);
-    setSubjects(randomSubjects);
+    setSimulation({ subjects: randomSubjects });
   }, [department]);
 
   const handleResetRandomSubjects = () => {
     const randomSubjects = pickRandomsubjects(department);
-    setSubjects(randomSubjects);
+    setSimulation({ subjects: randomSubjects });
   };
 
   const handleStartGame = () => {
     closeModal('wish');
+
+    /**
+     * TODO: 게임 시작 Promise 호출
+     */
   };
 
   return (
@@ -102,7 +106,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
             </button>
           </div>
 
-          <SubjectTable subjects={subjects} />
+          <SubjectTable subjects={simulation.subjects} />
 
           <div className="mt-4 flex items-center">
             <input

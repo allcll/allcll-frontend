@@ -1,8 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Modal from '@/components/simulation/modal/Modal';
 import ModalHeader from '@/components/simulation/modal/ModalHeader';
 import { drawCaptcha } from '@/utils/captcha';
-import { useSimulationModal } from '@/store/useSimulationModal';
+import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
+import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
+import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 
 function generateNumericText() {
   return Math.floor(1000 + Math.random() * 9000).toString();
@@ -13,7 +15,13 @@ function CaptchaInput() {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const codeRef = useRef<string>('');
 
-  const { closeModal } = useSimulationModal();
+  const { closeModal, openModal } = useSimulationModalStore();
+  const { setSubjectStatus, currentSubjectId } = useSimulationSubjectStore();
+  const { subjectsStatus, setSubjectsStatus } = useSimulationProcessStore();
+
+  const currentSubjectStatus = subjectsStatus.find(subject => subject.subjectId === currentSubjectId)?.subjectStatus;
+
+  const [isSame, setIsSame] = useState(false);
 
   function handleRefreshCaptcha() {
     const randomCaptchaCode = generateNumericText();
@@ -28,22 +36,41 @@ function CaptchaInput() {
   }, []);
 
   function handleConfirm() {
-    /*const inputValue = inputRef.current?.value;
-    캡챠 TODO -> 캡
-  */
+    const inputValue = inputRef.current?.value;
+
+    if (inputValue === codeRef.current) {
+      setIsSame(true);
+
+      if (currentSubjectStatus === 'SUCCESS') {
+        setSubjectsStatus(currentSubjectId, 'DOUBLED');
+      } else {
+        setSubjectsStatus(currentSubjectId, 'PROGRESS');
+      }
+      closeModal('captcha');
+      openModal('simulation');
+    } else {
+      /**캡차 실패 모달 Promise날리기 */
+
+      setSubjectsStatus(currentSubjectId, 'PROGRESS', true);
+      setSubjectStatus(currentSubjectId, 'CAPTCHA_FAILED');
+
+      console.log(subjectsStatus);
+      closeModal('captcha');
+      openModal('simulation');
+    }
   }
 
   return (
     <Modal>
       <div className="w-[500px] bg-white rounded shadow p-4">
-        <ModalHeader title="매크로방지 코드입력 (Arti-marco code input)" onClose={() => {}} />
+        <ModalHeader title="매크로방지 코드입력 (Arti-marco code input)" onClose={() => closeModal('captcha')} />
 
         <div className="grid grid-cols-2 gap-4 mt-4">
           <div>
             <label className="text-sm font-semibold">생성된 코드</label>
             <button
               onClick={handleRefreshCaptcha}
-              className="ml-2 px-2 py-1 bg-blue-500 text-white text-sm rounded-xs hover:bg-blue-600"
+              className="ml-2 px-2 py-1 bg-blue-500 text-white text-sm rounded-xs cursor-pointer hover:bg-blue-600"
             >
               재생성
             </button>

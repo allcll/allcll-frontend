@@ -1,5 +1,5 @@
 import Modal from '@/components/simulation/modal/Modal.tsx';
-import { useSimulationModal } from '@/store/useSimulationModal';
+import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import { useState, useEffect, useRef } from 'react';
 
 function calculateBehindPeople(
@@ -38,10 +38,10 @@ function WaitingModal() {
   const [timer, setTimer] = useState(0);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const { closeModal, openModal } = useSimulationModal();
+  const { closeModal } = useSimulationModalStore();
 
   const unit = 0.2;
-  const clickTime = 1;
+  const clickTime = 0.5;
   const peoplePerUnit = 98;
   const processedPerUnit = 79;
 
@@ -94,8 +94,8 @@ function WaitingModal() {
         if (updated === 0 && intervalRef.current) {
           clearInterval(intervalRef.current);
           closeModal('waiting');
-          openModal('processing');
         }
+
         return updated;
       });
     }, 1000);

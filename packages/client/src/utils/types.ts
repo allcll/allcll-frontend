@@ -46,3 +46,7 @@ export interface SimulationSubject {
   professorName: string | null;
   lesn_room: string | null;
 }
+
+export type SubjectStatusType = 'PROGRESS' | 'SUCCESS' | 'FAILED' | 'DOUBLED' | 'CAPTCHA_FAILED' | 'CANCELED';
+
+export type SimulationStatusType = 'before' | 'process' | 'finish';
