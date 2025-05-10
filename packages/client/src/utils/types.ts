@@ -32,3 +32,21 @@ export interface WishRegister {
   registerDepartment: string | null;
   eachCount: number | null;
 }
+
+export interface SimulationSubject {
+  subjectId: number;
+  subjectCode: string;
+  classCode: string;
+  departmentName: string;
+  subjectName: string;
+  language: string | null;
+  subjectType: string;
+  semester_at: number;
+  lesn_time: string | null;
+  professorName: string | null;
+  lesn_room: string | null;
+}
+
+export type SubjectStatusType = 'PROGRESS' | 'SUCCESS' | 'FAILED' | 'DOUBLED' | 'CAPTCHA_FAILED' | 'CANCELED';
+
+export type SimulationStatusType = 'before' | 'process' | 'finish';

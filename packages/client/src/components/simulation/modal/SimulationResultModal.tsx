@@ -4,7 +4,6 @@ function SimulationResultModal() {
   return (
     <Modal>
       <div className="w-full max-w-md bg-white rounded-xl shadow-xl p-6 relative overflow-hidden">
-        {/* 배경 애니메이션 아이콘들 */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="animate-float1 absolute top-6 left-6 w-3 h-3 bg-red-400 rounded-full" />
           <div className="animate-float2 absolute top-16 right-10 w-2 h-2 bg-yellow-400 rounded-full" />
@@ -13,19 +12,16 @@ function SimulationResultModal() {
           <div className="animate-float5 absolute top-1/2 left-1/2 w-2 h-2 bg-purple-400 rounded-full" />
         </div>
 
-        {/* 본문 */}
         <div className="relative z-10 text-center">
           <h2 className="text-xl font-bold text-gray-900">
             수강 신청 <span className="text-blue-600">성공!</span>
           </h2>
           <p className="text-sm text-gray-700 mt-1">수강신청을 성공 하셨습니다!</p>
 
-          {/* 메인 아이콘 */}
           <div className="my-6 flex justify-center">
             <img src="/ci.svg" alt="축하 아이콘" className="w-20 h-20" />
           </div>
 
-          {/* 진행 바 - 소요 시간 */}
           <div className="text-left text-sm text-gray-800 mt-4 mb-1">소요 시간</div>
           <div className="flex items-center gap-2">
             <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
@@ -34,7 +30,6 @@ function SimulationResultModal() {
             <span className="text-xs text-gray-600 whitespace-nowrap">00 : 00 : 30</span>
           </div>
 
-          {/* 진행 바 - 정확도 */}
           <div className="text-left text-sm text-gray-800 mt-4 mb-1">정확도</div>
           <div className="flex items-center gap-2">
             <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
@@ -43,7 +38,6 @@ function SimulationResultModal() {
             <span className="text-xs text-gray-600 whitespace-nowrap">90%</span>
           </div>
 
-          {/* 버튼 */}
           <div className="flex justify-center gap-3 mt-6">
             <button className="px-4 py-2 border border-gray-400 text-gray-800 rounded-md hover:bg-gray-100 text-sm">
               다시 하기
@@ -55,7 +49,6 @@ function SimulationResultModal() {
         </div>
       </div>
 
-      {/* 애니메이션 정의 */}
       <style>{`
         @keyframes float1 {
           0% { transform: translateY(0); }
