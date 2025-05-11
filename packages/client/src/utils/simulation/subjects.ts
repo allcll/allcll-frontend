@@ -17,6 +17,21 @@ export async function getRecentInterestedSnapshot() {
 }
 
 /**
+ * 관심과목 스냅샷을 불러옵니다.
+ * */
+export async function getInterestedSnapshotById(snapshotId: number) {
+  const snapshot = await db.interested_snapshot.get(snapshotId);
+  if (!snapshot) return null;
+
+  const subjects = await db.interested_subject.where('snapshot_id').equals(snapshotId).toArray();
+
+  return {
+    ...snapshot,
+    subjects,
+  };
+}
+
+/**
  * 관심과목 스냅샷을 저장합니다
  * 스냅샷이 시뮬레이션에 사용되지 않았다면, 기존 스냅샷에 덮어씁니다.
  * */
@@ -44,6 +59,16 @@ export async function saveInterestedSnapshot(subjectIds: number[]) {
       subject_id: subjectId,
     })),
   );
+}
+
+export async function getInterestedId(snapshotId: number, subjectId: number) {
+  const interested = await db.interested_subject
+    .where('snapshot_id')
+    .equals(snapshotId)
+    .filter(subject => subject.subject_id === subjectId)
+    .first();
+
+  return interested ? interested.interested_id : -1;
 }
 
 /**

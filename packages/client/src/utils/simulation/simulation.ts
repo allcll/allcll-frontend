@@ -1,5 +1,5 @@
 import { db } from '@/utils/dbConfig.ts';
-import { getRecentInterestedSnapshot } from '@/utils/simulation/subjects';
+import { getInterestedId, getRecentInterestedSnapshot } from '@/utils/simulation/subjects';
 import { getAccuracy, getAccuracyScore, getSpeedScore } from '@/utils/simulation/score.ts';
 
 export enum BUTTON_EVENT {
@@ -27,6 +27,7 @@ export enum SIMULATION_ERROR {
   ONGOING_SIMULATION_NOT_FOUND = 'ONGOING_SIMULATION_NOT_FOUND',
   SELECTION_NOT_FOUND = 'SELECTION_NOT_FOUND',
   SIMULATION_NOT_FOUND = 'SIMULATION_NOT_FOUND',
+  MULTIPLE_SIMULATION_FOUND = 'MULTIPLE_SIMULATION_FOUND',
   SIMULATION_IS_NOT_FINISHED = 'SIMULATION_IS_NOT_FINISHED',
   MULTIPLE_SIMULATION_RUNNING = 'MULTIPLE_SIMULATION_RUNNING',
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
@@ -106,6 +107,19 @@ async function getOngoingSimulation() {
   if (ongoing && ongoing.length > 1) throw new Error(SIMULATION_ERROR.MULTIPLE_SIMULATION_RUNNING);
 
   return ongoing[0] ?? null;
+}
+
+export async function getSimulationById(simulationId: number) {
+  const simulations = await db.simulation_run
+    .where('simulation_run_id')
+    .equals(simulationId)
+    .filter(run => run.ended_at !== -1)
+    .toArray();
+
+  if (!simulations.length) throw new Error(SIMULATION_ERROR.SIMULATION_NOT_FOUND);
+  if (simulations.length > 1) throw new Error(SIMULATION_ERROR.MULTIPLE_SIMULATION_FOUND);
+
+  return simulations[0];
 }
 
 /**
@@ -197,7 +211,7 @@ export async function triggerButtonEvent(input: ButtonEventSearchReq | ButtonEve
 
     const selectionId = await db.simulation_run_selections.add({
       simulation_run_id: ongoing.simulation_run_id,
-      interested_id: subjectId,
+      interested_id: await getInterestedId(ongoing.snapshot_id, subjectId),
       selected_index: selected.length + 1, // ???
       status: APPLY_STATUS.PROGRESS,
       started_at: Date.now(),
