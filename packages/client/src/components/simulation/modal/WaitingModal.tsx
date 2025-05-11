@@ -1,5 +1,6 @@
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
+import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { useState, useEffect, useRef } from 'react';
 
 function calculateBehindPeople(
@@ -39,19 +40,20 @@ function WaitingModal() {
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const { closeModal } = useSimulationModalStore();
+  const { currentSimulation } = useSimulationProcessStore();
 
   const unit = 0.2;
-  const clickTime = 0.5;
   const peoplePerUnit = 98;
   const processedPerUnit = 79;
 
   //첫 렌더링 시
   useEffect(() => {
-    let cumulativeIn = Math.floor(clickTime / 0.2) * 100 + 100;
+    console.log(currentSimulation.clickedTime);
+    let cumulativeIn = Math.floor(currentSimulation.clickedTime / 0.2) * 100 + 100;
 
     const waitSec = (cumulativeIn / processedPerUnit) * unit;
 
-    for (let i = 0; i <= Math.floor(clickTime / unit); i++) {
+    for (let i = 0; i <= Math.floor(currentSimulation.clickedTime / unit); i++) {
       cumulativeIn += i * peoplePerUnit;
     }
 
@@ -68,7 +70,7 @@ function WaitingModal() {
         // 뒷 사람 수 재계산
         const newBehindPeople = calculateBehindPeople(
           elapsedTime,
-          clickTime,
+          currentSimulation.clickedTime,
           unit,
           behindPeople,
           peoplePerUnit,
@@ -80,7 +82,7 @@ function WaitingModal() {
         return elapsedTime;
       });
 
-      const cumulativeProcessed = Math.floor((waitTime + clickTime) / 0.2) * processedPerUnit;
+      const cumulativeProcessed = Math.floor((waitTime + currentSimulation.clickedTime) / 0.2) * processedPerUnit;
 
       if (aheadPeople < 0) {
         setAheadPeople(0);
@@ -107,7 +109,7 @@ function WaitingModal() {
 
   return (
     <Modal>
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-6 text-center space-y-6">
+      <div className="w-full max-w-md bg-white rounded-sm shadow-xl p-6 text-center space-y-6">
         <h2 className="text-lg md:text-xl font-semibold text-gray-800">
           서비스 <span className="text-blue-600 font-bold">접속대기 중</span>입니다.
         </h2>

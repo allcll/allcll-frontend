@@ -1,44 +1,38 @@
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
+import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation';
 
 const SubjectsTable = () => {
-  const { simulation } = useSimulationProcessStore();
+  const { currentSimulation } = useSimulationProcessStore();
   const { openModal } = useSimulationModalStore();
-  const { currentSubjectId, setCurrentSubjectId, setSubjectStatus } = useSimulationSubjectStore();
+  const { currentSubjectId, setCurrentSubjectId, setSubjectStatus, startTimer } = useSimulationSubjectStore();
   const { subjectsStatus, setSubjectsStatus } = useSimulationProcessStore();
 
   const handleClickSubject = (subjectId: number) => {
-    /**
-     * TODO: 이미 신청 한 과목인지 확인
-     */
+    triggerButtonEvent({ eventType: BUTTON_EVENT.APPLY, subjectId });
 
-    //이미 신청 한 과목인지 확인
+    const doubledSubject = subjectsStatus.find(subject => subject.subjectId === subjectId);
+
     setCurrentSubjectId(subjectId);
 
-    const doubledSubject = subjectsStatus.find(subject => subject.subjectId === currentSubjectId);
-
-    /**
-     * 이미 수강 신청한 과목일 경우 DOUBLED로 상태 변경
-     * 처음 수강 신청한 과목 : 캡챠 열기
-     */
-
-    if (doubledSubject?.subjectStatus === 'SUCCESS' || doubledSubject?.subjectStatus === 'DOUBLED') {
-      console.log(subjectsStatus);
-      setSubjectStatus(currentSubjectId, 'DOUBLED');
-      setSubjectsStatus(currentSubjectId, 'DOUBLED');
-      openModal('simulation');
-    } else if (doubledSubject?.subjectStatus === 'PROGRESS' || doubledSubject?.subjectStatus === 'CAPTCHA_FAILED') {
+    if (
+      doubledSubject?.subjectStatus === APPLY_STATUS.SUCCESS ||
+      doubledSubject?.subjectStatus === APPLY_STATUS.DOUBLED
+    ) {
+      setSubjectStatus(currentSubjectId, APPLY_STATUS.DOUBLED);
+      setSubjectsStatus(currentSubjectId, APPLY_STATUS.DOUBLED);
       openModal('captcha');
     } else {
+      startTimer();
       openModal('captcha');
     }
   };
 
   return (
-    <tbody>
-      {simulation.subjects.length > 0 ? (
-        simulation.subjects.map((course, idx) => (
+    <tbody className="min-h-[300px] border-gray-100">
+      {currentSimulation.subjects.length > 0 ? (
+        currentSimulation.subjects.map((course, idx) => (
           <tr key={course.subjectId} className="hover:bg-gray-50">
             <td className="border border-gray-300 bg-blue-100 px-2 py-1">{idx + 1}</td>
             <td className="border border-gray-300 px-2 py-1">
@@ -54,7 +48,7 @@ const SubjectsTable = () => {
             <td className="border border-gray-300 px-2 py-1">{course.departmentName}</td>
             <td className="border border-gray-300 px-2 py-1">{course.subjectName}</td>
             <td className="border border-gray-300 px-2 py-1">
-              <button className="bg-gray-200 text-xs rounded-xs px-2 py-0.5 ">수업계획서</button>
+              <button className="bg-gray-700 text-xs text-white rounded-xs px-2 py-0.5 ">수업계획서</button>
             </td>
             <td className="border border-gray-300 px-2 py-1">{course.language || '-'}</td>
             <td className="border border-gray-300 px-2 py-1">{course.semester_at}</td>
@@ -62,7 +56,7 @@ const SubjectsTable = () => {
             <td className="border border-gray-300 px-2 py-1">{course.semester_at}</td>
             <td className="border border-gray-300 px-2 py-1">{course.lesn_time || '-'}</td>
             <td className="border border-gray-300 px-2 py-1">
-              <button className="bg-gray-200 text-xs px-2 py-0.5 rounded-xs">수강인원</button>
+              <button className="bg-gray-700 text-white text-xs px-2 py-0.5 rounded-xs">수강인원</button>
             </td>
           </tr>
         ))

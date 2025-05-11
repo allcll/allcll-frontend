@@ -7,6 +7,8 @@ import { SimulationSubject } from '@/utils/types';
 import { pickRandomsubjects } from '@/utils/subjectPicker';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
+import { saveInterestedSnapshot } from '@/utils/simulation/subjects';
+import { startSimulation } from '@/utils/simulation/simulation';
 
 type Department = {
   departmentCode: string;
@@ -62,26 +64,44 @@ const GameTips = () => (
 );
 
 function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
-  const { simulation, setSimulation } = useSimulationProcessStore();
+  const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore();
   const [isCheckedSubject, setIsCheckedSubject] = useState(false);
   const { closeModal } = useSimulationModalStore();
 
   useEffect(() => {
     const randomSubjects = pickRandomsubjects(department);
-    setSimulation({ subjects: randomSubjects });
+    setCurrentSimulation({ subjects: randomSubjects });
   }, [department]);
 
   const handleResetRandomSubjects = () => {
     const randomSubjects = pickRandomsubjects(department);
-    setSimulation({ subjects: randomSubjects });
+    setCurrentSimulation({ subjects: randomSubjects });
   };
 
   const handleStartGame = () => {
     closeModal('wish');
 
     /**
-     * TODO: 게임 시작 Promise 호출
+     * 게임 시작 Promise 호출
      */
+    saveInterestedSnapshot(
+      currentSimulation.subjects.map(subject => {
+        return subject.subjectId;
+      }),
+    )
+      .then(() => {
+        startSimulation()
+          .then(({ simulation_id, isRunning }) => {
+            setCurrentSimulation({
+              simulationId: simulation_id,
+              simulationStatus: isRunning ? 'start' : 'before',
+            });
+          })
+          .catch(e => {
+            console.error('시뮬레이션 시작 중 오류 발생:', e);
+          });
+      })
+      .then(() => {});
   };
 
   return (
@@ -106,7 +126,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
             </button>
           </div>
 
-          <SubjectTable subjects={simulation.subjects} />
+          <SubjectTable subjects={currentSimulation.subjects} />
 
           <div className="mt-4 flex items-center">
             <input
@@ -114,7 +134,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
               id="confirm"
               className="mr-2"
               checked={isCheckedSubject}
-              onChange={() => setIsCheckedSubject(true)}
+              onChange={() => setIsCheckedSubject(!isCheckedSubject)}
             />
             <label htmlFor="confirm" className="text-sm text-gray-700">
               관심과목을 확인하였습니다.

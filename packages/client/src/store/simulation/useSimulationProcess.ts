@@ -1,4 +1,5 @@
-import { SimulationStatusType, SimulationSubject, SubjectStatusType } from '@/utils/types';
+import { APPLY_STATUS } from '@/utils/simulation/simulation';
+import { SimulationStatusType, SimulationSubject } from '@/utils/types';
 import { create } from 'zustand';
 
 interface DepartmentType {
@@ -8,34 +9,36 @@ interface DepartmentType {
 
 interface SubjectStatus {
   subjectId: number;
-  subjectStatus: SubjectStatusType;
+  subjectStatus: APPLY_STATUS;
   isCaptchaFailed: boolean;
 }
 
 interface SimulationState {
-  simulationId: string;
+  simulationId: number;
   department: DepartmentType;
   subjects: SimulationSubject[];
   simulationStatus: SimulationStatusType;
+  clickedTime: number;
 }
 
 interface IUseSimulationProcessStore {
-  simulation: SimulationState;
+  currentSimulation: SimulationState;
   subjectsStatus: SubjectStatus[];
-  setSimulation: (simulation: Partial<SimulationState>) => void;
-  setSubjectsStatus: (subjectId: number, subjectStatus: SubjectStatusType, isCaptchaFailed?: boolean) => void;
+  setCurrentSimulation: (simulation: Partial<SimulationState>) => void;
+  setSubjectsStatus: (subjectId: number, subjectStatus: APPLY_STATUS, isCaptchaFailed?: boolean) => void;
   resetSimulation: () => void;
 }
 
 const defaultSimulation: SimulationState = {
-  simulationId: '',
+  simulationId: -1,
   department: { departmentCode: '', departmentName: '' },
   subjects: [],
   simulationStatus: 'before',
+  clickedTime: 2,
 };
 
 const useSimulationProcessStore = create<IUseSimulationProcessStore>(set => ({
-  simulation: defaultSimulation,
+  currentSimulation: defaultSimulation,
   subjectsStatus: [],
   setSubjectsStatus: (subjectId, subjectStatus, isCaptchaFailed = false) =>
     set(state => {
@@ -54,11 +57,11 @@ const useSimulationProcessStore = create<IUseSimulationProcessStore>(set => ({
       }
     }),
 
-  setSimulation: simulation =>
+  setCurrentSimulation: simulation =>
     set(state => ({
-      simulation: { ...state.simulation, ...simulation },
+      currentSimulation: { ...state.currentSimulation, ...simulation },
     })),
-  resetSimulation: () => set({ simulation: defaultSimulation }),
+  resetSimulation: () => set({ currentSimulation: defaultSimulation, subjectsStatus: [] }),
 }));
 
 export default useSimulationProcessStore;

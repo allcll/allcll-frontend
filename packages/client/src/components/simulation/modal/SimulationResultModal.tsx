@@ -1,6 +1,8 @@
 import Modal from '@/components/simulation/modal/Modal.tsx';
+import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 
 function SimulationResultModal() {
+  const { closeModal } = useSimulationModalStore();
   return (
     <Modal>
       <div className="w-full max-w-md bg-white rounded-xl shadow-xl p-6 relative overflow-hidden">
@@ -39,10 +41,20 @@ function SimulationResultModal() {
           </div>
 
           <div className="flex justify-center gap-3 mt-6">
-            <button className="px-4 py-2 border border-gray-400 text-gray-800 rounded-md hover:bg-gray-100 text-sm">
+            <button
+              className="px-4 py-2 border border-gray-400 text-gray-800 rounded-md hover:bg-gray-100 text-sm"
+              onClick={() => {
+                closeModal('result');
+              }}
+            >
               다시 하기
             </button>
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm">
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm"
+              onClick={() => {
+                closeModal('result');
+              }}
+            >
               자세히 보기
             </button>
           </div>
