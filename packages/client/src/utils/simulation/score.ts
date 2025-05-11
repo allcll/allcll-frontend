@@ -40,7 +40,7 @@ export function getAccuracyScore(accuracy: number): number {
  * @param canceledTime SUCCESS, FAILED 걸린 시간
  */
 export function getAccuracy(takenTime: number, canceledTime: number): number {
-  const accuracy = (takenTime - 2 * canceledTime) / takenTime;
+  const accuracy = (takenTime - 2 * canceledTime) / (takenTime - canceledTime);
   return Math.max(0, Math.round(accuracy * 100));
 }
 
