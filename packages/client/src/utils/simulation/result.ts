@@ -1,4 +1,6 @@
-import { db } from '@/utils/dbConfig.ts';
+import { db, SimulationRunSelections } from '@/utils/dbConfig.ts';
+import { getInterestedSnapshotById } from '@/utils/simulation/subjects.ts';
+import { getSimulationById } from '@/utils/simulation/simulation.ts';
 
 export async function getSimulationList() {
   const snapshots = await db.simulation_run.filter(run => run.ended_at !== -1).toArray();
@@ -6,6 +8,29 @@ export async function getSimulationList() {
   return {
     snapshots,
   };
+}
+
+export interface ResultResponse {
+  user_ability: {
+    click_speed: number;
+    total_elapsed: number;
+    accuracy: number;
+    score: number;
+  };
+  timeline: {
+    interested_id: number;
+    subject_id: number;
+    started_at: number;
+    ended_at: number;
+    status: number;
+  }[];
+  subject_results: {
+    interested_id: number;
+    subject_id: number;
+    selected_index: number;
+    ended_at: number;
+    status: number;
+  }[];
 }
 
 /**
@@ -27,57 +52,57 @@ export async function getSimulationList() {
  * 과목별 클릭 시점, 입력 완료 시간
  * 👉 simulation_run_selections의 started_at, ended_at 활용
  * */
-export const getSimulationResultForUser = async (userId: string) => {
-  const snapshots = await db.interested_snapshot.where('user_id').equals(userId).reverse().toArray();
+export async function getSimulationResult(simulationId: number): Promise<ResultResponse | null> {
+  const simulation = await getSimulationById(simulationId);
+  const snapshots = await getInterestedSnapshotById(simulation.snapshot_id);
 
-  if (!snapshots.length) return null;
-
-  const latestSnapshot = snapshots[0];
-  const simulationRuns = await db.simulation_run
-    .where({ snapshot_id: latestSnapshot.snapshot_id })
-    .reverse()
-    .sortBy('started_at');
-
-  const latestRun = simulationRuns.at(-1);
-  if (!latestRun) return null;
+  if (!simulation || !snapshots) return null;
 
   const selections = await db.simulation_run_selections
     .where('simulation_run_id')
-    .equals(latestRun.simulation_run_id)
+    .equals(simulation.simulation_run_id)
     .toArray();
 
   // const events = await db.simulation_run_events
   //   .filter(e => selections.some(s => s.run_selections_id === e.simulation_section_id))
   //   .toArray();
 
+  const getSubjectId = (interestedId: number) => {
+    const interested = snapshots.subjects.find(i => i.interested_id === interestedId);
+    return interested ? interested.subject_id : -1;
+  };
+
   return {
     user_ability: {
       click_speed: selections.length
         ? selections.reduce((sum, s) => sum + (s.started_at ?? 0), 0) / selections.length
         : 0,
-      total_elapsed: latestRun.total_elapsed,
-      accuracy: latestRun.accuracy,
-      score: latestRun.score,
+      total_elapsed: simulation.total_elapsed,
+      accuracy: simulation.accuracy,
+      score: simulation.score,
     },
 
     timeline: selections.map(s => ({
       interested_id: s.interested_id,
+      subject_id: getSubjectId(s.interested_id),
       started_at: s.started_at,
       ended_at: s.ended_at,
       status: s.status,
     })),
 
-    subject_results: await Promise.all(
-      selections.map(async s => {
-        const interested = await db.interested_subject.get(s.interested_id);
-        return {
-          interested_id: s.interested_id,
-          subject_id: interested?.subject_id,
-          started_at: s.started_at,
-          ended_at: s.ended_at,
-          status: s.status,
-        };
-      }),
-    ),
+    subject_results: selections
+      .sort((s1, s2) => s2.started_at - s1.started_at)
+      .reduce((acc, s) => {
+        if (acc.some(item => item.interested_id === s.interested_id)) return acc;
+
+        return [...acc, s];
+      }, [] as SimulationRunSelections[])
+      .map(s => ({
+        interested_id: s.interested_id,
+        subject_id: getSubjectId(s.interested_id),
+        selected_index: s.selected_index,
+        ended_at: s.ended_at,
+        status: s.status,
+      })),
   };
-};
+}

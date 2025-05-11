@@ -9,9 +9,9 @@ export function useDashboardList() {
   const [simulations, setSimulations] = useState<SimulationRun[] | null>(null);
 
   useEffect(() => {
-    db.simulation_run.toArray().then((data) => {
+    db.simulation_run.toArray().then(data => {
       setSimulations(data);
-      console.log("simulate data", data);
+      console.log('simulate data', data);
     });
   }, []);
 
@@ -29,7 +29,7 @@ export function useDashboardResults() {
   const [results, setResults] = useState<SimulationRun[] | null>(null);
 
   useEffect(() => {
-    db.simulation_run.toArray().then((data) => {
+    db.simulation_run.toArray().then(data => {
       setResults(data);
     });
   }, []);

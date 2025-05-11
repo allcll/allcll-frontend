@@ -1,5 +1,6 @@
 import { db } from '@/utils/dbConfig.ts';
-import { getRecentInterestedSnapshot } from '@/utils/simulation/subjects.ts';
+import { getInterestedId, getRecentInterestedSnapshot } from '@/utils/simulation/subjects';
+import { getAccuracy, getAccuracyScore, getSpeedScore } from '@/utils/simulation/score.ts';
 
 export enum BUTTON_EVENT {
   SEARCH,
@@ -21,28 +22,104 @@ export enum APPLY_STATUS {
   CANCELED,
 }
 
+export enum SIMULATION_ERROR {
+  SNAPSHOT_NOT_EXIST = 'SNAPSHOT_NOT_EXIST',
+  ONGOING_SIMULATION_NOT_FOUND = 'ONGOING_SIMULATION_NOT_FOUND',
+  SELECTION_NOT_FOUND = 'SELECTION_NOT_FOUND',
+  SIMULATION_NOT_FOUND = 'SIMULATION_NOT_FOUND',
+  MULTIPLE_SIMULATION_FOUND = 'MULTIPLE_SIMULATION_FOUND',
+  SIMULATION_IS_NOT_FINISHED = 'SIMULATION_IS_NOT_FINISHED',
+  MULTIPLE_SIMULATION_RUNNING = 'MULTIPLE_SIMULATION_RUNNING',
+  UNKNOWN_ERROR = 'UNKNOWN_ERROR',
+}
+
+function errMsg(msg: SIMULATION_ERROR) {
+  return { errMsg: msg };
+}
+
+function CheckError(err: unknown) {
+  if (err instanceof Error) {
+    return errMsg(err.message as SIMULATION_ERROR);
+  }
+  return errMsg(SIMULATION_ERROR.UNKNOWN_ERROR);
+}
+
 /**
  * 진행 중인 시뮬레이션 확인
  * 현재 진행중인 시뮬레이션이 있는지 확인합니다.
- * 진행중인 시뮬레이션이 있다면 해당 simulation_id 를 반환하고, 없다면 simulation_id=-1 을 반환합니다
+ * 진행중인 시뮬레이션이 있다면 해당 simulation_id 와 진행 정보를 반환하고, 없다면 simulation_id=-1 을 반환합니다.
  * 사용자가 시뮬레이션 페이지에 들어왔을 때 확인합니다.
  * @returns { simulation_id: number } */
 export async function checkOngoingSimulation() {
-  const ongoing = await getOngoingSimulation();
+  try {
+    const ongoing = await getOngoingSimulation();
 
-  return {
-    simulation_id: ongoing ? ongoing.simulation_run_id : -1,
-  };
+    if (!ongoing) return { simulationId: -1 };
+
+    const registeredSelections = await db.simulation_run_selections
+      .filter(
+        selection =>
+          selection.simulation_run_id === ongoing.simulation_run_id &&
+          [APPLY_STATUS.SUCCESS, APPLY_STATUS.FAILED].includes(selection.status),
+      )
+      .toArray();
+
+    const snapshotSubjects = await db.interested_subject.where('snapshot_id').equals(ongoing.snapshot_id).toArray();
+    if (!snapshotSubjects) return errMsg(SIMULATION_ERROR.SNAPSHOT_NOT_EXIST);
+
+    const registeredSubjects = snapshotSubjects
+      .filter(subject => registeredSelections.some(selection => selection.interested_id === subject.interested_id))
+      .map(subject => ({ subjectId: subject.subject_id }));
+
+    const nonRegisteredSubjects = snapshotSubjects
+      .filter(subject => !registeredSelections.some(selection => selection.interested_id === subject.interested_id))
+      .map(subject => ({ subjectId: subject.subject_id }));
+
+    const subjectStatus = registeredSelections.map(selection => {
+      const subject = snapshotSubjects.find(subject => subject.interested_id === selection.interested_id);
+      if (!subject) return { subjectId: -1, status: APPLY_STATUS.FAILED };
+
+      return {
+        subjectId: subject.subject_id,
+        status: selection.status,
+      };
+    });
+
+    return {
+      simulation_id: ongoing.simulation_run_id,
+      nonRegisteredSubjects,
+      registeredSubjects,
+      subjectStatus,
+    };
+  } catch (e) {
+    return CheckError(e);
+  }
 }
 
 /**
  * 진행중인 시뮬레이션을 반환합니다.
  * 진행중인 시뮬레이션이 없다면, null 을 반환합니다.
+ * @throws {Error} 진행중인 시뮬레이션이 2개 이상일 경우
  * @returns {SimulationRun|null} */
 async function getOngoingSimulation() {
-  const ongoing = await db.simulation_run.filter(run => run.ended_at === -1).last();
+  const ongoing = await db.simulation_run.filter(run => run.ended_at === -1).toArray();
 
-  return ongoing ?? null;
+  if (ongoing && ongoing.length > 1) throw new Error(SIMULATION_ERROR.MULTIPLE_SIMULATION_RUNNING);
+
+  return ongoing[0] ?? null;
+}
+
+export async function getSimulationById(simulationId: number) {
+  const simulations = await db.simulation_run
+    .where('simulation_run_id')
+    .equals(simulationId)
+    .filter(run => run.ended_at !== -1)
+    .toArray();
+
+  if (!simulations.length) throw new Error(SIMULATION_ERROR.SIMULATION_NOT_FOUND);
+  if (simulations.length > 1) throw new Error(SIMULATION_ERROR.MULTIPLE_SIMULATION_FOUND);
+
+  return simulations[0];
 }
 
 /**
@@ -53,16 +130,18 @@ async function getOngoingSimulation() {
  * @returns { simulation_id: number, isRunning?: true } */
 export async function startSimulation() {
   const ongoing = await checkOngoingSimulation();
-  if (ongoing.simulation_id !== -1) {
-    return { simulation_id: ongoing.simulation_id, isRunning: true };
+
+  if (ongoing && 'errMsg' in ongoing) {
+    return ongoing;
+  }
+
+  if (ongoing.simulationId !== -1) {
+    return { simulationId: ongoing.simulationId, isRunning: true };
   }
 
   const recent = await getRecentInterestedSnapshot();
-  if (!recent) {
-    return {
-      errMsg: 'SNAPSHOT_NOT_EXIST',
-    };
-  }
+
+  if (!recent) return errMsg(SIMULATION_ERROR.SNAPSHOT_NOT_EXIST);
 
   await db.interested_snapshot.update(recent.snapshot_id, { simulated: true });
 
@@ -81,7 +160,7 @@ export async function startSimulation() {
     ended_at: -1,
   });
 
-  return { simulation_id: newId, isRunning: true };
+  return { simulationId: newId, isRunning: true };
 }
 
 // 타입 정의
@@ -107,12 +186,13 @@ export async function triggerButtonEvent(input: ButtonEventApplyReq): Promise<{}
 export async function triggerButtonEvent(input: ButtonEventEndReq): Promise<{ finished: boolean }>;
 export async function triggerButtonEvent(input: ButtonEventSearchReq | ButtonEventApplyReq | ButtonEventEndReq) {
   const { eventType } = input;
-  const ongoing = await getOngoingSimulation();
+  let ongoing;
+  try {
+    ongoing = await getOngoingSimulation();
 
-  if (!ongoing) {
-    return {
-      errMsg: 'ONGOING_SIMULATION_NOT_FOUND',
-    };
+    if (!ongoing) throw new Error(SIMULATION_ERROR.ONGOING_SIMULATION_NOT_FOUND);
+  } catch (e) {
+    return CheckError(e);
   }
 
   const latestSimulationId = ongoing.simulation_run_id;
@@ -131,7 +211,7 @@ export async function triggerButtonEvent(input: ButtonEventSearchReq | ButtonEve
 
     const selectionId = await db.simulation_run_selections.add({
       simulation_run_id: ongoing.simulation_run_id,
-      interested_id: subjectId,
+      interested_id: await getInterestedId(ongoing.snapshot_id, subjectId),
       selected_index: selected.length + 1, // ???
       status: APPLY_STATUS.PROGRESS,
       started_at: Date.now(),
@@ -151,11 +231,7 @@ export async function triggerButtonEvent(input: ButtonEventSearchReq | ButtonEve
     .filter(selection => selection.simulation_run_id === latestSimulationId && selection.interested_id === subjectId)
     .toArray();
   const latestSelection = selections[selections.length - 1]; //마지막이 나올까요?
-  if (!latestSelection) {
-    return {
-      errMsg: 'SELECTION_NOT_FOUND',
-    };
-  }
+  if (!latestSelection) return errMsg(SIMULATION_ERROR.SELECTION_NOT_FOUND);
 
   await db.simulation_run_events.add({
     simulation_section_id: latestSelection.run_selections_id,
@@ -198,11 +274,31 @@ async function endCurrentSimulation() {
 
   if (!lastRun) return;
 
+  // 정확도, 점수 계산
+  const selections = await db.simulation_run_selections
+    .filter(selection => selection.simulation_run_id === lastRun.simulation_run_id)
+    .toArray();
+
+  const triedCount = selections.filter(selection =>
+    [APPLY_STATUS.SUCCESS, APPLY_STATUS.FAILED].includes(selection.status),
+  ).length;
+  const canceledTry = selections.filter(
+    selection => ![APPLY_STATUS.SUCCESS, APPLY_STATUS.FAILED].includes(selection.status),
+  );
+  const canceledTime = canceledTry.reduce((acc, cur) => {
+    if (cur.ended_at === -1) return acc + 4600;
+    return acc + (cur.ended_at - cur.started_at);
+  }, 0);
+
+  const totalElapsed = Date.now() - lastRun.started_at;
+  const accuracy = getAccuracy(totalElapsed / 1000, canceledTime / 1000);
+  const score = getSpeedScore(totalElapsed / 1000 / triedCount) + getAccuracyScore(accuracy);
+
   await db.simulation_run.update(lastRun.simulation_run_id, {
     ended_at: Date.now(),
-    accuracy: lastRun.success_subject_count / lastRun.subject_count,
-    score: lastRun.success_subject_count * 1000,
-    total_elapsed: Date.now() - lastRun.started_at,
+    accuracy: accuracy,
+    score: Math.min(100, Math.max(0, score)),
+    total_elapsed: totalElapsed,
   });
 }
 
@@ -214,17 +310,9 @@ async function endCurrentSimulation() {
  * */
 export async function getSummaryResult({ simulationId }: { simulationId: number }) {
   const run = await db.simulation_run.get(simulationId);
-  if (!run) {
-    return {
-      errMsg: 'SIMULATION NOT FOUND',
-    };
-  }
+  if (!run) return errMsg(SIMULATION_ERROR.SIMULATION_NOT_FOUND);
 
-  if (run.ended_at === -1) {
-    return {
-      errMsg: 'SIMULATION IS NOT FINISHED',
-    };
-  }
+  if (run.ended_at === -1) return errMsg(SIMULATION_ERROR.SIMULATION_IS_NOT_FINISHED);
 
   return {
     accuracy: run.accuracy,
@@ -237,7 +325,14 @@ export async function getSummaryResult({ simulationId }: { simulationId: number 
  * 시뮬레이션이 끝났는지 확인합니다.
  * 수강 신청이 끝난 과목과 숫자가 같으면, 종료로 판단합니다. */
 export async function isSimulationFinished() {
-  const ongoing = await getOngoingSimulation();
+  let ongoing;
+
+  try {
+    ongoing = await getOngoingSimulation();
+  } catch (e) {
+    return true;
+  }
+
   if (!ongoing) {
     return true;
   }
@@ -249,7 +344,6 @@ export async function isSimulationFinished() {
         [APPLY_STATUS.SUCCESS, APPLY_STATUS.FAILED].includes(selection.status),
     )
     .toArray();
-  console.log(subjects.length);
 
   return ongoing.subject_count <= subjects.length;
 }

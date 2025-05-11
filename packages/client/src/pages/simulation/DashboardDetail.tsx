@@ -1,6 +1,20 @@
+import { useMemo } from 'react';
 import { Helmet } from 'react-helmet';
+import { useParams } from 'react-router-dom';
+import { useLiveQuery } from 'dexie-react-hooks';
+import useWishes from '@/hooks/server/useWishes.ts';
+import { getSimulationResult, ResultResponse } from '@/utils/simulation/result.ts';
+import { Wishes } from '@/utils/types.ts';
+import { getStausColor, getWishesColor } from '@/utils/colors.ts';
+import { APPLY_STATUS } from '@/utils/simulation/simulation.ts';
 
 function DashboardDetail() {
+  const { runId } = useParams();
+  const { data: subjects } = useWishes();
+  const result = useLiveQuery(() => getSimulationResult(Number(runId)));
+
+  const resultInfo = useMemo(() => joinSubjectInfo(subjects, result), [subjects, result]);
+
   return (
     <>
       <Helmet>
@@ -24,135 +38,130 @@ function DashboardDetail() {
         {/* 과목별 수강 신청 담은 사람 */}
         <div className="bg-white p-6 rounded-2xl shadow-sm overflow-x-auto">
           <h2 className="text-lg font-semibold mb-4">과목 별 수강 신청 담은 사람</h2>
-          <table className="min-w-full text-sm text-center">
-            <thead className="bg-gray-100 text-gray-600">
-              <tr>
-                <th className="py-2 px-2">학수번호</th>
-                <th className="py-2 px-2">과목명</th>
-                <th className="py-2 px-2">교수명</th>
-                <th className="py-2 px-2">순위</th>
-                <th className="py-2 px-2">관심시간</th>
-                <th className="py-2 px-2">관심</th>
-                <th className="py-2 px-2">성공/실패</th>
-              </tr>
-            </thead>
-            <tbody className="text-gray-700">
-              {[
-                {
-                  id: '004310-004',
-                  name: '운영체제',
-                  prof: '이수형',
-                  rank: '1/2순위',
-                  time: '11/20초',
-                  interest: '상',
-                  result: '성공',
-                },
-                {
-                  id: '002381-001',
-                  name: '컴퓨터그래픽스',
-                  prof: '하이',
-                  rank: '1/2순위',
-                  time: '11/20초',
-                  interest: '상',
-                  result: '성공',
-                },
-                {
-                  id: '004110-007',
-                  name: '디지털시스템',
-                  prof: 'Rajendra Chikal',
-                  rank: '1/2순위',
-                  time: '11/20초',
-                  interest: '상',
-                  result: '성공',
-                },
-                {
-                  id: '004310-004',
-                  name: '운영체제',
-                  prof: '이수형',
-                  rank: '1/2순위',
-                  time: '11/20초',
-                  interest: '중',
-                  result: '실패',
-                },
-                {
-                  id: '004310-004',
-                  name: '운영체제',
-                  prof: '이수형',
-                  rank: '1/2순위',
-                  time: '11/20초',
-                  interest: '하',
-                  result: '실패',
-                },
-              ].map((row, i) => (
-                <tr key={i} className="border-t">
-                  <td className="py-2 px-2">{row.id}</td>
-                  <td className="py-2 px-2">{row.name}</td>
-                  <td className="py-2 px-2">{row.prof}</td>
-                  <td className="py-2 px-2">{row.rank}</td>
-                  <td className="py-2 px-2">{row.time}</td>
-                  <td className="py-2 px-2">
-                    <span
-                      className={`px-2 py-0.5 rounded-full text-white ${
-                        row.interest === '상' ? 'bg-green-500' : row.interest === '중' ? 'bg-yellow-400' : 'bg-red-500'
-                      }`}
-                    >
-                      {row.interest}
-                    </span>
-                  </td>
-                  <td className="py-2 px-2">
-                    <span
-                      className={`px-2 py-0.5 rounded-full text-white text-xs ${
-                        row.result === '성공' ? 'bg-green-500' : 'bg-red-500'
-                      }`}
-                    >
-                      {row.result}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {resultInfo ? (
+            <SubjectDetailResult result={resultInfo} />
+          ) : (
+            <div className="text-center text-gray-500">데이터를 불러오는 중입니다...</div>
+          )}
         </div>
       </section>
 
       {/* Timeline */}
       <section className="bg-white p-6 rounded-2xl shadow-sm">
         <h2 className="text-lg font-semibold mb-4">내 모의 수강 신청 별 TimeLine</h2>
-        <div className="w-full overflow-x-auto">
-          <div className="relative w-[900px] h-64 border-t border-l border-gray-200">
-            {/* Timeline rows (예시) */}
-            {[
-              { label: '운영체제', time1: '1.03', time2: '2.59', success: true },
-              { label: '컴퓨터그래픽스', time1: null, time2: null, success: false },
-            ].map((item, i) => (
-              <div key={i} className="flex items-center space-x-2 mt-4">
-                <div className={`text-sm ${item.success ? 'text-black' : 'text-red-500'}`}>{item.label}</div>
-                <div className="relative flex-1 h-6">
-                  {item.success ? (
-                    <>
-                      <div className="absolute left-[50px] top-0 text-xs text-gray-600">
-                        신청 버튼 클릭
-                        <br />
-                        {item.time1} sec
-                      </div>
-                      <div className="absolute left-[150px] top-0 text-xs text-gray-600">
-                        입력 완료 시간
-                        <br />
-                        {item.time2} sec
-                      </div>
-                      <div className="absolute left-[50px] top-5 w-[100px] h-2 bg-green-400 rounded-full"></div>
-                    </>
-                  ) : (
-                    <div className="absolute left-[250px] top-5 w-[100px] h-2 bg-red-400 rounded-full"></div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        {resultInfo ? (
+          <SubjectTimeLine result={resultInfo} />
+        ) : (
+          <div className="text-center text-gray-500">데이터를 불러오는 중입니다...</div>
+        )}
       </section>
     </>
   );
+}
+
+function SubjectDetailResult({ result }: { result: ExtendedResultResponse }) {
+  const { subject_results } = result;
+
+  return (
+    <table className="min-w-full text-sm text-center">
+      <thead className="bg-gray-100 text-gray-600">
+        <tr>
+          <th className="py-2 px-2">학수번호</th>
+          <th className="py-2 px-2">과목명</th>
+          <th className="py-2 px-2">교수명</th>
+          <th className="py-2 px-2">순위</th>
+          <th className="py-2 px-2">관심시간</th>
+          <th className="py-2 px-2">관심</th>
+          <th className="py-2 px-2">성공/실패</th>
+        </tr>
+      </thead>
+      <tbody className="text-gray-700">
+        {subject_results.map((row, i) => (
+          <tr key={i} className="border-t">
+            <td className="py-2 px-2">{row.subjectInfo?.classCode + '-' + row.subjectInfo?.classCode}</td>
+            <td className="py-2 px-2">{row.subjectInfo?.subjectName}</td>
+            <td className="py-2 px-2">{row.subjectInfo?.professorName}</td>
+            <td className="py-2 px-2">{row.selected_index + '/'}</td>
+            <td className="py-2 px-2">{row.ended_at + ' sec'}</td>
+            <td className="py-2 px-2">
+              <span
+                className={`px-2 py-0.5 rounded-full text-white ${getWishesColor(row.subjectInfo?.totalCount ?? -1)}`}
+              >
+                {row.subjectInfo?.totalCount}
+              </span>
+            </td>
+            <td className="py-2 px-2">
+              <span className={`px-2 py-0.5 rounded-full text-white text-xs ${getStausColor(row.status)}`}>
+                {row.status === APPLY_STATUS.SUCCESS ? '성공' : '실패'}
+              </span>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+function SubjectTimeLine({ result }: { result: ExtendedResultResponse }) {
+  const { timeline } = result;
+
+  return (
+    <div className="w-full overflow-x-auto">
+      <div className="relative w-[900px] h-64 border-t border-l border-gray-200">
+        {/* Timeline rows (예시) */}
+        {timeline.map((item, i) => (
+          <div key={i} className="flex items-center space-x-2 mt-4">
+            <div className={`text-sm ${getStausColor(item.status)}`}>{item.subjectInfo?.subjectName}</div>
+            <div className="relative flex-1 h-6">
+              {item.status === APPLY_STATUS.SUCCESS ? (
+                <>
+                  <div className="absolute left-[50px] top-0 text-xs text-gray-600">
+                    신청 버튼 클릭
+                    <br />
+                    {item.started_at} sec
+                  </div>
+                  <div className="absolute left-[150px] top-0 text-xs text-gray-600">
+                    입력 완료 시간
+                    <br />
+                    {item.ended_at} sec
+                  </div>
+                  <div className="absolute left-[50px] top-5 w-[100px] h-2 bg-green-400 rounded-full"></div>
+                </>
+              ) : (
+                <div className="absolute left-[250px] top-5 w-[100px] h-2 bg-red-400 rounded-full"></div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+interface ExtendedResultResponse extends ResultResponse {
+  subject_results: (ResultResponse['subject_results'][number] & { subjectInfo?: Wishes })[];
+  timeline: (ResultResponse['timeline'][number] & { subjectInfo?: Wishes })[];
+  result?: ExtendedResultResponse;
+}
+
+function joinSubjectInfo(subjects?: Wishes[], result?: ResultResponse | null): ExtendedResultResponse | undefined {
+  if (!result || !subjects) return undefined;
+
+  const searchSubject = (subjectId: number) => {
+    return subjects.find(subject => subject.subjectId === subjectId);
+  };
+
+  return {
+    user_ability: result.user_ability,
+    timeline: result.timeline.map(item => ({
+      ...item,
+      subjectInfo: searchSubject(item.subject_id),
+    })),
+    subject_results: result.subject_results.map(item => ({
+      ...item,
+      subjectInfo: searchSubject(item.subject_id),
+    })),
+  };
 }
 
 export default DashboardDetail;

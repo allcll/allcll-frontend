@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import useWishes from '@/hooks/server/useWishes.ts';
 import {
   startSimulation,
   checkOngoingSimulation,
@@ -9,16 +10,21 @@ import {
   APPLY_STATUS,
 } from '@/utils/simulation/simulation.ts';
 import { getRecentInterestedSnapshot, saveInterestedSnapshot } from '@/utils/simulation/subjects.ts';
-import useWishes from '@/hooks/server/useWishes.ts';
-import { Button } from '@allcll/common/src/components/Button.tsx';
+import { InterestedSubject } from '@/utils/dbConfig.ts';
 
 export function SimulationTestUI() {
   const [log, setLog] = useState('');
   const { data: subjects } = useWishes();
+  const snapshots = useRef<InterestedSubject[] | null>(null);
+  const clickIndex = useRef(0);
+  // const simulationId = useRef<number | null>(null);
 
   async function handleLoadSnapshot() {
     const res = await getRecentInterestedSnapshot();
     setLog(JSON.stringify(res));
+
+    snapshots.current = res?.subjects ?? null;
+    clickIndex.current = 0;
   }
 
   async function handleSaveSnapshot() {
@@ -34,6 +40,8 @@ export function SimulationTestUI() {
   async function handleStartSim() {
     const res = await startSimulation();
     setLog(JSON.stringify(res));
+
+    clickIndex.current = 0;
   }
 
   async function handleCheckOngoing() {
@@ -56,7 +64,7 @@ export function SimulationTestUI() {
     // 과목 ID 예시
     const res = await triggerButtonEvent({
       eventType: BUTTON_EVENT.APPLY,
-      subjectId: 101,
+      subjectId: snapshots.current?.[clickIndex.current % 7].subject_id ?? -1,
     });
     setLog(JSON.stringify(res));
   }
@@ -65,7 +73,7 @@ export function SimulationTestUI() {
     // 과목 ID 예시
     const res = await triggerButtonEvent({
       eventType: BUTTON_EVENT.REFRESH,
-      subjectId: 101,
+      subjectId: snapshots.current?.[clickIndex.current++ % 7].subject_id ?? -1,
       status: APPLY_STATUS.SUCCESS,
     });
     setLog(JSON.stringify(res));
@@ -93,4 +101,27 @@ export function SimulationTestUI() {
       <p className="block">{log}</p>
     </div>
   );
+}
+
+// Button
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary';
+}
+
+export const Button = ({ children, className, variant = 'primary', ...props }: ButtonProps) => {
+  const baseStyles = 'px-4 py-2 rounded-xl font-semibold transition-colors duration-200 focus:outline-none';
+  const variantStyles = {
+    primary: 'bg-blue-500 text-white hover:bg-blue-600',
+    secondary: 'bg-gray-100 text-gray-800 hover:bg-gray-200',
+  };
+
+  return (
+    <button className={cn(baseStyles, variantStyles[variant], className)} {...props}>
+      {children}
+    </button>
+  );
+};
+
+export function cn(...classes: (string | undefined | false)[]): string {
+  return classes.filter(Boolean).join(' ');
 }
