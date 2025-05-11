@@ -46,15 +46,49 @@ function CheckError(err: unknown) {
 /**
  * 진행 중인 시뮬레이션 확인
  * 현재 진행중인 시뮬레이션이 있는지 확인합니다.
- * 진행중인 시뮬레이션이 있다면 해당 simulation_id 를 반환하고, 없다면 simulation_id=-1 을 반환합니다
+ * 진행중인 시뮬레이션이 있다면 해당 simulation_id 와 진행 정보를 반환하고, 없다면 simulation_id=-1 을 반환합니다.
  * 사용자가 시뮬레이션 페이지에 들어왔을 때 확인합니다.
  * @returns { simulation_id: number } */
 export async function checkOngoingSimulation() {
   try {
     const ongoing = await getOngoingSimulation();
 
+    if (!ongoing) return { simulationId: -1 };
+
+    const registeredSelections = await db.simulation_run_selections
+      .filter(
+        selection =>
+          selection.simulation_run_id === ongoing.simulation_run_id &&
+          [APPLY_STATUS.SUCCESS, APPLY_STATUS.FAILED].includes(selection.status),
+      )
+      .toArray();
+
+    const snapshotSubjects = await db.interested_subject.where('snapshot_id').equals(ongoing.snapshot_id).toArray();
+    if (!snapshotSubjects) return errMsg(SIMULATION_ERROR.SNAPSHOT_NOT_EXIST);
+
+    const registeredSubjects = snapshotSubjects
+      .filter(subject => registeredSelections.some(selection => selection.interested_id === subject.interested_id))
+      .map(subject => ({ subjectId: subject.subject_id }));
+
+    const nonRegisteredSubjects = snapshotSubjects
+      .filter(subject => !registeredSelections.some(selection => selection.interested_id === subject.interested_id))
+      .map(subject => ({ subjectId: subject.subject_id }));
+
+    const subjectStatus = registeredSelections.map(selection => {
+      const subject = snapshotSubjects.find(subject => subject.interested_id === selection.interested_id);
+      if (!subject) return { subjectId: -1, status: APPLY_STATUS.FAILED };
+
+      return {
+        subjectId: subject.subject_id,
+        status: selection.status,
+      };
+    });
+
     return {
-      simulation_id: ongoing ? ongoing.simulation_run_id : -1,
+      simulation_id: ongoing.simulation_run_id,
+      nonRegisteredSubjects,
+      registeredSubjects,
+      subjectStatus,
     };
   } catch (e) {
     return CheckError(e);
@@ -87,8 +121,8 @@ export async function startSimulation() {
     return ongoing;
   }
 
-  if (ongoing.simulation_id !== -1) {
-    return { simulation_id: ongoing.simulation_id, isRunning: true };
+  if (ongoing.simulationId !== -1) {
+    return { simulationId: ongoing.simulationId, isRunning: true };
   }
 
   const recent = await getRecentInterestedSnapshot();
@@ -112,7 +146,7 @@ export async function startSimulation() {
     ended_at: -1,
   });
 
-  return { simulation_id: newId, isRunning: true };
+  return { simulationId: newId, isRunning: true };
 }
 
 // 타입 정의
@@ -243,8 +277,8 @@ async function endCurrentSimulation() {
   }, 0);
 
   const totalElapsed = Date.now() - lastRun.started_at;
-  const accuracy = getAccuracy(totalElapsed, canceledTime);
-  const score = getSpeedScore(totalElapsed / triedCount) + getAccuracyScore(accuracy);
+  const accuracy = getAccuracy(totalElapsed / 1000, canceledTime / 1000);
+  const score = getSpeedScore(totalElapsed / 1000 / triedCount) + getAccuracyScore(accuracy);
 
   await db.simulation_run.update(lastRun.simulation_run_id, {
     ended_at: Date.now(),
