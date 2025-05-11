@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import useWishes from '@/hooks/server/useWishes.ts';
 import {
   startSimulation,
@@ -10,14 +10,21 @@ import {
   APPLY_STATUS,
 } from '@/utils/simulation/simulation.ts';
 import { getRecentInterestedSnapshot, saveInterestedSnapshot } from '@/utils/simulation/subjects.ts';
+import { InterestedSubject } from '@/utils/dbConfig.ts';
 
 export function SimulationTestUI() {
   const [log, setLog] = useState('');
   const { data: subjects } = useWishes();
+  const snapshots = useRef<InterestedSubject[] | null>(null);
+  const clickIndex = useRef(0);
+  // const simulationId = useRef<number | null>(null);
 
   async function handleLoadSnapshot() {
     const res = await getRecentInterestedSnapshot();
     setLog(JSON.stringify(res));
+
+    snapshots.current = res?.subjects ?? null;
+    clickIndex.current = 0;
   }
 
   async function handleSaveSnapshot() {
@@ -33,6 +40,8 @@ export function SimulationTestUI() {
   async function handleStartSim() {
     const res = await startSimulation();
     setLog(JSON.stringify(res));
+
+    clickIndex.current = 0;
   }
 
   async function handleCheckOngoing() {
@@ -55,7 +64,7 @@ export function SimulationTestUI() {
     // 과목 ID 예시
     const res = await triggerButtonEvent({
       eventType: BUTTON_EVENT.APPLY,
-      subjectId: 101,
+      subjectId: snapshots.current?.[clickIndex.current % 7].subject_id ?? -1,
     });
     setLog(JSON.stringify(res));
   }
@@ -64,7 +73,7 @@ export function SimulationTestUI() {
     // 과목 ID 예시
     const res = await triggerButtonEvent({
       eventType: BUTTON_EVENT.REFRESH,
-      subjectId: 101,
+      subjectId: snapshots.current?.[clickIndex.current++ % 7].subject_id ?? -1,
       status: APPLY_STATUS.SUCCESS,
     });
     setLog(JSON.stringify(res));
