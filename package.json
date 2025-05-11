@@ -11,7 +11,8 @@
     "client": "pnpm --filter @allcll/client run dev",
     "admin": "pnpm --filter @allcll/admin run dev",
     "build-client": "pnpm --filter @allcll/client run build",
-    "build-admin": "pnpm --filter @allcll/admin run build"
+    "build-admin": "pnpm --filter @allcll/admin run build",
+    "prettier": "npx prettier ./packages --write"
   },
   "packageManager": "pnpm@9.15.4",
   "dependencies": {

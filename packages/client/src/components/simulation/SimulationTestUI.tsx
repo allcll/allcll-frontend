@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import useWishes from '@/hooks/server/useWishes.ts';
 import {
   startSimulation,
   checkOngoingSimulation,
@@ -9,8 +10,6 @@ import {
   APPLY_STATUS,
 } from '@/utils/simulation/simulation.ts';
 import { getRecentInterestedSnapshot, saveInterestedSnapshot } from '@/utils/simulation/subjects.ts';
-import useWishes from '@/hooks/server/useWishes.ts';
-import { Button } from '@allcll/common/src/components/Button.tsx';
 
 export function SimulationTestUI() {
   const [log, setLog] = useState('');
@@ -93,4 +92,27 @@ export function SimulationTestUI() {
       <p className="block">{log}</p>
     </div>
   );
+}
+
+// Button
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary';
+}
+
+export const Button = ({ children, className, variant = 'primary', ...props }: ButtonProps) => {
+  const baseStyles = 'px-4 py-2 rounded-xl font-semibold transition-colors duration-200 focus:outline-none';
+  const variantStyles = {
+    primary: 'bg-blue-500 text-white hover:bg-blue-600',
+    secondary: 'bg-gray-100 text-gray-800 hover:bg-gray-200',
+  };
+
+  return (
+    <button className={cn(baseStyles, variantStyles[variant], className)} {...props}>
+      {children}
+    </button>
+  );
+};
+
+export function cn(...classes: (string | undefined | false)[]): string {
+  return classes.filter(Boolean).join(' ');
 }
