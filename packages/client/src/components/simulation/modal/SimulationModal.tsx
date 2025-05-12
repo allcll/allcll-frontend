@@ -85,7 +85,6 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
         stopTimer();
 
         const elapsedTime = getElapsedTime(currentSimulation.started_simulation_at, ended_subject_at);
-        console.log('elapsedTime', elapsedTime, currentSimulation.started_simulation_at, ended_subject_at);
         const isSuccess = checkSubjectResult(currentSubjectId, elapsedTime);
 
         if (!isSuccess) {
