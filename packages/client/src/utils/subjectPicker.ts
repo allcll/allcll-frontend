@@ -7,7 +7,18 @@ type Department = {
 };
 
 function getRandomItems(subject: SimulationSubject[], count: number) {
-  return [...subject].sort(() => Math.random() - 0.5).slice(0, Math.min(count, subject.length));
+  const uniqueSubjectCodes: Set<string> = new Set();
+  const randomSubjects: SimulationSubject[] = [];
+
+  for (const item of [...subject].sort(() => Math.random() - 0.5)) {
+    if (uniqueSubjectCodes.size >= count) break;
+    if (!uniqueSubjectCodes.has(item.subjectCode)) {
+      uniqueSubjectCodes.add(item.subjectCode);
+      randomSubjects.push(item);
+    }
+  }
+
+  return randomSubjects;
 }
 
 function pickCollege(department: string) {

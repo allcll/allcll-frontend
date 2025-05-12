@@ -33,9 +33,9 @@ export const checkSubjectResult = (currentSubjectId: number, elaspedTime: number
     });
 
     if (isPopular) {
-      limitTime = 2.6 * 2;
+      limitTime = 4.6 * 2;
     } else {
-      limitTime = 2.6 * 3;
+      limitTime = 4.6 * 3;
     }
   }
 

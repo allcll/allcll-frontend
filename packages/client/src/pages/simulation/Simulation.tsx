@@ -294,7 +294,13 @@ function Simulation() {
             {hasRunningSimulationId ? (
               currentSimulation.simulationStatus === 'progress' ? (
                 <SubjectsTable isRegisteredTable={false} />
-              ) : null
+              ) : (
+                <tr>
+                  <td colSpan={13} className="text-gray-400 py-4">
+                    조회된 내역이 없습니다.
+                  </td>
+                </tr>
+              )
             ) : (
               <tr>
                 <td colSpan={13} className="text-gray-400 py-4">
@@ -354,10 +360,16 @@ function Simulation() {
           {hasRunningSimulationId ? (
             currentSimulation.simulationStatus === 'progress' ? (
               <SubjectsTable isRegisteredTable={true} />
-            ) : null
+            ) : (
+              <tr>
+                <td colSpan={13} className=" text-gray-500 py-4">
+                  조회된 내역이 없습니다.
+                </td>
+              </tr>
+            )
           ) : (
             <tr>
-              <td colSpan={13} className="text-gray-400 py-4">
+              <td colSpan={13} className=" text-gray-500 py-4">
                 조회된 내역이 없습니다.
               </td>
             </tr>
