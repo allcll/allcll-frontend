@@ -3,6 +3,7 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 
 function SimulationResultModal() {
   const { closeModal } = useSimulationModalStore();
+
   return (
     <Modal>
       <div className="w-full max-w-md bg-white rounded-xl shadow-xl p-6 relative overflow-hidden">

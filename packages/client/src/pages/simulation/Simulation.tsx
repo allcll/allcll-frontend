@@ -29,13 +29,6 @@ function Simulation() {
   const hasRunningSimulationId =
     ongoingSimulation && 'simulation_id' in ongoingSimulation ? ongoingSimulation.simulation_id : -1;
 
-  /**
-   * 디버깅 중..
-   * 모달 SUCCESS에서 취소 버튼 누르면 SECTION -> hasRunningSimulationId찾을 수 없음
-   * 갑자기 종료되어서 hasRunningSimulationId이 -1로 됨 !
-   */
-  console.log(hasRunningSimulationId);
-
   const isPending = hasRunningSimulationId === undefined;
   const isError = hasRunningSimulationId === null;
 
@@ -46,10 +39,13 @@ function Simulation() {
      * 새로고침 시 진행 중인 시뮬레이션이 있다면
      *  현재 시뮬레이션으로 저장
      */
-    if (hasRunningSimulationId && currentSimulation.simulationStatus !== 'selectedDepartment') {
+    if (
+      hasRunningSimulationId &&
+      currentSimulation.simulationStatus !== 'selectedDepartment' &&
+      currentSimulation.simulationStatus !== 'start'
+    ) {
       getSimulateStatus()
         .then(result => {
-          console.log('result', result);
           if (result?.nonRegisteredSubjects) {
             const filteredSubjectsDetail = result?.nonRegisteredSubjects
               .map(subject => findSubjectsById(subject.subjectId))
@@ -65,7 +61,6 @@ function Simulation() {
             const filteredSubjectsDetail = result?.registeredSubjects
               .map(subject => findSubjectsById(subject.subjectId))
               .filter((subject): subject is SimulationSubject => subject !== undefined);
-            console.log(filteredSubjectsDetail);
             setCurrentSimulation({
               simulationId: result?.simulationId,
               simulationStatus: 'progress',
@@ -77,7 +72,7 @@ function Simulation() {
           console.log(error);
         });
     }
-  }, [hasRunningSimulationId]);
+  }, [currentSimulation.simulationStatus]);
 
   const handleChangeDepartment = (name: string) => {
     if (name === 'none') {

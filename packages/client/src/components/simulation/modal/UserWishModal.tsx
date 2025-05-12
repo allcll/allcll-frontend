@@ -82,6 +82,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
     closeModal('wish');
 
     /**
+     * 관심과목 스냅샷 저장 후
      * 게임 시작 Promise 호출
      */
     saveInterestedSnapshot(
