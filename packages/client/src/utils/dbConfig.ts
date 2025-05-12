@@ -49,6 +49,7 @@ export interface SimulationRun extends SimulationRunData {
 export interface SimulationRunData {
   snapshot_id: number;
   user_id: string;
+  department_code: string;
   department_name: string;
   success_subject_count: number;
   subject_count: number;

@@ -89,6 +89,7 @@ export async function checkOngoingSimulation() {
       simulationId: ongoing.simulation_run_id,
       userStatus: {
         userPK: ongoing.user_id,
+        departmentCode: ongoing.department_code,
         departmentName: ongoing.department_name,
       },
       searchEventAt: ongoing.search_event_at,
@@ -134,7 +135,7 @@ export async function getSimulationById(simulationId: number) {
  * 진행 중인 시뮬레이션이 존재하면, 해당 simulation_id 를 반환,
  * 진행 중인 시뮬레이션이 존재하지 않으면, 새로운 simulation_id 반환 후 시뮬레이션 테이블 생성
  * @returns { simulation_id: number, isRunning?: true } */
-export async function startSimulation(userPK: string, departmentName: string) {
+export async function startSimulation(userPK: string, departmentCode: string, departmentName: string) {
   const ongoing = await checkOngoingSimulation();
 
   if (ongoing && 'errMsg' in ongoing) {
@@ -156,6 +157,7 @@ export async function startSimulation(userPK: string, departmentName: string) {
   const newId = await db.simulation_run.add({
     snapshot_id: recent.snapshot_id,
     user_id: userPK,
+    department_code: departmentCode,
     department_name: departmentName,
     success_subject_count: 0,
     subject_count: subjects.length,

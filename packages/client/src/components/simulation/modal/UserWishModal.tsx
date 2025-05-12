@@ -91,7 +91,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
       }),
     )
       .then(() => {
-        return startSimulation('Fixme: USER_PK', department.departmentName);
+        return startSimulation('Fixme: USER_PK', department.departmentCode, department.departmentName);
       })
       .then(result => {
         if (

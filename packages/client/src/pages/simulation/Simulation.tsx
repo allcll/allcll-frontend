@@ -15,6 +15,7 @@ import { SimulationSubject } from '@/utils/types';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
+import { isValidUser } from '@/hooks/scoreServer/useScoreServer.ts';
 
 function Simulation() {
   const { type, openModal, closeModal } = useSimulationModalStore();
@@ -54,6 +55,16 @@ function Simulation() {
       .then(result => {
         if (!result || result.simulationId == -1) return;
 
+        // Todo: 시뮬레이션 simulationId, userPK, DepartmentCode, DepartmentName 다른 곳에서도 불러오기
+        setCurrentSimulation({
+          simulationId: result.simulationId,
+          userPK: result?.userStatus?.userPK ?? '',
+          department: {
+            departmentCode: result?.userStatus?.departmentCode ?? '',
+            departmentName: result?.userStatus?.departmentName ?? '',
+          },
+        });
+
         if (result?.nonRegisteredSubjects) {
           updateSimulation(result.nonRegisteredSubjects, 'nonRegisteredSubjects', result);
         }
@@ -80,6 +91,14 @@ function Simulation() {
       fetchAndUpdateSimulationStatus();
     }
   }, [currentSimulation.simulationStatus]);
+
+  /** userPK를 store에  저장합니다*/
+  const handleChangeUserPK = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setCurrentSimulation({
+      userPK: value,
+    });
+  };
 
   const handleChangeDepartment = (name: string) => {
     if (name === 'none') {
@@ -127,7 +146,22 @@ function Simulation() {
       });
   };
 
-  const handleSubjectSearchClick = () => {
+  const handleSubjectSearchClick = async () => {
+    // user 검증 로직
+    try {
+      const isValid = await isValidUser(currentSimulation.userPK);
+
+      if (!isValid) {
+        alert('유효하지 않은 사용자입니다. userPK를 확인해주세요!');
+        return;
+      }
+    } catch (error) {
+      console.error('Error validating user:', error);
+      alert('유효하지 않은 사용자입니다. userPK를 확인해주세요!');
+      return;
+    }
+
+    // 학과 검증 로직
     if (currentSimulation.department.departmentName !== '') {
       setCurrentSimulation({
         simulationStatus: 'selectedDepartment',
@@ -202,7 +236,12 @@ function Simulation() {
 
             <div className="flex items-center gap-2">
               <label className="font-bold">고유번호</label>
-              <input className="border px-2 py-1 w-48" placeholder="1234" />
+              <input
+                className="border px-2 py-1 w-48"
+                placeholder="userPK"
+                value={currentSimulation.userPK}
+                onChange={handleChangeUserPK}
+              />
             </div>
           </div>
 

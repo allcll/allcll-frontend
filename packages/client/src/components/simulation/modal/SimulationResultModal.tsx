@@ -4,10 +4,11 @@ import { getSummaryResult } from '@/utils/simulation/simulation';
 import { useEffect, useState } from 'react';
 import ProcessingModal from './Processing';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
+import { postUserScore } from '@/hooks/scoreServer/useScoreServer.ts';
 
 function SimulationResultModal({ simulationId }: { simulationId: number }) {
   const { closeModal } = useSimulationModalStore();
-  const { resetSimulation } = useSimulationProcessStore();
+  const { currentSimulation, resetSimulation } = useSimulationProcessStore();
   const [result, setResult] = useState<{ accuracy: number; score: number; total_elapsed: number } | null>(null);
 
   useEffect(() => {
@@ -17,6 +18,10 @@ function SimulationResultModal({ simulationId }: { simulationId: number }) {
         if ('errMsg' in result) {
           alert(result.errMsg);
         } else {
+          postUserScore(currentSimulation.userPK, result.score).then(res => {
+            // Todo: 서버에서 점수 저장 후 처리
+            console.log(res);
+          });
           setResult(result);
           resetSimulation();
         }

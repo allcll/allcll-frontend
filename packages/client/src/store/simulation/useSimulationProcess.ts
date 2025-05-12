@@ -15,6 +15,7 @@ interface SubjectStatus {
 
 interface SimulationState {
   simulationId: number;
+  userPK: string;
   department: DepartmentType;
   subjects: SimulationSubject[];
   started_simulation_at: number | null;
@@ -34,6 +35,7 @@ interface IUseSimulationProcessStore {
 
 const defaultSimulation: SimulationState = {
   simulationId: -1,
+  userPK: '',
   department: { departmentCode: '', departmentName: '' },
   subjects: [],
   started_simulation_at: null,
