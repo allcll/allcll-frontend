@@ -5,11 +5,10 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import useWishes from '@/hooks/server/useWishes.ts';
 import { getSimulationResult, ResultResponse } from '@/utils/simulation/result.ts';
 import { Wishes } from '@/utils/types.ts';
-import { getStausColor } from '@/utils/colors.ts';
-import { APPLY_STATUS } from '@/utils/simulation/simulation.ts';
 import { findSubjectsById } from '@/utils/subjectPicker.ts';
-// import Timeline from '@/components/simulation/detail/Timeline.tsx';
+import Timeline from '@/components/simulation/detail/Timeline.tsx';
 import RadarChart from '@/components/simulation/detail/RadarChart.tsx';
+import SubjectDetailResult from '@/components/simulation/detail/SubjectDetailResult.tsx';
 
 function DashboardDetail() {
   const { runId } = useParams();
@@ -50,92 +49,22 @@ function DashboardDetail() {
 
       {/* Timeline */}
       <section className="bg-white p-6 rounded-2xl shadow-sm">
-        <h2 className="text-lg font-semibold mb-4">내 모의 수강 신청 별 TimeLine</h2>
+        <div className="flex items-start justify-between mb-4">
+          <h2 className="text-lg font-semibold mb-4">내 모의 수강 신청 별 TimeLine</h2>
+
+          <label className="flex items-center text-sm gap-1 text-gray-500">
+            <input type="checkbox" className="accent-gray-400" />
+            전체 사용자 평균 보기
+          </label>
+        </div>
         {resultInfo ? (
-          <SubjectTimeLine result={resultInfo} />
+          // <SubjectTimeLine result={resultInfo} />
+          <Timeline />
         ) : (
-          // <Timeline />
           <div className="text-center text-gray-500">데이터를 불러오는 중입니다...</div>
         )}
       </section>
     </>
-  );
-}
-
-function SubjectDetailResult({ result }: { result: ExtendedResultResponse }) {
-  const { subject_results } = result;
-
-  return (
-    <table className="min-w-full text-sm text-center">
-      <thead className="bg-gray-100 text-gray-600">
-        <tr>
-          <th className="py-2 px-2">학수번호</th>
-          <th className="py-2 px-2">과목명</th>
-          <th className="py-2 px-2">교수명</th>
-          <th className="py-2 px-2">순위</th>
-          <th className="py-2 px-2">관심시간</th>
-          {/*<th className="py-2 px-2">관심</th>*/}
-          <th className="py-2 px-2">성공/실패</th>
-        </tr>
-      </thead>
-      <tbody className="text-gray-700">
-        {subject_results.map((row, i) => (
-          <tr key={i} className="border-t">
-            <td className="py-2 px-1">{row.subjectInfo?.subjectCode + '-' + row.subjectInfo?.classCode}</td>
-            <td className="py-2 px-1">{row.subjectInfo?.subjectName}</td>
-            <td className="py-2 px-1">{row.subjectInfo?.professorName}</td>
-            <td className="py-2 px-1">{row.selected_index + '/'}</td>
-            <td className="py-2 px-1">{row.ended_at + ' sec'}</td>
-            {/*<td className="py-2 px-1">*/}
-            {/*  <span className={`px-2 py-0.5 rounded-full ${getWishesColor(row.subjectInfo?.totalCount ?? -1)}`}>*/}
-            {/*    {row.subjectInfo?.totalCount}*/}
-            {/*  </span>*/}
-            {/*</td>*/}
-            <td className="py-2 px-2">
-              <span className={`px-2 py-0.5 rounded-full text-xs ${getStausColor(row.status)}`}>
-                {row.status === APPLY_STATUS.SUCCESS ? '성공' : '실패'}
-              </span>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-}
-
-function SubjectTimeLine({ result }: { result: ExtendedResultResponse }) {
-  const { timeline } = result;
-
-  return (
-    <div className="w-full overflow-x-auto">
-      <div className="relative w-[900px] h-64 border-t border-l border-gray-200">
-        {/* Timeline rows (예시) */}
-        {timeline.map((item, i) => (
-          <div key={i} className="flex items-center space-x-2 mt-4">
-            <div className={`text-sm ${getStausColor(item.status)}`}>{item.subjectInfo?.subjectName}</div>
-            <div className="relative flex-1 h-6">
-              {item.status === APPLY_STATUS.SUCCESS ? (
-                <>
-                  <div className="absolute left-[50px] top-0 text-xs text-gray-600">
-                    신청 버튼 클릭
-                    <br />
-                    {item.started_at} sec
-                  </div>
-                  <div className="absolute left-[150px] top-0 text-xs text-gray-600">
-                    입력 완료 시간
-                    <br />
-                    {item.ended_at} sec
-                  </div>
-                  <div className="absolute left-[50px] top-5 w-[100px] h-2 bg-green-400 rounded-full"></div>
-                </>
-              ) : (
-                <div className="absolute left-[250px] top-5 w-[100px] h-2 bg-red-400 rounded-full"></div>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
   );
 }
 
