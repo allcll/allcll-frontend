@@ -227,9 +227,16 @@ export async function triggerButtonEvent(input: ButtonEventSearchReq | ButtonEve
     return {};
   }
 
+  // const selections = await db.simulation_run_selections
+  //   .filter(selection => selection.simulation_run_id === latestSimulationId && selection.interested_id === subjectId)
+  //   .toArray();
   const selections = await db.simulation_run_selections
-    .filter(selection => selection.simulation_run_id === latestSimulationId && selection.interested_id === subjectId)
+    .filter(selection => selection.simulation_run_id === latestSimulationId)
     .toArray();
+  /**
+   * 여기서 selection.interested_id === subjectId에서 자꾸 false를 반환
+   */
+  console.log(selections);
   const latestSelection = selections[selections.length - 1]; //마지막이 나올까요?
   if (!latestSelection) return errMsg(SIMULATION_ERROR.SELECTION_NOT_FOUND);
 

@@ -3,17 +3,28 @@ import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation';
 
-const SubjectsTable = () => {
+interface ISubjectsTable {
+  isRegisteredTable: boolean;
+}
+
+const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
   const { currentSimulation } = useSimulationProcessStore();
   const { openModal } = useSimulationModalStore();
   const { currentSubjectId, setCurrentSubjectId, setSubjectStatus, startTimer } = useSimulationSubjectStore();
   const { subjectsStatus, setSubjectsStatus } = useSimulationProcessStore();
 
   const handleClickSubject = (subjectId: number) => {
-    triggerButtonEvent({ eventType: BUTTON_EVENT.APPLY, subjectId });
+    triggerButtonEvent({ eventType: BUTTON_EVENT.APPLY, subjectId })
+      .then(result => {
+        if ('errMsg' in result) {
+          alert(result.errMsg);
+        }
+      })
+      .catch(e => {
+        console.error('예외 발생:', e);
+      });
 
     const doubledSubject = subjectsStatus.find(subject => subject.subjectId === subjectId);
-
     setCurrentSubjectId(subjectId);
 
     if (
@@ -29,10 +40,18 @@ const SubjectsTable = () => {
     }
   };
 
+  const filteredNonRegistered = currentSimulation.nonRegisteredSubjects.filter(subject => {
+    return !currentSimulation.registeredSubjects.some(
+      registeredSubject => registeredSubject.subjectId === subject.subjectId,
+    );
+  });
+
+  const subjectsToRender = isRegisteredTable ? currentSimulation.registeredSubjects : filteredNonRegistered;
+
   return (
     <tbody className="min-h-[300px] border-gray-100">
-      {currentSimulation.subjects.length > 0 ? (
-        currentSimulation.subjects.map((course, idx) => (
+      {subjectsToRender.length > 0 ? (
+        subjectsToRender.map((course, idx) => (
           <tr key={course.subjectId} className="hover:bg-gray-50">
             <td className="border border-gray-300 bg-blue-100 px-2 py-1">{idx + 1}</td>
             <td className="border border-gray-300 px-2 py-1">
@@ -40,7 +59,7 @@ const SubjectsTable = () => {
                 className="bg-blue-500 cursor-pointer text-white text-xs px-2 py-0.5 rounded-xs"
                 onClick={() => handleClickSubject(course.subjectId)}
               >
-                신청
+                {isRegisteredTable ? '삭제' : '신청'}
               </button>
             </td>
             <td className="border border-gray-300 px-2 py-1">{course.subjectCode}</td>

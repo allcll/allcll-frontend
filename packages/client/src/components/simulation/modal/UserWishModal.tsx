@@ -90,18 +90,27 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
       }),
     )
       .then(() => {
-        startSimulation()
-          .then(({ simulation_id, isRunning }) => {
-            setCurrentSimulation({
-              simulationId: simulation_id,
-              simulationStatus: isRunning ? 'start' : 'before',
-            });
-          })
-          .catch(e => {
-            console.error('시뮬레이션 시작 중 오류 발생:', e);
-          });
+        return startSimulation();
       })
-      .then(() => {});
+      .then(result => {
+        if (
+          'simulationId' in result &&
+          'isRunning' in result &&
+          result.simulationId !== undefined &&
+          result.isRunning !== undefined
+        ) {
+          const { simulationId, isRunning } = result;
+          setCurrentSimulation({
+            simulationId,
+            simulationStatus: isRunning ? 'start' : 'before',
+          });
+        } else {
+          console.error('시뮬레이션 시작 결과가 유효하지 않음', result);
+        }
+      })
+      .catch(e => {
+        console.error('시뮬레이션 시작 중 오류 발생:', e);
+      });
   };
 
   return (

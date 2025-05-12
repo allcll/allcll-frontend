@@ -64,6 +64,7 @@ function SimulationModal() {
         setSubjectsStatus(currentSubjectId, APPLY_STATUS.CAPTCHA_FAILED);
         closeModal('simulation');
         openModal('simulation');
+        return;
       } else {
         /**
          *캡차를 잘 입력한 경우 -> 경과 시간에 따라서
@@ -72,7 +73,6 @@ function SimulationModal() {
         stopTimer();
 
         const elapsedTime = getElapsedTime();
-        console.log(elapsedTime);
         const isSuccess = checkSubjectResult(currentSubjectId, elapsedTime);
 
         if (!isSuccess) {
@@ -82,22 +82,20 @@ function SimulationModal() {
           setSubjectStatus(currentSubjectId, APPLY_STATUS.SUCCESS);
           setSubjectsStatus(currentSubjectId, APPLY_STATUS.SUCCESS);
         }
-
         closeModal('simulation');
         openModal('simulation');
+        return;
       }
     } else if (modalData.status === APPLY_STATUS.CAPTCHA_FAILED) {
       setSubjectStatus(currentSubjectId, APPLY_STATUS.CANCELED);
       setSubjectsStatus(currentSubjectId, APPLY_STATUS.CANCELED);
       closeModal('simulation');
+      return;
     } else if (currentSubjectStatus?.subjectStatus === APPLY_STATUS.DOUBLED) {
       openModal('simulation');
       closeModal('simulation');
-    } else {
-      closeModal('simulation');
-    }
-
-    if (modalData?.status === APPLY_STATUS.SUCCESS || APPLY_STATUS.FAILED) {
+      return;
+    } else if (modalData?.status === APPLY_STATUS.SUCCESS || APPLY_STATUS.FAILED) {
       /**
        * 과목 신청 완료 -> 과목 담기 종료 이벤트
        */
@@ -108,7 +106,7 @@ function SimulationModal() {
       })
         .then(result => {
           if ('errMsg' in result) {
-            alert('시뮬레이션이 존재하지 않습니다. ');
+            alert(result.errMsg);
           }
         })
         .catch(e => {
@@ -124,6 +122,8 @@ function SimulationModal() {
             openModal('result');
           }
         });
+
+      closeModal('simulation');
     }
   };
 
@@ -133,6 +133,7 @@ function SimulationModal() {
      * SUCCESS이거나 FAILED일 때 과목 신청 완료, 시뮬레이션 종료 확인
      */
     if (modalData?.status === APPLY_STATUS.SUCCESS || APPLY_STATUS.FAILED) {
+      console.log(currentSubjectId);
       triggerButtonEvent({
         eventType: BUTTON_EVENT.SKIP_REFRESH,
         subjectId: currentSubjectId,
@@ -140,7 +141,7 @@ function SimulationModal() {
       })
         .then(async result => {
           if ('errMsg' in result) {
-            alert('시뮬레이션이 존재하지 않습니다.');
+            alert(result.errMsg);
             forceStopSimulation();
             resetSimulation();
             openModal('result');

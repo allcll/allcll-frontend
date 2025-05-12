@@ -10,6 +10,7 @@ import { useInterestedSubjectList } from '@/hooks/simulation/useFavorite';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { BUTTON_EVENT, checkOngoingSimulation, triggerButtonEvent } from '@/utils/simulation/simulation';
+import { getSimulateStatus } from '@/utils/simulation/subjects';
 import { checkExistDepartment, findSubjectsById, makeValidateDepartment } from '@/utils/subjectPicker';
 import { SimulationSubject } from '@/utils/types';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -24,7 +25,17 @@ function Simulation() {
   const notExistDepartments = checkExistDepartment(departments);
   const newDepartments = makeValidateDepartment(departments, notExistDepartments);
 
-  const hasRunningSimulationId = useLiveQuery(checkOngoingSimulation)?.simulation_id;
+  const ongoingSimulation = useLiveQuery(checkOngoingSimulation);
+  const hasRunningSimulationId =
+    ongoingSimulation && 'simulation_id' in ongoingSimulation ? ongoingSimulation.simulation_id : -1;
+
+  /**
+   * 디버깅 중..
+   * 모달 SUCCESS에서 취소 버튼 누르면 SECTION -> hasRunningSimulationId찾을 수 없음
+   * 갑자기 종료되어서 hasRunningSimulationId이 -1로 됨 !
+   */
+  console.log(hasRunningSimulationId);
+
   const isPending = hasRunningSimulationId === undefined;
   const isError = hasRunningSimulationId === null;
 
@@ -35,20 +46,38 @@ function Simulation() {
      * 새로고침 시 진행 중인 시뮬레이션이 있다면
      *  현재 시뮬레이션으로 저장
      */
-    if (hasRunningSimulationId && subjects && currentSimulation.simulationStatus !== 'selectedDepartment') {
-      if (subjects) {
-        const filteredSubjectsDetail = subjects
-          .map(subject => findSubjectsById(subject.subject_id))
-          .filter((subject): subject is SimulationSubject => subject !== undefined);
+    if (hasRunningSimulationId && currentSimulation.simulationStatus !== 'selectedDepartment') {
+      getSimulateStatus()
+        .then(result => {
+          console.log('result', result);
+          if (result?.nonRegisteredSubjects) {
+            const filteredSubjectsDetail = result?.nonRegisteredSubjects
+              .map(subject => findSubjectsById(subject.subjectId))
+              .filter((subject): subject is SimulationSubject => subject !== undefined);
 
-        setCurrentSimulation({
-          simulationId: hasRunningSimulationId,
-          simulationStatus: 'progress',
-          subjects: filteredSubjectsDetail,
+            setCurrentSimulation({
+              simulationId: result?.simulationId,
+              simulationStatus: 'progress',
+              nonRegisteredSubjects: filteredSubjectsDetail,
+            });
+          }
+          if (result?.registeredSubjects) {
+            const filteredSubjectsDetail = result?.registeredSubjects
+              .map(subject => findSubjectsById(subject.subjectId))
+              .filter((subject): subject is SimulationSubject => subject !== undefined);
+            console.log(filteredSubjectsDetail);
+            setCurrentSimulation({
+              simulationId: result?.simulationId,
+              simulationStatus: 'progress',
+              registeredSubjects: filteredSubjectsDetail,
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
         });
-      }
     }
-  }, [subjects]);
+  }, [hasRunningSimulationId]);
 
   const handleChangeDepartment = (name: string) => {
     if (name === 'none') {
@@ -262,7 +291,9 @@ function Simulation() {
                 </td>
               </tr>
             ) : hasRunningSimulationId ? (
-              currentSimulation.simulationStatus === 'progress' && <SubjectsTable />
+              currentSimulation.simulationStatus === 'progress' ? (
+                <SubjectsTable isRegisteredTable={false} />
+              ) : null
             ) : (
               <tr>
                 <td colSpan={13} className="text-gray-400 py-4">
@@ -308,13 +339,24 @@ function Simulation() {
               ))}
             </tr>
           </thead>
-          <tbody>
+
+          {isPending || isError || type === 'waiting' ? (
             <tr>
               <td colSpan={13} className="text-gray-400 py-4">
                 조회된 내역이 없습니다.
               </td>
             </tr>
-          </tbody>
+          ) : hasRunningSimulationId ? (
+            currentSimulation.simulationStatus === 'progress' ? (
+              <SubjectsTable isRegisteredTable={true} />
+            ) : null
+          ) : (
+            <tr>
+              <td colSpan={13} className="text-gray-400 py-4">
+                조회된 내역이 없습니다.
+              </td>
+            </tr>
+          )}
         </table>
       </section>
     </>

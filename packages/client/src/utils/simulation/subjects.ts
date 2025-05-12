@@ -104,11 +104,41 @@ export async function getSimulateStatus() {
     [] as { subjectId: number; status: APPLY_STATUS }[],
   );
 
-  // 신청 과목
+  // // 신청 과목
+  // const subjects = await db.interested_subject.where('snapshot_id').equals(recentSimulation.snapshot_id).toArray();
+  // console.log(subjects);
+  // const registeredSubjects = subjects.reduce(
+  //   (acc, subject) => {
+  //     console.log(subjects);
+  //     if (
+  //       subjectStatus.some(item => item.subjectId === subject.interested_id && item.status === APPLY_STATUS.SUCCESS)
+  //     ) {
+  //       return [...acc, { subjectId: subject.subject_id }];
+  //     }
+  //     return acc;
+  //   },
+  //   [] as { subjectId: number }[],
+  // );
+
+  // // 비신청 과목
+  // const nonRegisteredSubjects = subjects.reduce(
+  //   (acc, subject) => {
+  //     if (registeredSubjects.some(item => item.subjectId === subject.interested_id)) {
+  //       return [...acc, { subjectId: subject.subject_id }];
+  //     }
+  //     return acc;
+  //   },
+  //   [] as { subjectId: number }[],
+  // );
+
+  //신청 과목
   const subjects = await db.interested_subject.where('snapshot_id').equals(recentSimulation.snapshot_id).toArray();
+
   const registeredSubjects = subjects.reduce(
     (acc, subject) => {
-      if (subjectStatus.some(item => item.subjectId === subject.subject_id && item.status === APPLY_STATUS.SUCCESS)) {
+      if (
+        subjectStatus.some(item => item.subjectId === subject.interested_id && item.status === APPLY_STATUS.SUCCESS)
+      ) {
         return [...acc, { subjectId: subject.subject_id }];
       }
       return acc;
@@ -119,7 +149,7 @@ export async function getSimulateStatus() {
   // 비신청 과목
   const nonRegisteredSubjects = subjects.reduce(
     (acc, subject) => {
-      if (registeredSubjects.some(item => item.subjectId === subject.subject_id)) {
+      if (!registeredSubjects.some(item => item.subjectId === subject.interested_id)) {
         return [...acc, { subjectId: subject.subject_id }];
       }
       return acc;
