@@ -6,7 +6,6 @@ import UserWishModal from '@/components/simulation/modal/UserWishModal';
 import WaitingModal from '@/components/simulation/modal/WaitingModal';
 import SubjectsTable from '@/components/simulation/SubjectsTable';
 import useDepartments from '@/hooks/server/useDepartments';
-import { useInterestedSubjectList } from '@/hooks/simulation/useFavorite';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { BUTTON_EVENT, checkOngoingSimulation, triggerButtonEvent } from '@/utils/simulation/simulation';
@@ -32,7 +31,39 @@ function Simulation() {
   const isPending = hasRunningSimulationId === undefined;
   const isError = hasRunningSimulationId === null;
 
-  const { data: subjects, isPending: isSubjectPending } = useInterestedSubjectList();
+  const updateSimulation = (
+    subjects: { subjectId: number }[],
+    key: 'nonRegisteredSubjects' | 'registeredSubjects',
+    result: any,
+  ) => {
+    const filteredSubjectsDetail = subjects
+      .map(subject => findSubjectsById(subject.subjectId))
+      .filter((subject): subject is SimulationSubject => subject !== undefined);
+
+    setCurrentSimulation({
+      simulationId: result.simulationId,
+      simulationStatus: 'progress',
+      [key]: filteredSubjectsDetail,
+    });
+  };
+
+  const fetchAndUpdateSimulationStatus = () => {
+    getSimulateStatus()
+      .then(result => {
+        if (!result) return;
+
+        if (result?.nonRegisteredSubjects) {
+          updateSimulation(result.nonRegisteredSubjects, 'nonRegisteredSubjects', result);
+        }
+
+        if (result?.registeredSubjects) {
+          updateSimulation(result.registeredSubjects, 'registeredSubjects', result);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
     /**
@@ -44,33 +75,7 @@ function Simulation() {
       currentSimulation.simulationStatus !== 'selectedDepartment' &&
       currentSimulation.simulationStatus !== 'start'
     ) {
-      getSimulateStatus()
-        .then(result => {
-          if (result?.nonRegisteredSubjects) {
-            const filteredSubjectsDetail = result?.nonRegisteredSubjects
-              .map(subject => findSubjectsById(subject.subjectId))
-              .filter((subject): subject is SimulationSubject => subject !== undefined);
-
-            setCurrentSimulation({
-              simulationId: result?.simulationId,
-              simulationStatus: 'progress',
-              nonRegisteredSubjects: filteredSubjectsDetail,
-            });
-          }
-          if (result?.registeredSubjects) {
-            const filteredSubjectsDetail = result?.registeredSubjects
-              .map(subject => findSubjectsById(subject.subjectId))
-              .filter((subject): subject is SimulationSubject => subject !== undefined);
-            setCurrentSimulation({
-              simulationId: result?.simulationId,
-              simulationStatus: 'progress',
-              registeredSubjects: filteredSubjectsDetail,
-            });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      fetchAndUpdateSimulationStatus();
     }
   }, [currentSimulation.simulationStatus]);
 
@@ -277,7 +282,7 @@ function Simulation() {
               </tr>
             </thead>
 
-            {isSubjectPending && <ProcessingModal />}
+            {isPending && <ProcessingModal />}
 
             {isPending || isError || type === 'waiting' ? (
               <tr>
@@ -304,10 +309,19 @@ function Simulation() {
         <div className="flex items-center gap-2 mb-2">
           <div className="flex items-baseline gap-2">
             <span className="font-semibold pl-2 border-l-4 border-blue-500">수강 신청 내역</span>
-            <button className="text-xs bg-blue-500 text-white px-2 py-0.5 rounded">재조회</button>
+            <button
+              className="text-xs bg-blue-500 text-white px-2 py-0.5 rounded cursor-pointer"
+              onClick={fetchAndUpdateSimulationStatus}
+            >
+              재조회
+            </button>
           </div>
           <div className="text-xs font-bold text-black">
-            수강 가능 학점: 18 / <span className="text-blue-500">신청 과목수: 4 / 신청 학점수: 10.5</span>
+            수강 가능 학점: 18 /{' '}
+            <span className="text-blue-500">
+              신청 과목수: {currentSimulation.registeredSubjects.length} / 신청 학점수:
+              {currentSimulation.registeredSubjects.length * 3}
+            </span>
           </div>
         </div>
         <table className="min-w-full text-center border border-gray-300 border-t-3 border-t-black text-xs">
