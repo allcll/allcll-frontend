@@ -49,6 +49,7 @@ function Simulation() {
 
   const fetchAndUpdateSimulationStatus = () => {
     if (currentSimulation.simulationStatus === 'progress') openModal('waiting');
+
     getSimulateStatus()
       .then(result => {
         if (!result) return;
@@ -111,7 +112,7 @@ function Simulation() {
         if ('errMsg' in result) {
           alert('시뮬레이션이 존재하지 않습니다. 학과 검색을 먼저 진행해주세요!');
         } else {
-          const elapsedSeconds = Math.floor(result.elapsed_time / 1000);
+          const elapsedSeconds = result.elapsed_time / 1000;
 
           setCurrentSimulation({
             simulationStatus: 'progress',
