@@ -56,6 +56,7 @@ const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
             <td className="border border-gray-300 px-2 py-1">
               <button
                 className="bg-blue-500 cursor-pointer text-white text-xs px-2 py-0.5 rounded-xs"
+                disabled={!!isRegisteredTable}
                 onClick={() => handleClickSubject(course.subjectId)}
               >
                 {isRegisteredTable ? '삭제' : '신청'}

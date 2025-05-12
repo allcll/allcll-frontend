@@ -148,7 +148,7 @@ function Simulation() {
       case 'wish':
         return <UserWishModal department={currentSimulation.department} setIsModalOpen={() => closeModal()} />;
       case 'simulation':
-        return <SimulationModal />;
+        return <SimulationModal fetchAndUpdateSimulationStatus={fetchAndUpdateSimulationStatus} />;
       case 'result':
         return <SimulationResultModal simulationId={currentSimulation.simulationId} />;
       default:

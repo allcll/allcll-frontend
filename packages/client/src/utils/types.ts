@@ -48,4 +48,4 @@ export interface SimulationSubject {
   tm_num: string;
 }
 
-export type SimulationStatusType = 'before' | 'selectedDepartment' | 'start' | 'progress' | 'finish';
+export type SimulationStatusType = 'before' | 'selectedDepartment' | 'start' | 'progress' | 'finish' | 'refresh';

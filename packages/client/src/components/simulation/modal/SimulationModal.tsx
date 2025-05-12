@@ -51,7 +51,11 @@ function getElapsedTime(started_simulation_at: number | null, ended_subject_at: 
   return Math.floor((ended_subject_at - started_simulation_at) / 1000);
 }
 
-function SimulationModal() {
+interface ISimulationModal {
+  fetchAndUpdateSimulationStatus: () => void;
+}
+
+function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
   const { closeModal, openModal } = useSimulationModalStore();
   const { currentSubjectId, setSubjectStatus, stopTimer, ended_subject_at } = useSimulationSubjectStore();
   const { subjectsStatus, setSubjectsStatus, resetSimulation, currentSimulation } = useSimulationProcessStore();
@@ -117,6 +121,7 @@ function SimulationModal() {
           if ('errMsg' in result) {
             alert(result.errMsg);
           }
+          if (modalData?.status === APPLY_STATUS.SUCCESS) fetchAndUpdateSimulationStatus();
         })
         .catch(e => {
           console.error('예외 발생:', e);
@@ -157,7 +162,6 @@ function SimulationModal() {
 
             if (isFinishSimulation) {
               forceStopSimulation();
-
               openModal('result');
             }
           }

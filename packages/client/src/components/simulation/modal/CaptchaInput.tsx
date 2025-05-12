@@ -29,13 +29,13 @@ function CaptchaInput() {
       if (canvasRef.current) {
         drawCaptcha(canvasRef.current, randomCaptchaCode);
       }
-    }, 500);
+    }, 300);
   }
 
   useEffect(() => {
     setTimeout(() => {
       handleRefreshCaptcha();
-    }, 500);
+    }, 300);
   }, []);
 
   function handleConfirm() {

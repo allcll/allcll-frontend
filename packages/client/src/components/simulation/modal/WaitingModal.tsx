@@ -48,8 +48,7 @@ function WaitingModal() {
 
   //첫 렌더링 시
   useEffect(() => {
-    console.log(currentSimulation.clickedTime);
-    let cumulativeIn = Math.floor(currentSimulation.clickedTime / 0.2) * 100 + 100;
+    let cumulativeIn = Math.floor(currentSimulation.clickedTime / 0.2) * 100 + 124;
 
     const waitSec = (cumulativeIn / processedPerUnit) * unit;
 
