@@ -199,17 +199,10 @@ function Simulation() {
                 <option>없음</option>
               </select>
             </div>
+
             <div className="flex items-center gap-2">
-              <label className="font-bold">학번</label>
-              <input className="border px-2 py-1 w-48" placeholder="2022123456" />
-            </div>
-            <div className="flex items-center gap-2">
-              <label className="font-bold">이름</label>
-              <input className="border px-2 py-1 w-48" placeholder="홍길동" />
-            </div>
-            <div className="flex items-center gap-2">
-              <label className="font-bold">전화번호</label>
-              <input className="border px-2 py-1 w-48" placeholder="010-1234-5678" />
+              <label className="font-bold">고유번호</label>
+              <input className="border px-2 py-1 w-48" placeholder="1234" />
             </div>
           </div>
 
