@@ -1,6 +1,6 @@
 import { db, SimulationRunSelections } from '@/utils/dbConfig.ts';
 import { getInterestedSnapshotById } from '@/utils/simulation/subjects.ts';
-import { getSimulationById } from '@/utils/simulation/simulation.ts';
+import { BUTTON_EVENT, getSimulationById } from '@/utils/simulation/simulation.ts';
 
 export async function getSimulationList() {
   const snapshots = await db.simulation_run.filter(run => run.ended_at !== -1).toArray();
@@ -12,10 +12,10 @@ export async function getSimulationList() {
 
 export interface ResultResponse {
   user_ability: {
-    click_speed: number;
-    total_elapsed: number;
+    searchBtnSpeed: number;
+    totalSpeed: number;
     accuracy: number;
-    score: number;
+    captchaSpeed: number;
   };
   timeline: {
     interested_id: number;
@@ -72,14 +72,37 @@ export async function getSimulationResult(simulationId: number): Promise<ResultR
     return interested ? interested.subject_id : -1;
   };
 
+  const captchaEvents = await db.simulation_run_events
+    .filter(
+      event =>
+        event.event_type === BUTTON_EVENT.CAPTCHA &&
+        selections.map(s => s.run_selections_id).includes(event.simulation_section_id),
+    )
+    .toArray();
+
+  const getCaptchaSpeed =
+    selections.reduce((acc, selection) => {
+      const thatEvent = captchaEvents.find(e => e.simulation_section_id === selection.run_selections_id);
+
+      if (thatEvent?.timestamp) {
+        console.log(
+          'captcha event',
+          thatEvent?.timestamp,
+          selection.started_at,
+          (thatEvent?.timestamp ?? 0) - selection.started_at,
+        );
+        return acc + thatEvent.timestamp - selection.started_at;
+      }
+      return acc;
+    }, 0) / selections.length;
+
+  // Todo: 정확한 점수화 기준 필요
   return {
     user_ability: {
-      click_speed: selections.length
-        ? selections.reduce((sum, s) => sum + (s.started_at ?? 0), 0) / selections.length
-        : 0,
-      total_elapsed: simulation.total_elapsed,
+      searchBtnSpeed: ((simulation.search_event_at - simulation.started_at) / 2000) * 100,
+      totalSpeed: simulation.total_elapsed / simulation.subject_count / 1000,
       accuracy: simulation.accuracy,
-      score: simulation.score,
+      captchaSpeed: getCaptchaSpeed / 1000,
     },
 
     timeline: selections.map(s => ({

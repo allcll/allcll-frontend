@@ -8,6 +8,8 @@ import { Wishes } from '@/utils/types.ts';
 import { getStausColor } from '@/utils/colors.ts';
 import { APPLY_STATUS } from '@/utils/simulation/simulation.ts';
 import { findSubjectsById } from '@/utils/subjectPicker.ts';
+// import Timeline from '@/components/simulation/detail/Timeline.tsx';
+import RadarChart from '@/components/simulation/detail/RadarChart.tsx';
 
 function DashboardDetail() {
   const { runId } = useParams();
@@ -26,14 +28,13 @@ function DashboardDetail() {
       {/* Top Grid: 능력분석 + 수강 신청자 리스트 */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* 사용자 능력 분석 */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm">
+        <div className="relative bg-white p-6 rounded-2xl shadow-sm">
           <h2 className="text-lg font-semibold mb-4">사용자 능력 분석</h2>
-          <div className="flex justify-center items-center h-64">
-            {/* SVG or Radar Chart Placeholder */}
-            <div className="w-60 h-60 bg-gray-100 rounded-full flex items-center justify-center text-sm text-gray-400">
-              SVG 레이더 차트 삽입
-            </div>
-          </div>
+          {resultInfo ? (
+            <RadarChart result={resultInfo} />
+          ) : (
+            <div className="text-center text-gray-500">데이터를 불러오는 중입니다...</div>
+          )}
         </div>
 
         {/* 과목별 수강 신청 담은 사람 */}
@@ -53,6 +54,7 @@ function DashboardDetail() {
         {resultInfo ? (
           <SubjectTimeLine result={resultInfo} />
         ) : (
+          // <Timeline />
           <div className="text-center text-gray-500">데이터를 불러오는 중입니다...</div>
         )}
       </section>
@@ -137,7 +139,7 @@ function SubjectTimeLine({ result }: { result: ExtendedResultResponse }) {
   );
 }
 
-interface ExtendedResultResponse extends ResultResponse {
+export interface ExtendedResultResponse extends ResultResponse {
   subject_results: (ResultResponse['subject_results'][number] & { subjectInfo?: any })[];
   timeline: (ResultResponse['timeline'][number] & { subjectInfo?: any })[];
   result?: ExtendedResultResponse;
