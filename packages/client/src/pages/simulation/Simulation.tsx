@@ -48,6 +48,7 @@ function Simulation() {
   };
 
   const fetchAndUpdateSimulationStatus = () => {
+    if (currentSimulation.simulationStatus === 'progress') openModal('waiting');
     getSimulateStatus()
       .then(result => {
         if (!result) return;
@@ -148,11 +149,16 @@ function Simulation() {
       case 'simulation':
         return <SimulationModal />;
       case 'result':
-        return <SimulationResultModal />;
+        return <SimulationResultModal simulationId={currentSimulation.simulationId} />;
       default:
         return null;
     }
   };
+
+  const totalCredits = currentSimulation.registeredSubjects.reduce((acc, subject) => {
+    const firstNumber = subject.tm_num.split('/')[0];
+    return acc + parseInt(firstNumber, 10);
+  }, 0);
 
   return (
     <>
@@ -282,15 +288,9 @@ function Simulation() {
               </tr>
             </thead>
 
-            {isPending && <ProcessingModal />}
+            {isPending || (isError && <ProcessingModal />)}
 
-            {isPending || isError || type === 'waiting' ? (
-              <tr>
-                <td colSpan={13} className="text-gray-400 py-4">
-                  조회된 내역이 없습니다.
-                </td>
-              </tr>
-            ) : hasRunningSimulationId ? (
+            {hasRunningSimulationId ? (
               currentSimulation.simulationStatus === 'progress' ? (
                 <SubjectsTable isRegisteredTable={false} />
               ) : null
@@ -317,10 +317,9 @@ function Simulation() {
             </button>
           </div>
           <div className="text-xs font-bold text-black">
-            수강 가능 학점: 18 /{' '}
+            수강 가능 학점: 18 /
             <span className="text-blue-500">
-              신청 과목수: {currentSimulation.registeredSubjects.length} / 신청 학점수:
-              {currentSimulation.registeredSubjects.length * 3}
+              신청 과목수: {currentSimulation.registeredSubjects.length} / 신청 학점수:{totalCredits}
             </span>
           </div>
         </div>
@@ -349,13 +348,9 @@ function Simulation() {
             </tr>
           </thead>
 
-          {isPending || isError || type === 'waiting' ? (
-            <tr>
-              <td colSpan={13} className="text-gray-400 py-4">
-                조회된 내역이 없습니다.
-              </td>
-            </tr>
-          ) : hasRunningSimulationId ? (
+          {isPending || (isError && <ProcessingModal />)}
+
+          {hasRunningSimulationId ? (
             currentSimulation.simulationStatus === 'progress' ? (
               <SubjectsTable isRegisteredTable={true} />
             ) : null

@@ -12,6 +12,7 @@ const POPULAR_SUBJECTS = [
   '우리차문화의이해',
   '중급미술심리치료',
   '과학사',
+  '성과문화',
   '교양스키',
   '교양배드민턴',
   '생활일본어',
@@ -24,7 +25,7 @@ const POPULAR_SUBJECTS = [
 export const checkSubjectResult = (currentSubjectId: number, elaspedTime: number) => {
   const findSubject = lecturesData.subjects.find(subject => subject.subjectId === currentSubjectId);
 
-  let limitTime = 6;
+  let limitTime = 40;
 
   if (findSubject?.departmentName === '대양휴머니티칼리지') {
     const isPopular = POPULAR_SUBJECTS.find(subject => {
@@ -32,9 +33,9 @@ export const checkSubjectResult = (currentSubjectId: number, elaspedTime: number
     });
 
     if (isPopular) {
-      limitTime = 3;
+      limitTime = 2.6 * 2;
     } else {
-      limitTime = 4;
+      limitTime = 2.6 * 3;
     }
   }
 

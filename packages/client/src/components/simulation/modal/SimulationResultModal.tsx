@@ -1,9 +1,36 @@
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
+import { getSummaryResult } from '@/utils/simulation/simulation';
+import { useEffect, useState } from 'react';
+import ProcessingModal from './Processing';
+import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 
-function SimulationResultModal() {
+function SimulationResultModal({ simulationId }: { simulationId: number }) {
   const { closeModal } = useSimulationModalStore();
+  const { resetSimulation } = useSimulationProcessStore();
+  const [result, setResult] = useState<{ accuracy: number; score: number; total_elapsed: number } | null>(null);
 
+  useEffect(() => {
+    async function fetchResult() {
+      console.log(simulationId);
+      getSummaryResult({ simulationId }).then(result => {
+        if ('errMsg' in result) {
+          alert(result.errMsg);
+        } else {
+          setResult(result);
+          resetSimulation();
+        }
+      });
+    }
+    fetchResult();
+  }, []);
+
+  if (!result) {
+    return <ProcessingModal />;
+  }
+
+  const { accuracy, score, total_elapsed } = result;
+  console.log(score);
   return (
     <Modal>
       <div className="w-full max-w-md bg-white rounded-xl shadow-xl p-6 relative overflow-hidden">
@@ -25,20 +52,27 @@ function SimulationResultModal() {
             <img src="/ci.svg" alt="축하 아이콘" className="w-20 h-20" />
           </div>
 
+          <div className="text-left text-sm text-gray-800 mt-4 mb-1">점수</div>
+          <div className="flex items-center gap-2">
+            <p className="text-xl text-gray-600 whitespace-nowrap">{score}</p>
+          </div>
+
           <div className="text-left text-sm text-gray-800 mt-4 mb-1">소요 시간</div>
           <div className="flex items-center gap-2">
             <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-              <div className="h-3 bg-indigo-400 w-[70%] rounded-full transition-all duration-300" />
+              <div
+                className={`h-3 bg-indigo-400 w-[${total_elapsed / 1000}%] rounded-full transition-all duration-300`}
+              />
             </div>
-            <span className="text-xs text-gray-600 whitespace-nowrap">00 : 00 : 30</span>
+            <span className="text-xs text-gray-600 whitespace-nowrap">{total_elapsed / 1000}</span>
           </div>
 
           <div className="text-left text-sm text-gray-800 mt-4 mb-1">정확도</div>
           <div className="flex items-center gap-2">
             <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-              <div className="h-3 bg-indigo-400 w-[90%] rounded-full transition-all duration-300" />
+              <div className={`h-3 bg-indigo-400 w-[${accuracy}%] rounded-full transition-all duration-300`} />
             </div>
-            <span className="text-xs text-gray-600 whitespace-nowrap">90%</span>
+            <span className="text-xs text-gray-600 whitespace-nowrap">{accuracy}%</span>
           </div>
 
           <div className="flex justify-center gap-3 mt-6">

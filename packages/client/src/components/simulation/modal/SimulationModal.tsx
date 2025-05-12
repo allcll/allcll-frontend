@@ -43,10 +43,18 @@ const SIMULATION_MODAL_CONTENTS = [
   },
 ];
 
+function getElapsedTime(started_simulation_at: number | null, ended_subject_at: number | null) {
+  if (started_simulation_at === null || ended_subject_at === null) {
+    return 0;
+  }
+
+  return Math.floor((ended_subject_at - started_simulation_at) / 1000);
+}
+
 function SimulationModal() {
   const { closeModal, openModal } = useSimulationModalStore();
-  const { currentSubjectId, setSubjectStatus, stopTimer, getElapsedTime } = useSimulationSubjectStore();
-  const { subjectsStatus, setSubjectsStatus, resetSimulation } = useSimulationProcessStore();
+  const { currentSubjectId, setSubjectStatus, stopTimer, ended_subject_at } = useSimulationSubjectStore();
+  const { subjectsStatus, setSubjectsStatus, resetSimulation, currentSimulation } = useSimulationProcessStore();
 
   const currentSubjectStatus = subjectsStatus.find(subject => subject.subjectId === currentSubjectId);
   const modalData = SIMULATION_MODAL_CONTENTS.find(data => data.status === currentSubjectStatus?.subjectStatus);
@@ -72,7 +80,8 @@ function SimulationModal() {
          */
         stopTimer();
 
-        const elapsedTime = getElapsedTime();
+        const elapsedTime = getElapsedTime(currentSimulation.started_simulation_at, ended_subject_at);
+        console.log('elapsedTime', elapsedTime, currentSimulation.started_simulation_at, ended_subject_at);
         const isSuccess = checkSubjectResult(currentSubjectId, elapsedTime);
 
         if (!isSuccess) {
@@ -118,7 +127,6 @@ function SimulationModal() {
         .then(result => {
           if (result) {
             forceStopSimulation();
-            resetSimulation();
             openModal('result');
           }
         });
@@ -133,7 +141,6 @@ function SimulationModal() {
      * SUCCESS이거나 FAILED일 때 과목 신청 완료, 시뮬레이션 종료 확인
      */
     if (modalData?.status === APPLY_STATUS.SUCCESS || APPLY_STATUS.FAILED) {
-      console.log(currentSubjectId);
       triggerButtonEvent({
         eventType: BUTTON_EVENT.SKIP_REFRESH,
         subjectId: currentSubjectId,
@@ -150,7 +157,7 @@ function SimulationModal() {
 
             if (isFinishSimulation) {
               forceStopSimulation();
-              resetSimulation();
+
               openModal('result');
             }
           }

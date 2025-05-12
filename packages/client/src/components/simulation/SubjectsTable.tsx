@@ -10,7 +10,7 @@ interface ISubjectsTable {
 const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
   const { currentSimulation } = useSimulationProcessStore();
   const { openModal } = useSimulationModalStore();
-  const { currentSubjectId, setCurrentSubjectId, setSubjectStatus, startTimer } = useSimulationSubjectStore();
+  const { currentSubjectId, setCurrentSubjectId, setSubjectStatus } = useSimulationSubjectStore();
   const { subjectsStatus, setSubjectsStatus } = useSimulationProcessStore();
 
   const handleClickSubject = (subjectId: number) => {
@@ -35,7 +35,6 @@ const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
       setSubjectsStatus(currentSubjectId, APPLY_STATUS.DOUBLED);
       openModal('captcha');
     } else {
-      startTimer();
       openModal('captcha');
     }
   };
@@ -70,7 +69,7 @@ const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
               <button className="bg-gray-700 text-xs text-white rounded-xs px-2 py-0.5 ">수업계획서</button>
             </td>
             <td className="border border-gray-300 px-2 py-1">{course.language || '-'}</td>
-            <td className="border border-gray-300 px-2 py-1">{course.semester_at}</td>
+            <td className="border border-gray-300 px-2 py-1">{course.tm_num}</td>
             <td className="border border-gray-300 px-2 py-1">{course.subjectType}</td>
             <td className="border border-gray-300 px-2 py-1">{course.semester_at}</td>
             <td className="border border-gray-300 px-2 py-1">{course.lesn_time || '-'}</td>

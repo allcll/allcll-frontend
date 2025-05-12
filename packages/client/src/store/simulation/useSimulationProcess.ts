@@ -17,6 +17,7 @@ interface SimulationState {
   simulationId: number;
   department: DepartmentType;
   subjects: SimulationSubject[];
+  started_simulation_at: number | null;
   registeredSubjects: SimulationSubject[];
   nonRegisteredSubjects: SimulationSubject[];
   simulationStatus: SimulationStatusType;
@@ -35,6 +36,7 @@ const defaultSimulation: SimulationState = {
   simulationId: -1,
   department: { departmentCode: '', departmentName: '' },
   subjects: [],
+  started_simulation_at: null,
   registeredSubjects: [],
   nonRegisteredSubjects: [],
   simulationStatus: 'before',

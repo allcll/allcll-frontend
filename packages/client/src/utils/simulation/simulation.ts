@@ -160,7 +160,7 @@ export async function startSimulation() {
     ended_at: -1,
   });
 
-  return { simulationId: newId, isRunning: true };
+  return { simulationId: newId, started_at: Date.now(), isRunning: true };
 }
 
 // 타입 정의
@@ -233,10 +233,6 @@ export async function triggerButtonEvent(input: ButtonEventSearchReq | ButtonEve
   const selections = await db.simulation_run_selections
     .filter(selection => selection.simulation_run_id === latestSimulationId)
     .toArray();
-  /**
-   * 여기서 selection.interested_id === subjectId에서 자꾸 false를 반환
-   */
-  console.log(selections);
   const latestSelection = selections[selections.length - 1]; //마지막이 나올까요?
   if (!latestSelection) return errMsg(SIMULATION_ERROR.SELECTION_NOT_FOUND);
 

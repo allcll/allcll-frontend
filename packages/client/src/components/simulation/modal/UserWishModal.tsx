@@ -100,9 +100,11 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
           result.simulationId !== undefined &&
           result.isRunning !== undefined
         ) {
-          const { simulationId, isRunning } = result;
+          const { simulationId, isRunning, started_at } = result;
+
           setCurrentSimulation({
             simulationId,
+            started_simulation_at: started_at,
             simulationStatus: isRunning ? 'start' : 'before',
           });
         } else {
