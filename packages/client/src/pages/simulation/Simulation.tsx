@@ -52,7 +52,7 @@ function Simulation() {
 
     getSimulateStatus()
       .then(result => {
-        if (!result) return;
+        if (!result || result.simulationId == -1) return;
 
         if (result?.nonRegisteredSubjects) {
           updateSimulation(result.nonRegisteredSubjects, 'nonRegisteredSubjects', result);

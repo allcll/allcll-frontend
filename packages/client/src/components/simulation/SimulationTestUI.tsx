@@ -38,7 +38,7 @@ export function SimulationTestUI() {
   }
 
   async function handleStartSim() {
-    const res = await startSimulation();
+    const res = await startSimulation('TestPK', 'Test 학과');
     setLog(JSON.stringify(res));
 
     clickIndex.current = 0;

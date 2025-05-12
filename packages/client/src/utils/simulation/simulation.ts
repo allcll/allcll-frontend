@@ -49,7 +49,7 @@ function CheckError(err: unknown) {
  * 현재 진행중인 시뮬레이션이 있는지 확인합니다.
  * 진행중인 시뮬레이션이 있다면 해당 simulation_id 와 진행 정보를 반환하고, 없다면 simulation_id=-1 을 반환합니다.
  * 사용자가 시뮬레이션 페이지에 들어왔을 때 확인합니다.
- * @returns { simulation_id: number } */
+ * @returns { simulationId: number } */
 export async function checkOngoingSimulation() {
   try {
     const ongoing = await getOngoingSimulation();
@@ -86,7 +86,13 @@ export async function checkOngoingSimulation() {
     });
 
     return {
-      simulation_id: ongoing.simulation_run_id,
+      simulationId: ongoing.simulation_run_id,
+      userStatus: {
+        userPK: ongoing.user_id,
+        departmentName: ongoing.department_name,
+      },
+      searchEventAt: ongoing.search_event_at,
+      startedAt: ongoing.started_at,
       nonRegisteredSubjects,
       registeredSubjects,
       subjectStatus,
@@ -101,7 +107,7 @@ export async function checkOngoingSimulation() {
  * 진행중인 시뮬레이션이 없다면, null 을 반환합니다.
  * @throws {Error} 진행중인 시뮬레이션이 2개 이상일 경우
  * @returns {SimulationRun|null} */
-async function getOngoingSimulation() {
+export async function getOngoingSimulation() {
   const ongoing = await db.simulation_run.filter(run => run.ended_at === -1).toArray();
 
   if (ongoing && ongoing.length > 1) throw new Error(SIMULATION_ERROR.MULTIPLE_SIMULATION_RUNNING);
@@ -128,7 +134,7 @@ export async function getSimulationById(simulationId: number) {
  * 진행 중인 시뮬레이션이 존재하면, 해당 simulation_id 를 반환,
  * 진행 중인 시뮬레이션이 존재하지 않으면, 새로운 simulation_id 반환 후 시뮬레이션 테이블 생성
  * @returns { simulation_id: number, isRunning?: true } */
-export async function startSimulation() {
+export async function startSimulation(userPK: string, departmentName: string) {
   const ongoing = await checkOngoingSimulation();
 
   if (ongoing && 'errMsg' in ongoing) {
@@ -149,7 +155,8 @@ export async function startSimulation() {
   const subjects = recent.subjects;
   const newId = await db.simulation_run.add({
     snapshot_id: recent.snapshot_id,
-    user_id: 'Todo: user',
+    user_id: userPK,
+    department_name: departmentName,
     success_subject_count: 0,
     subject_count: subjects.length,
     accuracy: -1,
