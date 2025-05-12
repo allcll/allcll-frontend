@@ -214,12 +214,14 @@ export async function triggerButtonEvent(input: ButtonEventSearchReq | ButtonEve
 
   const { subjectId } = input as ButtonEventApplyReq;
   if (eventType === BUTTON_EVENT.APPLY) {
-    const selected = await db.simulation_run_selections.filter(run => run.ended_at === eventType).toArray();
+    const selectedIndex = await db.simulation_run_selections
+      .filter(run => run.simulation_run_id === ongoing.simulation_run_id && run.ended_at >= 0)
+      .count();
 
     const selectionId = await db.simulation_run_selections.add({
       simulation_run_id: ongoing.simulation_run_id,
       interested_id: await getInterestedId(ongoing.snapshot_id, subjectId),
-      selected_index: selected.length + 1, // ???
+      selected_index: selectedIndex + 1,
       status: APPLY_STATUS.PROGRESS,
       started_at: Date.now(),
       ended_at: -1,
