@@ -12,17 +12,18 @@ function logNormalCDF(x: number, mu: number, sigma: number): number {
 /**
  * Speed Score 계산
  * @param takenTime {number} 과목 당 소요 시간 평균 (초)
- * @param tMin {number?} 과목 당 예상 최소 시간 (초)
- * @param tMax {number?} 과목당 예상 최대 시간 (초)
  * @param mu {number?} 정규 분포 평균
  * @param sigma {number?} 정규 분포 표준편차
  */
-export function getSpeedScore(takenTime: number, tMin = 3.0, tMax = 7.5, mu = 4.6, sigma = 0.16): number {
+export function getSpeedScore(takenTime: number, mu = 7.5, sigma = 0.3): number {
   // 경계 제한
-  const time = Math.min(Math.max(takenTime, tMin), tMax);
+  const MIN_SCORE = 0;
+  const MAX_SCORE = 100;
+
+  const time = takenTime > 3000 ? takenTime / 1000 : takenTime; // sec / ms 자동 구분
   const cdf = logNormalCDF(time, mu, sigma);
   const reversedScore = 1 - cdf;
-  return reversedScore * 100;
+  return Math.max(Math.min(reversedScore * MAX_SCORE, MAX_SCORE), MIN_SCORE);
 }
 
 export function getAccuracyScore(accuracy: number): number {
