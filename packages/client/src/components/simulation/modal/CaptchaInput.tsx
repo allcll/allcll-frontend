@@ -38,6 +38,7 @@ function CaptchaInput() {
 
     if (/[^0-9]/.test(value)) {
       setMessage('0~9까지의 숫자만 입력해주세요');
+      setCaptchaInput('');
       return;
     }
 
@@ -46,12 +47,6 @@ function CaptchaInput() {
       setMessage('');
     } else {
       setMessage('4자리까지 입력 가능합니다');
-    }
-  }
-
-  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (!/[0-9]/.test(event.key) && event.key !== 'Backspace') {
-      event.preventDefault();
     }
   }
 
@@ -113,7 +108,6 @@ function CaptchaInput() {
             <input
               type="text"
               value={captchaInput}
-              onKeyDown={handleKeyDown}
               onChange={e => handleInputChange(e)}
               className="mt-2 w-full border-1 border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring focus:border-gray-800"
               placeholder="코드를 입력하세요"
