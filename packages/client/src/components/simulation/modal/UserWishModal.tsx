@@ -20,6 +20,15 @@ interface UserWishModalIProp {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+function reorderSubject({ subjects }: { subjects: SimulationSubject[] }) {
+  for (let i = subjects.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [subjects[i], subjects[j]] = [subjects[j], subjects[i]];
+  }
+
+  return subjects;
+}
+
 const SubjectTable = ({ subjects }: { subjects: SimulationSubject[] }) => (
   <table className="w-full text-sm text-left border-t border-b border-gray-200">
     <thead className="bg-gray-100 text-gray-700">
@@ -67,11 +76,19 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
   const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore();
   const [isCheckedSubject, setIsCheckedSubject] = useState(false);
   const { closeModal } = useSimulationModalStore();
+  const [subjects, setSubjects] = useState<SimulationSubject[]>();
+
+  const reorderSubjects = reorderSubject({ subjects: currentSimulation.subjects });
 
   useEffect(() => {
     const randomSubjects = pickRandomsubjects(department);
     setCurrentSimulation({ subjects: randomSubjects });
   }, [department]);
+
+  useEffect(() => {
+    const newSubjects = reorderSubject({ subjects: currentSimulation.subjects });
+    setSubjects(newSubjects);
+  }, []);
 
   const handleResetRandomSubjects = () => {
     const randomSubjects = pickRandomsubjects(department);
@@ -137,9 +154,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
               <ResetSvg />
             </button>
           </div>
-
-          <SubjectTable subjects={currentSimulation.subjects} />
-
+          {subjects && <SubjectTable subjects={subjects} />}
           <div className="mt-4 flex items-center">
             <input
               type="checkbox"
@@ -152,9 +167,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
               관심과목을 확인하였습니다.
             </label>
           </div>
-
           <GameTips />
-
           <div className="pt-6 text-right">
             <button
               onClick={handleStartGame}
