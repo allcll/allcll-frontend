@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Modal from '@/components/simulation/modal/Modal';
 import ModalHeader from '@/components/simulation/modal/ModalHeader';
 import { drawCaptcha } from '@/utils/captcha';
@@ -13,7 +13,8 @@ function generateNumericText() {
 
 function CaptchaInput() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [captchaInput, setCaptchaInput] = useState<string | number>();
+  const [message, setMessage] = useState('');
   const codeRef = useRef<string>('');
 
   const { closeModal, openModal } = useSimulationModalStore();
@@ -29,13 +30,35 @@ function CaptchaInput() {
       if (canvasRef.current) {
         drawCaptcha(canvasRef.current, randomCaptchaCode);
       }
-    }, 300);
+    }, 100);
+  }
+
+  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    let value = event.target.value;
+
+    if (/[^0-9]/.test(value)) {
+      setMessage('0~9까지의 숫자만 입력해주세요');
+      return;
+    }
+
+    if (value.length <= 4) {
+      setCaptchaInput(value);
+      setMessage('');
+    } else {
+      setMessage('4자리까지 입력 가능합니다');
+    }
+  }
+
+  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (!/[0-9]/.test(event.key) && event.key !== 'Backspace') {
+      event.preventDefault();
+    }
   }
 
   useEffect(() => {
     setTimeout(() => {
       handleRefreshCaptcha();
-    }, 300);
+    }, 100);
   }, []);
 
   function handleConfirm() {
@@ -47,9 +70,8 @@ function CaptchaInput() {
     /**
      * 캡차 입력 검증
      */
-    const inputValue = inputRef.current?.value;
 
-    if (inputValue === codeRef.current) {
+    if (captchaInput?.toString() === codeRef.current) {
       if (currentSubjectStatus?.subjectStatus !== APPLY_STATUS.DOUBLED) {
         setSubjectsStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
       }
@@ -90,10 +112,13 @@ function CaptchaInput() {
             </label>
             <input
               type="text"
-              ref={inputRef}
+              value={captchaInput}
+              onKeyDown={handleKeyDown}
+              onChange={e => handleInputChange(e)}
               className="mt-2 w-full border-1 border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring focus:border-gray-800"
               placeholder="코드를 입력하세요"
             />
+            <span className="pl-1 text-xs text-red-500 ">{message}</span>
           </div>
         </div>
 
