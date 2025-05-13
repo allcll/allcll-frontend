@@ -144,11 +144,11 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
             <input
               type="checkbox"
               id="confirm"
-              className="mr-2"
+              className="mr-2 cursor-pointer"
               checked={isCheckedSubject}
               onChange={() => setIsCheckedSubject(!isCheckedSubject)}
             />
-            <label htmlFor="confirm" className="text-sm text-gray-700">
+            <label htmlFor="confirm" className="mr-2 cursor-pointer text-sm text-gray-700">
               관심과목을 확인하였습니다.
             </label>
           </div>
