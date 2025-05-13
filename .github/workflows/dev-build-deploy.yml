@@ -51,6 +51,7 @@ jobs:
           VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           VITE_GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
           VITE_AMPLITUDE_API_KEY: ${{ secrets.AMPLITUDE_API_KEY }}
+          VITE_SCORE_API_TOKEN: ${{ secrets.SCORE_API_TOKEN }}
           VITE_DEV_SERVER: true
         working-directory: ${{env.working-directory}}
 
