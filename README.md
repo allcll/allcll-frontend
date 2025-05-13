@@ -61,16 +61,28 @@ README.md           # 프로젝트 설명
 - Node.js (^18.0.0)
 - npm, pnpm
 
+
 ### 설치
+
 1. 레포지토리를 클론합니다:
+
    ```sh
    git clone https://github.com/allcll/frontend.git
    cd frontend
    ```
-2. 의존성을 설치합니다:  
-    ```sh
-    pnpm install
-    ```
+
+2. 15-simulation-db 브랜치로 이동합니다.
+
+   ```
+   git checkout 15-simulation-db
+   ```
+   수강 신청 시뮬레이션 실행을 하려면 다음 단계를 실행해주세요.
+   일반 서비스를 이용하시고 싶으시다면 3번으로 바로 이동해주세요.
+
+3. 의존성을 설치합니다:
+   ```sh
+   pnpm install
+   ```
 
 ### 실행
 1. 일반 사용자 페이지를 실행합니다:
