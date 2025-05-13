@@ -20,14 +20,13 @@ interface UserWishModalIProp {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function reorderSubject({ subjects }: { subjects: SimulationSubject[] }) {
-  for (let i = subjects.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [subjects[i], subjects[j]] = [subjects[j], subjects[i]];
-  }
-
-  return subjects;
-}
+// function reorderSubject({ subjects }: { subjects: SimulationSubject[] }) {
+//   for (let i = subjects.length - 1; i > 0; i--) {
+//     const j = Math.floor(Math.random() * (i + 1));
+//     [subjects[i], subjects[j]] = [subjects[j], subjects[i]];
+//   }
+//   return subjects;
+// }
 
 const SubjectTable = ({ subjects }: { subjects: SimulationSubject[] }) => (
   <table className="w-full text-sm text-left border-t border-b border-gray-200">
@@ -76,13 +75,10 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
   const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore();
   const [isCheckedSubject, setIsCheckedSubject] = useState(false);
   const { closeModal } = useSimulationModalStore();
-  const [subjects, setSubjects] = useState<SimulationSubject[]>();
 
   useEffect(() => {
     const randomSubjects = pickRandomsubjects(department);
     setCurrentSimulation({ subjects: randomSubjects });
-    const newSubjects = reorderSubject({ subjects: currentSimulation.subjects });
-    setSubjects(newSubjects);
   }, [department]);
 
   const handleResetRandomSubjects = () => {
@@ -103,7 +99,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
       }),
     )
       .then(() => {
-        return startSimulation('Fixme: USER_PK', department.departmentCode, department.departmentName);
+        return startSimulation(currentSimulation.userPK, department.departmentCode, department.departmentName);
       })
       .then(result => {
         if (
@@ -149,7 +145,9 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
               <ResetSvg />
             </button>
           </div>
-          {subjects && <SubjectTable subjects={subjects} />}
+
+          <SubjectTable subjects={currentSimulation.subjects} />
+
           <div className="mt-4 flex items-center">
             <input
               type="checkbox"
@@ -162,7 +160,9 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
               관심과목을 확인하였습니다.
             </label>
           </div>
+
           <GameTips />
+
           <div className="pt-6 text-right">
             <button
               onClick={handleStartGame}
