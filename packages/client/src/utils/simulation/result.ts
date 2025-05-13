@@ -107,7 +107,7 @@ export async function getSimulationResult(simulationId: number): Promise<ResultR
     ended_at: simulation.ended_at,
 
     user_ability: {
-      searchBtnSpeed: ((simulation.search_event_at - simulation.started_at) / 2000) * 100,
+      searchBtnSpeed: (simulation.search_event_at - simulation.started_at) / 1000,
       totalSpeed: simulation.total_elapsed / simulation.subject_count / 1000,
       accuracy: simulation.accuracy,
       captchaSpeed: getCaptchaSpeed / 1000,

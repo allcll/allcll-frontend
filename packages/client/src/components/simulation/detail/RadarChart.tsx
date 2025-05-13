@@ -68,14 +68,14 @@ function getDataset(result: ExtendedResultResponse) {
   const { user_ability } = result;
   const { searchBtnSpeed, totalSpeed, accuracy, captchaSpeed } = user_ability;
   const labels = ['신청 버튼 클릭 속도', '전체 속도', '정확도', '캡차 인증 속도'];
-  const myData = [searchBtnSpeed, totalSpeed, accuracy, captchaSpeed];
+  const myData = [(2 - searchBtnSpeed) * 50, ((15 - totalSpeed) / 15) * 100, accuracy, ((7 - captchaSpeed) / 7) * 100];
 
   return {
     labels,
     datasets: [
       {
         label: '평균',
-        data: [50, 50, 50, 50],
+        data: [50, 50, 89.2, 50],
         backgroundColor: 'rgba(5, 223, 114, 0.2)', // bg-blue-500 with opacity
         borderColor: 'rgba(5, 223, 114, 1)',
         borderWidth: 2,
@@ -95,6 +95,7 @@ function getDataset(result: ExtendedResultResponse) {
 
 function RadarChart({ result }: { result: ExtendedResultResponse }) {
   const datasets = getDataset(result);
+  const { searchBtnSpeed, totalSpeed, accuracy, captchaSpeed } = result.user_ability;
 
   return (
     <>
@@ -108,16 +109,16 @@ function RadarChart({ result }: { result: ExtendedResultResponse }) {
         <div className="font-bold text-base mb-1">내 능력</div>
         <ul className="space-y-1">
           <li className="flex justify-between">
-            <span>• 캡차 인증 속도</span> <span>{datasets.datasets[1].data[0]}</span>
+            <span>• 신청 버튼 클릭 속도&nbsp;</span> <span>{searchBtnSpeed.toFixed(2)} sec</span>
           </li>
           <li className="flex justify-between">
-            <span>• 총 소요 시간</span> <span>{datasets.datasets[1].data[1]}</span>
+            <span>• 총 소요 시간</span> <span>{totalSpeed.toFixed(2)} sec</span>
           </li>
           <li className="flex justify-between">
-            <span>• 정확도</span> <span>{datasets.datasets[1].data[2]}</span>
+            <span>• 정확도</span> <span>{accuracy} %</span>
           </li>
           <li className="flex justify-between">
-            <span>• 신청 버튼 클릭 속도</span> <span>{datasets.datasets[1].data[3]}</span>
+            <span>• 캡차 인증 속도</span> <span>{captchaSpeed.toFixed(2)} sec</span>
           </li>
         </ul>
       </div>

@@ -38,7 +38,7 @@ function DashboardDetail() {
 
         {/* 과목별 수강 신청 담은 사람 */}
         <div className="bg-white p-6 rounded-2xl shadow-sm overflow-x-auto">
-          <h2 className="text-lg font-semibold mb-4">과목 별 수강 신청 담은 사람</h2>
+          <h2 className="text-lg font-semibold mb-4">과목 별 분석</h2>
           {resultInfo ? (
             <SubjectDetailResult result={resultInfo} />
           ) : (
@@ -52,10 +52,10 @@ function DashboardDetail() {
         <div className="flex items-start justify-between mb-4">
           <h2 className="text-lg font-semibold mb-4">내 모의 수강 신청 별 TimeLine</h2>
 
-          <label className="flex items-center text-sm gap-1 text-gray-500">
-            <input type="checkbox" className="accent-gray-400" />
-            전체 사용자 평균 보기
-          </label>
+          {/*<label className="flex items-center text-sm gap-1 text-gray-500">*/}
+          {/*  <input type="checkbox" className="accent-gray-400" />*/}
+          {/*  전체 사용자 평균 보기*/}
+          {/*</label>*/}
         </div>
         {resultInfo ? (
           // <SubjectTimeLine result={resultInfo} />
