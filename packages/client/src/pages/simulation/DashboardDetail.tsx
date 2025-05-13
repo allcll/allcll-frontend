@@ -59,7 +59,7 @@ function DashboardDetail() {
         </div>
         {resultInfo ? (
           // <SubjectTimeLine result={resultInfo} />
-          <Timeline />
+          <Timeline result={resultInfo} />
         ) : (
           <div className="text-center text-gray-500">데이터를 불러오는 중입니다...</div>
         )}
@@ -82,7 +82,7 @@ function joinSubjectInfo(subjects?: Wishes[], result?: ResultResponse | null): E
   // };
 
   return {
-    user_ability: result.user_ability,
+    ...result,
     timeline: result.timeline.map(item => ({
       ...item,
       subjectInfo: findSubjectsById(item.subject_id),

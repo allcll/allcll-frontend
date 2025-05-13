@@ -11,6 +11,8 @@ export async function getSimulationList() {
 }
 
 export interface ResultResponse {
+  started_at: number;
+  ended_at: number;
   user_ability: {
     searchBtnSpeed: number;
     totalSpeed: number;
@@ -23,6 +25,10 @@ export interface ResultResponse {
     started_at: number;
     ended_at: number;
     status: number;
+    events: {
+      event: BUTTON_EVENT;
+      timestamp: number;
+    }[];
   }[];
   subject_results: {
     interested_id: number;
@@ -62,6 +68,7 @@ export async function getSimulationResult(simulationId: number): Promise<ResultR
     .where('simulation_run_id')
     .equals(simulation.simulation_run_id)
     .toArray();
+  const selectionIds = selections.map(s => s.run_selections_id);
 
   // const events = await db.simulation_run_events
   //   .filter(e => selections.some(s => s.run_selections_id === e.simulation_section_id))
@@ -72,13 +79,11 @@ export async function getSimulationResult(simulationId: number): Promise<ResultR
     return interested ? interested.subject_id : -1;
   };
 
-  const captchaEvents = await db.simulation_run_events
-    .filter(
-      event =>
-        event.event_type === BUTTON_EVENT.CAPTCHA &&
-        selections.map(s => s.run_selections_id).includes(event.simulation_section_id),
-    )
+  const simulationEvents = await db.simulation_run_events
+    .filter(e => selectionIds.includes(e.simulation_section_id))
     .toArray();
+
+  const captchaEvents = simulationEvents.filter(e => e.event_type === BUTTON_EVENT.CAPTCHA);
 
   const getCaptchaSpeed =
     selections.reduce((acc, selection) => {
@@ -98,6 +103,9 @@ export async function getSimulationResult(simulationId: number): Promise<ResultR
 
   // Todo: 정확한 점수화 기준 필요
   return {
+    started_at: simulation.started_at,
+    ended_at: simulation.ended_at,
+
     user_ability: {
       searchBtnSpeed: ((simulation.search_event_at - simulation.started_at) / 2000) * 100,
       totalSpeed: simulation.total_elapsed / simulation.subject_count / 1000,
@@ -111,6 +119,10 @@ export async function getSimulationResult(simulationId: number): Promise<ResultR
       started_at: s.started_at,
       ended_at: s.ended_at,
       status: s.status,
+      events: simulationEvents
+        .filter(e => e.simulation_section_id === s.run_selections_id)
+        .sort((a, b) => a.timestamp - b.timestamp)
+        .map(e => ({ event: e.event_type, timestamp: e.timestamp })),
     })),
 
     subject_results: selections

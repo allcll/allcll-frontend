@@ -1,73 +1,128 @@
+import { ExtendedResultResponse } from '@/pages/simulation/DashboardDetail.tsx';
+import { BUTTON_EVENT } from '@/utils/simulation/simulation.ts';
+import { APPLY_STATUS } from '@/utils/simulation/simulation.ts';
+
 type Step = {
   label: string;
   duration: number; // in seconds
   start: number; // timeline start tick (e.g., 2, 8, 14...)
 };
 
-type Subject = {
-  name: string;
-  code: string;
-  steps: Step[];
-  color: 'green' | 'blue' | 'gray' | 'red';
-};
+// type Subject = {
+//   name: string;
+//   code: string;
+//   steps: Step[];
+//   color: 'green' | 'blue' | 'gray' | 'red';
+// };
 
-const timelineTicks = Array.from({ length: 35 }, (_, i) => i + 1);
+// const subjects: Subject[] = [
+//   {
+//     name: '운영체제 이수정',
+//     code: '004310-004',
+//     color: 'green',
+//     steps: [
+//       { label: '신청 버튼 클릭', start: 2, duration: 1.03 },
+//       { label: '캡차 입력 시간', start: 8, duration: 2.59 },
+//     ],
+//   },
+//   {
+//     name: '컴퓨터그래픽스 최수미',
+//     code: '003281-001',
+//     color: 'green',
+//     steps: [{ label: '신청 버튼 클릭', start: 8, duration: 2.59 }],
+//   },
+//   {
+//     name: '운영체제 이수정',
+//     code: '004310-004',
+//     color: 'blue',
+//     steps: [{ label: '수강 신청 처리', start: 14, duration: 5 }],
+//   },
+//   {
+//     name: '컴퓨터그래픽스 최수미',
+//     code: '003281-001',
+//     color: 'gray',
+//     steps: [{ label: '서버 응답 대기', start: 21, duration: 5 }],
+//   },
+//   {
+//     name: '운영체제 이수정',
+//     code: '004310-004',
+//     color: 'red',
+//     steps: [
+//       { label: '신청 실패 대기', start: 27, duration: 5 },
+//       { label: '다시 시도', start: 34, duration: 1 },
+//     ],
+//   },
+// ];
 
-const subjects: Subject[] = [
-  {
-    name: '운영체제 이수정',
-    code: '004310-004',
-    color: 'green',
-    steps: [
-      { label: '신청 버튼 클릭', start: 2, duration: 1.03 },
-      { label: '캡차 입력 시간', start: 8, duration: 2.59 },
-    ],
-  },
-  {
-    name: '컴퓨터그래픽스 최수미',
-    code: '003281-001',
-    color: 'green',
-    steps: [{ label: '신청 버튼 클릭', start: 8, duration: 2.59 }],
-  },
-  {
-    name: '운영체제 이수정',
-    code: '004310-004',
-    color: 'blue',
-    steps: [{ label: '수강 신청 처리', start: 14, duration: 5 }],
-  },
-  {
-    name: '컴퓨터그래픽스 최수미',
-    code: '003281-001',
-    color: 'gray',
-    steps: [{ label: '서버 응답 대기', start: 21, duration: 5 }],
-  },
-  {
-    name: '운영체제 이수정',
-    code: '004310-004',
-    color: 'red',
-    steps: [
-      { label: '신청 실패 대기', start: 27, duration: 5 },
-      { label: '다시 시도', start: 34, duration: 1 },
-    ],
-  },
-];
-
-const getColorClass = (color: Subject['color']) => {
-  switch (color) {
-    case 'green':
-      return 'bg-green-100 border-green-500 text-green-700';
-    case 'blue':
-      return 'bg-blue-100 border-blue-500 text-blue-700';
-    case 'gray':
-      return 'bg-gray-100 border-gray-400 text-gray-700';
-    case 'red':
-      return 'bg-red-100 border-red-500 text-red-700';
+function getColorCode(status: APPLY_STATUS) {
+  switch (status) {
+    case APPLY_STATUS.SUCCESS:
+      return 'green';
+    case APPLY_STATUS.FAILED:
+      return 'red';
+    case APPLY_STATUS.CAPTCHA_FAILED:
+      return 'orange';
+    case APPLY_STATUS.PROGRESS:
+      return 'yellow';
     default:
-      return '';
+      return 'gray';
   }
+}
+
+function getSubjectData(result: ExtendedResultResponse) {
+  const { timeline, started_at } = result;
+
+  return timeline.map(sel => ({
+    name: sel.subjectInfo?.subjectName,
+    code: sel.subjectInfo?.subjectCode + '-' + sel.subjectInfo?.classCode,
+    color: getColorCode(sel.status),
+    steps: sel.events.reduce<Step[]>(
+      (acc, evt, index) => [
+        ...acc,
+        {
+          label: getEventLabel(evt.event),
+          duration: index == 0 ? 0 : (evt.timestamp - sel.events[index - 1].timestamp) / 1000,
+          start: (evt.timestamp - started_at) / 1000,
+        },
+      ],
+      [],
+    ),
+  }));
+}
+
+function getEventLabel(eventType: BUTTON_EVENT) {
+  switch (eventType) {
+    case BUTTON_EVENT.SEARCH:
+      return '검색 버튼 클릭';
+    case BUTTON_EVENT.APPLY:
+      return '신청 버튼 클릭';
+    case BUTTON_EVENT.CAPTCHA:
+      return '코드 입력 버튼 클릭';
+    case BUTTON_EVENT.SUBJECT_SUBMIT:
+      return '수강 신청 버튼 클릭';
+    case BUTTON_EVENT.SKIP_REFRESH:
+      return '재조회 취소';
+    case BUTTON_EVENT.REFRESH:
+      return '재조회 버튼 클릭';
+    case BUTTON_EVENT.CANCEL_SUBMIT:
+      return '수강 신청 취소';
+  }
+}
+
+const getColorClass = (color: string) => {
+  if (!color) return '';
+
+  return `bg-${color}-100 border-${color}-500 text-${color}-700`;
 };
 
-const Timeline = () => {
+function Timeline({ result }: { result: ExtendedResultResponse }) {
+  const subjects = getSubjectData(result);
+  console.log(result.timeline);
+  console.log(subjects);
+
+  const totalDuration = (result.ended_at - result.started_at) / 1000;
+  const timelineTicks = Array.from({ length: Math.floor(totalDuration) + 5 }, (_, i) => i + 1);
+
   return (
     <>
       <div className="relative overflow-x-auto overflow-y-hidden">
@@ -106,7 +161,7 @@ const Timeline = () => {
                     >
                       <div className="w-2 h-2 bg-white border rounded-full" />
                       {/* Tooltip wrapper */}
-                      <div className="relative group cursor-pointer z-10">
+                      <div className="relative group cursor-pointer z-5">
                         <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
                           {step.label}
                           <br />
@@ -123,6 +178,6 @@ const Timeline = () => {
       </div>
     </>
   );
-};
+}
 
 export default Timeline;
