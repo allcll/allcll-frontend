@@ -2,57 +2,23 @@ import { ExtendedResultResponse } from '@/pages/simulation/DashboardDetail.tsx';
 import { BUTTON_EVENT } from '@/utils/simulation/simulation.ts';
 import { APPLY_STATUS } from '@/utils/simulation/simulation.ts';
 
+interface TimelineData {
+  name: string;
+  code: string;
+  color: string;
+  timelines: {
+    color: string;
+    start: number;
+    duration: number;
+    events: Step[];
+  }[];
+}
+
 type Step = {
-  label: string;
+  event: BUTTON_EVENT;
   duration: number; // in seconds
   start: number; // timeline start tick (e.g., 2, 8, 14...)
 };
-
-// type Subject = {
-//   name: string;
-//   code: string;
-//   steps: Step[];
-//   color: 'green' | 'blue' | 'gray' | 'red';
-// };
-
-// const subjects: Subject[] = [
-//   {
-//     name: '운영체제 이수정',
-//     code: '004310-004',
-//     color: 'green',
-//     steps: [
-//       { label: '신청 버튼 클릭', start: 2, duration: 1.03 },
-//       { label: '캡차 입력 시간', start: 8, duration: 2.59 },
-//     ],
-//   },
-//   {
-//     name: '컴퓨터그래픽스 최수미',
-//     code: '003281-001',
-//     color: 'green',
-//     steps: [{ label: '신청 버튼 클릭', start: 8, duration: 2.59 }],
-//   },
-//   {
-//     name: '운영체제 이수정',
-//     code: '004310-004',
-//     color: 'blue',
-//     steps: [{ label: '수강 신청 처리', start: 14, duration: 5 }],
-//   },
-//   {
-//     name: '컴퓨터그래픽스 최수미',
-//     code: '003281-001',
-//     color: 'gray',
-//     steps: [{ label: '서버 응답 대기', start: 21, duration: 5 }],
-//   },
-//   {
-//     name: '운영체제 이수정',
-//     code: '004310-004',
-//     color: 'red',
-//     steps: [
-//       { label: '신청 실패 대기', start: 27, duration: 5 },
-//       { label: '다시 시도', start: 34, duration: 1 },
-//     ],
-//   },
-// ];
 
 function getColorCode(status: APPLY_STATUS) {
   switch (status) {
@@ -69,24 +35,33 @@ function getColorCode(status: APPLY_STATUS) {
   }
 }
 
-function getSubjectData(result: ExtendedResultResponse) {
-  const { timeline, started_at } = result;
+function getSubjectData(result: ExtendedResultResponse): TimelineData[] {
+  const { timeline, started_at, subject_results } = result;
 
-  return timeline.map(sel => ({
-    name: sel.subjectInfo?.subjectName,
-    code: sel.subjectInfo?.subjectCode + '-' + sel.subjectInfo?.classCode,
-    color: getColorCode(sel.status),
-    steps: sel.events.reduce<Step[]>(
-      (acc, evt, index) => [
-        ...acc,
-        {
-          label: getEventLabel(evt.event),
-          duration: index == 0 ? 0 : (evt.timestamp - sel.events[index - 1].timestamp) / 1000,
-          start: (evt.timestamp - started_at) / 1000,
-        },
-      ],
-      [],
-    ),
+  // subject -> timelines -> events
+
+  return subject_results.map(subject => ({
+    name: subject.subjectInfo?.subjectName,
+    code: subject.subjectInfo?.subjectCode + '-' + subject.subjectInfo?.classCode,
+    color: getColorCode(subject.status),
+    timelines: timeline
+      .filter(sel => sel.subject_id === subject.subject_id)
+      .map(sel => ({
+        color: getColorCode(sel.status),
+        start: (sel.started_at - started_at) / 1000,
+        duration: (sel.ended_at - sel.started_at) / 1000,
+        events: sel.events.reduce<Step[]>(
+          (acc, evt, index) => [
+            ...acc,
+            {
+              event: evt.event,
+              duration: index == 0 ? 0 : (evt.timestamp - sel.events[index - 1].timestamp) / 1000,
+              start: (evt.timestamp - started_at) / 1000,
+            },
+          ],
+          [],
+        ),
+      })),
   }));
 }
 
@@ -115,8 +90,12 @@ const getColorClass = (color: string) => {
   return `bg-${color}-100 border-${color}-500 text-${color}-700`;
 };
 
+const TICK_WIDTH = 32;
+const HEADER_WIDTH = 200;
+
 function Timeline({ result }: { result: ExtendedResultResponse }) {
   const subjects = getSubjectData(result);
+
   console.log(result.timeline);
   console.log(subjects);
 
@@ -127,56 +106,73 @@ function Timeline({ result }: { result: ExtendedResultResponse }) {
     <>
       <div className="relative overflow-x-auto overflow-y-hidden">
         {/* timeline grid */}
-        <div className="absolute top-0 left-[200px] flex h-full">
+        <div className={`absolute top-0 flex h-full`} style={{ left: `${HEADER_WIDTH}px` }}>
           {timelineTicks.map(tick => (
-            <div key={tick} className="w-[32px] border-r border-gray-200 relative">
+            <div key={tick} className="border-r border-gray-200 relative" style={{ width: `${TICK_WIDTH}px` }}>
               <span className="absolute bottom-0 text-xs text-gray-400 left-1/2 -translate-x-1/2">{tick}</span>
             </div>
           ))}
         </div>
 
         {/* subject rows */}
-        <div>
-          {subjects.map((subject, rowIndex) => (
-            <div key={rowIndex} className="flex items-center">
-              {/* subject info */}
-              <div className="w-[200px] py-2 text-sm sticky left-0 z-10 bg-white">
-                <div className={`font-semibold ${subject.color === 'red' ? 'text-red-600' : ''}`}>{subject.name}</div>
-                <span className={`text-xs ${subject.color === 'red' ? 'text-red-500' : 'text-gray-500'}`}>
-                  {subject.code}
-                </span>
-              </div>
-
-              {/* timeline bars */}
-              <div className="flex-1 relative h-8">
-                {subject.steps.map((step, i) => {
-                  const left = step.start * 32; // width per tick
-                  const width = step.duration * 32;
-
-                  return (
-                    <div
-                      key={i}
-                      className={`absolute top-1 h-6 rounded-full px-3 flex items-center gap-1 ${getColorClass(subject.color)}`}
-                      style={{ left: `${left}px`, width: `${width}px` }}
-                    >
-                      <div className="w-2 h-2 bg-white border rounded-full" />
-                      {/* Tooltip wrapper */}
-                      <div className="relative group cursor-pointer z-5">
-                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-                          {step.label}
-                          <br />
-                          {step.duration.toFixed(2)} sec
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+        {/*<div>*/}
+        {subjects.map((subject, rowIndex) => (
+          <div key={rowIndex} className="flex items-center">
+            {/* subject info */}
+            <div className={`py-2 text-sm sticky left-0 right-0 z-10 bg-white`} style={{ width: `${HEADER_WIDTH}px` }}>
+              <div className={`font-semibold text-${subject.color}-600`}>{subject.name}</div>
+              <span className={`text-xs text-${subject.color}-500`}>{subject.code}</span>
             </div>
-          ))}
+
+            {/* timeline bars */}
+            <div className="flex-1 relative h-8">
+              <TimelineBar timelines={subject.timelines} />
+            </div>
+          </div>
+        ))}
+      </div>
+      {/*</div>*/}
+    </>
+  );
+}
+
+// Timeline component
+function TimelineBar({ timelines }: { timelines: TimelineData['timelines'] }) {
+  return timelines.map((timeline, i) => {
+    const left = timeline.start * TICK_WIDTH - 12;
+    const width = timeline.duration * TICK_WIDTH + 12 * 2;
+
+    return (
+      <div
+        key={i}
+        className={`relative top-1 h-6 rounded-full px-3 ${getColorClass(timeline.color)}`}
+        style={{ left: `${left}px`, width: `${width}px` }}
+      >
+        {timeline.events.map((event, j) => (
+          <TimelineDot key={j} event={event} startAt={timeline.start} color={timeline.color} />
+        ))}
+      </div>
+    );
+  });
+}
+
+// Timeline Dot component
+function TimelineDot({ event, startAt, color }: { event: Step; startAt: number; color: string }) {
+  const left = (event.start - startAt) * TICK_WIDTH + 6;
+
+  return (
+    <div className={`absolute top-1.5`} style={{ left: `${left}px` }}>
+      <div className={`w-3 h-3 text-${color}-500 bg-white border-2 border-${color}-500 rounded-full`} />
+
+      {/* Tooltip wrapper */}
+      <div className="relative group cursor-pointer z-10">
+        <div className="absolute w-30 -top-10 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
+          {getEventLabel(event.event)}
+          <br />
+          {(event.duration + startAt).toFixed(2)} sec
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
