@@ -301,9 +301,7 @@ function Simulation() {
             <button
               onClick={handleSearchClick}
               className={`px-4 py-2 rounded text-white ${
-                hasRunningSimulationId !== -1 ||
-                currentSimulation.simulationStatus !== 'progress' ||
-                'selectedDepartment'
+                hasRunningSimulationId !== -1 || currentSimulation.simulationStatus === 'before'
                   ? 'bg-gray-400 cursor-not-allowed'
                   : 'bg-gray-700 hover:bg-gray-800 cursor-pointer'
               }`}

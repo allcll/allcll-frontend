@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import ProcessingModal from './Processing';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { postUserScore } from '@/hooks/scoreServer/useScoreServer.ts';
+import { NavLink } from 'react-router-dom';
 
 function SimulationResultModal({ simulationId }: { simulationId: number }) {
   const { closeModal } = useSimulationModalStore();
@@ -13,13 +14,13 @@ function SimulationResultModal({ simulationId }: { simulationId: number }) {
 
   useEffect(() => {
     async function fetchResult() {
-      console.log(simulationId);
       getSummaryResult({ simulationId }).then(result => {
         if ('errMsg' in result) {
           alert(result.errMsg);
         } else {
           postUserScore(currentSimulation.userPK, result.score).then(res => {
             // Todo: 서버에서 점수 저장 후 처리
+
             console.log(res);
           });
           setResult(result);
@@ -35,7 +36,7 @@ function SimulationResultModal({ simulationId }: { simulationId: number }) {
   }
 
   const { accuracy, score, total_elapsed } = result;
-  console.log(score);
+
   return (
     <Modal>
       <div className="w-full max-w-md bg-white rounded-xl shadow-xl p-6 relative overflow-hidden">
@@ -89,14 +90,16 @@ function SimulationResultModal({ simulationId }: { simulationId: number }) {
             >
               다시 하기
             </button>
-            <button
+            <NavLink
+              to="/simulation/logs"
+              end={false}
               className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm"
               onClick={() => {
                 closeModal('result');
               }}
             >
               자세히 보기
-            </button>
+            </NavLink>
           </div>
         </div>
       </div>
