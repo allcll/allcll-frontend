@@ -78,8 +78,6 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
   const { closeModal } = useSimulationModalStore();
   const [subjects, setSubjects] = useState<SimulationSubject[]>();
 
-  const reorderSubjects = reorderSubject({ subjects: currentSimulation.subjects });
-
   useEffect(() => {
     const randomSubjects = pickRandomsubjects(department);
     setCurrentSimulation({ subjects: randomSubjects });
