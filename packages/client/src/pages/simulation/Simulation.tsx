@@ -26,9 +26,12 @@ function Simulation() {
   const newDepartments = makeValidateDepartment(departments, notExistDepartments);
 
   const ongoingSimulation = useLiveQuery(checkOngoingSimulation);
+  const startedSimulationAt = ongoingSimulation && 'startedAt' in ongoingSimulation ? ongoingSimulation.startedAt : -1;
   const hasRunningSimulationId =
     ongoingSimulation && 'simulation_id' in ongoingSimulation ? ongoingSimulation.simulation_id : -1;
 
+  const departmentName =
+    ongoingSimulation && 'userStatus' in ongoingSimulation ? ongoingSimulation.userStatus?.departmentName : -1;
   const isPending = hasRunningSimulationId === undefined;
   const isError = hasRunningSimulationId === null;
 
@@ -44,6 +47,7 @@ function Simulation() {
     setCurrentSimulation({
       simulationId: result.simulationId,
       simulationStatus: 'progress',
+      started_simulation_at: startedSimulationAt,
       [key]: filteredSubjectsDetail,
     });
   };
@@ -208,13 +212,13 @@ function Simulation() {
           <div className="flex gap-8">
             <div className="flex items-center gap-2">
               <label className="font-bold">조직 분류</label>
-              <select className="border px-2 py-1 w-48 disabled:bg-gray-100" disabled>
-                <option></option>
+              <select className="border border-gray-300 px-2 py-1 w-48 disabled:bg-gray-100" disabled>
+                <option className="text-gray-100"></option>
               </select>
             </div>
             <div className="flex items-center gap-2">
               <label className="font-bold">년도/학기</label>
-              <select className="border px-2 py-1 w-48 disabled:bg-gray-100" disabled>
+              <select className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100" disabled>
                 <option></option>
               </select>
             </div>
@@ -223,13 +227,13 @@ function Simulation() {
           <div className="flex flex-wrap gap-4">
             <div className="flex items-center gap-2">
               <label className="font-bold">주전공(교직)</label>
-              <select className="border px-2 py-1 w-48">
+              <select className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100" disabled>
                 <option>컴퓨터공학전공</option>
               </select>
             </div>
             <div className="flex items-center gap-2">
               <label className="font-bold">복수전공(교직)</label>
-              <select className="border px-2 py-1 w-48">
+              <select className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100" disabled>
                 <option>없음</option>
               </select>
             </div>
@@ -249,18 +253,22 @@ function Simulation() {
             <div className="flex gap-4">
               <div className="flex items-center gap-2">
                 <label className="font-bold">검색구분</label>
-                <select className="border px-2 py-1 w-48 disabled:bg-gray-100" disabled>
+                <select className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100" disabled>
                   <option>관심과목검색</option>
                 </select>
               </div>
               <div className="flex items-center gap-2">
                 <label className="font-bold">관심과목</label>
-                <select className="border px-2 py-1 w-48 disabled:bg-gray-100" disabled>
+                <select className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100" disabled>
                   <option>학부</option>
                 </select>
                 <select
-                  className={`border px-2 py-1 w-120 ${hasRunningSimulationId ? 'bg-gray-100' : ''}`}
-                  value={currentSimulation.department.departmentName}
+                  className={`cursor-pointer border px-2 py-1 w-120 ${hasRunningSimulationId ? 'bg-white-100' : ''}`}
+                  value={
+                    currentSimulation.department.departmentName
+                      ? currentSimulation.department.departmentName
+                      : departmentName
+                  }
                   onChange={e => handleChangeDepartment(e.target.value)}
                   disabled={hasRunningSimulationId !== -1}
                 >
@@ -276,16 +284,30 @@ function Simulation() {
             <button
               onClick={handleSubjectSearchClick}
               className={`px-4 py-2 rounded text-white ${
-                hasRunningSimulationId !== -1
+                hasRunningSimulationId !== -1 ||
+                (currentSimulation.simulationStatus !== 'before' &&
+                  currentSimulation.simulationStatus !== 'selectedDepartment')
                   ? 'bg-gray-400 cursor-not-allowed'
                   : 'bg-gray-700 hover:bg-gray-800 cursor-pointer'
               }`}
-              disabled={hasRunningSimulationId !== -1}
+              disabled={
+                currentSimulation.simulationStatus !== 'before' &&
+                currentSimulation.simulationStatus !== 'selectedDepartment'
+              }
             >
               학과 검색
             </button>
 
-            <button onClick={handleSearchClick} className="bg-gray-700 text-white px-4 py-2 rounded cursor-pointer">
+            <button
+              onClick={handleSearchClick}
+              className={`px-4 py-2 rounded text-white ${
+                hasRunningSimulationId !== -1 ||
+                currentSimulation.simulationStatus !== 'progress' ||
+                'selectedDepartment'
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-gray-700 hover:bg-gray-800 cursor-pointer'
+              }`}
+            >
               검색
             </button>
           </div>
