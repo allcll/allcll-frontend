@@ -1,6 +1,8 @@
 import { db } from '@/utils/dbConfig.ts';
 import { getInterestedId, getRecentInterestedSnapshot } from '@/utils/simulation/subjects';
 import { getAccuracy, getAccuracyScore, getSpeedScore } from '@/utils/simulation/score.ts';
+import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
+import { checkSubjectResult } from '@/utils/checkSubjectResult.ts';
 
 export enum BUTTON_EVENT {
   SEARCH,
@@ -176,14 +178,20 @@ export async function startSimulation(userPK: string, departmentCode: string, de
 type ButtonEventSearchReq = {
   eventType: BUTTON_EVENT.SEARCH;
 };
+type ButtonEventSubmitReq = {
+  eventType: BUTTON_EVENT.SUBJECT_SUBMIT;
+  subjectId: number;
+};
 type ButtonEventApplyReq = {
-  eventType: Exclude<BUTTON_EVENT, BUTTON_EVENT.REFRESH | BUTTON_EVENT.SKIP_REFRESH | BUTTON_EVENT.SEARCH>;
+  eventType: Exclude<
+    BUTTON_EVENT,
+    BUTTON_EVENT.REFRESH | BUTTON_EVENT.SKIP_REFRESH | BUTTON_EVENT.SEARCH | BUTTON_EVENT.SUBJECT_SUBMIT
+  >;
   subjectId: number;
 };
 type ButtonEventEndReq = {
   eventType: BUTTON_EVENT.REFRESH | BUTTON_EVENT.SKIP_REFRESH;
   subjectId: number;
-  status: APPLY_STATUS;
 };
 
 /**
@@ -191,9 +199,12 @@ type ButtonEventEndReq = {
  * 시뮬레이션에 있는 버튼을 클릭 할 때 마다 발생시켜야 하는 이벤트
  * */
 export async function triggerButtonEvent(input: ButtonEventSearchReq): Promise<{ elapsed_time: number }>;
+export async function triggerButtonEvent(input: ButtonEventSubmitReq): Promise<{ status: APPLY_STATUS }>;
 export async function triggerButtonEvent(input: ButtonEventApplyReq): Promise<{}>;
 export async function triggerButtonEvent(input: ButtonEventEndReq): Promise<{ finished: boolean }>;
-export async function triggerButtonEvent(input: ButtonEventSearchReq | ButtonEventApplyReq | ButtonEventEndReq) {
+export async function triggerButtonEvent(
+  input: ButtonEventSearchReq | ButtonEventSubmitReq | ButtonEventApplyReq | ButtonEventEndReq,
+) {
   const { eventType } = input;
   let ongoing;
   try {
@@ -246,20 +257,69 @@ export async function triggerButtonEvent(input: ButtonEventSearchReq | ButtonEve
     .toArray();
   const latestSelection = selections[selections.length - 1]; //마지막이 나올까요?
   if (!latestSelection) return errMsg(SIMULATION_ERROR.SELECTION_NOT_FOUND);
+  const now = Date.now();
 
   await db.simulation_run_events.add({
     simulation_section_id: latestSelection.run_selections_id,
     event_type: eventType,
-    timestamp: Date.now(),
+    timestamp: now,
   });
 
-  if (eventType === BUTTON_EVENT.REFRESH || eventType === BUTTON_EVENT.SKIP_REFRESH) {
-    const { status } = input as ButtonEventEndReq;
+  if (eventType === BUTTON_EVENT.SUBJECT_SUBMIT) {
+    // 과목 결과 불러오는 로직
+    // 과목 중 simulationId, Section 중 started_at 이 가장 늦은 Section 을 가져옵니다.
 
+    const interestedId = await getInterestedId(ongoing.snapshot_id, subjectId);
+    const selection = await db.simulation_run_selections
+      .filter(
+        selection => selection.simulation_run_id === latestSimulationId && selection.interested_id === interestedId,
+      )
+      .last();
+
+    if (!selection) return errMsg(SIMULATION_ERROR.SELECTION_NOT_FOUND);
+
+    const saveStatus = async (status: APPLY_STATUS) => {
+      await db.simulation_run_selections.update(latestSelection.run_selections_id, { status });
+      return { status };
+    };
+
+    // 캡차 상태를 확인합니다.
+    const currentSubjectStatus = useSimulationProcessStore
+      .getState()
+      .subjectsStatus.find(subject => subject.subjectId === subjectId);
+    const isCaptchaFailed = currentSubjectStatus?.isCaptchaFailed;
+
+    if (isCaptchaFailed) {
+      return await saveStatus(APPLY_STATUS.CAPTCHA_FAILED);
+    }
+
+    // 과목 중복 여부를 확인합니다.
+    const isDouble = selections.some(
+      s => s.interested_id === interestedId && [APPLY_STATUS.SUCCESS, APPLY_STATUS.FAILED].includes(s.status),
+    );
+    if (isDouble) {
+      return await saveStatus(APPLY_STATUS.DOUBLED);
+    }
+
+    // 과목 성공 실패를 확인합니다.
+    const elapsedTime = now - latestSelection.started_at;
+    const isSuccess = checkSubjectResult(subjectId, elapsedTime);
+    if (isSuccess) {
+      return await saveStatus(APPLY_STATUS.SUCCESS);
+    }
+
+    return await saveStatus(APPLY_STATUS.FAILED);
+  }
+
+  if (eventType === BUTTON_EVENT.CANCEL_SUBMIT) {
     await db.simulation_run_selections.update(latestSelection.run_selections_id, {
-      status,
+      status: APPLY_STATUS.CANCELED,
       ended_at: Date.now(),
     });
+  }
+
+  if (eventType === BUTTON_EVENT.REFRESH || eventType === BUTTON_EVENT.SKIP_REFRESH) {
+    await db.simulation_run_selections.update(latestSelection.run_selections_id, { ended_at: Date.now() });
 
     const isFinished = await isSimulationFinished();
     if (isFinished) {
