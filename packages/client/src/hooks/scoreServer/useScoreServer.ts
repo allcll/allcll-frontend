@@ -1,8 +1,9 @@
 const GAME_NAME = 'allcll';
 const AUTHORIZATION_TOKEN = import.meta.env.VITE_SCORE_API_TOKEN;
+const VITE_SCORE_API_URL = import.meta.env.VITE_SCORE_API_URL;
 
 export async function isValidUser(userPK: string) {
-  const result = await fetch(`/scoreApi/users/${userPK}`, {
+  const result = await fetch(`${VITE_SCORE_API_URL}/api/users/${userPK}`, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + AUTHORIZATION_TOKEN,
@@ -21,7 +22,7 @@ export interface PostUserScoreResponse {
 }
 
 export async function postUserScore(userPK: string, score: number): Promise<PostUserScoreResponse> {
-  const result = await fetch(`/scoreApi/result`, {
+  const result = await fetch(`${VITE_SCORE_API_URL}api/result`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
