@@ -52,6 +52,21 @@ export async function restoreDatabase(file: File) {
   });
 }
 
+export async function deleteAllDatabase() {
+  isValidDatabase();
+
+  await db.transaction('rw', db.interested_snapshot, db.interested_subject, async () => {
+    await db.interested_snapshot.clear();
+    await db.interested_subject.clear();
+  });
+
+  await db.transaction('rw', db.simulation_run, db.simulation_run_selections, db.simulation_run_events, async () => {
+    await db.simulation_run.clear();
+    await db.simulation_run_selections.clear();
+    await db.simulation_run_events.clear();
+  });
+}
+
 function isValidDatabase() {
   const currentTables = db.tables.map(table => table.name).sort();
   const expectedTables = [...EXPECTED_TABLES].sort();
