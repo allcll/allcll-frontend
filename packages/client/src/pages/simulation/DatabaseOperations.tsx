@@ -39,6 +39,8 @@ const DatabaseOperations: React.FC = () => {
     try {
       await deleteAllDatabase();
       alert('Database cleared successfully.');
+
+      window.location.href = '/simulation';
     } catch (error) {
       console.error(error);
       alert('Failed to delete the database.');
