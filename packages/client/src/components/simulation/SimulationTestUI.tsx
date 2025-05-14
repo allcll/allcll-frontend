@@ -79,6 +79,15 @@ export function SimulationTestUI() {
     setLog(getApplyStatusName(res.status));
   }
 
+  // 과목 한번 더 담는 시뮬
+  async function handleEndAgainEvent() {
+    const res = await triggerButtonEvent({
+      eventType: BUTTON_EVENT.SKIP_REFRESH,
+      subjectId: snapshots.current?.[clickIndex.current % 7].subject_id ?? -1,
+    });
+    setLog(JSON.stringify(res));
+  }
+
   async function handleEndEvent() {
     // 과목 ID 예시
     const res = await triggerButtonEvent({
@@ -110,6 +119,7 @@ export function SimulationTestUI() {
         <Button onClick={handleSearchEvent}>검색 이벤트</Button>
         <Button onClick={handleApplyEvent}>APPLY 이벤트</Button>
         <Button onClick={handleSubmitSubject}>SUBJECT_SUBMIT 이벤트</Button>
+        <Button onClick={handleEndAgainEvent}>SKIP_REFRESH 이벤트</Button>
         <Button onClick={handleEndEvent}>REFRESH 이벤트</Button>
         <Button onClick={handleStopSim}>강제 종료</Button>
         <Button onClick={handleGetResults}>결과 확인</Button>
