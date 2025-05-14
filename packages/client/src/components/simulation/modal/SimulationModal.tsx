@@ -84,7 +84,6 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
         // 캡차를 잘 입력한 경우 -> 경과 시간에 따라서 과목의 성공/실패 판별
         stopTimer();
         if (successedId.includes(currentSubjectId)) {
-          // Use `includes` instead of `include`
           setSubjectStatus(currentSubjectId, APPLY_STATUS.DOUBLED);
           setSubjectsStatus(currentSubjectId, APPLY_STATUS.DOUBLED, false, {
             isFinishedSubject: true,
@@ -93,16 +92,18 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
           closeModal('simulation');
           openModal('simulation');
           return;
-        } else if (currentSubjectStatus?.isFinished.isSuccessed === 'SUCCESS') {
-          setSubjectStatus(currentSubjectId, APPLY_STATUS.DOUBLED);
-          setSubjectsStatus(currentSubjectId, APPLY_STATUS.DOUBLED, false, {
-            isFinishedSubject: true,
-            isSuccessed: 'SUCCESS',
-          });
-          closeModal('simulation');
-          openModal('simulation');
-          return;
-        } else if (currentSubjectStatus?.isFinished.isSuccessed == 'FAIL') {
+        }
+        // else if (currentSubjectStatus?.isFinished.isSuccessed === 'SUCCESS') {
+        //   setSubjectStatus(currentSubjectId, APPLY_STATUS.DOUBLED);
+        //   setSubjectsStatus(currentSubjectId, APPLY_STATUS.DOUBLED, false, {
+        //     isFinishedSubject: true,
+        //     isSuccessed: 'SUCCESS',
+        //   });
+        //   closeModal('simulation');
+        //   openModal('simulation');
+        //   return;
+        // }
+        else if (currentSubjectStatus?.isFinished.isSuccessed == 'FAIL') {
           setSubjectStatus(currentSubjectId, APPLY_STATUS.FAILED);
           setSubjectsStatus(currentSubjectId, APPLY_STATUS.FAILED, false, {
             isFinishedSubject: true,
@@ -135,7 +136,7 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
           }
         }
       }
-    } else if (modalData?.status === APPLY_STATUS.SUCCESS || APPLY_STATUS.FAILED) {
+    } else if (modalData?.status === APPLY_STATUS.SUCCESS || APPLY_STATUS.FAILED || APPLY_STATUS.DOUBLED) {
       // 과목 신청 완료 -> 과목 담기 종료 이벤트
       triggerButtonEvent({
         eventType: BUTTON_EVENT.REFRESH,
@@ -170,7 +171,7 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
      * 취소 버튼 클릭했을 때, 모달의 타입이
      * SUCCESS이거나 FAILED일 때 과목 신청 완료, 시뮬레이션 종료 확인
      */
-    if (modalData?.status === APPLY_STATUS.SUCCESS || APPLY_STATUS.FAILED) {
+    if (modalData?.status === APPLY_STATUS.SUCCESS || APPLY_STATUS.FAILED || APPLY_STATUS.DOUBLED) {
       triggerButtonEvent({
         eventType: BUTTON_EVENT.SKIP_REFRESH,
         subjectId: currentSubjectId,
