@@ -11,6 +11,7 @@ import {
 } from '@/utils/simulation/simulation.ts';
 import { getRecentInterestedSnapshot, saveInterestedSnapshot } from '@/utils/simulation/subjects.ts';
 import { InterestedSubject } from '@/utils/dbConfig.ts';
+import { backupDatabase, restoreDatabase } from '@/utils/simulation/backupData.ts';
 
 export function SimulationTestUI() {
   const [log, setLog] = useState('');
@@ -84,6 +85,13 @@ export function SimulationTestUI() {
     setLog('Simulation forced to stop');
   }
 
+  function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (file) {
+      restoreDatabase(file);
+    }
+  }
+
   return (
     <div>
       <div className="flex flex-col gap-2">
@@ -96,6 +104,8 @@ export function SimulationTestUI() {
         <Button onClick={handleEndEvent}>리프레시 이벤트</Button>
         <Button onClick={handleStopSim}>강제 종료</Button>
         <Button onClick={handleGetResults}>결과 확인</Button>
+        <Button onClick={backupDatabase}>데이터베이스 다운로드</Button>
+        <input type="file" placeholder="데이터베이스 업로드" multiple={false} onChange={handleFileUpload} />
       </div>
       <br />
       <p className="block">{log}</p>
