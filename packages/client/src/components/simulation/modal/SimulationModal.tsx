@@ -57,6 +57,8 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
 
   const skipRefrech = modalData?.status === APPLY_STATUS.FAILED || APPLY_STATUS.DOUBLED || APPLY_STATUS.CAPTCHA_FAILED;
 
+  const checkFinish = modalData?.status === APPLY_STATUS.FAILED || APPLY_STATUS.DOUBLED || APPLY_STATUS.SUCCESS;
+
   if (!modalData) return null;
 
   const handleSubjectResult = async () => {
@@ -126,9 +128,8 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
 
             if (isFinishSimulation) {
               forceStopSimulation().then(() => {
-                return;
+                openModal('result');
               });
-              openModal('result');
             }
           }
         })
@@ -137,7 +138,7 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
         });
 
       closeModal('simulation');
-    } else {
+    } else if (checkFinish) {
       closeModal('simulation');
     }
   };
