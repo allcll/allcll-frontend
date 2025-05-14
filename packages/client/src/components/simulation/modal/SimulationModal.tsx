@@ -101,9 +101,9 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
         .then(result => {
           if (result) {
             forceStopSimulation().then(() => {
-              return;
+              console.log('실행중 ');
+              openModal('result');
             });
-            openModal('result');
           }
         });
 
@@ -117,10 +117,9 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
           if ('errMsg' in result) {
             alert(result.errMsg);
             forceStopSimulation().then(() => {
-              return;
+              openModal('result');
+              resetSimulation();
             });
-            resetSimulation();
-            openModal('result');
           } else {
             const isFinishSimulation = await isSimulationFinished();
 
@@ -137,34 +136,6 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
 
       closeModal('simulation');
     } else if (checkFinish) {
-      triggerButtonEvent({
-        eventType: BUTTON_EVENT.REFRESH,
-        subjectId: currentSubjectId,
-      })
-        .then(async result => {
-          if ('errMsg' in result) {
-            alert(result.errMsg);
-            forceStopSimulation().then(() => {
-              return;
-            });
-            resetSimulation();
-            openModal('result');
-          } else {
-            const isFinishSimulation = await isSimulationFinished();
-
-            if (isFinishSimulation) {
-              forceStopSimulation().then(() => {
-                return;
-              });
-              openModal('result');
-            }
-          }
-        })
-        .catch(e => {
-          console.error('예외 발생:', e);
-        });
-
-      closeModal('simulation');
     }
   };
 
@@ -182,18 +153,16 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
           if ('errMsg' in result) {
             alert(result.errMsg);
             forceStopSimulation().then(() => {
-              return;
+              openModal('result');
             });
             resetSimulation();
-            openModal('result');
           } else {
             const isFinishSimulation = await isSimulationFinished();
 
             if (isFinishSimulation) {
               forceStopSimulation().then(() => {
-                return;
+                openModal('result');
               });
-              openModal('result');
             }
           }
         })
@@ -210,7 +179,7 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
         if ('errMsg' in result) {
           alert(result.errMsg);
           forceStopSimulation().then(() => {
-            return;
+            openModal('result');
           });
         }
       });
