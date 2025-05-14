@@ -11,7 +11,6 @@ import {
   isSimulationFinished,
   triggerButtonEvent,
 } from '@/utils/simulation/simulation';
-import { checkSubjectResult } from '@/utils/checkSubjectResult';
 
 const SIMULATION_MODAL_CONTENTS = [
   {
@@ -73,7 +72,6 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
           }
           setSubjectStatus(currentSubjectId, result.status);
           setSubjectsStatus(currentSubjectId, result.status);
-          closeModal('result');
           openModal('simulation');
         })
         .catch(e => {
@@ -139,6 +137,33 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
 
       closeModal('simulation');
     } else if (checkFinish) {
+      triggerButtonEvent({
+        eventType: BUTTON_EVENT.REFRESH,
+        subjectId: currentSubjectId,
+      })
+        .then(async result => {
+          if ('errMsg' in result) {
+            alert(result.errMsg);
+            forceStopSimulation().then(() => {
+              return;
+            });
+            resetSimulation();
+            openModal('result');
+          } else {
+            const isFinishSimulation = await isSimulationFinished();
+
+            if (isFinishSimulation) {
+              forceStopSimulation().then(() => {
+                return;
+              });
+              openModal('result');
+            }
+          }
+        })
+        .catch(e => {
+          console.error('예외 발생:', e);
+        });
+
       closeModal('simulation');
     }
   };

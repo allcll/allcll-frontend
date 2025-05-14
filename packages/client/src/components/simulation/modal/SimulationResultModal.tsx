@@ -90,7 +90,7 @@ function SimulationResultModal({ simulationId }: { simulationId: number }) {
               다시 하기
             </button>
             <NavLink
-              to="/simulation/logs"
+              to={`/simulation/logs/${simulationId}`}
               end={false}
               className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm"
               onClick={() => {
