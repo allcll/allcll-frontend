@@ -1,4 +1,5 @@
 import { backupDatabase, deleteAllDatabase, restoreDatabase } from '@/utils/simulation/backupData';
+import { forceStopSimulation } from '@/utils/simulation/simulation';
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 
@@ -11,7 +12,7 @@ const DatabaseOperations: React.FC = () => {
     }
   };
 
-  const handleBackup = async () => {
+  const handleBackupDataBase = async () => {
     try {
       await backupDatabase();
       alert('Backup completed successfully.');
@@ -21,7 +22,7 @@ const DatabaseOperations: React.FC = () => {
     }
   };
 
-  const handleRestore = async () => {
+  const handleRestoreDataBase = async () => {
     if (file) {
       try {
         await restoreDatabase(file);
@@ -35,7 +36,7 @@ const DatabaseOperations: React.FC = () => {
     }
   };
 
-  const handleDelete = async () => {
+  const handleDeleteDataBase = async () => {
     try {
       await deleteAllDatabase();
       alert('Database cleared successfully.');
@@ -47,6 +48,16 @@ const DatabaseOperations: React.FC = () => {
     }
   };
 
+  const handleForceSimulation = async () => {
+    try {
+      await forceStopSimulation();
+
+      window.location.href = '/simulation';
+    } catch (error) {
+      console.error(error);
+      alert('Failed to delete the database.');
+    }
+  };
   return (
     <>
       <Helmet>
@@ -59,16 +70,22 @@ const DatabaseOperations: React.FC = () => {
         {/* Export Button */}
         <div className="flex justify-center gap-5">
           <button
-            onClick={handleBackup}
-            className="w-full cursor-pointer md:w-auto bg-blue-600 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700 transition-colors"
+            onClick={handleBackupDataBase}
+            className="bg-white cursor-pointer text-gray-800 px-6 py-3 rounded-md shadow-md hover:bg-gray-400 hover:text-white transition-colors"
           >
             데이터베이스 내보내기
           </button>
           <button
-            onClick={handleDelete}
-            className="w-full md:w-auto bg-red-600 cursor-pointer text-white px-6 py-3 rounded-md shadow-md hover:bg-red-700 transition-colors"
+            onClick={handleDeleteDataBase}
+            className="bg-blue-600  cursor-pointer text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700 hover:text-white transition-colors"
           >
             데이터 초기화
+          </button>
+          <button
+            onClick={handleForceSimulation}
+            className="w-full md:w-auto bg-red-600 cursor-pointer text-white px-6 py-3 rounded-md shadow-md hover:bg-red-700 transition-colors"
+          >
+            시뮬레이션 중지
           </button>
         </div>
 
@@ -81,7 +98,7 @@ const DatabaseOperations: React.FC = () => {
             className="block w-full md:w-80 cursor-pointer text-sm text-gray-700 py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
           />
           <button
-            onClick={handleRestore}
+            onClick={handleRestoreDataBase}
             className="bg-white cursor-pointer text-gray-800 px-6 py-3 rounded-md shadow-md hover:bg-gray-400 hover:text-white transition-colors"
           >
             데이터베이스 불러오기
