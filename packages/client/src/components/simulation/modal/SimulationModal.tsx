@@ -43,111 +43,54 @@ const SIMULATION_MODAL_CONTENTS = [
   },
 ];
 
-function getElapsedTime(started_simulation_at: number | null, ended_subject_at: number | null) {
-  if (started_simulation_at === null || ended_subject_at === null) {
-    return 0;
-  }
-
-  return Math.floor((ended_subject_at - started_simulation_at) / 1000);
-}
-
 interface ISimulationModal {
   fetchAndUpdateSimulationStatus: () => void;
 }
 
 function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
   const { closeModal, openModal } = useSimulationModalStore();
-  const { currentSubjectId, setSubjectStatus, stopTimer, ended_subject_at } = useSimulationSubjectStore();
-  const { subjectsStatus, setSubjectsStatus, setSuccessedId, successedId, resetSimulation, currentSimulation } =
-    useSimulationProcessStore();
+  const { currentSubjectId, setSubjectStatus } = useSimulationSubjectStore();
+  const { subjectsStatus, setSubjectsStatus, resetSimulation } = useSimulationProcessStore();
 
   const currentSubjectStatus = subjectsStatus.find(subject => subject.subjectId === currentSubjectId);
   const modalData = SIMULATION_MODAL_CONTENTS.find(data => data.status === currentSubjectStatus?.subjectStatus);
 
+  const skipRefrech = modalData?.status === APPLY_STATUS.FAILED || APPLY_STATUS.DOUBLED || APPLY_STATUS.CAPTCHA_FAILED;
+
   if (!modalData) return null;
 
   const handleSubjectResult = async () => {
-    console.log(modalData, subjectsStatus, currentSubjectId);
     if (modalData.status === APPLY_STATUS.PROGRESS) {
-      // 캡차 실패 처리
-      if (currentSubjectStatus?.isCaptchaFailed) {
-        // setSubjectsStatus 호출 시 상태 유지하고 업데이트
-        setSubjectsStatus(currentSubjectId, APPLY_STATUS.CAPTCHA_FAILED, true, {
-          isFinishedSubject: currentSubjectStatus?.isFinished.isFinishedSubject || false,
-          isSuccessed: currentSubjectStatus?.isFinished.isSuccessed || 'FAIL',
-        });
-
-        closeModal('simulation');
-        openModal('simulation');
-        return;
-      } else {
-        // 캡차를 잘 입력한 경우 -> 경과 시간에 따라서 과목의 성공/실패 판별
-        stopTimer();
-        if (successedId.includes(currentSubjectId)) {
-          setSubjectStatus(currentSubjectId, APPLY_STATUS.DOUBLED);
-          setSubjectsStatus(currentSubjectId, APPLY_STATUS.DOUBLED, false, {
-            isFinishedSubject: true,
-            isSuccessed: 'SUCCESS',
-          });
-          closeModal('simulation');
-          openModal('simulation');
-          return;
-        }
-        // else if (currentSubjectStatus?.isFinished.isSuccessed === 'SUCCESS') {
-        //   setSubjectStatus(currentSubjectId, APPLY_STATUS.DOUBLED);
-        //   setSubjectsStatus(currentSubjectId, APPLY_STATUS.DOUBLED, false, {
-        //     isFinishedSubject: true,
-        //     isSuccessed: 'SUCCESS',
-        //   });
-        //   closeModal('simulation');
-        //   openModal('simulation');
-        //   return;
-        // }
-        else if (currentSubjectStatus?.isFinished.isSuccessed == 'FAIL') {
-          setSubjectStatus(currentSubjectId, APPLY_STATUS.FAILED);
-          setSubjectsStatus(currentSubjectId, APPLY_STATUS.FAILED, false, {
-            isFinishedSubject: true,
-            isSuccessed: 'FAIL',
-          });
-          closeModal('simulation');
-          openModal('simulation');
-          return;
-        } else {
-          const elapsedTime = getElapsedTime(currentSimulation.started_simulation_at, ended_subject_at);
-          const isSubjectSuccess = checkSubjectResult(currentSubjectId, elapsedTime);
-          if (!isSubjectSuccess) {
-            setSubjectStatus(currentSubjectId, APPLY_STATUS.FAILED);
-            setSubjectsStatus(currentSubjectId, APPLY_STATUS.FAILED, false, {
-              isFinishedSubject: true,
-              isSuccessed: 'FAIL',
-            });
-            closeModal('simulation');
-            openModal('simulation');
-          } else if (isSubjectSuccess) {
-            setSuccessedId(currentSubjectId);
-            setSubjectStatus(currentSubjectId, APPLY_STATUS.SUCCESS);
-            setSubjectsStatus(currentSubjectId, APPLY_STATUS.SUCCESS, false, {
-              isFinishedSubject: true,
-              isSuccessed: 'SUCCESS',
-            });
-
-            closeModal('simulation');
-            openModal('simulation');
+      /**
+       * 신청하시겠습니까 버튼 이벤트
+       */
+      triggerButtonEvent({ eventType: BUTTON_EVENT.SUBJECT_SUBMIT, subjectId: currentSubjectId })
+        .then(result => {
+          if ('errMsg' in result) {
+            alert(result.errMsg);
           }
-        }
-      }
-    } else if (modalData?.status === APPLY_STATUS.SUCCESS || APPLY_STATUS.FAILED || APPLY_STATUS.DOUBLED) {
-      // 과목 신청 완료 -> 과목 담기 종료 이벤트
+          setSubjectStatus(currentSubjectId, result.status);
+          setSubjectsStatus(currentSubjectId, result.status);
+          closeModal('result');
+          openModal('simulation');
+        })
+        .catch(e => {
+          console.error('예외 발생:', e);
+        });
+    } else if (modalData?.status === APPLY_STATUS.SUCCESS) {
+      /**과목 신청 완료 -> 과목 담기 종료 이벤트
+       *  */
       triggerButtonEvent({
         eventType: BUTTON_EVENT.REFRESH,
         subjectId: currentSubjectId,
-        status: modalData.status,
       })
         .then(result => {
           if ('errMsg' in result) {
             alert(result.errMsg);
           }
-          if (modalData?.status === APPLY_STATUS.SUCCESS) fetchAndUpdateSimulationStatus();
+          setSubjectStatus(currentSubjectId, APPLY_STATUS.SUCCESS);
+          setSubjectsStatus(currentSubjectId, APPLY_STATUS.SUCCESS);
+          fetchAndUpdateSimulationStatus();
         })
         .catch(e => {
           console.error('예외 발생:', e);
@@ -157,11 +100,44 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
         })
         .then(result => {
           if (result) {
-            forceStopSimulation();
+            forceStopSimulation().then(() => {
+              return;
+            });
             openModal('result');
           }
         });
 
+      closeModal('simulation');
+    } else if (skipRefrech) {
+      triggerButtonEvent({
+        eventType: BUTTON_EVENT.SKIP_REFRESH,
+        subjectId: currentSubjectId,
+      })
+        .then(async result => {
+          if ('errMsg' in result) {
+            alert(result.errMsg);
+            forceStopSimulation().then(() => {
+              return;
+            });
+            resetSimulation();
+            openModal('result');
+          } else {
+            const isFinishSimulation = await isSimulationFinished();
+
+            if (isFinishSimulation) {
+              forceStopSimulation().then(() => {
+                return;
+              });
+              openModal('result');
+            }
+          }
+        })
+        .catch(e => {
+          console.error('예외 발생:', e);
+        });
+
+      closeModal('simulation');
+    } else {
       closeModal('simulation');
     }
   };
@@ -171,23 +147,26 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
      * 취소 버튼 클릭했을 때, 모달의 타입이
      * SUCCESS이거나 FAILED일 때 과목 신청 완료, 시뮬레이션 종료 확인
      */
-    if (modalData?.status === APPLY_STATUS.SUCCESS || APPLY_STATUS.FAILED || APPLY_STATUS.DOUBLED) {
+    if (modalData?.status === APPLY_STATUS.SUCCESS) {
       triggerButtonEvent({
         eventType: BUTTON_EVENT.SKIP_REFRESH,
         subjectId: currentSubjectId,
-        status: modalData.status,
       })
         .then(async result => {
           if ('errMsg' in result) {
             alert(result.errMsg);
-            forceStopSimulation();
+            forceStopSimulation().then(() => {
+              return;
+            });
             resetSimulation();
             openModal('result');
           } else {
             const isFinishSimulation = await isSimulationFinished();
 
             if (isFinishSimulation) {
-              forceStopSimulation();
+              forceStopSimulation().then(() => {
+                return;
+              });
               openModal('result');
             }
           }
@@ -196,6 +175,20 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
           console.error('예외 발생:', e);
         });
 
+      closeModal('simulation');
+    } else if (modalData?.status === APPLY_STATUS.PROGRESS) {
+      triggerButtonEvent({
+        eventType: BUTTON_EVENT.CANCEL_SUBMIT,
+        subjectId: currentSubjectId,
+      }).then(async result => {
+        if ('errMsg' in result) {
+          alert(result.errMsg);
+          forceStopSimulation().then(() => {
+            return;
+          });
+        }
+      });
+    } else {
       closeModal('simulation');
     }
   };

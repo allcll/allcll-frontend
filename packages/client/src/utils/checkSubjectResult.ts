@@ -39,6 +39,7 @@ export const checkSubjectResult = (currentSubjectId: number, elaspedTime: number
     }
   }
 
+  console.log(elaspedTime, limitTime);
   if (elaspedTime < limitTime) return true;
 
   return false;

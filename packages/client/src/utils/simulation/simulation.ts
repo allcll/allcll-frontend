@@ -302,8 +302,8 @@ export async function triggerButtonEvent(
     }
 
     // 과목 성공 실패를 확인합니다.
-    const elapsedTime = now - latestSelection.started_at;
-    const isSuccess = checkSubjectResult(subjectId, elapsedTime);
+    const elapsedTime = now - ongoing.started_at;
+    const isSuccess = checkSubjectResult(subjectId, elapsedTime / 1000);
     if (isSuccess) {
       return await saveStatus(APPLY_STATUS.SUCCESS);
     }

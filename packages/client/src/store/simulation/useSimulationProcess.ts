@@ -11,10 +11,6 @@ interface SubjectStatus {
   subjectId: number;
   subjectStatus: APPLY_STATUS;
   isCaptchaFailed: boolean;
-  isFinished: {
-    isFinishedSubject: boolean;
-    isSuccessed: 'BEFORE' | 'SUCCESS' | 'FAIL';
-  };
 }
 
 interface SimulationState {
@@ -32,15 +28,8 @@ interface SimulationState {
 interface IUseSimulationProcessStore {
   currentSimulation: SimulationState;
   subjectsStatus: SubjectStatus[];
-  successedId: number[]; // Define successedId as an array of numbers
-  setSuccessedId: (id: number) => void; // Add setSuccessedId method
   setCurrentSimulation: (simulation: Partial<SimulationState>) => void;
-  setSubjectsStatus: (
-    subjectId: number,
-    subjectStatus: APPLY_STATUS,
-    isCaptchaFailed?: boolean,
-    isFinished?: { isFinishedSubject: boolean; isSuccessed: 'BEFORE' | 'SUCCESS' | 'FAIL' },
-  ) => void;
+  setSubjectsStatus: (subjectId: number, subjectStatus: APPLY_STATUS, isCaptchaFailed?: boolean) => void;
   resetSimulation: () => void;
 }
 
@@ -59,29 +48,20 @@ const defaultSimulation: SimulationState = {
 const useSimulationProcessStore = create<IUseSimulationProcessStore>(set => ({
   currentSimulation: defaultSimulation,
   subjectsStatus: [],
-  successedId: [],
-  setSuccessedId: id =>
-    set(state => ({
-      successedId: [...state.successedId, id],
-    })),
-  setSubjectsStatus: (
-    subjectId: number,
-    subjectStatus: APPLY_STATUS,
-    isCaptchaFailed = false,
-    isFinished = { isFinishedSubject: false, isSuccessed: 'BEFORE' },
-  ) =>
+
+  setSubjectsStatus: (subjectId: number, subjectStatus: APPLY_STATUS, isCaptchaFailed = false) =>
     set(state => {
       const exists = state.subjectsStatus.find(s => s.subjectId === subjectId);
 
       if (exists) {
         return {
           subjectsStatus: state.subjectsStatus.map(s =>
-            s.subjectId === subjectId ? { ...s, subjectStatus, isCaptchaFailed, isFinished } : s,
+            s.subjectId === subjectId ? { ...s, subjectStatus, isCaptchaFailed } : s,
           ),
         };
       } else {
         return {
-          subjectsStatus: [...state.subjectsStatus, { subjectId, subjectStatus, isCaptchaFailed, isFinished }],
+          subjectsStatus: [...state.subjectsStatus, { subjectId, subjectStatus, isCaptchaFailed }],
         };
       }
     }),
