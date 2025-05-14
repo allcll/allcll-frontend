@@ -83,7 +83,7 @@ function getDataset(result: ExtendedResultResponse) {
       },
       {
         label: '내 능력',
-        data: myData,
+        data: myData.map(item => Math.min(Math.max(item, 0), 100)),
         backgroundColor: 'rgb(0, 122, 255, 0.2)', // bg-blue-500 with opacity
         borderColor: 'rgba(0, 122, 255, 1)',
         borderWidth: 2,
