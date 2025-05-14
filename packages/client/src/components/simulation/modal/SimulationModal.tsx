@@ -58,7 +58,8 @@ interface ISimulationModal {
 function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
   const { closeModal, openModal } = useSimulationModalStore();
   const { currentSubjectId, setSubjectStatus, stopTimer, ended_subject_at } = useSimulationSubjectStore();
-  const { subjectsStatus, setSubjectsStatus, resetSimulation, currentSimulation } = useSimulationProcessStore();
+  const { subjectsStatus, setSubjectsStatus, setSuccessedId, successedId, resetSimulation, currentSimulation } =
+    useSimulationProcessStore();
 
   const currentSubjectStatus = subjectsStatus.find(subject => subject.subjectId === currentSubjectId);
   const modalData = SIMULATION_MODAL_CONTENTS.find(data => data.status === currentSubjectStatus?.subjectStatus);
@@ -66,51 +67,76 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
   if (!modalData) return null;
 
   const handleSubjectResult = async () => {
-    /**
-     * 확인 버튼 클릭했을 때 , 모달의 타입이
-     * PROGRESS일 때,
-     */
+    console.log(modalData, subjectsStatus, currentSubjectId);
     if (modalData.status === APPLY_STATUS.PROGRESS) {
+      // 캡차 실패 처리
       if (currentSubjectStatus?.isCaptchaFailed) {
-        setSubjectStatus(currentSubjectId, APPLY_STATUS.CAPTCHA_FAILED);
-        setSubjectsStatus(currentSubjectId, APPLY_STATUS.CAPTCHA_FAILED);
+        // setSubjectsStatus 호출 시 상태 유지하고 업데이트
+        setSubjectsStatus(currentSubjectId, APPLY_STATUS.CAPTCHA_FAILED, true, {
+          isFinishedSubject: currentSubjectStatus?.isFinished.isFinishedSubject || false,
+          isSuccessed: currentSubjectStatus?.isFinished.isSuccessed || 'FAIL',
+        });
+
         closeModal('simulation');
         openModal('simulation');
         return;
       } else {
-        /**
-         *캡차를 잘 입력한 경우 -> 경과 시간에 따라서
-         *과목의 성공/실패 판별
-         */
+        // 캡차를 잘 입력한 경우 -> 경과 시간에 따라서 과목의 성공/실패 판별
         stopTimer();
-
-        const elapsedTime = getElapsedTime(currentSimulation.started_simulation_at, ended_subject_at);
-        const isSuccess = checkSubjectResult(currentSubjectId, elapsedTime);
-
-        if (!isSuccess) {
+        if (successedId.includes(currentSubjectId)) {
+          // Use `includes` instead of `include`
+          setSubjectStatus(currentSubjectId, APPLY_STATUS.DOUBLED);
+          setSubjectsStatus(currentSubjectId, APPLY_STATUS.DOUBLED, false, {
+            isFinishedSubject: true,
+            isSuccessed: 'SUCCESS',
+          });
+          closeModal('simulation');
+          openModal('simulation');
+          return;
+        } else if (currentSubjectStatus?.isFinished.isSuccessed === 'SUCCESS') {
+          setSubjectStatus(currentSubjectId, APPLY_STATUS.DOUBLED);
+          setSubjectsStatus(currentSubjectId, APPLY_STATUS.DOUBLED, false, {
+            isFinishedSubject: true,
+            isSuccessed: 'SUCCESS',
+          });
+          closeModal('simulation');
+          openModal('simulation');
+          return;
+        } else if (currentSubjectStatus?.isFinished.isSuccessed == 'FAIL') {
           setSubjectStatus(currentSubjectId, APPLY_STATUS.FAILED);
-          setSubjectsStatus(currentSubjectId, APPLY_STATUS.FAILED);
+          setSubjectsStatus(currentSubjectId, APPLY_STATUS.FAILED, false, {
+            isFinishedSubject: true,
+            isSuccessed: 'FAIL',
+          });
+          closeModal('simulation');
+          openModal('simulation');
+          return;
         } else {
-          setSubjectStatus(currentSubjectId, APPLY_STATUS.SUCCESS);
-          setSubjectsStatus(currentSubjectId, APPLY_STATUS.SUCCESS);
+          const elapsedTime = getElapsedTime(currentSimulation.started_simulation_at, ended_subject_at);
+          const isSubjectSuccess = checkSubjectResult(currentSubjectId, elapsedTime);
+          if (!isSubjectSuccess) {
+            setSubjectStatus(currentSubjectId, APPLY_STATUS.FAILED);
+            setSubjectsStatus(currentSubjectId, APPLY_STATUS.FAILED, false, {
+              isFinishedSubject: true,
+              isSuccessed: 'FAIL',
+            });
+            closeModal('simulation');
+            openModal('simulation');
+          } else if (isSubjectSuccess) {
+            setSuccessedId(currentSubjectId);
+            setSubjectStatus(currentSubjectId, APPLY_STATUS.SUCCESS);
+            setSubjectsStatus(currentSubjectId, APPLY_STATUS.SUCCESS, false, {
+              isFinishedSubject: true,
+              isSuccessed: 'SUCCESS',
+            });
+
+            closeModal('simulation');
+            openModal('simulation');
+          }
         }
-        closeModal('simulation');
-        openModal('simulation');
-        return;
       }
-    } else if (modalData.status === APPLY_STATUS.CAPTCHA_FAILED) {
-      setSubjectStatus(currentSubjectId, APPLY_STATUS.CANCELED);
-      setSubjectsStatus(currentSubjectId, APPLY_STATUS.CANCELED);
-      closeModal('simulation');
-      return;
-    } else if (currentSubjectStatus?.subjectStatus === APPLY_STATUS.DOUBLED) {
-      openModal('simulation');
-      closeModal('simulation');
-      return;
     } else if (modalData?.status === APPLY_STATUS.SUCCESS || APPLY_STATUS.FAILED) {
-      /**
-       * 과목 신청 완료 -> 과목 담기 종료 이벤트
-       */
+      // 과목 신청 완료 -> 과목 담기 종료 이벤트
       triggerButtonEvent({
         eventType: BUTTON_EVENT.REFRESH,
         subjectId: currentSubjectId,

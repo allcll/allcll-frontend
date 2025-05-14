@@ -263,14 +263,18 @@ function Simulation() {
                   <option>학부</option>
                 </select>
                 <select
-                  className={`cursor-pointer border px-2 py-1 w-120 ${hasRunningSimulationId ? 'bg-white-100' : ''}`}
+                  className={`cursor-pointer border px-2 py-1 w-120 ${hasRunningSimulationId || currentSimulation.simulationStatus === 'progress' ? ' border-gray-300 bg-gray-100' : ''}`}
                   value={
                     currentSimulation.department.departmentName
                       ? currentSimulation.department.departmentName
                       : departmentName
                   }
                   onChange={e => handleChangeDepartment(e.target.value)}
-                  disabled={hasRunningSimulationId !== -1}
+                  disabled={
+                    hasRunningSimulationId !== -1 ||
+                    (currentSimulation.simulationStatus !== 'before' &&
+                      currentSimulation.simulationStatus !== 'selectedDepartment')
+                  }
                 >
                   <option value="none">전체 학과</option>
                   {newDepartments?.map(dept => (

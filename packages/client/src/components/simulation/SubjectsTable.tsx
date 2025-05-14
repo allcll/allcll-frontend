@@ -37,6 +37,8 @@ const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
     } else {
       openModal('captcha');
     }
+
+    openModal('captcha');
   };
 
   const filteredNonRegistered = currentSimulation.nonRegisteredSubjects.filter(subject => {

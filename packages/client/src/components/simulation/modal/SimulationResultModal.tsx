@@ -20,7 +20,6 @@ function SimulationResultModal({ simulationId }: { simulationId: number }) {
         } else {
           postUserScore(currentSimulation.userPK, result.score).then(res => {
             // Todo: 서버에서 점수 저장 후 처리
-
             console.log(res);
           });
           setResult(result);
@@ -63,12 +62,12 @@ function SimulationResultModal({ simulationId }: { simulationId: number }) {
             <p className="text-xl text-gray-600 whitespace-nowrap">{score}</p>
           </div>
 
-          <div className="text-left text-sm text-gray-800 mt-4 mb-1">소요 시간</div>
+          <div className="text-left font-bold text-xl text-blue-600 mt-4 mb-1">소요 시간</div>
           <div className="flex items-center gap-2">
             <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-              <div
+              {/* <div
                 className={`h-3 bg-indigo-400 w-[${total_elapsed / 1000}%] rounded-full transition-all duration-300`}
-              />
+              /> */}
             </div>
             <span className="text-xs text-gray-600 whitespace-nowrap">{total_elapsed / 1000}</span>
           </div>
