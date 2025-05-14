@@ -38,7 +38,7 @@ function CaptchaInput() {
 
     if (/[^0-9]/.test(value)) {
       setMessage('0~9까지의 숫자만 입력해주세요');
-      setCaptchaInput('');
+      setCaptchaInput(value.replace(/[^0-9]/g, ''));
       return;
     }
 
