@@ -1,6 +1,6 @@
 import { ExtendedResultResponse } from '@/pages/simulation/DashboardDetail.tsx';
 import { BUTTON_EVENT } from '@/utils/simulation/simulation.ts';
-import { APPLY_STATUS } from '@/utils/simulation/simulation.ts';
+import { getStatusColorCode } from '@/utils/colors.ts';
 
 interface TimelineData {
   name: string;
@@ -118,7 +118,7 @@ function getColorClass(color: string) {
     case 'yellow':
       return 'bg-yellow-100 border-yellow-500 text-yellow-700';
     default:
-      break;
+      return 'bg-gray-100 border-gray-500 text-gray-700';
   }
 }
 
@@ -167,21 +167,6 @@ function getTextColor600(color: string) {
   }
 }
 
-function getColorCode(status: APPLY_STATUS) {
-  switch (status) {
-    case APPLY_STATUS.SUCCESS:
-      return 'green';
-    case APPLY_STATUS.FAILED:
-      return 'red';
-    case APPLY_STATUS.CAPTCHA_FAILED:
-      return 'orange';
-    case APPLY_STATUS.PROGRESS:
-      return 'yellow';
-    default:
-      return 'gray';
-  }
-}
-
 function getEventLabel(eventType: BUTTON_EVENT) {
   switch (eventType) {
     case BUTTON_EVENT.SEARCH:
@@ -209,11 +194,11 @@ function getSubjectData(result: ExtendedResultResponse): TimelineData[] {
   return subject_results.map(subject => ({
     name: subject.subjectInfo?.subjectName,
     code: subject.subjectInfo?.subjectCode + '-' + subject.subjectInfo?.classCode,
-    color: getColorCode(subject.status),
+    color: getStatusColorCode(subject.status),
     timelines: timeline
       .filter(sel => sel.subject_id === subject.subject_id)
       .map(sel => ({
-        color: getColorCode(sel.status),
+        color: getStatusColorCode(sel.status),
         start: (sel.started_at - started_at) / 1000,
         duration: (sel.ended_at - sel.started_at) / 1000,
         events: sel.events.reduce<Step[]>(

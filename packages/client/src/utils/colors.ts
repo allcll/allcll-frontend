@@ -17,14 +17,35 @@ export function getWishesColor(wishCount: number) {
 }
 
 export function getStausColor(status: APPLY_STATUS) {
+  return getTextBgColor(getStatusColorCode(status));
+}
+
+export function getStatusColorCode(status: APPLY_STATUS) {
   switch (status) {
     case APPLY_STATUS.SUCCESS:
-      return 'text-green-500 bg-green-100';
+      return 'green';
     case APPLY_STATUS.FAILED:
-      return 'text-red-500 bg-red-100';
-    case APPLY_STATUS.DOUBLED:
-      return 'text-yellow-500 bg-yellow-100';
+      return 'red';
+    case APPLY_STATUS.CAPTCHA_FAILED:
+      return 'orange';
+    case APPLY_STATUS.PROGRESS:
+      return 'yellow';
     default:
-      return 'text-gray-500 bg-gray-100';
+      return 'gray';
+  }
+}
+
+function getTextBgColor(color: string) {
+  switch (color) {
+    case 'green':
+      return 'bg-green-100 text-green-500';
+    case 'red':
+      return 'bg-red-100 text-red-500';
+    case 'orange':
+      return 'bg-orange-100 text-orange-500';
+    case 'yellow':
+      return 'bg-yellow-100 text-yellow-500';
+    default:
+      return 'bg-gray-100 text-gray-500';
   }
 }
