@@ -70,12 +70,20 @@ export function SimulationTestUI() {
     setLog(JSON.stringify(res));
   }
 
+  // 과목 신청 이벤트
+  async function handleSubmitSubject() {
+    const res = await triggerButtonEvent({
+      eventType: BUTTON_EVENT.SUBJECT_SUBMIT,
+      subjectId: snapshots.current?.[clickIndex.current % 7].subject_id ?? -1,
+    });
+    setLog(getApplyStatusName(res.status));
+  }
+
   async function handleEndEvent() {
     // 과목 ID 예시
     const res = await triggerButtonEvent({
       eventType: BUTTON_EVENT.REFRESH,
       subjectId: snapshots.current?.[clickIndex.current++ % 7].subject_id ?? -1,
-      status: APPLY_STATUS.SUCCESS,
     });
     setLog(JSON.stringify(res));
   }
@@ -88,7 +96,7 @@ export function SimulationTestUI() {
   function handleFileUpload(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (file) {
-      restoreDatabase(file);
+      restoreDatabase(file).then();
     }
   }
 
@@ -100,8 +108,9 @@ export function SimulationTestUI() {
         <Button onClick={handleStartSim}>시뮬레이션 시작</Button>
         <Button onClick={handleCheckOngoing}>진행 중 확인</Button>
         <Button onClick={handleSearchEvent}>검색 이벤트</Button>
-        <Button onClick={handleApplyEvent}>수강신청 이벤트</Button>
-        <Button onClick={handleEndEvent}>리프레시 이벤트</Button>
+        <Button onClick={handleApplyEvent}>APPLY 이벤트</Button>
+        <Button onClick={handleSubmitSubject}>SUBJECT_SUBMIT 이벤트</Button>
+        <Button onClick={handleEndEvent}>REFRESH 이벤트</Button>
         <Button onClick={handleStopSim}>강제 종료</Button>
         <Button onClick={handleGetResults}>결과 확인</Button>
         <Button onClick={backupDatabase}>데이터베이스 다운로드</Button>
@@ -134,4 +143,23 @@ export const Button = ({ children, className, variant = 'primary', ...props }: B
 
 export function cn(...classes: (string | undefined | false)[]): string {
   return classes.filter(Boolean).join(' ');
+}
+
+function getApplyStatusName(status: APPLY_STATUS) {
+  switch (status) {
+    case APPLY_STATUS.PROGRESS:
+      return '진행 중';
+    case APPLY_STATUS.SUCCESS:
+      return '신청 완료';
+    case APPLY_STATUS.FAILED:
+      return '신청 실패';
+    case APPLY_STATUS.CANCELED:
+      return '신청 취소';
+    case APPLY_STATUS.CAPTCHA_FAILED:
+      return 'CAPTCHA 실패';
+    case APPLY_STATUS.NOT_ELIGIBLE:
+      return '신청 자격 없음';
+    default:
+      return '알 수 없음';
+  }
 }
