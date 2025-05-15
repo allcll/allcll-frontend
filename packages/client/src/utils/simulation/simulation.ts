@@ -66,11 +66,11 @@ export async function checkOngoingSimulation() {
       )
       .toArray();
 
-    // 시뮬레이션이 이미 종료된 경우를 다시 체크합니다.
-    if (ongoing.subject_count <= registeredSelections.length) {
-      await forceStopSimulation();
-      return { simulationId: -1 };
-    }
+    // // 시뮬레이션이 이미 종료된 경우를 다시 체크합니다.
+    // if (ongoing.subject_count <= registeredSelections.length) {
+    //   await forceStopSimulation();
+    //   return { simulationId: -1 };
+    // }
 
     const snapshotSubjects = await db.interested_subject.where('snapshot_id').equals(ongoing.snapshot_id).toArray();
     if (!snapshotSubjects) return errMsg(SIMULATION_ERROR.SNAPSHOT_NOT_EXIST);

@@ -54,8 +54,7 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
   const currentSubjectStatus = subjectsStatus.find(subject => subject.subjectId === currentSubjectId);
   const modalData = SIMULATION_MODAL_CONTENTS.find(data => data.status === currentSubjectStatus?.subjectStatus);
 
-  const skipRefrech = modalData?.status === APPLY_STATUS.FAILED || APPLY_STATUS.DOUBLED || APPLY_STATUS.CAPTCHA_FAILED;
-
+  const skipRefrech = modalData?.status === APPLY_STATUS.FAILED || APPLY_STATUS.DOUBLED;
   const checkFinish = modalData?.status === APPLY_STATUS.FAILED || APPLY_STATUS.DOUBLED || APPLY_STATUS.SUCCESS;
 
   if (!modalData) return null;
@@ -69,43 +68,48 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
         .then(result => {
           if ('errMsg' in result) {
             alert(result.errMsg);
+          } else {
+            // console.log(result.status, subjectsStatus);
+
+            setSubjectStatus(currentSubjectId, result.status);
+            setSubjectsStatus(currentSubjectId, result.status);
+            openModal('simulation');
           }
-          setSubjectStatus(currentSubjectId, result.status);
-          setSubjectsStatus(currentSubjectId, result.status);
-          openModal('simulation');
         })
         .catch(e => {
           console.error('예외 발생:', e);
         });
     } else if (modalData?.status === APPLY_STATUS.SUCCESS) {
-      /**과목 신청 완료 -> 과목 담기 종료 이벤트
+      /**
+       * 과목 신청 완료 -> 과목 담기 종료 이벤트
        *  */
       triggerButtonEvent({
         eventType: BUTTON_EVENT.REFRESH,
         subjectId: currentSubjectId,
-      })
-        .then(result => {
-          if ('errMsg' in result) {
-            alert(result.errMsg);
-          }
-          setSubjectStatus(currentSubjectId, APPLY_STATUS.SUCCESS);
-          setSubjectsStatus(currentSubjectId, APPLY_STATUS.SUCCESS);
-          fetchAndUpdateSimulationStatus();
-        })
-        .catch(e => {
-          console.error('예외 발생:', e);
-        })
-        .then(() => {
-          return isSimulationFinished();
-        })
-        .then(result => {
-          if (result) {
-            forceStopSimulation().then(() => {
-              console.log('실행중 ');
-              openModal('result');
-            });
-          }
-        });
+      }).then(result => {
+        if ('errMsg' in result) {
+          alert(result.errMsg);
+        }
+        fetchAndUpdateSimulationStatus();
+        if (result.finished) {
+          console.log(result, subjectsStatus);
+          forceStopSimulation().then(() => {
+            openModal('result');
+          });
+        }
+      });
+      // .then(() => {
+      //   return isSimulationFinished();
+      // })
+      // .then(result => {
+      //   if (result) {
+      //     forceStopSimulation().then(() => {
+      //       console.log('실행중 ');
+      //       return;
+      //     });
+      //     openModal('result');
+      //   }
+      // });
 
       closeModal('simulation');
     } else if (skipRefrech) {
@@ -117,13 +121,22 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
           if ('errMsg' in result) {
             alert(result.errMsg);
             forceStopSimulation().then(() => {
-              openModal('result');
-              resetSimulation();
+              return;
             });
+            resetSimulation();
+            openModal('result');
           } else {
-            const isFinishSimulation = await isSimulationFinished();
+            // if (currentSubjectStatus?.subjectStatus === APPLY_STATUS.FAILED) {
+            //   const isFinishSimulation = await isSimulationFinished();
 
-            if (isFinishSimulation) {
+            //   if (isFinishSimulation) {
+            //     forceStopSimulation().then(() => {
+            //       openModal('result');
+            //     });
+            //   }
+            // }
+            if (result.finished) {
+              console.log(result, subjectsStatus);
               forceStopSimulation().then(() => {
                 openModal('result');
               });
@@ -153,13 +166,14 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
           if ('errMsg' in result) {
             alert(result.errMsg);
             forceStopSimulation().then(() => {
+              console.log(result, subjectsStatus);
+
               openModal('result');
             });
             resetSimulation();
           } else {
-            const isFinishSimulation = await isSimulationFinished();
-
-            if (isFinishSimulation) {
+            if (result.finished) {
+              console.log(result, subjectsStatus);
               forceStopSimulation().then(() => {
                 openModal('result');
               });
