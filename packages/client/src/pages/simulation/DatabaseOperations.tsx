@@ -1,4 +1,9 @@
-import { backupDatabase, deleteAllDatabase, restoreDatabase } from '@/utils/simulation/backupData';
+import {
+  backupDatabase,
+  deleteAllDatabase,
+  restoreDatabase,
+  backupOngoingSimulation,
+} from '@/utils/simulation/backupData';
 import { forceStopSimulation } from '@/utils/simulation/simulation';
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
@@ -19,6 +24,16 @@ const DatabaseOperations: React.FC = () => {
     } catch (error) {
       console.error(error);
       alert('Failed to backup the database.');
+    }
+  };
+
+  const handleBackupOngoingSimulation = async () => {
+    try {
+      await backupOngoingSimulation();
+      alert('Backup completed successfully.');
+    } catch (error) {
+      console.error(error);
+      alert(error);
     }
   };
 
@@ -67,25 +82,34 @@ const DatabaseOperations: React.FC = () => {
       <div className="max-w-4xl min-h-screen mx-auto p-8 space-y-6">
         <h2 className="text-2xl font-semibold text-center text-gray-900">데이터베이스 관리</h2>
 
+        <div className="flex justify-center gap-5">
+          <button
+            onClick={handleBackupOngoingSimulation}
+            className="bg-slate-200 cursor-pointer text-gray-800 px-6 py-3 rounded-md shadow-md hover:bg-slate-400 hover:text-white transition-colors"
+          >
+            진행중인 시뮬레이션 내보내기
+          </button>
+          <button
+            onClick={handleForceSimulation}
+            className="w-full md:w-auto bg-blue-600 cursor-pointer text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700 transition-colors"
+          >
+            시뮬레이션 중지
+          </button>
+        </div>
+
         {/* Export Button */}
         <div className="flex justify-center gap-5">
           <button
             onClick={handleBackupDataBase}
-            className="bg-white cursor-pointer text-gray-800 px-6 py-3 rounded-md shadow-md hover:bg-gray-400 hover:text-white transition-colors"
+            className="bg-gray-100 cursor-pointer text-gray-800 px-6 py-3 rounded-md shadow-md hover:bg-gray-400 hover:text-white transition-colors"
           >
-            데이터베이스 내보내기
+            전체 데이터베이스 내보내기
           </button>
           <button
             onClick={handleDeleteDataBase}
-            className="bg-blue-600  cursor-pointer text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700 hover:text-white transition-colors"
+            className="bg-red-600  cursor-pointer text-white px-6 py-3 rounded-md shadow-md hover:bg-red-700 hover:text-white transition-colors"
           >
             데이터 초기화
-          </button>
-          <button
-            onClick={handleForceSimulation}
-            className="w-full md:w-auto bg-red-600 cursor-pointer text-white px-6 py-3 rounded-md shadow-md hover:bg-red-700 transition-colors"
-          >
-            시뮬레이션 중지
           </button>
         </div>
 

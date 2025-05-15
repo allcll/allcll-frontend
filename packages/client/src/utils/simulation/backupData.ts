@@ -28,6 +28,49 @@ export async function backupDatabase() {
   URL.revokeObjectURL(url);
 }
 
+export async function backupOngoingSimulation() {
+  isValidDatabase();
+
+  const simulation_run = await db.simulation_run.filter(s => s.ended_at === -1).last();
+  if (!simulation_run) {
+    throw new Error('진행중인 시뮬레이션이 없습니다.');
+  }
+
+  const simulation_run_selections = await db.simulation_run_selections
+    .where('simulation_run_id')
+    .equals(simulation_run.simulation_run_id)
+    .toArray();
+  const sectionIds = simulation_run_selections.map(s => s.run_selections_id);
+  const simulation_run_events = await db.simulation_run_events
+    .filter(e => sectionIds.includes(e.simulation_section_id))
+    .toArray();
+
+  const interested_snapshot = await db.interested_snapshot
+    .where('snapshot_id')
+    .equals(simulation_run.snapshot_id)
+    .toArray();
+  const interested_subject = await db.interested_subject
+    .where('snapshot_id')
+    .equals(simulation_run.snapshot_id)
+    .toArray();
+
+  const data = {
+    simulation_run: [simulation_run],
+    simulation_run_selections,
+    simulation_run_events,
+    interested_snapshot,
+    interested_subject,
+  };
+
+  const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'ongoing-simulation.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 export async function restoreDatabase(file: File) {
   isValidDatabase();
 
