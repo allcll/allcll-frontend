@@ -1,4 +1,4 @@
-import { db } from '@/utils/dbConfig.ts';
+import { db, SimulationRunSelections } from '@/utils/dbConfig.ts';
 import { getInterestedId, getRecentInterestedSnapshot } from '@/utils/simulation/subjects';
 import { getAccuracy, getAccuracyScore, getSpeedScore } from '@/utils/simulation/score.ts';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
@@ -59,11 +59,7 @@ export async function checkOngoingSimulation() {
     if (!ongoing) return { simulationId: -1 };
 
     const registeredSelections = await db.simulation_run_selections
-      .filter(
-        selection =>
-          selection.simulation_run_id === ongoing.simulation_run_id &&
-          [APPLY_STATUS.SUCCESS, APPLY_STATUS.FAILED].includes(selection.status),
-      )
+      .filter(s => submittedFilter(s, ongoing.simulation_run_id))
       .toArray();
 
     // // 시뮬레이션이 이미 종료된 경우를 다시 체크합니다.
@@ -212,6 +208,7 @@ export async function triggerButtonEvent(
   input: ButtonEventSearchReq | ButtonEventSubmitReq | ButtonEventApplyReq | ButtonEventEndReq,
 ) {
   const { eventType } = input;
+  console.log('BUTTON EVENT', input);
   let ongoing;
   try {
     ongoing = await getOngoingSimulation();
@@ -261,7 +258,7 @@ export async function triggerButtonEvent(
   const selections = await db.simulation_run_selections
     .filter(selection => selection.simulation_run_id === latestSimulationId)
     .toArray();
-  const latestSelection = selections[selections.length - 1]; //마지막이 나올까요?
+  const latestSelection = selections.filter(s => s.ended_at === -1).sort((a, b) => b.started_at - a.started_at)[0];
   if (!latestSelection) return errMsg(SIMULATION_ERROR.SELECTION_NOT_FOUND);
   const now = Date.now();
 
@@ -286,6 +283,7 @@ export async function triggerButtonEvent(
 
     const saveStatus = async (status: APPLY_STATUS) => {
       await db.simulation_run_selections.update(latestSelection.run_selections_id, { status });
+      console.log('saved section', latestSelection.run_selections_id, status);
       return { status };
     };
 
@@ -301,7 +299,7 @@ export async function triggerButtonEvent(
 
     // 과목 중복 여부를 확인합니다.
     const isDouble = selections.some(
-      s => s.interested_id === interestedId && [APPLY_STATUS.SUCCESS, APPLY_STATUS.FAILED].includes(s.status),
+      s => s.interested_id === interestedId && s.ended_at >= 0 && submittedFilter(s, latestSimulationId),
     );
     if (isDouble) {
       return await saveStatus(APPLY_STATUS.DOUBLED);
@@ -359,12 +357,8 @@ async function endCurrentSimulation() {
     .filter(selection => selection.simulation_run_id === lastRun.simulation_run_id)
     .toArray();
 
-  const triedCount = selections.filter(selection =>
-    [APPLY_STATUS.SUCCESS, APPLY_STATUS.FAILED].includes(selection.status),
-  ).length;
-  const canceledTry = selections.filter(
-    selection => ![APPLY_STATUS.SUCCESS, APPLY_STATUS.FAILED].includes(selection.status),
-  );
+  const triedCount = selections.filter(s => submittedFilter(s, lastRun.simulation_run_id)).length;
+  const canceledTry = selections.filter(s => notSubmittedFilter(s, lastRun.simulation_run_id));
   const canceledTime = canceledTry.reduce((acc, cur) => {
     if (cur.ended_at === -1) return acc + 4600;
     return acc + (cur.ended_at - cur.started_at);
@@ -419,12 +413,19 @@ export async function isSimulationFinished() {
   }
 
   const subjects = await db.simulation_run_selections
-    .filter(
-      selection =>
-        selection.simulation_run_id === ongoing.simulation_run_id &&
-        [APPLY_STATUS.SUCCESS, APPLY_STATUS.FAILED].includes(selection.status),
-    )
+    .filter(s => submittedFilter(s, ongoing.simulation_run_id))
     .toArray();
+
+  // debug 추가
 
   return ongoing.subject_count <= subjects.length;
 }
+
+const isOngoingSection = (sections: SimulationRunSelections, simulationId: number) =>
+  sections.simulation_run_id === simulationId;
+
+const submittedFilter = (sections: SimulationRunSelections, simulationId: number) =>
+  isOngoingSection(sections, simulationId) && [APPLY_STATUS.SUCCESS, APPLY_STATUS.FAILED].includes(sections.status);
+
+const notSubmittedFilter = (sections: SimulationRunSelections, simulationId: number) =>
+  isOngoingSection(sections, simulationId) && ![APPLY_STATUS.SUCCESS, APPLY_STATUS.FAILED].includes(sections.status);
