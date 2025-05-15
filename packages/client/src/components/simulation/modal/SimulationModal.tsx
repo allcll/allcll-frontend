@@ -172,6 +172,7 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
             });
             resetSimulation();
           } else {
+            console.log(result.finished);
             if (result.finished) {
               console.log(result, subjectsStatus);
               forceStopSimulation().then(() => {
