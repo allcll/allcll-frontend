@@ -49,7 +49,7 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
   const modalData = SIMULATION_MODAL_CONTENTS.find(data => data.status === currentSubjectStatus?.subjectStatus);
 
   const modalStatus = modalData?.status ?? APPLY_STATUS.PROGRESS;
-  const skipRefresh = [APPLY_STATUS.FAILED, APPLY_STATUS.DOUBLED].includes(modalStatus);
+  const skipRefresh = [APPLY_STATUS.FAILED, APPLY_STATUS.DOUBLED, APPLY_STATUS.CAPTCHA_FAILED].includes(modalStatus);
   const checkFinish = [APPLY_STATUS.FAILED, APPLY_STATUS.DOUBLED, APPLY_STATUS.SUCCESS].includes(modalStatus);
 
   if (!modalData) return null;
@@ -83,8 +83,6 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
       triggerButtonEvent({ eventType: BUTTON_EVENT.SUBJECT_SUBMIT, subjectId: currentSubjectId })
         .then(result => {
           checkErrorValue(result);
-          // console.log(result.status, subjectsStatus);
-
           setSubjectStatus(currentSubjectId, result.status);
           setSubjectsStatus(currentSubjectId, result.status);
           openModal('simulation');
@@ -99,27 +97,11 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
         subjectId: currentSubjectId,
       }).then(result => {
         checkErrorValue(result);
-
         fetchAndUpdateSimulationStatus();
         if (result.finished) {
-          console.log(result, subjectsStatus);
-          forceStopSimulation().then(() => {
-            openModal('result');
-          });
+          openModal('result');
         }
       });
-      // .then(() => {
-      //   return isSimulationFinished();
-      // })
-      // .then(result => {
-      //   if (result) {
-      //     forceStopSimulation().then(() => {
-      //       console.log('실행중 ');
-      //       return;
-      //     });
-      //     openModal('result');
-      //   }
-      // });
 
       closeModal('simulation');
     } else if (skipRefresh) {
@@ -136,22 +118,8 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
             resetSimulation();
             openModal('result');
           } else {
-            // if (currentSubjectStatus?.subjectStatus === APPLY_STATUS.FAILED) {
-            //   const isFinishSimulation = await isSimulationFinished();
-
-            //   if (isFinishSimulation) {
-            //     forceStopSimulation().then(() => {
-            //       openModal('result');
-            //     });
-            //   }
-            // }
-
-            // Fixme: 강제로 종료 할 필요가 있는가? 샐각해보기
             if (result.finished) {
-              console.log(result, subjectsStatus);
-              forceStopSimulation().then(() => {
-                openModal('result');
-              });
+              openModal('result');
             }
           }
         })
@@ -160,8 +128,6 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
       closeModal('simulation');
     } else if (checkFinish) {
     }
-
-    // console.log('modalData?.status', modalData?.status);
   };
 
   /**
@@ -190,10 +156,7 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
           } else {
             console.log(result.finished);
             if (result.finished) {
-              console.log(result, subjectsStatus);
-              forceStopSimulation().then(() => {
-                openModal('result');
-              });
+              openModal('result');
             }
           }
         })
@@ -208,8 +171,6 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
     } else {
       closeModal('simulation');
     }
-
-    // console.log('modalData?.status', modalData?.status);
   };
 
   return (
