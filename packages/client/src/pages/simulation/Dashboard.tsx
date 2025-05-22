@@ -5,6 +5,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { getSimulationList } from '@/utils/simulation/result.ts';
 import { SimulationRun } from '@/utils/dbConfig.ts';
 import CursorBlue from '@/assets/cursor-blue.svg?react';
+import AllResult from '@/components/simulation/AllResult.tsx';
 
 function Dashboard() {
   const logs = useLiveQuery<{ snapshots: SimulationRun[] }>(getSimulationList);
@@ -31,20 +32,28 @@ function Dashboard() {
         <title>ALLCLL | 대시보드</title>
       </Helmet>
 
-      <div className="flex justify-between items-start max-w-3xl mx-auto">
-        <h1 className="text-2xl font-bold">모의 수강 신청 로그</h1>
-        <div className="border border-gray-300 rounded">
-          <input
-            type="text"
-            className="text-xs p-1"
-            placeholder="user-pk를 입력해주세요"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
-        </div>
-      </div>
+      <section className="max-w-7xl mx-auto">
+        <h1 className="text-2xl font-bold mb-4">모의 수강 통계</h1>
 
-      <section className="max-w-3xl min-h-screen mx-auto">
+        <div className="bg-white p-3 rounded-md text-sm shadow-md shadow-gray-300">
+          <AllResult />
+        </div>
+      </section>
+
+      <section className="max-w-3xl min-h-screen mx-auto mt-12">
+        <div className="flex justify-between items-start max-w-3xl mx-auto mb-4">
+          <h1 className="text-2xl font-bold">모의 수강 신청 로그</h1>
+          <div className="border border-gray-300 rounded">
+            <input
+              type="text"
+              className="text-xs p-1"
+              placeholder="user-pk를 입력해주세요"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+            />
+          </div>
+        </div>
+
         {isPending ? (
           <div className="flex justify-center items-center h-64">
             <span className="text-gray-500">로딩 중...</span>
