@@ -141,3 +141,169 @@ export async function getSimulationResult(simulationId: number): Promise<ResultR
       })),
   };
 }
+
+export interface AggregatedResultResponse {
+  total_users: number;
+  avg_started_at: number;
+  avg_ended_at: number;
+  avg_elapsed_time: number;
+  user_ability: {
+    avg_searchBtnSpeed: number;
+    avg_totalSpeed: number;
+    avg_accuracy: number;
+    avg_captchaSpeed: number;
+  };
+  subject_success_rate: {
+    subject_id: number;
+    success_count: number;
+    total_count: number;
+    success_rate: number;
+    avg_completion_time: number;
+  }[];
+  status_distribution: {
+    status: number;
+    count: number;
+    percentage: number;
+  }[];
+}
+
+/**
+ * 모든 시뮬레이션 결과에 대한 종합 통계 데이터를 생성합니다.
+ *
+ * 이 함수는 다음과 같은 통계 정보를 계산합니다:
+ * - 총 사용자 수 및 평균 시작/종료 시간
+ * - 사용자 능력치 평균 (검색 버튼 속도, 총 속도, 정확도, 캡차 속도)
+ * - 과목별 성공률과 평균 완료 시간
+ * - 상태별 분포 (성공, 실패, 캡차 실패 등의 비율)
+ *
+ * @returns {Promise<AggregatedResultResponse>} 종합 통계 데이터를 포함한 객체
+ * @throws {Error} 통계를 계산할 시뮬레이션 데이터가 없을 경우 오류 발생
+ *
+ * @example
+ * // 전체 시뮬레이션 통계 가져오기
+ * try {
+ *   const stats = await getAggregatedSimulationResults();
+ *   console.log(`총 ${stats.total_users}명의 사용자 데이터 분석 완료`);
+ * } catch (error) {
+ *   console.error('통계 생성 실패:', error.message);
+ * }
+ */
+export async function getAggregatedSimulationResults(): Promise<AggregatedResultResponse> {
+  // 1. 모든 완료된 시뮬레이션 가져오기
+  const completedSimulations = await db.simulation_run.filter(run => run.ended_at !== -1).toArray();
+  const simulationCount = completedSimulations.length;
+
+  if (simulationCount === 0) {
+    throw new Error('통계를 계산할 시뮬레이션 데이터가 없습니다.');
+  }
+
+  // 2. 능력치 평균 계산
+  const avgSearchBtnSpeed =
+    completedSimulations.reduce((acc, sim) => acc + (sim.search_event_at - sim.started_at), 0) / simulationCount / 1000;
+
+  const avgTotalSpeed =
+    completedSimulations.reduce((acc, sim) => acc + sim.total_elapsed / sim.subject_count, 0) / simulationCount / 1000;
+
+  const avgAccuracy = completedSimulations.reduce((acc, sim) => acc + sim.accuracy, 0) / simulationCount;
+
+  // 3. 모든 selections 데이터 가져오기
+  const allSelections = await db.simulation_run_selections.toArray();
+
+  // 4. 과목별 성공률 계산
+  const subjectStats = new Map();
+
+  for (const selection of allSelections) {
+    const simulationId = selection.simulation_run_id;
+    const simulation = completedSimulations.find(s => s.simulation_run_id === simulationId);
+    if (!simulation) continue;
+
+    const snapshot = await getInterestedSnapshotById(simulation.snapshot_id);
+    if (!snapshot) continue;
+
+    const subject = snapshot.subjects.find(s => s.interested_id === selection.interested_id);
+    if (!subject) continue;
+
+    const subjectId = subject.subject_id;
+
+    if (!subjectStats.has(subjectId)) {
+      subjectStats.set(subjectId, {
+        subject_id: subjectId,
+        success_count: 0,
+        total_count: 0,
+        completion_time_sum: 0,
+      });
+    }
+
+    const stat = subjectStats.get(subjectId);
+    stat.total_count++;
+
+    if (selection.status === 1) {
+      // SUCCESS 상태
+      stat.success_count++;
+      stat.completion_time_sum += selection.ended_at - selection.started_at;
+    }
+  }
+
+  const subjectSuccessRates = Array.from(subjectStats.values()).map(stat => ({
+    subject_id: stat.subject_id,
+    success_count: stat.success_count,
+    total_count: stat.total_count,
+    success_rate: stat.success_count / stat.total_count,
+    avg_completion_time: stat.success_count > 0 ? stat.completion_time_sum / stat.success_count / 1000 : 0,
+  }));
+
+  // 5. 상태별 분포 계산
+  const statusCounts = allSelections.reduce<Record<number, number>>((acc, selection) => {
+    acc[selection.status] = (acc[selection.status] || 0) + 1;
+    return acc;
+  }, {});
+
+  const totalSelections = allSelections.length;
+  const statusDistribution = Object.entries(statusCounts).map(([status, count]) => ({
+    status: Number(status),
+    count: count as number,
+    percentage: (count as number) / totalSelections,
+  }));
+
+  // 6. 캡차 평균 속도 계산
+  const simulationIds = completedSimulations.map(s => s.simulation_run_id);
+  const selectionIds = allSelections
+    .filter(s => simulationIds.includes(s.simulation_run_id))
+    .map(s => s.run_selections_id);
+
+  const captchaEvents = await db.simulation_run_events
+    .filter(e => selectionIds.includes(e.simulation_section_id) && e.event_type === BUTTON_EVENT.CAPTCHA)
+    .toArray();
+
+  let captchaSpeedSum = 0;
+  let captchaCount = 0;
+
+  for (const event of captchaEvents) {
+    const selection = allSelections.find(s => s.run_selections_id === event.simulation_section_id);
+    if (selection) {
+      captchaSpeedSum += event.timestamp - selection.started_at;
+      captchaCount++;
+    }
+  }
+
+  const avgCaptchaSpeed = captchaCount > 0 ? captchaSpeedSum / captchaCount / 1000 : 0;
+
+  // 7. 결과 반환
+  return {
+    total_users: simulationCount,
+    avg_started_at: completedSimulations.reduce((acc, sim) => acc + sim.started_at, 0) / simulationCount,
+    avg_ended_at: completedSimulations.reduce((acc, sim) => acc + sim.ended_at, 0) / simulationCount,
+    avg_elapsed_time:
+      completedSimulations.reduce((acc, sim) => acc + (sim.ended_at - sim.started_at), 0) / simulationCount / 1000,
+
+    user_ability: {
+      avg_searchBtnSpeed: avgSearchBtnSpeed,
+      avg_totalSpeed: avgTotalSpeed,
+      avg_accuracy: avgAccuracy,
+      avg_captchaSpeed: avgCaptchaSpeed,
+    },
+
+    subject_success_rate: subjectSuccessRates,
+    status_distribution: statusDistribution,
+  };
+}

@@ -1,3 +1,10 @@
+const Distribution = {
+  searchBtnSpeed: { mu: 1.457, sigma: 0.7362 },
+  accuracy: { mu: 100, sigma: 0.0017 },
+  captchaSpeed: { mu: 3.6415, sigma: 0.4057 },
+  totalSpeed: { mu: 8.6367, sigma: 0.5422 },
+};
+
 function logNormalCDF(x: number, mu: number, sigma: number): number {
   if (x <= 0) return 0;
 
@@ -12,8 +19,8 @@ function logNormalCDF(x: number, mu: number, sigma: number): number {
 /**
  * Speed Score 계산
  * @param takenTime {number} 과목 당 소요 시간 평균 (초)
- * @param mu {number?} 정규 분포 평균
- * @param sigma {number?} 정규 분포 표준편차
+ * @param mu {number|undefined} 정규 분포 평균
+ * @param sigma {number|undefined} 정규 분포 표준편차
  */
 export function getSpeedScore(takenTime: number, mu = 7.5, sigma = 0.3): number {
   // 경계 제한
@@ -51,3 +58,35 @@ export function getAccuracy(takenTime: number, canceledTime: number): number {
 // exampleTimes.forEach(t => {
 //   console.log(`Time: ${t}s -> Score: ${getSpeedScore(t)}`);
 // });
+
+/**
+ * 검색 버튼 클릭 속도 랭크 계산
+ * @param takenTime
+ */
+export function getSearchBtnSpeedRank(takenTime: number): number {
+  return getSpeedScore(takenTime, Distribution.searchBtnSpeed.mu, Distribution.searchBtnSpeed.sigma);
+}
+
+/**
+ * 캡차 인증 속도 랭크 계산
+ * @param takenTime
+ */
+export function getCaptchaSpeedRank(takenTime: number): number {
+  return getSpeedScore(takenTime, Distribution.captchaSpeed.mu, Distribution.captchaSpeed.sigma);
+}
+
+/**
+ * Accuracy 랭크 계산
+ * @param accuracy
+ */
+export function getAccuracyRank(accuracy: number): number {
+  return Math.max(0, Math.min(accuracy, 100));
+}
+
+/**
+ * 전체 소요 시간 / 과목 수 랭크 계산
+ * @param takenTime
+ */
+export function getTotalSpeedRank(takenTime: number): number {
+  return getSpeedScore(takenTime, Distribution.totalSpeed.mu, Distribution.totalSpeed.sigma);
+}
