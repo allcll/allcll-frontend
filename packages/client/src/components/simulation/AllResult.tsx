@@ -2,7 +2,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import RadarChart from '@/components/simulation/detail/RadarChart.tsx';
 import SubjectDetailResult from '@/components/simulation/detail/SubjectDetailResult.tsx';
 import { getAggregatedSimulationResults, getSimulationResult } from '@/utils/simulation/result.ts';
-import Timeline from '@/components/simulation/detail/Timeline.tsx';
+import StatisticsChart from '@/components/simulation/detail/StatisticsChart.tsx';
 
 function AllResult() {
   const simulationResult = useLiveQuery(() => getSimulationResult(Number(2)));
@@ -42,7 +42,7 @@ function AllResult() {
       <div>
         {/*Timeline */}
         {modifiedResult ? (
-          <Timeline result={modifiedResult} />
+          <StatisticsChart result={modifiedResult} />
         ) : (
           <div className="text-center text-gray-500">데이터를 불러오는 중입니다...</div>
         )}
