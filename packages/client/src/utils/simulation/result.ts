@@ -1,6 +1,6 @@
 import { db, SimulationRunSelections } from '@/utils/dbConfig.ts';
 import { getInterestedSnapshotById } from '@/utils/simulation/subjects.ts';
-import { BUTTON_EVENT, getSimulationById } from '@/utils/simulation/simulation.ts';
+import { APPLY_STATUS, BUTTON_EVENT, getSimulationById } from '@/utils/simulation/simulation.ts';
 
 const SEC = 1 / 1000;
 
@@ -139,12 +139,23 @@ export async function getSimulationResult(simulationId: number): Promise<ResultR
 }
 
 interface SimulationTimeData {
-  simulation_run_id: number;
-  captchaTime: number; // 캡차 인증 시간
-  subjectTime: number; // 과목 신청 시간
-  searchBtnTime: number; // 검색 버튼 시간
-  otherTime: number; // 나머지 시간
-  totalTime: number; // 전체 시간
+  simulationRunId: number;
+  accuracy: number;
+  subjectCount: number;
+  searchBtnTime: number;
+  captchaTime: number;
+  subjectTime: number;
+  totalTime: number;
+}
+
+export interface ISubjectsAnalysis {
+  subjectId: number;
+  successCount: number;
+  failedCount: number;
+  doubledCount: number;
+  totalCount: number;
+  avgCompletionTime: number;
+  avgIndex: number;
 }
 
 export interface AggregatedResultResponse {
@@ -153,12 +164,6 @@ export interface AggregatedResultResponse {
   avg_started_at: number;
   avg_ended_at: number;
   avg_elapsed_time: number;
-  user_ability: {
-    avg_searchBtnSpeed: number;
-    avg_totalSpeed: number;
-    avg_accuracy: number;
-    avg_captchaSpeed: number;
-  };
   subject_success_rate: {
     subject_id: number;
     success_count: number;
@@ -174,6 +179,7 @@ export interface AggregatedResultResponse {
 
   // 추가되는 필드: 시뮬레이션별 시간 분석 데이터
   simulations: SimulationTimeData[];
+  subjects: ISubjectsAnalysis[];
 }
 
 /**
@@ -209,25 +215,80 @@ export async function getAggregatedSimulationResults(): Promise<AggregatedResult
   // 2. 모든 selections 데이터 가져오기
   const allSelections = await db.simulation_run_selections.toArray();
 
-  // 3. 능력치 평균 계산
-  const searchBtnTimes = completedSimulations.map(sim => (sim.search_event_at - sim.started_at) * SEC);
-  const totalElapsedTimes = completedSimulations.map(sim => sim.total_elapsed * SEC);
+  // 3. 시뮬레이션 데이터 정리
+  const simulationData = await Promise.all(
+    completedSimulations.map(async sim => {
+      const selections = await db.simulation_run_selections
+        .filter(sel => sel.simulation_run_id === sim.simulation_run_id)
+        .toArray();
 
-  const avgTotalSpeed =
-    (completedSimulations.reduce((acc, sim) => acc + sim.total_elapsed / sim.subject_count, 0) / simulationCount) * SEC;
+      const selectionIds = selections.map(s => s.run_selections_id);
+      const captchaEvents = await db.simulation_run_events
+        .filter(e => e.event_type === BUTTON_EVENT.CAPTCHA && selectionIds.includes(e.simulation_section_id))
+        .toArray();
 
-  // const subjectTimes = allSelections.map(sim => {
+      const searchBtnTime = (sim.search_event_at - sim.started_at) * SEC;
 
-  const captchaTimes = await Promise.all(
-    allSelections.map(async sim => {
-      const captchaEvent = await db.simulation_run_events
-        .filter(e => e.simulation_section_id === sim.run_selections_id && e.event_type === BUTTON_EVENT.CAPTCHA)
-        .last();
-      return captchaEvent ? (captchaEvent.timestamp - sim.started_at) * SEC : 0;
+      const captchaTime =
+        captchaEvents.reduce((acc, event) => {
+          const selection = selections.find(s => s.run_selections_id === event.simulation_section_id);
+          if (selection) return acc + (event.timestamp - selection.started_at);
+          return acc;
+        }, 0) * SEC;
+
+      const subjectTime =
+        selections.reduce((acc, sel) => {
+          if (sel.ended_at >= 0) return acc + (sel.ended_at - sel.started_at);
+          return acc;
+        }, 0) * SEC;
+
+      return {
+        simulationRunId: sim.simulation_run_id,
+        accuracy: sim.accuracy,
+        subjectCount: sim.subject_count,
+        searchBtnTime,
+        captchaTime: captchaTime + searchBtnTime,
+        subjectTime: subjectTime + searchBtnTime,
+        totalTime: sim.total_elapsed * SEC,
+      };
     }),
   );
 
-  const avgAccuracy = completedSimulations.reduce((acc, sim) => acc + sim.accuracy, 0) / simulationCount;
+  // 4. 과목별 데이터 수집
+  const subjectSnapshots = await db.interested_snapshot.filter(shot => shot.simulated).last();
+
+  if (!subjectSnapshots) {
+    throw new Error('과목 스냅샷 데이터가 없습니다.');
+  }
+
+  const subjects = await db.interested_subject
+    .filter(sub => sub.snapshot_id === subjectSnapshots.snapshot_id)
+    .toArray();
+
+  const subjectData = subjects.map(sub => {
+    const selections = allSelections.filter(sel => sel.interested_id === sub.interested_id);
+    const successCount = selections.filter(sel => sel.status === APPLY_STATUS.SUCCESS).length;
+    const failedCount = selections.filter(sel => sel.status === APPLY_STATUS.FAILED).length;
+    const doubledCount = selections.filter(sel => sel.status === APPLY_STATUS.DOUBLED).length;
+    const totalCount = selections.length;
+    const avgIndex = selections.reduce((acc, sel) => acc + sel.selected_index, 0) / totalCount || 0;
+
+    const completionTimes = selections
+      .filter(sel => sel.ended_at >= 0 && sel.started_at >= 0)
+      .map(sel => (sel.ended_at - sel.started_at) * SEC);
+
+    const avgCompletionTime = average(completionTimes);
+
+    return {
+      subjectId: sub.subject_id,
+      successCount,
+      failedCount,
+      doubledCount,
+      totalCount,
+      avgCompletionTime,
+      avgIndex,
+    };
+  });
 
   // 4. 과목별 성공률 계산
   const subjectStats = new Map();
@@ -306,8 +367,6 @@ export async function getAggregatedSimulationResults(): Promise<AggregatedResult
     }
   }
 
-  const avgCaptchaSpeed = captchaCount > 0 ? captchaSpeedSum / captchaCount / 1000 : 0;
-
   // 7. 결과 반환
   return {
     total_users: simulationCount,
@@ -316,27 +375,15 @@ export async function getAggregatedSimulationResults(): Promise<AggregatedResult
     avg_elapsed_time:
       completedSimulations.reduce((acc, sim) => acc + (sim.ended_at - sim.started_at), 0) / simulationCount / 1000,
 
-    user_ability: {
-      avg_searchBtnSpeed: average(searchBtnTimes),
-      avg_totalSpeed: avgTotalSpeed,
-      avg_accuracy: avgAccuracy,
-      avg_captchaSpeed: avgCaptchaSpeed,
-    },
-
     subject_success_rate: subjectSuccessRates,
     status_distribution: statusDistribution,
 
-    simulations: completedSimulations.map(sim => ({
-      simulation_run_id: sim.simulation_run_id,
-      captchaTime: sim.captcha_time || 0,
-      subjectTime: sim.subject_time || 0,
-      searchBtnTime: sim.search_btn_time || 0,
-      otherTime: sim.other_time || 0,
-      totalTime: sim.total_elapsed / sim.subject_count, // 전체 시간
-    })),
+    simulations: simulationData,
+    subjects: subjectData,
   };
 }
 
 function average(arr: number[]): number {
+  if (arr.length === 0) return 0;
   return arr.reduce((sum, value) => sum + value, 0) / arr.length;
 }

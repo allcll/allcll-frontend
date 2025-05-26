@@ -70,7 +70,7 @@ const options = {
   },
 };
 
-function getDataset(result: ExtendedResultResponse) {
+function getDataset(result: IRadarChart['result']) {
   const { user_ability } = result;
   const { searchBtnSpeed, totalSpeed, accuracy, captchaSpeed } = user_ability;
   const labels = ['신청 버튼 클릭 속도', '전체 속도', '정확도', '캡차 인증 속도'];
@@ -108,7 +108,13 @@ function getRankArr(data: number[]) {
   ];
 }
 
-function RadarChart({ result }: { result: ExtendedResultResponse }) {
+interface IRadarChart {
+  result: {
+    user_ability: ExtendedResultResponse['user_ability'];
+  };
+}
+
+function RadarChart({ result }: IRadarChart) {
   const datasets = getDataset(result);
   const { searchBtnSpeed, totalSpeed, accuracy, captchaSpeed } = result.user_ability;
 
@@ -120,8 +126,8 @@ function RadarChart({ result }: { result: ExtendedResultResponse }) {
       </div>
 
       {/* 능력 설명 박스 */}
-      <div className="absolute bottom-6 right-6 bg-white shadow-lg rounded-lg px-4 py-3 text-sm text-gray-800">
-        <div className="font-bold text-base mb-1">내 능력</div>
+      <div className="absolute bottom-6 right-6 bg-white shadow-lg rounded-lg px-4 py-3 text-xs text-gray-800">
+        <div className="font-bold text-sm mb-1">내 능력</div>
         <ul className="space-y-1">
           <li className="flex justify-between">
             <span>• 신청 버튼 클릭 속도&nbsp;</span> <span>{searchBtnSpeed.toFixed(2)} sec</span>
