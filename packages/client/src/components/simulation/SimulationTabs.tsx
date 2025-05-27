@@ -1,11 +1,6 @@
 import useTabStore, { useSimulationTab } from '@/store/simulation/useTabStore.ts';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-// const TabMenu = [
-//   { name: '관심과목 담기', path: '#' },
-//   { name: '수강신청', path: '#', active: true },
-// ];
-
 function SimulationTabs() {
   const tabs = useTabStore(state => state.tabs);
   const deleteTab = useTabStore(state => state.deleteTab);
@@ -20,15 +15,22 @@ function SimulationTabs() {
           key={item.urlPath}
           to={item.realUrl}
           className={({ isActive }) =>
-            'px-8 flex items-center gap-2 cursor-pointer border-r-1 border-r-neutral-300' +
+            'px-2.5 flex items-center gap-2.5 w-1/8 border-r-1 border-r-neutral-300 cursor-pointer' +
             (isActive
-              ? '  mb-[-1px] bg-white border-b-2 border-b-white border-t-4 border-t-blue-500 font-semibold text-blue-500'
-              : '  text-gray-500')
+              ? ' mb-[-1px] bg-white border-b-2 border-b-white border-t-4 border-t-blue-500 font-semibold text-blue-500'
+              : ' text-gray-500 hover:bg-white')
           }
           end
         >
-          <span>{item.title}</span>
-          <button className="text-gray-700" onClick={() => deleteTab(item.urlPath, navigate)}>
+          <span className="flex-1 text-center overflow-hidden text-ellipsis text-nowrap">{item.title}</span>
+          <button
+            className="w-4 text-gray-700 cursor-pointer"
+            onClick={e => {
+              e.preventDefault();
+              e.stopPropagation();
+              deleteTab(item.urlPath, navigate);
+            }}
+          >
             x
           </button>
         </NavLink>
