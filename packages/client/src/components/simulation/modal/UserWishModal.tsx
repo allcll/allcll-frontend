@@ -20,14 +20,6 @@ interface UserWishModalIProp {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-// function reorderSubject({ subjects }: { subjects: SimulationSubject[] }) {
-//   for (let i = subjects.length - 1; i > 0; i--) {
-//     const j = Math.floor(Math.random() * (i + 1));
-//     [subjects[i], subjects[j]] = [subjects[j], subjects[i]];
-//   }
-//   return subjects;
-// }
-
 const SubjectTable = ({ subjects }: { subjects: SimulationSubject[] }) => (
   <table className="w-full text-sm text-left border-t border-b border-gray-200">
     <thead className="bg-gray-100 text-gray-700">

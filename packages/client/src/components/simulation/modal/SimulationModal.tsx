@@ -148,13 +148,10 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
           if ('errMsg' in result) {
             alert(result.errMsg);
             forceStopSimulation().then(() => {
-              console.log(result, subjectsStatus);
-
               openModal('result');
             });
             resetSimulation();
           } else {
-            console.log(result.finished);
             if (result.finished) {
               openModal('result');
             }
