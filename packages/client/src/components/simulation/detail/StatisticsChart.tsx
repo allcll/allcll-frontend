@@ -24,7 +24,9 @@ type ChartType = 'bar' | 'line';
 function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
   const [normalData, setNormalData] = useState(true);
 
-  const simulations = !normalData ? result.simulations : result.simulations.filter(sim => sim.totalTime <= 80);
+  const simulations = !normalData
+    ? result.simulations
+    : result.simulations.filter(sim => sim.totalTime <= 80 && sim.searchBtnTime > 0);
 
   // 시뮬레이션 라벨 생성 (Sim 1, Sim 2, ...)
   const labels = simulations.map((_, index) => `시뮬레이션 ${index + 1}`);
