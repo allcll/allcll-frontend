@@ -2,6 +2,7 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation';
+import SubjectRow from './table/SubjectRow';
 
 interface ISubjectsTable {
   isRegisteredTable: boolean;
@@ -37,7 +38,6 @@ const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
     } else {
       openModal('captcha');
     }
-
     openModal('captcha');
   };
 
@@ -52,41 +52,14 @@ const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
   return (
     <tbody className="min-h-[300px] border-gray-100">
       {subjectsToRender.length > 0 ? (
-        subjectsToRender.map((course, idx) => (
-          <tr key={course.subjectId} className="hover:bg-gray-50">
-            <td className="border border-gray-300 bg-blue-100 px-2 py-1">{idx + 1}</td>
-            <td className="border border-gray-300 px-2 py-1">
-              <button
-                className="bg-blue-500 cursor-pointer text-white text-xs px-2 py-0.5 rounded-xs"
-                disabled={!!isRegisteredTable}
-                onClick={() => handleClickSubject(course.subjectId)}
-              >
-                {isRegisteredTable ? '삭제' : '신청'}
-              </button>
-            </td>
-            <td className="border border-gray-300 px-2 py-1">{course.subjectCode}</td>
-            <td className="border border-gray-300 px-2 py-1">{course.classCode}</td>
-            <td className="border border-gray-300 px-2 py-1">{course.departmentName}</td>
-            <td className="border border-gray-300 px-2 py-1">{course.subjectName}</td>
-            <td className="border border-gray-300 px-2 py-1">
-              <button className="bg-gray-700 text-xs text-white rounded-xs px-2 py-0.5 ">수업계획서</button>
-            </td>
-            <td className="border border-gray-300 px-2 py-1">{course.language || '-'}</td>
-            <td className="border border-gray-300 px-2 py-1">
-              {course.tm_num
-                ? course.tm_num
-                    .split('/')
-                    .map((num, index) => (index === 0 ? parseFloat(num).toFixed(1) : num))
-                    .join('/')
-                : '-'}
-            </td>
-            <td className="border border-gray-300 px-2 py-1">{course.subjectType}</td>
-            <td className="border border-gray-300 px-2 py-1">{course.semester_at}</td>
-            <td className="border border-gray-300 px-2 py-1">{course.lesn_time || '-'}</td>
-            <td className="border border-gray-300 px-2 py-1">
-              <button className="bg-gray-700 text-white text-xs px-2 py-0.5 rounded-xs">수강인원</button>
-            </td>
-          </tr>
+        subjectsToRender.map((subject, idx) => (
+          <SubjectRow
+            key={subject.subjectId}
+            index={idx}
+            subject={subject}
+            isRegisteredTable={isRegisteredTable}
+            onClickSubject={handleClickSubject}
+          />
         ))
       ) : (
         <tr>
