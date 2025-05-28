@@ -15,7 +15,6 @@ import { SimulationSubject } from '@/utils/types';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { isValidUser } from '@/hooks/scoreServer/useScoreServer.ts';
 
 function Simulation() {
   const { type, openModal, closeModal } = useSimulationModalStore();
@@ -151,20 +150,6 @@ function Simulation() {
   };
 
   const handleSubjectSearchClick = async () => {
-    // user 검증 로직
-    try {
-      const isValid = await isValidUser(currentSimulation.userPK);
-
-      if (!isValid) {
-        alert('유효하지 않은 사용자입니다. userPK를 확인해주세요!');
-        return;
-      }
-    } catch (error) {
-      console.error('Error validating user:', error);
-      alert('유효하지 않은 사용자입니다. userPK를 확인해주세요!');
-      return;
-    }
-
     // 학과 검증 로직
     if (currentSimulation.department.departmentName !== '') {
       setCurrentSimulation({
