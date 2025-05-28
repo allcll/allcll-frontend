@@ -20,7 +20,7 @@ function SubjectDetailResult({ result }: { result: ExtendedResultResponse }) {
       </thead>
       <tbody className="text-gray-700">
         {subject_results.map((row, i) => (
-          <tr key={i} className="border-t">
+          <tr key={i} className="border-t border-gray-200">
             <td className="py-2 px-1">{row.subjectInfo?.subjectCode + '-' + row.subjectInfo?.classCode}</td>
             <td className="py-2 px-1">{row.subjectInfo?.subjectName}</td>
             <td className="py-2 px-1">{row.subjectInfo?.professorName}</td>

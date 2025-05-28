@@ -10,6 +10,12 @@ import {
 } from 'chart.js';
 import { Radar as RadarChartJS } from 'react-chartjs-2';
 import { ExtendedResultResponse } from '@/pages/simulation/DashboardDetail.tsx';
+import {
+  getSearchBtnSpeedRank,
+  getTotalSpeedRank,
+  getAccuracyRank,
+  getCaptchaSpeedRank,
+} from '@/utils/simulation/score.ts';
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, ChartTooltip, Legend);
 
@@ -64,18 +70,18 @@ const options = {
   },
 };
 
-function getDataset(result: ExtendedResultResponse) {
+function getDataset(result: IRadarChart['result']) {
   const { user_ability } = result;
   const { searchBtnSpeed, totalSpeed, accuracy, captchaSpeed } = user_ability;
   const labels = ['신청 버튼 클릭 속도', '전체 속도', '정확도', '캡차 인증 속도'];
-  const myData = [(2 - searchBtnSpeed) * 50, ((15 - totalSpeed) / 15) * 100, accuracy, ((7 - captchaSpeed) / 7) * 100];
+  const myData = [searchBtnSpeed, totalSpeed, accuracy, captchaSpeed];
 
   return {
     labels,
     datasets: [
       {
         label: '평균',
-        data: [50, 50, 89.2, 50],
+        data: getRankArr([1.776296, 9.30268, 93.58, 3.843947]),
         backgroundColor: 'rgba(5, 223, 114, 0.2)', // bg-blue-500 with opacity
         borderColor: 'rgba(5, 223, 114, 1)',
         borderWidth: 2,
@@ -83,7 +89,7 @@ function getDataset(result: ExtendedResultResponse) {
       },
       {
         label: '내 능력',
-        data: myData.map(item => Math.min(Math.max(item, 0), 100)),
+        data: getRankArr(myData),
         backgroundColor: 'rgb(0, 122, 255, 0.2)', // bg-blue-500 with opacity
         borderColor: 'rgba(0, 122, 255, 1)',
         borderWidth: 2,
@@ -93,7 +99,22 @@ function getDataset(result: ExtendedResultResponse) {
   };
 }
 
-function RadarChart({ result }: { result: ExtendedResultResponse }) {
+function getRankArr(data: number[]) {
+  return [
+    getSearchBtnSpeedRank(data[0]),
+    getTotalSpeedRank(data[1]),
+    getAccuracyRank(data[2]),
+    getCaptchaSpeedRank(data[3]),
+  ];
+}
+
+interface IRadarChart {
+  result: {
+    user_ability: ExtendedResultResponse['user_ability'];
+  };
+}
+
+function RadarChart({ result }: IRadarChart) {
   const datasets = getDataset(result);
   const { searchBtnSpeed, totalSpeed, accuracy, captchaSpeed } = result.user_ability;
 
@@ -105,8 +126,8 @@ function RadarChart({ result }: { result: ExtendedResultResponse }) {
       </div>
 
       {/* 능력 설명 박스 */}
-      <div className="absolute bottom-6 right-6 bg-white shadow-lg rounded-lg px-4 py-3 text-sm text-gray-800">
-        <div className="font-bold text-base mb-1">내 능력</div>
+      <div className="absolute bottom-6 right-6 bg-white shadow-lg rounded-lg px-4 py-3 text-xs text-gray-800">
+        <div className="font-bold text-sm mb-1">내 능력</div>
         <ul className="space-y-1">
           <li className="flex justify-between">
             <span>• 신청 버튼 클릭 속도&nbsp;</span> <span>{searchBtnSpeed.toFixed(2)} sec</span>
@@ -115,7 +136,7 @@ function RadarChart({ result }: { result: ExtendedResultResponse }) {
             <span>• 총 소요 시간</span> <span>{totalSpeed.toFixed(2)} sec</span>
           </li>
           <li className="flex justify-between">
-            <span>• 정확도</span> <span>{accuracy} %</span>
+            <span>• 정확도</span> <span>{accuracy.toFixed(2)} %</span>
           </li>
           <li className="flex justify-between">
             <span>• 캡차 인증 속도</span> <span>{captchaSpeed.toFixed(2)} sec</span>

@@ -1,6 +1,13 @@
 import { NavLink } from 'react-router-dom';
+import { useState } from 'react';
 
-const ASIDE_MENU = [
+interface IMenu {
+  name: string;
+  path?: string;
+  children?: IMenu[];
+}
+
+const ASIDE_MENU: IMenu[] = [
   {
     name: '수강 및 변동신청',
     children: [
@@ -25,48 +32,88 @@ function AsideMenu() {
     <aside className="w-[230px] min-w-[230px]">
       <div className="h-12 bg-blue-500 text-white text-lg font-semibold px-4 flex items-center">학부생학사정보</div>
 
-      <ul className="flex flex-col text-sm font-semibold">
+      <ul className="flex flex-col text-sm">
         {ASIDE_MENU.map((item, index) => (
-          <li key={index}>
-            <button className="px-4 py-2 h-12 flex items-center justify-between w-full border-b border-neutral-300 cursor-pointer hover:bg-gray-100">
-              {item.name}
-              {item.children && <span className="ml-auto">▼</span>}
-            </button>
-
-            {item.children && (
-              <ul className="">
-                {item.children.map((subItem, subIndex) => (
-                  <li key={subIndex} className="">
-                    <button className="px-4 py-2 h-10 flex items-center gap-4 w-full border-b border-neutral-300 cursor-pointer hover:bg-gray-100">
-                      <span>+</span>
-                      <span>{subItem.name}</span>
-                    </button>
-
-                    {subItem.children && (
-                      <ul className="ml-1 pl-4 bg-neutral-100">
-                        {subItem.children.map((subSubItem, subSubIndex) => (
-                          <li key={subSubIndex} className="">
-                            <NavLink
-                              to={subSubItem.path}
-                              className={({ isActive }) =>
-                                `block px-2 py-2 text-xs cursor-pointer hover:bg-blue-500 hover:text-white ${isActive && subSubItem.path != '#' ? 'bg-blue-500 text-white' : ''}`
-                              }
-                              end
-                            >
-                              {subSubItem.name}
-                            </NavLink>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
+          <BigMenu menu={item} key={index} />
         ))}
       </ul>
     </aside>
+  );
+}
+
+interface IMenuComponent {
+  menu: IMenu;
+}
+
+const MENU_OPEN = true;
+
+function BigMenu({ menu }: IMenuComponent) {
+  const [isOpen, setIsOpen] = useState(MENU_OPEN);
+
+  return (
+    <li>
+      <button
+        className={
+          'px-4 py-2 h-12 flex items-center justify-between w-full border-b border-neutral-300 cursor-pointer hover:bg-gray-100 ' +
+          (isOpen ? 'font-semibold' : 'font-normal')
+        }
+        onClick={() => setIsOpen(prev => !prev)}
+      >
+        {menu.name}
+        {menu.children && <span className="ml-auto text-gray-500">{isOpen ? '▲' : '▼'}</span>}
+      </button>
+
+      {isOpen && menu.children && (
+        <ul className="">
+          {menu.children.map((item, index) => (
+            <MediumMenu key={index} menu={item} />
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+}
+
+function MediumMenu({ menu }: IMenuComponent) {
+  const [isOpen, setIsOpen] = useState(MENU_OPEN);
+
+  return (
+    <li className="">
+      <button
+        className={
+          'px-4 py-2 h-10 flex items-center gap-4 w-full border-b border-neutral-300 cursor-pointer hover:bg-gray-100 ' +
+          (isOpen ? 'font-semibold' : 'font-normal')
+        }
+        onClick={() => setIsOpen(prev => !prev)}
+      >
+        <span>{isOpen ? '-' : '+'}</span>
+        <span>{menu.name}</span>
+      </button>
+
+      {isOpen && menu.children && (
+        <ul className="ml-1 pl-4 bg-neutral-100 font-semibold">
+          {menu.children.map((item, index) => (
+            <SmallMenu key={index} menu={item} />
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+}
+
+function SmallMenu({ menu }: IMenuComponent) {
+  return (
+    <li>
+      <NavLink
+        to={menu.path ?? '#'}
+        className={({ isActive }) =>
+          `block px-2 py-2 text-xs cursor-pointer hover:bg-blue-500 hover:text-white ${isActive && menu.path != '#' ? 'bg-blue-500 text-white' : ''}`
+        }
+        end
+      >
+        {menu.name}
+      </NavLink>
+    </li>
   );
 }
 
