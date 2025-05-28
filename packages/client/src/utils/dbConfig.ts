@@ -13,7 +13,7 @@ class MyDexieDB extends Dexie {
       interested_snapshot: '++snapshot_id,user_id,created_at,simulated',
       interested_subject: '++interested_id,snapshot_id,subject_id',
       simulation_run:
-        '++simulation_run_id,snapshot_id,user_id,success_subject_count,subject_count,accuracy,score,total_elapsed,started_at,ended_at',
+        '++simulation_run_id,snapshot_id,user_id,department_name,success_subject_count,subject_count,accuracy,score,total_elapsed,started_at,ended_at',
       simulation_run_selections:
         '++run_selections_id,simulation_run_id,interested_id,selected_index,status,started_at,ended_at',
       simulation_run_events: '++event_id,simulation_section_id,event_type,timestamp',
@@ -49,6 +49,8 @@ export interface SimulationRun extends SimulationRunData {
 export interface SimulationRunData {
   snapshot_id: number;
   user_id: string;
+  department_code: string;
+  department_name: string;
   success_subject_count: number;
   subject_count: number;
   accuracy: number;

@@ -15,6 +15,8 @@ import Simulation from '@/pages/simulation/Simulation.tsx';
 import SimulationDashboard from '@/pages/simulation/Dashboard.tsx';
 import SimulationDashboardDetail from '@/pages/simulation/DashboardDetail.tsx';
 import NotFound from '@/pages/NotFound.tsx';
+import DatabaseOperations from '@/pages/simulation/DatabaseOperations';
+import SimulationWishlist from '@/pages/simulation/SimulationWishlist';
 
 const router = createBrowserRouter([
   {
@@ -76,7 +78,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: '',
+        path: 'simulation',
         element: <Simulation />,
       },
       {
@@ -86,6 +88,14 @@ const router = createBrowserRouter([
       {
         path: 'logs/:runId',
         element: <SimulationDashboardDetail />,
+      },
+      {
+        path: 'admin',
+        element: <DatabaseOperations />,
+      },
+      {
+        path: 'wishlist',
+        element: <SimulationWishlist />,
       },
     ],
   },

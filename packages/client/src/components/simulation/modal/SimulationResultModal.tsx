@@ -1,6 +1,38 @@
 import Modal from '@/components/simulation/modal/Modal.tsx';
+import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
+import { getSummaryResult } from '@/utils/simulation/simulation';
+import { useEffect, useState } from 'react';
+import ProcessingModal from './Processing';
+import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
+import { NavLink } from 'react-router-dom';
 
-function SimulationResultModal() {
+function SimulationResultModal({ simulationId }: { simulationId: number }) {
+  const { closeModal } = useSimulationModalStore();
+  const { resetSimulation } = useSimulationProcessStore();
+  const [result, setResult] = useState<{ accuracy: number; score: number; total_elapsed: number } | null>(null);
+  const [id, setId] = useState<number>();
+
+  useEffect(() => {
+    async function fetchResult() {
+      getSummaryResult({ simulationId }).then(result => {
+        if ('errMsg' in result) {
+          alert(result.errMsg);
+        } else {
+          setResult(result);
+          setId(simulationId);
+          resetSimulation();
+        }
+      });
+    }
+    fetchResult();
+  }, []);
+
+  if (!result) {
+    return <ProcessingModal />;
+  }
+
+  const { accuracy, score, total_elapsed } = result;
+
   return (
     <Modal>
       <div className="w-full max-w-md bg-white rounded-xl shadow-xl p-6 relative overflow-hidden">
@@ -22,29 +54,48 @@ function SimulationResultModal() {
             <img src="/ci.svg" alt="축하 아이콘" className="w-20 h-20" />
           </div>
 
+          <div className="text-left text-sm text-gray-800 mt-4 mb-1">점수</div>
+          <div className="flex items-center gap-2">
+            <p className="text-xl text-gray-600 font-bold whitespace-nowrap">{score.toFixed(2)}</p>
+          </div>
+
           <div className="text-left text-sm text-gray-800 mt-4 mb-1">소요 시간</div>
           <div className="flex items-center gap-2">
             <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-              <div className="h-3 bg-indigo-400 w-[70%] rounded-full transition-all duration-300" />
+              <div
+                className={`h-3 bg-indigo-400 w-[${total_elapsed / 1000}%] rounded-full transition-all duration-300`}
+              />
             </div>
-            <span className="text-xs text-gray-600 whitespace-nowrap">00 : 00 : 30</span>
+            <span className="text-xs text-gray-600 whitespace-nowrap">{total_elapsed / 1000}</span>
           </div>
 
           <div className="text-left text-sm text-gray-800 mt-4 mb-1">정확도</div>
           <div className="flex items-center gap-2">
             <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-              <div className="h-3 bg-indigo-400 w-[90%] rounded-full transition-all duration-300" />
+              <div className={`h-3 bg-indigo-400 w-[${accuracy}%] rounded-full transition-all duration-300`} />
             </div>
-            <span className="text-xs text-gray-600 whitespace-nowrap">90%</span>
+            <span className="text-xs text-gray-600 whitespace-nowrap">{accuracy}%</span>
           </div>
 
           <div className="flex justify-center gap-3 mt-6">
-            <button className="px-4 py-2 border border-gray-400 text-gray-800 rounded-md hover:bg-gray-100 text-sm">
+            <button
+              className="px-4 py-2 border border-gray-400 text-gray-800 rounded-md hover:bg-gray-100 text-sm"
+              onClick={() => {
+                closeModal('result');
+              }}
+            >
               다시 하기
             </button>
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm">
+            <NavLink
+              to={`/simulation/logs/${id}`}
+              end={false}
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm"
+              onClick={() => {
+                closeModal('result');
+              }}
+            >
               자세히 보기
-            </button>
+            </NavLink>
           </div>
         </div>
       </div>

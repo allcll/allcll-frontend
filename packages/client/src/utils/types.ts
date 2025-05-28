@@ -39,14 +39,13 @@ export interface SimulationSubject {
   classCode: string;
   departmentName: string;
   subjectName: string;
-  language: string | null;
+  language: string;
   subjectType: string;
   semester_at: number;
   lesn_time: string | null;
-  professorName: string | null;
+  professorName: string;
   lesn_room: string | null;
+  tm_num: string;
 }
 
-export type SubjectStatusType = 'PROGRESS' | 'SUCCESS' | 'FAILED' | 'DOUBLED' | 'CAPTCHA_FAILED' | 'CANCELED';
-
-export type SimulationStatusType = 'before' | 'process' | 'finish';
+export type SimulationStatusType = 'before' | 'selectedDepartment' | 'start' | 'progress' | 'finish' | 'refresh';

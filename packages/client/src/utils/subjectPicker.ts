@@ -7,7 +7,18 @@ type Department = {
 };
 
 function getRandomItems(subject: SimulationSubject[], count: number) {
-  return [...subject].sort(() => Math.random() - 0.5).slice(0, Math.min(count, subject.length));
+  const uniqueSubjectCodes: Set<string> = new Set();
+  const randomSubjects: SimulationSubject[] = [];
+
+  for (const item of [...subject].sort(() => Math.random() - 0.5)) {
+    if (uniqueSubjectCodes.size >= count) break;
+    if (!uniqueSubjectCodes.has(item.subjectCode)) {
+      uniqueSubjectCodes.add(item.subjectCode);
+      randomSubjects.push(item);
+    }
+  }
+
+  return randomSubjects;
 }
 
 function pickCollege(department: string) {
@@ -36,10 +47,22 @@ export const pickRandomsubjects = (department: Department) => {
 
   const humanitySubjects = lecturesData.subjects.filter(subject => subject.departmentName === '대양휴머니티칼리지');
 
-  const departmentRandomSubjects = getRandomItems(departmentSubjects, 3);
-  const humanityRandomSubjects = getRandomItems(humanitySubjects, 2);
+  const validDepartmentSubjects = departmentSubjects.filter(
+    subject => subject.professorName !== null && subject.lesn_time !== null,
+  );
+  const departmentRandomSubjects = getRandomItems(validDepartmentSubjects, 3);
+
+  const validHumanitySubjects = humanitySubjects.filter(
+    subject => subject.professorName !== null && subject.lesn_time !== null,
+  );
+  const humanityRandomSubjects = getRandomItems(validHumanitySubjects, 2);
 
   const allRandomSubjects = [...departmentRandomSubjects, ...humanityRandomSubjects];
+
+  for (let i = allRandomSubjects.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [allRandomSubjects[i], allRandomSubjects[j]] = [allRandomSubjects[j], allRandomSubjects[i]];
+  }
 
   return allRandomSubjects;
 };
@@ -66,4 +89,12 @@ export const makeValidateDepartment = (
 
   const notExistIds = new Set(notExistDepartment.map(dep => dep.departmentCode));
   return departments.filter(dep => !notExistIds.has(dep.departmentCode));
+};
+
+/**
+ * 문제점 : subjectId만 판별할 경우, 분반은 001로 통일 된다.
+ * @param subjectId
+ */
+export const findSubjectsById = (subjectId: number) => {
+  return lecturesData.subjects.find(subject => subjectId === subject.subjectId);
 };
