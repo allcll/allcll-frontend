@@ -2,7 +2,7 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation';
-import SubjectRow from './table/SubjectRow';
+import SubjectRow from './SubjectRow';
 
 interface ISubjectsTable {
   isRegisteredTable: boolean;

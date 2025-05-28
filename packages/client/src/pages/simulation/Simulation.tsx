@@ -4,7 +4,7 @@ import SimulationModal from '@/components/simulation/modal/SimulationModal';
 import SimulationResultModal from '@/components/simulation/modal/SimulationResultModal';
 import UserWishModal from '@/components/simulation/modal/UserWishModal';
 import WaitingModal from '@/components/simulation/modal/WaitingModal';
-import SubjectsTable from '@/components/simulation/SubjectsTable';
+import SubjectsTable from '@/components/simulation/table/SubjectsTable';
 import useDepartments from '@/hooks/server/useDepartments';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
@@ -94,14 +94,6 @@ function Simulation() {
       fetchAndUpdateSimulationStatus();
     }
   }, [currentSimulation.simulationStatus]);
-
-  /** userPK를 store에  저장합니다*/
-  const handleChangeUserPK = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setCurrentSimulation({
-      userPK: value,
-    });
-  };
 
   const handleChangeDepartment = (name: string) => {
     if (name === 'none') {
@@ -221,16 +213,6 @@ function Simulation() {
               <select className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100" disabled>
                 <option>없음</option>
               </select>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <label className="font-bold">고유번호</label>
-              <input
-                className="border px-2 py-1 w-48"
-                placeholder="userPK"
-                value={currentSimulation.userPK}
-                onChange={handleChangeUserPK}
-              />
             </div>
           </div>
 
