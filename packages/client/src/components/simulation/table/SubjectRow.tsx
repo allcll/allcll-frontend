@@ -1,0 +1,49 @@
+import { SimulationSubject } from '@/utils/types';
+
+interface SubjectRowProps {
+  index: number;
+  subject: SimulationSubject;
+  isRegisteredTable: boolean;
+  onClickSubject: (subjectId: number) => void;
+}
+
+const SubjectRow = ({ index, subject, isRegisteredTable, onClickSubject }: SubjectRowProps) => {
+  return (
+    <tr className="hover:bg-gray-50">
+      <td className="border bg-blue-100 px-2 py-1">{index + 1}</td>
+      <td className="border px-2 py-1">
+        <button
+          className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-xs"
+          disabled={!!isRegisteredTable}
+          onClick={() => onClickSubject(subject.subjectId)}
+        >
+          {isRegisteredTable ? '삭제' : '신청'}
+        </button>
+      </td>
+      <td className="border px-2 py-1">{subject.subjectCode}</td>
+      <td className="border px-2 py-1">{subject.classCode}</td>
+      <td className="border px-2 py-1">{subject.departmentName}</td>
+      <td className="border px-2 py-1">{subject.subjectName}</td>
+      <td className="border px-2 py-1">
+        <button className="bg-gray-700 text-xs text-white rounded-xs px-2 py-0.5">수업계획서</button>
+      </td>
+      <td className="border px-2 py-1">{subject.language || '-'}</td>
+      <td className="border px-2 py-1">
+        {subject.tm_num
+          ? subject.tm_num
+              .split('/')
+              .map((num: string, i: number) => (i === 0 ? parseFloat(num).toFixed(1) : num))
+              .join('/')
+          : '-'}
+      </td>
+      <td className="border px-2 py-1">{subject.subjectType}</td>
+      <td className="border px-2 py-1">{subject.semester_at}</td>
+      <td className="border px-2 py-1">{subject.lesn_time || '-'}</td>
+      <td className="border px-2 py-1">
+        <button className="bg-gray-700 text-white text-xs px-2 py-0.5 rounded-xs">수강인원</button>
+      </td>
+    </tr>
+  );
+};
+
+export default SubjectRow;
