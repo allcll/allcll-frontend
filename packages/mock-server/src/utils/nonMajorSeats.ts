@@ -55,7 +55,7 @@ export function updateNonMajorSeats() {
   return nonMajorSeats
     .map(subject => ({
       ...subject,
-      queryTime: getRandom(50) === 1 ? new Date().toISOString() : subject.subjectId,
+      queryTime: getRandom(50) === 1 ? new Date().toISOString() : subject.queryTime,
     }))
     .sort((a, b) => a.seatCount - b.seatCount);
 }
