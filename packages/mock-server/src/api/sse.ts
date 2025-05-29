@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import { pinedSubjects } from './pin.ts';
+import { nonMajorSeats, updateNonMajorSeats } from '../utils/nonMajorSeats.ts';
 
 const encoder = new TextEncoder();
 const SSE_INTERVAL = 800;
@@ -22,13 +23,14 @@ export const handlers = [
   http.get('/api/connect', () => {
     const stream = new ReadableStream({
       start(controller) {
-        const json = JSON.stringify(getPinnedSeats());
+        const json = JSON.stringify({ seatResponses: nonMajorSeats });
         controller.enqueue(encoder.encode(dataFrame('nonMajorSeats', json, SSE_INTERVAL)));
 
         const nonMajorInterval = setInterval(() => {
           const json = JSON.stringify(getPinnedSeats());
-          controller.enqueue(encoder.encode(dataFrame('nonMajorSeats', json, SSE_INTERVAL)));
-          controller.enqueue(encoder.encode(dataFrame('majorSeats', json, SSE_INTERVAL)));
+          const seatsJson = JSON.stringify({ seatResponses: updateNonMajorSeats() });
+          controller.enqueue(encoder.encode(dataFrame('nonMajorSeats', seatsJson, SSE_INTERVAL)));
+          controller.enqueue(encoder.encode(dataFrame('majorSeats', seatsJson, SSE_INTERVAL)));
           controller.enqueue(encoder.encode(dataFrame('pinSeats', json, SSE_INTERVAL)));
         }, SSE_INTERVAL);
 
