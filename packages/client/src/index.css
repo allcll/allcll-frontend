@@ -29,11 +29,11 @@ body {
   background-color: transparent;
 }
 .seat-change-enter-active {
-  background-color: #bfdbfe;
+  background-color: #eff6ff;
   transition: background-color 500ms ease-in-out;
 }
 .seat-change-exit {
-  background-color: #bfdbfe;
+  background-color: #eff6ff;
 }
 .seat-change-exit-active {
   background-color: transparent;
