@@ -145,7 +145,7 @@ function SubjectRow({ subject }: { subject: ITableData }) {
   return (
     <tr
       className={`border-t border-gray-200 text-black transition-colors duration-500 ${
-        seatChanged ? 'bg-blue-100' : ''
+        seatChanged ? 'bg-blue-50' : ''
       }`}
     >
       {TableHeadTitles.map(({ key }) =>
