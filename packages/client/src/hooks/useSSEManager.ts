@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
 import { onChangePinned } from '@/hooks/useNotification.ts';
-import { PinnedSeats } from '@/utils/types.ts';
+import { NonMajorSeats, PinnedSeats } from '@/utils/types.ts';
 import useSSECondition, { RELOAD_INTERVAL, RELOAD_MAX_COUNT } from '@/store/useSSECondition.ts';
 
 export enum SSEType {
@@ -44,13 +44,37 @@ const useSSEManager = () => {
   // 조건이 바뀌었을 때, 연결이 끊어졌을 때 다시 연결
 };
 
+function mergeUpdatedOnly(prev: NonMajorSeats[], next: NonMajorSeats[]) {
+  const updated: NonMajorSeats[] = [];
+
+  for (const nextItem of next) {
+    const prevItem = prev.find(p => p.subjectId === nextItem.subjectId);
+    const isChanged =
+      !prevItem || prevItem.seatCount !== nextItem.seatCount || prevItem.queryTime !== nextItem.queryTime;
+
+    if (isChanged) {
+      updated.push(nextItem);
+    } else {
+      updated.push(prevItem);
+    }
+  }
+
+  return updated;
+}
+
 const fetchSSEData = (queryClient: QueryClient, resetError: () => void) => {
   return new Promise((resolve, reject) => {
     const eventSource = new EventSource('/api/connect');
 
     eventSource.addEventListener('nonMajorSeats', event => {
       const json = JSON.parse(event.data);
-      if (json) queryClient.setQueryData([SSEType.NON_MAJOR as string], json.seatResponses);
+      if (json) {
+        queryClient.setQueryData([SSEType.NON_MAJOR as string], (prev: NonMajorSeats[] = []) => {
+          const next: NonMajorSeats[] = json.seatResponses;
+
+          return mergeUpdatedOnly(prev, next);
+        });
+      }
     });
 
     eventSource.addEventListener('majorSeats', event => {

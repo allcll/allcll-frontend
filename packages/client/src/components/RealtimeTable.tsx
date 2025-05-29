@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useWishes from '@/hooks/server/useWishes.ts';
 import { SSEType, useSseData } from '@/hooks/useSSEManager.ts';
 import useTick from '@/hooks/useTick.ts';
@@ -10,6 +10,7 @@ import ZeroListError from '@/components/dashboard/errors/ZeroListError.tsx';
 import useSSECondition from '@/store/useSSECondition.ts';
 import { getTimeDiffString } from '@/utils/stringFormats.ts';
 import { getSeatColor } from '@/utils/colors.ts';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 interface IRealtimeTable {
   title: string;
@@ -113,7 +114,13 @@ const RealtimeTable = ({ title = '교양과목', showSelect = false }: IRealtime
                 </td>
               </tr>
             ) : (
-              tableData.map((subject, index) => <SubjectRow key={index} subject={subject} />)
+              <TransitionGroup component={null}>
+                {tableData.map(subject => (
+                  <CSSTransition key={subject.code} timeout={500} classNames="row-change">
+                    <SubjectRow key={subject.code} subject={subject} />
+                  </CSSTransition>
+                ))}
+              </TransitionGroup>
             )}
           </tbody>
         </table>
@@ -123,16 +130,32 @@ const RealtimeTable = ({ title = '교양과목', showSelect = false }: IRealtime
 };
 
 function SubjectRow({ subject }: { subject: ITableData }) {
+  const prevSeat = useRef(subject.seat);
+  const [seatChanged, setSeatChanged] = useState(false);
+
+  useEffect(() => {
+    if (prevSeat.current !== subject.seat) {
+      setSeatChanged(true);
+      const timer = setTimeout(() => setSeatChanged(false), 1000);
+      prevSeat.current = subject.seat;
+      return () => clearTimeout(timer);
+    }
+  }, [subject.seat]);
+
   return (
-    <tr className="border-t border-gray-200 text-black">
+    <tr
+      className={`border-t border-gray-200 text-black transition-colors duration-500 ${
+        seatChanged ? 'bg-blue-100' : ''
+      }`}
+    >
       {TableHeadTitles.map(({ key }) =>
-        key == 'seat' ? (
+        key === 'seat' ? (
           <td key={key} className="px-4 py-2 text-center">
             <span className={'px-3 py-1 rounded-full text-xs font-bold ' + getSeatColor(subject.seat ?? -1)}>
               {subject[key]}
             </span>
           </td>
-        ) : key == 'queryTime' ? (
+        ) : key === 'queryTime' ? (
           <QueryTimeTd key={key} queryTime={subject.queryTime} />
         ) : (
           <td key={key} className="px-4 py-2 text-center">

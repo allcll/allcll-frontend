@@ -12,6 +12,12 @@ export interface PinnedSeats {
   queryTime: string;
 }
 
+export interface NonMajorSeats {
+  subjectId: number;
+  seatCount: number;
+  queryTime: string;
+}
+
 export interface Wishlist {
   baskets: Wishes[];
 }

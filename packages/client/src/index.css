@@ -24,6 +24,42 @@ body {
   transform: translateY(100%);
   transition: transform 300ms;
 }
+
+.seat-change-enter {
+  background-color: transparent;
+}
+.seat-change-enter-active {
+  background-color: #bfdbfe;
+  transition: background-color 500ms ease-in-out;
+}
+.seat-change-exit {
+  background-color: #bfdbfe;
+}
+.seat-change-exit-active {
+  background-color: transparent;
+  transition: background-color 500ms ease-in-out;
+}
+
+.row-change-enter {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+.row-change-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 300ms ease-in-out;
+}
+
+.row-change-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+.row-change-exit-active {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 300ms ease-in-out;
+}
+
 /*.toast-exit {*/
 /*  opacity: 1;*/
 /*  transform: translateX(100%) translateY(100%);*/
