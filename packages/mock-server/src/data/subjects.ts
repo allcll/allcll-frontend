@@ -1,5 +1,3 @@
-import { mockCartData } from './wishes.ts';
-
 export interface ISubject {
   subjectId: number;
   subjectName: string;
@@ -8,7 +6,9 @@ export interface ISubject {
   professorName: string | null;
 }
 
-export const subjects: ISubject[] = mockCartData.baskets.map(wishes => ({
+// Fixme: baskets json 파일을 나중에 로드하도록 변경
+const { baskets: mockCartData } = await import('@public-client/baskets.json');
+export const subjects: ISubject[] = mockCartData.map(wishes => ({
   subjectId: wishes.subjectId,
   subjectName: wishes.subjectName,
   subjectCode: wishes.subjectCode.toString().padStart(6, '0'),

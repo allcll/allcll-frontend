@@ -5,14 +5,15 @@ export const handlers = [
   // GET /api/pins
   http.get('/api/departments', async () => {
     // Return a list of pinned subjects
-    const { Departments } = await import('../data/departments');
-    return HttpResponse.json(Departments);
+    const { departments } = await import('@public/departments.json');
+    return HttpResponse.json(departments);
   }),
   // GET /api/baskets/{subjectId}
   http.get('/api/baskets/:subjectId', async ({ params }) => {
     const { subjectId } = params;
-    const { getDepartmentRegister, mockCartData } = await import('../data/wishes.ts');
-    const subject = mockCartData.baskets.find(subject => subject.subjectId === Number(subjectId));
+    const { getDepartmentRegister } = await import('../data/wishes.ts');
+    const { baskets: mockCartData } = await import('@public-client/baskets.json');
+    const subject = mockCartData.find(subject => subject.subjectId === Number(subjectId));
 
     if (subject === undefined) return HttpResponse.json(SubjectNotFoundError, { status: 400 });
 
