@@ -3,8 +3,8 @@ import LogoSvg from '@public/ci.svg?react';
 import LogoName from '@public/logo-name.svg?react';
 
 const HeaderContents = [
-  { title: '과목검색', path: '/wishes', end: false },
-  { title: '시뮬레이션', path: '/simulation', end: false },
+  // { title: '과목검색', path: '/wishes', end: false },
+  { title: '수강연습', path: '/simulation', end: false },
   { title: '실시간', path: '/live', end: true },
 ];
 
