@@ -15,6 +15,7 @@ import { SimulationSubject } from '@/utils/types';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
+import SearchSvg from '@/assets/search-white.svg?react';
 
 function Simulation() {
   const { type, openModal, closeModal } = useSimulationModalStore();
@@ -229,12 +230,14 @@ function Simulation() {
 
             <button
               onClick={handleSearchClick}
-              className={`px-4 py-2 rounded text-white ${
+              className={`px-3 py-2 rounded flex flex-row gap-1 text-white ${
                 hasRunningSimulationId === -1
                   ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-gray-700 hover:bg-gray-800 cursor-pointer'
+                  : 'bg-gradient-animation cursor-pointer'
               }`}
+              disabled={hasRunningSimulationId === -1}
             >
+              <SearchSvg className="w-5 h-4" />
               검색
             </button>
           </div>
