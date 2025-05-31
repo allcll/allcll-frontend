@@ -26,7 +26,7 @@ function SideNavBar() {
   return (
     <>
       <div className="p-6 mb-6">
-        <Logo className="h-8 w-auto" />
+        <Logo className="h-8 w-8" />
       </div>
       <nav>
         <ul>
