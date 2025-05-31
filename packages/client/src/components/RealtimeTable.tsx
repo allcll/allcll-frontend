@@ -11,6 +11,7 @@ import useSSECondition from '@/store/useSSECondition.ts';
 import { getTimeDiffString } from '@/utils/stringFormats.ts';
 import { getSeatColor } from '@/utils/colors.ts';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import Tooltip from '@/components/common/Tooltip.tsx';
 
 interface IRealtimeTable {
   title: string;
@@ -79,7 +80,15 @@ const RealtimeTable = ({ title = '교양과목', showSelect = false }: IRealtime
   return (
     <CardWrap>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="font-bold text-lg p-2">{title} 실시간</h2>
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <h2 className="font-bold text-lg p-2">{title} 실시간</h2>
+          <Tooltip>
+            <p className="text-sm">
+              <b className="text-green-500">전체 과목 실시간 여석</b>을 <br />
+              제공하고 있어요
+            </p>
+          </Tooltip>
+        </div>
         {showSelect && (
           <select className="border border-gray-300 rounded px-4 py-2" onChange={onChangeDepartment}>
             {departments &&
