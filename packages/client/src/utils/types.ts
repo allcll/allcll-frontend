@@ -48,9 +48,9 @@ export interface SimulationSubject {
   language: string;
   subjectType: string;
   semester_at: number;
-  lesn_time: string | null;
+  lesn_time: string; // | null;
   professorName: string;
-  lesn_room: string | null;
+  lesn_room: string; // | null;
   tm_num: string;
 }
 

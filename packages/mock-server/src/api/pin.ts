@@ -41,7 +41,7 @@ export const handlers = [
   http.get('/api/pins', () => {
     // Return a list of pinned subjects
     return HttpResponse.json({
-      subjects: pinedSubjects,
+      subjects: pinedSubjects.map(({ subjectId }) => ({ subjectId })),
     });
   }),
 ];
