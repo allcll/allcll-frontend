@@ -5,7 +5,17 @@ import SubjectAllResult from '@/components/simulation/detail/SubjectAllResult.ts
 import { getAggregatedSimulationResults } from '@/utils/simulation/result.ts';
 
 function AllResult() {
-  const simulationAllResult = useLiveQuery(() => getAggregatedSimulationResults());
+  const simulationAllResult = useLiveQuery(async () => {
+    try {
+      return await getAggregatedSimulationResults();
+    } catch (error: unknown) {
+      return { error: (error as Error).message }; // Return null or handle the error as needed
+    }
+  });
+
+  if (simulationAllResult && 'error' in simulationAllResult) {
+    return <div className="text-center text-gray-500 my-10">{simulationAllResult.error}</div>;
+  }
 
   const { simulations } = simulationAllResult || { simulations: [] };
 
@@ -25,7 +35,7 @@ function AllResult() {
 
   return (
     <>
-      <div className="flex gap-3 flex-wrapㅏ">
+      <div className="flex gap-3 flex-wrap">
         <div className="relative flex-1">
           {modifiedResult ? (
             <RadarChart result={modifiedResult} />
