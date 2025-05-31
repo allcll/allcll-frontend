@@ -7,7 +7,10 @@ import ArrowSvg from '@/assets/arrow-down-gray.svg?react';
 import markdownComponents from '@/utils/markdownComponents.tsx';
 
 function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const hash = window.location.hash;
+  const selectedIndex = hash ? parseInt(hash.replace('#', '')) : null;
+
+  const [openIndex, setOpenIndex] = useState<number | null>(selectedIndex);
   const { data: faqItems } = useFaq();
 
   const toggleAnswer = (index: number) => {
