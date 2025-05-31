@@ -124,6 +124,12 @@ function Simulation() {
       });
   };
 
+  const handleClickRestart = () => {
+    if (hasRunningSimulationId === -1 && currentSimulation.simulationStatus !== 'progress') {
+      openModal('wish');
+    }
+  };
+
   const renderModal = () => {
     switch (type) {
       case 'waiting':
@@ -174,7 +180,7 @@ function Simulation() {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-4 ">
             <div className="flex items-center gap-2">
               <label className="font-bold">주전공(교직)</label>
               <select
@@ -228,6 +234,17 @@ function Simulation() {
               </div>
             </div>
 
+            <div className="flex justify-end">
+              <button
+                onClick={handleClickRestart}
+                className={`px-3 py-2 rounded flex flex-row gap-1 text-white ${
+                  hasRunningSimulationId !== -1 ? 'bg-gray-200 cursor-not-allowed' : 'bg-blue-500 cursor-pointer'
+                }`}
+                disabled={hasRunningSimulationId !== -1}
+              >
+                재시작
+              </button>
+            </div>
             <button
               onClick={handleSearchClick}
               className={`px-3 py-2 rounded flex flex-row gap-1 text-white ${
