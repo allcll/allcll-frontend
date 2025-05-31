@@ -19,8 +19,6 @@
     "chart.js": "^4.4.9",
     "es-hangul": "^2.3.3",
     "react-chartjs-2": "^5.3.0",
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
     "react-ga4": "^2.1.0",
     "react-helmet": "^6.1.0",
     "react-markdown": "^10.1.0",

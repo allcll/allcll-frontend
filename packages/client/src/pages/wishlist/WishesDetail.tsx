@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js/auto';
 import Table from '@/components/wishTable/Table';
 import CardWrap from '@/components/CardWrap';
 import BlurComponents from '@/components/BlurComponents';

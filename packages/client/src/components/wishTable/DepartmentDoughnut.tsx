@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js/auto';
 import useDepartments, { DepartmentDict, useDepartmentDict } from '@/hooks/server/useDepartments.ts';
 import {
   getCollegeDoughnutData,
