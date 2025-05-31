@@ -1,7 +1,8 @@
 import { ConfigEnv, defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
-import tsconfigPaths from 'vite-tsconfig-paths';
 import tailwindcss from '@tailwindcss/vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
+import { visualizer } from 'rollup-plugin-visualizer';
 import svgr from 'vite-plugin-svgr';
 
 // https://vite.dev/config/
@@ -13,7 +14,13 @@ export default ({ mode }: ConfigEnv) => {
   const ScoreServer = env.VITE_SCORE_API_URL ?? 'http://localhost:8081';
 
   return defineConfig({
-    plugins: [react(), tsconfigPaths(), tailwindcss(), svgr()],
+    plugins: [
+      react(),
+      tsconfigPaths(),
+      tailwindcss(),
+      svgr(),
+      visualizer({ open: true, filename: './dist/report.html' }),
+    ],
     server: {
       proxy: {
         '/api': {
