@@ -4,12 +4,16 @@ import CheckSvg from '@/assets/check.svg?react';
 import ResetSvg from '@/assets/reset.svg?react';
 import { useEffect, useState } from 'react';
 import { SimulationSubject } from '@/utils/types';
-import { checkExistDepartment, makeValidateDepartment, pickRandomsubjects } from '@/utils/subjectPicker';
+import {
+  checkExistDepartment,
+  makeValidateDepartment,
+  pickRandomsubjects,
+  pickNonRandomSubjects,
+} from '@/utils/subjectPicker';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { saveInterestedSnapshot } from '@/utils/simulation/subjects';
-import { checkOngoingSimulation, startSimulation } from '@/utils/simulation/simulation';
-import { useLiveQuery } from 'dexie-react-hooks';
+import { startSimulation } from '@/utils/simulation/simulation';
 import useDepartments from '@/hooks/server/useDepartments';
 
 type Department = {
@@ -72,19 +76,12 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
   const [isCheckedSubject, setIsCheckedSubject] = useState(false);
   const { closeModal } = useSimulationModalStore();
 
-  const ongoingSimulation = useLiveQuery(checkOngoingSimulation);
-
-  const hasRunningSimulationId =
-    ongoingSimulation && 'simulation_id' in ongoingSimulation ? ongoingSimulation.simulation_id : -1;
-
-  console.log(hasRunningSimulationId);
-
   const { data: departments } = useDepartments();
   const notExistDepartments = checkExistDepartment(departments);
   const newDepartments = makeValidateDepartment(departments, notExistDepartments);
 
   useEffect(() => {
-    const randomSubjects = pickRandomsubjects(department);
+    const randomSubjects = pickNonRandomSubjects(department);
     setCurrentSimulation({ subjects: randomSubjects });
   }, [department]);
 
@@ -177,7 +174,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
             value={department.departmentName}
             onChange={e => handleChangeDepartment(e.target.value)}
           >
-            <option value="none"> 학과가 목록에 없어요</option>
+            <option value="none">학과가 목록에 없어요</option>
             {newDepartments?.map(dept => (
               <option key={dept.departmentCode} value={dept.departmentName}>
                 {dept.departmentName}

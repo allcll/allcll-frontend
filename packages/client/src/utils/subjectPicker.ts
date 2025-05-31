@@ -98,3 +98,28 @@ export const makeValidateDepartment = (
 export const findSubjectsById = (subjectId: number) => {
   return lecturesData.subjects.find(subject => subjectId === subject.subjectId);
 };
+
+export const pickRandomSubjectsByAll = () => {
+  return getRandomItems(lecturesData.subjects, 5);
+};
+
+export const pickNonRandomSubjects = (department: Department) => {
+  const collegeName = pickCollege(department.departmentName);
+
+  if (collegeName === 'none') {
+    return [];
+  }
+
+  const departmentSubjects = lecturesData.subjects.filter(subject =>
+    checkSameDepartment(subject.departmentName, collegeName),
+  );
+
+  const humanitySubjects = lecturesData.subjects.filter(subject => subject.departmentName === '대양휴머니티칼리지');
+
+  const selectedDepartmentSubjects = departmentSubjects.slice(0, 5);
+  const needed = 5 - selectedDepartmentSubjects.length;
+
+  const selectedHumanitySubjects = humanitySubjects.slice(0, needed);
+
+  return [...selectedDepartmentSubjects, ...selectedHumanitySubjects];
+};
