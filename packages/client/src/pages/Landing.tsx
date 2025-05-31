@@ -4,12 +4,15 @@ import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js/auto';
 import { DoughnutColors } from '@/utils/doughnut.ts';
 import RightArrowSvg from '@/assets/right-arrow.svg?react';
+import RightArrowBlueSvg from '@/assets/arrow-blue.svg?react';
 import ClockBlueSvg from '@/assets/clock-blue.svg?react';
 import DisabledBlueSvg from '@/assets/disabled-blue.svg?react';
 import ReloadBlueSvg from '@/assets/reload-blue.svg?react';
 import LinkBlue from '@/assets/link-blue.svg?react';
 import ProfileSvg from '@/assets/profile.svg?react';
 import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
+import CalendarSvg from '@/assets/calendar.svg?react';
+
 import { getSeatColor } from '@/utils/colors.ts';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
@@ -28,22 +31,37 @@ function Landing() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <Section className="flex flex-col md:flex-row items-center justify-between" bgColor="bg-blue-50">
+      <Section className="flex flex-col md:flex-row items-center justify-between" bgColor="bg-banner-skysoft">
         <div className="max-w-lg">
-          <h1 className="text-3xl/[1.2] md:text-5xl/[1.2] font-bold">
-            수강 신청, <br /> 매번 어렵고 <br />
-            번거롭지 않나요?
-          </h1>
-          <p className="text-gray-600 mt-4">세종대 수강신청을 더 쉽고 빠르게 도와드릴게요!</p>
-          <Link
-            to="/live"
-            className="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-6 py-3 mt-6 flex items-center gap-2 w-fit"
-          >
-            수강여석 확인하기
-            <RightArrowSvg className="w-4 h-4" />
-          </Link>
+          <div className="flex flex-row gap-2 items-center">
+            <CalendarSvg className="w-20 h-20 " />
+            <span className="italic text-stone-500 ">6월 2일(월) ~ 6월 4일(수)</span>
+          </div>
+          <h2 className="text-xl sm:text-2xl md:text-4xl leading-snug font-bold mb-3 ">하계 계절학기 수강신청,</h2>
+          <div className="flex flex-row justify-center items-center text-xl sm:text-2xl md:text-4xl leading-snug font-bold mb-3">
+            <img src="/logo-name.svg" alt="logo-name" className="w-20 sm:w-32 md:w-40 lg:w-48 mr-2 animate-updown" />이
+          </div>
+          <h2 className="text-xl sm:text-2xl md:text-4xl leading-snug font-bold ">도와드립니다!</h2>
+
+          <p className="text-gray-400 mt-4">실시간 여석 확인부터 수강신청 연습까지 ALLCLL이 여러분과 함께합니다.</p>
+          <div className="flex flex-col gap-4 ">
+            <Link
+              to="/live"
+              className="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-6 py-3 mt-6 flex items-center gap-2 w-fit"
+            >
+              수강 여석 확인하기
+              <RightArrowSvg className="w-4 h-4" />
+            </Link>
+            <Link
+              to="/simulation"
+              className="bg-white hover:bg-gray-100 text-blue-500 rounded-md px-6 py-3 mt-6 flex items-center gap-2 w-fit"
+            >
+              수강 신청 연습하기
+              <RightArrowBlueSvg className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
-        <img src="/hero-illustration-min.png" alt="Illustration" className="w-80 md:w-96 mt-6 md:mt-0" />
+        <img src="/summer-banner.svg" alt="summer-banner" className="w-90 md:w-106 mt-8 md:mt-4" />
       </Section>
 
       {/* 관심과목 분석 Section */}

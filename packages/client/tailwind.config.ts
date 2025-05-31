@@ -10,15 +10,23 @@ const config: Config = {
         blue: {
           500: '#007aff',
         },
+        banner: {
+          skysoft: '#F4F9FF',
+        },
       },
       keyframes: {
         marquee: {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' },
         },
+        updown: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
       },
       animation: {
         marquee: 'marquee 20s linear infinite',
+        updown: 'updown 2s ease-in-out infinite',
       },
     },
   },
