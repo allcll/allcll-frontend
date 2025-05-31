@@ -3,6 +3,7 @@ import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation';
 import SubjectRow from './SubjectRow';
+import NothingTable from './NothingTable';
 
 interface ISubjectsTable {
   isRegisteredTable: boolean;
@@ -62,11 +63,7 @@ const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
           />
         ))
       ) : (
-        <tr>
-          <td colSpan={13} className="text-gray-400 py-4">
-            조회된 내역이 없습니다.
-          </td>
-        </tr>
+        <NothingTable />
       )}
     </tbody>
   );

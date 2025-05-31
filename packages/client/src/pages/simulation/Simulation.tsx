@@ -4,6 +4,7 @@ import SimulationModal from '@/components/simulation/modal/SimulationModal';
 import SimulationResultModal from '@/components/simulation/modal/SimulationResultModal';
 import UserWishModal from '@/components/simulation/modal/UserWishModal';
 import WaitingModal from '@/components/simulation/modal/WaitingModal';
+import NothingTable from '@/components/simulation/table/NothingTable';
 import SubjectsTable from '@/components/simulation/table/SubjectsTable';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
@@ -31,7 +32,6 @@ function Simulation() {
   const isError = hasRunningSimulationId === null;
 
   const modalType = useSimulationModalStore(state => state.type);
-
   const isWaitingModalClosed = modalType !== 'waiting';
 
   const updateSimulation = (
@@ -276,18 +276,10 @@ function Simulation() {
               currentSimulation.simulationStatus === 'progress' && isWaitingModalClosed ? (
                 <SubjectsTable isRegisteredTable={false} />
               ) : (
-                <tr>
-                  <td colSpan={13} className="text-gray-400 py-4">
-                    조회된 내역이 없습니다.
-                  </td>
-                </tr>
+                <NothingTable />
               )
             ) : (
-              <tr>
-                <td colSpan={13} className="text-gray-400 py-4">
-                  조회된 내역이 없습니다.
-                </td>
-              </tr>
+              <NothingTable />
             )}
           </table>
         </div>
@@ -342,18 +334,10 @@ function Simulation() {
             currentSimulation.simulationStatus === 'progress' && isWaitingModalClosed ? (
               <SubjectsTable isRegisteredTable={true} />
             ) : (
-              <tr>
-                <td colSpan={13} className=" text-gray-500 py-4">
-                  조회된 내역이 없습니다.
-                </td>
-              </tr>
+              <NothingTable />
             )
           ) : (
-            <tr>
-              <td colSpan={13} className=" text-gray-500 py-4">
-                조회된 내역이 없습니다.
-              </td>
-            </tr>
+            <NothingTable />
           )}
         </table>
       </section>

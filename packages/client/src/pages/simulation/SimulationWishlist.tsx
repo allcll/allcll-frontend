@@ -1,3 +1,4 @@
+import NothingTable from '@/components/simulation/table/NothingTable';
 import { Helmet } from 'react-helmet';
 
 const SimulationWishlist = () => {
@@ -63,13 +64,7 @@ const SimulationWishlist = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td colSpan={13} className="text-gray-400 py-4">
-                    <div className="min-h-[500px] flex items-center justify-center ">
-                      <p className="bg-stone-100 px-4 py-1 border">조회된 내역이 없습니다.</p>
-                    </div>
-                  </td>
-                </tr>
+                <NothingTable />
               </tbody>
             </table>
           </div>
