@@ -2,9 +2,8 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { server } from '@allcll/mock-server';
+// import { DndProvider } from 'react-dnd';
+// import { HTML5Backend } from 'react-dnd-html5-backend';
 import ReactGA from 'react-ga4';
 import Sentry from '@/utils/3party/sentry';
 import router from '@/utils/routing.tsx';
@@ -18,12 +17,15 @@ const isDevServer = import.meta.env.VITE_DEV_SERVER === 'true';
 if (isProduction && !isDevServer) {
   import('@/utils/3party/clarity.js' as string).then();
 
+  // Todo: Sentry tree shaking
   Sentry.initialize();
   ReactGA.initialize(import.meta.env.VITE_GOOGLE_ANALYTICS_ID);
 }
 
 // load mock server
 if (!isProduction && UsingMockServer) {
+  const { server } = await import('@allcll/mock-server');
+
   server.start().then(() => {
     loadApp();
   });
@@ -35,9 +37,9 @@ function loadApp() {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <DndProvider backend={HTML5Backend}>
-          <RouterProvider router={router} />
-        </DndProvider>
+        {/*<DndProvider backend={HTML5Backend}>*/}
+        <RouterProvider router={router} />
+        {/*</DndProvider>*/}
       </QueryClientProvider>
     </StrictMode>,
   );
