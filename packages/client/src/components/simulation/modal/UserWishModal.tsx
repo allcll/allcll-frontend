@@ -4,11 +4,13 @@ import CheckSvg from '@/assets/check.svg?react';
 import ResetSvg from '@/assets/reset.svg?react';
 import { useEffect, useState } from 'react';
 import { SimulationSubject } from '@/utils/types';
-import { pickRandomsubjects } from '@/utils/subjectPicker';
+import { checkExistDepartment, makeValidateDepartment, pickRandomsubjects } from '@/utils/subjectPicker';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { saveInterestedSnapshot } from '@/utils/simulation/subjects';
-import { startSimulation } from '@/utils/simulation/simulation';
+import { checkOngoingSimulation, startSimulation } from '@/utils/simulation/simulation';
+import { useLiveQuery } from 'dexie-react-hooks';
+import useDepartments from '@/hooks/server/useDepartments';
 
 type Department = {
   departmentCode: string;
@@ -47,17 +49,19 @@ const SubjectTable = ({ subjects }: { subjects: SimulationSubject[] }) => (
 
 const GameTips = () => (
   <div className="mt-6 text-sm text-gray-800 space-y-2">
-    <h2 className="text-left font-semibold mb-4">게임 Tip!</h2>
+    <h2 className="text-left font-semibold mb-4">
+      게임 <span className="text-blue-500">Tip!</span>
+    </h2>
     {[
-      '인기 있는 과목을 먼저 잡으세요.',
       '시작 시 검색 버튼을 빠르게 눌러주세요.',
+      '인기 있는 과목을 먼저 잡으세요.',
       '한 번 담은 과목을 또 담지 않도록 주의하세요!',
     ].map((tip, idx) => (
       <div key={idx} className="flex items-center">
-        <span className="text-green-500 mr-2">
+        <span className="text-blue-500 mr-2">
           <CheckSvg />
         </span>
-        {tip}
+        <span className={idx === 0 ? 'font-semibold text-blue-500 animate-bounce' : ''}>{tip}</span>
       </div>
     ))}
   </div>
@@ -67,6 +71,17 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
   const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore();
   const [isCheckedSubject, setIsCheckedSubject] = useState(false);
   const { closeModal } = useSimulationModalStore();
+
+  const ongoingSimulation = useLiveQuery(checkOngoingSimulation);
+
+  const hasRunningSimulationId =
+    ongoingSimulation && 'simulation_id' in ongoingSimulation ? ongoingSimulation.simulation_id : -1;
+
+  console.log(hasRunningSimulationId);
+
+  const { data: departments } = useDepartments();
+  const notExistDepartments = checkExistDepartment(departments);
+  const newDepartments = makeValidateDepartment(departments, notExistDepartments);
 
   useEffect(() => {
     const randomSubjects = pickRandomsubjects(department);
@@ -102,6 +117,8 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
         ) {
           const { simulationId, isRunning, started_at } = result;
 
+          console.log('시뮬레이션 시작 버튼 log', simulationId);
+
           setCurrentSimulation({
             simulationId,
             started_simulation_at: started_at,
@@ -116,6 +133,34 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
       });
   };
 
+  const handleChangeDepartment = (name: string) => {
+    if (name === 'none') {
+      setCurrentSimulation({
+        department: {
+          departmentCode: '',
+          departmentName: '',
+        },
+      });
+      return;
+    }
+
+    const selected = departments?.find(dept => dept.departmentName === name);
+    if (selected) {
+      setCurrentSimulation({
+        department: {
+          departmentCode: selected.departmentCode,
+          departmentName: selected.departmentName,
+        },
+      });
+    }
+
+    if (currentSimulation.department.departmentName !== '') {
+      setCurrentSimulation({
+        simulationStatus: 'selectedDepartment',
+      });
+    }
+  };
+
   return (
     <Modal>
       <div className="w-full max-w-3xl overflow-hidden bg-white rounded-lg border-2 border-gray-300">
@@ -125,15 +170,27 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
             setIsModalOpen(false);
           }}
         />
-
         <div className="p-6">
+          <h2 className="text-left font-semibold mb-2">학과 검색</h2>
+          <select
+            className="cursor-pointer border border-gray-300 rounded-sm px-2 py-1 w-120 bg-white mb-4"
+            value={department.departmentName}
+            onChange={e => handleChangeDepartment(e.target.value)}
+          >
+            <option value="none"> 학과가 목록에 없어요</option>
+            {newDepartments?.map(dept => (
+              <option key={dept.departmentCode} value={dept.departmentName}>
+                {dept.departmentName}
+              </option>
+            ))}
+          </select>
           <div className="flex flex-row justify-between">
-            <h2 className="text-left font-semibold mb-4">내 관심 과목 리스트</h2>
+            <h2 className="text-left font-semibold mb-4">수강 신청 과목 리스트</h2>
             <button
               onClick={handleResetRandomSubjects}
-              className="flex font-bold text-blue-600 items-center gap-2 cursor-pointer"
+              className="flex hover:font-bold hover:text-blue-500 items-center gap-2 cursor-pointer"
             >
-              랜덤 관심 과목 재생성
+              랜덤 과목 재생성
               <ResetSvg />
             </button>
           </div>
@@ -149,11 +206,11 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
               onChange={() => setIsCheckedSubject(!isCheckedSubject)}
             />
             <label htmlFor="confirm" className="mr-2 cursor-pointer text-sm text-gray-700">
-              관심과목을 확인하였습니다.
+              수강 신청 과목을 확인하였습니다.
             </label>
           </div>
 
-          <GameTips />
+          {isCheckedSubject && <GameTips />}
 
           <div className="pt-6 text-right">
             <button

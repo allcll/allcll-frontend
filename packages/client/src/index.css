@@ -60,6 +60,25 @@ body {
   transition: all 300ms ease-in-out;
 }
 
+@keyframes gradientBlink {
+  0%,
+  100% {
+    background-position: 0% 50%;
+    opacity: 1;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.bg-gradient-animation {
+  background: linear-gradient(270deg, #ef4444, #3b82f6, #ef4444);
+  background-size: 600% 600%;
+  animation: gradientBlink 3s ease infinite;
+  color: #ffffff;
+  font-weight: 600;
+}
+
 /*.toast-exit {*/
 /*  opacity: 1;*/
 /*  transform: translateX(100%) translateY(100%);*/
