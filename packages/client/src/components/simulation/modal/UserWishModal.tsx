@@ -162,7 +162,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
     <Modal>
       <div className="w-full max-w-3xl overflow-hidden bg-white rounded-lg border-2 border-gray-300">
         <ModalHeader
-          title="수강 신청 게임을 시작하시겠습니까?"
+          title="수강 신청 연습을 시작하시겠습니까?"
           onClose={() => {
             setIsModalOpen(false);
           }}

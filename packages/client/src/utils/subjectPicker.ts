@@ -127,10 +127,19 @@ export const pickNonRandomSubjects = (department: Department) => {
 
   const humanitySubjects = lecturesData.subjects.filter(subject => subject.departmentName === '대양휴머니티칼리지');
 
-  const selectedDepartmentSubjects = departmentSubjects.slice(0, 5);
-  const needed = 5 - selectedDepartmentSubjects.length;
+  const removeDuplicateSubjects = (subjects: typeof lecturesData.subjects) => {
+    const seen = new Set();
+    return subjects.filter(subject => {
+      if (seen.has(subject.subjectCode)) return false;
+      seen.add(subject.subjectCode);
+      return true;
+    });
+  };
 
-  const selectedHumanitySubjects = humanitySubjects.slice(0, needed);
+  const uniqueDepartmentSubjects = removeDuplicateSubjects(departmentSubjects).slice(0, 5);
+  const needed = 5 - uniqueDepartmentSubjects.length;
 
-  return [...selectedDepartmentSubjects, ...selectedHumanitySubjects];
+  const uniqueHumanitySubjects = removeDuplicateSubjects(humanitySubjects).slice(0, needed);
+
+  return [...uniqueDepartmentSubjects, ...uniqueHumanitySubjects];
 };
