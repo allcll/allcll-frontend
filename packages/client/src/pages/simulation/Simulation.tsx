@@ -30,6 +30,10 @@ function Simulation() {
   const isPending = hasRunningSimulationId === undefined;
   const isError = hasRunningSimulationId === null;
 
+  const modalType = useSimulationModalStore(state => state.type);
+
+  const isWaitingModalClosed = modalType !== 'waiting';
+
   const updateSimulation = (
     subjects: { subjectId: number }[],
     key: 'nonRegisteredSubjects' | 'registeredSubjects',
@@ -269,7 +273,7 @@ function Simulation() {
             {isPending || (isError && <ProcessingModal />)}
 
             {hasRunningSimulationId ? (
-              currentSimulation.simulationStatus === 'progress' ? (
+              currentSimulation.simulationStatus === 'progress' && isWaitingModalClosed ? (
                 <SubjectsTable isRegisteredTable={false} />
               ) : (
                 <tr>
@@ -335,7 +339,7 @@ function Simulation() {
           {isPending || (isError && <ProcessingModal />)}
 
           {hasRunningSimulationId ? (
-            currentSimulation.simulationStatus === 'progress' ? (
+            currentSimulation.simulationStatus === 'progress' && isWaitingModalClosed ? (
               <SubjectsTable isRegisteredTable={true} />
             ) : (
               <tr>
