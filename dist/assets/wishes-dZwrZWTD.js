@@ -1,0 +1,1 @@
+const t=e=>({eachDepartmentRegisters:[{studentBelong:"본교생",registerDepartment:"컴퓨터공학과",eachCount:e-3},{studentBelong:"본교생",registerDepartment:"소프트웨어학과",eachCount:3}]});export{t as getDepartmentRegister};
