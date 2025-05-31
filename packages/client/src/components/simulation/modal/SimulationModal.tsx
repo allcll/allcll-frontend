@@ -14,7 +14,7 @@ const SIMULATION_MODAL_CONTENTS = [
   },
   {
     status: APPLY_STATUS.SUCCESS,
-    topMessage: '과목이 신청 되었습니다. 수강신청내역을 재 조회 하시겠습니까?',
+    topMessage: '과목이 신청 되었습니다. 수강신청내역을 재조회 하시겠습니까?',
     description:
       '※ 취소를 선택하실 경우 [수강신청내역]이 갱신되지 않습니다. 취소를 선택하실 경우 수강신청 최종 완료 후 반드시 [수강신청내역] 재 조회를 눌러 신청 내역을 확인하세요. [수강신청내역]에 조회된 과목만이 정상적으로 수강신청된 과목입니다.',
   },
@@ -50,7 +50,6 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
 
   const modalStatus = modalData?.status ?? APPLY_STATUS.PROGRESS;
   const skipRefresh = [APPLY_STATUS.FAILED, APPLY_STATUS.DOUBLED, APPLY_STATUS.CAPTCHA_FAILED].includes(modalStatus);
-  const checkFinish = [APPLY_STATUS.FAILED, APPLY_STATUS.DOUBLED, APPLY_STATUS.SUCCESS].includes(modalStatus);
 
   if (!modalData) return null;
 
@@ -85,6 +84,7 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
           checkErrorValue(result);
           setSubjectStatus(currentSubjectId, result.status);
           setSubjectsStatus(currentSubjectId, result.status);
+          console.error('final', result.status);
           openModal('simulation');
         })
         .catch(catchAction);
@@ -126,7 +126,6 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
         .catch(catchAction);
 
       closeModal('simulation');
-    } else if (checkFinish) {
     }
   };
 
