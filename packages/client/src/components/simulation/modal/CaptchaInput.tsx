@@ -19,8 +19,7 @@ function CaptchaInput() {
 
   const { closeModal, openModal } = useSimulationModalStore();
   const { setSubjectStatus, currentSubjectId } = useSimulationSubjectStore();
-  const { setSubjectsStatus, subjectsStatus } = useSimulationProcessStore();
-  const currentSubjectStatus = subjectsStatus.find(subject => subject.subjectId === currentSubjectId);
+  const { setSubjectsStatus } = useSimulationProcessStore();
 
   function handleRefreshCaptcha() {
     const randomCaptchaCode = generateNumericText();
@@ -60,23 +59,24 @@ function CaptchaInput() {
     /**
      * 캡차 버튼 클릭 이벤트
      */
-    triggerButtonEvent({ eventType: BUTTON_EVENT.CAPTCHA, subjectId: currentSubjectId });
-
+    triggerButtonEvent({ eventType: BUTTON_EVENT.CAPTCHA, subjectId: currentSubjectId })
+      .then(() => {
+        if (captchaInput?.toString() === codeRef.current) {
+          setSubjectsStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
+          //여기 코드 추가
+          setSubjectStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
+        } else {
+          setSubjectsStatus(currentSubjectId, APPLY_STATUS.PROGRESS, true);
+          setSubjectStatus(currentSubjectId, APPLY_STATUS.CAPTCHA_FAILED);
+        }
+      })
+      .then(() => {
+        closeModal('captcha');
+        openModal('simulation');
+      });
     /**
      * 캡차 입력 검증
      */
-
-    if (captchaInput?.toString() === codeRef.current) {
-      if (currentSubjectStatus?.subjectStatus !== APPLY_STATUS.DOUBLED) {
-        setSubjectsStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
-      }
-    } else {
-      setSubjectsStatus(currentSubjectId, APPLY_STATUS.PROGRESS, true);
-      setSubjectStatus(currentSubjectId, APPLY_STATUS.CAPTCHA_FAILED);
-    }
-
-    closeModal('captcha');
-    openModal('simulation');
   }
 
   return (
