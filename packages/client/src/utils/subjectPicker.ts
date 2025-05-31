@@ -6,6 +6,8 @@ type Department = {
   departmentName: string;
 };
 
+const TOTAL_SUBJECTS = 5;
+
 function getRandomItems(subject: SimulationSubject[], count: number) {
   const uniqueSubjectCodes: Set<string> = new Set();
   const randomSubjects: SimulationSubject[] = [];
@@ -38,6 +40,10 @@ function checkSameDepartment(departmentName: string, collegeName: string) {
   return clean(departmentName) === clean(collegeName);
 }
 
+function checkMajorCount(count: number) {
+  return TOTAL_SUBJECTS - count;
+}
+
 export const pickRandomsubjects = (department: Department) => {
   const collegeName = pickCollege(department.departmentName);
 
@@ -50,12 +56,17 @@ export const pickRandomsubjects = (department: Department) => {
   const validDepartmentSubjects = departmentSubjects.filter(
     subject => subject.professorName !== null && subject.lesn_time !== null,
   );
+
   const departmentRandomSubjects = getRandomItems(validDepartmentSubjects, 3);
 
   const validHumanitySubjects = humanitySubjects.filter(
     subject => subject.professorName !== null && subject.lesn_time !== null,
   );
-  const humanityRandomSubjects = getRandomItems(validHumanitySubjects, 2);
+
+  const humanityRandomSubjects = getRandomItems(
+    validHumanitySubjects,
+    checkMajorCount(departmentRandomSubjects.length + 1),
+  );
 
   const allRandomSubjects = [...departmentRandomSubjects, ...humanityRandomSubjects];
 
@@ -106,7 +117,7 @@ export const pickRandomSubjectsByAll = () => {
 export const pickNonRandomSubjects = (department: Department) => {
   const collegeName = pickCollege(department.departmentName);
 
-  if (collegeName === 'none') {
+  if (collegeName === '학과를 선택하지 않았습니다.') {
     return [];
   }
 

@@ -13,7 +13,7 @@ const SubjectRow = ({ index, subject, isRegisteredTable, onClickSubject }: Subje
       <td className="border bg-blue-100 px-2 py-1 border-gray-200">{index + 1}</td>
       <td className="border px-2 py-1 border-gray-200">
         <button
-          className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-xs"
+          className="bg-blue-500 cursor-pointer text-white text-xs px-2 py-0.5 rounded-xs"
           disabled={!!isRegisteredTable}
           onClick={() => onClickSubject(subject.subjectId)}
         >

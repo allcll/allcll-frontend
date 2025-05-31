@@ -174,7 +174,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
             value={department.departmentName}
             onChange={e => handleChangeDepartment(e.target.value)}
           >
-            <option value="none">학과가 목록에 없어요</option>
+            <option value="학과를 선택하지 않았습니다.">학과가 목록에 없어요</option>
             {newDepartments?.map(dept => (
               <option key={dept.departmentCode} value={dept.departmentName}>
                 {dept.departmentName}
