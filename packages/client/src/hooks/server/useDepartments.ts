@@ -17,6 +17,7 @@ function useDepartments() {
     select: (data: DepartmentsAPIResponse) => {
       const departments = data.departments;
       departments.sort((a, b) => a.departmentName.localeCompare(b.departmentName));
+      console.log(departments, departments);
 
       return departments;
     },

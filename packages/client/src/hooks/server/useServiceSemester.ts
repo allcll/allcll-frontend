@@ -14,7 +14,7 @@ export interface ServiceSemesterWithPeriod extends ServiceSemester {
 
 function useServiceSemester() {
   return useQuery({
-    queryKey: ['departments'],
+    queryKey: ['serviceSemester'],
     queryFn: fetchServiceSemester,
     staleTime: Infinity,
     select: data => {
