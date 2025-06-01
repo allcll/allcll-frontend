@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { useLiveQuery } from 'dexie-react-hooks';
@@ -9,22 +9,23 @@ import AllResult from '@/components/simulation/AllResult.tsx';
 
 function Dashboard() {
   const logs = useLiveQuery<{ snapshots: SimulationRun[] }>(getSimulationList);
-  const [search, setSearch] = useState<string>('');
-  const [searchedLogs, setSearchedLogs] = useState<SimulationRun[]>([]);
+  // const [search, setSearch] = useState<string>('');
+  // const [searchedLogs, setSearchedLogs] = useState<SimulationRun[]>([]);
+  const searchedLogs = logs ? logs.snapshots : [];
   const isPending = logs === undefined;
   const isError = logs === null;
 
   // search debouncing
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!logs) return;
-
-      if (search === '') setSearchedLogs(logs.snapshots);
-      else setSearchedLogs(logs.snapshots.filter(log => log.user_id.toLowerCase().includes(search.toLowerCase())));
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [search, logs]);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     if (!logs) return;
+  //
+  //     if (search === '') setSearchedLogs(logs.snapshots);
+  //     else setSearchedLogs(logs.snapshots.filter(log => log.user_id.toLowerCase().includes(search.toLowerCase())));
+  //   }, 300);
+  //
+  //   return () => clearTimeout(timer);
+  // }, [search, logs]);
 
   return (
     <>
@@ -44,13 +45,13 @@ function Dashboard() {
         <div className="flex justify-between items-start max-w-3xl mx-auto mb-4">
           <h1 className="text-2xl font-bold">모의 수강 신청 로그</h1>
           <div className="border border-gray-300 rounded">
-            <input
-              type="text"
-              className="text-xs p-1"
-              placeholder="user-pk를 입력해주세요"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-            />
+            {/*<input*/}
+            {/*  type="text"*/}
+            {/*  className="text-xs p-1"*/}
+            {/*  placeholder="user-pk를 입력해주세요"*/}
+            {/*  value={search}*/}
+            {/*  onChange={e => setSearch(e.target.value)}*/}
+            {/*/>*/}
           </div>
         </div>
 
@@ -81,11 +82,11 @@ function Dashboard() {
 
                 <div className="col-span-7">
                   <label className="hidden">학과</label>
-                  <span>{log.department_name.split(' ').at(-1)}</span>
+                  <span>{log.department_name ? log.department_name.split(' ').at(-1) : '학과 정보 없음'}</span>
                 </div>
                 <div className="col-span-6">
-                  <label className="hidden">이름</label>
-                  <span className="font-bold">{log.user_id}</span>
+                  {/*<label className="hidden">이름</label>*/}
+                  {/*<span className="font-bold">{log.user_id}</span>*/}
                 </div>
                 <div className="col-span-4">
                   <label className="text-xs">정확도 </label>
