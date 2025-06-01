@@ -37,7 +37,7 @@ const SubjectRow = ({ index, subject, isRegisteredTable, onClickSubject }: Subje
           : '-'}
       </td>
       <td className="border px-2 py-1 border-gray-200">{subject.subjectType}</td>
-      <td className="border px-2 py-1 border-gray-200">{subject.semester_at}</td>
+      <td className="border px-2 py-1 border-gray-200">{subject.semester_at === -1 ? '' : subject.semester_at}</td>
       <td className="border px-2 py-1 border-gray-200">{subject.lesn_time || '-'}</td>
       <td className="border px-2 py-1 border-gray-200">
         <button className="bg-gray-700 text-white text-xs px-2 py-0.5 rounded-xs">수강인원</button>
