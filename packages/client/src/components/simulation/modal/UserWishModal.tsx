@@ -76,9 +76,13 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
   const [isCheckedSubject, setIsCheckedSubject] = useState(false);
   const { closeModal } = useSimulationModalStore();
 
-  const { data: departments } = useDepartments();
+  const { data: departments, refetch } = useDepartments();
   const notExistDepartments = checkExistDepartment(departments);
   const newDepartments = makeValidateDepartment(departments, notExistDepartments);
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   useEffect(() => {
     const randomSubjects = pickNonRandomSubjects(department);
