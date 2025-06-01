@@ -1,12 +1,11 @@
-import {useEffect} from 'react';
-import {PinnedSeats, Wishlist} from '@/utils/types.ts';
-import {QueryClient} from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { PinnedSeats, Wishlist } from '@/utils/types.ts';
+import { QueryClient } from '@tanstack/react-query';
 import useSSECondition from '@/store/useSSECondition.ts';
-import useBannerNotification, {ISetBanner} from '@/store/useBannerNotification.tsx';
+import useBannerNotification, { ISetBanner } from '@/store/useBannerNotification.tsx';
 import AlarmBanner from '@/components/banner/AlarmBanner.tsx';
 import useToastNotification from '@/store/useToastNotification.ts';
 import useAlarmSettings from '@/store/useAlarmSettings.ts';
-
 
 export function canNotify() {
   return 'Notification' in window;
@@ -41,24 +40,23 @@ function showNotification(message: string, tag?: string) {
   const isAlarmActivated = useAlarmSettings.getState().isAlarmActivated;
 
   if (isAlarmActivated)
-    navigator.serviceWorker.ready.then(function(registration) {
+    navigator.serviceWorker.ready.then(function (registration) {
       registration.showNotification(message, {
         // icon: '/logo-name.svg',
         badge: '/ci.svg',
-        tag
+        tag,
       });
     });
 
   const addToast = useToastNotification.getState().addToast;
   const isToastActivated = useAlarmSettings.getState().isToastActivated;
-  if (isToastActivated)
-    addToast(message, tag);
+  if (isToastActivated) addToast(message, tag);
 }
 
 function closeNotification(tag: string) {
-  navigator.serviceWorker.ready.then(function(registration) {
-    registration.getNotifications({ tag }).then(function(notifications) {
-      notifications.forEach(function(notification) {
+  navigator.serviceWorker.ready.then(function (registration) {
+    registration.getNotifications({ tag }).then(function (notifications) {
+      notifications.forEach(function (notification) {
         notification.close();
       });
     });
@@ -69,7 +67,7 @@ function closeNotification(tag: string) {
 }
 
 export function onChangePinned(prev: Array<PinnedSeats>, newPin: Array<PinnedSeats>, queryClient: QueryClient) {
-  const {alwaysReload} = useSSECondition.getState();
+  const { alwaysReload } = useSSECondition.getState();
 
   if (!canNotify() || !prev || !newPin || !alwaysReload) {
     return;
@@ -102,8 +100,8 @@ let globalNotificationTagId = 1;
 
 // 알림 메세지 관련 Notification 은 한 개만 띄웁니다
 function setGlobalNotification(message: string) {
-  const nowTag = 'global-notification_'+globalNotificationTagId;
-  const nextTag = 'global-notification_'+(++globalNotificationTagId);
+  const nowTag = 'global-notification_' + globalNotificationTagId;
+  const nextTag = 'global-notification_' + ++globalNotificationTagId;
 
   if (globalNotificationTimeout) {
     clearTimeout(globalNotificationTimeout);
@@ -114,7 +112,6 @@ function setGlobalNotification(message: string) {
   showNotification(message, nextTag);
   globalNotificationTimeout = setTimeout(() => closeNotification(nextTag) /*globalNotification?.close()*/, 3000);
 }
-
 
 const DAYS = 1000 * 60 * 60 * 24;
 // 맥에서 알림이 보이지 않을 때, 알림 권한을 확인합니다
@@ -177,17 +174,15 @@ function useNotification() {
         setGlobalNotification('알림 기능이 활성화되었습니다');
         checkSystemNotification(setBanner);
         setAlwaysReload(true);
-      }
-      else if (permission === 'default') {
+      } else if (permission === 'default') {
         alert('알림 권한을 허용해야 알림을 받을 수 있습니다');
-      }
-      else {
+      } else {
         alert('알림 권한이 없습니다. 브라우저의 알림 권한을 확인해주세요.');
       }
     });
-  }
+  };
 
-  return {isAlarm, changeAlarm};
+  return { isAlarm, changeAlarm };
 }
 
 export default useNotification;

@@ -1,4 +1,4 @@
-import {create} from 'zustand';
+import { create } from 'zustand';
 
 interface IUseAlarmSettings {
   isAlarmActivated: boolean;
@@ -11,12 +11,12 @@ const isMobileDevice = () => {
   return /Mobi|Android/i.test(navigator.userAgent);
 };
 
-const useAlarmSettings = create<IUseAlarmSettings>((set) => ({
+const useAlarmSettings = create<IUseAlarmSettings>(set => ({
   isAlarmActivated: true,
   isToastActivated: false,
-  saveSettings: (settings) => {
+  saveSettings: settings => {
     set(({ ...prev }) => {
-      const newSettings = {...prev, settings};
+      const newSettings = { ...prev, settings };
       localStorage.setItem('AlarmSettings', JSON.stringify(newSettings));
 
       return settings;
@@ -34,7 +34,7 @@ const useAlarmSettings = create<IUseAlarmSettings>((set) => ({
     const initSettings = {
       isAlarmActivated: true,
       isToastActivated: isMobileDevice(),
-    }
+    };
     set(initSettings);
 
     return initSettings;

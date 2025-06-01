@@ -1,25 +1,24 @@
-import {Helmet} from 'react-helmet';
-import React, {useEffect, useState} from "react";
-import {disassemble} from "es-hangul";
-import Navbar from "@/components/Navbar.tsx";
-import CardWrap from "@/components/CardWrap.tsx";
-import SubjectTable from "@/components/subjectTable/SubjectTable.tsx";
-import SubjectCards from "@/components/subjectTable/SubjectCards.tsx";
-import SearchBox from "@/components/common/SearchBox.tsx";
-import AlarmIcon from "@/components/svgs/AlarmIcon.tsx";
-import useWishesPreSeats from "@/hooks/useWishesPreSeats.ts";
-import useMobile from "@/hooks/useMobile.ts";
-import {Wishes} from "@/utils/types.ts";
-import {usePinned} from "@/store/usePinned.ts";
-import useAlarmSearchStore from "@/store/useAlarmSearchStore.ts";
-
+import { Helmet } from 'react-helmet';
+import React, { useEffect, useState } from 'react';
+import { disassemble } from 'es-hangul';
+import Navbar from '@/components/Navbar.tsx';
+import CardWrap from '@/components/CardWrap.tsx';
+import SubjectTable from '@/components/subjectTable/SubjectTable.tsx';
+import SubjectCards from '@/components/subjectTable/SubjectCards.tsx';
+import SearchBox from '@/components/common/SearchBox.tsx';
+import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
+import useWishesPreSeats from '@/hooks/useWishesPreSeats.ts';
+import useMobile from '@/hooks/useMobile.ts';
+import { Wishes } from '@/utils/types.ts';
+import { usePinned } from '@/store/usePinned.ts';
+import useAlarmSearchStore from '@/store/useAlarmSearchStore.ts';
 
 const TableHeadTitles = [
-  {title: "핀", key: "pin"},
-  {title: "과목코드", key: "code"},
-  {title: "개설학과", key: "departmentName"},
-  {title: "과목명", key: "name"},
-  {title: "담당교수", key: "professor"},
+  { title: '핀', key: 'pin' },
+  { title: '과목코드', key: 'code' },
+  { title: '개설학과', key: 'departmentName' },
+  { title: '과목명', key: 'name' },
+  { title: '담당교수', key: 'professor' },
   // {title: "학점", key: "credits"}
 ];
 
@@ -31,45 +30,44 @@ export interface ISubjectSearch {
 const SearchCourses = () => {
   const isMobile = useMobile();
 
-  const [search, setSearch] = useState<ISubjectSearch>({searchKeyword: '', isAlarmWish: false});
+  const [search, setSearch] = useState<ISubjectSearch>({ searchKeyword: '', isAlarmWish: false });
 
-  const {data: wishes, titles, isPending} = useWishesPreSeats(TableHeadTitles);
-  const {data: pinnedSubjects} = usePinned();
+  const { data: wishes, titles, isPending } = useWishesPreSeats(TableHeadTitles);
+  const { data: pinnedSubjects } = usePinned();
 
   const [filteredData, setFilteredData] = useState<Wishes[]>([]);
 
   useEffect(() => {
     const cleanSearchInput = search.searchKeyword.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
     const disassembledSearchInput = disassemble(cleanSearchInput).toLowerCase();
-    const matchesPinned = (id: number) =>
-      pinnedSubjects?.some(({subjectId}) => subjectId === id);
+    const matchesPinned = (id: number) => pinnedSubjects?.some(({ subjectId }) => subjectId === id);
 
-    const filtered = wishes?.filter((wish) => {
-      // const target = wish[search.searchOption as keyof Wishes] ?? "";
-      // const keyword = search.searchKeyword;
-      //
-      // const cleanTarget = target.toString().replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '').toLowerCase();
-      // const cleanKeyword = keyword.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '').toLowerCase();
-      //
-      // const disassembledTarget = disassemble(cleanTarget);
-      // const disassembledKeyword = disassemble(cleanKeyword);
-      //
-      // return disassembledTarget.includes(disassembledKeyword);
+    const filtered =
+      wishes?.filter(wish => {
+        // const target = wish[search.searchOption as keyof Wishes] ?? "";
+        // const keyword = search.searchKeyword;
+        //
+        // const cleanTarget = target.toString().replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '').toLowerCase();
+        // const cleanKeyword = keyword.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '').toLowerCase();
+        //
+        // const disassembledTarget = disassemble(cleanTarget);
+        // const disassembledKeyword = disassemble(cleanKeyword);
+        //
+        // return disassembledTarget.includes(disassembledKeyword);
 
-      const disassembledProfessorName = wish.professorName ? disassemble(wish.professorName).toLowerCase() : '';
-      const cleanSubjectName = wish.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-      const disassembledSubjectName = disassemble(cleanSubjectName).toLowerCase();
+        const disassembledProfessorName = wish.professorName ? disassemble(wish.professorName).toLowerCase() : '';
+        const cleanSubjectName = wish.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+        const disassembledSubjectName = disassemble(cleanSubjectName).toLowerCase();
 
-      const matchesProfessor = disassembledProfessorName.includes(disassembledSearchInput);
-      const matchesSubject = disassembledSubjectName.includes(disassembledSearchInput);
-      const matchesFavorite = search.isAlarmWish ? matchesPinned(wish.subjectId) : true;
+        const matchesProfessor = disassembledProfessorName.includes(disassembledSearchInput);
+        const matchesSubject = disassembledSubjectName.includes(disassembledSearchInput);
+        const matchesFavorite = search.isAlarmWish ? matchesPinned(wish.subjectId) : true;
 
-      return (matchesProfessor || matchesSubject) && matchesFavorite;
-    }) ?? [];
+        return (matchesProfessor || matchesSubject) && matchesFavorite;
+      }) ?? [];
 
     setFilteredData(filtered);
   }, [wishes, search]);
-
 
   return (
     <>
@@ -79,11 +77,11 @@ const SearchCourses = () => {
 
       <div className="max-w-screen-xl mx-auto mb-8">
         <div className="container p-4 mx-auto">
-          <Navbar/>
+          <Navbar />
 
           {/* Search Section */}
           <CardWrap>
-            <SubjectSearchInputs setSearch={setSearch}/>
+            <SubjectSearchInputs setSearch={setSearch} />
           </CardWrap>
 
           {/*<p className="text-sm text-gray-600 mb-4 italic">*/}
@@ -93,9 +91,9 @@ const SearchCourses = () => {
           {/* Course List */}
           <CardWrap>
             {isMobile ? (
-              <SubjectCards subjects={filteredData} isPending={isPending}/>
+              <SubjectCards subjects={filteredData} isPending={isPending} />
             ) : (
-              <SubjectTable titles={titles} subjects={filteredData} isPending={isPending}/>
+              <SubjectTable titles={titles} subjects={filteredData} isPending={isPending} />
             )}
           </CardWrap>
         </div>
@@ -108,17 +106,17 @@ interface ISubjectSearchInputs {
   setSearch: React.Dispatch<React.SetStateAction<ISubjectSearch>>;
 }
 
-function SubjectSearchInputs({setSearch}: ISubjectSearchInputs) {
-  const searchKeyword = useAlarmSearchStore((state) => state.searchKeyword);
-  const isAlarmWish = useAlarmSearchStore((state) => state.isAlarmWish);
-  const setSearchKeyword = useAlarmSearchStore((state) => state.setSearchKeyword);
-  const toggleAlarmWish = useAlarmSearchStore((state) => state.toggleAlarmWish);
-  
+function SubjectSearchInputs({ setSearch }: ISubjectSearchInputs) {
+  const searchKeyword = useAlarmSearchStore(state => state.searchKeyword);
+  const isAlarmWish = useAlarmSearchStore(state => state.isAlarmWish);
+  const setSearchKeyword = useAlarmSearchStore(state => state.setSearchKeyword);
+  const toggleAlarmWish = useAlarmSearchStore(state => state.toggleAlarmWish);
+
   useEffect(() => {
     if (!setSearch) return;
 
     const handler = setTimeout(() => {
-      setSearch({searchKeyword, isAlarmWish});
+      setSearch({ searchKeyword, isAlarmWish });
     }, 700);
 
     return () => {
@@ -127,22 +125,27 @@ function SubjectSearchInputs({setSearch}: ISubjectSearchInputs) {
   }, [searchKeyword, setSearch]);
 
   useEffect(() => {
-    setSearch({searchKeyword, isAlarmWish});
+    setSearch({ searchKeyword, isAlarmWish });
   }, [isAlarmWish]);
 
   return (
     <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 text-sm">
-      <label className="hidden" htmlFor="searchOption">검색 옵션</label>
+      <label className="hidden" htmlFor="searchOption">
+        검색 옵션
+      </label>
       <SearchBox
         type="text"
         placeholder="과목명 또는 교수명 검색"
         value={searchKeyword}
         onDelete={() => setSearchKeyword('')}
-        onChange={(e) => setSearchKeyword(e.target.value)}/>
+        onChange={e => setSearchKeyword(e.target.value)}
+      />
 
-      <button className="px-4 py-2 rounded-md flex gap-2 items-center text-nowrap border border-gray-400 hover:bg-white cursor-pointer"
-              onClick={toggleAlarmWish}>
-        <AlarmIcon disabled={!isAlarmWish}/>
+      <button
+        className="px-4 py-2 rounded-md flex gap-2 items-center text-nowrap border border-gray-400 hover:bg-white cursor-pointer"
+        onClick={toggleAlarmWish}
+      >
+        <AlarmIcon disabled={!isAlarmWish} />
         알림과목
       </button>
     </div>

@@ -1,7 +1,7 @@
 name: ALLCLL CI/CD
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -11,7 +11,7 @@ permissions:
 
 # Allow one concurrent deployment
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: true
 
 jobs:
@@ -46,11 +46,12 @@ jobs:
           cp package.json ./build/package.json
           cp pnpm-lock.yaml ./build/pnpm-lock.yaml
         env:
-          CI: ""
+          CI: ''
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           VITE_GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
           VITE_AMPLITUDE_API_KEY: ${{ secrets.AMPLITUDE_API_KEY }}
+          VITE_SCORE_API_TOKEN: ${{ secrets.SCORE_API_TOKEN }}
           VITE_DEV_SERVER: true
         working-directory: ${{env.working-directory}}
 

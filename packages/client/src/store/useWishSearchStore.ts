@@ -1,5 +1,5 @@
-import {create} from "zustand";
-import {WishSearchParams} from "@/components/dashboard/Searches.tsx";
+import { create } from 'zustand';
+import { WishSearchParams } from '@/components/dashboard/Searches.tsx';
 
 interface IUseWishSearchStore {
   searchInput: string;
@@ -12,15 +12,15 @@ interface IUseWishSearchStore {
   setSearchParams: (searchParams: WishSearchParams) => void;
 }
 
-const useWishSearchStore = create<IUseWishSearchStore>((set) => ({
+const useWishSearchStore = create<IUseWishSearchStore>(set => ({
   searchInput: '',
   selectedDepartment: '',
   isFavorite: false,
-  searchParams: {searchInput: '', selectedDepartment: '', isFavorite: false},
-  setSearchInput: (searchInput) => set(() => ({searchInput})),
-  setSelectedDepartment: (selectedDepartment) => set(() => ({selectedDepartment})),
-  setToggleFavorite: () => set(state => ({isFavorite: !state.isFavorite})),
-  setSearchParams: (searchParams) => set(() => ({searchParams})),
+  searchParams: { searchInput: '', selectedDepartment: '', isFavorite: false },
+  setSearchInput: searchInput => set(() => ({ searchInput })),
+  setSelectedDepartment: selectedDepartment => set(() => ({ selectedDepartment })),
+  setToggleFavorite: () => set(state => ({ isFavorite: !state.isFavorite })),
+  setSearchParams: searchParams => set(() => ({ searchParams })),
 }));
 
 export default useWishSearchStore;

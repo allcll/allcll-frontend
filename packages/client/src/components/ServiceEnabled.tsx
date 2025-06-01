@@ -13,7 +13,7 @@ function ServiceEnabled({ children }: IServiceEnabled) {
     console.error('Semester service error:', error);
   }
 
-  return !data || data.withinPeriod ? children : <ServiceClosed data={data}/>;
+  return !data || data.withinPeriod ? children : <ServiceClosed data={data} />;
 }
 
 export default ServiceEnabled;

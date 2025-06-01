@@ -1,6 +1,8 @@
 # Admin Page - ALLCLL
 
-ALLCLL의 관리자 페이지는 관리자들이 수강 여석 데이터를 관리하고 업데이트할 수 있도록 도와줍니다. 이 프로젝트는 ALLCLL monorepo의 일부입니다.
+ALLCLL의 관리자 페이지는 관리자들이 수강 여석 데이터를 관리하고 업데이트할 수 있도록 도와줍니다.
+운영에 필요한 관리 도구를, 서비스에서 사용할 수 있도록 도와줍니다.
+이 프로젝트는 ALLCLL monorepo의 일부입니다.
 
 ## 기능
 
@@ -40,6 +42,7 @@ admin/
 ### 설치
 
 1. 레포지토리를 클론합니다:
+
    ```sh
    git clone https://github.com/allcll/frontend.git
    cd ALLCLL/packages/admin
@@ -53,6 +56,7 @@ admin/
 ### 개발 서버 실행
 
 개발 서버를 시작합니다:
+
 ```sh
 pnpm run dev
 ```
@@ -60,6 +64,7 @@ pnpm run dev
 ### 프로덕션 빌드
 
 프로덕션 빌드를 수행합니다:
+
 ```sh
 pnpm run build
 ```
@@ -67,6 +72,7 @@ pnpm run build
 ### 테스트 실행
 
 테스트를 실행합니다:
+
 ```sh
 pnpm run test
 ```

@@ -1,4 +1,4 @@
-import {create} from 'zustand';
+import { create } from 'zustand';
 
 export interface IToastMessage {
   message: string;
@@ -9,22 +9,23 @@ interface IUseToastNotification {
   isActivated: boolean;
   messages: IToastMessage[];
   addToast: (message: string, tag?: string) => void;
-  clearToast: (filter: number|string) => void;
+  clearToast: (filter: number | string) => void;
 }
 
-const useToastNotification = create<IUseToastNotification>((set) => ({
+const useToastNotification = create<IUseToastNotification>(set => ({
   isActivated: false,
   messages: [],
-  addToast: (message, tag) => set((state) => ({ messages: [...state.messages, {message, tag}] })),
-  clearToast: (filter) => set((state) => {
-    if (typeof filter === 'number') {
-      state.messages = [...state.messages.slice(0, filter), ...state.messages.slice(filter + 1)];
-    } else {
-      state.messages = state.messages.filter((m) => m.tag !== filter);
-    }
+  addToast: (message, tag) => set(state => ({ messages: [...state.messages, { message, tag }] })),
+  clearToast: filter =>
+    set(state => {
+      if (typeof filter === 'number') {
+        state.messages = [...state.messages.slice(0, filter), ...state.messages.slice(filter + 1)];
+      } else {
+        state.messages = state.messages.filter(m => m.tag !== filter);
+      }
 
-    return { messages: state.messages };
-  }),
+      return { messages: state.messages };
+    }),
 }));
 
 export default useToastNotification;

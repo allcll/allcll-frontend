@@ -1,12 +1,12 @@
-import {useQuery} from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 export interface Department {
-  departmentName: string
-  departmentCode: string
+  departmentName: string;
+  departmentCode: string;
 }
 
 interface DepartmentsAPIResponse {
-  departments: Department[]
+  departments: Department[];
 }
 
 function useDepartments() {
@@ -26,7 +26,7 @@ function useDepartments() {
 const fetchDepartments = async (): Promise<DepartmentsAPIResponse> => {
   const response = await fetch('/api/departments', {
     headers: {
-      'Cookie': `sessionId=${document.cookie.split('=')[1]}`,
+      Cookie: `sessionId=${document.cookie.split('=')[1]}`,
     },
   });
 
@@ -38,18 +38,17 @@ const fetchDepartments = async (): Promise<DepartmentsAPIResponse> => {
 };
 
 export interface DepartmentDict {
-  universityDict: Record<string, string[]>
-  collegeDict: Record<string, string[]>
+  universityDict: Record<string, string[]>;
+  collegeDict: Record<string, string[]>;
 }
 
 export const useDepartmentDict = (departments?: Department[]): DepartmentDict => {
-  if (!departments)
-    return {universityDict: {}, collegeDict: {}};
+  if (!departments) return { universityDict: {}, collegeDict: {} };
 
   const universityDict: Record<string, string[]> = {};
   const collegeDict: Record<string, string[]> = {};
 
-  departments.forEach((departments) => {
+  departments.forEach(departments => {
     const [universityName, collegeName, departmentName] = departments.departmentName.split(' ');
     const university = universityName.trim();
     const college = collegeName?.trim();
@@ -79,11 +78,11 @@ export const useDepartmentDict = (departments?: Department[]): DepartmentDict =>
     }
   });
 
-  return {universityDict, collegeDict};
-}
+  return { universityDict, collegeDict };
+};
 
 export const searchFromUniversity = (searchInput: string, universityDict: Record<string, string[]>) => {
-  const names = searchInput.split(' ').map((name) => name.trim());
+  const names = searchInput.split(' ').map(name => name.trim());
 
   for (const universityName in universityDict) {
     if (names.some(name => universityDict[universityName].includes(name))) {
@@ -93,10 +92,10 @@ export const searchFromUniversity = (searchInput: string, universityDict: Record
 
   console.error('No university found', searchInput);
   return '';
-}
+};
 
 export const searchFromCollege = (searchInput: string, collegeDict: Record<string, string[]>) => {
-  const names = searchInput.split(' ').map((name) => name.trim());
+  const names = searchInput.split(' ').map(name => name.trim());
 
   for (const collegeName in collegeDict) {
     if (names.some(name => collegeName.includes(name))) {
@@ -106,6 +105,6 @@ export const searchFromCollege = (searchInput: string, collegeDict: Record<strin
 
   console.error('No college found', searchInput);
   return '';
-}
+};
 
 export default useDepartments;

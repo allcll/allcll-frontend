@@ -4,4 +4,4 @@ import { handlers } from './handlers.ts';
 const server = setupWorker();
 server.use(...handlers);
 
-export { server }
+export { server };

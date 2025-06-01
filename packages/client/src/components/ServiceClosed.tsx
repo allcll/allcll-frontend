@@ -1,13 +1,12 @@
-import {Link} from 'react-router-dom';
-import HomeSvg from "@/assets/home-white.svg?react";
-import {ServiceSemesterWithPeriod} from '@/hooks/server/useServiceSemester.ts';
+import { Link } from 'react-router-dom';
+import HomeSvg from '@/assets/home-white.svg?react';
+import { ServiceSemesterWithPeriod } from '@/hooks/server/useServiceSemester.ts';
 
 interface IServiceClosed {
   data: ServiceSemesterWithPeriod;
 }
 
-
-function ServiceClosed({data}: IServiceClosed) {
+function ServiceClosed({ data }: IServiceClosed) {
   const isSemesterExpired = new Date(data.period.endDate) > new Date();
 
   return (
@@ -31,28 +30,36 @@ function ServiceClosed({data}: IServiceClosed) {
             <>
               <h2 className="text-lg font-semibold text-gray-900">다음 수강신청 안내</h2>
               <p className="text-gray-600 mt-1">{data.semester} 수강신청</p>
-              <p className="text-gray-500 text-sm mt-1">{data.period.startDate} ~ {data.period.endDate}</p>
+              <p className="text-gray-500 text-sm mt-1">
+                {data.period.startDate} ~ {data.period.endDate}
+              </p>
             </>
           )}
 
           <hr className="my-4 border-gray-200" />
 
           <h3 className="text-md font-semibold text-gray-900">문의 안내</h3>
-          <p className="text-gray-600 flex items-center justify-center gap-2 mt-2">
-            allcllclla@google.com
-          </p>
-          <Link to="/survey" className="text-gray-600 flex items-center justify-center gap-2 mt-1 hover:text-blue-500 hover:underline">
+          <p className="text-gray-600 flex items-center justify-center gap-2 mt-2">allcllclla@google.com</p>
+          <Link
+            to="/survey"
+            className="text-gray-600 flex items-center justify-center gap-2 mt-1 hover:text-blue-500 hover:underline"
+          >
             오류 및 제안
           </Link>
-          <a className="text-gray-600 flex items-center justify-center gap-2 mt-1 hover:text-blue-500 hover:underline"
-             href='https://open.kakao.com/o/g3MztXfh'>
+          <a
+            className="text-gray-600 flex items-center justify-center gap-2 mt-1 hover:text-blue-500 hover:underline"
+            href="https://open.kakao.com/o/g3MztXfh"
+          >
             오픈 채팅
           </a>
         </div>
 
         <div className="flex flex-col items-center justify-center">
-          <Link to='/' className="flex items-center gap-2 mt-6 px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 cursor-pointer">
-            <HomeSvg className="w-4 h-4"/>
+          <Link
+            to="/"
+            className="flex items-center gap-2 mt-6 px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 cursor-pointer"
+          >
+            <HomeSvg className="w-4 h-4" />
             메인 페이지로 이동
           </Link>
         </div>

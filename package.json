@@ -11,30 +11,34 @@
     "client": "pnpm --filter @allcll/client run dev",
     "admin": "pnpm --filter @allcll/admin run dev",
     "build-client": "pnpm --filter @allcll/client run build",
-    "build-admin": "pnpm --filter @allcll/admin run build"
+    "build-admin": "pnpm --filter @allcll/admin run build",
+    "prettier": "npx prettier ./packages --write"
   },
   "packageManager": "pnpm@9.15.4",
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.1.1",
-    "@tailwindcss/vite": "^4.0.4",
-    "tailwindcss": "^4.0.4"
+    "react-router-dom": "^7.5.3",
+    "tailwindcss": "^4.1.5"
   },
   "devDependencies": {
-    "globals": "^15.14.0",
-    "@eslint/js": "^9.17.0",
-    "@types/node": "^18.19.71",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
-    "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^9.20.0",
-    "eslint-plugin-react-hooks": "^5.0.0",
-    "eslint-plugin-react-refresh": "^0.4.16",
-    "vite": "^6.1.0",
-    "vite-tsconfig-paths": "^5.1.4",
-    "typescript": "~5.7.3",
-    "typescript-eslint": "^8.23.0"
+    "@eslint/js": "^9.26.0",
+    "@types/node": "^18.19.87",
+    "@types/react": "^18.3.20",
+    "@types/react-dom": "^18.3.7",
+    "@tailwindcss/vite": "^4.1.5",
+    "@vitejs/plugin-react": "^4.4.1",
+    "eslint": "^9.26.0",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-prettier": "^5.3.1",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.0.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.31.1",
+    "vite": "^6.3.4",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "msw": {
     "workerDirectory": [

@@ -1,4 +1,4 @@
-import {create} from 'zustand';
+import { create } from 'zustand';
 
 interface FavoritesState {
   favorites: number[];
@@ -11,7 +11,7 @@ const useFavoritesStore = create<FavoritesState>((set, get) => ({
   toggleFavorite: (id: number) => {
     const isFavorite = get().favorites.includes(id);
 
-    set((state) => {
+    set(state => {
       const newFavorites = isFavorite ? state.favorites.filter(favId => favId !== id) : [...state.favorites, id];
       localStorage.setItem('favorites', JSON.stringify(newFavorites));
       return { favorites: newFavorites };

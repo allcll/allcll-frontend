@@ -1,11 +1,11 @@
-import {useQuery} from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 export interface ServiceSemester {
   semester: string;
   period: {
     startDate: string;
     endDate: string;
-  }
+  };
 }
 
 export interface ServiceSemesterWithPeriod extends ServiceSemester {
@@ -26,10 +26,14 @@ function useServiceSemester() {
       const startDate = new Date(data.period.startDate);
       const endDate = new Date(data.period.endDate);
 
+      // Normalize start and end dates to ensure correct comparison
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(23, 59, 59, 999);
+
       const withinPeriod = startDate <= now && now <= endDate;
 
-      return {withinPeriod, ...data};
-    }
+      return { withinPeriod, ...data };
+    },
   });
 }
 

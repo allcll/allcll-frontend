@@ -2,13 +2,13 @@ import { Config } from 'tailwindcss';
 
 /** @type {import('tailwindcss').Config} */
 const config: Config = {
-  content: ["./src/**/*.{html,js,jsx,ts,tsx}"],
+  content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        primary: "#007AFF",
+        primary: '#007aff',
         blue: {
-          500: "#007AFF",
+          500: '#007aff',
         },
       },
     },

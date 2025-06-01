@@ -15,12 +15,14 @@ interface StoreState {
   updateSeats: (id: string, seats: number) => void;
 }
 
-export const useStore = create<StoreState>((set) => ({
+/**
+ * @deprecated
+ * 여석을 저장하는 store입니다. 현재는 사용하지 않습니다.
+ * */
+export const useStore = create<StoreState>(set => ({
   courses: [],
   updateSeats: (id, seats) =>
-    set((state) => ({
-      courses: state.courses.map((course) =>
-        course.id === id ? { ...course, seats } : course
-      ),
+    set(state => ({
+      courses: state.courses.map(course => (course.id === id ? { ...course, seats } : course)),
     })),
 }));

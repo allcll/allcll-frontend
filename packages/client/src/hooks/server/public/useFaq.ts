@@ -1,4 +1,4 @@
-import {useQuery} from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 export interface FaqElement {
   question: string;
@@ -6,7 +6,7 @@ export interface FaqElement {
 }
 
 interface FaqAPIResponse {
-  faq: FaqElement[]
+  faq: FaqElement[];
 }
 
 function useFaq() {
