@@ -1,1 +1,0 @@
-(function(e,s,t,i,w,n,r){e[t]=e[t]||function(){(e[t].q=e[t].q||[]).push(arguments)},n=s.createElement(i),n.async=1,n.src="https://www.clarity.ms/tag/"+w,r=s.getElementsByTagName(i)[0],r.parentNode.insertBefore(n,r)})(window,document,"clarity","script","rqww72xge1");
