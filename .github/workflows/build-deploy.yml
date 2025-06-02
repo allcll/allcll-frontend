@@ -50,6 +50,7 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           VITE_GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
+          VITE_CLARITY_PROJECT_ID: ${{ secrets.CLARITY_PROJECT_ID }}
           VITE_AMPLITUDE_API_KEY: ${{ secrets.AMPLITUDE_API_KEY }}
           VITE_DEV_SERVER: false
         working-directory: ${{env.working-directory}}

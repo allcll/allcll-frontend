@@ -97,6 +97,9 @@ importers:
       '@amplitude/analytics-browser':
         specifier: ^2.17.2
         version: 2.17.2
+      '@microsoft/clarity':
+        specifier: ^1.0.0
+        version: 1.0.0
       '@sentry/react':
         specifier: ^8.55.0
         version: 8.55.0(react@18.3.1)
@@ -1071,6 +1074,9 @@ packages:
 
   '@kurkle/color@0.3.4':
     resolution: {integrity: sha512-M5UknZPHRu3DEDWoipU6sE8PdkZ6Z/S+v4dD+Ke8IaNlpdSQah50lz1KtcFBa2vsdOnwbbnxJwVM4wty6udA5w==}
+
+  '@microsoft/clarity@1.0.0':
+    resolution: {integrity: sha512-2QY6SmXnqRj6dWhNY8NYCN3e53j4zCFebH4wGnNhdGV1mqAsQwql2fT0w8TISxCvwwfVp8idsWLIdrRHOms1PQ==}
 
   '@modelcontextprotocol/sdk@1.11.0':
     resolution: {integrity: sha512-k/1pb70eD638anoi0e8wUGAlbMJXyvdV4p62Ko+EZ7eBe1xMx8Uhak1R5DgfoofsK5IBBnRwsYGTaLZl+6/+RQ==}
@@ -4570,6 +4576,8 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.0
 
   '@kurkle/color@0.3.4': {}
+
+  '@microsoft/clarity@1.0.0': {}
 
   '@modelcontextprotocol/sdk@1.11.0':
     dependencies:

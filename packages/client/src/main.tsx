@@ -5,6 +5,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 // import { DndProvider } from 'react-dnd';
 // import { HTML5Backend } from 'react-dnd-html5-backend';
 import ReactGA from 'react-ga4';
+import Clarity from '@microsoft/clarity';
 import Sentry from '@/utils/3party/sentry';
 import router from '@/utils/routing.tsx';
 import './index.css';
@@ -15,7 +16,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const isDevServer = import.meta.env.VITE_DEV_SERVER === 'true';
 
 if (isProduction && !isDevServer) {
-  import('@/utils/3party/clarity.js' as string).then();
+  Clarity.init(import.meta.env.VITE_CLARITY_PROJECT_ID);
 
   // Todo: Sentry tree shaking
   Sentry.initialize();
