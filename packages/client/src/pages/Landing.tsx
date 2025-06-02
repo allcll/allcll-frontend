@@ -11,7 +11,6 @@ import ReloadBlueSvg from '@/assets/reload-blue.svg?react';
 import LinkBlue from '@/assets/link-blue.svg?react';
 import ProfileSvg from '@/assets/profile.svg?react';
 import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
-import CalendarSvg from '@/assets/calendar.svg?react';
 
 import { getSeatColor } from '@/utils/colors.ts';
 
@@ -34,7 +33,7 @@ function Landing() {
       <Section className="flex flex-col md:flex-row items-center justify-between" bgColor="bg-banner-skysoft">
         <div className="max-w-lg">
           <div className="flex flex-row gap-2 items-center">
-            <CalendarSvg className="w-20 h-20 " />
+            <img src="/calendar.png" alt="" className="w-20 h-20" />
             <span className="italic text-stone-500 ">6월 2일(월) ~ 6월 4일(수)</span>
           </div>
           <h2 className="text-xl sm:text-2xl md:text-4xl leading-snug font-bold mb-3 ">하계 계절학기 수강신청,</h2>
@@ -61,7 +60,7 @@ function Landing() {
             </Link>
           </div>
         </div>
-        <img src="/summer-banner.svg" alt="summer-banner" className="w-90 md:w-106 mt-8 md:mt-4" />
+        <img src="/summer-banner.png" alt="summer-banner" className="w-90 md:w-106 mt-8 md:mt-4" />
       </Section>
 
       {/* 관심과목 분석 Section */}
