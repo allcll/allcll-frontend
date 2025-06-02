@@ -296,10 +296,14 @@ function Simulation() {
               currentSimulation.simulationStatus === 'progress' && isWaitingModalClosed ? (
                 <SubjectsTable isRegisteredTable={false} />
               ) : (
-                <NothingTable />
+                <tbody>
+                  <NothingTable />
+                </tbody>
               )
             ) : (
-              <NothingTable />
+              <tbody>
+                <NothingTable />
+              </tbody>
             )}
           </table>
         </div>
@@ -354,10 +358,14 @@ function Simulation() {
             currentSimulation.simulationStatus === 'progress' && isWaitingModalClosed ? (
               <SubjectsTable isRegisteredTable={true} />
             ) : (
-              <NothingTable />
+              <tbody>
+                <NothingTable />
+              </tbody>
             )
           ) : (
-            <NothingTable />
+            <tbody>
+              <NothingTable />
+            </tbody>
           )}
         </table>
       </section>
