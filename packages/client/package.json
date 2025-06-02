@@ -27,7 +27,7 @@
     "dexie": "^4.0.11",
     "dexie-react-hooks": "^1.1.7",
     "remark-gfm": "^4.0.1",
-    "zustand": "^5.0.4"
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@allcll/mock-server": "workspace:^",
