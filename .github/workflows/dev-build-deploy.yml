@@ -44,7 +44,7 @@ jobs:
           mkdir -p ./build
           cp -r dist ./build
           cp package.json ./build/package.json
-          cp pnpm-lock.yaml ./build/pnpm-lock.yaml
+#          cp pnpm-lock.yaml ./build/pnpm-lock.yaml
         env:
           CI: ''
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
