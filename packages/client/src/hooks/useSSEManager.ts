@@ -84,16 +84,19 @@ const fetchSSEData = (queryClient: QueryClient, resetError: () => void) => {
 
     eventSource.addEventListener('pinSeats', event => {
       queryClient.setQueryData([SSEType.PINNED as string], (prev: PinnedSeats[]) => {
+        const prevSeats = prev || [];
+        if (!prev) console.warn('prev is not available', prev);
+
         const json = JSON.parse(event.data);
-        if (!json) return prev;
+        if (!json) return prevSeats;
 
         const now: PinnedSeats[] = json.seatResponses;
-        for (const pinned of prev) {
+        for (const pinned of prevSeats) {
           const find = now.find(seat => seat.subjectId === pinned.subjectId);
           if (!find) now.push(pinned);
         }
 
-        onChangePinned(prev, now, queryClient);
+        onChangePinned(prevSeats, now, queryClient);
 
         return now;
       });
