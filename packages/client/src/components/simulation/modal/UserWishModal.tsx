@@ -27,24 +27,24 @@ interface UserWishModalIProp {
 }
 
 const SubjectTable = ({ subjects }: { subjects: SimulationSubject[] }) => (
-  <table className="w-full text-sm text-left border-t border-b border-gray-200">
+  <table className="min-w-full sm:text-sm text-xs text-left border-t border-b border-gray-200">
     <thead className="bg-gray-100 text-gray-700">
       <tr>
-        <th className="px-4 py-2">학수번호</th>
-        <th className="px-4 py-2">분반</th>
-        <th className="px-4 py-2">개설학과</th>
-        <th className="px-4 py-2">과목명</th>
-        <th className="px-4 py-2">교수명</th>
+        <th className="px-4 py-2 min-w-[100px]">학수번호</th>
+        <th className="px-4 py-2 min-w-[60px]">분반</th>
+        <th className="px-4 py-2 min-w-[160px]">개설학과</th>
+        <th className="px-4 py-2 min-w-[120px]">과목명</th>
+        <th className="px-4 py-2 min-w-[100px]">교수명</th>
       </tr>
     </thead>
     <tbody>
       {subjects.map(subject => (
         <tr key={subject.subjectId}>
-          <td className="px-4 py-2">{subject.subjectCode}</td>
-          <td className="px-4 py-2">{subject.classCode}</td>
-          <td className="px-4 py-2">{subject.departmentName}</td>
-          <td className="px-4 py-2">{subject.subjectName}</td>
-          <td className="px-4 py-2">{subject.professorName}</td>
+          <td className="px-4 py-2 whitespace-nowrap">{subject.subjectCode}</td>
+          <td className="px-4 py-2 whitespace-nowrap">{subject.classCode}</td>
+          <td className="px-4 py-2 whitespace-nowrap">{subject.departmentName}</td>
+          <td className="px-4 py-2 whitespace-nowrap">{subject.subjectName}</td>
+          <td className="px-4 py-2 whitespace-nowrap">{subject.professorName}</td>
         </tr>
       ))}
     </tbody>
@@ -62,7 +62,7 @@ const GameTips = () => (
       '한 번 담은 과목을 또 담지 않도록 주의하세요!',
       '모든 과목을 담은 즉시 종료됩니다.',
     ].map((tip, idx) => (
-      <div key={idx} className="flex items-center">
+      <div key={idx} className="flex items-center sm:text-sm text-xs ">
         <span className="text-blue-500 mr-2">
           <CheckSvg />
         </span>
@@ -161,7 +161,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
 
   return (
     <Modal>
-      <div className="w-full max-w-3xl overflow-hidden bg-white rounded-lg border-2 border-gray-300">
+      <div className="w-full max-w-3xl my-6 mx-5 sm:my-6 sm:mx-5 xs:my-2 xs:mx-2  sm:text-sm text-xs overflow-hidden bg-white rounded-lg border-2 border-gray-300">
         <ModalHeader
           title="수강 신청 연습을 시작하시겠습니까?"
           onClose={() => {
@@ -171,7 +171,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
         <div className="p-6">
           <h2 className="text-left font-semibold mb-2">학과 검색</h2>
           <select
-            className="cursor-pointer border border-gray-300 rounded-sm px-2 py-1 w-120 bg-white mb-4"
+            className="cursor-pointer border border-gray-300 rounded-sm px-2 py-1 w-50 sm:w-120 bg-white mb-4"
             value={department.departmentName}
             onChange={e => handleChangeDepartment(e.target.value)}
           >
@@ -182,8 +182,8 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
               </option>
             ))}
           </select>
-          <div className="flex flex-row justify-between">
-            <h2 className="text-left font-semibold mb-4">수강 신청 과목 리스트</h2>
+          <div className="flex flex-row justify-between mb-4">
+            <h2 className="text-left font-semibold flex items-center">수강 신청 과목 리스트</h2>
             <button
               onClick={handleResetRandomSubjects}
               className="flex hover:font-bold hover:text-blue-500 items-center gap-2 cursor-pointer"
@@ -193,7 +193,9 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
             </button>
           </div>
 
-          <SubjectTable subjects={currentSimulation.subjects} />
+          <div className="max-h-[300px]  overflow-x-auto overflow-y-auto">
+            <SubjectTable subjects={currentSimulation.subjects} />
+          </div>
 
           <div className="mt-4 flex items-center">
             <input
@@ -207,6 +209,10 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
               수강 신청 과목을 확인하였습니다.
             </label>
           </div>
+
+          <span className="text-red-500 mt-2  block sm:hidden">
+            ※ 수강 신청 연습은 PC에서 진행해 주시면 더욱 편리합니다.
+          </span>
 
           {isCheckedSubject && <GameTips />}
 
