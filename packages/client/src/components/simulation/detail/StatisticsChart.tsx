@@ -37,6 +37,8 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
   const subjectTimes = simulations.map(sim => sim.subjectTime - sim.captchaTime);
   const totalTimes = simulations.map(sim => sim.totalTime - sim.subjectTime);
 
+  const barThickness = simulations && simulations.length < 50 ? 16 : 8;
+
   const data: ChartData<ChartType> = {
     labels,
     datasets: [
@@ -45,6 +47,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         type: 'bar',
         label: '검색 버튼 시간',
         data: searchBtnTimes,
+        barThickness,
         backgroundColor: 'rgba(75, 192, 192, 0.7)',
         stack: 'Stack 0',
       },
@@ -52,6 +55,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         type: 'bar',
         label: '캡차 인증 속도',
         data: captchaTimes,
+        barThickness,
         backgroundColor: 'rgba(255, 99, 132, 0.7)',
         stack: 'Stack 0',
       },
@@ -59,6 +63,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         type: 'bar',
         label: '과목 신청 시간',
         data: subjectTimes,
+        barThickness,
         backgroundColor: 'rgba(54, 162, 235, 0.7)',
         stack: 'Stack 0',
       },
@@ -66,6 +71,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         type: 'bar',
         label: '나머지 시간',
         data: totalTimes,
+        barThickness,
         backgroundColor: 'rgba(153, 102, 255, 0.7)',
         stack: 'Stack 0',
       },
@@ -163,7 +169,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
   };
 
   return (
-    <div className="w-full h-96 p-4">
+    <div className="w-full h-96 p-4 box-border">
       <div className="flex justify-between items-center mb-4">
         <div></div>
         <div className="text-lg font-semibold">
@@ -179,7 +185,9 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
           </label>
         </div>
       </div>
-      <Chart type="bar" data={data} options={options} />
+      <div className="h-full pb-6 overflow-x-auto">
+        <Chart type="bar" data={data} options={options} />
+      </div>
     </div>
   );
 }
