@@ -161,7 +161,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
 
   return (
     <Modal>
-      <div className="w-full max-w-3xl my-6 mx-5 sm:my-6 sm:mx-5 xs:my-2 xs:mx-2  sm:text-sm text-xs overflow-hidden bg-white rounded-lg border-2 border-gray-300">
+      <div className="w-full max-w-3xl my-6 mx-5 sm:my-6 sm:mx-5 xs:my-2 xs:mx-2 sm:text-sm text-xs overflow-hidden bg-white rounded-lg border-2 border-gray-300">
         <ModalHeader
           title="수강 신청 연습을 시작하시겠습니까?"
           onClose={() => {
@@ -209,10 +209,6 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
               수강 신청 과목을 확인하였습니다.
             </label>
           </div>
-
-          <span className="text-red-500 mt-2  block sm:hidden">
-            ※ 수강 신청 연습은 PC에서 진행해 주시면 더욱 편리합니다.
-          </span>
 
           {isCheckedSubject && <GameTips />}
 

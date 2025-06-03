@@ -15,7 +15,7 @@ function SimulationTabs() {
           key={item.urlPath}
           to={item.realUrl}
           className={({ isActive }) =>
-            'px-2.5 flex items-center gap-2.5 w-1/8 border-r-1 border-r-neutral-300 cursor-pointer' +
+            'px-2.5 flex items-center gap-2.5 w-1/4 sm:w-1/8 border-r-1 border-r-neutral-300 cursor-pointer' +
             (isActive
               ? ' mb-[-1px] bg-white border-b-2 border-b-white border-t-4 border-t-blue-500 font-semibold text-blue-500'
               : ' text-gray-500 hover:bg-white')

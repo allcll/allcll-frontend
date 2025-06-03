@@ -23,7 +23,7 @@ function SimulationLayout() {
           <div className="flex">
             <AsideMenu />
 
-            <div className="flex-auto">
+            <div className="flex-auto min-w-0">
               <SimulationTabs />
 
               <main className="flex-1 p-4 space-y-4 mx-auto max-w-screen-2xl overflow-x-hidden">
