@@ -210,10 +210,6 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
             </label>
           </div>
 
-          <span className="text-red-500 mt-2  block sm:hidden">
-            ※ 수강 신청 연습은 PC에서 진행해 주시면 더욱 편리합니다.
-          </span>
-
           {isCheckedSubject && <GameTips />}
 
           <div className="pt-6 text-right">
