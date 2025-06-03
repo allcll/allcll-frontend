@@ -261,13 +261,13 @@ function Simulation() {
         </div>
       </section>
 
-      <section className="overflow-x-auto mt-4 ">
+      <section className="mt-4 ">
         <div className="font-semibold pl-2 mb-2 border-l-4 border-blue-500">수강 대상 교과목</div>
 
         <div className="overflow-x-auto min-h-[300px] border-gray-300">
-          <table className="min-w-full text-center border border-gray-300 border-t-3 border-t-black text-xs ">
+          <table className="w-full border border-gray-300 border-t-3 text-xs border-t-black text-center">
             <thead className="bg-gray-100">
-              <tr>
+              <tr className="text-nowrap">
                 {[
                   '순번',
                   '신청',
@@ -309,9 +309,9 @@ function Simulation() {
         </div>
       </section>
 
-      <section className="overflow-x-auto mt-4">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="flex items-baseline gap-2">
+      <section className="mt-4">
+        <div className="w-full flex items-center gap-2 mb-2">
+          <div className="flex flex-col xs:flex-row items-baseline gap-2">
             <span className="font-semibold pl-2 border-l-4 border-blue-500">수강 신청 내역</span>
             <button
               className="text-xs bg-blue-500 text-white px-2 py-0.5 rounded cursor-pointer"
@@ -327,47 +327,49 @@ function Simulation() {
             </span>
           </div>
         </div>
-        <table className="min-w-full text-center border border-gray-300 border-t-3 border-t-black text-xs">
-          <thead className="bg-gray-100">
-            <tr>
-              {[
-                '순번',
-                '신청',
-                '학수번호',
-                '분반',
-                '개설학과',
-                '교과목명',
-                '수업계획서',
-                '강의언어',
-                '학점/이론/실습',
-                '이수',
-                '학년',
-                '시간표',
-                '인원보기',
-              ].map((text, i) => (
-                <th key={i} className="border border-gray-300 px-2 py-1">
-                  {text}
-                </th>
-              ))}
-            </tr>
-          </thead>
+        <div className="overflow-x-auto ">
+          <table className="min-w-full text-center border border-gray-300 border-t-3 border-t-black text-xs">
+            <thead className="bg-gray-100">
+              <tr className="text-nowrap">
+                {[
+                  '순번',
+                  '신청',
+                  '학수번호',
+                  '분반',
+                  '개설학과',
+                  '교과목명',
+                  '수업계획서',
+                  '강의언어',
+                  '학점/이론/실습',
+                  '이수',
+                  '학년',
+                  '시간표',
+                  '인원보기',
+                ].map((text, i) => (
+                  <th key={i} className="border border-gray-300 px-2 py-1">
+                    {text}
+                  </th>
+                ))}
+              </tr>
+            </thead>
 
-          {isPending || (isError && <ProcessingModal />)}
+            {isPending || (isError && <ProcessingModal />)}
 
-          {hasRunningSimulationId ? (
-            currentSimulation.simulationStatus === 'progress' && isWaitingModalClosed ? (
-              <SubjectsTable isRegisteredTable={true} />
+            {hasRunningSimulationId ? (
+              currentSimulation.simulationStatus === 'progress' && isWaitingModalClosed ? (
+                <SubjectsTable isRegisteredTable={true} />
+              ) : (
+                <tbody>
+                  <NothingTable />
+                </tbody>
+              )
             ) : (
               <tbody>
                 <NothingTable />
               </tbody>
-            )
-          ) : (
-            <tbody>
-              <NothingTable />
-            </tbody>
-          )}
-        </table>
+            )}
+          </table>
+        </div>
       </section>
     </>
   );
