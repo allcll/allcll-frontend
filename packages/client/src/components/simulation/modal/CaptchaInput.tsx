@@ -81,10 +81,10 @@ function CaptchaInput() {
 
   return (
     <Modal>
-      <div className="w-[500px] bg-white rounded shadow p-4">
+      <div className="w-[90%] sm:w-[500px] bg-white rounded shadow">
         <ModalHeader title="매크로방지 코드입력 (Arti-marco code input)" onClose={() => closeModal('captcha')} />
 
-        <div className="grid grid-cols-2 gap-4 mt-4">
+        <div className="grid grid-cols-2 gap-4 mt-4 p-4">
           <div className="flex flex-col">
             <label className="text-sm font-semibold flex flex-row items-center">
               <span className="inline-block w-1.5 h-5 bg-blue-500 mr-2 "></span>생성된 코드
@@ -116,7 +116,7 @@ function CaptchaInput() {
           </div>
         </div>
 
-        <p className="text-sm text-gray-800 mt-10">
+        <p className="text-sm text-gray-800 mt-10 p-4">
           ※ 코드가 표시되지 않는 경우 잠시 기다리거나 매크로 방지 코드 입력 창을 닫고 새로 열어 주세요.
         </p>
 

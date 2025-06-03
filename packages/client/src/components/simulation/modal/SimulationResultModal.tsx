@@ -35,7 +35,7 @@ function SimulationResultModal({ simulationId }: { simulationId: number }) {
 
   return (
     <Modal>
-      <div className="w-full max-w-md bg-white rounded-xl shadow-xl p-6 relative overflow-hidden">
+      <div className="w-[95%] sm:w-full max-w-md bg-white rounded-xl shadow-xl p-6 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="animate-float1 absolute top-6 left-6 w-3 h-3 bg-red-400 rounded-full" />
           <div className="animate-float2 absolute top-16 right-10 w-2 h-2 bg-yellow-400 rounded-full" />

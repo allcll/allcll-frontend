@@ -159,17 +159,17 @@ function Simulation() {
       </Helmet>
 
       {renderModal()}
-
+      <h1 className="font-bold text-lg">수강신청</h1>
       <section className="border p-2 text-xs">
-        <div className="flex flex-col gap-4">
-          <div className="flex gap-8">
-            <div className="flex items-center gap-2">
+        <div className="flex flex-col gap-1 sm:gap-4">
+          <div className="flex flex-col sm:flex-row gap-1 sm:gap-8">
+            <div className="flex justify-end items-center sm:justify-start gap-2">
               <label className="font-bold">조직 분류</label>
               <select className="border border-gray-300 px-2 py-1 w-48 disabled:bg-gray-100" disabled>
                 <option className="text-gray-100"></option>
               </select>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex justify-end items-center sm:justify-start gap-2">
               <label className="font-bold">년도/학기</label>
               <select
                 className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed"
@@ -180,8 +180,8 @@ function Simulation() {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-4 ">
-            <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row gap-1 sm:gap-8">
+            <div className="flex justify-end items-center sm:justify-start gap-2">
               <label className="font-bold">주전공(교직)</label>
               <select
                 className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed"
@@ -190,7 +190,7 @@ function Simulation() {
                 <option>컴퓨터공학전공</option>
               </select>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex justify-end items-center sm:justify-start gap-2">
               <label className="font-bold">복수전공(교직)</label>
               <select
                 className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed"
@@ -201,9 +201,9 @@ function Simulation() {
             </div>
           </div>
 
-          <div className="flex justify-between">
-            <div className="flex gap-4">
-              <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-col md:flex-row justify-between gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
+              <div className="flex justify-end items-center sm:justify-start gap-2">
                 <label className="font-bold">검색구분</label>
                 <select
                   className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed"
@@ -212,51 +212,55 @@ function Simulation() {
                   <option>주전공검색</option>
                 </select>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex justify-end items-center sm:justify-start gap-1">
                 <label className="font-bold">주전공</label>
-                <select
-                  className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed"
-                  disabled
-                >
-                  <option>학부</option>
-                </select>
-                <select
-                  className="cursor-not-allowed border px-2 py-1 w-120 border-gray-300 disabled:bg-gray-100 "
-                  value={
-                    currentSimulation.department.departmentName
-                      ? currentSimulation.department.departmentName
-                      : departmentName
-                  }
-                  disabled
-                >
-                  <option value="none">전체 학과</option>
-                </select>
+
+                <div className="flex flex-col sm:flex-row gap-1">
+                  <select
+                    className="border-gray-300 border px-2 py-1 w-48 sm:w-30 disabled:bg-gray-100 cursor-not-allowed"
+                    disabled
+                  >
+                    <option>학부</option>
+                  </select>
+                  <select
+                    className="cursor-not-allowed border px-2 py-1 w-40 lg:w-90 border-gray-300 disabled:bg-gray-100 "
+                    value={
+                      currentSimulation.department.departmentName
+                        ? currentSimulation.department.departmentName
+                        : departmentName
+                    }
+                    disabled
+                  >
+                  </select>
+                </div>
               </div>
             </div>
 
-            <div className="flex justify-end">
+            <div className="flex flex-row justify-between gap-2">
+              <div className="flex flex-row ">
+                <button
+                  onClick={handleClickRestart}
+                  className={`px-3 py-2 rounded flex flex-row gap-1 text-white ${
+                    hasRunningSimulationId !== -1 ? 'bg-gray-200 cursor-not-allowed' : 'bg-blue-500 cursor-pointer'
+                  }`}
+                  disabled={hasRunningSimulationId !== -1}
+                >
+                  재시작
+                </button>
+              </div>
               <button
-                onClick={handleClickRestart}
+                onClick={handleSearchClick}
                 className={`px-3 py-2 rounded flex flex-row gap-1 text-white ${
-                  hasRunningSimulationId !== -1 ? 'bg-gray-200 cursor-not-allowed' : 'bg-blue-500 cursor-pointer'
+                  hasRunningSimulationId === -1
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-animation cursor-pointer'
                 }`}
-                disabled={hasRunningSimulationId !== -1}
+                disabled={hasRunningSimulationId === -1}
               >
-                재시작
+                <SearchSvg className="w-5 h-4" />
+                검색
               </button>
             </div>
-            <button
-              onClick={handleSearchClick}
-              className={`px-3 py-2 rounded flex flex-row gap-1 text-white ${
-                hasRunningSimulationId === -1
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-gradient-animation cursor-pointer'
-              }`}
-              disabled={hasRunningSimulationId === -1}
-            >
-              <SearchSvg className="w-5 h-4" />
-              검색
-            </button>
           </div>
         </div>
       </section>
@@ -310,21 +314,23 @@ function Simulation() {
       </section>
 
       <section className="mt-4">
-        <div className="w-full flex items-center gap-2 mb-2">
-          <div className="flex flex-col xs:flex-row items-baseline gap-2">
+        <div className="w-full flex flex-col sm:flex-row sm:items-center justify-start gap-2 mb-2">
+          <div className="flex flex-col sm:flex-row items-baseline gap-2">
             <span className="font-semibold pl-2 border-l-4 border-blue-500">수강 신청 내역</span>
+          </div>
+          <div className="flex flex-row gap-2">
             <button
-              className="text-xs bg-blue-500 text-white px-2 py-0.5 rounded cursor-pointer"
+              className="text-xs w-14 bg-blue-500 text-white px-2 py-0.5 rounded-xs cursor-pointer"
               onClick={fetchAndUpdateSimulationStatus}
             >
               재조회
             </button>
-          </div>
-          <div className="text-xs font-bold text-black">
-            수강 가능 학점: 18 /
-            <span className="text-blue-500">
-              신청 과목수: {currentSimulation.registeredSubjects.length} / 신청 학점수:{totalCredits}
-            </span>
+            <div className="text-xs font-bold text-black">
+              수강 가능 학점: 18 /
+              <span className="text-blue-500">
+                신청 과목수: {currentSimulation.registeredSubjects.length} / 신청 학점수:{totalCredits}
+              </span>
+            </div>
           </div>
         </div>
         <div className="overflow-x-auto ">
