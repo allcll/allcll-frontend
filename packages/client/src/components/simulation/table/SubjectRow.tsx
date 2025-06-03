@@ -9,7 +9,7 @@ interface SubjectRowProps {
 
 const SubjectRow = ({ index, subject, isRegisteredTable, onClickSubject }: SubjectRowProps) => {
   return (
-    <tr className="hover:bg-gray-50">
+    <tr className="hover:bg-gray-50 text-nowrap">
       <td className="border bg-blue-100 px-2 py-1 border-gray-200">{index + 1}</td>
       <td className="border px-2 py-1 border-gray-200">
         <button
