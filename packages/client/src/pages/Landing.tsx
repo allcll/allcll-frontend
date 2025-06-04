@@ -34,13 +34,12 @@ function Landing() {
         <div className="max-w-lg">
           <div className="flex flex-row gap-2 items-center">
             <img src="/calendar.png" alt="" className="w-20 h-20" />
-            <span className="italic text-stone-500 ">6월 2일(월) ~ 6월 4일(수)</span>
+            <span className="italic text-stone-500 ">
+              다음 학기 수강 신청(2025-2학기) <br /> 8월 11일(월) ~ 8월 18일(월)
+            </span>
           </div>
-          <h2 className="text-xl sm:text-2xl md:text-4xl leading-snug font-bold mb-3 ">하계 계절학기 수강신청,</h2>
-          <div className="flex flex-row justify-center items-center text-xl sm:text-2xl md:text-4xl leading-snug font-bold mb-3">
-            <img src="/logo-name.svg" alt="logo-name" className="w-20 sm:w-32 md:w-40 lg:w-48 mr-2 animate-updown" />이
-          </div>
-          <h2 className="text-xl sm:text-2xl md:text-4xl leading-snug font-bold ">도와드립니다!</h2>
+          <h2 className="text-xl sm:text-2xl md:text-4xl leading-snug font-bold mb-3 ">하계 계절학기 수강신청</h2>
+          <h2 className="text-xl pl-18 sm:text-2xl md:text-4xl leading-snug font-bold ">고생많으셨습니다.</h2>
 
           <p className="text-gray-400 mt-4">실시간 여석 확인부터 수강신청 연습까지 ALLCLL이 여러분과 함께합니다.</p>
           <div className="flex flex-col gap-4 ">
