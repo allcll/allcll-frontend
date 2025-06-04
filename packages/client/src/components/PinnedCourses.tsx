@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import Tooltip from '@/components/common/Tooltip.tsx';
 import AlarmOptionModal from '@/components/toast/AlarmOptionModal.tsx';
 import RealtimeCard from '@/components/subjectTable/RealtimeCard.tsx';
@@ -11,8 +10,8 @@ import { SSEType, useSseData } from '@/hooks/useSSEManager.ts';
 import useNotification from '@/hooks/useNotification.ts';
 import AlarmBlueIcon from '@/assets/alarm-blue.svg?react';
 import AlarmDisabledIcon from '@/assets/alarm-disabled.svg?react';
-import AddBlueIcon from '@/assets/add-blue.svg?react';
 import SettingSvg from '@/assets/settings.svg?react';
+import AlarmButton from './AlarmButton';
 
 const PinnedCourses = () => {
   const { data, isPending, isError, refetch } = usePinned();
@@ -67,14 +66,6 @@ const PinnedCourses = () => {
             >
               {isAlarm ? <AlarmBlueIcon className="w-5 h-5" /> : <AlarmDisabledIcon className="w-5 h-5" />}
             </button>
-            <Link
-              to="/live/search"
-              className="p-2 rounded-full hover:bg-blue-100"
-              aria-label="여석 알림 과목 추가"
-              title="여석 알림 과목 추가"
-            >
-              <AddBlueIcon className="w-5 h-5" />
-            </Link>
           </div>
         </div>
 
@@ -103,6 +94,7 @@ const PinnedCourses = () => {
                 queryTime={getQueryTime(subject.subjectId)}
               />
             ))}
+            {pinnedWishes.length < 5 && <AlarmButton />}
           </div>
         )}
       </div>
