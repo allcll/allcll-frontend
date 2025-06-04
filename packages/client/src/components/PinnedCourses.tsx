@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import Tooltip from '@/components/common/Tooltip.tsx';
 import AlarmOptionModal from '@/components/toast/AlarmOptionModal.tsx';
 import RealtimeCard from '@/components/subjectTable/RealtimeCard.tsx';
@@ -11,8 +10,8 @@ import { SSEType, useSseData } from '@/hooks/useSSEManager.ts';
 import useNotification from '@/hooks/useNotification.ts';
 import AlarmBlueIcon from '@/assets/alarm-blue.svg?react';
 import AlarmDisabledIcon from '@/assets/alarm-disabled.svg?react';
-import AddBlueIcon from '@/assets/add-blue.svg?react';
 import SettingSvg from '@/assets/settings.svg?react';
+import AlarmButton from './AlarmButton';
 
 const PinnedCourses = () => {
   const { data, isPending, isError, refetch } = usePinned();
@@ -67,21 +66,13 @@ const PinnedCourses = () => {
             >
               {isAlarm ? <AlarmBlueIcon className="w-5 h-5" /> : <AlarmDisabledIcon className="w-5 h-5" />}
             </button>
-            <Link
-              to="/live/search"
-              className="p-2 rounded-full hover:bg-blue-100"
-              aria-label="여석 알림 과목 추가"
-              title="여석 알림 과목 추가"
-            >
-              <AddBlueIcon className="w-5 h-5" />
-            </Link>
           </div>
         </div>
 
-        <p className="text-sm text-gray-500 mb-2">
+        {/* <p className="text-sm text-gray-500 mb-2">
           검색중 표시는 최대 5분까지 나올 수 있어요. <br />
           만약 검색중이 계속 사라지지 않는다면 새로고침을 해주세요.
-        </p>
+        </p> */}
 
         {isPending ? (
           <div className="animate-pulse grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -103,6 +94,7 @@ const PinnedCourses = () => {
                 queryTime={getQueryTime(subject.subjectId)}
               />
             ))}
+            {pinnedWishes.length < 5 && <AlarmButton />}
           </div>
         )}
       </div>
