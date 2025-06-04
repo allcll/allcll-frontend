@@ -78,10 +78,10 @@ const PinnedCourses = () => {
           </div>
         </div>
 
-        <p className="text-sm text-gray-500 mb-2">
+        {/* <p className="text-sm text-gray-500 mb-2">
           검색중 표시는 최대 5분까지 나올 수 있어요. <br />
           만약 검색중이 계속 사라지지 않는다면 새로고침을 해주세요.
-        </p>
+        </p> */}
 
         {isPending ? (
           <div className="animate-pulse grid grid-cols-1 md:grid-cols-3 gap-4">
