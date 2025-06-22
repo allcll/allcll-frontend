@@ -1,3 +1,6 @@
+import environment from '../environment.json';
+// Fixme: Dynamic import is not supported in this context, so we use a static import instead
+
 export interface Environment {
   targetUrl: string;
   // 필요한 필드 추가
@@ -8,13 +11,11 @@ let env: Environment | undefined;
 export async function getTestEnv(): Promise<Environment> {
   if (env) return env;
 
-  // JSON 파일을 동적으로 import
   let testEnv;
   if (process.env.VITE_TEST_ENV) {
     testEnv = JSON.parse(process.env.VITE_TEST_ENV);
   } else {
-    const json = await import('../environment.json');
-    testEnv = json.default;
+    testEnv = environment;
   }
 
   env = {
