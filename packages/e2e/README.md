@@ -1,6 +1,18 @@
 # ALLCLL E2E Test
 ALLCLL E2E 테스트를 관리하는 공간입니다.
 
+## 환경 변수 설정
+테스트를 실행하기 위해서는 `environment.json` 파일이 필요합니다.\
+아래의 내용을 참고하여 `environment.json` 파일을 생성해주세요.\
+`.env` 의 `VITE_TEST_ENV` 는 GitHub Actions 에서만 사용됩니다.
+
+```json
+{
+  "target-url": "https://dev.allcll.kr"
+}
+```
+
+
 ## 실행 방법
 ### 1. 테스트 생성
 브라우저에서 행동을 감지하여, 자동으로 테스트를 생성해줍니다.
