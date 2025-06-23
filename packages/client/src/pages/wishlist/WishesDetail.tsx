@@ -10,6 +10,7 @@ import useDetailWishes, { DEFAULT_WISH } from '@/hooks/server/useDetailWishes';
 import useRecommendWishes from '@/hooks/server/useRecommendWishes';
 import useDetailRegisters from '@/hooks/server/useDetailRegisters.ts';
 import { getWishesColor } from '@/utils/colors.ts';
+import { BadRequestError, NotFoundError } from '@/utils/errors.ts';
 import LinkWhiteSvg from '@/assets/link-white.svg?react';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
@@ -51,11 +52,9 @@ function WishesDetail() {
   }
 
   // 과목이 없는 경우 404
-  // Todo: 에러 관리를 더 잘 할 수 있는 방법 찾기
   if (error) {
-    if (error.message.includes('SUBJECT_NOT_FOUND')) {
-      const message = error.message.replace('SUBJECT_NOT_FOUND', 'NOT_FOUND');
-      throw new Error(message);
+    if (error instanceof BadRequestError) {
+      throw new NotFoundError(error.message);
     }
     throw new Error(error.message);
   }

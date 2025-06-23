@@ -1,13 +1,12 @@
 import { useRouteError } from 'react-router-dom';
 import NotFound from '@/pages/NotFound.tsx';
 import ErrorPage from '@/pages/ErrorPage.tsx';
+import { BadRequestError, NotFoundError } from '@/utils/errors.ts';
 
 const ErrorPageWith404 = () => {
-  const error = useRouteError() as Error;
+  const error = useRouteError();
 
-  const message404 = '"code":"NOT_FOUND"';
-
-  if (error.message.includes(message404)) {
+  if (error instanceof BadRequestError || error instanceof NotFoundError) {
     return <NotFound />;
   }
 

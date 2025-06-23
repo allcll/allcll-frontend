@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { WishRegister } from '@/utils/types.ts';
+import { BadRequestError } from '@/utils/errors.ts';
 
 interface DetailRegistersResponse {
   eachDepartmentRegisters: WishRegister[];
@@ -23,6 +24,13 @@ const fetchDetailRegisters = async (subjectId: string): Promise<DetailRegistersR
   });
 
   if (!response.ok) {
+    const errorMessage = await response.text();
+    const parsedError = jsonParse(errorMessage);
+
+    if (parsedError?.status === '400 BAD_REQUEST') {
+      throw new BadRequestError(parsedError.code);
+    }
+
     throw new Error(await response.text());
   }
 
@@ -33,19 +41,13 @@ const retryCondition = (failureCount: number, error: Error) => {
   if (failureCount >= 3) return false;
 
   // error 따라서 재시도 여부 결정
-  const parsedError = jsonParse(error.message);
-  if (parsedError?.code) {
-    return !['SUBJECT_NOT_FOUND'].includes(parsedError.code);
-  }
-
-  return true;
+  return !(error instanceof BadRequestError);
 };
 
 const jsonParse = (data: string) => {
   try {
     return JSON.parse(data);
-  } catch (error) {
-    console.error('JSON parsing error:', error);
+  } catch {
     return null;
   }
 };
