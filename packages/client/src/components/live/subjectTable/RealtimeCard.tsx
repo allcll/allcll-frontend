@@ -12,7 +12,7 @@ interface IPinCard {
   disableSeat?: boolean;
 }
 
-function RealtimeCard({ subject, seats, queryTime, disableSeat = false }: IPinCard) {
+function RealtimeCard({ subject, seats, queryTime, disableSeat = false }: Readonly<IPinCard>) {
   const { mutate: deletePin } = useRemovePinned();
 
   const handlePin = () => {
@@ -23,7 +23,7 @@ function RealtimeCard({ subject, seats, queryTime, disableSeat = false }: IPinCa
     <div className="bg-gray-50 shadow-sm rounded-lg p-4 border border-gray-200 hover:shadow-md">
       <div className="flex justify-between">
         <h3 className="font-bold">{subject.subjectName}</h3>
-        <button className="p-2 rounded-full hover:bg-blue-100" area-label="핀 제거" onClick={handlePin}>
+        <button className="p-2 rounded-full hover:bg-blue-100" aria-label="알림 과목 제거" onClick={handlePin}>
           <CloseIcon />
         </button>
       </div>
@@ -45,7 +45,7 @@ function RealtimeCard({ subject, seats, queryTime, disableSeat = false }: IPinCa
   );
 }
 
-function QueryTimeComponent({ queryTime }: { queryTime?: string }) {
+function QueryTimeComponent({ queryTime }: Readonly<{ queryTime?: string }>) {
   useTick();
 
   return <p className={`text-xs text-gray-500`}>{getTimeDiffString(queryTime)}</p>;

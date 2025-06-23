@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { WishSearchParams } from '@/components/dashboard/Searches.tsx';
+import { WishSearchParams } from '@/components/live/Searches.tsx';
 
 interface IUseWishSearchStore {
   searchInput: string;

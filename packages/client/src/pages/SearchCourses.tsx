@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { disassemble } from 'es-hangul';
 import Navbar from '@/components/Navbar.tsx';
 import CardWrap from '@/components/CardWrap.tsx';
-import SubjectTable from '@/components/subjectTable/SubjectTable.tsx';
-import SubjectCards from '@/components/subjectTable/SubjectCards.tsx';
+import SubjectTable from '@/components/live/subjectTable/SubjectTable.tsx';
+import SubjectCards from '@/components/live/subjectTable/SubjectCards.tsx';
 import SearchBox from '@/components/common/SearchBox.tsx';
 import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
 import useWishesPreSeats from '@/hooks/useWishesPreSeats.ts';
@@ -44,17 +44,6 @@ const SearchCourses = () => {
 
     const filtered =
       wishes?.filter(wish => {
-        // const target = wish[search.searchOption as keyof Wishes] ?? "";
-        // const keyword = search.searchKeyword;
-        //
-        // const cleanTarget = target.toString().replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '').toLowerCase();
-        // const cleanKeyword = keyword.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '').toLowerCase();
-        //
-        // const disassembledTarget = disassemble(cleanTarget);
-        // const disassembledKeyword = disassemble(cleanKeyword);
-        //
-        // return disassembledTarget.includes(disassembledKeyword);
-
         const disassembledProfessorName = wish.professorName ? disassemble(wish.professorName).toLowerCase() : '';
         const cleanSubjectName = wish.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
         const disassembledSubjectName = disassemble(cleanSubjectName).toLowerCase();
@@ -106,7 +95,7 @@ interface ISubjectSearchInputs {
   setSearch: React.Dispatch<React.SetStateAction<ISubjectSearch>>;
 }
 
-function SubjectSearchInputs({ setSearch }: ISubjectSearchInputs) {
+function SubjectSearchInputs({ setSearch }: Readonly<ISubjectSearchInputs>) {
   const searchKeyword = useAlarmSearchStore(state => state.searchKeyword);
   const isAlarmWish = useAlarmSearchStore(state => state.isAlarmWish);
   const setSearchKeyword = useAlarmSearchStore(state => state.setSearchKeyword);

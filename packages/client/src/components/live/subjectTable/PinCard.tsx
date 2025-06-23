@@ -11,7 +11,7 @@ interface IPinCard {
   disableSeat?: boolean;
 }
 
-function PinCard({ subject, seats, queryTime, disableSeat = false }: IPinCard) {
+function PinCard({ subject, seats, queryTime, disableSeat = false }: Readonly<IPinCard>) {
   const { data: pinnedSubjects } = usePinned();
   const { mutate: deletePin } = useRemovePinned();
   const { mutate: addPin } = useAddPinned();
@@ -31,7 +31,7 @@ function PinCard({ subject, seats, queryTime, disableSeat = false }: IPinCard) {
     <div className="bg-gray-50 shadow-sm rounded-lg p-4">
       <div className="flex justify-between">
         <h3 className="font-bold">{subject.subjectName}</h3>
-        <button area-label="핀 제거" onClick={handlePin}>
+        <button aria-label="알림 과목 제거" onClick={handlePin}>
           <AlarmIcon disabled={!isPinned} />
         </button>
       </div>

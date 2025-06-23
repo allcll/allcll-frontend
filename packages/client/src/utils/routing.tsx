@@ -3,7 +3,7 @@ import MainLayout from '@/layouts/MainLayout.tsx';
 import ServiceLayout from '@/layouts/ServiceLayout.tsx';
 import SimulationLayout from '@/layouts/SimulationLayout.tsx';
 import Landing from '@/pages/Landing.tsx';
-import Dashboard from '@/pages/Dashboard.tsx';
+import Live from '@/pages/Live.tsx';
 import SearchCourses from '@/pages/SearchCourses.tsx';
 import ServiceInfo from '@/pages/ServiceInfo.tsx';
 import CustomerService from '@/pages/CustomerService.tsx';
@@ -64,7 +64,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <Dashboard />,
+        element: <Live />,
       },
       {
         path: 'search',
