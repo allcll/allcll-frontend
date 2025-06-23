@@ -17,12 +17,14 @@ function CaptchaInput() {
   const [message, setMessage] = useState('');
   const codeRef = useRef<string>('');
 
+  const isDevEnv = import.meta.env.MODE === 'test';
+
   const { closeModal, openModal } = useSimulationModalStore();
   const { setSubjectStatus, currentSubjectId } = useSimulationSubjectStore();
   const { setSubjectsStatus } = useSimulationProcessStore();
 
   function handleRefreshCaptcha() {
-    const randomCaptchaCode = generateNumericText();
+    const randomCaptchaCode = isDevEnv ? '1234' : generateNumericText();
     codeRef.current = randomCaptchaCode;
 
     setTimeout(() => {
@@ -59,9 +61,14 @@ function CaptchaInput() {
     /**
      * 캡차 버튼 클릭 이벤트
      */
+    let isCorrectInTestEnv = false;
+    if (isDevEnv && captchaInput?.toString() === '1234') {
+      isCorrectInTestEnv = true;
+    }
+
     triggerButtonEvent({ eventType: BUTTON_EVENT.CAPTCHA, subjectId: currentSubjectId })
       .then(() => {
-        if (captchaInput?.toString() === codeRef.current) {
+        if (captchaInput?.toString() === codeRef.current || isCorrectInTestEnv) {
           setSubjectsStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
           //여기 코드 추가
           setSubjectStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
@@ -74,9 +81,6 @@ function CaptchaInput() {
         closeModal('captcha');
         openModal('simulation');
       });
-    /**
-     * 캡차 입력 검증
-     */
   }
 
   return (
