@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "es2016",
     "resolveJsonModule": true,
-    "module": "commonjs",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,

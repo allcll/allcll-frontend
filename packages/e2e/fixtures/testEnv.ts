@@ -1,9 +1,10 @@
-import environment from '../environment.json';
-// Fixme: Dynamic import is not supported in this context, so we use a static import instead
-
 export interface Environment {
   targetUrl: string;
   // 필요한 필드 추가
+}
+
+interface Env {
+  default: Environment;
 }
 
 let env: Environment | undefined;
@@ -15,7 +16,7 @@ export async function getTestEnv(): Promise<Environment> {
   if (process.env.VITE_TEST_ENV) {
     testEnv = JSON.parse(process.env.VITE_TEST_ENV);
   } else {
-    testEnv = environment;
+    testEnv = ((await import('../environment.json', { assert: { type: 'json' } })) as unknown as Env)['default'];
   }
 
   env = {
