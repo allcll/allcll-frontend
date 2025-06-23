@@ -11,6 +11,7 @@ import FAQ from '@/pages/FAQ.tsx';
 import WishTable from '@/pages/wishlist/WishTable.tsx';
 import WishesDetail from '@/pages/wishlist/WishesDetail.tsx';
 import ErrorPage from '@/pages/ErrorPage.tsx';
+import ErrorPageWith404 from '@/pages/ErrorPageWith404.tsx';
 import Simulation from '@/pages/simulation/Simulation.tsx';
 import SimulationDashboard from '@/pages/simulation/Dashboard.tsx';
 import SimulationDashboardDetail from '@/pages/simulation/DashboardDetail.tsx';
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
   {
     path: 'wishes',
     element: <ServiceLayout />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPageWith404 />,
     children: [
       {
         path: '',

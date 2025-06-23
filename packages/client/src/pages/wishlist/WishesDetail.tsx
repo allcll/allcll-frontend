@@ -28,7 +28,7 @@ const gradeData = {
 function WishesDetail() {
   const params = useParams();
   const { data: wishes, isPending, isLastSemesterWish } = useDetailWishes(params.id ?? '-1');
-  const { data: registers, isError: isRegisterError } = useDetailRegisters(params.id ?? '-1');
+  const { data: registers, error } = useDetailRegisters(params.id ?? '-1');
   const { data: recommend } = useRecommendWishes(
     wishes?.subjectCode ?? '',
     wishes?.subjectId ? [wishes.subjectId] : [],
@@ -51,8 +51,13 @@ function WishesDetail() {
   }
 
   // 과목이 없는 경우 404
-  if (isRegisterError) {
-    throw new Error('해당 과목의 데이터가 없습니다.');
+  // Todo: 에러 관리를 더 잘 할 수 있는 방법 찾기
+  if (error) {
+    if (error.message.includes('SUBJECT_NOT_FOUND')) {
+      const message = error.message.replace('SUBJECT_NOT_FOUND', 'NOT_FOUND');
+      throw new Error(message);
+    }
+    throw new Error(error.message);
   }
   //data.everytimeLink
 

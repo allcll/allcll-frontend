@@ -11,6 +11,7 @@ function useDetailRegisters(id: string) {
     queryKey: ['detail-registers', id],
     queryFn: () => fetchDetailRegisters(id),
     staleTime: Infinity,
+    retry: retryCondition,
   });
 }
 
@@ -26,6 +27,27 @@ const fetchDetailRegisters = async (subjectId: string): Promise<DetailRegistersR
   }
 
   return response.json();
+};
+
+const retryCondition = (failureCount: number, error: Error) => {
+  if (failureCount >= 3) return false;
+
+  // error 따라서 재시도 여부 결정
+  const parsedError = jsonParse(error.message);
+  if (parsedError?.code) {
+    return !['SUBJECT_NOT_FOUND'].includes(parsedError.code);
+  }
+
+  return true;
+};
+
+const jsonParse = (data: string) => {
+  try {
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('JSON parsing error:', error);
+    return null;
+  }
 };
 
 export default useDetailRegisters;
