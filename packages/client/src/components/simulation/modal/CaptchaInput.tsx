@@ -11,13 +11,13 @@ function generateNumericText() {
   return Math.floor(1000 + Math.random() * 9000).toString();
 }
 
+const isDevEnv = window.location.hostname === 'dev.allcll.kr';
+
 function CaptchaInput() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [captchaInput, setCaptchaInput] = useState<string | number>();
   const [message, setMessage] = useState('');
   const codeRef = useRef<string>('');
-
-  const isDevEnv = import.meta.env.MODE === 'test';
 
   const { closeModal, openModal } = useSimulationModalStore();
   const { setSubjectStatus, currentSubjectId } = useSimulationSubjectStore();

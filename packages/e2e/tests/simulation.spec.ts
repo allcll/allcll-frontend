@@ -11,7 +11,7 @@ async function agreeAndStart(page: Page) {
   await page.getByRole('button', { name: '검색' }).click();
 }
 
-async function applyWithCode(page: Page, index: number, code: string) {
+async function applyWithCaptcha(page: Page, index: number, code: string) {
   await page.getByRole('button', { name: '신청', exact: true }).nth(index).click();
   await page.getByRole('textbox', { name: '코드를 입력하세요' }).click();
   await page.getByRole('textbox', { name: '코드를 입력하세요' }).fill(code);
@@ -39,29 +39,30 @@ async function expectVisibleText(page: Page, text: string) {
 test.describe('수강신청 시뮬레이션 예외 상황', () => {
   test('과목 재신청 시 이미 수강신청 된 과목 모달을 띄웁니다.', async ({ page }) => {
     await agreeAndStart(page);
-    await applyWithCode(page, 0, '1234');
-    await applyWithCode(page, 0, '1234');
+    await applyWithCaptcha(page, 0, '1234');
+    await applyWithCaptcha(page, 0, '1234');
     await expectVisibleText(page, '이미 수강신청 된 과목입니다!');
   });
 
   test('캡챠 잘못된 입력 모달 띄우기', async ({ page }) => {
     await agreeAndStart(page);
-    await applyWithCode(page, 0, '0000');
+    await applyWithCaptcha(page, 0, '0000');
     await expectVisibleText(page, '입력하신 코드가 일치하지 않습니다.');
   });
 
   test('이미 신청한 과목 재신청 시 과목 5개 신청 후 시뮬레이션이 정상적으로 종료된다. ', async ({ page }) => {
     await agreeAndStart(page);
 
-    await applyWithCode(page, 0, '1234');
-    await applyWithCode(page, 1, '1234');
-    await applyWithCode(page, 2, '1234');
-    //이미 신청한 과목 재신청
-    await applyWithCode(page, 0, '1234');
-    await applyWithCode(page, 1, '1234');
+    await applyWithCaptcha(page, 0, '1234');
+    await applyWithCaptcha(page, 1, '1234');
+    await applyWithCaptcha(page, 2, '1234');
 
-    await applyWithCode(page, 4, '1234');
-    await applyWithCode(page, 3, '1234');
+    //이미 신청한 과목 재신청
+    await applyWithCaptcha(page, 0, '1234');
+    await applyWithCaptcha(page, 1, '1234');
+
+    await applyWithCaptcha(page, 4, '1234');
+    await applyWithCaptcha(page, 3, '1234');
 
     await expectVisibleText(page, '수강 신청 성공!');
   });
@@ -72,7 +73,7 @@ test.describe('수강신청 시뮬레이션 전체 흐름', () => {
     await agreeAndStart(page);
 
     for (let i = 0; i < SUBJECT_COUNT; i++) {
-      await applyWithCode(page, i, '1234');
+      await applyWithCaptcha(page, i, '1234');
     }
 
     await expectVisibleText(page, '수강 신청 성공!');
