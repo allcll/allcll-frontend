@@ -7,11 +7,15 @@ import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation';
 
+declare global {
+  interface Window {
+    __CAPTCHA_TEXT__?: string;
+  }
+}
+
 function generateNumericText() {
   return Math.floor(1000 + Math.random() * 9000).toString();
 }
-
-const isDevEnv = window.location.hostname === 'dev.allcll.kr';
 
 function CaptchaInput() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -24,8 +28,11 @@ function CaptchaInput() {
   const { setSubjectsStatus } = useSimulationProcessStore();
 
   function handleRefreshCaptcha() {
-    const randomCaptchaCode = isDevEnv ? '1234' : generateNumericText();
+    const randomCaptchaCode = generateNumericText();
     codeRef.current = randomCaptchaCode;
+
+    //테스트를 위한 브라우저 전역 변수 설정
+    window.__CAPTCHA_TEXT__ = randomCaptchaCode;
 
     setTimeout(() => {
       if (canvasRef.current) {
@@ -61,14 +68,9 @@ function CaptchaInput() {
     /**
      * 캡차 버튼 클릭 이벤트
      */
-    let isCorrectInTestEnv = false;
-    if (isDevEnv && captchaInput?.toString() === '1234') {
-      isCorrectInTestEnv = true;
-    }
-
     triggerButtonEvent({ eventType: BUTTON_EVENT.CAPTCHA, subjectId: currentSubjectId })
       .then(() => {
-        if (captchaInput?.toString() === codeRef.current || isCorrectInTestEnv) {
+        if (captchaInput?.toString() === codeRef.current) {
           setSubjectsStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
           //여기 코드 추가
           setSubjectStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
