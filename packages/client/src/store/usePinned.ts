@@ -39,7 +39,7 @@ export const useAddPinned = () => {
       return { previousUsers: previousPined };
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['pinnedSubjects'] });
+      queryClient.invalidateQueries({ queryKey: ['pinnedSubjects'] }).then();
     },
     onError: error => {
       try {
@@ -69,7 +69,7 @@ export const useRemovePinned = () => {
       return { previousData };
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['pinnedSubjects'] });
+      queryClient.invalidateQueries({ queryKey: ['pinnedSubjects'] }).then();
     },
     onError: error => {
       console.error('Error removing pinned subject:', error);

@@ -6,7 +6,9 @@ export const RELOAD_MAX_COUNT = 5;
 
 interface ISSECondition {
   isInitialized: boolean;
+  /** SSE 데이터가 필요한 컴포넌트 수*/
   needCount: number;
+  /** 백그라운드에서 SSE를 계속 유지할지 여부 */
   alwaysReload: boolean;
   forceReloadNumber: number;
   isError: boolean;

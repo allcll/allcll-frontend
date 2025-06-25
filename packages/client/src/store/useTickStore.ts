@@ -8,28 +8,39 @@ interface IUseTickStore {
   tick: number;
 }
 
-const useTickStore = create<IUseTickStore>(set => ({
-  refCount: 0,
-  addRefCount: () =>
-    set(state => {
-      if (state.refCount === 0) {
-        const timer = setInterval(() => {
-          set(state => ({ tick: state.tick + 1 }));
-        }, 1000);
-        return { refCount: state.refCount + 1, timer };
+const useTickStore = create<IUseTickStore>((set, get) => {
+  const startTimer = () => {
+    const timer = setInterval(() => {
+      set(state => ({ tick: state.tick + 1 }));
+    }, 1000);
+    set({ timer });
+  };
+
+  const stopTimer = () => {
+    const timer = get().timer;
+    if (timer) clearInterval(timer);
+    set({ timer: null });
+  };
+
+  return {
+    refCount: 0,
+    tick: 0,
+    timer: null,
+    addRefCount: () => {
+      const { refCount } = get();
+      if (refCount === 0) startTimer();
+      set({ refCount: refCount + 1 });
+    },
+    removeRefCount: () => {
+      const { refCount } = get();
+      if (refCount <= 1) {
+        stopTimer();
+        set({ refCount: 0 });
+      } else {
+        set({ refCount: refCount - 1 });
       }
-      return { refCount: state.refCount + 1 };
-    }),
-  removeRefCount: () =>
-    set(state => {
-      if (state.refCount === 1) {
-        clearInterval(state.timer!);
-        return { refCount: state.refCount - 1, timer: null };
-      }
-      return { refCount: state.refCount - 1 };
-    }),
-  timer: null,
-  tick: 0,
-}));
+    },
+  };
+});
 
 export default useTickStore;

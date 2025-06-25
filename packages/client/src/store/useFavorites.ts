@@ -7,7 +7,7 @@ interface FavoritesState {
 }
 
 const useFavoritesStore = create<FavoritesState>((set, get) => ({
-  favorites: JSON.parse(localStorage.getItem('favorites') || '[]'),
+  favorites: JSON.parse(localStorage.getItem('favorites') ?? '[]'),
   toggleFavorite: (id: number) => {
     const isFavorite = get().favorites.includes(id);
 

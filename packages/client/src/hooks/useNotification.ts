@@ -41,11 +41,13 @@ function showNotification(message: string, tag?: string) {
 
   if (isAlarmActivated)
     navigator.serviceWorker.ready.then(function (registration) {
-      registration.showNotification(message, {
-        // icon: '/logo-name.svg',
-        badge: '/ci.svg',
-        tag,
-      });
+      registration
+        .showNotification(message, {
+          // icon: '/logo-name.svg',
+          badge: '/ci.svg',
+          tag,
+        })
+        .then();
     });
 
   const addToast = useToastNotification.getState().addToast;
@@ -94,7 +96,6 @@ function getWishes(queryClient: QueryClient, subjectId: number) {
   return wishes.find(wish => wish.subjectId === subjectId);
 }
 
-// let globalNotification: Notification | null = null;
 let globalNotificationTimeout: NodeJS.Timeout | null = null;
 let globalNotificationTagId = 1;
 
