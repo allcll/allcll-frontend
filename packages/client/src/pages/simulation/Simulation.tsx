@@ -164,13 +164,13 @@ function Simulation() {
         <div className="flex flex-col gap-1 sm:gap-4">
           <div className="flex flex-col sm:flex-row gap-1 sm:gap-8">
             <div className="flex justify-end items-center sm:justify-start gap-2">
-              <label className="font-bold">조직 분류</label>
+              <span className="font-bold">조직 분류</span>
               <select className="border border-gray-300 px-2 py-1 w-48 disabled:bg-gray-100" disabled>
                 <option className="text-gray-100"></option>
               </select>
             </div>
             <div className="flex justify-end items-center sm:justify-start gap-2">
-              <label className="font-bold">년도/학기</label>
+              <span className="font-bold">년도/학기</span>
               <select
                 className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed"
                 disabled
@@ -182,7 +182,7 @@ function Simulation() {
 
           <div className="flex flex-col sm:flex-row gap-1 sm:gap-8">
             <div className="flex justify-end items-center sm:justify-start gap-2">
-              <label className="font-bold">주전공(교직)</label>
+              <span className="font-bold">주전공(교직)</span>
               <select
                 className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed"
                 disabled
@@ -191,7 +191,7 @@ function Simulation() {
               </select>
             </div>
             <div className="flex justify-end items-center sm:justify-start gap-2">
-              <label className="font-bold">복수전공(교직)</label>
+              <span className="font-bold">복수전공(교직)</span>
               <select
                 className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed"
                 disabled
@@ -204,7 +204,7 @@ function Simulation() {
           <div className="flex flex-col sm:flex-col md:flex-row justify-between gap-2">
             <div className="flex flex-col sm:flex-row gap-2">
               <div className="flex justify-end items-center sm:justify-start gap-2">
-                <label className="font-bold">검색구분</label>
+                <span className="font-bold">검색구분</span>
                 <select
                   className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed"
                   disabled
@@ -213,7 +213,7 @@ function Simulation() {
                 </select>
               </div>
               <div className="flex justify-end items-center sm:justify-start gap-1">
-                <label className="font-bold">주전공</label>
+                <span className="font-bold">주전공</span>
 
                 <div className="flex flex-col sm:flex-row gap-1">
                   <select
@@ -230,8 +230,7 @@ function Simulation() {
                         : departmentName
                     }
                     disabled
-                  >
-                  </select>
+                  ></select>
                 </div>
               </div>
             </div>

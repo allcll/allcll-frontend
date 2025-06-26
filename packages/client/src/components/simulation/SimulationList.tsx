@@ -1,4 +1,3 @@
-// import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { getSimulationList } from '@/utils/simulation/result.ts';
@@ -7,23 +6,10 @@ import CursorBlue from '@/assets/cursor-blue.svg?react';
 
 function SimulationList() {
   const logs = useLiveQuery<{ snapshots: SimulationRun[] }>(getSimulationList);
-  // const [search, setSearch] = useState<string>('');
-  // const [searchedLogs, setSearchedLogs] = useState<SimulationRun[]>([]);
   const searchedLogs = logs ? logs.snapshots : [];
   const isPending = logs === undefined;
   const isError = logs === null;
 
-  // search debouncing
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     if (!logs) return;
-  //
-  //     if (search === '') setSearchedLogs(logs.snapshots);
-  //     else setSearchedLogs(logs.snapshots.filter(log => log.user_id.toLowerCase().includes(search.toLowerCase())));
-  //   }, 300);
-  //
-  //   return () => clearTimeout(timer);
-  // }, [search, logs]);
   if (searchedLogs && !searchedLogs.length) {
     return <div className="flex justify-between items-center"></div>;
   }
@@ -54,24 +40,20 @@ function SimulationList() {
           >
             <div className="grid gap-4 grid-cols-21">
               <div className="col-span-1">
-                <label className="hidden">id</label>
+                <span className="hidden">id</span>
                 <span className="font-bold">{log.simulation_run_id}</span>
               </div>
-
               <div className="col-span-7">
-                <label className="hidden">학과</label>
+                <span className="hidden">학과</span>
                 <span>{log.department_name ? log.department_name.split(' ').at(-1) : '학과 정보 없음'}</span>
               </div>
-              <div className="col-span-6">
-                {/*<label className="hidden">이름</label>*/}
-                {/*<span className="font-bold">{log.user_id}</span>*/}
-              </div>
+              <div className="col-span-6"></div>
               <div className="col-span-4">
-                <label className="text-xs">정확도 </label>
+                <span className="text-xs">정확도 </span>
                 <span className="text-sm font-bold">{log.accuracy}%</span>
               </div>
               <div className="col-span-3 flex items-center justify-end gap-2">
-                <label className="hidden">점수</label>
+                <span className="hidden">점수</span>
                 <CursorBlue className="w-4 h-4" />
                 <span className="font-bold">{log.score.toFixed(3)}</span>
               </div>

@@ -72,7 +72,6 @@ function CaptchaInput() {
       .then(() => {
         if (captchaInput?.toString() === codeRef.current) {
           setSubjectsStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
-          //여기 코드 추가
           setSubjectStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
         } else {
           setSubjectsStatus(currentSubjectId, APPLY_STATUS.PROGRESS, true);
@@ -92,7 +91,7 @@ function CaptchaInput() {
 
         <div className="grid grid-cols-2 gap-4 mt-4 p-4">
           <div className="flex flex-col">
-            <label className="text-sm font-semibold flex flex-row items-center">
+            <div className="text-sm font-semibold flex flex-row items-center">
               <span className="inline-block w-1.5 h-5 bg-blue-500 mr-2 "></span>생성된 코드
               <button
                 onClick={handleRefreshCaptcha}
@@ -100,7 +99,7 @@ function CaptchaInput() {
               >
                 재생성
               </button>
-            </label>
+            </div>
 
             <div className="flex items-center mt-1">
               <canvas id="captcha" width="105" height="50" ref={canvasRef} />
@@ -108,9 +107,9 @@ function CaptchaInput() {
           </div>
 
           <div>
-            <label className="text-sm font-semibold  flex flex-row items-center">
+            <div className="text-sm font-semibold  flex flex-row items-center">
               <span className="inline-block w-1.5 h-5 bg-blue-500 mr-2 "></span>생성된 코드 입력
-            </label>
+            </div>
             <input
               type="text"
               value={captchaInput}
