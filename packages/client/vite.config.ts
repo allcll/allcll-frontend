@@ -33,6 +33,7 @@ export default ({ mode }: ConfigEnv) => {
       }),
     ],
     server: {
+      open: true,
       proxy: {
         '/api': {
           target: TargetServer,

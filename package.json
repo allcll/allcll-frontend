@@ -12,7 +12,10 @@
     "admin": "pnpm --filter @allcll/admin run dev",
     "build-client": "pnpm --filter @allcll/client run build",
     "build-admin": "pnpm --filter @allcll/admin run build",
-    "prettier": "npx prettier ./packages --write"
+    "prettier": "npx prettier ./packages --write",
+    "test": "pnpm --filter @allcll/e2e run test",
+    "test:ui": "pnpm --filter @allcll/e2e run test:ui",
+    "test:gen": "pnpm --filter @allcll/e2e run test:gen"
   },
   "packageManager": "pnpm@9.15.4",
   "dependencies": {
