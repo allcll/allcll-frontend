@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
 import { onChangePinned } from '@/hooks/useNotification.ts';
 import { NonMajorSeats, PinnedSeats } from '@/utils/types.ts';
@@ -10,9 +10,10 @@ export enum SSEType {
   PINNED = 'pinSeats',
 }
 
+let isConnected = false;
+
 const useSSEManager = () => {
   const queryClient = useQueryClient();
-  const [isConnected, setIsConnected] = useState(false);
   const needCount = useSSECondition(state => state.needCount);
   const alwaysReload = useSSECondition(state => state.alwaysReload);
   const forceReloadNumber = useSSECondition(state => state.forceReloadNumber);
@@ -28,19 +29,19 @@ const useSSEManager = () => {
       return;
     }
 
-    setIsConnected(true);
+    isConnected = true;
     fetchSSEData(queryClient, resetError)
       .then(() => {
         resetError();
-        setIsConnected(false);
+        isConnected = false;
       })
       .catch(() => {
         setError();
         setTimeout(() => {
-          setIsConnected(false);
+          isConnected = false;
         }, RELOAD_INTERVAL);
       });
-  }, [alwaysReload, isConnected, needCount, queryClient, setError, forceReloadNumber, resetError, errorCount]);
+  }, [alwaysReload, needCount, queryClient, setError, forceReloadNumber, resetError, errorCount]);
   // 조건이 바뀌었을 때, 연결이 끊어졌을 때 다시 연결
 };
 
@@ -91,7 +92,7 @@ const fetchSSEData = (queryClient: QueryClient, resetError: () => void) => {
 
     eventSource.onerror = error => {
       eventSource.close();
-      reject(new Error('SSE connection error: ' + error.type));
+      reject(new Error('SSE connection error: ' + (error.type ?? 'Unknown error')));
     };
 
     return () => {
@@ -104,6 +105,11 @@ export const useSseData = (type: SSEType) => {
   const queryClient = useQueryClient();
   const addNeedCount = useSSECondition(state => state.addNeedCount);
   const deleteNeedCount = useSSECondition(state => state.deleteNeedCount);
+
+  // SSE 상태 관리
+  const isPending = useSSECondition(state => state.isPending);
+  const isError = useSSECondition(state => state.isError);
+  const refetch = useSSECondition(state => state.setForceReload);
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -123,10 +129,17 @@ export const useSseData = (type: SSEType) => {
     };
   }, [addNeedCount, deleteNeedCount]);
 
-  return useQuery<PinnedSeats[]>({
+  const query = useQuery<PinnedSeats[]>({
     queryKey: [type as string],
     queryFn: () => Promise.resolve(queryClient.getQueryData([type as string]) ?? []),
   });
+
+  return {
+    ...query,
+    isPending,
+    isError,
+    refetch,
+  };
 };
 
 type SSESeats = NonMajorSeats | PinnedSeats;

@@ -7,6 +7,9 @@ import AlarmBanner from '@/components/banner/AlarmBanner.tsx';
 import useToastNotification from '@/store/useToastNotification.ts';
 import useAlarmSettings from '@/store/useAlarmSettings.ts';
 
+// notification 변수
+let isInitialized = false;
+
 export function canNotify() {
   return 'Notification' in window;
 }
@@ -132,9 +135,6 @@ function checkSystemNotification(setBanner: ISetBanner) {
 }
 
 function useNotification() {
-  const isInitialized = useSSECondition(state => state.isInitialized);
-  const setInitialized = useSSECondition(state => state.endInitialized);
-
   const alwaysReload = useSSECondition(state => state.alwaysReload);
   const setAlwaysReload = useSSECondition(state => state.setAlwaysReload);
   const setBanner = useBannerNotification(state => state.setBanner);
@@ -156,7 +156,7 @@ function useNotification() {
       setAlwaysReload(true);
     });
 
-    setInitialized();
+    isInitialized = true;
   }, []);
 
   const changeAlarm = () => {

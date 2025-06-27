@@ -1,16 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import useWishes from '@/hooks/server/useWishes.ts';
-import { SSEType, useSseData } from '@/hooks/useSSEManager.ts';
-import useTick from '@/hooks/useTick.ts';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import CardWrap from '@/components/CardWrap.tsx';
+import Tooltip from '@/components/common/Tooltip.tsx';
 import SkeletonRows from '@/components/live/skeletons/SkeletonRows.tsx';
 import NetworkError from '@/components/live/errors/NetworkError.tsx';
 import ZeroListError from '@/components/live/errors/ZeroListError.tsx';
-import useSSECondition from '@/store/useSSECondition.ts';
+import useTick from '@/hooks/useTick.ts';
+import useWishes from '@/hooks/server/useWishes.ts';
+import { SSEType, useSseData } from '@/hooks/useSSEManager.ts';
 import { getTimeDiffString } from '@/utils/stringFormats.ts';
 import { getSeatColor } from '@/utils/colors.ts';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import Tooltip from '@/components/common/Tooltip.tsx';
 
 interface IRealtimeTable {
   title: string;
@@ -70,12 +69,8 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
 function SubjectBody() {
   // major list API fetch
   // subject list SSE API fetch
-  const { data: subjectIds } = useSseData(SSEType.NON_MAJOR);
+  const { data: subjectIds, isError, isPending, refetch } = useSseData(SSEType.NON_MAJOR);
   const { data: subjectData } = useWishes();
-
-  const isPendingSSE = useSSECondition(state => state.isPending);
-  const isError = useSSECondition(state => state.isError);
-  const setForceReload = useSSECondition(state => state.setForceReload);
 
   const tableData: ITableData[] =
     subjectIds?.map(subject => {
@@ -95,13 +90,13 @@ function SubjectBody() {
     return (
       <tr>
         <td colSpan={TableHeadTitles.length}>
-          <NetworkError onReload={setForceReload} />
+          <NetworkError onReload={refetch} />
         </td>
       </tr>
     );
   }
 
-  if (isPendingSSE) {
+  if (isPending) {
     return <SkeletonRows row={5} col={TableHeadTitles.length} />;
   }
 
