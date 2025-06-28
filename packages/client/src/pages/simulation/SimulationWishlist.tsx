@@ -15,13 +15,13 @@ const SimulationWishlist = () => {
           <div className="flex justify-between">
             <div className="flex gap-4">
               <div className="flex items-center gap-2">
-                <label className="font-bold">검색구분</label>
+                <span className="font-bold">검색구분</span>
                 <select className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100" disabled>
                   <option>주전공검색</option>
                 </select>
               </div>
               <div className="flex items-center gap-2">
-                <label className="font-bold">주전공검색</label>
+                <span className="font-bold">주전공검색</span>
                 <select className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100" disabled>
                   <option>학부</option>
                 </select>
