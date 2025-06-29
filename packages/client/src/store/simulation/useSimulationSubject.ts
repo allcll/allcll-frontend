@@ -14,7 +14,6 @@ interface IUseSimulationSubjectStore {
 
 const useSimulationSubjectStore = create<IUseSimulationSubjectStore>((set, get) => ({
   currentSubjectId: 0,
-  ended_subject_at: null,
   isCaptchaFailed: false,
   subjectStatusMap: {},
   setCurrentSubjectId: (currentSubjectId: number) => set({ currentSubjectId }),

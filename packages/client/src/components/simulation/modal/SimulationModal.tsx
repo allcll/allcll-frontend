@@ -76,9 +76,8 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
 
   const handleSubjectResult = async () => {
     if (modalData.status === APPLY_STATUS.PROGRESS) {
-      /**
-       * 신청하시겠습니까 버튼 이벤트
-       */
+      //신청하시겠습니까 버튼 이벤트
+
       triggerButtonEvent({ eventType: BUTTON_EVENT.SUBJECT_SUBMIT, subjectId: currentSubjectId })
         .then(result => {
           checkErrorValue(result);
@@ -88,9 +87,7 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
         })
         .catch(catchAction);
     } else if (modalData?.status === APPLY_STATUS.SUCCESS) {
-      /**
-       * 과목 신청 완료 -> 과목 담기 종료 이벤트
-       */
+      // 과목 신청 완료 -> 과목 담기 종료 이벤트
       triggerButtonEvent({
         eventType: BUTTON_EVENT.REFRESH,
         subjectId: currentSubjectId,

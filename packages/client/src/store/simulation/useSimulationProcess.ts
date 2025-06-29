@@ -1,11 +1,6 @@
 import { APPLY_STATUS } from '@/utils/simulation/simulation';
-import { SimulationStatusType, SimulationSubject } from '@/utils/types';
+import { DepartmentType, SimulationStatusType, SimulationSubject } from '@/utils/types';
 import { create } from 'zustand';
-
-interface DepartmentType {
-  departmentCode: string;
-  departmentName: string;
-}
 
 interface SubjectStatus {
   subjectId: number;
@@ -43,7 +38,6 @@ const defaultSimulation: SimulationState = {
 const useSimulationProcessStore = create<IUseSimulationProcessStore>(set => ({
   currentSimulation: defaultSimulation,
   subjectsStatus: [],
-
   setCurrentSimulation: simulation =>
     set(state => ({
       currentSimulation: { ...state.currentSimulation, ...simulation },
