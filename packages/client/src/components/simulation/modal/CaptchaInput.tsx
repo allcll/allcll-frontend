@@ -7,12 +7,6 @@ import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation';
 
-declare global {
-  interface Window {
-    __CAPTCHA_TEXT__?: string;
-  }
-}
-
 function generateNumericText() {
   return Math.floor(1000 + Math.random() * 9000).toString();
 }
@@ -30,9 +24,6 @@ function CaptchaInput() {
   function handleRefreshCaptcha() {
     const randomCaptchaCode = generateNumericText();
     codeRef.current = randomCaptchaCode;
-
-    //테스트를 위한 브라우저 전역 변수 설정
-    window.__CAPTCHA_TEXT__ = randomCaptchaCode;
 
     setTimeout(() => {
       if (canvasRef.current) {
