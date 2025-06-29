@@ -18,7 +18,6 @@ export function SimulationTestUI() {
   const { data: subjects } = useWishes();
   const snapshots = useRef<InterestedSubject[] | null>(null);
   const clickIndex = useRef(0);
-  // const simulationId = useRef<number | null>(null);
 
   async function handleLoadSnapshot() {
     const res = await getRecentInterestedSnapshot();
