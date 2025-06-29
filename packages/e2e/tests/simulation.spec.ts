@@ -30,8 +30,9 @@ async function applyWithCaptcha(page: Page, index: number) {
   //모달 뜰 때까지 대기
   await page.waitForTimeout(300);
   const failedModal = await page.getByText('수강여석이 없습니다!', { exact: false });
+  const doubledModal = await page.getByText('이미 수강신청 된 과목입니다!', { exact: false });
 
-  if (await failedModal.isVisible().catch(() => false)) {
+  if ((await failedModal.isVisible().catch(() => false)) || (await doubledModal.isVisible().catch(() => false))) {
     await page.getByRole('button', { name: '확인' }).click();
   } else {
     await page.getByRole('button', { name: '취소' }).click();
@@ -98,6 +99,22 @@ test.describe('수강신청 시뮬레이션 전체 흐름', () => {
 
   test('수강신청 전체 과정을 시뮬레이션 합니다.', async ({ page }) => {
     for (let i = 0; i < SUBJECT_COUNT; i++) {
+      await applyWithCaptcha(page, i);
+    }
+
+    await expectVisibleModal(page, '수강 신청 성공!');
+  });
+
+  test('이미 신청한 과목 재신청 시에도 수강신청이 정상적으로 끝납니다.', async ({ page }) => {
+    for (let i = 0; i < 2; i++) {
+      await applyWithCaptcha(page, i);
+    }
+
+    for (let i = 0; i < 2; i++) {
+      await applyWithCaptcha(page, i);
+    }
+
+    for (let i = 2; i < SUBJECT_COUNT; i++) {
       await applyWithCaptcha(page, i);
     }
 
