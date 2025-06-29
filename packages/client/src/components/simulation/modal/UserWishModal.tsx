@@ -83,12 +83,12 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
 
   useEffect(() => {
     const randomSubjects = pickNonRandomSubjects(department);
-    setCurrentSimulation({ subjects: randomSubjects });
+    setCurrentSimulation({ simulatonSubjects: randomSubjects });
   }, [department]);
 
   const handleResetRandomSubjects = () => {
     const randomSubjects = pickRandomsubjects(department);
-    setCurrentSimulation({ subjects: randomSubjects });
+    setCurrentSimulation({ simulatonSubjects: randomSubjects });
   };
 
   const handleStartGame = () => {
@@ -99,12 +99,12 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
      * 게임 시작 Promise 호출
      */
     saveInterestedSnapshot(
-      currentSimulation.subjects.map(subject => {
+      currentSimulation.simulatonSubjects.map(subject => {
         return subject.subjectId;
       }),
     )
       .then(() => {
-        return startSimulation(currentSimulation.userPK, department.departmentCode, department.departmentName);
+        return startSimulation('', department.departmentCode, department.departmentName);
       })
       .then(result => {
         if (
@@ -113,13 +113,10 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
           result.simulationId !== undefined &&
           result.isRunning !== undefined
         ) {
-          const { simulationId, isRunning, started_at } = result;
-
-          console.log('시뮬레이션 시작 버튼 log', simulationId);
+          const { simulationId, isRunning } = result;
 
           setCurrentSimulation({
             simulationId,
-            started_simulation_at: started_at,
             simulationStatus: isRunning ? 'start' : 'before',
           });
         } else {
@@ -194,7 +191,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
           </div>
 
           <div className="max-h-[300px]  overflow-x-auto overflow-y-auto">
-            <SubjectTable subjects={currentSimulation.subjects} />
+            <SubjectTable subjects={currentSimulation.simulatonSubjects} />
           </div>
 
           <div className="mt-4 flex items-center">

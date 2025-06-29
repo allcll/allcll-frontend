@@ -3,18 +3,19 @@ import { create } from 'zustand';
 
 interface IUseSimulationSubjectStore {
   currentSubjectId: number;
-  ended_subject_at: number | null;
   subjectStatusMap: Record<string, APPLY_STATUS>;
+  isCaptchaFailed: boolean;
   setCurrentSubjectId: (currentSubjectId: number) => void;
   setSubjectStatus: (currentSubjectId: number, status: APPLY_STATUS) => void;
   getSubjectStatus: (subjectId: string) => APPLY_STATUS | undefined;
-  stopTimer: () => void;
-  getElapsedTime: () => number;
+  getIsCaptchaFailed: () => boolean;
+  setCaptchaFailed: (failed: boolean) => void;
 }
 
 const useSimulationSubjectStore = create<IUseSimulationSubjectStore>((set, get) => ({
   currentSubjectId: 0,
   ended_subject_at: null,
+  isCaptchaFailed: false,
   subjectStatusMap: {},
   setCurrentSubjectId: (currentSubjectId: number) => set({ currentSubjectId }),
   setSubjectStatus: (currentSubjectId, status) =>
@@ -24,16 +25,9 @@ const useSimulationSubjectStore = create<IUseSimulationSubjectStore>((set, get) 
         [currentSubjectId]: status,
       },
     })),
-
   getSubjectStatus: currentSubjectId => get().subjectStatusMap[currentSubjectId],
-  stopTimer: () =>
-    set({
-      ended_subject_at: Date.now(),
-    }),
-  getElapsedTime: () => {
-    const { ended_subject_at } = get();
-    return ended_subject_at ? Date.now() - ended_subject_at : 0;
-  },
+  getIsCaptchaFailed: () => get().isCaptchaFailed,
+  setCaptchaFailed: failed => set({ isCaptchaFailed: failed }),
 }));
 
 export default useSimulationSubjectStore;

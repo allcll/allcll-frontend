@@ -42,11 +42,11 @@ interface ISimulationModal {
 
 function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
   const { closeModal, openModal } = useSimulationModalStore();
-  const { currentSubjectId, setSubjectStatus } = useSimulationSubjectStore();
-  const { subjectsStatus, setSubjectsStatus, resetSimulation } = useSimulationProcessStore();
+  const { currentSubjectId, setSubjectStatus, subjectStatusMap } = useSimulationSubjectStore();
+  const { resetSimulation } = useSimulationProcessStore();
 
-  const currentSubjectStatus = subjectsStatus.find(subject => subject.subjectId === currentSubjectId);
-  const modalData = SIMULATION_MODAL_CONTENTS.find(data => data.status === currentSubjectStatus?.subjectStatus);
+  const currentSubjectStatus = subjectStatusMap[currentSubjectId];
+  const modalData = SIMULATION_MODAL_CONTENTS.find(data => data.status === currentSubjectStatus);
 
   const modalStatus = modalData?.status ?? APPLY_STATUS.PROGRESS;
   const skipRefresh = [APPLY_STATUS.FAILED, APPLY_STATUS.DOUBLED, APPLY_STATUS.CAPTCHA_FAILED].includes(modalStatus);
@@ -83,7 +83,6 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
         .then(result => {
           checkErrorValue(result);
           setSubjectStatus(currentSubjectId, result.status);
-          setSubjectsStatus(currentSubjectId, result.status);
           console.error('final', result.status);
           openModal('simulation');
         })
@@ -91,7 +90,7 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
     } else if (modalData?.status === APPLY_STATUS.SUCCESS) {
       /**
        * 과목 신청 완료 -> 과목 담기 종료 이벤트
-       *  */
+       */
       triggerButtonEvent({
         eventType: BUTTON_EVENT.REFRESH,
         subjectId: currentSubjectId,

@@ -22,7 +22,6 @@ function Simulation() {
   const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore();
 
   const ongoingSimulation = useLiveQuery(checkOngoingSimulation);
-  const startedSimulationAt = ongoingSimulation && 'startedAt' in ongoingSimulation ? ongoingSimulation.startedAt : -1;
 
   const hasRunningSimulationId =
     ongoingSimulation && 'simulationId' in ongoingSimulation ? ongoingSimulation.simulationId : -1;
@@ -47,7 +46,6 @@ function Simulation() {
     setCurrentSimulation({
       simulationId: result.simulationId,
       simulationStatus: 'progress',
-      started_simulation_at: startedSimulationAt,
       [key]: filteredSubjectsDetail,
     });
   };
@@ -59,10 +57,8 @@ function Simulation() {
       .then(result => {
         if (!result || result.simulationId == -1) return;
 
-        // Todo: 시뮬레이션 simulationId, userPK, DepartmentCode, DepartmentName 다른 곳에서도 불러오기
         setCurrentSimulation({
           simulationId: result.simulationId,
-          userPK: result?.userStatus?.userPK ?? '',
           department: {
             departmentCode: result?.userStatus?.departmentCode ?? '',
             departmentName: result?.userStatus?.departmentName ?? '',

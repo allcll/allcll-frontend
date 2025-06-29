@@ -4,22 +4,23 @@ import ModalHeader from '@/components/simulation/modal/ModalHeader';
 import { drawCaptcha } from '@/utils/captcha';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation';
 
 function generateNumericText() {
   return Math.floor(1000 + Math.random() * 9000).toString();
 }
 
+const CAPTCHA_LENGTH = 4;
+
 function CaptchaInput() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [captchaInput, setCaptchaInput] = useState<string | number>();
-  const [message, setMessage] = useState('');
+  const [infoMessage, setInfoMessage] = useState<string>('');
   const codeRef = useRef<string>('');
 
   const { closeModal, openModal } = useSimulationModalStore();
-  const { setSubjectStatus, currentSubjectId } = useSimulationSubjectStore();
-  const { setSubjectsStatus } = useSimulationProcessStore();
+  const { currentSubjectId, setSubjectStatus, setCaptchaFailed } = useSimulationSubjectStore();
+  // const { setSubjectsStatus } = useSimulationProcessStore();
 
   function handleRefreshCaptcha() {
     const randomCaptchaCode = generateNumericText();
@@ -36,16 +37,16 @@ function CaptchaInput() {
     let value = event.target.value;
 
     if (/[^0-9]/.test(value)) {
-      setMessage('0~9까지의 숫자만 입력해주세요');
+      setInfoMessage('0~9까지의 숫자만 입력해주세요');
       setCaptchaInput(value.replace(/[^0-9]/g, ''));
       return;
     }
 
-    if (value.length <= 4) {
+    if (value.length <= CAPTCHA_LENGTH) {
       setCaptchaInput(value);
-      setMessage('');
+      setInfoMessage('');
     } else {
-      setMessage('4자리까지 입력 가능합니다');
+      setInfoMessage('4자리까지 입력 가능합니다');
     }
   }
 
@@ -62,11 +63,10 @@ function CaptchaInput() {
     triggerButtonEvent({ eventType: BUTTON_EVENT.CAPTCHA, subjectId: currentSubjectId })
       .then(() => {
         if (captchaInput?.toString() === codeRef.current) {
-          setSubjectsStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
           setSubjectStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
         } else {
-          setSubjectsStatus(currentSubjectId, APPLY_STATUS.PROGRESS, true);
-          setSubjectStatus(currentSubjectId, APPLY_STATUS.CAPTCHA_FAILED);
+          setSubjectStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
+          setCaptchaFailed(true);
         }
       })
       .then(() => {
@@ -108,7 +108,7 @@ function CaptchaInput() {
               className="mt-2 w-full border-1 border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring focus:border-gray-800"
               placeholder="코드를 입력하세요"
             />
-            <span className="pl-1 text-xs text-red-500 ">{message}</span>
+            <span className="pl-1 text-xs text-red-500 ">{infoMessage}</span>
           </div>
         </div>
 
