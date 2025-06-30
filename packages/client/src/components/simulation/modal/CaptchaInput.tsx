@@ -20,7 +20,6 @@ function CaptchaInput() {
 
   const { closeModal, openModal } = useSimulationModalStore();
   const { currentSubjectId, setSubjectStatus, setCaptchaFailed } = useSimulationSubjectStore();
-  // const { setSubjectsStatus } = useSimulationProcessStore();
 
   function handleRefreshCaptcha() {
     const randomCaptchaCode = generateNumericText();
@@ -33,17 +32,17 @@ function CaptchaInput() {
     }, 100);
   }
 
-  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    let value = event.target.value;
+  function handleChangeInput(event: React.ChangeEvent<HTMLInputElement>) {
+    let inputValue = event.target.value;
 
-    if (/[^0-9]/.test(value)) {
+    if (/[^0-9]/.test(inputValue)) {
       setInfoMessage('0~9까지의 숫자만 입력해주세요');
-      setCaptchaInput(value.replace(/[^0-9]/g, ''));
+      setCaptchaInput(inputValue.replace(/[^0-9]/g, ''));
       return;
     }
 
-    if (value.length <= CAPTCHA_LENGTH) {
-      setCaptchaInput(value);
+    if (inputValue.length <= CAPTCHA_LENGTH) {
+      setCaptchaInput(inputValue);
       setInfoMessage('');
     } else {
       setInfoMessage('4자리까지 입력 가능합니다');
@@ -56,16 +55,14 @@ function CaptchaInput() {
     }, 100);
   }, []);
 
-  function handleConfirm() {
-    /**
-     * 캡차 버튼 클릭 이벤트
-     */
+  function handleConfirmCaptcha() {
     triggerButtonEvent({ eventType: BUTTON_EVENT.CAPTCHA, subjectId: currentSubjectId })
       .then(() => {
         if (captchaInput?.toString() === codeRef.current) {
           setSubjectStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
         } else {
           setSubjectStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
+
           setCaptchaFailed(true);
         }
       })
@@ -104,7 +101,7 @@ function CaptchaInput() {
             <input
               type="text"
               value={captchaInput}
-              onChange={e => handleInputChange(e)}
+              onChange={e => handleChangeInput(e)}
               className="mt-2 w-full border-1 border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring focus:border-gray-800"
               placeholder="코드를 입력하세요"
             />
@@ -118,7 +115,7 @@ function CaptchaInput() {
 
         <div className="flex justify-end border-t px-6 py-4 gap-3 bg-gray-100 text-xs">
           <button
-            onClick={handleConfirm}
+            onClick={handleConfirmCaptcha}
             className="px-4 py-2 bg-white hover:bg-blue-50 rounded-xs border cursor-pointer"
           >
             코드입력

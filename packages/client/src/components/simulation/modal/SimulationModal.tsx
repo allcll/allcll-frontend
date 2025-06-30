@@ -37,10 +37,10 @@ const SIMULATION_MODAL_CONTENTS = [
 ];
 
 interface ISimulationModal {
-  fetchAndUpdateSimulationStatus: () => void;
+  reloadSimulationStatus: () => void;
 }
 
-function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
+function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
   const { closeModal, openModal } = useSimulationModalStore();
   const { currentSubjectId, setSubjectStatus, subjectStatusMap } = useSimulationSubjectStore();
   const { resetSimulation } = useSimulationProcessStore();
@@ -76,24 +76,24 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
 
   const handleSubjectResult = async () => {
     if (modalData.status === APPLY_STATUS.PROGRESS) {
-      //신청하시겠습니까 버튼 이벤트
-
+      //신청하시겠습니까? 버튼 이벤트
       triggerButtonEvent({ eventType: BUTTON_EVENT.SUBJECT_SUBMIT, subjectId: currentSubjectId })
         .then(result => {
           checkErrorValue(result);
           setSubjectStatus(currentSubjectId, result.status);
-          console.error('final', result.status);
+
           openModal('simulation');
         })
         .catch(catchAction);
     } else if (modalData?.status === APPLY_STATUS.SUCCESS) {
-      // 과목 신청 완료 -> 과목 담기 종료 이벤트
+      // 과목 신청 완료 후 해당 과목 담기 종료 이벤트
       triggerButtonEvent({
         eventType: BUTTON_EVENT.REFRESH,
         subjectId: currentSubjectId,
       }).then(result => {
         checkErrorValue(result);
-        fetchAndUpdateSimulationStatus();
+        reloadSimulationStatus();
+
         if (result.finished) {
           openModal('result');
         }
@@ -160,8 +160,6 @@ function SimulationModal({ fetchAndUpdateSimulationStatus }: ISimulationModal) {
         eventType: BUTTON_EVENT.CANCEL_SUBMIT,
         subjectId: currentSubjectId,
       }).then(result => checkErrorValue(result, true));
-    } else {
-      closeModal('simulation');
     }
   };
 

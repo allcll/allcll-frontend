@@ -21,7 +21,7 @@ async function applyWithCaptcha(page: Page, index: number) {
 
   await page.getByRole('textbox', { name: '코드를 입력하세요' }).fill('1234');
 
-  //입력 할 때까지 대기
+  //캡차 입력 할 때까지 대기
   await page.waitForTimeout(300);
 
   await page.getByRole('button', { name: '코드입력' }).click();

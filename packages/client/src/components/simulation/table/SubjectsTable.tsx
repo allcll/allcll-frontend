@@ -38,21 +38,23 @@ const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
   const subjectsToRender = isRegisteredTable ? currentSimulation.registeredSubjects : filteredNonRegistered;
 
   return (
-    <tbody className="min-h-[300px] border-gray-100">
+    <>
       {subjectsToRender.length > 0 ? (
         subjectsToRender.map((subject, idx) => (
-          <SubjectRow
-            key={subject.subjectId}
-            index={idx}
-            subject={subject}
-            isRegisteredTable={isRegisteredTable}
-            onClickSubject={handleClickSubject}
-          />
+          <tbody className="min-h-[300px] border-gray-100">
+            <SubjectRow
+              key={subject.subjectId}
+              index={idx}
+              subject={subject}
+              isRegisteredTable={isRegisteredTable}
+              onClickSubject={handleClickSubject}
+            />
+          </tbody>
         ))
       ) : (
         <NothingTable />
       )}
-    </tbody>
+    </>
   );
 };
 

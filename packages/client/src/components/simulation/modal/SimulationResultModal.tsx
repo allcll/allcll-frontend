@@ -10,7 +10,7 @@ function SimulationResultModal({ simulationId }: { simulationId: number }) {
   const { closeModal } = useSimulationModalStore();
   const { resetSimulation } = useSimulationProcessStore();
   const [result, setResult] = useState<{ accuracy: number; score: number; total_elapsed: number } | null>(null);
-  const [id, setId] = useState<number>();
+  const [logParam, setLogParam] = useState<number>();
 
   useEffect(() => {
     async function fetchResult() {
@@ -19,7 +19,7 @@ function SimulationResultModal({ simulationId }: { simulationId: number }) {
           alert(result.errMsg);
         } else {
           setResult(result);
-          setId(simulationId);
+          setLogParam(simulationId);
           resetSimulation();
         }
       });
@@ -87,7 +87,7 @@ function SimulationResultModal({ simulationId }: { simulationId: number }) {
               다시 하기
             </button>
             <NavLink
-              to={`/simulation/logs/${id}`}
+              to={`/simulation/logs/${logParam}`}
               end={false}
               className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm"
               onClick={() => {

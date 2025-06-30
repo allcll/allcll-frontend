@@ -3,7 +3,7 @@ import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import CheckSvg from '@/assets/check.svg?react';
 import ResetSvg from '@/assets/reset.svg?react';
 import { useEffect, useState } from 'react';
-import { SimulationSubject } from '@/utils/types';
+import { DepartmentType, SimulationSubject } from '@/utils/types';
 import {
   checkExistDepartment,
   makeValidateDepartment,
@@ -16,13 +16,8 @@ import { saveInterestedSnapshot } from '@/utils/simulation/subjects';
 import { startSimulation } from '@/utils/simulation/simulation';
 import useDepartments from '@/hooks/server/useDepartments';
 
-type Department = {
-  departmentCode: string;
-  departmentName: string;
-};
-
 interface UserWishModalIProp {
-  department: Department;
+  department: DepartmentType;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

@@ -5,7 +5,6 @@ import { create } from 'zustand';
 interface SubjectStatus {
   subjectId: number;
   subjectStatus: APPLY_STATUS;
-  isCaptchaFailed: boolean;
 }
 
 interface SimulationState {
