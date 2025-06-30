@@ -10,7 +10,6 @@ import useDetailWishes, { DEFAULT_WISH } from '@/hooks/server/useDetailWishes';
 import useRecommendWishes from '@/hooks/server/useRecommendWishes';
 import useDetailRegisters from '@/hooks/server/useDetailRegisters.ts';
 import { getWishesColor } from '@/utils/colors.ts';
-import { BadRequestError, NotFoundError } from '@/utils/errors.ts';
 import LinkWhiteSvg from '@/assets/link-white.svg?react';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
@@ -51,14 +50,7 @@ function WishesDetail() {
     );
   }
 
-  // 과목이 없는 경우 404
-  if (error) {
-    if (error instanceof BadRequestError) {
-      throw new NotFoundError(error.message);
-    }
-    throw new Error(error.message);
-  }
-  //data.everytimeLink
+  if (error) throw error;
 
   return (
     <>
