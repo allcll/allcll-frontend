@@ -86,41 +86,36 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
     setCurrentSimulation({ simulatonSubjects: randomSubjects });
   };
 
-  const handleStartGame = () => {
-    closeModal('wish');
+  const handleStartGame = async () => {
+    try {
+      closeModal('wish');
 
-    /**
-     * 관심과목 스냅샷 저장 후
-     * 게임 시작 Promise 호출
-     */
-    saveInterestedSnapshot(
-      currentSimulation.simulatonSubjects.map(subject => {
-        return subject.subjectId;
-      }),
-    )
-      .then(() => {
-        return startSimulation('', department.departmentCode, department.departmentName);
-      })
-      .then(result => {
-        if (
-          'simulationId' in result &&
-          'isRunning' in result &&
-          result.simulationId !== undefined &&
-          result.isRunning !== undefined
-        ) {
-          const { simulationId, isRunning } = result;
+      /**
+       * 관심과목 스냅샷 저장 후
+       * 게임 시작 Promise 호출
+       */
+      await saveInterestedSnapshot(currentSimulation.simulatonSubjects.map(subject => subject.subjectId));
 
-          setCurrentSimulation({
-            simulationId,
-            simulationStatus: isRunning ? 'start' : 'before',
-          });
-        } else {
-          console.error('시뮬레이션 시작 결과가 유효하지 않음', result);
-        }
-      })
-      .catch(e => {
-        console.error('시뮬레이션 시작 중 오류 발생:', e);
-      });
+      const result = await startSimulation('', department.departmentCode, department.departmentName);
+
+      if (
+        'simulationId' in result &&
+        'isRunning' in result &&
+        result.simulationId !== -1 &&
+        result.isRunning !== undefined
+      ) {
+        const { simulationId, isRunning } = result;
+
+        setCurrentSimulation({
+          simulationId,
+          simulationStatus: isRunning ? 'start' : 'before',
+        });
+      } else {
+        console.error('시뮬레이션 시작 결과가 유효하지 않음', result);
+      }
+    } catch (e) {
+      console.error('시뮬레이션 시작 중 오류 발생:', e);
+    }
   };
 
   const handleChangeDepartment = (name: string) => {
