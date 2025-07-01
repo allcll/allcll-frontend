@@ -7,7 +7,6 @@ const useTick = (callback?: () => void) => {
   const removeRefCount = useTickStore(state => state.removeRefCount);
 
   useEffect(() => {
-    // if (!enable) return;
     addRefCount();
 
     return () => {

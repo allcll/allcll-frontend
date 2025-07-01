@@ -7,6 +7,9 @@ import AlarmBanner from '@/components/banner/AlarmBanner.tsx';
 import useToastNotification from '@/store/useToastNotification.ts';
 import useAlarmSettings from '@/store/useAlarmSettings.ts';
 
+// notification 변수
+let isInitialized = false;
+
 export function canNotify() {
   return 'Notification' in window;
 }
@@ -41,11 +44,13 @@ function showNotification(message: string, tag?: string) {
 
   if (isAlarmActivated)
     navigator.serviceWorker.ready.then(function (registration) {
-      registration.showNotification(message, {
-        // icon: '/logo-name.svg',
-        badge: '/ci.svg',
-        tag,
-      });
+      registration
+        .showNotification(message, {
+          // icon: '/logo-name.svg',
+          badge: '/ci.svg',
+          tag,
+        })
+        .then();
     });
 
   const addToast = useToastNotification.getState().addToast;
@@ -94,7 +99,6 @@ function getWishes(queryClient: QueryClient, subjectId: number) {
   return wishes.find(wish => wish.subjectId === subjectId);
 }
 
-// let globalNotification: Notification | null = null;
 let globalNotificationTimeout: NodeJS.Timeout | null = null;
 let globalNotificationTagId = 1;
 
@@ -131,9 +135,6 @@ function checkSystemNotification(setBanner: ISetBanner) {
 }
 
 function useNotification() {
-  const isInitialized = useSSECondition(state => state.isInitialized);
-  const setInitialized = useSSECondition(state => state.endInitialized);
-
   const alwaysReload = useSSECondition(state => state.alwaysReload);
   const setAlwaysReload = useSSECondition(state => state.setAlwaysReload);
   const setBanner = useBannerNotification(state => state.setBanner);
@@ -155,7 +156,7 @@ function useNotification() {
       setAlwaysReload(true);
     });
 
-    setInitialized();
+    isInitialized = true;
   }, []);
 
   const changeAlarm = () => {

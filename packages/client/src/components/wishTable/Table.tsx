@@ -4,7 +4,7 @@ import { Wishes } from '@/utils/types.ts';
 import useFavorites from '@/store/useFavorites.ts';
 import StarIcon from '@/components/svgs/StarIcon.tsx';
 import SearchSvg from '@/assets/search.svg?react';
-import { SkeletonRow } from '@/components/skeletons/SkeletonTable.tsx';
+import SkeletonRows from '@/components/live/skeletons/SkeletonRows.tsx';
 import useInfScroll from '@/hooks/useInfScroll.ts';
 import { getWishesColor } from '@/utils/colors.ts';
 
@@ -23,9 +23,7 @@ export const TableHeaders = [
   { name: '관심', key: 'totalCount' },
 ];
 
-function Table({ data, isPending = false }: ITable) {
-  const { visibleRows } = useInfScroll(data ?? []);
-
+function Table({ data, isPending = false }: Readonly<ITable>) {
   return (
     <table className="w-full bg-white rounded-lg relative text-sm">
       <thead>
@@ -38,24 +36,45 @@ function Table({ data, isPending = false }: ITable) {
         </tr>
       </thead>
       <tbody>
-        {isPending || !data ? (
-          Array.from({ length: 5 }).map((_, index) => <SkeletonRow key={index} length={TableHeaders.length} />)
-        ) : !data.length ? (
-          <tr>
-            <td colSpan={TableHeaders.length} className="text-center py-4">
-              <div className="flex flex-col items-center">
-                <SearchSvg className="w-12 h-12" />
-                <p className="text-gray-500 font-bold mt-4">검색된 과목이 없습니다.</p>
-                <p className="text-gray-400 text-xs mt-1">다른 검색어로 다시 시도해보세요.</p>
-              </div>
-            </td>
-          </tr>
-        ) : (
-          data.slice(0, visibleRows).map((course: Wishes) => <TableRow key={course.subjectId} data={course} />)
-        )}
-        <tr className="load-more-trigger"></tr>
+        <TableBody data={data} isPending={isPending} />
       </tbody>
     </table>
+  );
+}
+
+function TableBody({ data, isPending = false }: Readonly<ITable>) {
+  const { visibleRows } = useInfScroll(data ?? []);
+  const wishes = data ? data.slice(0, visibleRows) : [];
+
+  if (isPending || !data) {
+    return <SkeletonRows row={5} col={TableHeaders.length} />;
+  }
+
+  if (!data.length) {
+    return <ZeroElementRow col={TableHeaders.length} />;
+  }
+
+  return (
+    <>
+      {wishes.map(course => (
+        <TableRow key={`${course.subjectCode} ${course.subjectId} ${course.professorName}`} data={course} />
+      ))}
+      <tr className="load-more-trigger" />
+    </>
+  );
+}
+
+export function ZeroElementRow({ col }: Readonly<{ col: number }>) {
+  return (
+    <tr>
+      <td colSpan={col} className="text-center py-4">
+        <div className="flex flex-col items-center">
+          <SearchSvg className="w-12 h-12" />
+          <p className="text-gray-500 font-bold mt-4">검색된 과목이 없습니다.</p>
+          <p className="text-gray-400 text-xs mt-1">다른 검색어로 다시 시도해보세요.</p>
+        </div>
+      </td>
+    </tr>
   );
 }
 
@@ -94,13 +113,7 @@ const MemoTableRow = memo(({ data }: TableRowProps) => {
       {TableHeaders.slice(1, 10).map(({ key }) => (
         <td className="px-4 py-2 text-center" key={key}>
           <Link to={`/wishes/${data.subjectId}`}>
-            {key === '' ? (
-              '시간표'
-            ) : key === 'totalCount' ? (
-              <ColoredText wishCount={data.totalCount} />
-            ) : (
-              data[key as keyof Wishes]?.toString()
-            )}
+            <UiSelector data={data} headerType={key} />
           </Link>
         </td>
       ))}
@@ -108,7 +121,18 @@ const MemoTableRow = memo(({ data }: TableRowProps) => {
   );
 }, equalComponent);
 
-function ColoredText({ wishCount }: { wishCount: number }) {
+function UiSelector({ data, headerType }: Readonly<{ data: Wishes; headerType: string }>) {
+  switch (headerType) {
+    case '':
+      return <>시간표</>;
+    case 'totalCount':
+      return <ColoredText wishCount={data.totalCount} />;
+    default:
+      return data[headerType as keyof Wishes]?.toString();
+  }
+}
+
+function ColoredText({ wishCount }: Readonly<{ wishCount: number }>) {
   const style = getWishesColor(wishCount);
 
   return <span className={`px-3 py-1 rounded-full text-xs font-bold ${style}`}>{wishCount}</span>;

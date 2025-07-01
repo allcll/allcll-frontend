@@ -77,6 +77,7 @@ jobs:
         with:
           github_token: ${{ secrets.GIT_TOKEN }}
           publish_dir: ${{env.project-directory}}/build
+          publish_branch: 'gh-dev-pages'
 
   Deploy:
     runs-on: ubuntu-latest
@@ -93,6 +94,6 @@ jobs:
           port: 22
           script: |
             cd ${{ secrets.PWD }}
-            sudo git pull https://${{ secrets.GIT_TOKEN }}:x-oauth-basic@github.com/allcll/frontend.git gh-pages
+            sudo git pull https://${{ secrets.GIT_TOKEN }}:x-oauth-basic@github.com/allcll/frontend.git gh-dev-pages
             sudo systemctl reload nginx
             # 필요한 cmd 명령어 사용

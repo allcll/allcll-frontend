@@ -89,7 +89,10 @@ function Landing() {
               { name: '데이터베이스개론', dept: '데이터베이스 시스템', status: '30명' },
               { name: '알고리즘분석', dept: '고급알고리즘', status: '14명' },
             ].map((course, index) => (
-              <div key={index} className="mt-4 flex justify-between p-2 rounded-md border border-gray-200">
+              <div
+                key={'recommend-course-' + index}
+                className="mt-4 flex justify-between p-2 rounded-md border border-gray-200"
+              >
                 <div>
                   <p className="font-semibold">{course.name}</p>
                   <p className="text-sm text-gray-500">{course.dept}</p>
@@ -116,7 +119,7 @@ function Landing() {
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-lg font-semibold mb-2">여석 과목 알림</h2>
             <p className="text-gray-500">
-              핀 과목에 대해서, 여석이 생기면 <span className="text-blue-500 font-bold">알림</span>을 드려요
+              등록된 알림 과목에 대해서, 여석이 생기면 <span className="text-blue-500 font-bold">알림</span>을 드려요
             </p>
             <div className="flex flex-col gap-4 mt-4">
               {/* 실시간 수강 여석 차트 */}
@@ -160,7 +163,7 @@ function Landing() {
                     { id: '009912-006', name: 'C프로그래밍및실습', prof: '김도년', seats: 5 },
                     { id: '007330-001', name: '확률및통계', prof: '김해광', seats: 4 },
                   ].map(({ id, name, prof, seats }, index) => (
-                    <tr key={index} className="border-t border-gray-200 text-black">
+                    <tr key={'live-non-major-' + index} className="border-t border-gray-200 text-black">
                       <td className="px-4 py-2 text-center">{id}</td>
                       <td className="px-4 py-2 text-center">{name}</td>
                       <td className="px-4 py-2 text-center">{prof}</td>
@@ -209,7 +212,7 @@ function Landing() {
               text: '수강신청 버튼만 수백 번, 그래도 원하는 강의는 잡지 못했습니다',
             },
           ].map(({ icon, title, text }, index) => (
-            <div key={index} className="flex flex-col gap-4 p-6 rounded-md bg-gray-50 text-left">
+            <div key={'pain-point-' + index} className="flex flex-col gap-4 p-6 rounded-md bg-gray-50 text-left">
               {icon}
               <h3 className="font-extrabold">{title}</h3>
               <p className="text-xs text-gray-500">{text}</p>
@@ -229,10 +232,10 @@ function Landing() {
           <div className="absolute top-0 left-0 w-12 h-full bg-gradient-to-r from-gray-50 to-transparent z-10"></div>
           <div className="animate-marquee flex gap-6 flex-nowrap w-fit">
             {UserFeedbacks.map((feedback, index) => (
-              <UserFeedbackCard key={index} {...feedback} />
+              <UserFeedbackCard key={'feedback-left-' + index} {...feedback} />
             ))}
             {UserFeedbacks.map((feedback, index) => (
-              <UserFeedbackCard key={index} {...feedback} />
+              <UserFeedbackCard key={'feedback-right-' + index} {...feedback} />
             ))}
           </div>
           <div className="absolute top-0 right-0 w-12 h-full bg-gradient-to-l from-gray-50 to-transparent z-10"></div>
@@ -262,7 +265,7 @@ const UserFeedbacks: IUserFeedback[] = [
   { name: '김O환', department: '컴퓨터공학과 3학년', review: '수강신청이 이렇게 편해질 수 있다니 놀랍네요!' },
 ];
 
-function UserFeedbackCard({ name, department, review }: IUserFeedback) {
+function UserFeedbackCard({ name, department, review }: Readonly<IUserFeedback>) {
   return (
     <div className="w-screen md:w-xs flex flex-col gap-4 p-6 rounded-md bg-white text-left text-sm">
       <div className="flex gap-4 items-center">
@@ -283,8 +286,8 @@ interface SectionProps {
   children: React.ReactNode;
 }
 
-function Section({ bgColor, className, children }: SectionProps) {
-  const additionalStyle = bgColor ? bgColor : '';
+function Section({ bgColor, className, children }: Readonly<SectionProps>) {
+  const additionalStyle = bgColor ?? '';
   const additionalClass = className ? ` ${className}` : '';
   return (
     <section className={additionalStyle}>

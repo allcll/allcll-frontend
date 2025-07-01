@@ -1,35 +1,39 @@
 import { create } from 'zustand';
 
 interface IUseTickStore {
-  refCount: number;
   addRefCount: () => void;
   removeRefCount: () => void;
-  timer: NodeJS.Timeout | null;
   tick: number;
 }
 
-const useTickStore = create<IUseTickStore>(set => ({
-  refCount: 0,
-  addRefCount: () =>
-    set(state => {
-      if (state.refCount === 0) {
-        const timer = setInterval(() => {
-          set(state => ({ tick: state.tick + 1 }));
-        }, 1000);
-        return { refCount: state.refCount + 1, timer };
-      }
-      return { refCount: state.refCount + 1 };
-    }),
-  removeRefCount: () =>
-    set(state => {
-      if (state.refCount === 1) {
-        clearInterval(state.timer!);
-        return { refCount: state.refCount - 1, timer: null };
-      }
-      return { refCount: state.refCount - 1 };
-    }),
-  timer: null,
-  tick: 0,
-}));
+let timer: NodeJS.Timeout | null = null;
+let refCount = 0; // timer를 사용하는 컴포넌트 수
+
+const useTickStore = create<IUseTickStore>(set => {
+  const startTimer = () => {
+    if (timer) return;
+
+    timer = setInterval(() => {
+      set(state => ({ tick: state.tick + 1 }));
+    }, 1000);
+  };
+
+  const stopTimer = () => {
+    if (timer) clearInterval(timer);
+    timer = null;
+  };
+
+  return {
+    tick: 0,
+    addRefCount: () => {
+      if (refCount === 0) startTimer();
+      refCount = refCount + 1;
+    },
+    removeRefCount: () => {
+      if (refCount <= 1) stopTimer();
+      refCount = Math.max(0, refCount - 1);
+    },
+  };
+});
 
 export default useTickStore;

@@ -55,3 +55,8 @@ export interface SimulationSubject {
 }
 
 export type SimulationStatusType = 'before' | 'selectedDepartment' | 'start' | 'progress' | 'finish' | 'refresh';
+
+export interface DepartmentType {
+  departmentCode: string;
+  departmentName: string;
+}

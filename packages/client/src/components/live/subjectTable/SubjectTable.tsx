@@ -2,9 +2,8 @@ import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
 import { useAddPinned, usePinned, useRemovePinned } from '@/store/usePinned.ts';
 import useInfScroll from '@/hooks/useInfScroll.ts';
 import { WishesWithSeat } from '@/hooks/useWishesPreSeats.ts';
-import { SkeletonRow } from '@/components/skeletons/SkeletonTable.tsx';
-import { TableHeaders } from '@/components/wishTable/Table.tsx';
-import SearchSvg from '@/assets/search.svg?react';
+import SkeletonRows from '@/components/live/skeletons/SkeletonRows.tsx';
+import { ZeroElementRow } from '@/components/wishTable/Table.tsx';
 import { getSeatColor } from '@/utils/colors.ts';
 
 export interface ITableHead {
@@ -18,9 +17,7 @@ interface ISubjectTable {
   isPending?: boolean;
 }
 
-function SubjectTable({ titles, subjects, isPending = false }: ISubjectTable) {
-  const { visibleRows } = useInfScroll(subjects);
-
+function SubjectTable({ titles, subjects, isPending = false }: Readonly<ISubjectTable>) {
   return (
     <table className="w-full bg-white rounded-lg relative text-sm">
       <thead>
@@ -33,35 +30,35 @@ function SubjectTable({ titles, subjects, isPending = false }: ISubjectTable) {
         </tr>
       </thead>
       <tbody>
-        {isPending || !subjects ? (
-          Array.from({ length: 5 }, (_, i) => <SkeletonRow length={titles.length} key={i} />)
-        ) : !subjects.length ? (
-          <tr>
-            <td colSpan={TableHeaders.length} className="text-center py-4">
-              <div className="flex flex-col items-center">
-                <SearchSvg className="w-12 h-12" />
-                <p className="text-gray-500 font-bold mt-4">검색된 과목이 없습니다.</p>
-                <p className="text-gray-400 text-xs mt-1">다른 검색어로 다시 시도해보세요.</p>
-              </div>
-            </td>
-          </tr>
-        ) : (
-          subjects
-            .slice(0, visibleRows)
-            .map(subject => (
-              <TableRow
-                key={`${subject.subjectCode} ${subject.subjectId} ${subject.professorName}`}
-                subject={subject}
-              />
-            ))
-        )}
-        <tr className="load-more-trigger"></tr>
+        <TableBody titles={titles} subjects={subjects} isPending={isPending} />
       </tbody>
     </table>
   );
 }
 
-function TableRow({ subject }: { subject: WishesWithSeat }) {
+function TableBody({ titles, subjects, isPending = false }: Readonly<ISubjectTable>) {
+  const { visibleRows } = useInfScroll(subjects);
+  const data = subjects ? subjects.slice(0, visibleRows) : [];
+
+  if (isPending || !subjects) {
+    return <SkeletonRows row={5} col={titles.length} />;
+  }
+
+  if (!subjects.length) {
+    return <ZeroElementRow col={titles.length} />;
+  }
+
+  return (
+    <>
+      {data.map(subject => (
+        <TableRow key={`${subject.subjectCode} ${subject.subjectId} ${subject.professorName}`} subject={subject} />
+      ))}
+      <tr className="load-more-trigger" />
+    </>
+  );
+}
+
+function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
   const { data: pinnedSubjects } = usePinned();
   const { mutate: deletePin } = useRemovePinned();
   const { mutate: addPin } = useAddPinned();

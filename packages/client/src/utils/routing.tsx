@@ -3,7 +3,7 @@ import MainLayout from '@/layouts/MainLayout.tsx';
 import ServiceLayout from '@/layouts/ServiceLayout.tsx';
 import SimulationLayout from '@/layouts/SimulationLayout.tsx';
 import Landing from '@/pages/Landing.tsx';
-import Dashboard from '@/pages/Dashboard.tsx';
+import Live from '@/pages/Live.tsx';
 import SearchCourses from '@/pages/SearchCourses.tsx';
 import ServiceInfo from '@/pages/ServiceInfo.tsx';
 import CustomerService from '@/pages/CustomerService.tsx';
@@ -11,6 +11,7 @@ import FAQ from '@/pages/FAQ.tsx';
 import WishTable from '@/pages/wishlist/WishTable.tsx';
 import WishesDetail from '@/pages/wishlist/WishesDetail.tsx';
 import ErrorPage from '@/pages/ErrorPage.tsx';
+import ErrorPageWith404 from '@/pages/ErrorPageWith404.tsx';
 import Simulation from '@/pages/simulation/Simulation.tsx';
 import SimulationDashboard from '@/pages/simulation/Dashboard.tsx';
 import SimulationDashboardDetail from '@/pages/simulation/DashboardDetail.tsx';
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
   {
     path: 'wishes',
     element: <ServiceLayout />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorPageWith404 />,
     children: [
       {
         path: '',
@@ -64,7 +65,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <Dashboard />,
+        element: <Live />,
       },
       {
         path: 'search',
