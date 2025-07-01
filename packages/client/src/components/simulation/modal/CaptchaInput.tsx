@@ -6,6 +6,7 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation';
 
+
 function generateNumericText() {
   return Math.floor(1000 + Math.random() * 9000).toString();
 }

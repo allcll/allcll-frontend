@@ -16,7 +16,6 @@ async function startSimulation(page: Page) {
 
 async function applyWithCaptcha(page: Page, index: number) {
   await page.getByRole('button', { name: '신청', exact: true }).nth(index).click();
-
   await page.getByRole('textbox', { name: '코드를 입력하세요' }).click();
 
   await page.getByRole('textbox', { name: '코드를 입력하세요' }).fill('1234');
@@ -36,6 +35,7 @@ async function applyWithCaptcha(page: Page, index: number) {
     await page.getByRole('button', { name: '확인' }).click();
   } else {
     await page.getByRole('button', { name: '취소' }).click();
+
   }
 }
 
@@ -120,4 +120,5 @@ test.describe('수강신청 시뮬레이션 전체 흐름', () => {
 
     await expectVisibleModal(page, '수강 신청 성공!');
   });
+
 });
