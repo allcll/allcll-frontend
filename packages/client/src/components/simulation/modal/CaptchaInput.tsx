@@ -4,35 +4,27 @@ import ModalHeader from '@/components/simulation/modal/ModalHeader';
 import { drawCaptcha } from '@/utils/captcha';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation';
 
-declare global {
-  interface Window {
-    __CAPTCHA_TEXT__?: string;
-  }
-}
 
 function generateNumericText() {
   return Math.floor(1000 + Math.random() * 9000).toString();
 }
 
+const CAPTCHA_LENGTH = 4;
+
 function CaptchaInput() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [captchaInput, setCaptchaInput] = useState<string | number>();
-  const [message, setMessage] = useState('');
+  const [infoMessage, setInfoMessage] = useState<string>('');
   const codeRef = useRef<string>('');
 
   const { closeModal, openModal } = useSimulationModalStore();
-  const { setSubjectStatus, currentSubjectId } = useSimulationSubjectStore();
-  const { setSubjectsStatus } = useSimulationProcessStore();
+  const { currentSubjectId, setSubjectStatus, setCaptchaFailed } = useSimulationSubjectStore();
 
   function handleRefreshCaptcha() {
     const randomCaptchaCode = generateNumericText();
     codeRef.current = randomCaptchaCode;
-
-    //테스트를 위한 브라우저 전역 변수 설정
-    window.__CAPTCHA_TEXT__ = randomCaptchaCode;
 
     setTimeout(() => {
       if (canvasRef.current) {
@@ -41,20 +33,20 @@ function CaptchaInput() {
     }, 100);
   }
 
-  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    let value = event.target.value;
+  function handleChangeInput(event: React.ChangeEvent<HTMLInputElement>) {
+    let inputValue = event.target.value;
 
-    if (/[^0-9]/.test(value)) {
-      setMessage('0~9까지의 숫자만 입력해주세요');
-      setCaptchaInput(value.replace(/[^0-9]/g, ''));
+    if (/[^0-9]/.test(inputValue)) {
+      setInfoMessage('0~9까지의 숫자만 입력해주세요');
+      setCaptchaInput(inputValue.replace(/[^0-9]/g, ''));
       return;
     }
 
-    if (value.length <= 4) {
-      setCaptchaInput(value);
-      setMessage('');
+    if (inputValue.length <= CAPTCHA_LENGTH) {
+      setCaptchaInput(inputValue);
+      setInfoMessage('');
     } else {
-      setMessage('4자리까지 입력 가능합니다');
+      setInfoMessage('4자리까지 입력 가능합니다');
     }
   }
 
@@ -64,18 +56,15 @@ function CaptchaInput() {
     }, 100);
   }, []);
 
-  function handleConfirm() {
-    /**
-     * 캡차 버튼 클릭 이벤트
-     */
+  function handleConfirmCaptcha() {
     triggerButtonEvent({ eventType: BUTTON_EVENT.CAPTCHA, subjectId: currentSubjectId })
       .then(() => {
         if (captchaInput?.toString() === codeRef.current) {
-          setSubjectsStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
           setSubjectStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
         } else {
-          setSubjectsStatus(currentSubjectId, APPLY_STATUS.PROGRESS, true);
-          setSubjectStatus(currentSubjectId, APPLY_STATUS.CAPTCHA_FAILED);
+          setSubjectStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
+
+          setCaptchaFailed(true);
         }
       })
       .then(() => {
@@ -113,11 +102,11 @@ function CaptchaInput() {
             <input
               type="text"
               value={captchaInput}
-              onChange={e => handleInputChange(e)}
+              onChange={e => handleChangeInput(e)}
               className="mt-2 w-full border-1 border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring focus:border-gray-800"
               placeholder="코드를 입력하세요"
             />
-            <span className="pl-1 text-xs text-red-500 ">{message}</span>
+            <span className="pl-1 text-xs text-red-500 ">{infoMessage}</span>
           </div>
         </div>
 
@@ -127,7 +116,7 @@ function CaptchaInput() {
 
         <div className="flex justify-end border-t px-6 py-4 gap-3 bg-gray-100 text-xs">
           <button
-            onClick={handleConfirm}
+            onClick={handleConfirmCaptcha}
             className="px-4 py-2 bg-white hover:bg-blue-50 rounded-xs border cursor-pointer"
           >
             코드입력

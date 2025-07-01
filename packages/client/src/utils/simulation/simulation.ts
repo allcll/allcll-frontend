@@ -1,8 +1,8 @@
 import { db, SimulationRunSelections } from '@/utils/dbConfig.ts';
 import { getInterestedId, getRecentInterestedSnapshot } from '@/utils/simulation/subjects';
 import { getAccuracy, getAccuracyScore, getSpeedScore } from '@/utils/simulation/score.ts';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
 import { checkSubjectResult } from '@/utils/checkSubjectResult.ts';
+import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 
 export enum BUTTON_EVENT {
   SEARCH,
@@ -288,10 +288,7 @@ export async function triggerButtonEvent(
     };
 
     // 캡차 상태를 확인합니다.
-    const currentSubjectStatus = useSimulationProcessStore
-      .getState()
-      .subjectsStatus.find(subject => subject.subjectId === subjectId);
-    const isCaptchaFailed = currentSubjectStatus?.isCaptchaFailed;
+    const isCaptchaFailed = useSimulationSubjectStore.getState().isCaptchaFailed;
 
     if (isCaptchaFailed) {
       return await saveStatus(APPLY_STATUS.CAPTCHA_FAILED);

@@ -1,7 +1,7 @@
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
-import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation';
+import { BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation';
 import SubjectRow from './SubjectRow';
 import NothingTable from './NothingTable';
 
@@ -12,8 +12,7 @@ interface ISubjectsTable {
 const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
   const { currentSimulation } = useSimulationProcessStore();
   const { openModal } = useSimulationModalStore();
-  const { currentSubjectId, setCurrentSubjectId, setSubjectStatus } = useSimulationSubjectStore();
-  const { subjectsStatus, setSubjectsStatus } = useSimulationProcessStore();
+  const { setCurrentSubjectId } = useSimulationSubjectStore();
 
   const handleClickSubject = (subjectId: number) => {
     triggerButtonEvent({ eventType: BUTTON_EVENT.APPLY, subjectId })
@@ -26,19 +25,7 @@ const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
         console.error('예외 발생:', e);
       });
 
-    const doubledSubject = subjectsStatus.find(subject => subject.subjectId === subjectId);
     setCurrentSubjectId(subjectId);
-
-    if (
-      doubledSubject?.subjectStatus === APPLY_STATUS.SUCCESS ||
-      doubledSubject?.subjectStatus === APPLY_STATUS.DOUBLED
-    ) {
-      setSubjectStatus(currentSubjectId, APPLY_STATUS.DOUBLED);
-      setSubjectsStatus(currentSubjectId, APPLY_STATUS.DOUBLED);
-      openModal('captcha');
-    } else {
-      openModal('captcha');
-    }
     openModal('captcha');
   };
 
@@ -51,21 +38,23 @@ const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
   const subjectsToRender = isRegisteredTable ? currentSimulation.registeredSubjects : filteredNonRegistered;
 
   return (
-    <tbody className="min-h-[300px] border-gray-100">
+    <>
       {subjectsToRender.length > 0 ? (
         subjectsToRender.map((subject, idx) => (
-          <SubjectRow
-            key={subject.subjectId}
-            index={idx}
-            subject={subject}
-            isRegisteredTable={isRegisteredTable}
-            onClickSubject={handleClickSubject}
-          />
+          <tbody className="min-h-[300px] border-gray-100">
+            <SubjectRow
+              key={subject.subjectId}
+              index={idx}
+              subject={subject}
+              isRegisteredTable={isRegisteredTable}
+              onClickSubject={handleClickSubject}
+            />
+          </tbody>
         ))
       ) : (
         <NothingTable />
       )}
-    </tbody>
+    </>
   );
 };
 

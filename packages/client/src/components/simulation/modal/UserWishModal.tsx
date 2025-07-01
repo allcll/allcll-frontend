@@ -3,7 +3,7 @@ import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import CheckSvg from '@/assets/check.svg?react';
 import ResetSvg from '@/assets/reset.svg?react';
 import { useEffect, useState } from 'react';
-import { SimulationSubject } from '@/utils/types';
+import { DepartmentType, SimulationSubject } from '@/utils/types';
 import {
   checkExistDepartment,
   makeValidateDepartment,
@@ -16,13 +16,8 @@ import { saveInterestedSnapshot } from '@/utils/simulation/subjects';
 import { startSimulation } from '@/utils/simulation/simulation';
 import useDepartments from '@/hooks/server/useDepartments';
 
-type Department = {
-  departmentCode: string;
-  departmentName: string;
-};
-
 interface UserWishModalIProp {
-  department: Department;
+  department: DepartmentType;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -83,52 +78,44 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
 
   useEffect(() => {
     const randomSubjects = pickNonRandomSubjects(department);
-    setCurrentSimulation({ subjects: randomSubjects });
+    setCurrentSimulation({ simulatonSubjects: randomSubjects });
   }, [department]);
 
   const handleResetRandomSubjects = () => {
     const randomSubjects = pickRandomsubjects(department);
-    setCurrentSimulation({ subjects: randomSubjects });
+    setCurrentSimulation({ simulatonSubjects: randomSubjects });
   };
 
-  const handleStartGame = () => {
-    closeModal('wish');
+  const handleStartGame = async () => {
+    try {
+      closeModal('wish');
 
-    /**
-     * 관심과목 스냅샷 저장 후
-     * 게임 시작 Promise 호출
-     */
-    saveInterestedSnapshot(
-      currentSimulation.subjects.map(subject => {
-        return subject.subjectId;
-      }),
-    )
-      .then(() => {
-        return startSimulation(currentSimulation.userPK, department.departmentCode, department.departmentName);
-      })
-      .then(result => {
-        if (
-          'simulationId' in result &&
-          'isRunning' in result &&
-          result.simulationId !== undefined &&
-          result.isRunning !== undefined
-        ) {
-          const { simulationId, isRunning, started_at } = result;
+      /**
+       * 관심과목 스냅샷 저장 후
+       * 게임 시작 Promise 호출
+       */
+      await saveInterestedSnapshot(currentSimulation.simulatonSubjects.map(subject => subject.subjectId));
 
-          console.log('시뮬레이션 시작 버튼 log', simulationId);
+      const result = await startSimulation('', department.departmentCode, department.departmentName);
 
-          setCurrentSimulation({
-            simulationId,
-            started_simulation_at: started_at,
-            simulationStatus: isRunning ? 'start' : 'before',
-          });
-        } else {
-          console.error('시뮬레이션 시작 결과가 유효하지 않음', result);
-        }
-      })
-      .catch(e => {
-        console.error('시뮬레이션 시작 중 오류 발생:', e);
-      });
+      if (
+        'simulationId' in result &&
+        'isRunning' in result &&
+        result.simulationId !== -1 &&
+        result.isRunning !== undefined
+      ) {
+        const { simulationId, isRunning } = result;
+
+        setCurrentSimulation({
+          simulationId,
+          simulationStatus: isRunning ? 'start' : 'before',
+        });
+      } else {
+        console.error('시뮬레이션 시작 결과가 유효하지 않음', result);
+      }
+    } catch (e) {
+      console.error('시뮬레이션 시작 중 오류 발생:', e);
+    }
   };
 
   const handleChangeDepartment = (name: string) => {
@@ -194,7 +181,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
           </div>
 
           <div className="max-h-[300px]  overflow-x-auto overflow-y-auto">
-            <SubjectTable subjects={currentSimulation.subjects} />
+            <SubjectTable subjects={currentSimulation.simulatonSubjects} />
           </div>
 
           <div className="mt-4 flex items-center">
