@@ -6,7 +6,7 @@ import Table from '@/components/wishTable/Table';
 import CardWrap from '@/components/CardWrap';
 import BlurComponents from '@/components/BlurComponents';
 import DepartmentDoughnut from '@/components/wishTable/DepartmentDoughnut.tsx';
-import useDetailWishes from '@/hooks/server/useDetailWishes';
+import useDetailWishes, { DEFAULT_WISH } from '@/hooks/server/useDetailWishes';
 import useRecommendWishes from '@/hooks/server/useRecommendWishes';
 import useDetailRegisters from '@/hooks/server/useDetailRegisters.ts';
 import { getWishesColor } from '@/utils/colors.ts';
@@ -27,9 +27,14 @@ const gradeData = {
 
 function WishesDetail() {
   const params = useParams();
-  const { data, isPending } = useDetailWishes(params.id ?? '-1');
-  const { data: registers } = useDetailRegisters(params.id ?? '-1');
-  const { data: recommend } = useRecommendWishes(data?.subjectCode ?? '', data?.subjectId ? [data.subjectId] : []);
+  const { data: wishes, isPending, isLastSemesterWish } = useDetailWishes(params.id ?? '-1');
+  const { data: registers, error } = useDetailRegisters(params.id ?? '-1');
+  const { data: recommend } = useRecommendWishes(
+    wishes?.subjectCode ?? '',
+    wishes?.subjectId ? [wishes.subjectId] : [],
+  );
+
+  const data = wishes ?? DEFAULT_WISH;
 
   if (isPending || !data) {
     return (
@@ -44,13 +49,20 @@ function WishesDetail() {
       </>
     );
   }
-  //data.everytimeLink
+
+  if (error) throw error;
 
   return (
     <>
       <Helmet>
         <title>ALLCLL | 관심과목 분석 상세</title>
       </Helmet>
+
+      {isLastSemesterWish && (
+        <p className="bg-red-100 text-red-500 py-2 px-4 font-bold">
+          이번 학기의 데이터가 아닙니다. 수강 신청에 유의해주세요.
+        </p>
+      )}
 
       <div className="min-h-screen bg-gray-50">
         {/* Course Info Section */}

@@ -1,7 +1,20 @@
+import * as Sentry from '@sentry/react';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
+import { Link, useRouteError } from 'react-router-dom';
 
 const ErrorPage = () => {
+  const error = useRouteError();
+
+  useEffect(() => {
+    Sentry.captureException(error, {
+      extra: {
+        url: window.location.href,
+        userAgent: navigator.userAgent,
+      },
+    });
+  }, [error]);
+
   return (
     <>
       <Helmet>
