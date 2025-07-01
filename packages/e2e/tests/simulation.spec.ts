@@ -14,11 +14,17 @@ async function startSimulation(page: Page) {
   await page.getByRole('button', { name: '검색' }).click();
 }
 
+async function fillCaptchaAndConfirm(page: Page, code: string) {
+  await page.getByRole('textbox', { name: '코드를 입력하세요' }).click();
+  await page.getByRole('textbox', { name: '코드를 입력하세요' }).fill(code);
+  await page.getByRole('button', { name: '코드입력' }).click();
+  await page.getByRole('button', { name: '확인' }).click();
+}
+
 async function applyWithCaptcha(page: Page, index: number) {
   await page.getByRole('button', { name: '신청', exact: true }).nth(index).click();
 
   await page.getByRole('textbox', { name: '코드를 입력하세요' }).click();
-
   await page.getByRole('textbox', { name: '코드를 입력하세요' }).fill('1234');
 
   //캡차 입력 할 때까지 대기
@@ -55,35 +61,21 @@ test.describe('수강신청 시뮬레이션 예외 상황', () => {
     await applyWithCaptcha(page, 0);
 
     await page.getByRole('button', { name: '신청', exact: true }).nth(0).click();
-    await page.getByRole('textbox', { name: '코드를 입력하세요' }).click();
-
-    await page.getByRole('textbox', { name: '코드를 입력하세요' }).fill('1234');
-    await page.getByRole('button', { name: '코드입력' }).click();
-    await page.getByRole('button', { name: '확인' }).click();
+    await fillCaptchaAndConfirm(page, '1234');
 
     await expectVisibleModal(page, '이미 수강신청 된 과목입니다!');
   });
 
   test('캡챠 잘못된 입력 모달 띄우기', async ({ page }) => {
     await page.getByRole('button', { name: '신청', exact: true }).nth(0).click();
-    await page.getByRole('textbox', { name: '코드를 입력하세요' }).click();
-
-    await page.getByRole('textbox', { name: '코드를 입력하세요' }).fill('0000');
-    await page.getByRole('button', { name: '코드입력' }).click();
-
-    await page.getByRole('button', { name: '확인' }).click();
+    await fillCaptchaAndConfirm(page, '0000');
 
     await expectVisibleModal(page, '입력하신 코드가 일치하지 않습니다');
   });
 
   test('재조회시 새로고침', async ({ page }) => {
     await page.getByRole('button', { name: '신청', exact: true }).nth(0).click();
-    await page.getByRole('textbox', { name: '코드를 입력하세요' }).click();
-
-    await page.getByRole('textbox', { name: '코드를 입력하세요' }).fill('1234');
-    await page.getByRole('button', { name: '코드입력' }).click();
-
-    await page.getByRole('button', { name: '확인' }).click();
+    await fillCaptchaAndConfirm(page, '1234');
 
     await page.getByRole('button', { name: '확인' }).click();
 
