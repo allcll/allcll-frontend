@@ -32,7 +32,7 @@ function SimulationSearchForm() {
 
           setCurrentSimulation({
             simulationStatus: 'progress',
-            clickedTime: elapsedSeconds > 10 ? Math.floor(Math.random() * 5) + 1 : elapsedSeconds,
+            clickedTime: elapsedSeconds > 10 ? 5 : elapsedSeconds,
           });
 
           openModal('waiting');
