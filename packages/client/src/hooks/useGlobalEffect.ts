@@ -22,7 +22,7 @@ function useGlobalEffect() {
       window.scrollTo(0, 0);
     }
 
-    history.current = h || DefaultHistory;
+    history.current = h ?? DefaultHistory;
   }, [location.pathname]);
 
   // SSEManager.ts

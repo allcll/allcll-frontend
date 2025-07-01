@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { disassemble } from 'es-hangul';
 import useWishes from '@/hooks/server/useWishes.ts';
 import Table from '@/components/wishTable/Table.tsx';
-import Searches, { WishSearchParams } from '@/components/dashboard/Searches.tsx';
+import Searches, { WishSearchParams } from '@/components/live/Searches.tsx';
 import { Wishes } from '@/utils/types.ts';
 import useFavorites from '@/store/useFavorites.ts';
 import useWishSearchStore from '@/store/useWishSearchStore.ts';

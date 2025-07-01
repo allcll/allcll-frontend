@@ -20,7 +20,7 @@ export enum DoughnutSelectType {
   COLLEGE = '학부',
 }
 
-function DepartmentDoughnut({ data, majorName }: { data?: WishRegister[]; majorName: string }) {
+function DepartmentDoughnut({ data, majorName }: Readonly<{ data?: WishRegister[]; majorName: string }>) {
   const [selectedFilter, setSelectedFilter] = useState<DoughnutSelectType>(DoughnutSelectType.MAJOR);
   const { data: departmentData } = useDepartments();
   const departmentDict = useDepartmentDict(departmentData);

@@ -9,7 +9,7 @@ function AlarmButton() {
       title="여석 알림 과목 추가"
     >
       <div className="bg-gray-50 rounded-full px-4 py-2 text-sm border border-gray-200 hover:shadow-md">
-        + 핀 알림 과목 등록
+        + 알림 과목 등록
       </div>
     </Link>
   );

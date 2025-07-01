@@ -1,4 +1,4 @@
-import NoneLayout from '@/components/dashboard/NoneLayout.tsx';
+import NoneLayout from '@/components/live/NoneLayout.tsx';
 import ListSVG from '@/assets/list.svg?react';
 
 function ZeroListError() {
