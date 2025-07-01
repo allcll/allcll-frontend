@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { fetchJsonOnAPI } from '@/utils/api.ts';
 
 export interface ServiceSemester {
   semester: string;
@@ -37,14 +38,8 @@ function useServiceSemester() {
   });
 }
 
-const fetchServiceSemester = async (): Promise<ServiceSemester> => {
-  const response = await fetch('/api/service/semester');
-
-  if (!response.ok) {
-    throw new Error(await response.text());
-  }
-
-  return response.json();
+const fetchServiceSemester = async () => {
+  return await fetchJsonOnAPI<ServiceSemester>('/api/service/semester');
 };
 
 export default useServiceSemester;

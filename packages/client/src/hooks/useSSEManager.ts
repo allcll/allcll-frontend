@@ -3,6 +3,7 @@ import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
 import { onChangePinned } from '@/hooks/useNotification.ts';
 import { NonMajorSeats, PinnedSeats } from '@/utils/types.ts';
 import useSSECondition, { RELOAD_INTERVAL, RELOAD_MAX_COUNT } from '@/store/useSSECondition.ts';
+import { fetchEventSource } from '@/utils/api.ts';
 
 export enum SSEType {
   NON_MAJOR = 'nonMajorSeats',
@@ -47,7 +48,7 @@ const useSSEManager = () => {
 
 const fetchSSEData = (queryClient: QueryClient, resetError: () => void) => {
   return new Promise((resolve, reject) => {
-    const eventSource = new EventSource('/api/connect');
+    const eventSource = fetchEventSource('/api/connect');
 
     eventSource.addEventListener('nonMajorSeats', event => {
       const json = JSON.parse(event.data);

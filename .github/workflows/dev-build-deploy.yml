@@ -29,7 +29,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: '18.13.0'
+          node-version: '24'
 
       - name: Install NPM packages
         run: |
@@ -43,7 +43,7 @@ jobs:
           cd ${{env.project-directory}}
           mkdir -p ./build
           cp -r dist ./build
-          cp package.json ./build/package.json
+#          cp package.json ./build/package.json
 #          cp pnpm-lock.yaml ./build/pnpm-lock.yaml
         env:
           CI: ''
@@ -51,8 +51,7 @@ jobs:
           VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           VITE_GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
           VITE_CLARITY_PROJECT_ID: ${{ secrets.CLARITY_PROJECT_ID }}
-          VITE_AMPLITUDE_API_KEY: ${{ secrets.AMPLITUDE_API_KEY }}
-          VITE_SCORE_API_TOKEN: ${{ secrets.SCORE_API_TOKEN }}
+          VITE_API_BASE_URL: ${{ secrets.DEV_API_BASE_URL }}
           VITE_DEV_SERVER: true
         working-directory: ${{env.working-directory}}
 

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { fetchJsonOnAPI } from '@/utils/api.ts';
 
 export interface Department {
   departmentName: string;
@@ -23,18 +24,8 @@ function useDepartments() {
   });
 }
 
-const fetchDepartments = async (): Promise<DepartmentsAPIResponse> => {
-  const response = await fetch('/api/departments', {
-    headers: {
-      Cookie: `sessionId=${document.cookie.split('=')[1]}`,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(await response.text());
-  }
-
-  return response.json();
+const fetchDepartments = async () => {
+  return await fetchJsonOnAPI<DepartmentsAPIResponse>('/api/departments');
 };
 
 export interface DepartmentDict {
