@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { WishRegister } from '@/utils/types.ts';
 import { BadRequestError } from '@/utils/errors.ts';
+import { fetchOnAPI } from '@/utils/api.ts';
 
 interface DetailRegistersResponse {
   eachDepartmentRegisters: WishRegister[];
@@ -17,11 +18,7 @@ function useDetailRegisters(id: string) {
 }
 
 const fetchDetailRegisters = async (subjectId: string): Promise<DetailRegistersResponse> => {
-  const response = await fetch(`/api/baskets/${subjectId}`, {
-    headers: {
-      Cookie: `sessionId=${document.cookie.split('=')[1]}`,
-    },
-  });
+  const response = await fetchOnAPI(`/api/baskets/${subjectId}`);
 
   if (!response.ok) {
     const errorMessage = await response.text();

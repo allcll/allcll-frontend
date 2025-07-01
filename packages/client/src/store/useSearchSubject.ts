@@ -1,5 +1,6 @@
 import { Subject } from '@/utils/types.ts';
 import { useQuery } from '@tanstack/react-query';
+import { fetchJsonOnAPI } from '@/utils/api.ts';
 
 export function useSearchSubject(searchOption: SubjectOption) {
   return useQuery({
@@ -27,13 +28,5 @@ const searchSubject = async (searchOption: SubjectOption): Promise<SubjectRespon
     .map(([key, value]) => `${key}=${value}`)
     .join('&');
 
-  const response = await fetch(`/api/subjects?${query}`, {
-    headers: {
-      Cookie: `sessionId=${document.cookie.split('=')[1]}`,
-    },
-  });
-  if (!response.ok) {
-    throw new Error('Failed to fetch pinned subjects');
-  }
-  return response.json();
+  return await fetchJsonOnAPI(`/api/subjects?${query}`);
 };
