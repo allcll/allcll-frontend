@@ -85,11 +85,12 @@ jobs:
           AWS_REGION: ${{ secrets.DEV_AWS_DEFAULT_REGION }}
           SOURCE_DIR: ${{env.project-directory}}/dist
 
-      - name: Cloudfront invalidation
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id ${{ secrets.DEV_AWS_DISTRIBUTION_ID }} \
-            --paths "/*"
+      - name: Invalidate CloudFront Cache
+        uses: chetan/invalidate-cloudfront-action@master
+        env:
+          AWS_DISTRIBUTION: ${{ secrets.DEV_AWS_DISTRIBUTION_ID }}
+          PATHS: '/*'
+        continue-on-error: true
 
   client-test:
     runs-on: ubuntu-latest
