@@ -26,3 +26,16 @@ export function fetchEventSource(url: string, options?: EventSourceInit): EventS
     ...options,
   });
 }
+
+export async function fetchJsonOnPublic<T>(url: string, options?: RequestInit): Promise<T> {
+  const response = await fetch(url, {
+    credentials: 'include',
+    ...options,
+  });
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+
+  return await response.json();
+}
