@@ -57,6 +57,10 @@ jobs:
           name: production-files
           path: ${{env.project-directory}}/dist
 
+      - name: Delete unused files
+        run: |
+          rm -rf ${{env.project-directory}}/dist/report.html
+
       # Deployment
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@master
