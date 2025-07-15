@@ -101,10 +101,6 @@ jobs:
           npm install -g pnpm
           pnpm i --frozen-lockfile
 
-      - name: Install dependencies
-        run: |
-          pnpm ci
-
       - name: Install Playwright Browsers
         run: |
           cd ./packages/e2e
