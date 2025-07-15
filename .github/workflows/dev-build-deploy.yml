@@ -41,8 +41,8 @@ jobs:
         run: |
           pnpm run build-client
           cd ${{env.project-directory}}
-          mkdir -p ./build
-          cp -r dist ./build
+#          mkdir -p ./build
+#          cp -r dist ./build
 #          cp package.json ./build/package.json
 #          cp pnpm-lock.yaml ./build/pnpm-lock.yaml
         env:
@@ -55,15 +55,11 @@ jobs:
           VITE_DEV_SERVER: true
         working-directory: ${{env.working-directory}}
 
-      #    - name: Run tests
-      #      run: npm run test
-      #      working-directory: ${{env.working-directory}}
-
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v4
         with:
           name: production-files
-          path: ${{env.project-directory}}/build
+          path: ${{env.project-directory}}/dist
 
 #      - name: Download artifact
 #        uses: actions/download-artifact@v4
@@ -71,12 +67,12 @@ jobs:
 #          name: production-files
 #          path: ./build
 
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GIT_TOKEN }}
-          publish_dir: ${{env.project-directory}}/build
-          publish_branch: 'gh-dev-pages'
+#      - name: Deploy to gh-pages
+#        uses: peaceiris/actions-gh-pages@v3
+#        with:
+#          github_token: ${{ secrets.GIT_TOKEN }}
+#          publish_dir: ${{env.project-directory}}/build
+#          publish_branch: 'gh-dev-pages'
 
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@master
@@ -87,7 +83,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.DEV_AWS_DEFAULT_REGION }}
-          SOURCE_DIR: "build"
+          SOURCE_DIR: ${{env.project-directory}}/dist
 
   client-test:
     runs-on: ubuntu-latest
