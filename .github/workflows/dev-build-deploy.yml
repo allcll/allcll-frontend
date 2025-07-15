@@ -85,10 +85,16 @@ jobs:
           AWS_REGION: ${{ secrets.DEV_AWS_DEFAULT_REGION }}
           SOURCE_DIR: ${{env.project-directory}}/dist
 
+      - name: Cloudfront invalidation
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.DEV_AWS_DISTRIBUTION_ID }} \
+            --paths "/*"
+
   client-test:
     runs-on: ubuntu-latest
     needs: client-deploy
-    timeout-minutes: 25
+    timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v4
