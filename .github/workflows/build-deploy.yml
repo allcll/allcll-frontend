@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  client-deploy:
     name: build
     runs-on: ubuntu-latest
     env:
@@ -41,10 +41,6 @@ jobs:
         run: |
           pnpm run build-client
           cd ${{env.project-directory}}
-          mkdir -p ./build
-          cp -r dist ./build
-          cp package.json ./build/package.json
-#          cp pnpm-lock.yaml ./build/pnpm-lock.yaml
         env:
           CI: ''
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -55,43 +51,29 @@ jobs:
           VITE_DEV_SERVER: false
         working-directory: ${{env.working-directory}}
 
-      #    - name: Run tests
-      #      run: npm run test
-      #      working-directory: ${{env.working-directory}}
-
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v4
         with:
           name: production-files
-          path: ${{env.project-directory}}/build
+          path: ${{env.project-directory}}/dist
 
-      - name: Download artifact
-        uses: actions/download-artifact@v4
+      # Deployment
+      - name: Deploy to S3
+        uses: jakejarvis/s3-sync-action@master
         with:
-          name: production-files
-          path: ./build
+          args: --acl public-read --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.MAIN_AWS_BUCKET_NAME }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.MAIN_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.MAIN_AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.MAIN_AWS_DEFAULT_REGION }}
+          SOURCE_DIR: ${{env.project-directory}}/dist
 
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GIT_TOKEN }}
-          publish_dir: ${{env.project-directory}}/build
-
-  Deploy:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: executing remote ssh commands using ssh key
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.MAIN_SERVER_HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.MAIN_SERVER_SSH_KEY }}
-          #passphrase: ${{ secrets.PASSPHRASE }}
-          port: 22
-          script: |
-            cd ${{ secrets.PWD }}
-            sudo git pull https://${{ secrets.GIT_TOKEN }}:x-oauth-basic@github.com/allcll/frontend.git gh-pages
-            sudo systemctl reload nginx
-            # 필요한 cmd 명령어 사용
+      - name: Invalidate CloudFront
+        uses: chetan/invalidate-cloudfront-action@master
+        env:
+          PATHS: '/*'
+          AWS_ACCESS_KEY_ID: ${{ secrets.MAIN_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.MAIN_AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.MAIN_AWS_DEFAULT_REGION }}
+          DISTRIBUTION: ${{ secrets.MAIN_AWS_DISTRIBUTION_ID }}
