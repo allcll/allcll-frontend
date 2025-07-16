@@ -16,9 +16,13 @@ function SimulationSearchForm() {
     ongoingSimulation && 'userStatus' in ongoingSimulation ? ongoingSimulation.userStatus?.departmentName : -1;
 
   const handleClickRestart = () => {
-    if (hasRunningSimulationId === -1 && currentSimulation.simulationStatus !== 'progress') {
-      openModal('wish');
-    }
+    setCurrentSimulation({
+      simulationStatus: 'before',
+    });
+
+    // if (hasRunningSimulationId === -1 && currentSimulation.simulationStatus !== 'progress') {
+    //   openModal('wish');
+    // }
   };
 
   const handleStartSimulation = async () => {
@@ -34,6 +38,8 @@ function SimulationSearchForm() {
             simulationStatus: 'progress',
             clickedTime: elapsedSeconds > 10 ? 5 : elapsedSeconds,
           });
+
+          console.log(currentSimulation.simulationStatus);
 
           openModal('waiting');
         }

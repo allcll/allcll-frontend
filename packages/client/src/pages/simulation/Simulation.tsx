@@ -53,7 +53,6 @@ function Simulation() {
 
   const hasOngoingSimulation =
     ongoingSimulation && 'simulationId' in ongoingSimulation && ongoingSimulation.simulationId !== -1;
-
   const currentModal = useSimulationModalStore(state => state.type);
 
   const loadCurrentSimulation = (
@@ -73,9 +72,9 @@ function Simulation() {
   };
 
   const reloadSimulationStatus = () => {
-    if (currentSimulation.simulationStatus === 'progress') {
-      openModal('waiting');
-    }
+    // if (currentSimulation.simulationStatus === 'progress') {
+    //   openModal('waiting');
+    // }
 
     getSimulateStatus()
       .then(result => {
@@ -107,15 +106,12 @@ function Simulation() {
      * 새로고침 시 진행 중인 시뮬레이션이 있다면
      * 현재 시뮬레이션으로 저장
      */
-    if (
-      hasOngoingSimulation &&
-      currentSimulation.simulationStatus !== 'selectedDepartment' &&
-      currentSimulation.simulationStatus !== 'start'
-    ) {
-      reloadSimulationStatus();
-    }
 
-    if (!hasOngoingSimulation && currentSimulation.simulationStatus !== 'progress') {
+    if (!hasOngoingSimulation) return;
+
+    if (hasOngoingSimulation) {
+      reloadSimulationStatus();
+    } else if (currentSimulation.simulationStatus === 'before' || currentSimulation.simulationStatus === 'start') {
       openModal('wish');
     }
   }, [currentSimulation.simulationStatus]);
