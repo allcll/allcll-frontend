@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchJsonOnAPI } from '@/utils/api.ts';
+import { fetchJsonOnPublic } from '@/utils/api.ts';
 
 export interface FaqElement {
   question: string;
@@ -20,7 +20,7 @@ function useFaq() {
 }
 
 const fetchFaq = async () => {
-  return await fetchJsonOnAPI<FaqAPIResponse>('/faq.json');
+  return await fetchJsonOnPublic<FaqAPIResponse>('/faq.json');
 };
 
 export default useFaq;
