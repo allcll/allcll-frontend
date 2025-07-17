@@ -20,9 +20,7 @@ function SimulationSearchForm() {
       simulationStatus: 'before',
     });
 
-    // if (hasRunningSimulationId === -1 && currentSimulation.simulationStatus !== 'progress') {
-    //   openModal('wish');
-    // }
+    openModal('wish');
   };
 
   const handleStartSimulation = async () => {

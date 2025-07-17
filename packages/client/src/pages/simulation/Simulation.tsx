@@ -51,8 +51,11 @@ function Simulation() {
   const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore();
   const ongoingSimulation = useLiveQuery(checkOngoingSimulation);
 
-  const hasOngoingSimulation =
-    ongoingSimulation && 'simulationId' in ongoingSimulation && ongoingSimulation.simulationId !== -1;
+  // const hasOngoingSimulation =
+  //   ongoingSimulation && 'simulationId' in ongoingSimulation && ongoingSimulation.simulationId !== -1;
+
+  const hasRunningSimulationId =
+    ongoingSimulation && 'simulationId' in ongoingSimulation ? ongoingSimulation.simulationId : -1;
   const currentModal = useSimulationModalStore(state => state.type);
 
   const loadCurrentSimulation = (
@@ -66,16 +69,11 @@ function Simulation() {
 
     setCurrentSimulation({
       simulationId: simulationId,
-      simulationStatus: 'progress',
       [key]: filteredSubjects,
     });
   };
 
   const reloadSimulationStatus = () => {
-    // if (currentSimulation.simulationStatus === 'progress') {
-    //   openModal('waiting');
-    // }
-
     getSimulateStatus()
       .then(result => {
         if (!result || result.simulationId === -1) return;
@@ -106,10 +104,7 @@ function Simulation() {
      * 새로고침 시 진행 중인 시뮬레이션이 있다면
      * 현재 시뮬레이션으로 저장
      */
-
-    if (!hasOngoingSimulation) return;
-
-    if (hasOngoingSimulation) {
+    if (hasRunningSimulationId) {
       reloadSimulationStatus();
     } else if (currentSimulation.simulationStatus === 'before' || currentSimulation.simulationStatus === 'start') {
       openModal('wish');
@@ -155,12 +150,8 @@ function Simulation() {
           <table className="w-full border border-gray-300 border-t-3 text-xs border-t-black text-center">
             <SimulationSubjectsHeader />
 
-            {hasOngoingSimulation ? (
-              currentSimulation.simulationStatus === 'progress' && currentModal !== 'waiting' ? (
-                <SubjectsTable isRegisteredTable={false} />
-              ) : (
-                <NothingTable />
-              )
+            {currentSimulation.simulationStatus === 'progress' && currentModal !== 'waiting' ? (
+              <SubjectsTable isRegisteredTable={false} />
             ) : (
               <NothingTable />
             )}
@@ -193,12 +184,8 @@ function Simulation() {
           <table className="w-full border border-gray-300 border-t-3 text-xs border-t-black text-center">
             <SimulationSubjectsHeader />
 
-            {hasOngoingSimulation ? (
-              currentSimulation.simulationStatus === 'progress' && currentModal !== 'waiting' ? (
-                <SubjectsTable isRegisteredTable={true} />
-              ) : (
-                <NothingTable />
-              )
+            {currentSimulation.simulationStatus === 'progress' && currentModal !== 'waiting' ? (
+              <SubjectsTable isRegisteredTable={true} />
             ) : (
               <NothingTable />
             )}
