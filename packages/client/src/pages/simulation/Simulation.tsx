@@ -8,13 +8,10 @@ import SubjectsTable from '@/components/simulation/table/SubjectsTable';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { checkOngoingSimulation } from '@/utils/simulation/simulation';
-import { getSimulateStatus } from '@/utils/simulation/subjects';
-import { findSubjectsById } from '@/utils/subjectPicker';
-import { SimulationSubject } from '@/utils/types';
-import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import SimulationSearchForm from '@/components/simulation/SimulationSearchForm';
+import { useReloadSimulation } from '@/hooks/useReloadSimulation';
 
 const SUBJECTS_COLUMNS_HEADER = [
   '순번',
@@ -48,55 +45,19 @@ function SimulationSubjectsHeader() {
 
 function Simulation() {
   const { type, openModal, closeModal } = useSimulationModalStore();
-  const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore();
-  const ongoingSimulation = useLiveQuery(checkOngoingSimulation);
+  const { currentSimulation } = useSimulationProcessStore();
+  const { reloadSimulationStatus } = useReloadSimulation();
 
-  // const hasOngoingSimulation =
-  //   ongoingSimulation && 'simulationId' in ongoingSimulation && ongoingSimulation.simulationId !== -1;
-
-  const hasRunningSimulationId =
-    ongoingSimulation && 'simulationId' in ongoingSimulation ? ongoingSimulation.simulationId : -1;
   const currentModal = useSimulationModalStore(state => state.type);
 
-  const loadCurrentSimulation = (
-    subjects: { subjectId: number }[],
-    key: 'nonRegisteredSubjects' | 'registeredSubjects',
-    simulationId: number,
-  ) => {
-    const filteredSubjects = subjects
-      .map(subject => findSubjectsById(subject.subjectId))
-      .filter((subject): subject is SimulationSubject => subject !== undefined);
-
-    setCurrentSimulation({
-      simulationId: simulationId,
-      [key]: filteredSubjects,
+  const checkHasSimulation = () => {
+    checkOngoingSimulation().then(simulation => {
+      if (simulation && 'simulationId' in simulation && typeof simulation.simulationId === 'number') {
+        reloadSimulationStatus();
+      } else if (currentSimulation.simulationStatus === 'before' || currentSimulation.simulationStatus !== 'start') {
+        openModal('wish');
+      }
     });
-  };
-
-  const reloadSimulationStatus = () => {
-    getSimulateStatus()
-      .then(result => {
-        if (!result || result.simulationId === -1) return;
-
-        setCurrentSimulation({
-          simulationId: result.simulationId,
-          department: {
-            departmentCode: result?.userStatus?.departmentCode ?? '',
-            departmentName: result?.userStatus?.departmentName ?? '',
-          },
-        });
-
-        if (result?.nonRegisteredSubjects) {
-          loadCurrentSimulation(result.nonRegisteredSubjects, 'nonRegisteredSubjects', result.simulationId);
-        }
-
-        if (result?.registeredSubjects) {
-          loadCurrentSimulation(result.registeredSubjects, 'registeredSubjects', result.simulationId);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
   };
 
   useEffect(() => {
@@ -104,11 +65,7 @@ function Simulation() {
      * 새로고침 시 진행 중인 시뮬레이션이 있다면
      * 현재 시뮬레이션으로 저장
      */
-    if (hasRunningSimulationId) {
-      reloadSimulationStatus();
-    } else if (currentSimulation.simulationStatus === 'before' || currentSimulation.simulationStatus === 'start') {
-      openModal('wish');
-    }
+    checkHasSimulation();
   }, [currentSimulation.simulationStatus]);
 
   const totalCredits = currentSimulation.registeredSubjects.reduce((acc, subject) => {
