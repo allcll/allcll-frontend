@@ -52,9 +52,9 @@ function Simulation() {
 
   const checkHasSimulation = () => {
     checkOngoingSimulation().then(simulation => {
-      if (simulation && 'simulationId' in simulation && typeof simulation.simulationId === 'number') {
+      if (simulation && 'simulationId' in simulation && simulation.simulationId !== -1) {
         reloadSimulationStatus();
-      } else if (currentSimulation.simulationStatus === 'before' || currentSimulation.simulationStatus !== 'start') {
+      } else if (currentSimulation.simulationStatus === 'before') {
         openModal('wish');
       }
     });
@@ -64,6 +64,7 @@ function Simulation() {
     /**
      * 새로고침 시 진행 중인 시뮬레이션이 있다면
      * 현재 시뮬레이션으로 저장
+     * 과목 데이터 나눌 때 호출
      */
     checkHasSimulation();
   }, [currentSimulation.simulationStatus]);
