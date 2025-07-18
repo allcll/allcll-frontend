@@ -38,8 +38,6 @@ function SimulationSearchForm() {
             clickedTime: elapsedSeconds > 10 ? 5 : elapsedSeconds,
           });
 
-          console.log(currentSimulation.simulationStatus);
-
           openModal('waiting');
         }
       })

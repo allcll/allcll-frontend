@@ -63,7 +63,6 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
       if (forceFinish) {
         forceStopSimulation().then(() => {
           openModal('result');
-          // resetSimulation();
         });
       }
 
