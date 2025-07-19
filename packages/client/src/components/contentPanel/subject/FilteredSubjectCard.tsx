@@ -1,5 +1,5 @@
 import useInfScroll from '@/hooks/useInfScroll';
-import { Wishes } from '@/utils/types';
+import { Day, DepartmentType, Grade, Wishes } from '@/utils/types';
 import { WishesWithSeat } from '@/hooks/useWishesPreSeats.ts';
 import { ZeroElementRow } from '@/components/wishTable/Table';
 
@@ -11,19 +11,37 @@ interface ISubjectCard {
 interface ISubjectCards {
   subjects: WishesWithSeat[];
   isPending: boolean;
+  selectedDepartment: DepartmentType | '전체';
+  selectedGrades: Grade[];
+  selectedDays: Day[];
 }
 
-export function FilteredSubjectCards({ subjects, isPending = false }: ISubjectCards) {
+export function FilteredSubjectCards({
+  subjects,
+  isPending = false,
+  selectedDepartment,
+  selectedGrades,
+  selectedDays,
+}: ISubjectCards) {
   const { visibleRows } = useInfScroll(subjects ?? []);
   const data = subjects.slice(0, visibleRows);
   const isMore = data.length < subjects.length;
 
+  if (selectedDepartment === '전체') {
+  }
+
   if (isPending) return <div className="w-full h-10 bg-blue-100"></div>;
-  if (!subjects.length) return <ZeroElementRow col={subjects.length} />;
+  //TODO: ZeroSubject 컴포넌트 만들기
+  if (!subjects.length) return <div>검색 결과가 없습니다.</div>;
+
+  const filteredData = subjects.filter(subject => {
+    if (selectedDepartment === '전체') return true;
+    return subject.departmentName === selectedDepartment.departmentName;
+  });
 
   return (
     <div className="w-full flex flex-col gap-1">
-      {data.map(subject => (
+      {filteredData.map(subject => (
         <FilteredSubjectCard key={subject.subjectId} subject={subject} isActive={false} />
       ))}
 

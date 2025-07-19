@@ -60,3 +60,6 @@ export interface DepartmentType {
   departmentCode: string;
   departmentName: string;
 }
+
+export type Grade = 1 | 2 | 3 | 4;
+export type Day = '월' | '화' | '수' | '목' | '금';
