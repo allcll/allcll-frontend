@@ -43,7 +43,7 @@ interface ISimulationModal {
 function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
   const { closeModal, openModal } = useSimulationModalStore();
   const { currentSubjectId, setSubjectStatus, subjectStatusMap } = useSimulationSubjectStore();
-  const { resetSimulation } = useSimulationProcessStore();
+  const { setCurrentSimulation } = useSimulationProcessStore();
 
   const currentSubjectStatus = subjectStatusMap[currentSubjectId];
   const modalData = SIMULATION_MODAL_CONTENTS.find(data => data.status === currentSubjectStatus);
@@ -63,7 +63,6 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
       if (forceFinish) {
         forceStopSimulation().then(() => {
           openModal('result');
-          resetSimulation();
         });
       }
 
@@ -91,6 +90,9 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
     reloadSimulationStatus();
 
     if (result.finished) {
+      setCurrentSimulation({
+        simulationStatus: 'finish',
+      });
       openModal('result');
     }
 
@@ -103,10 +105,15 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
       if ('errMsg' in result) {
         alert(result.errMsg);
         await forceStopSimulation();
-        resetSimulation();
 
+        setCurrentSimulation({
+          simulationStatus: 'finish',
+        });
         openModal('result');
       } else if (result.finished) {
+        setCurrentSimulation({
+          simulationStatus: 'finish',
+        });
         openModal('result');
       }
     } catch (error) {
@@ -152,9 +159,17 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
         if ('errMsg' in result) {
           alert(result.errMsg);
           await forceStopSimulation();
-          resetSimulation();
+
+          setCurrentSimulation({
+            simulationStatus: 'finish',
+          });
+
           openModal('result');
         } else if (result.finished) {
+          setCurrentSimulation({
+            simulationStatus: 'finish',
+          });
+
           openModal('result');
         }
 

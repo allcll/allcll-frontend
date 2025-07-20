@@ -5,7 +5,7 @@ import SearchSvg from '@/assets/search-white.svg?react';
 import { BUTTON_EVENT, checkOngoingSimulation, triggerButtonEvent } from '@/utils/simulation/simulation';
 
 function SimulationSearchForm() {
-  const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore();
+  const { currentSimulation, setCurrentSimulation, resetSimulation } = useSimulationProcessStore();
   const { openModal } = useSimulationModalStore();
   const ongoingSimulation = useLiveQuery(checkOngoingSimulation);
 
@@ -16,9 +16,12 @@ function SimulationSearchForm() {
     ongoingSimulation && 'userStatus' in ongoingSimulation ? ongoingSimulation.userStatus?.departmentName : -1;
 
   const handleClickRestart = () => {
-    if (hasRunningSimulationId === -1 && currentSimulation.simulationStatus !== 'progress') {
-      openModal('wish');
-    }
+    setCurrentSimulation({
+      simulationStatus: 'before',
+    });
+
+    openModal('wish');
+    resetSimulation();
   };
 
   const handleStartSimulation = async () => {
