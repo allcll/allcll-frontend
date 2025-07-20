@@ -12,7 +12,7 @@ interface IFiltering {
 function Filtering({ label, children, className = '', isOpen, onToggle }: IFiltering) {
   return (
     <div className="relative inline-block">
-      <Chip label={label} type="select" selected={isOpen} onClick={() => onToggle(label)} />
+      <Chip label={label} chipType="select" selected={isOpen} onClick={() => onToggle(label)} />
       {isOpen && <FilterOption className={className}>{children}</FilterOption>}
     </div>
   );
