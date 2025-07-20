@@ -4,22 +4,24 @@ import { getSelectedColor } from '@/utils/colors';
 
 interface IChip {
   label: string;
-  selected: boolean;
-  type?: 'select' | 'cancle';
+  selected?: boolean;
+  chipType?: 'select' | 'cancle';
   onClick?: () => void;
 }
 
-function Chip({ label = 'Chip', selected = true, type = 'select', onClick, ...props }: IChip) {
+function Chip({ label = 'Chip', selected = false, chipType, onClick, ...props }: IChip) {
   return (
     <button
       type="button"
       className={`items-center justify-center px-3 py-2 rounded-lg cursor-pointer text-sm gap-4 flex flex-row max-w-40 ${getSelectedColor(selected)} 
-        focus:outline focus:outline-2`}
+    focus:outline focus:outline-2 focus:outline-blue-400`}
+      aria-pressed={selected}
       onClick={onClick}
       {...props}
     >
-      <span>{label}</span>
-      {type === 'select' ? <ArrowIcon selected={selected} /> : <CancelIcon selected={selected} />}
+      <span className="text-xs sm:text-sm truncate">{label}</span>
+      {chipType === 'select' && <ArrowIcon selected={selected} />}
+      {chipType === 'cancle' && <CancelIcon selected={selected} />}
     </button>
   );
 }
