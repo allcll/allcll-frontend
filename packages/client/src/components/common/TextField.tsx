@@ -16,7 +16,7 @@ function TextField({ onDelete, required, ...props }: ITextField) {
         type="text"
         required={required}
         {...props}
-        className="placeholder:text-gray-400 w-full p-2"
+        className="placeholder:text-gray-400 w-full p-2 text-sm"
       />
     </div>
   );

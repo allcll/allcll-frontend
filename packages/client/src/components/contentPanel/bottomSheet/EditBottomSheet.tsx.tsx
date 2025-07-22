@@ -2,12 +2,13 @@ import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
 import { useState } from 'react';
 import ScheduleFormContent from '../ScheduleFormContent';
+import { Day } from '@/utils/types';
 
 interface ScheduleInfo {
   subjectName: string;
   professorName: string;
   location: string;
-  dayOfWeek: string;
+  dayOfWeek: Day[];
   startTime: string;
   endTime: string;
 }
@@ -29,12 +30,12 @@ function EditBottomSheet({ shedule }: IEditBottomSheet) {
     subjectName: shedule?.subjectName ?? '',
     professorName: shedule?.professorName ?? '',
     location: shedule?.location ?? '',
-    dayOfWeek: shedule?.dayOfWeek ?? '',
+    dayOfWeek: shedule?.dayOfWeek ?? [],
     startTime: shedule?.startTime ?? '',
     endTime: shedule?.endTime ?? '',
   });
 
-  const onChange = (key: string, value: string) => {
+  const onChange = (key: string, value: string | Day[]) => {
     setScheduleForm(prev => ({ ...prev, [key]: value }));
   };
 
@@ -44,7 +45,7 @@ function EditBottomSheet({ shedule }: IEditBottomSheet) {
 
   return (
     <BottomSheet>
-      <BottomSheetHeader headerType="close" onClose={() => {}} />
+      <BottomSheetHeader title="과목 추가" headerType="close" onClose={() => {}} />
       <ScheduleFormContent scheduleForm={scheduleForm} onChange={onChange} handleSubmit={handleSubmit} />
     </BottomSheet>
   );

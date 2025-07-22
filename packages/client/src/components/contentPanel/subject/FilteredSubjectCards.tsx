@@ -1,27 +1,21 @@
 import useInfScroll from '@/hooks/useInfScroll';
-import { Day, DepartmentType, Grade, Wishes } from '@/utils/types';
+import { Wishes } from '@/utils/types';
 import { WishesWithSeat } from '@/hooks/useWishesPreSeats.ts';
 import { useState } from 'react';
+import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 
 interface ISubjectCards {
   subjects: WishesWithSeat[];
   isPending: boolean;
-  selectedDepartment: DepartmentType | '전체';
-  selectedGrades: Grade[];
-  selectedDays: Day[];
 }
 
-export function FilteredSubjectCards({
-  subjects,
-  isPending = false,
-  selectedDepartment,
-  selectedGrades,
-  selectedDays,
-}: ISubjectCards) {
+export function FilteredSubjectCards({ subjects, isPending = false }: ISubjectCards) {
   const { visibleRows } = useInfScroll(subjects ?? []);
   const data = subjects.slice(0, visibleRows);
   const isMore = data.length < subjects.length;
   const [selectedSubjectId, setSelectedSubjectId] = useState<number>();
+  const { selectedDepartment, selectedGrades, selectedDays, selectedTimeRange, setFilterSchedule } =
+    useFilterScheduleStore();
 
   if (selectedDepartment === '전체') {
   }
@@ -32,7 +26,7 @@ export function FilteredSubjectCards({
 
   const filteredData = subjects.filter(subject => {
     if (selectedDepartment === '전체') return true;
-    return subject.departmentName === selectedDepartment.departmentName;
+    return subject.departmentName === selectedDepartment;
   });
 
   return (

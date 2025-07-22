@@ -6,14 +6,14 @@ interface ScheduleInfo {
   subjectName: string;
   professorName: string;
   location: string;
-  dayOfWeek: string;
+  dayOfWeek: Day[];
   startTime: string;
   endTime: string;
 }
 
 interface IEditBottomSheet {
   scheduleForm?: ScheduleInfo;
-  onChange: (key: string, value: string) => void;
+  onChange: (key: string, value: string | Day[]) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
@@ -22,12 +22,12 @@ const DAYS: Day[] = ['월', '화', '수', '목', '금'];
 function ScheduleFormContent({ scheduleForm, onChange, handleSubmit }: IEditBottomSheet) {
   const textFields = [
     {
-      id: 'subject',
+      id: 'subjectName',
       placeholder: '과목명',
       value: scheduleForm?.subjectName ?? '',
     },
     {
-      id: 'professor',
+      id: 'professorName',
       placeholder: '교수명',
       value: scheduleForm?.professorName ?? '',
     },
@@ -58,8 +58,8 @@ function ScheduleFormContent({ scheduleForm, onChange, handleSubmit }: IEditBott
           <Chip
             key={day}
             label={day}
-            selected={scheduleForm?.dayOfWeek === day}
-            onClick={() => onChange('dayOfWeek', day)}
+            selected={scheduleForm?.dayOfWeek.includes(day)}
+            onClick={() => onChange('dayOfWeek', [...scheduleForm?.dayOfWeek ?? [], day])}
           />
         ))}
       </div>

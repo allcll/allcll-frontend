@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import SearchBox from '../common/SearchBox';
-import { FilteredSubjectCards } from './subject/FilteredSubjectCard';
+import { FilteredSubjectCards } from './subject/FilteredSubjectCards';
 import useWishes from '@/hooks/server/useWishes';
-import { Day, DepartmentType, Grade, Wishes } from '@/utils/types';
+import { Wishes } from '@/utils/types';
 import DepartmentFilter from './filter/DepartmentFilter';
 import GradeFilter from './filter/GradeFilter';
 import DayFilter from './filter/DayFilter';
@@ -11,19 +11,11 @@ import { disassemble } from 'es-hangul';
 type FilterType = '학과' | '학년' | '요일' | null;
 
 function ContentPanel() {
-  const [selectedGrades, setSelectedGrades] = useState<Grade[]>([]);
-  const [selectedDays, setSelectedDays] = useState<Day[]>([]);
-  const [selectedDepartment, setSelectedDepartment] = useState<DepartmentType | '전체'>('전체');
-
   const [openFilter, setOpenFilter] = useState<FilterType | null>(null);
 
   const [searchKeywords, setSearchKeywords] = useState<string>('');
   const [filteredData, setFilteredData] = useState<Wishes[]>([]);
   const { data: subjects, isPending } = useWishes();
-
-  const toggleFilter = (label: FilterType) => {
-    setOpenFilter(prev => (prev === label ? null : label));
-  };
 
   useEffect(() => {
     if (!setSearchKeywords) return;
@@ -56,6 +48,7 @@ function ContentPanel() {
 
   return (
     <div className="w-full  h-screen md:basis-1/3 p-4 md:border-t-0 flex flex-col gap-3 bg-white shadow-md rounded-lg">
+      {/* <AddSubjectModal /> */}
       <SearchBox
         type="text"
         placeholder="과목명 검색"
@@ -64,36 +57,13 @@ function ContentPanel() {
       />
 
       <div className="flex flex-row gap-3">
-        <DepartmentFilter
-          openFilter={openFilter}
-          toggleFilter={() => toggleFilter('학과')}
-          selectedDepartment={selectedDepartment}
-          setSelectedDepartment={setSelectedDepartment}
-        />
-
-        <GradeFilter
-          openFilter={openFilter}
-          toggleFilter={() => toggleFilter('학년')}
-          selectedGrades={selectedGrades}
-          setSelectedGrades={setSelectedGrades}
-        />
-
-        <DayFilter
-          openFilter={openFilter}
-          toggleFilter={() => toggleFilter('요일')}
-          selectedDays={selectedDays}
-          setSelectedDays={setSelectedDays}
-        />
+        <DepartmentFilter openFilter={openFilter} toggleFilter={() => setOpenFilter('학과')} />
+        <GradeFilter openFilter={openFilter} toggleFilter={() => setOpenFilter('학년')} />
+        <DayFilter openFilter={openFilter} toggleFilter={() => setOpenFilter('요일')} />
       </div>
 
       <div className="overflow-y-auto max-h-[80vh]">
-        <FilteredSubjectCards
-          subjects={filteredData}
-          isPending={isPending}
-          selectedDepartment={selectedDepartment}
-          selectedGrades={selectedGrades}
-          selectedDays={selectedDays}
-        />
+        <FilteredSubjectCards subjects={filteredData} isPending={isPending} />
       </div>
     </div>
   );
