@@ -4,17 +4,30 @@ import { Day } from '@/utils/types';
 
 const DAYS: Day[] = ['월', '화', '수', '목', '금'];
 
-function DayFilter(props: { openFilter: '학과' | '학년' | '요일' | null; toggleFilter: () => void }) {
-  const { openFilter, toggleFilter } = props;
+interface IDayFilter {
+  openFilter: boolean;
+  onToggle: () => void;
+}
+
+function DayFilter(props: IDayFilter) {
+  const { openFilter, onToggle } = props;
+
   const { selectedDays, setFilterSchedule } = useFilterScheduleStore();
+
+  const handleChangeCheckbox = (item: Day) => {
+    const isSelected = selectedDays.includes(item);
+    const updatedDays = isSelected ? selectedDays.filter(day => day !== item) : [...selectedDays, item];
+
+    setFilterSchedule('selectedDays', updatedDays);
+  };
 
   return (
     <CheckboxFilter
       labelPrefix="요일"
       openFilter={openFilter}
-      toggleFilter={toggleFilter}
+      toggleFilter={onToggle}
       selectedItems={selectedDays}
-      setSelectedItems={() => setFilterSchedule('selectedDays', selectedDays)}
+      handleChangeCheckbox={handleChangeCheckbox}
       options={DAYS}
     />
   );

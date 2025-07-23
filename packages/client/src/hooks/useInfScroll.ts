@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { Subject, Wishes } from '@/utils/types.ts';
+import { SimulationSubject, Subject, Wishes } from '@/utils/types.ts';
 
 // 스크롤 3번 정도 사이즈 : 45
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 45;
 
 // .load-more-trigger 인 항목 추가
-function useInfScroll(data: Wishes[] | Subject[]) {
+function useInfScroll(data: Wishes[] | Subject[] | SimulationSubject[]) {
   const [visibleRows, setVisibleRows] = useState(PAGE_SIZE);
   const observerRef = useRef<IntersectionObserver | null>(null);
 

@@ -3,10 +3,10 @@ import Checkbox from '@/components/common/Checkbox';
 
 interface ICheckboxFilter<T extends string | number> {
   labelPrefix: string;
-  openFilter: '학과' | '학년' | '요일' | null;
+  openFilter: boolean;
   toggleFilter: () => void;
   selectedItems: T[];
-  setSelectedItems: React.Dispatch<React.SetStateAction<T[]>>;
+  handleChangeCheckbox: (item: T) => void;
   options: T[];
 }
 
@@ -15,14 +15,10 @@ function CheckboxFilter<T extends string | number>({
   openFilter,
   toggleFilter,
   selectedItems,
-  setSelectedItems,
+  handleChangeCheckbox,
   options,
 }: ICheckboxFilter<T>) {
   const checkSelected = (item: T) => selectedItems.includes(item);
-
-  const handleChange = (item: T) => {
-    setSelectedItems(prev => (prev.includes(item) ? prev.filter(i => i !== item) : [...prev, item]));
-  };
 
   const label =
     selectedItems.length === 0
@@ -32,13 +28,13 @@ function CheckboxFilter<T extends string | number>({
         : `${selectedItems[0]}${labelPrefix}`;
 
   return (
-    <Filtering label={label} isOpen={openFilter === labelPrefix} onToggle={toggleFilter}>
+    <Filtering label={label} isOpen={openFilter} onToggle={toggleFilter}>
       {options.map(item => (
         <Checkbox
           key={item}
           label={`${item}${labelPrefix}`}
           isChecked={checkSelected(item)}
-          onChange={() => handleChange(item)}
+          onChange={() => handleChangeCheckbox(item)}
         />
       ))}
     </Filtering>

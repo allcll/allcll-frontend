@@ -16,10 +16,11 @@ const MINUTES = ['0분', '10분', '20분', '30분', '40분', '50분'];
 function SelectTime({ timeRange, onChange }: ISelectTime) {
   return (
     <div className=" w-full h-15 flex gap-2 flex flex-col justify-center">
-      <label className="text-xs text-gray-500">시간</label>
+      <label className="text-xs text-gray-400">시간</label>
       <div className="relative w-full flex gap-2 flex-wrap">
         <select
-          value={timeRange.startHour}
+          name=""
+          value={timeRange.startHour ?? HOURS[0]}
           onChange={e => onChange('startHour', e.target.value)}
           className="bg-gray-100 px-3 py-2 rounded-md text-xs text-gray-600 w-fit"
         >
@@ -30,7 +31,7 @@ function SelectTime({ timeRange, onChange }: ISelectTime) {
           ))}
         </select>
         <select
-          value={timeRange.startMinute}
+          value={timeRange.startMinute ?? MINUTES[0]}
           onChange={e => onChange('startMinute', e.target.value)}
           className="bg-gray-100 px-3 py-2 rounded-md text-xs text-gray-600 w-fit"
         >
@@ -44,7 +45,7 @@ function SelectTime({ timeRange, onChange }: ISelectTime) {
         <span className="text-gray-400 text-sm mx-1">~</span>
 
         <select
-          value={timeRange.endHour}
+          value={timeRange.endHour ?? HOURS[0]}
           onChange={e => onChange('endHour', e.target.value)}
           className="bg-gray-100 px-3 py-2 rounded-md text-xs text-gray-600 w-fit"
         >
@@ -55,7 +56,7 @@ function SelectTime({ timeRange, onChange }: ISelectTime) {
           ))}
         </select>
         <select
-          value={timeRange.endMinute}
+          value={timeRange.endMinute ?? MINUTES[0]}
           onChange={e => onChange('endMinute', e.target.value)}
           className="bg-gray-100 px-3 py-2 rounded-md text-xs text-gray-600 w-fit"
         >

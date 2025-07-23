@@ -2,42 +2,50 @@ import useDepartments from '@/hooks/server/useDepartments';
 import Filtering from './Filtering';
 import SearchBox from '../../common/SearchBox';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
+import { DepartmentType } from '@/utils/types';
 
 interface IDepartmentFilter {
-  openFilter: '학과' | '학년' | '요일' | null;
-  toggleFilter: () => void;
+  openFilter: boolean;
+  onToggle: () => void;
 }
 
-function DepartmentFilter({ openFilter, toggleFilter }: IDepartmentFilter) {
+function DepartmentFilter({ openFilter, onToggle }: IDepartmentFilter) {
   function pickCollegeOrMajor(selectedDepartment: string) {
     const splitDepartment = selectedDepartment.split(' ');
     return splitDepartment[splitDepartment.length - 1];
   }
+  const { data: departments } = useDepartments();
+
+  const departmentsList = [{ departmentName: '전체 학과', departmentCode: '' }, ...(departments ?? [])];
 
   const { selectedDepartment, setFilterSchedule } = useFilterScheduleStore();
-
   const customDepartmentLabel = selectedDepartment === '전체' ? '전체' : pickCollegeOrMajor(selectedDepartment);
+  console.log('departments', departments);
 
   return (
     <>
       <Filtering
         label={customDepartmentLabel}
-        isOpen={openFilter === '학과'}
-        onToggle={toggleFilter}
+        isOpen={openFilter}
+        onToggle={onToggle}
         className="max-h-80 overflow-y-auto"
       >
         <div className="flex flex-col h-80">
           <div className="shrink-0 px-2 py-2 bg-white">
             <SearchBox
+              type="text"
               placeholder="학과 검색"
               onDelete={() => {
                 setFilterSchedule('selectedDepartment', '전체');
+              }}
+              onChange={e => {
+                setFilterSchedule('selectedDepartment', e.target.value);
               }}
             />
           </div>
 
           <div className="overflow-y-auto flex-1 px-2 py-2">
-            <SelectSubject toggleFilter={toggleFilter} />
+            <SelectSubject departments={departmentsList} toggleFilter={onToggle} />
           </div>
         </div>
       </Filtering>
@@ -49,10 +57,10 @@ export default DepartmentFilter;
 
 interface ISelectSubject {
   toggleFilter: () => void;
+  departments: DepartmentType[];
 }
 
-export function SelectSubject({ toggleFilter }: ISelectSubject) {
-  const { data: departments } = useDepartments();
+export function SelectSubject({ toggleFilter, departments }: ISelectSubject) {
   const selected = '전체';
   const { setFilterSchedule } = useFilterScheduleStore();
 

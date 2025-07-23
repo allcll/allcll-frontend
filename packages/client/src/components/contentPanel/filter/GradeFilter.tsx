@@ -4,16 +4,29 @@ import { Grade } from '@/utils/types';
 
 const GRADE: Grade[] = [1, 2, 3, 4];
 
-function GradeFilter(props: { openFilter: '학과' | '학년' | '요일' | null; toggleFilter: () => void }) {
-  const { openFilter, toggleFilter } = props;
+interface IGradeFilter {
+  openFilter: boolean;
+  onToggle: () => void;
+}
+
+function GradeFilter(props: IGradeFilter) {
+  const { openFilter, onToggle } = props;
   const { selectedGrades, setFilterSchedule } = useFilterScheduleStore();
+
+  const handleChangeCheckbox = (item: Grade) => {
+    const isSelected = selectedGrades.includes(item);
+    const updateGrades = isSelected ? selectedGrades.filter(grade => grade !== item) : [...selectedGrades, item];
+
+    setFilterSchedule('selectedGrades', updateGrades);
+  };
+
   return (
     <CheckboxFilter
       labelPrefix="학년"
       openFilter={openFilter}
-      toggleFilter={toggleFilter}
+      toggleFilter={onToggle}
       selectedItems={selectedGrades}
-      setSelectedItems={() => setFilterSchedule('selectedGrades', selectedGrades)}
+      handleChangeCheckbox={handleChangeCheckbox}
       options={GRADE}
     />
   );

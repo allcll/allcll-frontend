@@ -1,11 +1,10 @@
 import useInfScroll from '@/hooks/useInfScroll';
-import { Wishes } from '@/utils/types';
-import { WishesWithSeat } from '@/hooks/useWishesPreSeats.ts';
+import { Subject } from '@/utils/types';
 import { useState } from 'react';
-import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
+import ZeroListError from '../errors/ZeroListError';
 
 interface ISubjectCards {
-  subjects: WishesWithSeat[];
+  subjects: Subject[];
   isPending: boolean;
 }
 
@@ -14,24 +13,14 @@ export function FilteredSubjectCards({ subjects, isPending = false }: ISubjectCa
   const data = subjects.slice(0, visibleRows);
   const isMore = data.length < subjects.length;
   const [selectedSubjectId, setSelectedSubjectId] = useState<number>();
-  const { selectedDepartment, selectedGrades, selectedDays, selectedTimeRange, setFilterSchedule } =
-    useFilterScheduleStore();
-
-  if (selectedDepartment === '전체') {
-  }
 
   if (isPending) return <div className="w-full h-10 bg-blue-100"></div>;
   //TODO: ZeroSubject 컴포넌트 만들기
-  if (!subjects.length) return <div>검색 결과가 없습니다.</div>;
-
-  const filteredData = subjects.filter(subject => {
-    if (selectedDepartment === '전체') return true;
-    return subject.departmentName === selectedDepartment;
-  });
+  if (!subjects.length) return <ZeroListError />;
 
   return (
     <div className="w-full flex flex-col gap-1">
-      {filteredData.map(subject => (
+      {data.map(subject => (
         <FilteredSubjectCard
           key={subject.subjectId}
           subject={subject}
@@ -40,14 +29,14 @@ export function FilteredSubjectCards({ subjects, isPending = false }: ISubjectCa
         />
       ))}
 
-      {isMore && <div className="load-more-trigger h-3 mt-4 bg-transparent" />}
+      {isMore && <div className="load-more-trigger h-10 mt-4 bg-transparent" />}
     </div>
   );
 }
 
 interface ISubjectCard {
   isActive?: boolean;
-  subject: Wishes;
+  subject: Subject;
   onClick: () => void;
 }
 
@@ -56,7 +45,7 @@ function FilteredSubjectCard({ isActive, subject, onClick }: ISubjectCard) {
 
   return (
     <div
-      className={`border border-gray-200 rounded-lg cursor-pointer p-3 sm:p-4 gap-2 sm:gap-3 flex flex-col ${color}`}
+      className={`border border-gray-200 rounded-lg cursor-pointer p-3 sm:p-4 gap-2 sm:gap-3 flex flex-col cursor-pointer ${color}`}
       onClick={onClick}
     >
       <div className="flex justify-between items-center">
@@ -64,7 +53,12 @@ function FilteredSubjectCard({ isActive, subject, onClick }: ISubjectCard) {
         <span className="text-xs sm:text-sm text-gray-500">{subject.professorName}</span>
       </div>
 
-      <span className="text-xs sm:text-sm text-gray-500">강의 시간 / 강의실</span>
+      <span className="text-xs sm:text-sm text-gray-500">
+        {subject.lesn_time}/{subject.lesn_room}
+      </span>
+      <span className="text-xs sm:text-sm text-gray-500">
+        {subject.semester_at}학기/{subject.tm_num}학점/{subject.departmentName}
+      </span>
 
       <div className="flex justify-between items-center">
         <div
@@ -72,7 +66,7 @@ function FilteredSubjectCard({ isActive, subject, onClick }: ISubjectCard) {
             isActive ? '' : 'bg-gray-100 px-2 py-0.5 sm:px-2.5 sm:py-0.5'
           }`}
         >
-          3학점
+          {subject.tm_num}학점
         </div>
 
         {isActive && (
