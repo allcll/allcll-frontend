@@ -23,6 +23,11 @@ if (isProduction && !isDevServer) {
   ReactGA.initialize(import.meta.env.VITE_GOOGLE_ANALYTICS_ID);
 }
 
+if (!isProduction || !isDevServer) {
+  // @ts-ignore
+  window.__TANSTACK_QUERY_CLIENT__ = queryClient;
+}
+
 // load mock server
 if (!isProduction && UsingMockServer) {
   const { server } = await import('@allcll/mock-server');

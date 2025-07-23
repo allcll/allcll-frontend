@@ -1,17 +1,21 @@
-// import { useState } from 'react';
 import Schedule from '@/components/timetable/Schedule.tsx';
-import { ScheduleTime } from '@/hooks/server/useTimetableData.ts';
+import { DayNameType, ScheduleTime } from '@/hooks/server/useTimetableData.ts';
+import WireSchedules from '@/components/timetable/WireSchedules.tsx';
+// import { useMutateScheduleState } from '@/store/useMutateScheduleState.ts';
 
-function DaySchedule({ scheduleTimes }: Readonly<{ scheduleTimes: ScheduleTime[] }>) {
+interface IDayScheduleProps {
+  dayOfWeek: DayNameType;
+  scheduleTimes: ScheduleTime[];
+}
+
+function DaySchedule({ dayOfWeek, scheduleTimes }: Readonly<IDayScheduleProps>) {
   const Timeslots = scheduleTimes;
-  const RandomNumber = Math.floor(Math.random() * 1000);
-  // const [newSchedule, setNewSchedule] = useState(null);
+  // const timetableId = useMutateScheduleState(state => state.timetableId);
 
   const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    // Handle click event, e.g., open a modal or navigate to a detailed view
-    console.log('DaySchedule clicked');
-    console.log(RandomNumber, e.nativeEvent.offsetY);
+    console.log(e.currentTarget);
+    // Todo: Open modal to create a new schedule
   };
 
   return (
@@ -22,7 +26,7 @@ function DaySchedule({ scheduleTimes }: Readonly<{ scheduleTimes: ScheduleTime[]
       // onMouseMove={onMouseMove}
       // onMouseUp={onMouseUp}
     >
-      {/*<WireSchedule title="알고" professor="ㄴㄴ" location="ㄴ" color="violet" />*/}
+      <WireSchedules dayOfWeek={dayOfWeek} />
       {Timeslots.map(({ title, professor, location, color, width, height, top }, index) => (
         <Schedule
           key={'schedule-' + index}

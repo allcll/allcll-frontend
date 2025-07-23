@@ -1,4 +1,5 @@
-import { HTMLAttributes, useEffect, useState } from 'react';
+import { HTMLAttributes } from 'react';
+import { useScheduleDrag } from '@/hooks/useScheduleDrag.ts';
 
 type ColorType = 'rose' | 'amber' | 'green' | 'emerald' | 'blue' | 'violet';
 
@@ -20,54 +21,27 @@ function Schedule({
   ...attrs
 }: Readonly<IScheduleProps>) {
   const { text, bgLight, bg } = getColors(color);
-  const [dragging, setDragging] = useState(false);
+  const { dragging, onMouseDown } = useScheduleDrag(
+    () => {},
+    () => {},
+  );
 
   const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    // Handle click event, e.g., open a modal or navigate to a detailed view
-    console.log('Schedule clicked');
+
+    // Todo: 수정 모드
   };
-
-  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    // Handle mouse down event, e.g., start dragging or selecting
-    console.log('Schedule mouse down');
-    setDragging(true);
-  };
-
-  useEffect(() => {
-    if (!dragging) return;
-
-    const randomNumber = Math.floor(Math.random() * 1000);
-    const onMouseUp = (e: MouseEvent) => {
-      e.stopPropagation();
-      // Handle mouse up event, e.g., stop dragging or selecting
-      console.log(randomNumber, 'Mouse up at', e.clientX, e.clientY);
-      setDragging(false);
-    };
-    const onMouseMove = (e: MouseEvent) => {
-      e.stopPropagation();
-      // Handle mouse move event, e.g., update position or size
-      console.log(randomNumber, 'Mouse move at', e.clientX, e.clientY);
-    };
-
-    document.addEventListener('mouseup', onMouseUp);
-    document.addEventListener('mousemove', onMouseMove);
-    return () => {
-      document.removeEventListener('mouseup', onMouseUp);
-      document.removeEventListener('mousemove', onMouseMove);
-    };
-  }, [dragging]);
 
   return (
     <div
-      className={`flex absolute ${bgLight} rounded-l-xs ` + attrs.className}
+      className={`flex absolute ${bgLight} rounded-l-xs cursor-pointer ` + attrs.className}
       onClick={onClick}
       onMouseDown={onMouseDown}
+      tabIndex={0}
       {...attrs}
     >
       <div className={`w-1 h-full rounded-xs ${bg}`} />
-      <div className={'flex-auto p-2 ' + (selected ? 'animate-pulse' : '')}>
+      <div className={'flex-auto p-2 ' + (selected ? 'animate-pulse' : '') + (dragging ? 'opacity-50' : '')}>
         <h3 className={`${text} font-semibold text-sm`}>{title}</h3>
         <p className="text-xs text-gray-500">
           {professor} {location}

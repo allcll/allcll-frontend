@@ -1,13 +1,20 @@
 import Card from '@/components/common/Card.tsx';
 import DaySchedule from '@/components/timetable/DaySchedule.tsx';
-import { timetableAPIDummies } from '@/utils/timetable/dummies.ts';
-import { ScheduleTime, scheduleTimeAdapter } from '@/hooks/server/useTimetableData.ts';
-import useWishes from '@/hooks/server/useWishes.ts';
+import { DayNameType, ScheduleTime, useTimetableData } from '@/hooks/server/useTimetableData.ts';
+import { useMutateScheduleState } from '@/store/useMutateScheduleState.ts';
+
+const DAY_NAMES: DayNameType[] = ['월', '화', '수', '목', '금', '토', '일'];
+const DEFAULT_DAY_NAMES = DAY_NAMES.slice(0, 5); // Default to weekdays
+const DEFAULT_ROW_NAMES = Array.from({ length: 12 }, (_, i) => `${i + 9}`);
+export const HEADER_WIDTH = 60;
+export const ROW_HEIGHT = 40;
 
 function Timetable() {
-  const { data: wishes } = useWishes();
-  const timetable = scheduleTimeAdapter(timetableAPIDummies, wishes);
-  const { scheduleTimes, colNames, rowNames } = timetable ?? { scheduleTimes: undefined };
+  const timetableId = useMutateScheduleState(state => state.timetableId);
+  console.log('Timetable ID:', timetableId, !!timetableId && timetableId > 0);
+
+  const { data: timetable } = useTimetableData(timetableId);
+  const { scheduleTimes, colNames, rowNames } = timetable ?? {};
 
   return (
     <Card>
@@ -21,29 +28,23 @@ function Timetable() {
 function WeekTable({
   colNames = DEFAULT_DAY_NAMES,
   scheduleTimes,
-}: Readonly<{ colNames?: string[]; scheduleTimes?: Record<string, ScheduleTime[]> }>) {
+}: Readonly<{ colNames?: DayNameType[]; scheduleTimes?: Record<string, ScheduleTime[]> }>) {
   if (!scheduleTimes) {
     return <div className="text-gray-500 text-center">시간표가 없습니다.</div>;
   }
 
   return colNames.map(dayName => (
-    <DaySchedule key={'day-schedule-' + dayName} scheduleTimes={scheduleTimes[dayName]} />
+    <DaySchedule key={'day-schedule-' + dayName} scheduleTimes={scheduleTimes[dayName]} dayOfWeek={dayName} />
   ));
 }
 
 interface ITimetableGridProps {
-  colNames?: string[];
+  colNames?: DayNameType[];
   rowNames?: string[];
   headerWidth?: number;
   rowHeight?: number;
   children?: React.ReactNode;
 }
-
-const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-const DEFAULT_DAY_NAMES = DAY_NAMES.slice(0, 5); // Default to weekdays
-const DEFAULT_ROW_NAMES = Array.from({ length: 12 }, (_, i) => `${i + 9}`);
-export const HEADER_WIDTH = 60;
-export const ROW_HEIGHT = 40;
 
 function TimetableGrid({
   colNames = DEFAULT_DAY_NAMES,
