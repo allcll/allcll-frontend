@@ -11,7 +11,7 @@ export interface Timetable {
   timetableId: number;
   timetableName: string;
   semester: string; // e.g., "2025-1"
-  schedules: (OfficialSchedule | CustomSchedule)[];
+  schedules: ScheduleApiResponse[];
 }
 export interface OfficialSchedule {
   scheduleId: number;
@@ -26,6 +26,8 @@ export interface CustomSchedule extends Schedule {
   scheduleType: 'custom';
   subjectId: null;
 }
+
+type ScheduleApiResponse = OfficialSchedule | CustomSchedule;
 
 // 정보를 모두 담는 Schedule 인터페이스
 export interface Schedule {
@@ -70,7 +72,7 @@ export function useTimetableData(timetableId?: number) {
 }
 
 interface ScheduleMutationData {
-  schedule: OfficialSchedule | CustomSchedule;
+  schedule: ScheduleApiResponse;
   prevTimetable: Timetable;
 }
 
@@ -79,7 +81,7 @@ export function useCreateSchedule(timetableId?: number) {
 
   return useMutation({
     mutationFn: async ({ schedule }: ScheduleMutationData) =>
-      await fetchJsonOnAPI(`/api/timetables/${timetableId}/schuedules`, {
+      await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${timetableId}/schuedules`, {
         method: 'POST',
         body: JSON.stringify(schedule),
       }),
@@ -87,6 +89,16 @@ export function useCreateSchedule(timetableId?: number) {
       // Optimistically update the timetable data
       await queryClient.cancelQueries({ queryKey: ['timetableData', timetableId] });
       return mutateData;
+    },
+    onError: (error, __, context) => {
+      queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetable);
+      console.error(error);
+    },
+    onSuccess: async (schedule, _, context) => {
+      queryClient.setQueryData(['timetableData', timetableId], {
+        ...context.prevTimetable,
+        schedules: [...context.prevTimetable.schedules, schedule],
+      });
     },
   });
 }
@@ -96,14 +108,29 @@ export function useUpdateSchedule(timetableId?: number) {
 
   return useMutation({
     mutationFn: async ({ schedule }: ScheduleMutationData) =>
-      await fetchJsonOnAPI(`/api/timetables/${timetableId}/schuedules/${schedule.scheduleId}`, {
-        method: 'PUT',
+      await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${timetableId}/schuedules/${schedule.scheduleId}`, {
+        method: 'PATCH',
         body: JSON.stringify(schedule),
       }),
     onMutate: async mutateData => {
       // Optimistically update the timetable data
       await queryClient.cancelQueries({ queryKey: ['timetableData', timetableId] });
       return mutateData;
+    },
+    onError: (error, __, context) => {
+      queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetable);
+      console.error(error);
+    },
+    onSuccess: async (schedule, _, context) => {
+      queryClient.setQueryData(['timetableData', timetableId], {
+        ...context.prevTimetable,
+        schedules: context.prevTimetable.schedules.map(sch => {
+          if (sch.scheduleId === schedule.scheduleId) {
+            return { ...sch, ...schedule }; // Update the specific schedule
+          }
+          return sch; // Return unchanged schedules
+        }),
+      });
     },
   });
 }
@@ -119,13 +146,23 @@ export function useDeleteSchedule(timetableId?: number) {
       await queryClient.cancelQueries({ queryKey: ['timetableData', timetableId] });
       return mutateData;
     },
+    onError: (error, __, context) => {
+      queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetable);
+      console.error(error);
+    },
+    onSuccess: async (_, { schedule }, context) => {
+      queryClient.setQueryData(['timetableData', timetableId], {
+        ...context.prevTimetable,
+        schedules: context.prevTimetable.schedules.filter(sch => sch.scheduleId !== schedule.scheduleId),
+      });
+    },
   });
 }
 
 //// api 데이터 변경 로직
 
 interface IApiScheduleData {
-  schedules: (OfficialSchedule | CustomSchedule)[];
+  schedules: ScheduleApiResponse[];
 }
 
 function mergeTimetableData(apiScheduleData?: IApiScheduleData, wishes?: Wishes[]) {
