@@ -25,7 +25,7 @@ function useScheduleModal() {
   const prevTimetable = useRef<Timetable | undefined>(undefined);
 
   /** schedule 설정하면서 모달 열기 */
-  const open = (targetSchedule: Schedule) => {
+  const openScheduleModal = (targetSchedule: Schedule) => {
     // caching previous timetable data
     prevTimetable.current = queryClient.getQueryData<Timetable>(['timetableData', timetableId]);
 
@@ -120,7 +120,7 @@ function useScheduleModal() {
   return {
     modalActionType: mode,
     schedule: prevSchedule,
-    open,
+    openScheduleModal,
     editSchedule,
     saveSchedule,
     deleteSchedule,

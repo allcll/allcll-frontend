@@ -3,6 +3,7 @@ import { ScheduleTime } from '@/hooks/server/useTimetableData.ts';
 import WireSchedules from '@/components/timetable/WireSchedules.tsx';
 import { useScheduleDrag } from '@/hooks/useScheduleDrag.ts';
 import { Day } from '@/utils/types.ts';
+import useScheduleModal from '@/hooks/useScheduleModal.ts';
 
 interface IDayScheduleProps {
   dayOfWeek: Day;
@@ -11,6 +12,8 @@ interface IDayScheduleProps {
 
 function DaySchedule({ dayOfWeek, scheduleTimes }: Readonly<IDayScheduleProps>) {
   const Timeslots = scheduleTimes;
+  const { openScheduleModal } = useScheduleModal();
+
   const { onMouseDown } = useScheduleDrag(
     () => {},
     () => {},
@@ -20,6 +23,16 @@ function DaySchedule({ dayOfWeek, scheduleTimes }: Readonly<IDayScheduleProps>) 
     e.stopPropagation();
     console.log(e.relatedTarget);
     // Todo: Open modal to create a new schedule
+
+    openScheduleModal({
+      scheduleId: 0,
+      scheduleType: 'custom',
+      subjectId: null,
+      subjectName: '',
+      professorName: '',
+      location: '',
+      timeslots: [],
+    });
   };
 
   return (

@@ -16,7 +16,7 @@ interface IDragData {
   rows: number;
 }
 
-export function useScheduleDrag(onAreaChanged, onDragEnd) {
+export function useScheduleDrag(onAreaChanged: Function, onDragEnd: Function) {
   const timetableOptions = useScheduleState(state => state.options);
   const [dragging, setDragging] = useState(false);
 
@@ -121,6 +121,7 @@ export function useScheduleDrag(onAreaChanged, onDragEnd) {
   };
 }
 
+const TIME_DIV_COUNT = 6;
 // getDragPosition 함수는 동일하게 유지
 function getDragPosition(e: MouseEvent | React.MouseEvent<HTMLDivElement>, dragData: IDragData) {
   const { clientX, clientY, width, height, cols, rows } = dragData;
@@ -130,7 +131,7 @@ function getDragPosition(e: MouseEvent | React.MouseEvent<HTMLDivElement>, dragD
   const rowHeight = height / rows || 1;
 
   const x = Math.floor((e.clientX - clientX) / colWidth);
-  const y = Math.floor((e.clientY - clientY) / rowHeight);
+  const y = Math.floor(((e.clientY - clientY) / rowHeight) * TIME_DIV_COUNT) / TIME_DIV_COUNT;
 
   return { x, y };
 }
