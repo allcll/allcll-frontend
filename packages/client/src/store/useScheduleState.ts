@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { CustomSchedule, OfficialSchedule } from '@/hooks/server/useTimetableData.ts';
+import { Schedule } from '@/hooks/server/useTimetableData.ts';
 
 export enum ScheduleMutateType {
   NONE = 'none',
@@ -18,8 +18,8 @@ export interface IMutateScheduleState {
   mode: ScheduleMutateType;
   setTimetableId: (timetableId: number) => void;
   setOptions: (options: Partial<IMutateScheduleState['options']>) => void;
-  changeScheduleData: (schedule: Partial<OfficialSchedule | CustomSchedule>, mode?: ScheduleMutateType) => void;
-  schedule: OfficialSchedule | CustomSchedule;
+  changeScheduleData: (schedule: Partial<Schedule>, mode?: ScheduleMutateType) => void;
+  schedule: Schedule;
 }
 
 export const useScheduleState = create<IMutateScheduleState>(set => ({
@@ -34,9 +34,9 @@ export const useScheduleState = create<IMutateScheduleState>(set => ({
     scheduleId: 0,
     scheduleType: 'official',
     subjectId: 0,
-    subjectName: null,
-    professorName: null,
-    location: null,
+    subjectName: '',
+    professorName: '',
+    location: '',
     timeslots: [],
   },
 
@@ -64,7 +64,7 @@ export const useScheduleState = create<IMutateScheduleState>(set => ({
       schedule: {
         ...state.schedule,
         ...schedule,
-      } as OfficialSchedule | CustomSchedule,
+      },
     }));
   },
 }));

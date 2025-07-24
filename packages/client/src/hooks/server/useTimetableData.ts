@@ -31,7 +31,7 @@ export interface CustomSchedule extends Schedule {
 
 type ScheduleApiResponse = OfficialSchedule | CustomSchedule;
 
-// 정보를 모두 담는 Schedule 인터페이스
+// 정보를 모두 담는 Schedule 인터페이스 - 코드 전반에 사용
 export interface Schedule {
   scheduleId: number;
   scheduleType: 'official' | 'custom';
@@ -319,4 +319,28 @@ function getSettings(schedule?: Schedule[]) {
     maxTime,
     minTime,
   };
+}
+
+/** Schedule을 API에서 사용하는 형식으로 변환합니다.
+ * Todo: Adapter 형식으로 변환하기
+ * @param schedule
+ */
+export function scheduleAsApiSchedule(schedule: Schedule): ScheduleApiResponse {
+  if (schedule.scheduleType === 'official') {
+    return {
+      scheduleId: schedule.scheduleId,
+      scheduleType: 'official',
+      subjectId: schedule.subjectId ?? 0,
+      subjectName: null,
+      professorName: null,
+      location: null,
+      timeslots: [],
+    };
+  } else {
+    return {
+      ...schedule,
+      scheduleType: 'custom',
+      subjectId: null,
+    };
+  }
 }
