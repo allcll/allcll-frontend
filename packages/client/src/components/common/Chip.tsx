@@ -1,13 +1,13 @@
 import ArrowIcon from '@/components/svgs/ArrowIcon';
 import CancelIcon from '@/components/svgs/CancelIcon';
 import { getSelectedColor } from '@/utils/colors';
-import { RefObject } from 'react';
+import { ButtonHTMLAttributes, RefObject } from 'react';
 
-interface IChip {
-  containerRef?: RefObject<HTMLButtonElement | null>;
+interface IChip extends ButtonHTMLAttributes<HTMLButtonElement> {
+  containerRef?: RefObject<HTMLButtonElement> | null;
   label: string;
   selected: boolean;
-  chipType?: 'select' | 'cancle';
+  chipType?: 'select' | 'cancel';
   onClick?: () => void;
 }
 
@@ -24,7 +24,7 @@ function Chip({ label = 'Chip', selected, chipType, containerRef, onClick, ...pr
     >
       <span className="text-xs sm:text-sm truncate">{label}</span>
       {chipType === 'select' && <ArrowIcon selected={selected} className="w-4 h-4 pointer-events-none" />}
-      {chipType === 'cancle' && <CancelIcon selected={selected} className="w-4 h-4 pointer-events-none" />}
+      {chipType === 'cancel' && <CancelIcon selected={selected} className="w-4 h-4 pointer-events-none" />}
     </button>
   );
 }

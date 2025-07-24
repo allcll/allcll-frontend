@@ -1,10 +1,10 @@
 import { InputHTMLAttributes } from 'react';
 
-interface ITextField extends InputHTMLAttributes<HTMLInputElement> {
-  onDelete: () => void;
+interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
 }
 
-function TextField({ onDelete, required, ...props }: ITextField) {
+function TextField({ required, ...props }: TextFieldProps) {
   return (
     <div className="h-12 w-full flex border-gray-200 border-b">
       <label
