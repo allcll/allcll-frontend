@@ -5,6 +5,7 @@ import ClockGraySvg from '@/assets/clock-gray.svg?react';
 import HouseSvg from '@/assets/house.svg?react';
 
 //TODO: 여기에는 학과 정보도 있는데, 과목 정보 get해올 때 가공해야하나?
+/** @deprecated */
 function ScheduleDetailBottomSheet() {
   const subject = {
     name: '재밌는 과목',

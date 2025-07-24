@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type BottomSheetType = 'filter' | 'search' | 'detail' | 'edit' | null;
+type BottomSheetType = 'filter' | 'search' | 'edit' | null;
 
 interface IBottomSheetStore {
   type: BottomSheetType;

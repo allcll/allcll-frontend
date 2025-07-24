@@ -4,11 +4,10 @@ import { Schedule } from '@/hooks/server/useTimetableData';
 
 interface IScheduleFormModal {
   schedule?: Schedule;
-  formType: 'add' | 'edit';
   onClose: () => void;
 }
 
-function ScheduleFormModal({ schedule, formType, onClose }: IScheduleFormModal) {
+function ScheduleFormModal({ onClose }: Readonly<IScheduleFormModal>) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={onClose}>
       <div
@@ -25,7 +24,7 @@ function ScheduleFormModal({ schedule, formType, onClose }: IScheduleFormModal) 
           </button>
         </div>
 
-        <ScheduleFormContent schedule={schedule} formType={formType} />
+        <ScheduleFormContent />
       </div>
     </div>
   );

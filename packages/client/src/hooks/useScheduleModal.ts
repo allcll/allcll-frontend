@@ -20,13 +20,21 @@ function useScheduleModal() {
   const { mutate: updateScheduleData } = useUpdateSchedule(timetableId);
   const { mutate: deleteScheduleData } = useDeleteSchedule(timetableId);
 
-  // Fixme: Open 할 때 어떤 데이터를 쓰나요?
-  const open = (targetSchedule: object) => {
+  /** schedule 설정하면서 모달 열기 */
+  const open = (targetSchedule: Schedule) => {
     // caching previous timetable data
     prevTimetable.current = queryClient.getQueryData<Timetable>(['timetableData', timetableId]);
-    changeScheduleData(targetSchedule);
 
-    // Todo: modal set state
+    // set modal set state
+    let currentMode;
+    if (!targetSchedule.scheduleId || targetSchedule.scheduleId <= 0) {
+      currentMode = ScheduleMutateType.CREATE;
+    } else if (targetSchedule.scheduleType === 'official') {
+      currentMode = ScheduleMutateType.VIEW;
+    } else {
+      currentMode = ScheduleMutateType.EDIT;
+    }
+    changeScheduleData(targetSchedule, currentMode);
   };
 
   type SetScheduleAction = Schedule | ((prevState: Schedule) => Schedule);
@@ -47,11 +55,21 @@ function useScheduleModal() {
     });
   };
 
-  const saveSchedule = (e?: React.MouseEvent<HTMLButtonElement>) => {
+  /** Schedule 의 생성 / 수정 로직
+   * @param e - React.MouseEvent<HTMLButtonElement> | React.FormEvent
+   */
+  const saveSchedule = (e?: React.MouseEvent<HTMLButtonElement> | React.FormEvent) => {
     if (e) e.preventDefault();
 
     if (!prevTimetable.current) {
       throw new Error('Previous timetable data is not available.');
+    }
+
+    // Schedule 시간 Validation
+    const isTimeslotValid = prevSchedule.timeslots.every(slot => slot.startTime <= slot.endTime);
+    if (!isTimeslotValid) {
+      alert('시작 시간이 종료 시간 보다 늦지 않아야 합니다.');
+      return;
     }
 
     const schedule = scheduleAsApiSchedule(prevSchedule);
@@ -63,7 +81,8 @@ function useScheduleModal() {
       updateScheduleData({ schedule, prevTimetable: prevTimetable.current });
     }
 
-    // Todo: Resetting the modal state
+    // 모달 state 초기화
+    changeScheduleData({}, ScheduleMutateType.NONE);
   };
 
   const deleteSchedule = (e?: React.MouseEvent<HTMLButtonElement>) => {
@@ -75,18 +94,23 @@ function useScheduleModal() {
 
     const schedule = scheduleAsApiSchedule(prevSchedule);
     deleteScheduleData({ schedule, prevTimetable: prevTimetable.current });
+
+    // 모달 state 초기화
+    changeScheduleData({}, ScheduleMutateType.NONE);
   };
 
   const cancelSchedule = (e?: React.MouseEvent<HTMLButtonElement>) => {
     if (e) e.preventDefault();
 
-    // Logic to cancel the current action
+    // timetable 롤백
     queryClient.setQueryData(['timetableData', timetableId], prevTimetable.current);
 
-    // Todo: Resetting the modal state
+    // 모달 state 초기화
+    changeScheduleData({}, ScheduleMutateType.NONE);
   };
 
   return {
+    modalActionType: mode,
     schedule: prevSchedule,
     open,
     editSchedule,

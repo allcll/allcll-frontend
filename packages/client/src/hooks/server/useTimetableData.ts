@@ -1,11 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchJsonOnAPI } from '@/utils/api.ts';
-import { Wishes } from '@/utils/types.ts';
+import { Day, Wishes } from '@/utils/types.ts';
 import { ROW_HEIGHT } from '@/components/timetable/Timetable.tsx';
 import useWishes from '@/hooks/server/useWishes.ts';
 import { timetableAPIDummies } from '@/utils/timetable/dummies.ts';
-
-export type DayNameType = '월' | '화' | '수' | '목' | '금' | '토' | '일';
 
 export interface Timetable {
   timetableId: number;
@@ -40,7 +38,7 @@ export interface Schedule {
   professorName: string;
   location: string;
   timeslots: {
-    dayOfWeek: DayNameType;
+    dayOfWeek: Day;
     startTime: string;
     endTime: string;
   }[];
@@ -291,7 +289,7 @@ function getSettings(schedule?: Schedule[]) {
     if (item.timeslots.some(time => time.dayOfWeek === '일')) hasSunday = true;
   });
 
-  const colNames: DayNameType[] = ['월', '화', '수', '목', '금'];
+  const colNames: Day[] = ['월', '화', '수', '목', '금'];
   if (hasSunday) {
     colNames.push('토');
     colNames.push('일');

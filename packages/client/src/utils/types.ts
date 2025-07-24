@@ -72,3 +72,4 @@ export interface DepartmentType {
 
 export type Grade = 1 | 2 | 3 | 4;
 export type Day = '월' | '화' | '수' | '목' | '금' | '토' | '일';
+export const DAYS: Day[] = ['월', '화', '수', '목', '금', '토', '일'];

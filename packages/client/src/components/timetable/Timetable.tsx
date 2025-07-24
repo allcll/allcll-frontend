@@ -1,10 +1,11 @@
+import { useEffect, useRef } from 'react';
 import Card from '@/components/common/Card.tsx';
 import DaySchedule from '@/components/timetable/DaySchedule.tsx';
-import { DayNameType, ScheduleTime, useTimetableData } from '@/hooks/server/useTimetableData.ts';
+import { ScheduleTime, useTimetableData } from '@/hooks/server/useTimetableData.ts';
 import { useScheduleState } from '@/store/useScheduleState.ts';
-import { useEffect, useRef } from 'react';
+import { Day } from '@/utils/types.ts';
 
-const DAY_NAMES: DayNameType[] = ['월', '화', '수', '목', '금', '토', '일'];
+const DAY_NAMES: Day[] = ['월', '화', '수', '목', '금', '토', '일'];
 const DEFAULT_DAY_NAMES = DAY_NAMES.slice(0, 5); // Default to weekdays
 const DEFAULT_ROW_NAMES = Array.from({ length: 12 }, (_, i) => `${i + 9}`);
 export const HEADER_WIDTH = 60;
@@ -28,7 +29,7 @@ function Timetable() {
 function WeekTable({
   colNames = DEFAULT_DAY_NAMES,
   scheduleTimes,
-}: Readonly<{ colNames?: DayNameType[]; scheduleTimes?: Record<string, ScheduleTime[]> }>) {
+}: Readonly<{ colNames?: Day[]; scheduleTimes?: Record<string, ScheduleTime[]> }>) {
   if (!scheduleTimes) {
     return <div className="text-gray-500 text-center">시간표가 없습니다.</div>;
   }
@@ -39,7 +40,7 @@ function WeekTable({
 }
 
 interface ITimetableGridProps {
-  colNames?: DayNameType[];
+  colNames?: Day[];
   rowNames?: string[];
   headerWidth?: number;
   rowHeight?: number;

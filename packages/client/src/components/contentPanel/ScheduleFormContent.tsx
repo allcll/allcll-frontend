@@ -1,15 +1,10 @@
-import TextField from '../common/TextField';
-import { Day } from '@/utils/types';
 import Chip from '../common/Chip';
+import TextField from '../common/TextField';
 import SelectTime from './SelectTime';
-import { useState } from 'react';
+import { Day, DAYS } from '@/utils/types';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
-import { Schedule } from '@/hooks/server/useTimetableData';
-
-interface IEditBottomSheet {
-  schedule?: Schedule;
-  formType: 'add' | 'edit';
-}
+import useScheduleModal from '@/hooks/useScheduleModal.ts';
+import React from 'react';
 
 interface TimeRange {
   startHour: string;
@@ -18,21 +13,10 @@ interface TimeRange {
   endMinute: string;
 }
 
-const DAYS: Day[] = ['월', '화', '수', '목', '금', '토', '일'];
-
-function ScheduleFormContent({ schedule, formType }: IEditBottomSheet) {
-  const isEdit = formType === 'edit';
+function ScheduleFormContent() {
   const { closeBottomSheet } = useBottomSheetStore();
 
-  const [scheduleForm, setScheduleForm] = useState<Schedule>({
-    subjectName: schedule?.subjectName ?? '',
-    professorName: schedule?.professorName ?? '',
-    scheduleType: schedule?.scheduleType ?? 'official',
-    subjectId: schedule?.scheduleId ?? null,
-    scheduleId: schedule?.scheduleId ?? -1,
-    location: schedule?.location ?? '',
-    timeslots: [],
-  });
+  const { schedule: scheduleForm, editSchedule: setScheduleForm, saveSchedule } = useScheduleModal();
 
   const textFields = [
     {
@@ -110,21 +94,8 @@ function ScheduleFormContent({ schedule, formType }: IEditBottomSheet) {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    scheduleForm.timeslots.forEach(slot => {
-      if (slot.startTime > slot.endTime) {
-        alert('시작 시간이 종료 시간 보다 늦지 않아야 합니다.');
-        return;
-      }
-    });
-
-    if (isEdit) {
-      // 기존 과목 수정 API 요청
-    } else {
-      // 새 과목 추가 API 요청
-    }
-
+    // create / edit schedule 동시에 처리
+    saveSchedule(e);
     closeBottomSheet('edit');
   };
 

@@ -1,11 +1,12 @@
 import { HTMLAttributes } from 'react';
-import { DayNameType, scheduleTimeAdapter } from '@/hooks/server/useTimetableData.ts';
+import { scheduleAsApiSchedule, scheduleTimeAdapter } from '@/hooks/server/useTimetableData.ts';
 import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState.ts';
 import { IScheduleProps } from '@/components/timetable/Schedule.tsx';
 import useWishes from '@/hooks/server/useWishes.ts';
+import { Day } from '@/utils/types.ts';
 
 interface IWireScheduleProps extends HTMLAttributes<HTMLDivElement> {
-  dayOfWeek: DayNameType;
+  dayOfWeek: Day;
 }
 
 function WireSchedules({ dayOfWeek }: Readonly<IWireScheduleProps>) {
@@ -14,7 +15,8 @@ function WireSchedules({ dayOfWeek }: Readonly<IWireScheduleProps>) {
 
   if (mode !== ScheduleMutateType.CREATE) return null;
 
-  const timetable = scheduleTimeAdapter({ schedules: [schedule] }, wishes);
+  // Fixme: schedule 형태 통일
+  const timetable = scheduleTimeAdapter({ schedules: [scheduleAsApiSchedule(schedule)] }, wishes);
   const scheduleTime = timetable?.scheduleTimes[dayOfWeek];
 
   if (!scheduleTime) return null;

@@ -4,14 +4,14 @@ import { getSelectedColor } from '@/utils/colors';
 import { ButtonHTMLAttributes, RefObject } from 'react';
 
 interface IChip extends ButtonHTMLAttributes<HTMLButtonElement> {
-  containerRef?: RefObject<HTMLButtonElement> | null;
+  containerRef?: RefObject<HTMLButtonElement | null>;
   label: string;
   selected: boolean;
   chipType?: 'select' | 'cancel';
   onClick?: () => void;
 }
 
-function Chip({ label = 'Chip', selected, chipType, containerRef, onClick, ...props }: IChip) {
+function Chip({ label = 'Chip', selected, chipType, containerRef, onClick, ...props }: Readonly<IChip>) {
   return (
     <button
       type="button"

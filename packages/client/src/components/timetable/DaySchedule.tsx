@@ -1,10 +1,11 @@
 import Schedule from '@/components/timetable/Schedule.tsx';
-import { DayNameType, ScheduleTime } from '@/hooks/server/useTimetableData.ts';
+import { ScheduleTime } from '@/hooks/server/useTimetableData.ts';
 import WireSchedules from '@/components/timetable/WireSchedules.tsx';
 import { useScheduleDrag } from '@/hooks/useScheduleDrag.ts';
+import { Day } from '@/utils/types.ts';
 
 interface IDayScheduleProps {
-  dayOfWeek: DayNameType;
+  dayOfWeek: Day;
   scheduleTimes: ScheduleTime[];
 }
 

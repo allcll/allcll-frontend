@@ -9,9 +9,9 @@ interface IFiltering {
   className?: string;
 }
 
-function Filtering({ label, children, className = '' }: IFiltering) {
+function Filtering({ label, children, className = '' }: Readonly<IFiltering>) {
   const containerRef = useRef<HTMLButtonElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   const [isChipOpen, setIsChipOpen] = useDetectClose({
     elem: contentRef,
