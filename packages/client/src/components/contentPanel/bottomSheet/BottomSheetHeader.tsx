@@ -8,16 +8,13 @@ interface IBottomSheetHeader {
   onClick?: () => void;
 }
 
-function BottomSheetHeader({ title, headerType, onClose, onClick }: IBottomSheetHeader) {
+function BottomSheetHeader({ title, headerType, onClose }: IBottomSheetHeader) {
   return (
     <header className="w-full flex justify-between mb-2 ">
       {headerType === 'close' ? (
         <>
           <HeaderTypeIcon headerType={headerType} onClose={onClose} />
           {title && <h3 className="text-sm font-semibold">{title}</h3>}
-          <button className="text-blue-500 cursor-pointer text-xs" onClick={onClick}>
-            저장
-          </button>
         </>
       ) : (
         <>

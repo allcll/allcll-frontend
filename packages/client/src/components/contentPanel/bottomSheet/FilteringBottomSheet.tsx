@@ -23,7 +23,6 @@ function FilteringBottomSheet() {
 
   const { selectedDepartment, selectedGrades, selectedDays, selectedTimeRange, setFilterSchedule } =
     useFilterScheduleStore();
-  const currentFilters = useFilterScheduleStore.getState().getFilterSchedule();
 
   const handleTimeChange = (key: keyof TimeRange, value: string) => {
     setFilterSchedule('selectedTimeRange', {
@@ -44,7 +43,6 @@ function FilteringBottomSheet() {
           closeBottomSheet('filter');
         }}
         onClick={() => {
-          console.log('필터링 적용', currentFilters);
           closeBottomSheet('filter');
           openBottomSheet('search');
         }}

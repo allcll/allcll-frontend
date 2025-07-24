@@ -1,15 +1,19 @@
 import useBottomSheet from '@/hooks/useBottomSheet';
 
+type IBottomSheetChildren =
+  | React.ReactNode
+  | ((methods: { expandToMax: () => void; collapseToMin: () => void }) => React.ReactNode);
+
 interface IBottomSheet {
-  children: React.ReactNode;
+  children: IBottomSheetChildren;
 }
 
 export const MIN_Y = 60;
-export const MAX_Y = window.innerHeight - 200;
+export const MAX_Y = window.innerHeight - 300;
 export const BOTTOM_SHEET_HEIGHT = window.innerHeight - MIN_Y;
 
 function BottomSheet({ children }: IBottomSheet) {
-  const { sheet, content } = useBottomSheet();
+  const { sheet, content, expandToMax, collapseToMin } = useBottomSheet();
 
   return (
     <div
@@ -22,7 +26,7 @@ function BottomSheet({ children }: IBottomSheet) {
       </div>
 
       <div ref={content} className="flex-1 overflow-y-auto px-4 pb-[5rem]">
-        {children}
+        {typeof children === 'function' ? children({ expandToMax, collapseToMin }) : children}
       </div>
     </div>
   );
