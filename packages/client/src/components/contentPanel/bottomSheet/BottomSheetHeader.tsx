@@ -12,13 +12,20 @@ function BottomSheetHeader({ title, headerType, onClose }: IBottomSheetHeader) {
   return (
     <header className="w-full flex justify-between mb-2 ">
       {headerType === 'close' ? (
-        <>
-          <HeaderTypeIcon headerType={headerType} onClose={onClose} />
-          {title && <h3 className="text-sm font-semibold">{title}</h3>}
-        </>
+        <div className="relative w-full h-6 flex items-center">
+          <div className="absolute left-0">
+            <HeaderTypeIcon headerType={headerType} onClose={onClose} />
+          </div>
+
+          {title && (
+            <div className="absolute left-1/2 transform -translate-x-1/2">
+              <h3 className="text-sm font-semibold">{title}</h3>
+            </div>
+          )}
+        </div>
       ) : (
         <>
-          <h3 className="text-sm">{title}</h3>
+          <h3 className="text-sm font-semibold">{title}</h3>
           <HeaderTypeIcon headerType={headerType} onClose={onClose} />
         </>
       )}

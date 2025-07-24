@@ -17,8 +17,8 @@ function BottomSheet({ children }: IBottomSheet) {
 
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-10 bg-white rounded-t-2xl shadow-2xl flex flex-col"
       ref={sheet}
+      className="fixed inset-x-0 bottom-0 z-10 bg-white rounded-t-2xl shadow-2xl flex flex-col transition-transform duration-300 ease-in-out"
       style={{ height: `${BOTTOM_SHEET_HEIGHT}px` }}
     >
       <div className="w-full flex justify-center py-2 h-10 shrink-0">

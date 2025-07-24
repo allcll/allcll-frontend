@@ -4,13 +4,7 @@ import { Grade } from '@/utils/types';
 
 const GRADE: Grade[] = [1, 2, 3, 4];
 
-interface IGradeFilter {
-  openFilter: boolean;
-  onToggle: () => void;
-}
-
-function GradeFilter(props: IGradeFilter) {
-  const { openFilter, onToggle } = props;
+function GradeFilter() {
   const { selectedGrades, setFilterSchedule } = useFilterScheduleStore();
 
   const handleChangeCheckbox = (item: Grade) => {
@@ -23,8 +17,6 @@ function GradeFilter(props: IGradeFilter) {
   return (
     <CheckboxFilter
       labelPrefix="학년"
-      openFilter={openFilter}
-      toggleFilter={onToggle}
       selectedItems={selectedGrades}
       handleChangeCheckbox={handleChangeCheckbox}
       options={GRADE}

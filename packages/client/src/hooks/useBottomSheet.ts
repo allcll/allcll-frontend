@@ -138,10 +138,10 @@ export default function useBottomSheet() {
 
   const expandToMax = () => {
     if (sheet.current) {
-      sheet.current.style.setProperty('transform', `translateY(${MIN_Y}px)`);
-      sheet.current.style.height = `${MAX_Y}px`;
+      sheet.current.style.setProperty('transform', `translateY(400px)`);
     }
   };
+
   const collapseToMin = () => {
     if (sheet.current) {
       sheet.current.style.setProperty('transform', `translateY(${MAX_Y}px)`);

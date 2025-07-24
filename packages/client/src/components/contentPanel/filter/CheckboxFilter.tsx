@@ -3,8 +3,7 @@ import Checkbox from '@/components/common/Checkbox';
 
 interface ICheckboxFilter<T extends string | number> {
   labelPrefix: string;
-  openFilter: boolean;
-  toggleFilter: () => void;
+
   selectedItems: T[];
   handleChangeCheckbox: (item: T) => void;
   options: T[];
@@ -12,8 +11,6 @@ interface ICheckboxFilter<T extends string | number> {
 
 function CheckboxFilter<T extends string | number>({
   labelPrefix,
-  openFilter,
-  toggleFilter,
   selectedItems,
   handleChangeCheckbox,
   options,
@@ -28,15 +25,17 @@ function CheckboxFilter<T extends string | number>({
         : `${selectedItems[0]}${labelPrefix}`;
 
   return (
-    <Filtering label={label} isOpen={openFilter} onToggle={toggleFilter}>
-      {options.map(item => (
-        <Checkbox
-          key={item}
-          label={`${item}${labelPrefix}`}
-          isChecked={checkSelected(item)}
-          onChange={() => handleChangeCheckbox(item)}
-        />
-      ))}
+    <Filtering label={label}>
+      <>
+        {options.map(item => (
+          <Checkbox
+            key={item}
+            label={`${item}${labelPrefix}`}
+            isChecked={checkSelected(item)}
+            onChange={() => handleChangeCheckbox(item)}
+          />
+        ))}
+      </>
     </Filtering>
   );
 }

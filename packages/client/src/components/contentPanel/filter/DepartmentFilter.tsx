@@ -4,12 +4,7 @@ import SearchBox from '../../common/SearchBox';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import { DepartmentType } from '@/utils/types';
 
-interface IDepartmentFilter {
-  openFilter: boolean;
-  onToggle: () => void;
-}
-
-function DepartmentFilter({ openFilter, onToggle }: IDepartmentFilter) {
+function DepartmentFilter() {
   function pickCollegeOrMajor(selectedDepartment: string) {
     const splitDepartment = selectedDepartment.split(' ');
     return splitDepartment[splitDepartment.length - 1];
@@ -20,16 +15,10 @@ function DepartmentFilter({ openFilter, onToggle }: IDepartmentFilter) {
 
   const { selectedDepartment, setFilterSchedule } = useFilterScheduleStore();
   const customDepartmentLabel = selectedDepartment === '전체' ? '전체' : pickCollegeOrMajor(selectedDepartment);
-  console.log('departments', departments);
 
   return (
     <>
-      <Filtering
-        label={customDepartmentLabel}
-        isOpen={openFilter}
-        onToggle={onToggle}
-        className="max-h-80 overflow-y-auto"
-      >
+      <Filtering label={customDepartmentLabel} className="max-h-80 overflow-y-auto">
         <div className="flex flex-col h-80">
           <div className="shrink-0 px-2 py-2 bg-white">
             <SearchBox
@@ -45,7 +34,7 @@ function DepartmentFilter({ openFilter, onToggle }: IDepartmentFilter) {
           </div>
 
           <div className="overflow-y-auto flex-1 px-2 py-2">
-            <SelectSubject departments={departmentsList} toggleFilter={onToggle} />
+            <SelectSubject departments={departmentsList} />
           </div>
         </div>
       </Filtering>
@@ -56,17 +45,15 @@ function DepartmentFilter({ openFilter, onToggle }: IDepartmentFilter) {
 export default DepartmentFilter;
 
 interface ISelectSubject {
-  toggleFilter: () => void;
   departments: DepartmentType[];
 }
 
-export function SelectSubject({ toggleFilter, departments }: ISelectSubject) {
+export function SelectSubject({ departments }: ISelectSubject) {
   const selected = '전체';
   const { setFilterSchedule } = useFilterScheduleStore();
 
   const handleChangeDepartment = (department: string) => {
     setFilterSchedule('selectedDepartment', department || '전체');
-    toggleFilter();
   };
 
   return (
