@@ -10,15 +10,19 @@ import {
   useUpdateSchedule,
 } from '@/hooks/server/useTimetableData.ts';
 import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState.ts';
+import { useBottomSheetStore } from '@/store/useBottomSheetStore.ts';
 
 function useScheduleModal() {
   const queryClient = useQueryClient();
   const { timetableId, schedule: prevSchedule, mode, changeScheduleData } = useScheduleState();
-  const prevTimetable = useRef<Timetable | undefined>(undefined);
+  const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
+  const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
 
   const { mutate: createScheduleData } = useCreateSchedule(timetableId);
   const { mutate: updateScheduleData } = useUpdateSchedule(timetableId);
   const { mutate: deleteScheduleData } = useDeleteSchedule(timetableId);
+
+  const prevTimetable = useRef<Timetable | undefined>(undefined);
 
   /** schedule 설정하면서 모달 열기 */
   const open = (targetSchedule: Schedule) => {
@@ -35,6 +39,7 @@ function useScheduleModal() {
       currentMode = ScheduleMutateType.EDIT;
     }
     changeScheduleData(targetSchedule, currentMode);
+    openBottomSheet('edit');
   };
 
   type SetScheduleAction = Schedule | ((prevState: Schedule) => Schedule);
@@ -83,6 +88,7 @@ function useScheduleModal() {
 
     // 모달 state 초기화
     changeScheduleData({}, ScheduleMutateType.NONE);
+    closeBottomSheet();
   };
 
   const deleteSchedule = (e?: React.MouseEvent<HTMLButtonElement>) => {
@@ -97,6 +103,7 @@ function useScheduleModal() {
 
     // 모달 state 초기화
     changeScheduleData({}, ScheduleMutateType.NONE);
+    closeBottomSheet();
   };
 
   const cancelSchedule = (e?: React.MouseEvent<HTMLButtonElement>) => {
@@ -107,6 +114,7 @@ function useScheduleModal() {
 
     // 모달 state 초기화
     changeScheduleData({}, ScheduleMutateType.NONE);
+    closeBottomSheet();
   };
 
   return {
