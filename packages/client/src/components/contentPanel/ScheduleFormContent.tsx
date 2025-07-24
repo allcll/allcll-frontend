@@ -4,34 +4,34 @@ import Chip from '../common/Chip';
 import SelectTime from './SelectTime';
 import { useState } from 'react';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
-
-interface ScheduleInfo {
-  subjectName: string;
-  professorName: string;
-  location: string;
-  dayOfWeek: Day[];
-  startTime: string;
-  endTime: string;
-}
+import { Schedule } from '@/hooks/server/useTimetableData';
 
 interface IEditBottomSheet {
-  schedule?: ScheduleInfo;
+  schedule?: Schedule;
   formType: 'add' | 'edit';
 }
 
-const DAYS: Day[] = ['월', '화', '수', '목', '금'];
+interface TimeRange {
+  startHour: string;
+  startMinute: string;
+  endHour: string;
+  endMinute: string;
+}
+
+const DAYS: Day[] = ['월', '화', '수', '목', '금', '토', '일'];
 
 function ScheduleFormContent({ schedule, formType }: IEditBottomSheet) {
   const isEdit = formType === 'edit';
   const { closeBottomSheet } = useBottomSheetStore();
 
-  const [scheduleForm, setScheduleForm] = useState<ScheduleInfo>({
+  const [scheduleForm, setScheduleForm] = useState<Schedule>({
     subjectName: schedule?.subjectName ?? '',
     professorName: schedule?.professorName ?? '',
+    scheduleType: schedule?.scheduleType ?? 'official',
+    subjectId: schedule?.scheduleId ?? null,
+    scheduleId: schedule?.scheduleId ?? -1,
     location: schedule?.location ?? '',
-    dayOfWeek: schedule?.dayOfWeek ?? [],
-    startTime: schedule?.startTime ?? '',
-    endTime: schedule?.endTime ?? '',
+    timeslots: [],
   });
 
   const textFields = [
@@ -60,57 +60,64 @@ function ScheduleFormContent({ schedule, formType }: IEditBottomSheet) {
   };
 
   const toggleDay = (day: Day) => {
-    const current = scheduleForm?.dayOfWeek ?? [];
-    const isSelected = current.includes(day);
+    const exists = scheduleForm.timeslots.find(slot => slot.dayOfWeek === day);
 
-    const days = isSelected ? current.filter(d => d !== day) : [...current, day];
-    onScheduleFormChange('dayOfWeek', days);
+    if (exists) {
+      setScheduleForm(prev => ({
+        ...prev,
+        timeslots: prev.timeslots.filter(slot => slot.dayOfWeek !== day),
+      }));
+    } else {
+      setScheduleForm(prev => ({
+        ...prev,
+        timeslots: [
+          ...prev.timeslots,
+          {
+            dayOfWeek: day,
+            startTime: '',
+            endTime: '',
+          },
+        ],
+      }));
+    }
   };
 
-  const onScheduleFormChange = (key: string, value: string | Day[]) => {
-    console.log('onScheduleFormChange', key, value);
-    if (key === 'startHour') {
-      const [, minute] = scheduleForm.startTime.split(':');
-      value = `${value}:${minute}`;
-      key = 'startTime';
-      setScheduleForm(prev => ({ ...prev, [key]: value }));
-      return;
-    }
+  const onScheduleFormChange = (key: keyof TimeRange, value: string, targetDay?: Day) => {
+    setScheduleForm(prev => {
+      const updated = prev.timeslots.map(slot => {
+        if (slot.dayOfWeek !== targetDay) return slot;
 
-    if (key === 'endHour') {
-      const [, minute] = scheduleForm.startTime.split(':');
-      value = `${value}:${minute}`;
-      key = 'endTime';
-      setScheduleForm(prev => ({ ...prev, [key]: value }));
-      return;
-    }
+        const [startHour, startMinute] = slot.startTime.split(':');
+        const [endHour, endMinute] = slot.endTime.split(':');
 
-    if (key === 'startMinute') {
-      const [hour] = scheduleForm.startTime.split(':');
-      value = `${hour}:${value}`;
-      key = 'startTime';
-      setScheduleForm(prev => ({ ...prev, [key]: value }));
-      return;
-    }
+        let newStartTime = slot.startTime;
+        let newEndTime = slot.endTime;
 
-    if (key === 'endMinute') {
-      const [hour] = scheduleForm.endTime.split(':');
-      value = `${hour}:${value}`;
-      key = 'endTime';
-      setScheduleForm(prev => ({ ...prev, [key]: value }));
-      return;
-    }
+        if (key === 'startHour') newStartTime = `${value}:${startMinute}`;
+        if (key === 'startMinute') newStartTime = `${startHour}:${value}`;
+        if (key === 'endHour') newEndTime = `${value}:${endMinute}`;
+        if (key === 'endMinute') newEndTime = `${endHour}:${value}`;
 
-    setScheduleForm(prev => ({ ...prev, [key]: value }));
+        return {
+          ...slot,
+          startTime: newStartTime,
+          endTime: newEndTime,
+        };
+      });
+
+      return { ...prev, timeslots: updated };
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (scheduleForm.startTime > scheduleForm.endTime) {
-      alert('시작 시간이 종료 시간 보다 늦지 않아야 합니다.');
-      return;
-    }
+    scheduleForm.timeslots.forEach(slot => {
+      if (slot.startTime > slot.endTime) {
+        alert('시작 시간이 종료 시간 보다 늦지 않아야 합니다.');
+        return;
+      }
+    });
 
     if (isEdit) {
       // 기존 과목 수정 API 요청
@@ -130,29 +137,37 @@ function ScheduleFormContent({ schedule, formType }: IEditBottomSheet) {
           required
           placeholder={placeholder}
           value={value}
-          onChange={e => onScheduleFormChange(id, e.target.value)}
-          onDelete={() => {}}
+          onChange={e => setScheduleForm(prev => ({ ...prev, [id]: e.target.value }))}
         />
       ))}
 
-      <div className="flex gap-2  flex-col ">
+      <div className="flex gap-2 flex-col">
         <p className="text-gray-400 text-xs">요일</p>
-        <div className="flex gap-2  items-center">
+        <div className="flex gap-2 items-center">
           {DAYS.map(day => (
             <Chip
               key={day}
               label={day}
-              selected={scheduleForm?.dayOfWeek.includes(day)}
+              selected={scheduleForm.timeslots.some(slot => slot.dayOfWeek === day)}
               onClick={() => toggleDay(day)}
             />
           ))}
         </div>
       </div>
 
-      <SelectTime
-        timeRange={extractTimeParts(scheduleForm?.startTime ?? '', scheduleForm?.endTime ?? '')}
-        onChange={onScheduleFormChange}
-      />
+      {scheduleForm.timeslots.map(slot => {
+        return (
+          <>
+            <p className="text-blue-500 text-xs">{slot.dayOfWeek}</p>
+            <SelectTime
+              key={slot.dayOfWeek}
+              day={slot.dayOfWeek}
+              timeRange={extractTimeParts(slot.startTime, slot.endTime)}
+              onChange={onScheduleFormChange}
+            />
+          </>
+        );
+      })}
 
       <div className="flex  justify-end gap-3">
         <button type="submit" className="text-blue-500 text-xs w-15 rounded px-4 py-2 cursor-pointer ">

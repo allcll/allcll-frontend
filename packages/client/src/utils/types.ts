@@ -63,7 +63,6 @@ export interface Subject {
   tm_num: string; // 학점
 }
 
-
 export type SimulationStatusType = 'before' | 'start' | 'progress' | 'finish';
 
 export interface DepartmentType {
@@ -72,4 +71,4 @@ export interface DepartmentType {
 }
 
 export type Grade = 1 | 2 | 3 | 4;
-export type Day = '월' | '화' | '수' | '목' | '금';
+export type Day = '월' | '화' | '수' | '목' | '금' | '토' | '일';

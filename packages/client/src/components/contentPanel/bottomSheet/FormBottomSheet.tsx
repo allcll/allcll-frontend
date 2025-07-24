@@ -1,20 +1,11 @@
 import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
 import ScheduleFormContent from '../ScheduleFormContent';
-import { Day } from '@/utils/types';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
-
-interface ScheduleInfo {
-  subjectName: string;
-  professorName: string;
-  location: string;
-  dayOfWeek: Day[];
-  startTime: string;
-  endTime: string;
-}
+import { Schedule } from '@/hooks/server/useTimetableData';
 
 interface IFormBottomSheet {
-  schedule?: ScheduleInfo;
+  schedule?: Schedule;
   formType: 'add' | 'edit';
 }
 

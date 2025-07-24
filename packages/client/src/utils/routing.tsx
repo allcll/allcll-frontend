@@ -19,6 +19,7 @@ import NotFound from '@/pages/NotFound.tsx';
 import DatabaseOperations from '@/pages/simulation/DatabaseOperations';
 import SimulationWishlist from '@/pages/simulation/SimulationWishlist';
 import Timetable from '@/pages/timetable/Timetable.tsx';
+import Timetables from '@/pages/Timetables';
 
 const router = createBrowserRouter([
   {
@@ -109,6 +110,17 @@ const router = createBrowserRouter([
       {
         path: '',
         element: <Timetable />,
+      },
+    ],
+  },
+  {
+    path: 'timetables',
+    element: <MainLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: '',
+        element: <Timetables />,
       },
     ],
   },

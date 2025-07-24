@@ -1,3 +1,5 @@
+import { Day } from '@/utils/types';
+
 interface TimeRange {
   startHour: string;
   startMinute: string;
@@ -7,21 +9,31 @@ interface TimeRange {
 
 interface ISelectTime {
   timeRange: TimeRange;
-  onChange: (key: keyof TimeRange, value: string) => void;
+  onChange: (key: keyof TimeRange, value: string, day?: Day) => void;
+  day?: Day;
 }
 
 const HOURS = ['9시', '10시', '11시', '12시', '13시', '14시', '15시', '16시', '17시'];
 const MINUTES = ['0분', '10분', '20분', '30분', '40분', '50분'];
 
-function SelectTime({ timeRange, onChange }: ISelectTime) {
+function SelectTime({ timeRange, onChange, day }: ISelectTime) {
+  const handleChangeTime = (key: keyof TimeRange, value: string) => {
+    if (day) {
+      onChange(key, value, day);
+      return;
+    }
+
+    onChange(key, value);
+  };
+
   return (
     <div className=" w-full h-15 flex gap-2 flex flex-col justify-center">
       <label className="text-xs text-gray-400">시간</label>
       <div className="relative w-full flex gap-2 flex-wrap">
         <select
-          name=""
+          name="startHour"
           value={timeRange.startHour ?? HOURS[0]}
-          onChange={e => onChange('startHour', e.target.value)}
+          onChange={e => handleChangeTime('startHour', e.target.value)}
           className="bg-gray-100 px-3 py-2 rounded-md text-xs text-gray-600 w-fit"
         >
           {HOURS.map(hour => (
@@ -31,8 +43,9 @@ function SelectTime({ timeRange, onChange }: ISelectTime) {
           ))}
         </select>
         <select
+          name="startMinute"
           value={timeRange.startMinute ?? MINUTES[0]}
-          onChange={e => onChange('startMinute', e.target.value)}
+          onChange={e => handleChangeTime('startMinute', e.target.value)}
           className="bg-gray-100 px-3 py-2 rounded-md text-xs text-gray-600 w-fit"
         >
           {MINUTES.map(minute => (
@@ -45,8 +58,9 @@ function SelectTime({ timeRange, onChange }: ISelectTime) {
         <span className="text-gray-400 text-sm mx-1">~</span>
 
         <select
+          name="endHour"
           value={timeRange.endHour ?? HOURS[0]}
-          onChange={e => onChange('endHour', e.target.value)}
+          onChange={e => handleChangeTime('endHour', e.target.value)}
           className="bg-gray-100 px-3 py-2 rounded-md text-xs text-gray-600 w-fit"
         >
           {HOURS.map(hour => (
@@ -56,8 +70,9 @@ function SelectTime({ timeRange, onChange }: ISelectTime) {
           ))}
         </select>
         <select
+          name="endMinute"
           value={timeRange.endMinute ?? MINUTES[0]}
-          onChange={e => onChange('endMinute', e.target.value)}
+          onChange={e => handleChangeTime('endMinute', e.target.value)}
           className="bg-gray-100 px-3 py-2 rounded-md text-xs text-gray-600 w-fit"
         >
           {MINUTES.map(minute => (

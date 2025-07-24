@@ -1,18 +1,9 @@
-import { Day } from '@/utils/types';
 import ScheduleFormContent from './ScheduleFormContent';
 import XDarkGraySvg from '@/assets/x-darkgray.svg?react';
-
-interface ScheduleInfo {
-  subjectName: string;
-  professorName: string;
-  location: string;
-  dayOfWeek: Day[];
-  startTime: string;
-  endTime: string;
-}
+import { Schedule } from '@/hooks/server/useTimetableData';
 
 interface IScheduleFormModal {
-  schedule?: ScheduleInfo;
+  schedule?: Schedule;
   formType: 'add' | 'edit';
   onClose: () => void;
 }

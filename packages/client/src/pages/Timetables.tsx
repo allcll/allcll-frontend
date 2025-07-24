@@ -7,7 +7,7 @@ import FormBottomSheet from '@/components/contentPanel/bottomSheet/FormBottomShe
 import ScheduleFormModal from '@/components/contentPanel/ScheduleFormModal';
 import { useState } from 'react';
 
-const Timetable = () => {
+const Timetables = () => {
   const { type } = useBottomSheetStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -29,4 +29,4 @@ const Timetable = () => {
   );
 };
 
-export default Timetable;
+export default Timetables;
