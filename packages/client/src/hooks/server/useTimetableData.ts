@@ -46,6 +46,7 @@ export interface Schedule {
   }[];
 }
 
+// Todo: Render에 필요한 데이터로 변환 / 필요 없는 정보 제거하기
 export interface ScheduleTime {
   title: string;
   professor: string | null;
@@ -257,6 +258,10 @@ export function scheduleTimeAdapter(timetable: IApiScheduleData, wishes?: Wishes
   };
 }
 
+/** Schedule의 시작 시간과 종료 시간을 계산하여, Schedule의 위치와 크기를 반환합니다.
+ * @param startTime
+ * @param time
+ */
 function getPositionFromString(startTime: number, time: Schedule['timeslots'][number]) {
   const parseTime = (time: string) => {
     const [hours, minutes] = time.split(':').map(Number);
@@ -272,6 +277,9 @@ function getPositionFromString(startTime: number, time: Schedule['timeslots'][nu
   };
 }
 
+/** Timetable을 렌더링 할 때 필요한 정보 (위치, 크기)를 반환합니다.
+ * @param schedule
+ */
 function getSettings(schedule?: Schedule[]) {
   if (!schedule) return undefined;
 
