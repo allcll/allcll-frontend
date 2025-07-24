@@ -25,24 +25,24 @@ export interface Schedule {
   }[];
 }
 
+const initSchedule: Schedule = {
+  scheduleId: -1,
+  scheduleType: 'custom',
+  subjectId: null,
+  subjectName: '',
+  professorName: '',
+  location: '',
+  timeslots: [],
+};
+
 function SearchBottomSheet() {
   const [searchKeywords, setSearchKeywords] = useState<string>('');
   const [filteredData, setFilteredData] = useState<Subject[]>([]);
+
   const { data: subjects = [], isPending } = useSubject();
   const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
-
   const { openScheduleModal } = useScheduleModal();
   const { openBottomSheet } = useBottomSheetStore();
-
-  const initSchedule: Schedule = {
-    scheduleId: -1,
-    scheduleType: 'custom',
-    subjectId: null,
-    subjectName: '',
-    professorName: '',
-    location: '',
-    timeslots: [],
-  };
 
   const handleClickFiltering = () => {
     openBottomSheet('filter');
@@ -112,7 +112,7 @@ function SearchBottomSheet() {
     });
 
     setFilteredData(filtered);
-  }, [subjects, searchKeywords]);
+  }, [searchKeywords]);
 
   return (
     <BottomSheet>
