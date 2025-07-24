@@ -1,7 +1,8 @@
 import Card from '@/components/common/Card.tsx';
 import DaySchedule from '@/components/timetable/DaySchedule.tsx';
 import { DayNameType, ScheduleTime, useTimetableData } from '@/hooks/server/useTimetableData.ts';
-import { useMutateScheduleState } from '@/store/useMutateScheduleState.ts';
+import { useScheduleState } from '@/store/useScheduleState.ts';
+import { useEffect, useRef } from 'react';
 
 const DAY_NAMES: DayNameType[] = ['월', '화', '수', '목', '금', '토', '일'];
 const DEFAULT_DAY_NAMES = DAY_NAMES.slice(0, 5); // Default to weekdays
@@ -10,8 +11,7 @@ export const HEADER_WIDTH = 60;
 export const ROW_HEIGHT = 40;
 
 function Timetable() {
-  const timetableId = useMutateScheduleState(state => state.timetableId);
-  console.log('Timetable ID:', timetableId, !!timetableId && timetableId > 0);
+  const timetableId = useScheduleState(state => state.timetableId);
 
   const { data: timetable } = useTimetableData(timetableId);
   const { scheduleTimes, colNames, rowNames } = timetable ?? {};
@@ -53,6 +53,13 @@ function TimetableGrid({
   rowHeight = ROW_HEIGHT,
   children,
 }: Readonly<ITimetableGridProps>) {
+  const setOptions = useScheduleState(state => state.setOptions);
+  const timetableRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setOptions({ timetableRef: timetableRef.current, colNames, rowNames });
+  }, [timetableRef.current]);
+
   return (
     <div className="relative w-full">
       {/*header*/}
@@ -98,7 +105,12 @@ function TimetableGrid({
       </div>
 
       {/*children*/}
-      <div className="absolute inset-0 flex z-10" style={{ top: `${rowHeight}px`, left: `${headerWidth}px` }}>
+      <div
+        id="timetable"
+        ref={timetableRef}
+        className="absolute inset-0 flex z-10"
+        style={{ top: `${rowHeight}px`, left: `${headerWidth}px` }}
+      >
         {children}
       </div>
     </div>

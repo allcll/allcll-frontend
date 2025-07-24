@@ -1,7 +1,7 @@
 import Schedule from '@/components/timetable/Schedule.tsx';
 import { DayNameType, ScheduleTime } from '@/hooks/server/useTimetableData.ts';
 import WireSchedules from '@/components/timetable/WireSchedules.tsx';
-// import { useMutateScheduleState } from '@/store/useMutateScheduleState.ts';
+import { useScheduleDrag } from '@/hooks/useScheduleDrag.ts';
 
 interface IDayScheduleProps {
   dayOfWeek: DayNameType;
@@ -10,11 +10,14 @@ interface IDayScheduleProps {
 
 function DaySchedule({ dayOfWeek, scheduleTimes }: Readonly<IDayScheduleProps>) {
   const Timeslots = scheduleTimes;
-  // const timetableId = useMutateScheduleState(state => state.timetableId);
+  const { onMouseDown } = useScheduleDrag(
+    () => {},
+    () => {},
+  );
 
   const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    console.log(e.currentTarget);
+    console.log(e.relatedTarget);
     // Todo: Open modal to create a new schedule
   };
 
@@ -22,7 +25,7 @@ function DaySchedule({ dayOfWeek, scheduleTimes }: Readonly<IDayScheduleProps>) 
     <div
       className="relative flex-auto px-[2px]"
       onClick={onClick}
-      // onMouseDown={onMouseDown}
+      onMouseDown={onMouseDown}
       // onMouseMove={onMouseMove}
       // onMouseUp={onMouseUp}
     >

@@ -1,6 +1,6 @@
 import { HTMLAttributes } from 'react';
 import { DayNameType, scheduleTimeAdapter } from '@/hooks/server/useTimetableData.ts';
-import { ScheduleMutateType, useMutateScheduleState } from '@/store/useMutateScheduleState.ts';
+import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState.ts';
 import { IScheduleProps } from '@/components/timetable/Schedule.tsx';
 import useWishes from '@/hooks/server/useWishes.ts';
 
@@ -9,7 +9,7 @@ interface IWireScheduleProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 function WireSchedules({ dayOfWeek }: Readonly<IWireScheduleProps>) {
-  const { mode, schedule } = useMutateScheduleState();
+  const { mode, schedule } = useScheduleState();
   const { data: wishes } = useWishes();
 
   if (mode !== ScheduleMutateType.CREATE) return null;

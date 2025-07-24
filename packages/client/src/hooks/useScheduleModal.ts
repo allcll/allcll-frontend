@@ -2,11 +2,11 @@
 import React, { useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { Timetable, useCreateSchedule, useDeleteSchedule, useUpdateSchedule } from '@/hooks/server/useTimetableData.ts';
-import { ScheduleMutateType, useMutateScheduleState } from '@/store/useMutateScheduleState.ts';
+import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState.ts';
 
 function useScheduleModal() {
   const queryClient = useQueryClient();
-  const { timetableId, schedule, mode, changeScheduleData } = useMutateScheduleState();
+  const { timetableId, schedule, mode, changeScheduleData } = useScheduleState();
   const prevTimetable = useRef<Timetable | undefined>(undefined);
 
   const { mutate: createScheduleData } = useCreateSchedule(timetableId);

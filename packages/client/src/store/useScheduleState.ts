@@ -10,14 +10,25 @@ export enum ScheduleMutateType {
 
 export interface IMutateScheduleState {
   timetableId?: number;
+  options: {
+    timetableRef: HTMLDivElement | null;
+    colNames: string[];
+    rowNames: string[];
+  };
   mode: ScheduleMutateType;
   setTimetableId: (timetableId: number) => void;
+  setOptions: (options: Partial<IMutateScheduleState['options']>) => void;
   changeScheduleData: (schedule: Partial<OfficialSchedule | CustomSchedule>, mode?: ScheduleMutateType) => void;
   schedule: OfficialSchedule | CustomSchedule;
 }
 
-export const useMutateScheduleState = create<IMutateScheduleState>(set => ({
+export const useScheduleState = create<IMutateScheduleState>(set => ({
   timetableId: 1,
+  options: {
+    timetableRef: null,
+    colNames: [],
+    rowNames: [],
+  },
   mode: ScheduleMutateType.NONE,
   schedule: {
     scheduleId: 0,
@@ -33,6 +44,16 @@ export const useMutateScheduleState = create<IMutateScheduleState>(set => ({
     set(state => ({
       ...state,
       timetableId,
+    }));
+  },
+
+  setOptions: (options: Partial<IMutateScheduleState['options']>) => {
+    set(state => ({
+      ...state,
+      options: {
+        ...state.options,
+        ...options,
+      },
     }));
   },
 
