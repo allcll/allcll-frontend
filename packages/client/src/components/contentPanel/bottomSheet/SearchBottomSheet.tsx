@@ -31,7 +31,7 @@ function SearchBottomSheet() {
   const { data: subjects = [], isPending } = useSubject();
   const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
 
-  const { open: openScheduleModal } = useScheduleModal();
+  const { openScheduleModal } = useScheduleModal();
   const { openBottomSheet } = useBottomSheetStore();
 
   const initSchedule: Schedule = {

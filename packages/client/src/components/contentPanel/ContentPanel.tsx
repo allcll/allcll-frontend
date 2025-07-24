@@ -18,7 +18,7 @@ function ContentPanel() {
   const [searchKeywords, setSearchKeywords] = useState('');
   const [filteredData, setFilteredData] = useState<Subject[]>([]);
 
-  const { open: openScheduleModal } = useScheduleModal();
+  const { openScheduleModal } = useScheduleModal();
 
   const initSchedule: Schedule = {
     scheduleId: -1,
