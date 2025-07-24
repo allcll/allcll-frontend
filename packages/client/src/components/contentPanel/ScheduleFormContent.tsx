@@ -17,6 +17,7 @@ function ScheduleFormContent() {
   const { closeBottomSheet } = useBottomSheetStore();
 
   const { schedule: scheduleForm, editSchedule: setScheduleForm, saveSchedule, deleteSchedule } = useScheduleModal();
+
   const { type } = useBottomSheetStore();
   const textFields = [
     {
