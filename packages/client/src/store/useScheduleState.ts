@@ -14,6 +14,12 @@ export interface IMutateScheduleState {
     timetableRef: HTMLDivElement | null;
     colNames: string[];
     rowNames: string[];
+    tableX: number;
+    tableY: number;
+    width: number;
+    height: number;
+    cols: number;
+    rows: number;
   };
   mode: ScheduleMutateType;
   setTimetableId: (timetableId: number) => void;
@@ -28,6 +34,12 @@ export const useScheduleState = create<IMutateScheduleState>(set => ({
     timetableRef: null,
     colNames: [],
     rowNames: [],
+    tableX: 0,
+    tableY: 0,
+    width: 0,
+    height: 0,
+    cols: 5,
+    rows: 11,
   },
   mode: ScheduleMutateType.NONE,
   schedule: {

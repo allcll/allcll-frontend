@@ -1,6 +1,6 @@
 import { HTMLAttributes } from 'react';
 import { scheduleAsApiSchedule, scheduleTimeAdapter } from '@/hooks/server/useTimetableData.ts';
-import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState.ts';
+import { useScheduleState } from '@/store/useScheduleState.ts';
 import { IScheduleProps } from '@/components/timetable/Schedule.tsx';
 import useWishes from '@/hooks/server/useWishes.ts';
 import { Day } from '@/utils/types.ts';
@@ -10,10 +10,10 @@ interface IWireScheduleProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 function WireSchedules({ dayOfWeek }: Readonly<IWireScheduleProps>) {
-  const { mode, schedule } = useScheduleState();
+  const { schedule } = useScheduleState();
   const { data: wishes } = useWishes();
 
-  if (mode !== ScheduleMutateType.CREATE) return null;
+  // if (mode !== ScheduleMutateType.CREATE) return null;
 
   // Fixme: schedule 형태 통일
   const timetable = scheduleTimeAdapter({ schedules: [scheduleAsApiSchedule(schedule)] }, wishes);
@@ -21,13 +21,13 @@ function WireSchedules({ dayOfWeek }: Readonly<IWireScheduleProps>) {
 
   if (!scheduleTime) return null;
 
-  return scheduleTime.map(({ title, professor, location }, index) => (
+  return scheduleTime.map(({ title, professor, location, width, height, top }, index) => (
     <WireSchedule
       key={`wire-schedule-${dayOfWeek}-${index}`}
       title={title}
       professor={professor ?? ''}
       location={location ?? ''}
-      style={{ height: 'calc(100% / 12)', width: '100%' }}
+      style={{ width, height, top }}
     />
   ));
 }

@@ -1,110 +1,61 @@
-import React, { useEffect, useState } from 'react';
-import { useScheduleState } from '@/store/useScheduleState.ts';
-
-let timer: ReturnType<typeof setTimeout> | null = null;
+import React, { useCallback, useEffect, useState } from 'react';
+import { IMutateScheduleState, useScheduleState } from '@/store/useScheduleState.ts';
+import { HEADER_WIDTH, ROW_HEIGHT } from '@/components/timetable/Timetable.tsx';
 
 interface IDragData {
+  dragging: boolean;
   startX: number;
   startY: number;
-  offsetX: number;
-  offsetY: number;
-  clientX: number;
-  clientY: number;
-  width: number;
-  height: number;
-  cols: number;
-  rows: number;
 }
 
-export function useScheduleDrag(onAreaChanged: Function, onDragEnd: Function) {
-  const timetableOptions = useScheduleState(state => state.options);
-  const [dragging, setDragging] = useState(false);
+type UpdateFunction = (startX: number, startY: number, nowX: number, nowY: number) => void;
 
-  // dragData를 useState로 변경
+export function useScheduleDrag(onAreaChanged: UpdateFunction, onDragEnd: UpdateFunction) {
+  const timetableOptions = useScheduleState(state => state.options);
+
   const [dragData, setDragData] = useState<IDragData>({
+    dragging: false,
     startX: 0,
     startY: 0,
-    offsetX: 0,
-    offsetY: 0,
-    clientX: 0,
-    clientY: 0,
-    width: 0,
-    height: 0,
-    cols: 5,
-    rows: 11,
   });
 
-  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    // dragData를 업데이트할 때 setDragData 사용
-    const { x, y } = getDragPosition(e, dragData);
-    console.log(`Start dragging at grid position: (${x}, ${y})`, dragData);
+  // useRef를 사용하여 항상 최신 dragData를 참조하도록 합니다.
+  useEffect(() => {
+    console.log('Drag data updated:', dragData);
+  }, [dragData]);
 
-    setDragging(true);
-  };
+  const onMouseDown = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      e.stopPropagation();
+
+      // 이벤트 핸들러에서는 ref의 최신 값을 사용합니다.
+      const { x, y } = getDragPosition(e, timetableOptions);
+      if (onAreaChanged) onAreaChanged(x, y, x, y);
+
+      setDragData({ startX: x, startY: y, dragging: true });
+    },
+    [onAreaChanged], // 의존성 배열에서 dragData를 제거하여 불필요한 함수 재생성을 방지합니다.
+  );
 
   useEffect(() => {
-    if (!timetableOptions) return;
-    if (!timetableOptions.timetableRef) return;
-
-    const { timetableRef } = timetableOptions;
-
-    // dragData를 업데이트할 때 setDragData 사용
-    setDragData(prev => ({
-      ...prev,
-      cols: timetableOptions.colNames.length || 5,
-      rows: timetableOptions.rowNames.length || 11,
-    }));
-
-    const onResize = () => {
-      if (timer) return;
-
-      timer = setTimeout(() => {
-        if (!timetableRef) return;
-
-        const rect = timetableRef.getBoundingClientRect();
-        // dragData를 업데이트할 때 setDragData 사용
-        setDragData(prev => ({
-          ...prev,
-          width: rect.width,
-          height: rect.height,
-          clientX: rect.left,
-          clientY: rect.top,
-        }));
-        console.log('Timetable resized:', rect, dragData); // 여기 dragData는 최신이 아닐 수 있음
-
-        timer = null;
-      }, 300);
-    };
-
-    onResize();
-    window.addEventListener('resize', onResize);
-    return () => {
-      window.removeEventListener('resize', onResize);
-    };
-  }, [timetableOptions]); // dragData를 의존성 배열에 추가하지 않아도 됨. (내부에서 setDragData를 사용하므로)
-
-  useEffect(() => {
-    if (!dragging) return;
+    if (!dragData.dragging) return;
 
     const onMouseUp = (e: MouseEvent) => {
       e.stopPropagation();
-      // 최신 dragData 값을 바로 사용
-      const { x, y } = getDragPosition(e, dragData);
 
-      console.log(`Dropped at grid position: (${x}, ${y})`, dragData);
-      setDragging(false);
+      // 이벤트 핸들러에서는 ref의 최신 값을 사용합니다.
+      const { x, y } = getDragPosition(e, timetableOptions);
+      if (onDragEnd) onDragEnd(dragData.startX, dragData.startY, x, y);
 
-      if (onDragEnd) onDragEnd({ x, y });
+      setDragData(prev => ({ ...prev, dragging: false }));
     };
 
     const onMouseMove = (e: MouseEvent) => {
       e.stopPropagation();
-      // 최신 dragData 값을 바로 사용
-      const { x, y } = getDragPosition(e, dragData);
 
-      console.log(`Dragging at grid position: (${x}, ${y})`, dragData);
-      if (onAreaChanged) onAreaChanged({ x, y });
+      // 이벤트 핸들러에서는 ref의 최신 값을 사용합니다.
+      const { x, y } = getDragPosition(e, timetableOptions);
+      if (onAreaChanged) onAreaChanged(dragData.startX, dragData.startY, x, y);
     };
 
     document.addEventListener('mouseup', onMouseUp);
@@ -113,25 +64,85 @@ export function useScheduleDrag(onAreaChanged: Function, onDragEnd: Function) {
       document.removeEventListener('mouseup', onMouseUp);
       document.removeEventListener('mousemove', onMouseMove);
     };
-  }, [dragging, dragData, onAreaChanged, onDragEnd]); // dragData를 의존성 배열에 추가
+  }, [dragData, onAreaChanged, onDragEnd]); // 의존성 배열에서 dragData 제거
 
   return {
-    dragging,
+    dragging: dragData.dragging,
     onMouseDown,
   };
 }
 
-const TIME_DIV_COUNT = 6;
-// getDragPosition 함수는 동일하게 유지
-function getDragPosition(e: MouseEvent | React.MouseEvent<HTMLDivElement>, dragData: IDragData) {
-  const { clientX, clientY, width, height, cols, rows } = dragData;
+let timer: ReturnType<typeof setTimeout> | null = null;
 
-  // 0으로 나누는 것을 방지
+export const useUpdateScheduleOptions = (
+  timetableRef: React.RefObject<HTMLDivElement | null>,
+  colNames: string[],
+  rowNames: string[],
+) => {
+  const setOptions = useScheduleState(state => state.setOptions);
+
+  useEffect(() => {
+    setOptions({
+      rowNames,
+      colNames,
+      cols: colNames.length || 5,
+      rows: rowNames.length || 11,
+    });
+  }, [colNames, rowNames]);
+
+  useEffect(() => {
+    if (!timetableRef.current) return;
+
+    const updateSizeOptions = () => {
+      if (!timetableRef.current) return;
+
+      const rect = timetableRef.current.getBoundingClientRect();
+      setOptions({
+        width: rect.width,
+        height: rect.height,
+        tableX: timetableRef.current.offsetLeft + HEADER_WIDTH,
+        tableY: timetableRef.current.offsetTop + ROW_HEIGHT,
+      });
+      console.log('Updated timetable options:', {
+        width: rect.width,
+        height: rect.height,
+        tableX: timetableRef.current.offsetLeft + HEADER_WIDTH,
+        tableY: timetableRef.current.offsetTop + ROW_HEIGHT,
+      });
+
+      timer = null;
+    };
+
+    const onResize = () => {
+      if (timer) return;
+      timer = setTimeout(updateSizeOptions, 300);
+    };
+
+    onResize();
+    window.addEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+    };
+  }, [timetableRef]);
+};
+
+const TIME_DIV_COUNT = 6;
+function getDragPosition(
+  e: MouseEvent | React.MouseEvent<HTMLDivElement>,
+  timetableOptions: IMutateScheduleState['options'],
+) {
+  const { tableX, tableY, width, height, cols, rows } = timetableOptions;
+  console.log(e.clientX, e.clientY, tableX, tableY, width, height, cols, rows);
+
   const colWidth = width / cols || 1;
   const rowHeight = height / rows || 1;
 
-  const x = Math.floor((e.clientX - clientX) / colWidth);
-  const y = Math.floor(((e.clientY - clientY) / rowHeight) * TIME_DIV_COUNT) / TIME_DIV_COUNT;
+  // 마우스의 절대 위치(e.clientX)에서 테이블의 절대 위치(tableX)를 빼서 상대 위치를 계산합니다.
+  const x = Math.floor((e.clientX - tableX) / colWidth);
+  const y = Math.floor(((e.clientY - tableY) / rowHeight) * TIME_DIV_COUNT) / TIME_DIV_COUNT;
 
-  return { x, y };
+  const clippedX = Math.max(0, Math.min(cols - 1, x)); // 최대값을 cols - 1로 수정
+  const clippedY = Math.max(0, Math.min(rows - 1, y)); // 최대값을 rows - 1로 수정
+
+  return { x: clippedX, y: clippedY };
 }

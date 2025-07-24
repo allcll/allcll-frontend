@@ -56,6 +56,16 @@ export interface ScheduleTime {
   top: string;
 }
 
+export const initCustomSchedule: Schedule = {
+  scheduleId: -1,
+  scheduleType: 'custom',
+  subjectId: null,
+  subjectName: '',
+  professorName: '',
+  location: '',
+  timeslots: [],
+};
+
 /** timetableId에 대한 Timetable 데이터를 가져옵니다.
  * @param timetableId
  */

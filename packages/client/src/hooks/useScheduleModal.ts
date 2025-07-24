@@ -1,5 +1,5 @@
 // This hook is used to manage the schedule modal state and actions
-import React, { useRef } from 'react';
+import React, { useRef, useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   Schedule,
@@ -18,6 +18,7 @@ function useScheduleModal() {
   const { timetableId, schedule: prevSchedule, mode, changeScheduleData } = useScheduleState();
   const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
   const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
+  const [, startTransition] = useTransition();
 
   const { mutate: createScheduleData } = useCreateSchedule(timetableId);
   const { mutate: updateScheduleData } = useUpdateSchedule(timetableId);
@@ -27,6 +28,11 @@ function useScheduleModal() {
 
   const prevTimetable = useRef<Timetable | undefined>(undefined);
 
+  /** Schedule Time 만 제어할 때 사용. 모달을 열고 싶지 않을 때 사용*/
+  const setOptimisticSchedule = (targetSchedule: Schedule) => {
+    startTransition(() => changeScheduleData(targetSchedule, ScheduleMutateType.NONE));
+  };
+
   /** schedule 설정하면서 모달 열기 */
   const openScheduleModal = (targetSchedule: Schedule) => {
     // caching previous timetable data
@@ -34,7 +40,7 @@ function useScheduleModal() {
 
     const isOfficialSchedule = subjects?.some(subject => subject.subjectId === targetSchedule.scheduleId);
 
-    const updateSchduleType: Schedule = {
+    const updateScheduleType: Schedule = {
       ...targetSchedule,
       scheduleType: isOfficialSchedule ? 'official' : 'custom',
     };
@@ -53,7 +59,7 @@ function useScheduleModal() {
     } else {
       currentMode = ScheduleMutateType.EDIT;
     }
-    changeScheduleData(updateSchduleType, currentMode);
+    changeScheduleData(updateScheduleType, currentMode);
     openBottomSheet('edit');
   };
 
@@ -135,12 +141,35 @@ function useScheduleModal() {
   return {
     modalActionType: mode,
     schedule: prevSchedule,
+    setOptimisticSchedule,
     openScheduleModal,
     editSchedule,
     saveSchedule,
     deleteSchedule,
     cancelSchedule,
   };
+}
+
+export function useScheduleTimeslot() {
+  const { rowNames } = useScheduleState(state => state.options);
+
+  const getTimeslot = (startX: number, endX: number) => {
+    if (startX > endX) {
+      [startX, endX] = [endX, startX];
+    }
+
+    const startHour = rowNames[Math.floor(startX)];
+    const startMinute = Math.floor((startX - Math.floor(startX)) * 60);
+    const endHour = rowNames[Math.floor(endX)];
+    const endMinute = Math.floor((endX - Math.floor(endX)) * 60);
+
+    return {
+      startTime: `${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')}`,
+      endTime: `${endHour.toString().padStart(2, '0')}:${endMinute.toString().padStart(2, '0')}`,
+    };
+  };
+
+  return { getTimeslot };
 }
 
 export default useScheduleModal;

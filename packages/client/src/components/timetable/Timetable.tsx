@@ -1,12 +1,12 @@
-import { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import Card from '@/components/common/Card.tsx';
 import DaySchedule from '@/components/timetable/DaySchedule.tsx';
+import { useUpdateScheduleOptions } from '@/hooks/useScheduleDrag.ts';
 import { ScheduleTime, useTimetableData } from '@/hooks/server/useTimetableData.ts';
 import { useScheduleState } from '@/store/useScheduleState.ts';
-import { Day } from '@/utils/types.ts';
+import { Day, DAYS } from '@/utils/types.ts';
 
-const DAY_NAMES: Day[] = ['월', '화', '수', '목', '금', '토', '일'];
-const DEFAULT_DAY_NAMES = DAY_NAMES.slice(0, 5); // Default to weekdays
+const DEFAULT_DAY_NAMES = DAYS.slice(0, 5); // Default to weekdays
 const DEFAULT_ROW_NAMES = Array.from({ length: 12 }, (_, i) => `${i + 9}`);
 export const HEADER_WIDTH = 60;
 export const ROW_HEIGHT = 40;
@@ -54,12 +54,8 @@ function TimetableGrid({
   rowHeight = ROW_HEIGHT,
   children,
 }: Readonly<ITimetableGridProps>) {
-  const setOptions = useScheduleState(state => state.setOptions);
   const timetableRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    setOptions({ timetableRef: timetableRef.current, colNames, rowNames });
-  }, [timetableRef.current]);
+  useUpdateScheduleOptions(timetableRef, colNames, rowNames);
 
   return (
     <div className="relative w-full">

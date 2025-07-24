@@ -1,48 +1,47 @@
+import React from 'react';
 import Schedule from '@/components/timetable/Schedule.tsx';
-import { ScheduleTime } from '@/hooks/server/useTimetableData.ts';
 import WireSchedules from '@/components/timetable/WireSchedules.tsx';
+import { initCustomSchedule, ScheduleTime } from '@/hooks/server/useTimetableData.ts';
 import { useScheduleDrag } from '@/hooks/useScheduleDrag.ts';
+import useScheduleModal, { useScheduleTimeslot } from '@/hooks/useScheduleModal.ts';
 import { Day } from '@/utils/types.ts';
-import useScheduleModal from '@/hooks/useScheduleModal.ts';
 
 interface IDayScheduleProps {
   dayOfWeek: Day;
   scheduleTimes: ScheduleTime[];
 }
 
-function DaySchedule({ dayOfWeek, scheduleTimes }: Readonly<IDayScheduleProps>) {
+const DaySchedule = ({ dayOfWeek, scheduleTimes }: Readonly<IDayScheduleProps>) => {
   const Timeslots = scheduleTimes;
-  const { openScheduleModal } = useScheduleModal();
+  const { setOptimisticSchedule, openScheduleModal } = useScheduleModal();
+  const { getTimeslot } = useScheduleTimeslot();
 
-  const { onMouseDown } = useScheduleDrag(
-    () => {},
-    () => {},
-  );
-
-  const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    console.log(e.relatedTarget);
-    // Todo: Open modal to create a new schedule
-
-    openScheduleModal({
-      scheduleId: 0,
-      scheduleType: 'custom',
-      subjectId: null,
-      subjectName: '',
-      professorName: '',
-      location: '',
-      timeslots: [],
+  const onDragChange = (_: number, startY: number, __: number, nowY: number) => {
+    const { startTime, endTime } = getTimeslot(startY, nowY);
+    setOptimisticSchedule({
+      ...initCustomSchedule,
+      timeslots: [{ dayOfWeek, startTime, endTime }],
     });
   };
 
+  const onDragEnd = (_: number, startY: number, __: number, nowY: number) => {
+    const { startTime, endTime } = getTimeslot(startY, nowY);
+    openScheduleModal({
+      ...initCustomSchedule,
+      timeslots: [{ dayOfWeek, startTime, endTime }],
+    });
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      openScheduleModal({ ...initCustomSchedule });
+    }
+  };
+
+  const { onMouseDown } = useScheduleDrag(onDragChange, onDragEnd);
+
   return (
-    <div
-      className="relative flex-auto px-[2px]"
-      onClick={onClick}
-      onMouseDown={onMouseDown}
-      // onMouseMove={onMouseMove}
-      // onMouseUp={onMouseUp}
-    >
+    <div className="relative flex-auto px-[2px]" tabIndex={0} onMouseDown={onMouseDown} onKeyDown={onKeyDown}>
       <WireSchedules dayOfWeek={dayOfWeek} />
       {Timeslots.map(({ title, professor, location, color, width, height, top }, index) => (
         <Schedule
@@ -56,6 +55,6 @@ function DaySchedule({ dayOfWeek, scheduleTimes }: Readonly<IDayScheduleProps>) 
       ))}
     </div>
   );
-}
+};
 
 export default DaySchedule;
