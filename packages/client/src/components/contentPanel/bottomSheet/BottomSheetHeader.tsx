@@ -8,7 +8,7 @@ interface IBottomSheetHeader {
   onClick?: () => void;
 }
 
-function BottomSheetHeader({ title, headerType, onClose }: IBottomSheetHeader) {
+function BottomSheetHeader({ title, headerType, onClose, onClick }: IBottomSheetHeader) {
   return (
     <header className="w-full flex justify-between mb-2 ">
       {headerType === 'close' ? (
@@ -26,7 +26,9 @@ function BottomSheetHeader({ title, headerType, onClose }: IBottomSheetHeader) {
       ) : (
         <>
           <h3 className="text-sm font-semibold">{title}</h3>
-          <HeaderTypeIcon headerType={headerType} onClose={onClose} />
+          <div onClick={onClick}>
+            <HeaderTypeIcon headerType={headerType} onClose={onClose} />
+          </div>
         </>
       )}
     </header>

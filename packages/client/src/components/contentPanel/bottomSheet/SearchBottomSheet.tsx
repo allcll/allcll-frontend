@@ -4,11 +4,26 @@ import BottomSheetHeader from './BottomSheetHeader';
 import FilterSvg from '@/assets/Filter.svg?react';
 import { FilteredSubjectCards } from '../subject/FilteredSubjectCards';
 import { useEffect, useState } from 'react';
-import { Subject } from '@/utils/types';
+import { Day, Subject } from '@/utils/types';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import { disassemble } from 'es-hangul';
 import useSubject from '@/hooks/server/useSubject';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
+import useScheduleModal from '@/hooks/useScheduleModal';
+
+export interface Schedule {
+  scheduleId: number;
+  scheduleType: 'official' | 'custom';
+  subjectId: number | null;
+  subjectName: string;
+  professorName: string;
+  location: string;
+  timeslots: {
+    dayOfWeek: Day;
+    startTime: string;
+    endTime: string;
+  }[];
+}
 
 function SearchBottomSheet() {
   const [searchKeywords, setSearchKeywords] = useState<string>('');
@@ -16,10 +31,25 @@ function SearchBottomSheet() {
   const { data: subjects = [], isPending } = useSubject();
   const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
 
+  const { open: openScheduleModal } = useScheduleModal();
   const { openBottomSheet } = useBottomSheetStore();
+
+  const initSchedule: Schedule = {
+    scheduleId: -1,
+    scheduleType: 'custom',
+    subjectId: null,
+    subjectName: '',
+    professorName: '',
+    location: '',
+    timeslots: [],
+  };
 
   const handleClickFiltering = () => {
     openBottomSheet('filter');
+  };
+
+  const handleCreateSchedule = () => {
+    openScheduleModal(initSchedule);
   };
 
   useEffect(() => {
@@ -94,6 +124,7 @@ function SearchBottomSheet() {
             onClose={() => {
               openBottomSheet('edit');
             }}
+            onClick={handleCreateSchedule}
           />
 
           <div className="flex items-center flex gap-2 py-3">

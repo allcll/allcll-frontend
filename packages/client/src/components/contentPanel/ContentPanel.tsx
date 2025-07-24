@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import SearchBox from '../common/SearchBox';
 import DepartmentFilter from './filter/DepartmentFilter';
 import GradeFilter from './filter/GradeFilter';
@@ -8,17 +8,31 @@ import { disassemble } from 'es-hangul';
 import useSubject from '@/hooks/server/useSubject';
 import { Subject } from '@/utils/types';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
+import useScheduleModal from '@/hooks/useScheduleModal';
+import { Schedule } from '@/hooks/server/useTimetableData';
 
-interface IContentPanel {
-  setIsModalOpen: Dispatch<SetStateAction<boolean>>;
-}
-
-function ContentPanel({ setIsModalOpen }: IContentPanel) {
+function ContentPanel() {
   const { data: subjects = [], isPending } = useSubject();
   const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
 
   const [searchKeywords, setSearchKeywords] = useState('');
   const [filteredData, setFilteredData] = useState<Subject[]>([]);
+
+  const { open: openScheduleModal } = useScheduleModal();
+
+  const initSchedule: Schedule = {
+    scheduleId: -1,
+    scheduleType: 'custom',
+    subjectId: null,
+    subjectName: '',
+    professorName: '',
+    location: '',
+    timeslots: [],
+  };
+
+  const handleCreateSchedule = () => {
+    openScheduleModal(initSchedule);
+  };
 
   useEffect(() => {
     const result = subjects.filter(subject => {
@@ -79,7 +93,7 @@ function ContentPanel({ setIsModalOpen }: IContentPanel) {
         <GradeFilter />
         <DayFilter />
         {/* <TimeFilter/> */}
-        <button type="button" className="text-blue-500 cursor-pointer text-sm" onClick={() => setIsModalOpen(true)}>
+        <button type="button" className="text-blue-500 cursor-pointer text-sm" onClick={handleCreateSchedule}>
           + 직접추가
         </button>
       </div>

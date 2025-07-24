@@ -1,15 +1,15 @@
+import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import ScheduleFormContent from './ScheduleFormContent';
 import XDarkGraySvg from '@/assets/x-darkgray.svg?react';
-import { Schedule } from '@/hooks/server/useTimetableData';
 
-interface IScheduleFormModal {
-  schedule?: Schedule;
-  onClose: () => void;
-}
+function ScheduleFormModal() {
+  const { closeBottomSheet } = useBottomSheetStore();
 
-function ScheduleFormModal({ onClose }: Readonly<IScheduleFormModal>) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+      onClick={() => closeBottomSheet('edit')}
+    >
       <div
         className="bg-white flex  flex-col gap-2 rounded-md w-[90%] max-w-md p-3 hadow-lg relative"
         onClick={e => e.stopPropagation()}
@@ -18,7 +18,7 @@ function ScheduleFormModal({ onClose }: Readonly<IScheduleFormModal>) {
           <h3>과목 등록</h3>
           <button
             className="w-6 h-6 cursor-pointer flex items-center justify-center bg-gray-100 rounded-full"
-            onClick={onClose}
+            onClick={() => closeBottomSheet('edit')}
           >
             <XDarkGraySvg />
           </button>

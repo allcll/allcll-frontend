@@ -4,11 +4,9 @@ import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import ContentPanel from '@/components/contentPanel/ContentPanel';
 import FormBottomSheet from '@/components/contentPanel/bottomSheet/FormBottomSheet';
 import ScheduleFormModal from '@/components/contentPanel/ScheduleFormModal';
-import { useState } from 'react';
 
 const Timetables = () => {
   const { type } = useBottomSheetStore();
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="w-full h-screen flex items-center justify-center">
@@ -20,9 +18,9 @@ const Timetables = () => {
         {/* <ScheduleDetailBottomSheet /> */}
       </div>
 
-      {isModalOpen && <ScheduleFormModal onClose={() => setIsModalOpen(!isModalOpen)} />}
+      <ScheduleFormModal />
       <div className="hidden md:block">
-        <ContentPanel setIsModalOpen={setIsModalOpen} />
+        <ContentPanel />
       </div>
     </div>
   );
