@@ -10,15 +10,14 @@ interface ISubjectCards {
 }
 
 export function FilteredSubjectCards({ subjects, expandToMax, isPending = false }: ISubjectCards) {
-  const { visibleRows } = useInfScroll(subjects ?? []);
-
-  const data = subjects.slice(0, visibleRows);
+  const { visibleRows } = useInfScroll(subjects);
+  const data = subjects ? subjects.slice(0, visibleRows) : [];
   const isMore = data.length < subjects.length;
   const [selectedSubjectId, setSelectedSubjectId] = useState<number>();
   const selectedCardRef = useRef<HTMLDivElement>(null);
 
-  if (isPending) {
-    return <div className="w-full h-10 bg-blue-100"></div>;
+  if (isPending || !subjects) {
+    return <div className="w-full h-100 bg-blue-100"></div>;
   }
 
   if (!subjects.length) {

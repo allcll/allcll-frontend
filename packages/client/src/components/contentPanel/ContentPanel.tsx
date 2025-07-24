@@ -11,6 +11,16 @@ import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import useScheduleModal from '@/hooks/useScheduleModal';
 import { Schedule } from '@/hooks/server/useTimetableData';
 
+const initSchedule: Schedule = {
+  scheduleId: -1,
+  scheduleType: 'custom',
+  subjectId: null,
+  subjectName: '',
+  professorName: '',
+  location: '',
+  timeslots: [],
+};
+
 function ContentPanel() {
   const { data: subjects = [], isPending } = useSubject();
   const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
@@ -19,16 +29,6 @@ function ContentPanel() {
   const [filteredData, setFilteredData] = useState<Subject[]>([]);
 
   const { openScheduleModal } = useScheduleModal();
-
-  const initSchedule: Schedule = {
-    scheduleId: -1,
-    scheduleType: 'custom',
-    subjectId: null,
-    subjectName: '',
-    professorName: '',
-    location: '',
-    timeslots: [],
-  };
 
   const handleCreateSchedule = () => {
     openScheduleModal(initSchedule);

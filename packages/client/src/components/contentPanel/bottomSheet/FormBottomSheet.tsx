@@ -1,14 +1,18 @@
 import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
 import ScheduleFormContent from '../ScheduleFormContent';
-import { useBottomSheetStore } from '@/store/useBottomSheetStore';
+import useScheduleModal from '@/hooks/useScheduleModal';
 
 function FormBottomSheet() {
-  const { closeBottomSheet } = useBottomSheetStore();
+  const { deleteSchedule } = useScheduleModal();
+
+  const handleCancelSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
+    deleteSchedule(e);
+  };
 
   return (
     <BottomSheet>
-      <BottomSheetHeader title="과목 수정" headerType="close" onClose={() => closeBottomSheet('edit')} />
+      <BottomSheetHeader title="과목 수정" headerType="close" onClose={handleCancelSchedule} />
       <ScheduleFormContent />
     </BottomSheet>
   );

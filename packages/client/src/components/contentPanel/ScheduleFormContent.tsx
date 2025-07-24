@@ -16,8 +16,8 @@ interface TimeRange {
 function ScheduleFormContent() {
   const { closeBottomSheet } = useBottomSheetStore();
 
-  const { schedule: scheduleForm, editSchedule: setScheduleForm, saveSchedule } = useScheduleModal();
-
+  const { schedule: scheduleForm, editSchedule: setScheduleForm, saveSchedule, deleteSchedule } = useScheduleModal();
+  const { type } = useBottomSheetStore();
   const textFields = [
     {
       id: 'subjectName',
@@ -99,56 +99,68 @@ function ScheduleFormContent() {
     closeBottomSheet('edit');
   };
 
+  const handleDeleteSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
+    deleteSchedule(e);
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      {textFields.map(({ id, placeholder, value }) => (
-        <TextField
-          key={id}
-          id={id}
-          required
-          placeholder={placeholder}
-          value={value}
-          onChange={e => setScheduleForm(prev => ({ ...prev, [id]: e.target.value }))}
-        />
-      ))}
+    <>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+        {textFields.map(({ id, placeholder, value }) => (
+          <TextField
+            key={id}
+            id={id}
+            required
+            placeholder={placeholder}
+            value={value}
+            onChange={e => setScheduleForm(prev => ({ ...prev, [id]: e.target.value }))}
+          />
+        ))}
 
-      <div className="flex gap-2 flex-col">
-        <p className="text-gray-400 text-xs">요일</p>
-        <div className="flex gap-2 items-center">
-          {DAYS.map(day => (
-            <Chip
-              key={day}
-              label={day}
-              selected={scheduleForm.timeslots.some(slot => slot.dayOfWeek === day)}
-              onClick={() => toggleDay(day)}
-            />
-          ))}
+        <div className="flex gap-2 flex-col">
+          <p className="text-gray-400 text-xs">요일</p>
+          <div className="flex gap-2 items-center">
+            {DAYS.map(day => (
+              <Chip
+                key={day}
+                label={day}
+                selected={scheduleForm.timeslots.some(slot => slot.dayOfWeek === day)}
+                onClick={() => toggleDay(day)}
+              />
+            ))}
+          </div>
         </div>
-      </div>
 
-      {scheduleForm.timeslots.map(slot => {
-        return (
-          <>
-            <p className="text-blue-500 text-xs">{slot.dayOfWeek}</p>
-            <SelectTime
-              key={slot.dayOfWeek}
-              day={slot.dayOfWeek}
-              timeRange={extractTimeParts(slot.startTime, slot.endTime)}
-              onChange={onScheduleFormChange}
-            />
-          </>
-        );
-      })}
+        {scheduleForm.timeslots.map(slot => {
+          return (
+            <>
+              <p className="text-blue-500 text-xs">{slot.dayOfWeek}</p>
+              <SelectTime
+                key={slot.dayOfWeek}
+                day={slot.dayOfWeek}
+                timeRange={extractTimeParts(slot.startTime, slot.endTime)}
+                onChange={onScheduleFormChange}
+              />
+            </>
+          );
+        })}
 
-      <div className="flex  justify-end gap-3">
-        <button type="submit" className="text-blue-500 text-xs w-15 rounded px-4 py-2 cursor-pointer ">
-          저장
-        </button>
-        <button type="submit" className="text-red-500 text-xs w-15 rounded px-3 py-2 cursor-pointer ">
-          삭제
-        </button>
-      </div>
-    </form>
+        <div className="flex  justify-end gap-3">
+          <button type="submit" className="text-blue-500 text-xs w-15 rounded px-4 py-2 cursor-pointer ">
+            저장
+          </button>
+          {type === 'edit' && (
+            <button
+              type="button"
+              onClick={handleDeleteSchedule}
+              className="text-red-500 text-xs w-15 rounded px-3 py-2 cursor-pointer "
+            >
+              삭제
+            </button>
+          )}
+        </div>
+      </form>
+    </>
   );
 }
 

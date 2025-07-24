@@ -1,5 +1,6 @@
 import { HTMLAttributes } from 'react';
 import { useScheduleDrag } from '@/hooks/useScheduleDrag.ts';
+import useScheduleModal from '@/hooks/useScheduleModal';
 
 type ColorType = 'rose' | 'amber' | 'green' | 'emerald' | 'blue' | 'violet';
 
@@ -26,10 +27,20 @@ function Schedule({
     () => {},
   );
 
+  const { openScheduleModal } = useScheduleModal();
+
   const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
 
-    // Todo: 수정 모드
+    openScheduleModal({
+      scheduleId: 0,
+      scheduleType: 'custom',
+      subjectId: null,
+      subjectName: '',
+      professorName: '',
+      location: '',
+      timeslots: [],
+    });
   };
 
   return (

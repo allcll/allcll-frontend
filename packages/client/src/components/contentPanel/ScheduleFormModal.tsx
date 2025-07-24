@@ -1,9 +1,15 @@
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import ScheduleFormContent from './ScheduleFormContent';
 import XDarkGraySvg from '@/assets/x-darkgray.svg?react';
+import useScheduleModal from '@/hooks/useScheduleModal';
 
 function ScheduleFormModal() {
   const { closeBottomSheet } = useBottomSheetStore();
+  const { cancelSchedule } = useScheduleModal();
+
+  const handleCancelSchedule = (e?: React.MouseEvent<HTMLButtonElement>) => {
+    cancelSchedule(e);
+  };
 
   return (
     <div
@@ -18,7 +24,7 @@ function ScheduleFormModal() {
           <h3>과목 등록</h3>
           <button
             className="w-6 h-6 cursor-pointer flex items-center justify-center bg-gray-100 rounded-full"
-            onClick={() => closeBottomSheet('edit')}
+            onClick={handleCancelSchedule}
           >
             <XDarkGraySvg />
           </button>
