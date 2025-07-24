@@ -95,8 +95,7 @@ export function useScheduleDrag(onAreaChanged, onDragEnd) {
       console.log(`Dropped at grid position: (${x}, ${y})`, dragData);
       setDragging(false);
 
-      if ()
-      onDragEnd && onDragEnd({ x, y }); // 필요하다면 onDragEnd 호출
+      if (onDragEnd) onDragEnd({ x, y });
     };
 
     const onMouseMove = (e: MouseEvent) => {
@@ -105,7 +104,7 @@ export function useScheduleDrag(onAreaChanged, onDragEnd) {
       const { x, y } = getDragPosition(e, dragData);
 
       console.log(`Dragging at grid position: (${x}, ${y})`, dragData);
-      onAreaChanged && onAreaChanged({ x, y }); // 필요하다면 onAreaChanged 호출
+      if (onAreaChanged) onAreaChanged({ x, y });
     };
 
     document.addEventListener('mouseup', onMouseUp);
