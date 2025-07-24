@@ -32,7 +32,6 @@ function SearchBottomSheet() {
     };
   }, [searchKeywords, setSearchKeywords]);
 
-  //TODO: 바텀 시트는 저장하는 순간, 적용하면 된다. -> useEfftect가 최선인가?
   useEffect(() => {
     const result = subjects.filter(subject => {
       const filteringDays = (lesn_time: string): boolean => {
@@ -60,14 +59,14 @@ function SearchBottomSheet() {
         return false;
       };
 
-      return (
-        filteringGrades(subject) && filteringDays(subject.lesn_time) && filteringDepartment(subject.departmentName)
-      );
+      //TODO: filteringGrades 추가하기
+      return filteringDays(subject.lesn_time) && filteringDepartment(subject.departmentName);
     });
 
     setFilteredData(result);
   }, []);
 
+  //TODO: 바텀 시트는 저장하는 순간, 적용하면 된다. -> useEfftect가 최선인가?
   useEffect(() => {
     const cleanSearchInput = searchKeywords?.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
     const disassembledSearchInput = disassemble(cleanSearchInput).toLowerCase();

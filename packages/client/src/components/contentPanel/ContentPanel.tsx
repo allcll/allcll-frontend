@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import SearchBox from '../common/SearchBox';
 import DepartmentFilter from './filter/DepartmentFilter';
 import GradeFilter from './filter/GradeFilter';
@@ -8,7 +8,6 @@ import { disassemble } from 'es-hangul';
 import useSubject from '@/hooks/server/useSubject';
 import { Subject } from '@/utils/types';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
-import useDetectClose from '@/hooks/useDetectClose';
 
 interface IContentPanel {
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -18,26 +17,8 @@ function ContentPanel({ setIsModalOpen }: IContentPanel) {
   const { data: subjects = [], isPending } = useSubject();
   const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
 
-  const [openFilter, setOpenFilter] = useState({
-    학과: false,
-    학년: false,
-    요일: false,
-  });
   const [searchKeywords, setSearchKeywords] = useState('');
   const [filteredData, setFilteredData] = useState<Subject[]>([]);
-
-  const toggleFilter = (key: '학과' | '학년' | '요일') => {
-    setOpenFilter(prev => {
-      const isCurrentlyOpen = prev[key];
-
-      return {
-        학과: false,
-        학년: false,
-        요일: false,
-        [key]: !isCurrentlyOpen,
-      };
-    });
-  };
 
   useEffect(() => {
     const result = subjects.filter(subject => {
@@ -52,11 +33,11 @@ function ContentPanel({ setIsModalOpen }: IContentPanel) {
 
       const filteringGrades = (subject: Subject): boolean => {
         if (selectedGrades.length === 0) return true;
-        const sem = subject.semester_at;
-        if (selectedGrades.includes(1) && [1, 2].includes(sem)) return true;
-        if (selectedGrades.includes(2) && [3, 4].includes(sem)) return true;
-        if (selectedGrades.includes(3) && [5, 6].includes(sem)) return true;
-        if (selectedGrades.includes(4) && [7, 8].includes(sem)) return true;
+        const sem = subject.studentYear;
+        if (selectedGrades.includes(1) && sem === 1) return true;
+        if (selectedGrades.includes(2) && sem === 2) return true;
+        if (selectedGrades.includes(3) && sem === 3) return true;
+        if (selectedGrades.includes(4) && sem === 4) return true;
         return false;
       };
 
@@ -94,9 +75,10 @@ function ContentPanel({ setIsModalOpen }: IContentPanel) {
       />
 
       <div className="flex flex-row gap-3">
-        <DepartmentFilter openFilter={openFilter.학과} onToggle={() => toggleFilter('학과')} />
-        <GradeFilter openFilter={openFilter.학년} onToggle={() => toggleFilter('학년')} />
-        <DayFilter openFilter={openFilter.요일} onToggle={() => toggleFilter('요일')} />
+        <DepartmentFilter />
+        <GradeFilter />
+        <DayFilter />
+        {/* <TimeFilter/> */}
         <button type="button" className="text-blue-500 cursor-pointer text-sm" onClick={() => setIsModalOpen(true)}>
           + 직접추가
         </button>

@@ -15,7 +15,7 @@ interface subject {
   //새로 추가되는 필드
   language: string; // 수업 언어
   subjectType: string; // 수업 유형
-  semester_at: number; // 학기
+  studentYear?: number; // 학기
   lesn_time: string; // 수업 시간
   lesn_room: string; // 수업실
   tm_num: string; // 학점
