@@ -57,6 +57,7 @@ interface Colors {
   bg: string;
 }
 
+// Todo: 색상을 colors.ts 로 분리하기
 export function getColors(color: ColorType): Colors {
   switch (color) {
     case 'rose':

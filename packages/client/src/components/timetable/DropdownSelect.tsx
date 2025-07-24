@@ -16,6 +16,7 @@ interface DropdownSelectProps {
   onDelete?: (optionId: string) => void;
 }
 
+// Fixme : 기존에 있는 Chip 형태의 Selectbox 와 통합하기
 const DropdownSelect: React.FC<DropdownSelectProps> = ({ initialLabel, options, onSelect, onEdit, onDelete }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLabel, setSelectedLabel] = useState(initialLabel);

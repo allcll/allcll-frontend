@@ -13,6 +13,7 @@ export interface Timetable {
   semester: string; // e.g., "2025-1"
   schedules: ScheduleApiResponse[];
 }
+
 export interface OfficialSchedule {
   scheduleId: number;
   scheduleType: 'official';
@@ -22,6 +23,7 @@ export interface OfficialSchedule {
   location: null;
   timeslots: never[];
 }
+
 export interface CustomSchedule extends Schedule {
   scheduleType: 'custom';
   subjectId: null;
@@ -55,6 +57,9 @@ export interface ScheduleTime {
   top: string;
 }
 
+/** timetableId에 대한 Timetable 데이터를 가져옵니다.
+ * @param timetableId
+ */
 export function useTimetableData(timetableId?: number) {
   const { data: wishes } = useWishes();
 
@@ -76,6 +81,12 @@ interface ScheduleMutationData {
   prevTimetable: Timetable;
 }
 
+/** 스케줄을 생성하는 Mutation 훅입니다.
+ * onMutate: mutation 전에 캐싱된 데이터를 context로 넘겨줍니다.
+ * onError: 에러 발생 시 캐싱된 데이터를 롤백합니다.
+ * onSuccess: 성공 시 캐싱된 데이터를 업데이트합니다.
+ * @param timetableId
+ */
 export function useCreateSchedule(timetableId?: number) {
   const queryClient = useQueryClient();
 
@@ -103,6 +114,12 @@ export function useCreateSchedule(timetableId?: number) {
   });
 }
 
+/** 스케줄을 업데이트하는 Mutation 훅입니다.
+ * onMutate: mutation 전에 캐싱된 데이터를 context로 넘겨줍니다.
+ * onError: 에러 발생 시 캐싱된 데이터를 롤백합니다.
+ * onSuccess: 성공 시 캐싱된 데이터를 업데이트합니다.
+ * @param timetableId
+ */
 export function useUpdateSchedule(timetableId?: number) {
   const queryClient = useQueryClient();
 
@@ -135,6 +152,12 @@ export function useUpdateSchedule(timetableId?: number) {
   });
 }
 
+/** 스케줄을 삭제하는 Mutation 훅입니다.
+ * onMutate: mutation 전에 캐싱된 데이터를 context로 넘겨줍니다.
+ * onError: 에러 발생 시 캐싱된 데이터를 롤백합니다.
+ * onSuccess: 성공 시 캐싱된 데이터를 업데이트합니다.
+ * @param timetableId
+ */
 export function useDeleteSchedule(timetableId?: number) {
   const queryClient = useQueryClient();
 
@@ -165,6 +188,10 @@ interface IApiScheduleData {
   schedules: ScheduleApiResponse[];
 }
 
+/** API에서 받은 Timetable 데이터를 Wishes와 병합하여, Schedule 배열을 반환합니다.
+ * @param apiScheduleData
+ * @param wishes
+ */
 function mergeTimetableData(apiScheduleData?: IApiScheduleData, wishes?: Wishes[]) {
   if (!apiScheduleData || !wishes) return undefined;
 
@@ -191,6 +218,10 @@ function mergeTimetableData(apiScheduleData?: IApiScheduleData, wishes?: Wishes[
   return mergedData;
 }
 
+/** timetable 데이터를 ScheduleTime 형태로 변환합니다.
+ * @param timetable
+ * @param wishes
+ */
 export function scheduleTimeAdapter(timetable: IApiScheduleData, wishes?: Wishes[]) {
   const colors: ScheduleTime['color'][] = ['rose', 'amber', 'green', 'emerald', 'blue', 'violet'];
 
