@@ -11,6 +11,7 @@ import {
 } from '@/hooks/server/useTimetableData.ts';
 import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState.ts';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore.ts';
+import useSubject from './server/useSubject';
 
 function useScheduleModal() {
   const queryClient = useQueryClient();
@@ -22,12 +23,26 @@ function useScheduleModal() {
   const { mutate: updateScheduleData } = useUpdateSchedule(timetableId);
   const { mutate: deleteScheduleData } = useDeleteSchedule(timetableId);
 
+  const { data: subjects } = useSubject();
+
   const prevTimetable = useRef<Timetable | undefined>(undefined);
 
   /** schedule 설정하면서 모달 열기 */
   const openScheduleModal = (targetSchedule: Schedule) => {
     // caching previous timetable data
     prevTimetable.current = queryClient.getQueryData<Timetable>(['timetableData', timetableId]);
+
+    const isOfficialSchedule = subjects?.some(subject => subject.subjectId === targetSchedule.scheduleId);
+
+    const updateSchduleType: Schedule = {
+      ...targetSchedule,
+      scheduleType: isOfficialSchedule ? 'official' : 'custom',
+    };
+
+    if (isOfficialSchedule) {
+      openBottomSheet('Info');
+      return;
+    }
 
     // set modal set state
     let currentMode;
@@ -38,7 +53,7 @@ function useScheduleModal() {
     } else {
       currentMode = ScheduleMutateType.EDIT;
     }
-    changeScheduleData(targetSchedule, currentMode);
+    changeScheduleData(updateSchduleType, currentMode);
     openBottomSheet('edit');
   };
 
