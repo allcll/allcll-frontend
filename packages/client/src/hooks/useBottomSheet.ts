@@ -56,9 +56,6 @@ export default function useBottomSheet() {
       touchStart.touchY = e.touches[0].clientY;
     };
 
-    //   이전 touchmove와 비교하여 터치 포인트가 어느 방향으로 진행 중인지와
-    //   얼만큼 진행했는지를 계산하고 기록합니다.
-    //   그 후 바텀시트를 터치 포인트의 진행 만큼 움직입니다.
     const handleTouchMove = (e: TouchEvent) => {
       const { touchStart, touchMove } = metrics.current;
       const currentTouch = e.touches[0];
@@ -68,7 +65,6 @@ export default function useBottomSheet() {
       }
 
       if (touchMove.prevTouchY === 0) {
-        // 맨 처음 앱 시작하고 시작시
         touchMove.prevTouchY = touchStart.touchY;
       }
 
@@ -100,8 +96,6 @@ export default function useBottomSheet() {
       }
     };
 
-    // 유저가 터치를 제거했을 때, 시트를 최상단으로 올리거나 최하단으로 내리는
-    //  Snap Animation을 트리거합니다. 그 후 터치 기록들을 초기화 합니다.
     const handleTouchEnd = () => {
       const { touchMove } = metrics.current;
 

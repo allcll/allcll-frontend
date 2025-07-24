@@ -45,7 +45,7 @@ function ContentPanel({ setIsModalOpen }: IContentPanel) {
     });
 
     setFilteredData(result);
-  }, [selectedDepartment, selectedGrades, selectedDays]);
+  }, [selectedDepartment, selectedGrades, selectedDays, searchKeywords]);
 
   useEffect(() => {
     const clearnSearchInput = searchKeywords?.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
