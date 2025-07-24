@@ -41,7 +41,6 @@ async function applyWithCaptcha(page: Page, index: number) {
     await page.getByRole('button', { name: '확인' }).click();
   } else {
     await page.getByRole('button', { name: '취소' }).click();
-
   }
 }
 
@@ -79,6 +78,7 @@ test.describe('수강신청 시뮬레이션 예외 상황', () => {
 
     await page.getByRole('button', { name: '확인' }).click();
 
+    await page.getByRole('button', { name: '검색' }).click();
     await expectVisibleModal(page, '서비스 접속대기 중입니다.');
   });
 });
@@ -112,5 +112,4 @@ test.describe('수강신청 시뮬레이션 전체 흐름', () => {
 
     await expectVisibleModal(page, '수강 신청 성공!');
   });
-
 });

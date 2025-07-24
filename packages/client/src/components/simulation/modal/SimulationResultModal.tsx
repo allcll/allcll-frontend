@@ -3,12 +3,10 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import { getSummaryResult } from '@/utils/simulation/simulation';
 import { useEffect, useState } from 'react';
 import ProcessingModal from './Processing';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { NavLink } from 'react-router-dom';
 
 function SimulationResultModal({ simulationId }: { simulationId: number }) {
   const { closeModal } = useSimulationModalStore();
-  const { resetSimulation } = useSimulationProcessStore();
   const [result, setResult] = useState<{ accuracy: number; score: number; total_elapsed: number } | null>(null);
   const [logParam, setLogParam] = useState<number>();
 
@@ -20,7 +18,6 @@ function SimulationResultModal({ simulationId }: { simulationId: number }) {
         } else {
           setResult(result);
           setLogParam(simulationId);
-          resetSimulation();
         }
       });
     }

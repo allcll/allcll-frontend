@@ -63,7 +63,8 @@ export interface Subject {
   tm_num: string; // 학점
 }
 
-export type SimulationStatusType = 'before' | 'selectedDepartment' | 'start' | 'progress' | 'finish' | 'refresh';
+
+export type SimulationStatusType = 'before' | 'start' | 'progress' | 'finish';
 
 export interface DepartmentType {
   departmentCode: string;
