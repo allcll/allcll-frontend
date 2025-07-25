@@ -17,7 +17,7 @@ const DaySchedule = ({ dayOfWeek, scheduleTimes }: Readonly<IDayScheduleProps>) 
   const { getTimeslot } = useScheduleTimeslot();
 
   const onDragChange = (_: number, startY: number, __: number, nowY: number) => {
-    const { startTime, endTime } = getTimeslot(startY, nowY);
+    const { startTime, endTime } = getTimeslot(startY, nowY, 1);
     setOptimisticSchedule({
       ...initCustomSchedule,
       timeslots: [{ dayOfWeek, startTime, endTime }],
@@ -25,7 +25,7 @@ const DaySchedule = ({ dayOfWeek, scheduleTimes }: Readonly<IDayScheduleProps>) 
   };
 
   const onDragEnd = (_: number, startY: number, __: number, nowY: number) => {
-    const { startTime, endTime } = getTimeslot(startY, nowY);
+    const { startTime, endTime } = getTimeslot(startY, nowY, 1);
     openScheduleModal({
       ...initCustomSchedule,
       timeslots: [{ dayOfWeek, startTime, endTime }],

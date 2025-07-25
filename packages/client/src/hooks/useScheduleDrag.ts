@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { IMutateScheduleState, useScheduleState } from '@/store/useScheduleState.ts';
-import { HEADER_WIDTH, ROW_HEIGHT } from '@/components/timetable/Timetable.tsx';
 
 interface IDragData {
   dragging: boolean;
@@ -19,11 +18,6 @@ export function useScheduleDrag(onAreaChanged: UpdateFunction, onDragEnd: Update
     startY: 0,
   });
 
-  // useRef를 사용하여 항상 최신 dragData를 참조하도록 합니다.
-  useEffect(() => {
-    console.log('Drag data updated:', dragData);
-  }, [dragData]);
-
   const onMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       e.stopPropagation();
@@ -37,26 +31,26 @@ export function useScheduleDrag(onAreaChanged: UpdateFunction, onDragEnd: Update
     [onAreaChanged], // 의존성 배열에서 dragData를 제거하여 불필요한 함수 재생성을 방지합니다.
   );
 
+  const onMouseUp = (e: MouseEvent) => {
+    e.stopPropagation();
+
+    // 이벤트 핸들러에서는 ref의 최신 값을 사용합니다.
+    const { x, y } = getDragPosition(e, timetableOptions);
+    if (onDragEnd) onDragEnd(dragData.startX, dragData.startY, x, y);
+
+    setDragData(prev => ({ ...prev, dragging: false }));
+  };
+
+  const onMouseMove = (e: MouseEvent) => {
+    e.stopPropagation();
+
+    // 이벤트 핸들러에서는 ref의 최신 값을 사용합니다.
+    const { x, y } = getDragPosition(e, timetableOptions);
+    if (onAreaChanged) onAreaChanged(dragData.startX, dragData.startY, x, y);
+  };
+
   useEffect(() => {
     if (!dragData.dragging) return;
-
-    const onMouseUp = (e: MouseEvent) => {
-      e.stopPropagation();
-
-      // 이벤트 핸들러에서는 ref의 최신 값을 사용합니다.
-      const { x, y } = getDragPosition(e, timetableOptions);
-      if (onDragEnd) onDragEnd(dragData.startX, dragData.startY, x, y);
-
-      setDragData(prev => ({ ...prev, dragging: false }));
-    };
-
-    const onMouseMove = (e: MouseEvent) => {
-      e.stopPropagation();
-
-      // 이벤트 핸들러에서는 ref의 최신 값을 사용합니다.
-      const { x, y } = getDragPosition(e, timetableOptions);
-      if (onAreaChanged) onAreaChanged(dragData.startX, dragData.startY, x, y);
-    };
 
     document.addEventListener('mouseup', onMouseUp);
     document.addEventListener('mousemove', onMouseMove);
@@ -74,6 +68,7 @@ export function useScheduleDrag(onAreaChanged: UpdateFunction, onDragEnd: Update
 
 let timer: ReturnType<typeof setTimeout> | null = null;
 
+/** 테이블 크기와 옵션을 업데이트하는 훅 */
 export const useUpdateScheduleOptions = (
   timetableRef: React.RefObject<HTMLDivElement | null>,
   colNames: string[],
@@ -90,28 +85,23 @@ export const useUpdateScheduleOptions = (
     });
   }, [colNames, rowNames]);
 
-  useEffect(() => {
+  // 테이블 크기 측정 / 저장하는 함수
+  const updateSizeOptions = () => {
     if (!timetableRef.current) return;
 
-    const updateSizeOptions = () => {
-      if (!timetableRef.current) return;
+    const rect = timetableRef.current.getBoundingClientRect();
+    setOptions({
+      width: rect.width,
+      height: rect.height,
+      tableX: rect.left + window.pageXOffset,
+      tableY: rect.top + window.pageYOffset,
+    });
 
-      const rect = timetableRef.current.getBoundingClientRect();
-      setOptions({
-        width: rect.width,
-        height: rect.height,
-        tableX: timetableRef.current.offsetLeft + HEADER_WIDTH,
-        tableY: timetableRef.current.offsetTop + ROW_HEIGHT,
-      });
-      console.log('Updated timetable options:', {
-        width: rect.width,
-        height: rect.height,
-        tableX: timetableRef.current.offsetLeft + HEADER_WIDTH,
-        tableY: timetableRef.current.offsetTop + ROW_HEIGHT,
-      });
+    timer = null;
+  };
 
-      timer = null;
-    };
+  useEffect(() => {
+    if (!timetableRef.current) return;
 
     const onResize = () => {
       if (timer) return;
@@ -132,17 +122,17 @@ function getDragPosition(
   timetableOptions: IMutateScheduleState['options'],
 ) {
   const { tableX, tableY, width, height, cols, rows } = timetableOptions;
-  console.log(e.clientX, e.clientY, tableX, tableY, width, height, cols, rows);
+  const { pageX, pageY } = e;
 
   const colWidth = width / cols || 1;
   const rowHeight = height / rows || 1;
 
   // 마우스의 절대 위치(e.clientX)에서 테이블의 절대 위치(tableX)를 빼서 상대 위치를 계산합니다.
-  const x = Math.floor((e.clientX - tableX) / colWidth);
-  const y = Math.floor(((e.clientY - tableY) / rowHeight) * TIME_DIV_COUNT) / TIME_DIV_COUNT;
+  const x = Math.floor((pageX - tableX) / colWidth);
+  const y = Math.floor(((pageY - tableY) / rowHeight) * TIME_DIV_COUNT) / TIME_DIV_COUNT;
 
-  const clippedX = Math.max(0, Math.min(cols - 1, x)); // 최대값을 cols - 1로 수정
-  const clippedY = Math.max(0, Math.min(rows - 1, y)); // 최대값을 rows - 1로 수정
+  const clippedX = Math.max(0, Math.min(cols, x)); // 최대값을 cols - 1로 수정
+  const clippedY = Math.max(0, Math.min(rows, y)); // 최대값을 rows - 1로 수정
 
   return { x: clippedX, y: clippedY };
 }
