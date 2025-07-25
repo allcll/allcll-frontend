@@ -5,7 +5,6 @@ import GradeFilter from './filter/GradeFilter';
 import DayFilter from './filter/DayFilter';
 import { FilteredSubjectCards } from './subject/FilteredSubjectCards';
 import { disassemble } from 'es-hangul';
-import useSubject from '@/hooks/server/useSubject';
 import { Subject } from '@/utils/types';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import useScheduleModal from '@/hooks/useScheduleModal';
@@ -24,7 +23,6 @@ const initSchedule: Schedule = {
 function ContentPanel() {
   const subjects: Subject[] = [];
   const isPending = false;
-  //  const { data: subjects = [], isPending } = useSubject();
   const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
   const [searchKeywords, setSearchKeywords] = useState('');
   const [filteredData, setFilteredData] = useState<Subject[]>(subjects ?? []);
