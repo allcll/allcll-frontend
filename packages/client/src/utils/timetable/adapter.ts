@@ -1,4 +1,4 @@
-import { CustomSchedule, OfficialSchedule, Schedule, Timeslot } from '@/hooks/server/useTimetableData.ts';
+import { CustomSchedule, OfficialSchedule, Schedule, TimeSlot } from '@/hooks/server/useTimetableData.ts';
 import { Day, Wishes } from '@/utils/types.ts';
 import { ROW_HEIGHT } from '@/components/timetable/Timetable.tsx';
 
@@ -44,7 +44,7 @@ export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, Schedu
       subjectName: '',
       professorName: '',
       location: '',
-      timeslots: [],
+      timeSlots: [],
     };
   }
 
@@ -63,7 +63,7 @@ export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, Schedu
       subjectName: wish?.subjectName ?? '',
       professorName: wish?.professorName ?? '',
       location: wish ? '센B209' : '',
-      timeslots: [],
+      timeSlots: [],
     };
   }
 
@@ -78,7 +78,7 @@ export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, Schedu
         subjectName: null,
         professorName: null,
         location: null,
-        timeslots: [],
+        timeSlots: [],
       };
     }
 
@@ -95,7 +95,7 @@ export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, Schedu
 }
 
 interface TimeslotGeneric {
-  dayOfWeek: Day;
+  dayOfWeeks: Day;
   startHour: number;
   startMinute: number;
   endHour: number;
@@ -105,7 +105,7 @@ interface TimeslotGeneric {
 export class TimeslotAdapter {
   data: TimeslotGeneric;
 
-  constructor(data?: Timeslot) {
+  constructor(data?: TimeSlot) {
     if (!data) {
       this.data = this.#toDefaultData();
       return;
@@ -116,7 +116,7 @@ export class TimeslotAdapter {
 
   #toDefaultData(): TimeslotGeneric {
     return {
-      dayOfWeek: '월',
+      dayOfWeeks: '월',
       startHour: 9,
       startMinute: 0,
       endHour: 10,
@@ -124,12 +124,12 @@ export class TimeslotAdapter {
     };
   }
 
-  #apiToGenericData(data: Timeslot): TimeslotGeneric {
+  #apiToGenericData(data: TimeSlot): TimeslotGeneric {
     const [sh, sm] = data.startTime.split(':');
     const [eh, em] = data.endTime.split(':');
 
     return {
-      dayOfWeek: data.dayOfWeek,
+      dayOfWeeks: data.dayOfWeeks,
       startHour: parseInt(sh),
       startMinute: parseInt(sm),
       endHour: parseInt(eh),
@@ -137,11 +137,11 @@ export class TimeslotAdapter {
     };
   }
 
-  toApiData(): Timeslot {
+  toApiData(): TimeSlot {
     const pad = (num: number) => num.toString().padStart(2, '0');
 
     return {
-      dayOfWeek: this.data.dayOfWeek,
+      dayOfWeeks: this.data.dayOfWeeks,
       startTime: `${pad(this.data.startHour)}:${pad(this.data.startMinute)}`,
       endTime: `${pad(this.data.endHour)}:${pad(this.data.endMinute)}`,
     };

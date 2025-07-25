@@ -37,11 +37,13 @@ export interface Schedule {
   subjectName: string;
   professorName: string;
   location: string;
-  timeSlots: {
-    dayOfWeeks: Day;
-    startTime: string;
-    endTime: string;
-  }[];
+  timeSlots: TimeSlot[];
+}
+
+export interface TimeSlot {
+  dayOfWeeks: Day;
+  startTime: string;
+  endTime: string;
 }
 
 // Todo: Render에 필요한 데이터로 변환 / 필요 없는 정보 제거하기
@@ -385,27 +387,6 @@ interface IApiScheduleData {
 function mergeTimetableData(apiScheduleData?: IApiScheduleData, wishes?: Wishes[]) {
   if (!apiScheduleData || !wishes) return undefined;
 
-  const mergedData: Schedule[] = [];
-  apiScheduleData.schedules.forEach(schedule => {
-    if (schedule.scheduleType === 'official') {
-      const wish = wishes.find(w => w.subjectId === schedule.scheduleId);
-
-      // Todo: Add Location Parsing Logic / timeSlots
-      mergedData.push({
-        scheduleId: schedule.scheduleId,
-        scheduleType: schedule.scheduleType,
-        subjectId: schedule.subjectId,
-        subjectName: wish?.subjectName ?? '',
-        professorName: wish?.professorName ?? '',
-        location: wish ? '센B209' : '',
-        timeSlots: [],
-      });
-    } else {
-      mergedData.push({ ...schedule });
-    }
-  });
-
-  return mergedData;
   return apiScheduleData.schedules.map(schedule => new ScheduleAdapter(schedule, wishes).toUiData());
 }
 
@@ -445,25 +426,6 @@ export function scheduleTimeAdapter(timetable: IApiScheduleData, wishes?: Wishes
   return {
     ...settings,
     scheduleTimes,
-  };
-}
-
-/** Schedule의 시작 시간과 종료 시간을 계산하여, Schedule의 위치와 크기를 반환합니다.
- * @param startTime
- * @param time
- */
-function getPositionFromString(startTime: number, time: Schedule['timeSlots'][number]) {
-  const parseTime = (time: string) => {
-    const [hours, minutes] = time.split(':').map(Number);
-    return hours * 60 + minutes;
-  };
-
-  const start = parseTime(time.startTime) / 60;
-  const end = parseTime(time.endTime) / 60;
-  return {
-    width: 'calc(100% - 4px)',
-    height: `${(end - start) * ROW_HEIGHT}px`, // Assuming each hour is 60px tall
-    top: `${(start - startTime) * ROW_HEIGHT}px`, // Assuming each hour is 60px tall
   };
 }
 
