@@ -275,6 +275,8 @@ export function useCreateSchedule(timetableId?: number) {
       console.error(error);
     },
     onSuccess: async (schedule, _, context) => {
+      console.log('요청 성공:', schedule);
+
       if (!context?.prevTimetable) {
         queryClient.invalidateQueries({ queryKey: ['timetableList'] });
         queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
