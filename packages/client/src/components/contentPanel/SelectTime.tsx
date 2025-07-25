@@ -14,7 +14,7 @@ interface ISelectTime {
 }
 
 const HOURS = Array.from({ length: 24 }, (_, i) => `${i}`);
-const MINUTES = ['0분', '10분', '20분', '30분', '40분', '50분'];
+const MINUTES = ['00', '10', '20', '30', '40', '50'];
 
 function SelectTime({ timeRange, onChange, day }: Readonly<ISelectTime>) {
   const handleChangeTime = (key: keyof TimeRange, value: string) => {
