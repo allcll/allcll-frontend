@@ -18,7 +18,7 @@ function Timetable() {
   const { scheduleTimes, colNames, rowNames } = timetable ?? {};
 
   return (
-    <Card>
+    <Card className="shadow-none">
       <TimetableGrid colNames={colNames} rowNames={rowNames}>
         <WeekTable colNames={colNames} scheduleTimes={scheduleTimes} />
       </TimetableGrid>

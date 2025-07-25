@@ -48,6 +48,7 @@ function ContentPanel() {
       const filteringGrades = (subject: Subject): boolean => {
         if (selectedGrades.length === 0) return true;
         const sem = subject.studentYear;
+        if (selectedGrades.includes('전체')) return true;
         if (selectedGrades.includes(1) && sem === 1) return true;
         if (selectedGrades.includes(2) && sem === 2) return true;
         if (selectedGrades.includes(3) && sem === 3) return true;
@@ -87,17 +88,14 @@ function ContentPanel() {
         onDelete={() => setSearchKeywords('')}
         onChange={e => setSearchKeywords(e.target.value)}
       />
-
-      <div className="flex flex-row gap-3">
+      <div className="flex flex-wrap gap-3 w-full">
         <DepartmentFilter />
         <GradeFilter />
         <DayFilter />
-        {/* <TimeFilter/> */}
-        <button type="button" className="text-blue-500 cursor-pointer text-sm" onClick={handleCreateSchedule}>
-          + 직접추가
-        </button>
       </div>
-
+      <button type="button" className="text-blue-500 cursor-pointer text-sm" onClick={handleCreateSchedule}>
+        + 직접추가
+      </button>
       <div className="overflow-y-auto max-h-[80vh]">
         <FilteredSubjectCards subjects={filteredData} isPending={isPending} />
       </div>
