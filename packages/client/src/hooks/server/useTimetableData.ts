@@ -73,7 +73,7 @@ export interface TimetableType {
 }
 
 export interface TimetableListResponse {
-  timetables: TimetableType[];
+  timeTables: TimetableType[];
 }
 
 export interface InitTimetableType {
@@ -91,7 +91,7 @@ export const useTimetables = () => {
   return useQuery({
     queryKey: ['timetableList'],
     queryFn: getTimetables,
-    select: data => data.timetables,
+    select: data => data.timeTables,
     staleTime: 1000 * 60 * 5,
   });
 };
@@ -183,7 +183,7 @@ export function useCreateTimetable() {
     },
     onMutate: async ({ timeTableName, semester }: InitTimetableType) => {
       await queryClient.cancelQueries({ queryKey: ['timetableList'] });
-      const { timetables: previousTimetables } = queryClient.getQueryData<TimetableListResponse>(['timetableList']) ?? {
+      const { timeTables: previousTimetables } = queryClient.getQueryData<TimetableListResponse>(['timetableList']) ?? {
         timetables: [],
       };
 
@@ -196,7 +196,7 @@ export function useCreateTimetable() {
       if (previousTimetables) {
         const newTimetables = [...previousTimetables, newTimetable];
 
-        queryClient.setQueryData<TimetableListResponse>(['timetableList'], { timetables: newTimetables });
+        queryClient.setQueryData<TimetableListResponse>(['timetableList'], { timeTables: newTimetables });
         previousTimetables.push(newTimetable);
       }
 

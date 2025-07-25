@@ -20,7 +20,6 @@ function Timetable() {
   const { data: timetables = [] } = useTimetables();
 
   const [isOpenModal, setIsOpenModal] = useState<modalType>(null);
-
   const { type: bottomSheetType } = useBottomSheetStore();
   const [currentTimetable, setCurrentTimetable] = useState<TimetableType | undefined>(timetables[0]);
   const setTimetableId = useScheduleState(state => state.setTimetableId);
