@@ -31,7 +31,7 @@ export interface IMutateScheduleState {
 export const useScheduleState = create<IMutateScheduleState>(set => ({
   currentTimetable: {
     timeTableId: -1,
-    timeTableName: '',
+    timeTableName: '새 시간표',
     semester: '',
   },
   options: {
