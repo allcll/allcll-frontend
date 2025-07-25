@@ -78,10 +78,10 @@ function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: ISubj
       </div>
 
       <span className="text-xs sm:text-sm text-gray-500">
-        {subject.lesn_time}/{subject.lesn_room}
+        {subject.lesnRoom}/{subject.lesnRoom}
       </span>
       <span className="text-xs sm:text-sm text-gray-500">
-        {subject.studentYear}학년/{subject.tm_num}학점/{subject.departmentName}
+        {subject.studentYear}학년/{subject.tmNum}학점/{subject.manageDeptNm}
       </span>
 
       <div className="flex justify-between items-center">
@@ -90,7 +90,7 @@ function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: ISubj
             isActive ? '' : 'bg-gray-100 px-2 py-0.5 sm:px-2.5 sm:py-0.5'
           }`}
         >
-          {subject.tm_num}학점
+          {subject.tmNum}학점
         </div>
 
         {isActive && (
