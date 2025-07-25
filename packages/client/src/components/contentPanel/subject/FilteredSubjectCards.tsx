@@ -71,6 +71,8 @@ function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: ISubj
   const { saveSchedule } = useScheduleModal();
 
   const handleAddOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log('과목 스케줄 추가');
+
     saveSchedule(e);
   };
 

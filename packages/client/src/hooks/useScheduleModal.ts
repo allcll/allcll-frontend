@@ -85,8 +85,11 @@ function useScheduleModal() {
 
     const schedule = scheduleAsApiSchedule(prevSchedule);
 
+    console.log('official 과목 추가', schedule);
+
     // 생성 및 수정 로직
     if (mode === ScheduleMutateType.CREATE) {
+      console.log('official 과목 추가, CREATE', schedule);
       createScheduleData({ schedule, prevTimetable: prevTimetable.current });
     } else if (mode === ScheduleMutateType.EDIT) {
       updateScheduleData({ schedule, prevTimetable: prevTimetable.current });
