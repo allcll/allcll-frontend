@@ -252,7 +252,7 @@ export function useCreateSchedule(timetableId?: number) {
     mutationFn: async ({ schedule }: ScheduleMutationData) => {
       let newTimetableId = timetableId;
 
-      if (!timetableId) {
+      if (!timetableId || timetableId <= 0) {
         const timetable = await createTimetable({ timeTableName: '새 시간표', semester: '2025-2' });
         setTimetableId(timetable);
       }
