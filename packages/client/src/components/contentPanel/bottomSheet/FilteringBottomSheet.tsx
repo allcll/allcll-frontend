@@ -3,33 +3,17 @@ import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
 import Chip from '@/components/common/Chip';
 import useDepartments from '@/hooks/server/useDepartments';
-import SelectTime from '../SelectTime';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 
 const GRADES: Grade[] = [1, 2, 3, 4];
 const DAYS: Day[] = ['월', '화', '수', '목', '금'];
 
-interface TimeRange {
-  startHour: string;
-  startMinute: string;
-  endHour: string;
-  endMinute: string;
-}
-
 function FilteringBottomSheet() {
   const { data: departments } = useDepartments();
   const { openBottomSheet, closeBottomSheet } = useBottomSheetStore();
 
-  const { selectedDepartment, selectedGrades, selectedDays, selectedTimeRange, setFilterSchedule } =
-    useFilterScheduleStore();
-
-  const handleTimeChange = (key: keyof TimeRange, value: string) => {
-    setFilterSchedule('selectedTimeRange', {
-      ...selectedTimeRange,
-      [key]: value,
-    });
-  };
+  const { selectedDepartment, selectedGrades, selectedDays, setFilterSchedule } = useFilterScheduleStore();
 
   function toggleSelectedValue<T>(array: T[], value: T): T[] {
     return array.includes(value) ? array.filter(item => item !== value) : [...array, value];
@@ -114,10 +98,12 @@ function FilteringBottomSheet() {
         </div>
       </div>
 
-      <SelectTime timeRange={selectedTimeRange} onChange={handleTimeChange} />
-
       <div className="flex justify-end gap-3">
-        <button type="submit" className="text-blue-500 text-xs w-15 rounded px-4 py-2 cursor-pointer ">
+        <button
+          onClick={() => closeBottomSheet('filter')}
+          type="submit"
+          className="text-blue-500 text-xs w-15 rounded px-4 py-2 cursor-pointer "
+        >
           저장
         </button>
       </div>
