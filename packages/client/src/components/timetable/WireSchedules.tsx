@@ -14,6 +14,8 @@ function WireSchedules({ dayOfWeeks }: Readonly<IWireSchedulesProps>) {
   const { data: wishes } = useWishes();
 
   // Fixme: schedule 형태 통일
+  if (!wishes || !schedule.timeSlots || schedule.timeSlots.length <= 0) return null;
+
   const timetable = scheduleTimeAdapter({ schedules: [scheduleAsApiSchedule(schedule)] }, wishes);
   const scheduleTime = timetable?.scheduleTimes[dayOfWeeks];
 
