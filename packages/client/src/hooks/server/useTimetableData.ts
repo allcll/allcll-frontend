@@ -82,20 +82,32 @@ export interface InitTimetableType {
 }
 
 export const getTimetables = async (): Promise<TimetableListResponse> => {
-  return await fetchJsonOnAPI<TimetableListResponse>('/api/timetables', {
-    method: 'GET',
-  });
+  return await fetchJsonOnAPI<TimetableListResponse>('/api/timetables');
 };
 
 export const useTimetables = () => {
+  const timetableId = useScheduleState(state => state.timetableId);
+  const setTimetableId = useScheduleState(state => state.setTimetableId);
+
+  const onSelect = (res: TimetableListResponse) => {
+    const { timeTables } = res;
+
+    if ((!timetableId || timetableId === -1) && timeTables.length > 0) {
+      setTimetableId(timeTables[0].timeTableId);
+    }
+
+    return timeTables;
+  };
+
   return useQuery({
     queryKey: ['timetableList'],
     queryFn: getTimetables,
-    select: data => data.timeTables,
+    select: onSelect,
     staleTime: 1000 * 60 * 5,
   });
 };
 
+// Fixme: useTimetableSchedules로 이름 변경하기
 /** timetableId에 대한 Timetable 데이터를 가져옵니다.
  * @param timetableId
  */
@@ -221,7 +233,7 @@ export function useCreateTimetable() {
 
 interface ScheduleMutationData {
   schedule: ScheduleApiResponse;
-  prevTimetable: Timetable;
+  prevTimetable?: Timetable;
 }
 
 /** 스케줄을 생성하는 Mutation 훅입니다.
@@ -261,6 +273,12 @@ export function useCreateSchedule(timetableId?: number) {
       console.error(error);
     },
     onSuccess: async (schedule, _, context) => {
+      if (!context?.prevTimetable) {
+        queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+        queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
+        return;
+      }
+
       queryClient.setQueryData(['timetableData', timetableId], {
         ...context.prevTimetable,
         schedules: [...context.prevTimetable.schedules, schedule],
@@ -294,6 +312,12 @@ export function useUpdateSchedule(timetableId?: number) {
       console.error(error);
     },
     onSuccess: async (schedule, _, context) => {
+      if (!context?.prevTimetable) {
+        queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+        queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
+        return;
+      }
+
       queryClient.setQueryData(['timetableData', timetableId], {
         ...context.prevTimetable,
         schedules: context.prevTimetable.schedules.map(sch => {
@@ -329,6 +353,12 @@ export function useDeleteSchedule(timetableId?: number) {
       console.error(error);
     },
     onSuccess: async (_, { schedule }, context) => {
+      if (!context?.prevTimetable) {
+        queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+        queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
+        return;
+      }
+
       queryClient.setQueryData(['timetableData', timetableId], {
         ...context.prevTimetable,
         schedules: context.prevTimetable.schedules.filter(sch => sch.scheduleId !== schedule.scheduleId),
