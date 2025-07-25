@@ -12,7 +12,6 @@ import {
 } from '@/hooks/server/useTimetableData.ts';
 import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState.ts';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore.ts';
-import useSubject from './server/useSubject';
 
 function useScheduleModal() {
   const queryClient = useQueryClient();
@@ -24,8 +23,6 @@ function useScheduleModal() {
   const { mutate: createScheduleData } = useCreateSchedule(timetableId);
   const { mutate: updateScheduleData } = useUpdateSchedule(timetableId);
   const { mutate: deleteScheduleData } = useDeleteSchedule(timetableId);
-
-  const { data: subjects } = useSubject();
 
   const prevTimetable = useRef<Timetable | undefined>(undefined);
 
@@ -39,29 +36,18 @@ function useScheduleModal() {
     // caching previous timetable data
     prevTimetable.current = queryClient.getQueryData<Timetable>(['timetableData', timetableId]);
 
-    const isOfficialSchedule = subjects?.some(subject => subject.subjectId === targetSchedule.scheduleId);
-
-    const updateScheduleType: Schedule = {
-      ...targetSchedule,
-      scheduleType: isOfficialSchedule ? 'official' : 'custom',
-    };
-
-    if (isOfficialSchedule) {
-      openBottomSheet('Info');
-      return;
-    }
-
-    // set modal set state
     let currentMode;
     if (!targetSchedule.scheduleId || targetSchedule.scheduleId <= 0) {
       currentMode = ScheduleMutateType.CREATE;
+      openBottomSheet('edit');
     } else if (targetSchedule.scheduleType === 'official') {
       currentMode = ScheduleMutateType.VIEW;
+      openBottomSheet('Info');
     } else {
       currentMode = ScheduleMutateType.EDIT;
+      openBottomSheet('edit');
     }
-    changeScheduleData(updateScheduleType, currentMode);
-    openBottomSheet('edit');
+    changeScheduleData(targetSchedule, currentMode);
   };
 
   type SetScheduleAction = Schedule | ((prevState: Schedule) => Schedule);
