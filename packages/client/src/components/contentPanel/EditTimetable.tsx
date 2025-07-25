@@ -15,7 +15,7 @@ interface IEditTimetable {
   type: 'edit' | 'create';
 }
 
-function EditTimetable({ onClose, type, timeTable }: IEditTimetable) {
+function EditTimetable({ onClose, type, timeTable }: Readonly<IEditTimetable>) {
   const [timeTableName, setTimeTableName] = useState('');
   const { mutate: updateTimetable } = useUpdateTimetable();
   const { mutate: deleteTimetable } = useDeleteTimetable();
@@ -47,7 +47,7 @@ function EditTimetable({ onClose, type, timeTable }: IEditTimetable) {
   };
 
   return (
-    <div className="fixed inset-0 z-50  hidden md:flex items-center justify-center  bg-black/10" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/10" onClick={onClose}>
       <div
         className="bg-white flex border border-gray-200 rounded-xl flex-col gap-2 w-[90%] max-w-md p-8 shadow-xl relative"
         onClick={e => e.stopPropagation()}
@@ -74,14 +74,14 @@ function EditTimetable({ onClose, type, timeTable }: IEditTimetable) {
           />
 
           <div className="flex  justify-end gap-3">
-            <button type="submit" className="text-blue-500 text-sm w-15 rounded px-4 py-2 cursor-pointer ">
+            <button type="submit" className="text-blue-500 text-sm w-15 rounded px-4 py-2 cursor-pointer">
               저장
             </button>
             {timeTable && type === 'edit' && (
               <button
                 type="button"
                 onClick={handleDeleteTimetable}
-                className="text-red-500 text-sm w-15 rounded px-3 py-2 cursor-pointer "
+                className="text-red-500 text-sm w-15 rounded px-3 py-2 cursor-pointer"
               >
                 삭제
               </button>
