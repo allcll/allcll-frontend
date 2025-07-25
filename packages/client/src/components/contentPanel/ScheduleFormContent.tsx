@@ -5,6 +5,7 @@ import { Day, DAYS } from '@/utils/types';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import React from 'react';
+import { ScheduleMutateType } from '@/store/useScheduleState';
 
 interface TimeRange {
   startHour: string;
@@ -13,12 +14,15 @@ interface TimeRange {
   endMinute: string;
 }
 
-function ScheduleFormContent() {
+interface IScheduleFormContent {
+  modalActionType?: ScheduleMutateType;
+}
+
+function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
   const { closeBottomSheet } = useBottomSheetStore();
 
   const { schedule: scheduleForm, editSchedule: setScheduleForm, saveSchedule, deleteSchedule } = useScheduleModal();
 
-  const { type } = useBottomSheetStore();
   const textFields = [
     {
       id: 'subjectName',
@@ -150,7 +154,7 @@ function ScheduleFormContent() {
           <button type="submit" className="text-blue-500 text-xs w-15 rounded px-4 py-2 cursor-pointer ">
             저장
           </button>
-          {type === 'edit' && (
+          {(modalActionType === ScheduleMutateType.EDIT || modalActionType === ScheduleMutateType.VIEW) && (
             <button
               type="button"
               onClick={handleDeleteSchedule}

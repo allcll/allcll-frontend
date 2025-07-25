@@ -12,7 +12,7 @@ function ScheduleFormModal() {
     cancelSchedule(e);
   };
 
-  const title = modalActionType === ScheduleMutateType.CREATE ? '수정' : '등록';
+  const title = modalActionType === ScheduleMutateType.CREATE ? '등록' : '수정';
 
   return (
     <div
@@ -33,7 +33,7 @@ function ScheduleFormModal() {
           </button>
         </div>
 
-        <ScheduleFormContent />
+        <ScheduleFormContent modalActionType={modalActionType} />
       </div>
     </div>
   );
