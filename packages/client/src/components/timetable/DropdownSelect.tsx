@@ -41,7 +41,7 @@ const DropdownSelect: React.FC<DropdownSelectProps> = ({ initialLabel, options, 
   };
 
   return (
-    <div className="relative inline-block w-full max-w-sm mb-4" ref={dropdownRef}>
+    <div className="relative inline-block w-full max-w-sm" ref={dropdownRef}>
       {/* Select Box (보여지는 부분) */}
       <>
         <Filtering label={selectedLabel} selected={selectedLabel.length !== 0} className="gap-4">

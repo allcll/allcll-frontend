@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import Card from '@/components/common/Card.tsx';
 import DaySchedule from '@/components/timetable/DaySchedule.tsx';
 import { useUpdateScheduleOptions } from '@/hooks/useScheduleDrag.ts';
 import { ScheduleTime, useTimetableData } from '@/hooks/server/useTimetableData.ts';
@@ -17,29 +16,31 @@ function Timetable() {
   const { data: timetable } = useTimetableData(timetableId);
   const { scheduleTimes, colNames, rowNames } = timetable ?? {};
 
-  if (!timetable) {
-    return <p>시간표 없습니다</p>;
-  }
-
   return (
-    <Card className="shadow-none">
-      <TimetableGrid colNames={colNames} rowNames={rowNames}>
-        <WeekTable colNames={colNames} scheduleTimes={scheduleTimes} />
-      </TimetableGrid>
-    </Card>
+    <TimetableGrid colNames={colNames} rowNames={rowNames}>
+      <WeekTable colNames={colNames} scheduleTimes={scheduleTimes} />
+    </TimetableGrid>
   );
 }
+
+const DefaultScheduleTimes: Record<Day, ScheduleTime[]> = {
+  월: [],
+  화: [],
+  수: [],
+  목: [],
+  금: [],
+  토: [],
+  일: [],
+};
 
 function WeekTable({
   colNames = DEFAULT_DAY_NAMES,
   scheduleTimes,
-}: Readonly<{ colNames?: Day[]; scheduleTimes?: Record<string, ScheduleTime[]> }>) {
-  if (!scheduleTimes) {
-    return <div className="text-gray-500 text-center">시간표가 없습니다.</div>;
-  }
+}: Readonly<{ colNames?: Day[]; scheduleTimes?: Record<Day, ScheduleTime[]> }>) {
+  const scheduleTime = scheduleTimes ?? DefaultScheduleTimes;
 
   return colNames.map(dayName => (
-    <DaySchedule key={'day-schedule-' + dayName} scheduleTimes={scheduleTimes[dayName]} dayOfWeek={dayName} />
+    <DaySchedule key={'day-schedule-' + dayName} scheduleTimes={scheduleTime[dayName]} dayOfWeek={dayName} />
   ));
 }
 

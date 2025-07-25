@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { fetchJsonOnAPI } from '@/utils/api.ts';
+import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api.ts';
 import { Day, Wishes } from '@/utils/types.ts';
 import { ROW_HEIGHT } from '@/components/timetable/Timetable.tsx';
 import useWishes from '@/hooks/server/useWishes.ts';
+import { useScheduleState } from '@/store/useScheduleState.ts';
 
 export interface Timetable {
   timetableId: number;
@@ -119,7 +120,7 @@ export function useUpdateTimetable() {
 
   return useMutation({
     mutationFn: async ({ timeTableId, timeTableName }: { timeTableId: number; timeTableName: string }) => {
-      return await fetchJsonOnAPI(`/api/timetables/${timeTableId}`, {
+      return await fetchJsonOnAPI<TimetableType>(`/api/timetables/${timeTableId}`, {
         method: 'PATCH',
         body: JSON.stringify({ timeTableName }),
       });
@@ -148,9 +149,7 @@ export function useDeleteTimetable() {
 
   return useMutation({
     mutationFn: async (timeTableId: number) => {
-      return await fetchJsonOnAPI(`/api/timetables/${timeTableId}`, {
-        method: 'DELETE',
-      });
+      return await fetchOnAPI(`/api/timetables/${timeTableId}`, { method: 'DELETE' });
     },
     onMutate: async (timeTableId: number) => {
       await queryClient.cancelQueries({ queryKey: ['timetableList', timeTableId] });
@@ -173,7 +172,7 @@ export function useCreateTimetable() {
 
   return useMutation({
     mutationFn: async ({ timeTableName, semester }: InitTimetableType) => {
-      return await fetchJsonOnAPI('/api/timetables', {
+      return await fetchJsonOnAPI<TimetableType>('/api/timetables', {
         method: 'POST',
         body: JSON.stringify({
           timeTableName: timeTableName,
@@ -200,9 +199,6 @@ export function useCreateTimetable() {
 
       return { previousTimetables };
     },
-    onSuccess: () => {
-      // queryClient.invalidateQueries({ queryKey: ['timetableList'] }).then();
-    },
     onError: error => {
       try {
         const e = JSON.parse(error.message);
@@ -228,13 +224,25 @@ interface ScheduleMutationData {
  */
 export function useCreateSchedule(timetableId?: number) {
   const queryClient = useQueryClient();
+  const setTimetableId = useScheduleState(state => state.setTimetableId);
+  const { mutateAsync: createTimetable } = useCreateTimetable();
 
   return useMutation({
-    mutationFn: async ({ schedule }: ScheduleMutationData) =>
-      await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${timetableId}/schuedules`, {
+    mutationFn: async ({ schedule }: ScheduleMutationData) => {
+      let newTimetableId = timetableId;
+
+      if (!timetableId) {
+        const timetable = await createTimetable({ timeTableName: '새 시간표', semester: '2025-2' });
+        newTimetableId = timetable.timeTableId;
+        setTimetableId(newTimetableId);
+      }
+
+      await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${newTimetableId}/schuedules`, {
         method: 'POST',
         body: JSON.stringify(schedule),
-      }),
+      });
+    },
+    // Fixme: timetable 도 같이 생성 될 때 오류 처리하기
     onMutate: async mutateData => {
       // Optimistically update the timetable data
       await queryClient.cancelQueries({ queryKey: ['timetableData', timetableId] });
