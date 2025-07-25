@@ -72,7 +72,9 @@ export interface TimetableType {
   semester: string; // ex: "2025-2"
 }
 
-export type TimetableListResponse = TimetableType[];
+export interface TimetableListResponse {
+  timetables: TimetableType[];
+}
 
 export interface InitTimetableType {
   timeTableName: string;
@@ -80,15 +82,16 @@ export interface InitTimetableType {
 }
 
 export const getTimetables = async (): Promise<TimetableListResponse> => {
-  return await fetchJsonOnAPI('/api/timetables', {
+  return await fetchJsonOnAPI<TimetableListResponse>('/api/timetables', {
     method: 'GET',
   });
 };
 
 export const useTimetables = () => {
-  return useQuery<TimetableListResponse>({
+  return useQuery({
     queryKey: ['timetableList'],
     queryFn: getTimetables,
+    select: data => data.timetables,
     staleTime: 1000 * 60 * 5,
   });
 };
@@ -113,7 +116,6 @@ export function useTimetableData(timetableId?: number) {
 /**
  * 시간표 수정 훅
  * timetableId에에 대한 timetableName을 수정합니다.
- * @param timetableId
  */
 export function useUpdateTimetable() {
   const queryClient = useQueryClient();
@@ -142,7 +144,6 @@ export function useUpdateTimetable() {
 /**
  * 시간표 삭제 훅
  * timetableId로 시간표를 삭제합니다.
- * @param timetableId
  */
 export function useDeleteTimetable() {
   const queryClient = useQueryClient();
@@ -182,7 +183,9 @@ export function useCreateTimetable() {
     },
     onMutate: async ({ timeTableName, semester }: InitTimetableType) => {
       await queryClient.cancelQueries({ queryKey: ['timetableList'] });
-      const previousTimetables = queryClient.getQueryData<TimetableListResponse>(['timetableList']) ?? [];
+      const { timetables: previousTimetables } = queryClient.getQueryData<TimetableListResponse>(['timetableList']) ?? {
+        timetables: [],
+      };
 
       const newTimetable: TimetableType = {
         timeTableId: -1,
@@ -193,7 +196,7 @@ export function useCreateTimetable() {
       if (previousTimetables) {
         const newTimetables = [...previousTimetables, newTimetable];
 
-        queryClient.setQueryData<TimetableListResponse>(['timetableList'], newTimetables);
+        queryClient.setQueryData<TimetableListResponse>(['timetableList'], { timetables: newTimetables });
         previousTimetables.push(newTimetable);
       }
 
