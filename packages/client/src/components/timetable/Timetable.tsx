@@ -17,6 +17,10 @@ function Timetable() {
   const { data: timetable } = useTimetableData(timetableId);
   const { scheduleTimes, colNames, rowNames } = timetable ?? {};
 
+  if (!timetable) {
+    return <p>시간표 없습니다</p>;
+  }
+
   return (
     <Card className="shadow-none">
       <TimetableGrid colNames={colNames} rowNames={rowNames}>

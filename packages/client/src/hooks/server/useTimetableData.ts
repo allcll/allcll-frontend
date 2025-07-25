@@ -101,10 +101,8 @@ export function useTimetableData(timetableId?: number) {
 
   return useQuery({
     queryKey: ['timetableData', timetableId],
-    queryFn: () => {
-      // await fetchJsonOnAPI<Timetable>(`/api/timetables/${timetableId}`);
-      return timetableAPIDummies;
-    },
+    queryFn: async () => await fetchJsonOnAPI<Timetable>(`/api/timetables/${timetableId}`),
+
     select: data => scheduleTimeAdapter(data, wishes),
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5,

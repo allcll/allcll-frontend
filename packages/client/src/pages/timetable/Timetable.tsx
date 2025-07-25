@@ -10,17 +10,19 @@ import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import { TimetableType, useDeleteTimetable, useTimetables } from '@/hooks/server/useTimetableData';
 import EditTimetable from '@/components/contentPanel/EditTimetable';
 import AddGraySvg from '@/assets/add-gray.svg?react';
+import { useScheduleState } from '@/store/useScheduleState';
 
 type modalType = 'edit' | 'create' | null;
 
 function Timetable() {
   const { mutate: deleteTimetable } = useDeleteTimetable();
-  const { data: timetables = [], isPending } = useTimetables();
+  const { data: timetables = [] } = useTimetables();
 
   const [isOpenModal, setIsOpenModal] = useState<modalType>(null);
 
   const { type: bottomSheetType } = useBottomSheetStore();
-  const [currentTimetable, setCurrentTimeTable] = useState<TimetableType | null>(timetables[0]);
+  const [currentTimetable, setCurrentTimeTable] = useState<TimetableType | undefined>(timetables[0]);
+  const setTimetableId = useScheduleState(state => state.setTimetableId);
 
   const yearOptions = useMemo(() => {
     return timetables.map(timetable => ({
@@ -30,9 +32,10 @@ function Timetable() {
   }, [timetables]);
 
   const handleSelect = (optionId: number) => {
-    const selectedTimetable = timetables.find(timetable => timetable.timeTableId === optionId) ?? null;
+    const selectedTimetable = timetables.find(timetable => timetable.timeTableId === optionId);
 
     setCurrentTimeTable(selectedTimetable);
+    setTimetableId(selectedTimetable?.timeTableId ?? -1);
   };
 
   const handleEdit = () => {
@@ -45,7 +48,6 @@ function Timetable() {
 
   const handleCreateTimetable = () => {
     setIsOpenModal('create');
-
     //TOOD: 시간표 추가 연결
   };
 
