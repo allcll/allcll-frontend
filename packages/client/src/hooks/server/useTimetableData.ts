@@ -181,6 +181,16 @@ export function useDeleteTimetable() {
     onSuccess: (_, timeTableId) => {
       queryClient.invalidateQueries({ queryKey: ['timetableList', timeTableId] });
       queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+
+      // 삭제된 게 현재 선택된 시간표->초기화
+      const { currentTimetable, pickTimetable } = useScheduleState();
+      if (currentTimetable?.timeTableId === timeTableId) {
+        pickTimetable({
+          timeTableId: -1,
+          timeTableName: '새 시간표',
+          semester: '',
+        });
+      }
     },
   });
 }
