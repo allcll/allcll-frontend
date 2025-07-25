@@ -7,23 +7,20 @@ import FormBottomSheet from '@/components/contentPanel/bottomSheet/FormBottomShe
 import ScheduleFormModal from '@/components/contentPanel/ScheduleFormModal';
 import ContentPanel from '@/components/contentPanel/ContentPanel';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
-import { TimetableType, useDeleteTimetable, useTimetables, useUpdateTimetable } from '@/hooks/server/useTimetableData';
+import { TimetableType, useDeleteTimetable, useTimetables } from '@/hooks/server/useTimetableData';
+import EditTimetable from '@/components/contentPanel/EditTimetable';
+import AddGraySvg from '@/assets/add-gray.svg?react';
+
+type modalType = 'edit' | 'create' | null;
 
 function Timetable() {
-  const { mutate: updateTimetable } = useUpdateTimetable();
   const { mutate: deleteTimetable } = useDeleteTimetable();
-  // const { data: timetables = [], isPending } = useTimetables();
+  const { data: timetables = [], isPending } = useTimetables();
 
-  const timetables = [
-    {
-      timeTableId: 1,
-      timeTableName: '2025-2학기',
-      semester: '2025-2', // ex: "2025-2"
-    },
-  ];
+  const [isOpenModal, setIsOpenModal] = useState<modalType>(null);
 
   const { type: bottomSheetType } = useBottomSheetStore();
-  const [currentTimetable, setCurrentTimeTable] = useState<TimetableType>();
+  const [currentTimetable, setCurrentTimeTable] = useState<TimetableType | null>(timetables[0]);
 
   const yearOptions = useMemo(() => {
     return timetables.map(timetable => ({
@@ -32,55 +29,43 @@ function Timetable() {
     }));
   }, [timetables]);
 
-  // if (isPending) {
-  //   return <div>로딩 중</div>;
-  // }
-
-  // if (!timetables) {
-  //   return <div>데이터 불러오는 중 오류 발생</div>;
-  // }
-
-  // if (timetables.length === 0) {
-  //   return <div>시간표가 없습니다. 새 시간표를 추가해주세요.</div>;
-  // }
-
   const handleSelect = (optionId: number) => {
-    const selectedTimetable = timetables.find(timetable => timetable.timeTableId === optionId);
+    const selectedTimetable = timetables.find(timetable => timetable.timeTableId === optionId) ?? null;
 
-    console.log('Selected semester:', selectedTimetable);
-    //여기서 currentTimetable 저장
     setCurrentTimeTable(selectedTimetable);
   };
 
-  const handleEdit = (value: string, optionId: number) => {
-    const selectedTimetable = timetables.find(timetable => timetable.timeTableId === optionId);
-
-    if (selectedTimetable) {
-      updateTimetable({
-        timeTableId: selectedTimetable.timeTableId,
-        timeTableName: value,
-      });
-    }
+  const handleEdit = () => {
+    setIsOpenModal('edit');
   };
 
   const handleDelete = (optionId: number) => {
-    console.log('Delete year:', optionId);
-
-    // TODO: 삭제 로직
     deleteTimetable(optionId);
+  };
+
+  const handleCreateTimetable = () => {
+    setIsOpenModal('create');
+
+    //TOOD: 시간표 추가 연결
   };
 
   return (
     <div className="w-full p-4 ">
       <div className="grid md:grid-cols-4 gap-4">
-        <div className="md:col-span-3 w-full h-screen">
-          <DropdownSelect
-            initialLabel={yearOptions[0]?.label ?? '학기 선택'}
-            options={yearOptions}
-            onSelect={handleSelect}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
+        <div className="md:col-span-3 w-full rounded rounded-lg bg-white h-screen">
+          <header className="flex p-5 justify-between">
+            <DropdownSelect
+              initialLabel={yearOptions[0]?.label ?? '학기 선택'}
+              options={yearOptions}
+              onSelect={handleSelect}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+            <button className="cursor-pointer" onClick={handleCreateTimetable}>
+              <AddGraySvg className="w-5 h-5 cursor-pointer" />
+            </button>
+          </header>
+
           <TimetableComponent />
         </div>
 
@@ -97,6 +82,10 @@ function Timetable() {
 
         {bottomSheetType === 'edit' && <ScheduleFormModal />}
       </div>
+
+      {isOpenModal && (
+        <EditTimetable type={isOpenModal} timeTable={currentTimetable} onClose={() => setIsOpenModal(null)} />
+      )}
     </div>
   );
 }

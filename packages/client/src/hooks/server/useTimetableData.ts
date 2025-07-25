@@ -74,16 +74,20 @@ export interface TimetableType {
 
 export type TimetableListResponse = TimetableType[];
 
+export interface InitTimetableType {
+  timeTableName: string;
+  semester: string;
+}
+
 export const getTimetables = async (): Promise<TimetableListResponse> => {
   return await fetchJsonOnAPI('/api/timetables', {
     method: 'GET',
-    credentials: 'include',
   });
 };
 
 export const useTimetables = () => {
   return useQuery<TimetableListResponse>({
-    queryKey: ['timetableData'],
+    queryKey: ['timetableList'],
     queryFn: getTimetables,
     staleTime: 1000 * 60 * 5,
   });
@@ -124,14 +128,14 @@ export function useUpdateTimetable() {
       });
     },
     onMutate: async ({ timeTableId }) => {
-      await queryClient.cancelQueries({ queryKey: ['timetableData', timeTableId] });
+      await queryClient.cancelQueries({ queryKey: ['timetableList', timeTableId] });
       return { timeTableId };
     },
     onError: (error, _variables, context) => {
       console.error(`시간표 수정 실패 (id: ${context?.timeTableId})`, error);
     },
     onSuccess: (_, __, context) => {
-      queryClient.invalidateQueries({ queryKey: ['timetableData', context?.timeTableId] });
+      queryClient.invalidateQueries({ queryKey: ['timetableList', context?.timeTableId] });
     },
   });
 }
@@ -145,21 +149,67 @@ export function useDeleteTimetable() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (timetableId: number) => {
-      return await fetchJsonOnAPI(`/api/timetables/${timetableId}`, {
+    mutationFn: async (timeTableId: number) => {
+      return await fetchJsonOnAPI(`/api/timetables/${timeTableId}`, {
         method: 'DELETE',
       });
     },
-    onMutate: async (timetableId: number) => {
-      await queryClient.cancelQueries({ queryKey: ['timetableData', timetableId] });
-      return { timetableId };
+    onMutate: async (timeTableId: number) => {
+      await queryClient.cancelQueries({ queryKey: ['timetableList', timeTableId] });
+      return { timeTableId };
     },
-    onError: (error, timetableId) => {
-      console.error(`시간표 삭제 실패 (id: ${timetableId})`, error);
+    onError: (error, timeTableId) => {
+      console.error(`시간표 삭제 실패 (id: ${timeTableId})`, error);
     },
-    onSuccess: (_, timetableId) => {
-      queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
-      queryClient.invalidateQueries({ queryKey: ['timetableData'] });
+    onSuccess: (_, timeTableId) => {
+      queryClient.invalidateQueries({ queryKey: ['timetableList', timeTableId] });
+      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+    },
+  });
+}
+
+export function useCreateTimetable() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ timeTableName, semester }: InitTimetableType) => {
+      return await fetchJsonOnAPI('/api/timetables', {
+        method: 'POST',
+        body: JSON.stringify({
+          timeTableName: timeTableName,
+          semester: semester,
+        }),
+      });
+    },
+    onMutate: async ({ timeTableName, semester }: InitTimetableType) => {
+      await queryClient.cancelQueries({ queryKey: ['timetableList'] });
+      const previousTimetables = queryClient.getQueryData<TimetableListResponse>(['timetableList']) ?? [];
+
+      const newTimetable: TimetableType = {
+        timeTableId: -1,
+        timeTableName: timeTableName,
+        semester: semester,
+      };
+
+      if (previousTimetables) {
+        const newTimetables = [...previousTimetables, newTimetable];
+
+        queryClient.setQueryData<TimetableListResponse>(['timetableList'], newTimetables);
+        previousTimetables.push(newTimetable);
+      }
+
+      return { previousTimetables };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['timetableList'] }).then();
+    },
+    onError: error => {
+      try {
+        const e = JSON.parse(error.message);
+        alert(e.message);
+      } catch {
+        alert('Error adding Timetable');
+      }
     },
   });
 }
