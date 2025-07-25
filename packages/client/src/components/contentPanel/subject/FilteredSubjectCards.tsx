@@ -3,6 +3,7 @@ import { Subject } from '@/utils/types';
 import { useRef, useState } from 'react';
 import ZeroListError from '../errors/ZeroListError';
 import useScheduleModal from '@/hooks/useScheduleModal';
+import { useScheduleState } from '@/store/useScheduleState';
 
 interface ISubjectCards {
   subjects: Subject[];
@@ -16,6 +17,7 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
   const isMore = data.length < subjects.length;
   const [selectedSubjectId, setSelectedSubjectId] = useState<number>();
   const selectedCardRef = useRef<HTMLDivElement>(null);
+  const { changeScheduleData, schedule } = useScheduleState();
 
   if (isPending || !subjects) {
     return <div className="w-full h-100 bg-blue-100"></div>;
@@ -27,7 +29,16 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
 
   const handleCardClick = (subject: Subject) => {
     setSelectedSubjectId(subject.subjectId);
-
+    changeScheduleData({
+      scheduleId: 0,
+      scheduleType: 'official',
+      subjectId: subject.subjectId,
+      subjectName: '',
+      professorName: '',
+      location: '',
+      timeSlots: [],
+    });
+    console.log('official', schedule);
     // openScheduleModal(subject);
     if (expandToMax) {
       expandToMax();
@@ -71,8 +82,6 @@ function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: ISubj
   const { saveSchedule } = useScheduleModal();
 
   const handleAddOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('과목 스케줄 추가');
-
     saveSchedule(e);
   };
 
