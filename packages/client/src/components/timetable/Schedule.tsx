@@ -1,14 +1,16 @@
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, useRef } from 'react';
 import { useScheduleDrag } from '@/hooks/useScheduleDrag.ts';
 import useScheduleModal from '@/hooks/useScheduleModal';
+import { ROW_HEIGHT } from '@/components/timetable/Timetable.tsx';
+import { Schedule as ScheduleType } from '@/hooks/server/useTimetableData.ts';
 
 type ColorType = 'rose' | 'amber' | 'green' | 'emerald' | 'blue' | 'violet';
 
 export interface IScheduleProps extends HTMLAttributes<HTMLDivElement> {
-  // Additional props can be defined here if needed
   title: string;
   professor: string;
   location: string;
+  schedule: ScheduleType;
   selected?: boolean;
   color?: ColorType;
 }
@@ -18,16 +20,37 @@ function Schedule({
   professor,
   location,
   color = 'blue',
+  schedule,
   selected = false,
   ...attrs
 }: Readonly<IScheduleProps>) {
   const { text, bgLight, bg } = getColors(color);
-  const { dragging, onMouseDown } = useScheduleDrag(
-    () => {},
-    () => {},
-  );
-
+  const ref = useRef<HTMLDivElement>(null);
   const { openScheduleModal } = useScheduleModal();
+
+  const onAreaChanged = (startX: number, startY: number, nowX: number, nowY: number) => {
+    if (!ref.current) return;
+
+    const diffX = nowX - startX;
+    const diffY = (nowY - startY) * ROW_HEIGHT;
+
+    // setTransform()
+    ref.current.style.setProperty('transform', `translate(calc(100% * ${diffX}), ${diffY}px)`);
+  };
+
+  const onDragEnd = (_: number, __: number, nowX: number, nowY: number) => {
+    if (!ref.current) return;
+
+    console.log(nowX, nowY);
+
+    // Todo: schedule 감지, schedule 업데이트 로직 추가
+    const updatedSchedule = { ...schedule };
+
+    openScheduleModal(updatedSchedule);
+    ref.current.style.setProperty('transform', '');
+  };
+
+  const { dragging, onMouseDown } = useScheduleDrag(onAreaChanged, onDragEnd);
 
   const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -45,6 +68,7 @@ function Schedule({
 
   return (
     <div
+      ref={ref}
       className={`flex absolute ${bgLight} rounded-l-xs cursor-pointer ` + attrs.className}
       onClick={onClick}
       onMouseDown={onMouseDown}

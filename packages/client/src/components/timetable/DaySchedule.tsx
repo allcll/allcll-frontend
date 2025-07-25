@@ -17,7 +17,7 @@ const DaySchedule = ({ dayOfWeek, scheduleTimes }: Readonly<IDayScheduleProps>) 
   const { getTimeslot } = useScheduleTimeslot();
 
   const onDragChange = (_: number, startY: number, __: number, nowY: number) => {
-    const { startTime, endTime } = getTimeslot(startY, nowY);
+    const { startTime, endTime } = getTimeslot(startY, nowY, 1);
     setOptimisticSchedule({
       ...initCustomSchedule,
       timeslots: [{ dayOfWeek, startTime, endTime }],
@@ -25,7 +25,7 @@ const DaySchedule = ({ dayOfWeek, scheduleTimes }: Readonly<IDayScheduleProps>) 
   };
 
   const onDragEnd = (_: number, startY: number, __: number, nowY: number) => {
-    const { startTime, endTime } = getTimeslot(startY, nowY);
+    const { startTime, endTime } = getTimeslot(startY, nowY, 1);
     openScheduleModal({
       ...initCustomSchedule,
       timeslots: [{ dayOfWeek, startTime, endTime }],
@@ -43,12 +43,13 @@ const DaySchedule = ({ dayOfWeek, scheduleTimes }: Readonly<IDayScheduleProps>) 
   return (
     <div className="relative flex-auto px-[2px]" tabIndex={0} onMouseDown={onMouseDown} onKeyDown={onKeyDown}>
       <WireSchedules dayOfWeek={dayOfWeek} />
-      {Timeslots.map(({ title, professor, location, color, width, height, top }, index) => (
+      {Timeslots.map(({ title, professor, location, color, width, height, top, schedule }, index) => (
         <Schedule
           key={'schedule-' + index}
           title={title}
           professor={professor ?? ''}
           location={location ?? ''}
+          schedule={schedule}
           color={color}
           style={{ height, top, width }}
         />

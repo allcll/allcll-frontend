@@ -2,6 +2,7 @@
 import React, { useRef, useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
+  initCustomSchedule,
   Schedule,
   scheduleAsApiSchedule,
   Timetable,
@@ -108,7 +109,7 @@ function useScheduleModal() {
     }
 
     // 모달 state 초기화
-    changeScheduleData({}, ScheduleMutateType.NONE);
+    changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);
     closeBottomSheet();
   };
 
@@ -123,7 +124,7 @@ function useScheduleModal() {
     deleteScheduleData({ schedule, prevTimetable: prevTimetable.current });
 
     // 모달 state 초기화
-    changeScheduleData({}, ScheduleMutateType.NONE);
+    changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);
     closeBottomSheet();
   };
 
@@ -134,7 +135,7 @@ function useScheduleModal() {
     queryClient.setQueryData(['timetableData', timetableId], prevTimetable.current);
 
     // 모달 state 초기화
-    changeScheduleData({}, ScheduleMutateType.NONE);
+    changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);
     closeBottomSheet();
   };
 
@@ -153,9 +154,19 @@ function useScheduleModal() {
 export function useScheduleTimeslot() {
   const { rowNames } = useScheduleState(state => state.options);
 
-  const getTimeslot = (startX: number, endX: number) => {
+  /**
+   * number type Timeslot 을 string type Timeslot 으로 변환합니다.
+   * @param startX - Timeslot 시작 위치
+   * @param endX - Timeslot 종료 위치
+   * @param minIntervalY - Optional 최소 시간 간격 (Hours)
+   */
+  const getTimeslot = (startX: number, endX: number, minIntervalY?: number) => {
     if (startX > endX) {
       [startX, endX] = [endX, startX];
+    }
+
+    if (minIntervalY !== undefined && endX - startX < minIntervalY) {
+      endX = startX + minIntervalY;
     }
 
     const startHour = rowNames[Math.floor(startX)];
