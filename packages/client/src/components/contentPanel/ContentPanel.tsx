@@ -56,7 +56,7 @@ function ContentPanel() {
         return false;
       };
 
-      return filteringGrades(subject) && filteringDays(subject.lesn_time);
+      return filteringGrades(subject) && filteringDays(subject.lesnTime);
     });
 
     setFilteredData(result);

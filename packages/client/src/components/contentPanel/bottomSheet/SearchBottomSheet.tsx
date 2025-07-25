@@ -90,7 +90,7 @@ function SearchBottomSheet() {
       };
 
       //TODO: filteringGrades 추가하기
-      return filteringDays(subject.lesn_time) && filteringDepartment(subject.departmentName);
+      return filteringDays(subject.lesnTime) && filteringDepartment(subject.manageDeptNm);
     });
 
     setFilteredData(result);
