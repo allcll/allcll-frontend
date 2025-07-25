@@ -13,12 +13,14 @@ function DepartmentFilter() {
   }
 
   const { data: departments } = useDepartments();
+
   const [searchKeywords, setSearchKeywords] = useState('');
 
   const departmentsList = [{ departmentName: '전체 학과', departmentCode: '' }, ...(departments ?? [])];
   const [filterDepartment, setFilterDepartment] = useState(departmentsList);
 
   const { selectedDepartment } = useFilterScheduleStore();
+
   const customDepartmentLabel = selectedDepartment === '전체' ? '전체' : pickCollegeOrMajor(selectedDepartment);
 
   useEffect(() => {
@@ -34,7 +36,7 @@ function DepartmentFilter() {
     });
 
     setFilterDepartment(result);
-  }, [searchKeywords]);
+  }, [departmentsList, searchKeywords]);
 
   return (
     <>
