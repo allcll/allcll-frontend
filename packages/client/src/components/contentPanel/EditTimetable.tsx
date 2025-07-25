@@ -38,7 +38,6 @@ function EditTimetable({ onClose, type, timeTable }: Readonly<IEditTimetable>) {
       return;
     }
     if (type === 'create') {
-      //TODO: 새로 생성
       createTimetable({
         timeTableName: timeTableName,
         semester: '2025-2',
