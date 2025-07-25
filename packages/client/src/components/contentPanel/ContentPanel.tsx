@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import SearchBox from '../common/SearchBox';
 import DepartmentFilter from './filter/DepartmentFilter';
 import GradeFilter from './filter/GradeFilter';
@@ -25,7 +25,6 @@ function ContentPanel() {
   const { data: subjects = [], isPending } = useSubject();
   const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
   const [searchKeywords, setSearchKeywords] = useState('');
-  const [filteredData, setFilteredData] = useState<Subject[]>(subjects ?? []);
 
   const { openScheduleModal } = useScheduleModal();
 
@@ -33,18 +32,13 @@ function ContentPanel() {
     openScheduleModal(initSchedule);
   };
 
-  useEffect(() => {
-    if (!subjects) {
-      setFilteredData([]);
-      return;
-    }
+  const filteredData = useMemo(() => {
+    if (!subjects) return [];
 
-    const result = subjects.filter(subject => {
+    return subjects.filter(subject => {
       const filteringDays = (lesn_time: string): boolean => {
         if (selectedDays.length === 0) return true;
         const days: string[] = lesn_time.match(/[가-힣]{1}(?=\d)/g) || [];
-
-        if (!days) return false;
         return selectedDays.some(d => days.includes(d));
       };
 
@@ -58,26 +52,24 @@ function ContentPanel() {
         if (selectedGrades.includes(4) && sem === '4') return true;
         return false;
       };
-
       const filteringSearchKeywords = (subject: Subject): boolean => {
         if (!searchKeywords) return true;
 
-        const clearnSearchInput = searchKeywords?.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+        const clearnSearchInput = searchKeywords.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
         const disassembledSearchInput = disassemble(clearnSearchInput).toLowerCase();
 
         const disassembledProfessorName = subject.professorName ? disassemble(subject.professorName).toLowerCase() : '';
         const cleanSubjectName = subject.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
         const disassembledSubjectName = disassemble(cleanSubjectName).toLowerCase();
 
-        const matchesProfessor = disassembledProfessorName.includes(disassembledSearchInput);
-        const matchesSubject = disassembledSubjectName.includes(disassembledSearchInput);
-        return matchesProfessor || matchesSubject;
+        return (
+          disassembledProfessorName.includes(disassembledSearchInput) ||
+          disassembledSubjectName.includes(disassembledSearchInput)
+        );
       };
 
       return filteringGrades(subject) && filteringDays(subject.lesnTime) && filteringSearchKeywords(subject);
     });
-
-    setFilteredData(result);
   }, [subjects, selectedDepartment, selectedGrades, selectedDays, searchKeywords]);
 
   return (
