@@ -38,7 +38,7 @@ export interface Schedule {
   professorName: string;
   location: string;
   timeslots: {
-    dayOfWeek: Day;
+    dayOfWeeks: Day;
     startTime: string;
     endTime: string;
   }[];
@@ -276,19 +276,18 @@ export function useCreateSchedule(timetableId?: number) {
     },
     onSuccess: async (schedule, _, context) => {
       console.log('요청 성공:', schedule);
-
       if (!context?.prevTimetable) {
         queryClient.invalidateQueries({ queryKey: ['timetableList'] });
         queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
         return;
       }
 
+      console.log('POST요청 전 이전 데이터와 새 데이터 합치는 스케줄', [...context.prevTimetable.schedules, schedule]);
+
       queryClient.setQueryData(['timetableData', timetableId], {
         ...context.prevTimetable,
         schedules: [...context.prevTimetable.schedules, schedule],
       });
-
-      console.log('POST요청 전 이전 데이터와 새 데이터 합치는 스케줄', [...context.prevTimetable.schedules, schedule]);
     },
   });
 }
@@ -427,11 +426,11 @@ export function scheduleTimeAdapter(timetable: IApiScheduleData, wishes?: Wishes
     const { subjectName: title, professorName: professor, location } = schedule;
 
     schedule.timeslots.forEach(time => {
-      if (!scheduleTimes[time.dayOfWeek]) {
-        scheduleTimes[time.dayOfWeek] = [];
+      if (!scheduleTimes[time.dayOfWeeks]) {
+        scheduleTimes[time.dayOfWeeks] = [];
       }
 
-      scheduleTimes[time.dayOfWeek].push({
+      scheduleTimes[time.dayOfWeeks].push({
         title,
         professor,
         location,
@@ -477,8 +476,8 @@ function getSettings(schedule?: Schedule[]) {
   let hasSaturday = false;
   let hasSunday = false;
   schedule.forEach(item => {
-    if (item.timeslots.some(time => time.dayOfWeek === '토')) hasSaturday = true;
-    if (item.timeslots.some(time => time.dayOfWeek === '일')) hasSunday = true;
+    if (item.timeslots.some(time => time.dayOfWeeks === '토')) hasSaturday = true;
+    if (item.timeslots.some(time => time.dayOfWeeks === '일')) hasSunday = true;
   });
 
   const colNames: Day[] = ['월', '화', '수', '목', '금'];

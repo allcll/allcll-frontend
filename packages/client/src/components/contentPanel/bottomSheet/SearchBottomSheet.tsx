@@ -19,7 +19,7 @@ export interface Schedule {
   professorName: string;
   location: string;
   timeslots: {
-    dayOfWeek: Day;
+    dayOfWeeks: Day;
     startTime: string;
     endTime: string;
   }[];

@@ -7,11 +7,11 @@ import useScheduleModal, { useScheduleTimeslot } from '@/hooks/useScheduleModal.
 import { Day } from '@/utils/types.ts';
 
 interface IDayScheduleProps {
-  dayOfWeek: Day;
+  dayOfWeeks: Day;
   scheduleTimes: ScheduleTime[];
 }
 
-const DaySchedule = ({ dayOfWeek, scheduleTimes }: Readonly<IDayScheduleProps>) => {
+const DaySchedule = ({ dayOfWeeks, scheduleTimes }: Readonly<IDayScheduleProps>) => {
   const Timeslots = scheduleTimes;
   const { setOptimisticSchedule, openScheduleModal } = useScheduleModal();
   const { getTimeslot } = useScheduleTimeslot();
@@ -20,7 +20,7 @@ const DaySchedule = ({ dayOfWeek, scheduleTimes }: Readonly<IDayScheduleProps>) 
     const { startTime, endTime } = getTimeslot(startY, nowY, 1);
     setOptimisticSchedule({
       ...initCustomSchedule,
-      timeslots: [{ dayOfWeek, startTime, endTime }],
+      timeslots: [{ dayOfWeeks, startTime, endTime }],
     });
   };
 
@@ -28,7 +28,7 @@ const DaySchedule = ({ dayOfWeek, scheduleTimes }: Readonly<IDayScheduleProps>) 
     const { startTime, endTime } = getTimeslot(startY, nowY, 1);
     openScheduleModal({
       ...initCustomSchedule,
-      timeslots: [{ dayOfWeek, startTime, endTime }],
+      timeslots: [{ dayOfWeeks, startTime, endTime }],
     });
   };
 
@@ -42,7 +42,7 @@ const DaySchedule = ({ dayOfWeek, scheduleTimes }: Readonly<IDayScheduleProps>) 
 
   return (
     <div className="relative flex-auto px-[2px]" tabIndex={0} onMouseDown={onMouseDown} onKeyDown={onKeyDown}>
-      <WireSchedules dayOfWeek={dayOfWeek} />
+      <WireSchedules dayOfWeeks={dayOfWeeks} />
       {Timeslots.map(({ title, professor, location, color, width, height, top, schedule }, index) => (
         <Schedule
           key={'schedule-' + index}

@@ -49,12 +49,12 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
   };
 
   const toggleDay = (day: Day) => {
-    const exists = scheduleForm.timeslots.find(slot => slot.dayOfWeek === day);
+    const exists = scheduleForm.timeslots.find(slot => slot.dayOfWeeks === day);
 
     if (exists) {
       setScheduleForm(prev => ({
         ...prev,
-        timeslots: prev.timeslots.filter(slot => slot.dayOfWeek !== day),
+        timeslots: prev.timeslots.filter(slot => slot.dayOfWeeks !== day),
       }));
     } else {
       setScheduleForm(prev => ({
@@ -62,7 +62,7 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
         timeslots: [
           ...prev.timeslots,
           {
-            dayOfWeek: day,
+            dayOfWeeks: day,
             startTime: '',
             endTime: '',
           },
@@ -74,7 +74,9 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
   const onScheduleFormChange = (key: keyof TimeRange, value: string, targetDay?: Day) => {
     setScheduleForm(prev => {
       const updated = prev.timeslots.map(slot => {
-        if (slot.dayOfWeek !== targetDay) return slot;
+        console.log(slot);
+
+        if (slot.dayOfWeeks !== targetDay) return slot;
 
         const [startHour, startMinute] = slot.startTime.split(':');
         const [endHour, endMinute] = slot.endTime.split(':');
@@ -130,7 +132,7 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
             <Chip
               key={day}
               label={day}
-              selected={scheduleForm.timeslots.some(slot => slot.dayOfWeek === day)}
+              selected={scheduleForm.timeslots.some(slot => slot.dayOfWeeks === day)}
               onClick={() => toggleDay(day)}
             />
           ))}
@@ -140,10 +142,10 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
       {scheduleForm.timeslots.map(slot => {
         return (
           <>
-            <p className="text-blue-500 text-xs">{slot.dayOfWeek}</p>
+            <p className="text-blue-500 text-xs">{slot.dayOfWeeks}</p>
             <SelectTime
-              key={slot.dayOfWeek}
-              day={slot.dayOfWeek}
+              key={slot.dayOfWeeks}
+              day={slot.dayOfWeeks}
               timeRange={extractTimeParts(slot.startTime, slot.endTime)}
               onChange={onScheduleFormChange}
             />

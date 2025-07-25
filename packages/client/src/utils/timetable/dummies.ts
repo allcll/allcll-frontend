@@ -23,12 +23,12 @@ export const timetableAPIDummies: Timetable = {
       location: '산학협력관 102호',
       timeslots: [
         {
-          dayOfWeek: '화',
+          dayOfWeeks: '화',
           startTime: '16:00',
           endTime: '18:50',
         },
         {
-          dayOfWeek: '목',
+          dayOfWeeks: '목',
           startTime: '16:00',
           endTime: '18:50',
         },
@@ -43,17 +43,17 @@ export const timetableAPIDummies: Timetable = {
       location: '센B201',
       timeslots: [
         {
-          dayOfWeek: '월',
+          dayOfWeeks: '월',
           startTime: '09:00',
           endTime: '10:30',
         },
         {
-          dayOfWeek: '수',
+          dayOfWeeks: '수',
           startTime: '09:00',
           endTime: '10:30',
         },
         {
-          dayOfWeek: '금',
+          dayOfWeeks: '금',
           startTime: '09:00',
           endTime: '10:30',
         },
@@ -68,12 +68,12 @@ export const timetableAPIDummies: Timetable = {
       location: '센B209',
       timeslots: [
         {
-          dayOfWeek: '화',
+          dayOfWeeks: '화',
           startTime: '10:40',
           endTime: '12:10',
         },
         {
-          dayOfWeek: '목',
+          dayOfWeeks: '목',
           startTime: '10:40',
           endTime: '12:10',
         },
@@ -88,17 +88,17 @@ export const timetableAPIDummies: Timetable = {
       location: '센B210',
       timeslots: [
         {
-          dayOfWeek: '월',
+          dayOfWeeks: '월',
           startTime: '13:00',
           endTime: '14:30',
         },
         {
-          dayOfWeek: '수',
+          dayOfWeeks: '수',
           startTime: '13:00',
           endTime: '14:30',
         },
         {
-          dayOfWeek: '금',
+          dayOfWeeks: '금',
           startTime: '13:00',
           endTime: '14:30',
         },
@@ -113,12 +113,12 @@ export const timetableAPIDummies: Timetable = {
       location: '카페',
       timeslots: [
         {
-          dayOfWeek: '월',
+          dayOfWeeks: '월',
           startTime: '18:50',
           endTime: '22:00',
         },
         {
-          dayOfWeek: '수',
+          dayOfWeeks: '수',
           startTime: '18:50',
           endTime: '22:00',
         },

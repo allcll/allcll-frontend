@@ -6,22 +6,22 @@ import useWishes from '@/hooks/server/useWishes.ts';
 import { Day } from '@/utils/types.ts';
 
 interface IWireSchedulesProps extends HTMLAttributes<HTMLDivElement> {
-  dayOfWeek: Day;
+  dayOfWeeks: Day;
 }
 
-function WireSchedules({ dayOfWeek }: Readonly<IWireSchedulesProps>) {
+function WireSchedules({ dayOfWeeks }: Readonly<IWireSchedulesProps>) {
   const { schedule } = useScheduleState();
   const { data: wishes } = useWishes();
 
   // Fixme: schedule 형태 통일
   const timetable = scheduleTimeAdapter({ schedules: [scheduleAsApiSchedule(schedule)] }, wishes);
-  const scheduleTime = timetable?.scheduleTimes[dayOfWeek];
+  const scheduleTime = timetable?.scheduleTimes[dayOfWeeks];
 
   if (!scheduleTime) return null;
 
   return scheduleTime.map(({ title, professor, location, width, height, top, schedule }, index) => (
     <WireSchedule
-      key={`wire-schedule-${dayOfWeek}-${index}`}
+      key={`wire-schedule-${dayOfWeeks}-${index}`}
       title={title}
       professor={professor ?? ''}
       location={location ?? ''}
