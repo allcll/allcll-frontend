@@ -11,7 +11,7 @@ interface Option {
 }
 
 interface DropdownSelectProps {
-  initialLabel: string;
+  initialOption: Option;
   options: Option[];
   onSelect: (optionId: number) => void;
   onEdit?: (value: string, optionId: number) => void;
@@ -19,12 +19,12 @@ interface DropdownSelectProps {
 }
 
 // Fixme : 기존에 있는 Chip 형태의 Selectbox 와 통합하기
-const DropdownSelect: React.FC<DropdownSelectProps> = ({ initialLabel, options, onSelect, onEdit, onDelete }) => {
-  const [selectedLabel, setSelectedLabel] = useState(initialLabel);
+const DropdownSelect: React.FC<DropdownSelectProps> = ({ initialOption, options, onSelect, onEdit, onDelete }) => {
+  const [selectedOption, setSelectedOption] = useState(initialOption);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleOptionClick = (option: Option) => {
-    setSelectedLabel(option.label);
+    setSelectedOption(option);
     onSelect(option.id);
   };
 
@@ -44,17 +44,17 @@ const DropdownSelect: React.FC<DropdownSelectProps> = ({ initialLabel, options, 
     <div className="relative inline-block w-full max-w-sm" ref={dropdownRef}>
       {/* Select Box (보여지는 부분) */}
       <>
-        <Filtering label={selectedLabel} selected={selectedLabel.length !== 0} className="gap-4">
-          <h3 className="font-semiblod">{initialLabel}</h3>
+        <Filtering label={selectedOption.label} selected={selectedOption.label.length !== 0} className="gap-4">
+          <h3 className="font-semiblod">{selectedOption.label}</h3>
           {options.map(option => (
             <div className="flex gap-5">
               <Checkbox
                 key={option.id}
                 label={option.label}
-                isChecked={selectedLabel === option.label}
+                isChecked={selectedOption.id === option.id}
                 onChange={() => handleOptionClick(option)}
               />
-              {selectedLabel === option.label && (
+              {selectedOption.id === option.id && (
                 <div className="flex gap-4 text-sm">
                   <button
                     className="text-stone-500 text-sm hover:text-stone-600 font-medium cursor-pointer"

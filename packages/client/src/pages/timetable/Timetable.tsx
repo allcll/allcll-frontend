@@ -58,7 +58,7 @@ function Timetable() {
           <Card className="px-2">
             <header className="flex pb-2 justify-between items-center">
               <DropdownSelect
-                initialLabel={yearOptions[0]?.label ?? '학기 선택'}
+                initialOption={yearOptions[0] ?? '학기 선택'}
                 options={yearOptions}
                 onSelect={handleSelect}
                 onEdit={handleEdit}
