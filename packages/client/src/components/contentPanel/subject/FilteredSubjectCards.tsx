@@ -30,7 +30,7 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
   const handleCardClick = (subject: Subject) => {
     setSelectedSubjectId(subject.subjectId);
     changeScheduleData({
-      scheduleId: 0,
+      scheduleId: schedule.scheduleId,
       scheduleType: 'official',
       subjectId: subject.subjectId,
       subjectName: '',
