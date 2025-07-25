@@ -69,11 +69,15 @@ function SearchBottomSheet() {
     }
 
     const result = subjects.filter(subject => {
-      const filteringDays = (lesn_time: string): boolean => {
+      const filteringDays = (lesnTime: string): boolean => {
+        if (!lesnTime) return false;
         if (selectedDays.length === 0) return true;
-        const days: string[] = lesn_time.match(/[가-힣]{1}(?=\d)/g) || [];
 
-        if (!days) return false;
+        const match = lesnTime.match(/^([가-힣]+)(\d{1,2}):\d{2}-(\d{1,2}):\d{2}$/);
+        if (!match) return false;
+
+        const [_, dayStr] = match;
+        const days = dayStr.split('');
         return selectedDays.some(d => days.includes(d));
       };
 
