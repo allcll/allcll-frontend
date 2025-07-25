@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api.ts';
 import { Day, Wishes } from '@/utils/types.ts';
-import { ROW_HEIGHT } from '@/components/timetable/Timetable.tsx';
 import useWishes from '@/hooks/server/useWishes.ts';
 import { useScheduleState } from '@/store/useScheduleState.ts';
+import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 
 export interface Timetable {
   timetableId: number;
@@ -37,11 +37,13 @@ export interface Schedule {
   subjectName: string;
   professorName: string;
   location: string;
-  timeslots: {
-    dayOfWeek: Day;
-    startTime: string;
-    endTime: string;
-  }[];
+  timeslots: Timeslot[];
+}
+
+export interface Timeslot {
+  dayOfWeek: Day;
+  startTime: string; // e.g., "09:00"
+  endTime: string; // e.g., "10:30"
 }
 
 // Todo: Render에 필요한 데이터로 변환 / 필요 없는 정보 제거하기
@@ -384,27 +386,7 @@ interface IApiScheduleData {
 function mergeTimetableData(apiScheduleData?: IApiScheduleData, wishes?: Wishes[]) {
   if (!apiScheduleData || !wishes) return undefined;
 
-  const mergedData: Schedule[] = [];
-  apiScheduleData.schedules.forEach(schedule => {
-    if (schedule.scheduleType === 'official') {
-      const wish = wishes.find(w => w.subjectId === schedule.scheduleId);
-
-      // Todo: Add Location Parsing Logic / timeslots
-      mergedData.push({
-        scheduleId: schedule.scheduleId,
-        scheduleType: schedule.scheduleType,
-        subjectId: schedule.subjectId,
-        subjectName: wish?.subjectName ?? '',
-        professorName: wish?.professorName ?? '',
-        location: wish ? '센B209' : '',
-        timeslots: [],
-      });
-    } else {
-      mergedData.push({ ...schedule });
-    }
-  });
-
-  return mergedData;
+  return apiScheduleData.schedules.map(schedule => new ScheduleAdapter(schedule, wishes).toUiData());
 }
 
 /** timetable 데이터를 ScheduleTime 형태로 변환합니다.
@@ -435,7 +417,7 @@ export function scheduleTimeAdapter(timetable: IApiScheduleData, wishes?: Wishes
         location,
         schedule,
         color,
-        ...getPositionFromString(settings?.minTime ?? 9, time),
+        ...new TimeslotAdapter(time).toUiData(settings?.minTime ?? 9),
       });
     });
   });
@@ -443,25 +425,6 @@ export function scheduleTimeAdapter(timetable: IApiScheduleData, wishes?: Wishes
   return {
     ...settings,
     scheduleTimes,
-  };
-}
-
-/** Schedule의 시작 시간과 종료 시간을 계산하여, Schedule의 위치와 크기를 반환합니다.
- * @param startTime
- * @param time
- */
-function getPositionFromString(startTime: number, time: Schedule['timeslots'][number]) {
-  const parseTime = (time: string) => {
-    const [hours, minutes] = time.split(':').map(Number);
-    return hours * 60 + minutes;
-  };
-
-  const start = parseTime(time.startTime) / 60;
-  const end = parseTime(time.endTime) / 60;
-  return {
-    width: 'calc(100% - 4px)',
-    height: `${(end - start) * ROW_HEIGHT}px`, // Assuming each hour is 60px tall
-    top: `${(start - startTime) * ROW_HEIGHT}px`, // Assuming each hour is 60px tall
   };
 }
 
@@ -514,21 +477,5 @@ function getSettings(schedule?: Schedule[]) {
  * @param schedule
  */
 export function scheduleAsApiSchedule(schedule: Schedule): ScheduleApiResponse {
-  if (schedule.scheduleType === 'official') {
-    return {
-      scheduleId: schedule.scheduleId,
-      scheduleType: 'official',
-      subjectId: schedule.subjectId ?? 0,
-      subjectName: null,
-      professorName: null,
-      location: null,
-      timeslots: [],
-    };
-  } else {
-    return {
-      ...schedule,
-      scheduleType: 'custom',
-      subjectId: null,
-    };
-  }
+  return new ScheduleAdapter(schedule).toApiData();
 }
