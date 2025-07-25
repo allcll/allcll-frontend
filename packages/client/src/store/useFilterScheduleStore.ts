@@ -28,10 +28,10 @@ const initialState: Omit<FilterState, 'setFilterSchedule' | 'resetFilterSchedule
   isMajor: undefined,
   selectedDays: [],
   selectedTimeRange: {
-    startHour: '9시',
-    startMinute: '0분',
-    endHour: '10시',
-    endMinute: '0분',
+    startHour: '9',
+    startMinute: '00',
+    endHour: '10',
+    endMinute: '00',
   },
 };
 

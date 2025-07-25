@@ -26,13 +26,7 @@ function Filtering({ label, selected, children, className = '' }: Readonly<IFilt
 
   return (
     <div className="relative inline-block">
-      <Chip
-        label={label}
-        containerRef={containerRef}
-        chipType={selected ? 'cancel' : 'select'}
-        selected={selected}
-        onClick={handleClickChip}
-      />
+      <Chip label={label} containerRef={containerRef} chipType="select" selected={selected} onClick={handleClickChip} />
       {isChipOpen && (
         <FilterOption contentRef={contentRef} className={className}>
           {children}
