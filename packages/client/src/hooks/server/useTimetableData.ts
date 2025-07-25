@@ -66,6 +66,29 @@ export const initCustomSchedule: Schedule = {
   timeslots: [],
 };
 
+export interface TimetableType {
+  timeTableId: number;
+  timeTableName: string;
+  semester: string; // ex: "2025-2"
+}
+
+export type TimetableListResponse = TimetableType[];
+
+export const getTimetables = async (): Promise<TimetableListResponse> => {
+  return await fetchJsonOnAPI('/api/timetables', {
+    method: 'GET',
+    credentials: 'include',
+  });
+};
+
+export const useTimetables = () => {
+  return useQuery<TimetableListResponse>({
+    queryKey: ['timetableData'],
+    queryFn: getTimetables,
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
 /** timetableId에 대한 Timetable 데이터를 가져옵니다.
  * @param timetableId
  */
@@ -82,6 +105,62 @@ export function useTimetableData(timetableId?: number) {
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5,
     enabled: !!timetableId && timetableId > 0,
+  });
+}
+
+/**
+ * 시간표 수정 훅
+ * timetableId에에 대한 timetableName을 수정합니다.
+ * @param timetableId
+ */
+export function useUpdateTimetable() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ timeTableId, timeTableName }: { timeTableId: number; timeTableName: string }) => {
+      return await fetchJsonOnAPI(`/api/timetables/${timeTableId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ timeTableName }),
+      });
+    },
+    onMutate: async ({ timeTableId }) => {
+      await queryClient.cancelQueries({ queryKey: ['timetableData', timeTableId] });
+      return { timeTableId };
+    },
+    onError: (error, _variables, context) => {
+      console.error(`시간표 수정 실패 (id: ${context?.timeTableId})`, error);
+    },
+    onSuccess: (_, __, context) => {
+      queryClient.invalidateQueries({ queryKey: ['timetableData', context?.timeTableId] });
+    },
+  });
+}
+
+/**
+ * 시간표 삭제 훅
+ * timetableId로 시간표를 삭제합니다.
+ * @param timetableId
+ */
+export function useDeleteTimetable() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (timetableId: number) => {
+      return await fetchJsonOnAPI(`/api/timetables/${timetableId}`, {
+        method: 'DELETE',
+      });
+    },
+    onMutate: async (timetableId: number) => {
+      await queryClient.cancelQueries({ queryKey: ['timetableData', timetableId] });
+      return { timetableId };
+    },
+    onError: (error, timetableId) => {
+      console.error(`시간표 삭제 실패 (id: ${timetableId})`, error);
+    },
+    onSuccess: (_, timetableId) => {
+      queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
+      queryClient.invalidateQueries({ queryKey: ['timetableData'] });
+    },
   });
 }
 
