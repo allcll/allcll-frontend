@@ -61,7 +61,7 @@ function Timetable() {
                 initialOption={
                   yearOptions[0] ?? {
                     id: -1,
-                    label: '',
+                    label: '학기 선택',
                   }
                 }
                 options={yearOptions}
