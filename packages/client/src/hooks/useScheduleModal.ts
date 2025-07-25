@@ -77,6 +77,7 @@ function useScheduleModal() {
 
     // Schedule 시간 Validation
     const isTimeslotValid = prevSchedule.timeslots.every(slot => slot.startTime <= slot.endTime);
+
     if (!isTimeslotValid) {
       alert('시작 시간이 종료 시간 보다 늦지 않아야 합니다.');
       return;

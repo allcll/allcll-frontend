@@ -257,7 +257,7 @@ export function useCreateSchedule(timetableId?: number) {
         setTimetableId(timetable);
       }
 
-      console.log('POST요청 전 스케줄', schedule, schedule.timeslots);
+      console.log('POST요청 전 새로운 스케줄', schedule, schedule.timeslots);
 
       await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${newTimetableId}/schedules`, {
         method: 'POST',
@@ -285,6 +285,8 @@ export function useCreateSchedule(timetableId?: number) {
         ...context.prevTimetable,
         schedules: [...context.prevTimetable.schedules, schedule],
       });
+
+      console.log('POST요청 전 이전 데이터와 새 데이터 합치는 스케줄', [...context.prevTimetable.schedules, schedule]);
     },
   });
 }
