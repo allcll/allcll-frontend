@@ -10,7 +10,7 @@ function FilterOption({ children, contentRef, className = '' }: IFilterOption) {
   return (
     <div
       ref={contentRef}
-      className={`absolute top-full mt-2 left-0 z-20 bg-white rounded-lg flex flex-col shadow-lg p-4 w-auto gap-1 min-w-max ${className}`}
+      className={`absolute top-full border border-gray-200 mt-2 left-0 z-20 bg-white rounded-lg flex flex-col shadow-lg p-4 w-auto gap-1 min-w-max ${className}`}
       role="listbox"
     >
       {children}

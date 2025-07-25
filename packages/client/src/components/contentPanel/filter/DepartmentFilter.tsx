@@ -18,7 +18,11 @@ function DepartmentFilter() {
 
   return (
     <>
-      <Filtering label={customDepartmentLabel} className="max-h-80 overflow-y-auto">
+      <Filtering
+        label={customDepartmentLabel}
+        className="max-h-80 overflow-y-auto"
+        selected={selectedDepartment.length !== 0}
+      >
         <div className="flex flex-col h-80">
           <div className="shrink-0 px-2 py-2 bg-white">
             <SearchBox

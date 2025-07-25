@@ -16,11 +16,11 @@ function ScheduleFormModal() {
 
   return (
     <div
-      className="fixed inset-0 z-50 hidden md:flex items-center justify-center bg-black/40"
+      className="fixed inset-0 z-50  hidden md:flex items-center justify-center  bg-black/10"
       onClick={() => closeBottomSheet('edit')}
     >
       <div
-        className="bg-white flex flex-col gap-2 rounded-md w-[90%] max-w-md p-3 shadow-lg relative"
+        className="bg-white flex border border-gray-200 rounded-xl flex-col gap-2 w-[90%] max-w-md p-8 shadow-xl relative"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex w-full justify-between">

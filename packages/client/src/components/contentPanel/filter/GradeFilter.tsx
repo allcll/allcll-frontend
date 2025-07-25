@@ -20,6 +20,7 @@ function GradeFilter() {
       selectedItems={selectedGrades}
       handleChangeCheckbox={handleChangeCheckbox}
       options={GRADE}
+      selected={selectedGrades.length !== 0}
     />
   );
 }

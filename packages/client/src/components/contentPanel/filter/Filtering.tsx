@@ -7,9 +7,10 @@ interface IFiltering {
   label: string;
   children: React.ReactNode;
   className?: string;
+  selected: boolean;
 }
 
-function Filtering({ label, children, className = '' }: Readonly<IFiltering>) {
+function Filtering({ label, selected, children, className = '' }: Readonly<IFiltering>) {
   const containerRef = useRef<HTMLButtonElement>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
@@ -25,7 +26,7 @@ function Filtering({ label, children, className = '' }: Readonly<IFiltering>) {
         label={label}
         containerRef={containerRef}
         chipType="select"
-        selected={label !== '학과' && label !== '요일' && label !== '학년'}
+        selected={selected}
         onClick={() => setIsChipOpen(!isChipOpen)}
       />
       {isChipOpen && (

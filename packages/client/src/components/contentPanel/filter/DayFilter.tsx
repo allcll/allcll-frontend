@@ -20,6 +20,7 @@ function DayFilter() {
       selectedItems={selectedDays}
       handleChangeCheckbox={handleChangeCheckbox}
       options={DAYS}
+      selected={selectedDays.length !== 0}
     />
   );
 }
