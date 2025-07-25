@@ -35,6 +35,7 @@ function EditTimetable({ onClose, type, timeTable }: Readonly<IEditTimetable>) {
 
     if (timeTable && type === 'edit') {
       updateTimetable({ timeTableId: timeTable.timeTableId, timeTableName: timeTableName });
+      onClose();
       return;
     }
     if (type === 'create') {
@@ -42,6 +43,7 @@ function EditTimetable({ onClose, type, timeTable }: Readonly<IEditTimetable>) {
         timeTableName: timeTableName,
         semester: '2025-2',
       });
+      onClose();
     }
   };
 
