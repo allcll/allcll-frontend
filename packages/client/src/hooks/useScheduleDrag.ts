@@ -131,7 +131,7 @@ function getDragPosition(
   const x = Math.floor((pageX - tableX) / colWidth);
   const y = Math.floor(((pageY - tableY) / rowHeight) * TIME_DIV_COUNT) / TIME_DIV_COUNT;
 
-  const clippedX = Math.max(0, Math.min(cols, x)); // 최대값을 cols - 1로 수정
+  const clippedX = Math.max(0, Math.min(cols - 1, x)); // 최대값을 cols - 1로 수정
   const clippedY = Math.max(0, Math.min(rows, y)); // 최대값을 rows - 1로 수정
 
   return { x: clippedX, y: clippedY };

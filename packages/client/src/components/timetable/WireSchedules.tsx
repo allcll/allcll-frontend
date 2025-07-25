@@ -5,15 +5,13 @@ import { IScheduleProps } from '@/components/timetable/Schedule.tsx';
 import useWishes from '@/hooks/server/useWishes.ts';
 import { Day } from '@/utils/types.ts';
 
-interface IWireScheduleProps extends HTMLAttributes<HTMLDivElement> {
+interface IWireSchedulesProps extends HTMLAttributes<HTMLDivElement> {
   dayOfWeek: Day;
 }
 
-function WireSchedules({ dayOfWeek }: Readonly<IWireScheduleProps>) {
+function WireSchedules({ dayOfWeek }: Readonly<IWireSchedulesProps>) {
   const { schedule } = useScheduleState();
   const { data: wishes } = useWishes();
-
-  // if (mode !== ScheduleMutateType.CREATE) return null;
 
   // Fixme: schedule 형태 통일
   const timetable = scheduleTimeAdapter({ schedules: [scheduleAsApiSchedule(schedule)] }, wishes);
@@ -21,12 +19,13 @@ function WireSchedules({ dayOfWeek }: Readonly<IWireScheduleProps>) {
 
   if (!scheduleTime) return null;
 
-  return scheduleTime.map(({ title, professor, location, width, height, top }, index) => (
+  return scheduleTime.map(({ title, professor, location, width, height, top, schedule }, index) => (
     <WireSchedule
       key={`wire-schedule-${dayOfWeek}-${index}`}
       title={title}
       professor={professor ?? ''}
       location={location ?? ''}
+      schedule={schedule}
       style={{ width, height, top }}
     />
   ));
