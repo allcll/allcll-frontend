@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api.ts';
 import { Day, Wishes } from '@/utils/types.ts';
-import { ROW_HEIGHT } from '@/components/timetable/Timetable.tsx';
 import useWishes from '@/hooks/server/useWishes.ts';
 import { useScheduleState } from '@/store/useScheduleState.ts';
+import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 
 export interface Timetable {
   timetableId: number;
@@ -406,6 +406,7 @@ function mergeTimetableData(apiScheduleData?: IApiScheduleData, wishes?: Wishes[
   });
 
   return mergedData;
+  return apiScheduleData.schedules.map(schedule => new ScheduleAdapter(schedule, wishes).toUiData());
 }
 
 /** timetable 데이터를 ScheduleTime 형태로 변환합니다.
@@ -436,7 +437,7 @@ export function scheduleTimeAdapter(timetable: IApiScheduleData, wishes?: Wishes
         location,
         schedule,
         color,
-        ...getPositionFromString(settings?.minTime ?? 9, time),
+        ...new TimeslotAdapter(time).toUiData(settings?.minTime ?? 9),
       });
     });
   });
@@ -515,21 +516,5 @@ function getSettings(schedule?: Schedule[]) {
  * @param schedule
  */
 export function scheduleAsApiSchedule(schedule: Schedule): ScheduleApiResponse {
-  if (schedule.scheduleType === 'official') {
-    return {
-      scheduleId: schedule.scheduleId,
-      scheduleType: 'official',
-      subjectId: schedule.subjectId ?? 0,
-      subjectName: null,
-      professorName: null,
-      location: null,
-      timeSlots: [],
-    };
-  } else {
-    return {
-      ...schedule,
-      scheduleType: 'custom',
-      subjectId: null,
-    };
-  }
+  return new ScheduleAdapter(schedule).toApiData();
 }

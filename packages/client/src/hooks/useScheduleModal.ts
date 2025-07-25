@@ -4,7 +4,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import {
   initCustomSchedule,
   Schedule,
-  scheduleAsApiSchedule,
   Timetable,
   useCreateSchedule,
   useDeleteSchedule,
@@ -12,6 +11,7 @@ import {
 } from '@/hooks/server/useTimetableData.ts';
 import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState.ts';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore.ts';
+import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 
 function useScheduleModal() {
   const queryClient = useQueryClient();
@@ -83,7 +83,7 @@ function useScheduleModal() {
       return;
     }
 
-    const schedule = scheduleAsApiSchedule(prevSchedule);
+    const schedule = new ScheduleAdapter(prevSchedule).toApiData();
 
     console.log('official 과목 추가', schedule);
 
@@ -107,7 +107,7 @@ function useScheduleModal() {
       throw new Error('Previous timetable data is not available.');
     }
 
-    const schedule = scheduleAsApiSchedule(prevSchedule);
+    const schedule = new ScheduleAdapter(prevSchedule).toApiData();
     deleteScheduleData({ schedule, prevTimetable: prevTimetable.current });
 
     // 모달 state 초기화
