@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import Card from '@/components/common/Card.tsx';
 import TimetableComponent from '@/components/timetable/Timetable.tsx';
 import DropdownSelect from '@/components/timetable/DropdownSelect.tsx';
 import SearchBottomSheet from '@/components/contentPanel/bottomSheet/SearchBottomSheet';
@@ -21,7 +22,7 @@ function Timetable() {
   const [isOpenModal, setIsOpenModal] = useState<modalType>(null);
 
   const { type: bottomSheetType } = useBottomSheetStore();
-  const [currentTimetable, setCurrentTimeTable] = useState<TimetableType | undefined>(timetables[0]);
+  const [currentTimetable, setCurrentTimetable] = useState<TimetableType | undefined>(timetables[0]);
   const setTimetableId = useScheduleState(state => state.setTimetableId);
 
   const yearOptions = useMemo(() => {
@@ -34,7 +35,7 @@ function Timetable() {
   const handleSelect = (optionId: number) => {
     const selectedTimetable = timetables.find(timetable => timetable.timeTableId === optionId);
 
-    setCurrentTimeTable(selectedTimetable);
+    setCurrentTimetable(selectedTimetable);
     setTimetableId(selectedTimetable?.timeTableId ?? -1);
   };
 
@@ -54,21 +55,23 @@ function Timetable() {
   return (
     <div className="w-full p-4 ">
       <div className="grid md:grid-cols-4 gap-4">
-        <div className="md:col-span-3 w-full rounded rounded-lg bg-white h-screen">
-          <header className="flex p-5 justify-between">
-            <DropdownSelect
-              initialLabel={yearOptions[0]?.label ?? '학기 선택'}
-              options={yearOptions}
-              onSelect={handleSelect}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
-            <button className="cursor-pointer" onClick={handleCreateTimetable}>
-              <AddGraySvg className="w-5 h-5 cursor-pointer" />
-            </button>
-          </header>
+        <div className="md:col-span-3 w-full h-screen">
+          <Card className="px-2">
+            <header className="flex pb-2 justify-between items-center">
+              <DropdownSelect
+                initialLabel={yearOptions[0]?.label ?? '학기 선택'}
+                options={yearOptions}
+                onSelect={handleSelect}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+              <button className="p-1 h-fit cursor-pointer" onClick={handleCreateTimetable}>
+                <AddGraySvg className="w-5 h-5 cursor-pointer" />
+              </button>
+            </header>
 
-          <TimetableComponent />
+            <TimetableComponent />
+          </Card>
         </div>
 
         <div className="md:col-span-1 w-full">
