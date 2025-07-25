@@ -1,9 +1,10 @@
 import useInfScroll from '@/hooks/useInfScroll';
-import { Subject } from '@/utils/types';
+import { Subject, Wishes } from '@/utils/types';
 import { useRef, useState } from 'react';
 import ZeroListError from '../errors/ZeroListError';
 import useScheduleModal from '@/hooks/useScheduleModal';
 import { useScheduleState } from '@/store/useScheduleState';
+import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 
 interface ISubjectCards {
   subjects: Subject[];
@@ -17,7 +18,8 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
   const isMore = data.length < subjects.length;
   const [selectedSubjectId, setSelectedSubjectId] = useState<number>();
   const selectedCardRef = useRef<HTMLDivElement>(null);
-  const { changeScheduleData, schedule } = useScheduleState();
+  const schedule = useScheduleState(state => state.schedule);
+  const { openScheduleModal } = useScheduleModal();
 
   if (isPending || !subjects) {
     return <div className="w-full h-100 bg-blue-100"></div>;
@@ -29,15 +31,21 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
 
   const handleCardClick = (subject: Subject) => {
     setSelectedSubjectId(subject.subjectId);
-    changeScheduleData({
-      scheduleId: schedule.scheduleId,
-      scheduleType: 'official',
-      subjectId: subject.subjectId,
-      subjectName: '',
-      professorName: '',
-      location: '',
-      timeSlots: [],
-    });
+    // Todo: Schedule 추가하는 기능 넣기 => Adapter 사용
+    const newSchedule = new ScheduleAdapter(
+      {
+        scheduleId: -1,
+        scheduleType: 'official',
+        subjectId: subject.subjectId,
+        subjectName: subject.subjectName,
+        professorName: subject.professorName ?? '',
+        location: subject.lesnRoom,
+        timeSlots: [], // Todo: 파싱 기능 사용하기 -> adopter
+      },
+      data as unknown as Wishes[],
+    );
+
+    openScheduleModal(newSchedule.toUiData());
     console.log('official', schedule);
     // openScheduleModal(subject);
     if (expandToMax) {

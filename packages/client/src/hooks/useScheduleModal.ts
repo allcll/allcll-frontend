@@ -40,7 +40,9 @@ function useScheduleModal() {
     let currentMode;
     if (!targetSchedule.scheduleId || targetSchedule.scheduleId <= 0) {
       currentMode = ScheduleMutateType.CREATE;
-      openBottomSheet('edit');
+      if (targetSchedule.scheduleType !== 'official') {
+        openBottomSheet('edit');
+      }
     } else if (targetSchedule.scheduleType === 'official') {
       currentMode = ScheduleMutateType.VIEW;
       openBottomSheet('Info');
