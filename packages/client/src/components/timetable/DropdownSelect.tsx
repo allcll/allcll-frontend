@@ -44,7 +44,7 @@ const DropdownSelect: React.FC<DropdownSelectProps> = ({ initialOption, options,
     <div className="relative inline-block w-full max-w-sm" ref={dropdownRef}>
       {/* Select Box (보여지는 부분) */}
       <>
-        <Filtering label={selectedOption.label} selected={selectedOption.label.length !== 0} className="gap-4">
+        <Filtering label={selectedOption.label ?? '학기 선택'} selected={selectedOption.id !== -1} className="gap-4">
           <h3 className="font-semiblod">{selectedOption.label}</h3>
           {options.map(option => (
             <div className="flex gap-5">
