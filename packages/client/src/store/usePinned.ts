@@ -70,6 +70,7 @@ export const useRemovePinned = () => {
       return { previousData };
     },
     onSettled: () => {
+      console.log('pin removed onSettled');
       queryClient.invalidateQueries({ queryKey: ['pinnedSubjects'] }).then();
     },
     onError: error => {
@@ -86,11 +87,11 @@ interface PinnedSubjectResponse {
   subjects: PinnedSubject[];
 }
 
-const fetchPinnedSubjects = async (): Promise<PinnedSubjectResponse> => {
+const fetchPinnedSubjects = async () => {
   return await fetchJsonOnAPI<PinnedSubjectResponse>('/api/pins');
 };
 
-const addPinnedSubject = async (subjectId: number): Promise<void> => {
+const addPinnedSubject = async (subjectId: number) => {
   const response = await fetchOnAPI(`/api/pin?subjectId=${subjectId}`, { method: 'POST' });
 
   if (!response.ok) {
@@ -98,7 +99,7 @@ const addPinnedSubject = async (subjectId: number): Promise<void> => {
   }
 };
 
-const removePinnedSubject = async (subjectId: number): Promise<void> => {
+const removePinnedSubject = async (subjectId: number) => {
   const response = await fetchOnAPI(`/api/pin/${subjectId}`, { method: 'DELETE' });
 
   if (!response.ok) {

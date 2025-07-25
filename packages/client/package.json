@@ -35,6 +35,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "@types/react-helmet": "^6.1.11",
     "@types/react-transition-group": "^4.4.12",
+    "@tanstack/query-core": "^5.83.0",
     "rollup-plugin-visualizer": "^6.0.1",
     "vite-plugin-svgr": "^4.3.0"
   }

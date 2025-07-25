@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { Subject, Wishes } from '@/utils/types.ts';
+import { SimulationSubject, Subject, Wishes } from '@/utils/types.ts';
 
 // 스크롤 3번 정도 사이즈 : 45
 const PAGE_SIZE = 45;
 
 // .load-more-trigger 인 항목 추가
-function useInfScroll(data: Wishes[] | Subject[]) {
+function useInfScroll(data: Wishes[] | Subject[] | SimulationSubject[]) {
   const [visibleRows, setVisibleRows] = useState(PAGE_SIZE);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -22,8 +22,19 @@ function useInfScroll(data: Wishes[] | Subject[]) {
           }
         });
       },
-      { root: null, rootMargin: '0px', threshold: 1.0 },
+      { root: null, rootMargin: '0px', threshold: 0.5 },
     );
+
+    const waitAndObserve = () => {
+      const target = document.querySelector('.load-more-trigger');
+      if (target) {
+        observer.observe(target);
+      } else {
+        setTimeout(waitAndObserve, 100);
+      }
+    };
+
+    waitAndObserve();
 
     observerRef.current = observer;
 
