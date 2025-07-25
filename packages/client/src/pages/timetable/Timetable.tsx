@@ -57,13 +57,6 @@ function Timetable() {
           <Card className="px-2">
             <header className="flex pb-2 justify-between items-center">
               <DropdownSelect
-                currentTimetable={
-                  currentTimetable ?? {
-                    timeTableId: -1,
-                    timeTableName: '학기 선택',
-                    semester: '',
-                  }
-                }
                 timetables={timetables}
                 onSelect={handleSelect}
                 onEdit={handleEdit}

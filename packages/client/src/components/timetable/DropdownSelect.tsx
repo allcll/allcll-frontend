@@ -1,10 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import Checkbox from '../common/Checkbox';
 import Filtering from '../contentPanel/filter/Filtering';
 import { TimetableType } from '@/hooks/server/useTimetableData';
+import { useScheduleState } from '@/store/useScheduleState';
 
 interface DropdownSelectProps {
-  currentTimetable: TimetableType;
   timetables: TimetableType[];
   onSelect: (optionId: number) => void;
   onEdit?: (value: string, optionId: number) => void;
@@ -12,18 +12,13 @@ interface DropdownSelectProps {
 }
 
 // Fixme : 기존에 있는 Chip 형태의 Selectbox 와 통합하기
-const DropdownSelect: React.FC<DropdownSelectProps> = ({
-  currentTimetable,
-  timetables,
-  onSelect,
-  onEdit,
-  onDelete,
-}) => {
-  const [selectedOption, setSelectedOption] = useState(currentTimetable);
+const DropdownSelect: React.FC<DropdownSelectProps> = ({ timetables, onSelect, onEdit, onDelete }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const currentTimetable = useScheduleState(state => state.currentTimetable);
+  const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
 
   const handleOptionClick = (option: TimetableType) => {
-    setSelectedOption(option);
+    setCurrentTimetable(option);
     onSelect(option.timeTableId);
   };
 
@@ -44,20 +39,20 @@ const DropdownSelect: React.FC<DropdownSelectProps> = ({
       {/* Select Box (보여지는 부분) */}
       <>
         <Filtering
-          label={selectedOption.timeTableName ?? '학기 선택'}
-          selected={selectedOption.timeTableId !== -1}
+          label={currentTimetable.timeTableName}
+          selected={currentTimetable.timeTableId !== -1}
           className="gap-4"
         >
-          <h3 className="font-semiblod">{selectedOption.timeTableName}</h3>
+          <h3 className="font-semiblod">{currentTimetable.timeTableName}</h3>
           {timetables.map(option => (
             <div className="flex gap-5">
               <Checkbox
                 key={option.timeTableId}
                 label={option.timeTableName}
-                isChecked={selectedOption.timeTableId === option.timeTableId}
+                isChecked={currentTimetable.timeTableId === option.timeTableId}
                 onChange={() => handleOptionClick(option)}
               />
-              {selectedOption.timeTableId === option.timeTableId && (
+              {currentTimetable.timeTableId === option.timeTableId && (
                 <div className="flex gap-4 text-sm">
                   <button
                     className="text-stone-500 text-sm hover:text-stone-600 font-medium cursor-pointer"
