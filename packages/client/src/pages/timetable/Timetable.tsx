@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Card from '@/components/common/Card.tsx';
 import TimetableComponent from '@/components/timetable/Timetable.tsx';
 import DropdownSelect from '@/components/timetable/DropdownSelect.tsx';
@@ -20,15 +20,17 @@ function Timetable() {
   const { data: timetables = [] } = useTimetables();
 
   const [isOpenModal, setIsOpenModal] = useState<modalType>(null);
-  const { type: bottomSheetType } = useBottomSheetStore();
-  const [currentTimetable, setCurrentTimetable] = useState<TimetableType | undefined>(timetables[0]);
+  const bottomSheetType = useBottomSheetStore(state => state.type);
+
   const setTimetableId = useScheduleState(state => state.setTimetableId);
 
-  const yearOptions = useMemo(() => {
-    return timetables.map(timetable => ({
-      id: timetable.timeTableId,
-      label: timetable.timeTableName,
-    }));
+  const [currentTimetable, setCurrentTimetable] = useState<TimetableType | undefined>(timetables[0]);
+
+  useEffect(() => {
+    if (timetables.length > 0 && !currentTimetable) {
+      setCurrentTimetable(timetables[0]);
+      setTimetableId(timetables[0].timeTableId);
+    }
   }, [timetables]);
 
   const handleSelect = (optionId: number) => {
@@ -58,13 +60,14 @@ function Timetable() {
           <Card className="px-2">
             <header className="flex pb-2 justify-between items-center">
               <DropdownSelect
-                initialOption={
-                  yearOptions[0] ?? {
-                    id: -1,
-                    label: '학기 선택',
+                currentTimetable={
+                  currentTimetable ?? {
+                    timeTableId: -1,
+                    timeTableName: '학기 선택',
+                    semester: '',
                   }
                 }
-                options={yearOptions}
+                timetables={timetables}
                 onSelect={handleSelect}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
