@@ -35,14 +35,15 @@ function EditTimetable({ onClose, type, timeTable }: Readonly<IEditTimetable>) {
 
     if (timeTable && type === 'edit') {
       updateTimetable({ timeTableId: timeTable.timeTableId, timeTableName: timeTableName });
+      onClose();
       return;
     }
     if (type === 'create') {
-      //TODO: 새로 생성
       createTimetable({
         timeTableName: timeTableName,
         semester: '2025-2',
       });
+      onClose();
     }
   };
 

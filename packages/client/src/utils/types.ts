@@ -54,7 +54,7 @@ export interface Subject {
   professorName: string; // 교수명
   deptCd: string; // 학과 코드 (deptCd)
   manageDeptNm: string; // 학과명 (manageDeptNm)
-  studentYear: number; // 수강 학년 (string → number로 변환 필요)
+  studentYear: string; // 수강 학년 (string → number로 변환 필요)
   lesnTime: string; // 수업 시간
   lesnRoom: string; // 수업실
   tmNum: string; // 학점 (tmNum)

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Card from '@/components/common/Card.tsx';
 import TimetableComponent from '@/components/timetable/Timetable.tsx';
 import DropdownSelect from '@/components/timetable/DropdownSelect.tsx';
@@ -8,7 +8,7 @@ import FormBottomSheet from '@/components/contentPanel/bottomSheet/FormBottomShe
 import ScheduleFormModal from '@/components/contentPanel/ScheduleFormModal';
 import ContentPanel from '@/components/contentPanel/ContentPanel';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
-import { TimetableType, useDeleteTimetable, useTimetables } from '@/hooks/server/useTimetableData';
+import { useDeleteTimetable, useTimetables } from '@/hooks/server/useTimetableData';
 import EditTimetable from '@/components/contentPanel/EditTimetable';
 import AddGraySvg from '@/assets/add-gray.svg?react';
 import { useScheduleState } from '@/store/useScheduleState';
@@ -20,23 +20,21 @@ function Timetable() {
   const { data: timetables = [] } = useTimetables();
 
   const [isOpenModal, setIsOpenModal] = useState<modalType>(null);
+  const bottomSheetType = useBottomSheetStore(state => state.type);
 
-  const { type: bottomSheetType } = useBottomSheetStore();
-  const [currentTimetable, setCurrentTimetable] = useState<TimetableType | undefined>(timetables[0]);
-  const setTimetableId = useScheduleState(state => state.setTimetableId);
+  const currentTimetable = useScheduleState(state => state.currentTimetable);
+  const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
 
-  const yearOptions = useMemo(() => {
-    return timetables.map(timetable => ({
-      id: timetable.timeTableId,
-      label: timetable.timeTableName,
-    }));
+  useEffect(() => {
+    if (timetables.length > 0 && (!currentTimetable || currentTimetable.timeTableId <= -1)) {
+      setCurrentTimetable(timetables[0]);
+    }
   }, [timetables]);
 
   const handleSelect = (optionId: number) => {
     const selectedTimetable = timetables.find(timetable => timetable.timeTableId === optionId);
 
-    setCurrentTimetable(selectedTimetable);
-    setTimetableId(selectedTimetable?.timeTableId ?? -1);
+    if (selectedTimetable) setCurrentTimetable(selectedTimetable);
   };
 
   const handleEdit = () => {
@@ -59,8 +57,7 @@ function Timetable() {
           <Card className="px-2">
             <header className="flex pb-2 justify-between items-center">
               <DropdownSelect
-                initialLabel={yearOptions[0]?.label ?? '학기 선택'}
-                options={yearOptions}
+                timetables={timetables}
                 onSelect={handleSelect}
                 onEdit={handleEdit}
                 onDelete={handleDelete}

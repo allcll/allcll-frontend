@@ -12,11 +12,11 @@ import {
 } from '@/hooks/server/useTimetableData.ts';
 import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState.ts';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore.ts';
-import useSubject from './server/useSubject';
 
 function useScheduleModal() {
   const queryClient = useQueryClient();
-  const { timetableId, schedule: prevSchedule, mode, changeScheduleData } = useScheduleState();
+  const { currentTimetable, schedule: prevSchedule, mode, changeScheduleData } = useScheduleState();
+  const timetableId = currentTimetable?.timeTableId;
   const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
   const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
   const [, startTransition] = useTransition();
@@ -24,8 +24,6 @@ function useScheduleModal() {
   const { mutate: createScheduleData } = useCreateSchedule(timetableId);
   const { mutate: updateScheduleData } = useUpdateSchedule(timetableId);
   const { mutate: deleteScheduleData } = useDeleteSchedule(timetableId);
-
-  const { data: subjects } = useSubject();
 
   const prevTimetable = useRef<Timetable | undefined>(undefined);
 
@@ -39,29 +37,18 @@ function useScheduleModal() {
     // caching previous timetable data
     prevTimetable.current = queryClient.getQueryData<Timetable>(['timetableData', timetableId]);
 
-    const isOfficialSchedule = subjects?.some(subject => subject.subjectId === targetSchedule.scheduleId);
-
-    const updateScheduleType: Schedule = {
-      ...targetSchedule,
-      scheduleType: isOfficialSchedule ? 'official' : 'custom',
-    };
-
-    if (isOfficialSchedule) {
-      openBottomSheet('Info');
-      return;
-    }
-
-    // set modal set state
     let currentMode;
     if (!targetSchedule.scheduleId || targetSchedule.scheduleId <= 0) {
       currentMode = ScheduleMutateType.CREATE;
+      openBottomSheet('edit');
     } else if (targetSchedule.scheduleType === 'official') {
       currentMode = ScheduleMutateType.VIEW;
+      openBottomSheet('Info');
     } else {
       currentMode = ScheduleMutateType.EDIT;
+      openBottomSheet('edit');
     }
-    changeScheduleData(updateScheduleType, currentMode);
-    openBottomSheet('edit');
+    changeScheduleData(targetSchedule, currentMode);
   };
 
   type SetScheduleAction = Schedule | ((prevState: Schedule) => Schedule);
@@ -88,12 +75,9 @@ function useScheduleModal() {
   const saveSchedule = (e?: React.MouseEvent<HTMLButtonElement> | React.FormEvent) => {
     if (e) e.preventDefault();
 
-    if (!prevTimetable.current) {
-      throw new Error('Previous timetable data is not available.');
-    }
-
     // Schedule 시간 Validation
     const isTimeslotValid = prevSchedule.timeslots.every(slot => slot.startTime <= slot.endTime);
+
     if (!isTimeslotValid) {
       alert('시작 시간이 종료 시간 보다 늦지 않아야 합니다.');
       return;
@@ -103,6 +87,9 @@ function useScheduleModal() {
 
     // 생성 및 수정 로직
     if (mode === ScheduleMutateType.CREATE) {
+      console.log('SaveSchedule:', 'newSchedult', schedule, 'prevTimetable', prevTimetable);
+      console.log('SaveSchedule: timeSlot', schedule.timeslots);
+
       createScheduleData({ schedule, prevTimetable: prevTimetable.current });
     } else if (mode === ScheduleMutateType.EDIT) {
       updateScheduleData({ schedule, prevTimetable: prevTimetable.current });

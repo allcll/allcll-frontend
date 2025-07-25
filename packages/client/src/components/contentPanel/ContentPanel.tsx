@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import SearchBox from '../common/SearchBox';
 import DepartmentFilter from './filter/DepartmentFilter';
 import GradeFilter from './filter/GradeFilter';
@@ -24,9 +24,7 @@ const initSchedule: Schedule = {
 function ContentPanel() {
   const { data: subjects = [], isPending } = useSubject();
   const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
-
   const [searchKeywords, setSearchKeywords] = useState('');
-  const [filteredData, setFilteredData] = useState<Subject[]>([]);
 
   const { openScheduleModal } = useScheduleModal();
 
@@ -34,12 +32,17 @@ function ContentPanel() {
     openScheduleModal(initSchedule);
   };
 
-  useEffect(() => {
-    const result = subjects.filter(subject => {
-      const filteringDays = (lesn_time: string): boolean => {
+  const filteredData = useMemo(() => {
+    if (!subjects) return [];
+
+    return subjects.filter(subject => {
+      const filteringDays = (lesnTime: string): boolean => {
+        if (!lesnTime) return false;
         if (selectedDays.length === 0) return true;
-        const match = lesn_time.match(/^([가-힣]+)(\d{1,2}):\d{2}-(\d{1,2}):\d{2}$/);
+
+        const match = lesnTime.match(/^([가-힣]+)(\d{1,2}):\d{2}-(\d{1,2}):\d{2}$/);
         if (!match) return false;
+
         const [_, dayStr] = match;
         const days = dayStr.split('');
         return selectedDays.some(d => days.includes(d));
@@ -49,35 +52,31 @@ function ContentPanel() {
         if (selectedGrades.length === 0) return true;
         const sem = subject.studentYear;
         if (selectedGrades.includes('전체')) return true;
-        if (selectedGrades.includes(1) && sem === 1) return true;
-        if (selectedGrades.includes(2) && sem === 2) return true;
-        if (selectedGrades.includes(3) && sem === 3) return true;
-        if (selectedGrades.includes(4) && sem === 4) return true;
+        if (selectedGrades.includes(1) && sem === '1') return true;
+        if (selectedGrades.includes(2) && sem === '2') return true;
+        if (selectedGrades.includes(3) && sem === '3') return true;
+        if (selectedGrades.includes(4) && sem === '4') return true;
         return false;
       };
+      const filteringSearchKeywords = (subject: Subject): boolean => {
+        if (!searchKeywords) return true;
 
-      return filteringGrades(subject) && filteringDays(subject.lesnTime);
+        const clearnSearchInput = searchKeywords.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+        const disassembledSearchInput = disassemble(clearnSearchInput).toLowerCase();
+
+        const disassembledProfessorName = subject.professorName ? disassemble(subject.professorName).toLowerCase() : '';
+        const cleanSubjectName = subject.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+        const disassembledSubjectName = disassemble(cleanSubjectName).toLowerCase();
+
+        return (
+          disassembledProfessorName.includes(disassembledSearchInput) ||
+          disassembledSubjectName.includes(disassembledSearchInput)
+        );
+      };
+
+      return filteringGrades(subject) && filteringDays(subject.lesnTime) && filteringSearchKeywords(subject);
     });
-
-    setFilteredData(result);
-  }, [selectedDepartment, selectedGrades, selectedDays, searchKeywords]);
-
-  useEffect(() => {
-    const clearnSearchInput = searchKeywords?.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-    const disassembledSearchInput = disassemble(clearnSearchInput).toLowerCase();
-
-    const filtered = (subjects ?? []).filter(subject => {
-      const disassembledProfessorName = subject.professorName ? disassemble(subject.professorName).toLowerCase() : '';
-      const cleanSubjectName = subject.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-      const disassembledSubjectName = disassemble(cleanSubjectName).toLowerCase();
-
-      const matchesProfessor = disassembledProfessorName.includes(disassembledSearchInput);
-      const matchesSubject = disassembledSubjectName.includes(disassembledSearchInput);
-      return matchesProfessor || matchesSubject;
-    });
-
-    setFilteredData(filtered);
-  }, [searchKeywords]);
+  }, [subjects, selectedDepartment, selectedGrades, selectedDays, searchKeywords]);
 
   return (
     <div className="w-full h-screen md:basis-1/3 p-4 md:border-t-0 flex flex-col gap-3 bg-white shadow-md rounded-lg">

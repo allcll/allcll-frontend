@@ -1,0 +1,57 @@
+{
+    "subjectResponses": [
+      {
+        "subjectId": 1,
+        "subjectName": "세종인을위한진로설계",
+        "subjectCode": "011614",
+        "classCode": "001",
+        "professorName": "하진용, 류승형",
+        "deptCd": "3517",
+        "manageDeptNm": "AI로봇학과",
+        "studentYear": "1",
+        "lesnTime": "화10:30-12:00,목19:00-20:00",
+        "lesnRoom": "대양홀강당/센B104",
+        "tmNum": "1.0 / 1 / 0"
+      },
+      {
+        "subjectId": 2,
+        "subjectName": "세종인을위한진로설계",
+        "subjectCode": "011614",
+        "classCode": "002",
+        "professorName": "하진용, 박규민",
+        "deptCd": "3517",
+        "manageDeptNm": "AI로봇학과",
+        "studentYear": "1",
+        "lesnTime": "화10:30-12:00,목19:00-20:00",
+        "lesnRoom": "대양홀강당/센B106",
+        "tmNum": "1.0 / 1 / 0"
+      },
+      {
+        "subjectId": 3,
+        "subjectName": "세종인을위한진로설계",
+        "subjectCode": "011614",
+        "classCode": "003",
+        "professorName": "하진용, 강창호",
+        "deptCd": "3517",
+        "manageDeptNm": "AI로봇학과",
+        "studentYear": "1",
+        "lesnTime": "화10:30-12:00,목19:00-20:00",
+        "lesnRoom": "대양홀강당/센B108",
+        "tmNum": "1.0 / 1 / 0"
+      },
+      {
+        "subjectId": 4,
+        "subjectName": "세종인을위한진로설계",
+        "subjectCode": "011614",
+        "classCode": "004",
+        "professorName": "하진용, 조재진",
+        "deptCd": "3517",
+        "manageDeptNm": "AI로봇학과",
+        "studentYear": "1",
+        "lesnTime": "화10:30-12:00,목19:00-20:00",
+        "lesnRoom": "대양홀강당/센B204",
+        "tmNum": "1.0 / 1 / 0"
+      }
+    ]
+  }
+  

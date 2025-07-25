@@ -13,10 +13,10 @@ interface ISelectTime {
   day?: Day;
 }
 
-const HOURS = ['9시', '10시', '11시', '12시', '13시', '14시', '15시', '16시', '17시'];
+const HOURS = Array.from({ length: 24 }, (_, i) => `${i}시`);
 const MINUTES = ['0분', '10분', '20분', '30분', '40분', '50분'];
 
-function SelectTime({ timeRange, onChange, day }: ISelectTime) {
+function SelectTime({ timeRange, onChange, day }: Readonly<ISelectTime>) {
   const handleChangeTime = (key: keyof TimeRange, value: string) => {
     if (day) {
       onChange(key, value, day);
@@ -27,12 +27,12 @@ function SelectTime({ timeRange, onChange, day }: ISelectTime) {
   };
 
   return (
-    <div className=" w-full h-15 flex gap-2 flex flex-col justify-center">
+    <div className=" w-full h-15 flex gap-2 flex-col justify-center">
       <label className="text-xs text-gray-400">시간</label>
       <div className="relative w-full flex gap-2 flex-wrap">
         <select
           name="startHour"
-          value={timeRange.startHour ?? HOURS[0]}
+          value={timeRange.startHour ?? HOURS[8]}
           onChange={e => handleChangeTime('startHour', e.target.value)}
           className="bg-gray-100 px-3 py-2 rounded-md text-xs text-gray-600 w-fit"
         >
@@ -59,7 +59,7 @@ function SelectTime({ timeRange, onChange, day }: ISelectTime) {
 
         <select
           name="endHour"
-          value={timeRange.endHour ?? HOURS[0]}
+          value={timeRange.endHour ?? HOURS[9]}
           onChange={e => handleChangeTime('endHour', e.target.value)}
           className="bg-gray-100 px-3 py-2 rounded-md text-xs text-gray-600 w-fit"
         >
