@@ -13,7 +13,7 @@ interface ISelectTime {
   day?: Day;
 }
 
-const HOURS = Array.from({ length: 24 }, (_, i) => `${i}시`);
+const HOURS = Array.from({ length: 24 }, (_, i) => `${i}`);
 const MINUTES = ['0분', '10분', '20분', '30분', '40분', '50분'];
 
 function SelectTime({ timeRange, onChange, day }: Readonly<ISelectTime>) {
