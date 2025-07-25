@@ -257,7 +257,7 @@ export function useCreateSchedule(timetableId?: number) {
         setTimetableId(timetable);
       }
 
-      await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${newTimetableId}/schuedules`, {
+      await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${newTimetableId}/schedules`, {
         method: 'POST',
         body: JSON.stringify(schedule),
       });
@@ -298,7 +298,7 @@ export function useUpdateSchedule(timetableId?: number) {
 
   return useMutation({
     mutationFn: async ({ schedule }: ScheduleMutationData) =>
-      await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${timetableId}/schuedules/${schedule.scheduleId}`, {
+      await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${timetableId}/schedules/${schedule.scheduleId}`, {
         method: 'PATCH',
         body: JSON.stringify(schedule),
       }),
@@ -342,7 +342,7 @@ export function useDeleteSchedule(timetableId?: number) {
 
   return useMutation({
     mutationFn: async ({ schedule }: ScheduleMutationData) =>
-      await fetchJsonOnAPI(`/api/timetables/${timetableId}/schuedules/${schedule.scheduleId}`, { method: 'DELETE' }),
+      await fetchJsonOnAPI(`/api/timetables/${timetableId}/schedules/${schedule.scheduleId}`, { method: 'DELETE' }),
     onMutate: async mutateData => {
       // Optimistically update the timetable data
       await queryClient.cancelQueries({ queryKey: ['timetableData', timetableId] });
