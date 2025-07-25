@@ -100,6 +100,8 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
 
   const handleSubmit = (e: React.FormEvent) => {
     // create / edit schedule 동시에 처리
+    console.log(e.target);
+    console.log('폼 제출 전 스케줄 확인', scheduleForm);
     saveSchedule(e);
     closeBottomSheet('edit');
   };

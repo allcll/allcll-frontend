@@ -86,6 +86,9 @@ function useScheduleModal() {
 
     // 생성 및 수정 로직
     if (mode === ScheduleMutateType.CREATE) {
+      console.log('SaveSchedule:', 'newSchedult', schedule, 'prevTimetable', prevTimetable);
+      console.log('SaveSchedule: timeSlot', schedule.timeslots);
+
       createScheduleData({ schedule, prevTimetable: prevTimetable.current });
     } else if (mode === ScheduleMutateType.EDIT) {
       updateScheduleData({ schedule, prevTimetable: prevTimetable.current });
