@@ -2,6 +2,7 @@ import useInfScroll from '@/hooks/useInfScroll';
 import { Subject } from '@/utils/types';
 import { useRef, useState } from 'react';
 import ZeroListError from '../errors/ZeroListError';
+import useScheduleModal from '@/hooks/useScheduleModal';
 
 interface ISubjectCards {
   subjects: Subject[];
@@ -26,6 +27,8 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
 
   const handleCardClick = (subject: Subject) => {
     setSelectedSubjectId(subject.subjectId);
+
+    // openScheduleModal(subject);
     if (expandToMax) {
       expandToMax();
 
@@ -65,6 +68,11 @@ interface ISubjectCard {
 
 function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: ISubjectCard) {
   const color = isActive ? 'text-blue-500 bg-blue-50' : 'text-gray-700 bg-white';
+  const { saveSchedule } = useScheduleModal();
+
+  const handleAddOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
+    saveSchedule(e);
+  };
 
   return (
     <div
@@ -94,7 +102,10 @@ function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: ISubj
         </div>
 
         {isActive && (
-          <button className="bg-blue-500 border-none cursor-pointer rounded-xl px-2 py-0.5 sm:px-2.5 sm:py-1 text-white text-xs sm:text-sm hover:bg-blue-600">
+          <button
+            onClick={handleAddOfficialSchedule}
+            className="bg-blue-500 border-none cursor-pointer rounded-xl px-2 py-0.5 sm:px-2.5 sm:py-1 text-white text-xs sm:text-sm hover:bg-blue-600"
+          >
             추가하기
           </button>
         )}
