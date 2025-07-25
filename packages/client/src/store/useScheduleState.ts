@@ -53,7 +53,7 @@ export const useScheduleState = create<IMutateScheduleState>(set => ({
     subjectName: '',
     professorName: '',
     location: '',
-    timeslots: [],
+    timeSlots: [],
   },
 
   pickTimetable: (timetable: TimetableType) => {

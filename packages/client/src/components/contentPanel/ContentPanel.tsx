@@ -18,7 +18,7 @@ const initSchedule: Schedule = {
   subjectName: '',
   professorName: '',
   location: '',
-  timeslots: [],
+  timeSlots: [],
 };
 
 function ContentPanel() {

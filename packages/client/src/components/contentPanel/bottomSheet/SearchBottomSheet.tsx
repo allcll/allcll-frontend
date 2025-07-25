@@ -18,7 +18,7 @@ export interface Schedule {
   subjectName: string;
   professorName: string;
   location: string;
-  timeslots: {
+  timeSlots: {
     dayOfWeeks: Day;
     startTime: string;
     endTime: string;
@@ -32,7 +32,7 @@ const initSchedule: Schedule = {
   subjectName: '',
   professorName: '',
   location: '',
-  timeslots: [],
+  timeSlots: [],
 };
 
 function SearchBottomSheet() {

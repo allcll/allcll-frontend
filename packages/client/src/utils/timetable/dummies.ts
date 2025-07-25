@@ -12,7 +12,7 @@ export const timetableAPIDummies: Timetable = {
       subjectName: null,
       professorName: null,
       location: null,
-      timeslots: [],
+      timeSlots: [],
     },
     {
       scheduleId: 2,
@@ -21,7 +21,7 @@ export const timetableAPIDummies: Timetable = {
       subjectName: '캡스톤 디자인',
       professorName: '박교수',
       location: '산학협력관 102호',
-      timeslots: [
+      timeSlots: [
         {
           dayOfWeeks: '화',
           startTime: '16:00',
@@ -41,7 +41,7 @@ export const timetableAPIDummies: Timetable = {
       subjectName: '알고리즘',
       professorName: '김교수',
       location: '센B201',
-      timeslots: [
+      timeSlots: [
         {
           dayOfWeeks: '월',
           startTime: '09:00',
@@ -66,7 +66,7 @@ export const timetableAPIDummies: Timetable = {
       subjectName: '컴퓨터네트워크',
       professorName: '최교수',
       location: '센B209',
-      timeslots: [
+      timeSlots: [
         {
           dayOfWeeks: '화',
           startTime: '10:40',
@@ -86,7 +86,7 @@ export const timetableAPIDummies: Timetable = {
       subjectName: '소프트웨어공학',
       professorName: '정교수',
       location: '센B210',
-      timeslots: [
+      timeSlots: [
         {
           dayOfWeeks: '월',
           startTime: '13:00',
@@ -111,7 +111,7 @@ export const timetableAPIDummies: Timetable = {
       subjectName: '알바',
       professorName: '',
       location: '카페',
-      timeslots: [
+      timeSlots: [
         {
           dayOfWeeks: '월',
           startTime: '18:50',

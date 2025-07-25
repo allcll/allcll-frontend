@@ -19,7 +19,7 @@ export interface OfficialSchedule {
   subjectName: null;
   professorName: null;
   location: null;
-  timeslots: never[];
+  timeSlots: never[];
 }
 
 export interface CustomSchedule extends Schedule {
@@ -37,7 +37,7 @@ export interface Schedule {
   subjectName: string;
   professorName: string;
   location: string;
-  timeslots: {
+  timeSlots: {
     dayOfWeeks: Day;
     startTime: string;
     endTime: string;
@@ -63,7 +63,7 @@ export const initCustomSchedule: Schedule = {
   subjectName: '',
   professorName: '',
   location: '',
-  timeslots: [],
+  timeSlots: [],
 };
 
 export interface TimetableType {
@@ -257,7 +257,7 @@ export function useCreateSchedule(timetableId?: number) {
         setTimetableId(timetable);
       }
 
-      console.log('POST요청 전 새로운 스케줄', schedule, schedule.timeslots);
+      console.log('POST요청 전 새로운 스케줄', schedule, schedule.timeSlots);
 
       await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${newTimetableId}/schedules`, {
         method: 'POST',
@@ -390,7 +390,7 @@ function mergeTimetableData(apiScheduleData?: IApiScheduleData, wishes?: Wishes[
     if (schedule.scheduleType === 'official') {
       const wish = wishes.find(w => w.subjectId === schedule.scheduleId);
 
-      // Todo: Add Location Parsing Logic / timeslots
+      // Todo: Add Location Parsing Logic / timeSlots
       mergedData.push({
         scheduleId: schedule.scheduleId,
         scheduleType: schedule.scheduleType,
@@ -398,7 +398,7 @@ function mergeTimetableData(apiScheduleData?: IApiScheduleData, wishes?: Wishes[
         subjectName: wish?.subjectName ?? '',
         professorName: wish?.professorName ?? '',
         location: wish ? '센B209' : '',
-        timeslots: [],
+        timeSlots: [],
       });
     } else {
       mergedData.push({ ...schedule });
@@ -425,7 +425,7 @@ export function scheduleTimeAdapter(timetable: IApiScheduleData, wishes?: Wishes
     const color = colors[index % colors.length];
     const { subjectName: title, professorName: professor, location } = schedule;
 
-    schedule.timeslots.forEach(time => {
+    schedule.timeSlots.forEach(time => {
       if (!scheduleTimes[time.dayOfWeeks]) {
         scheduleTimes[time.dayOfWeeks] = [];
       }
@@ -451,7 +451,7 @@ export function scheduleTimeAdapter(timetable: IApiScheduleData, wishes?: Wishes
  * @param startTime
  * @param time
  */
-function getPositionFromString(startTime: number, time: Schedule['timeslots'][number]) {
+function getPositionFromString(startTime: number, time: Schedule['timeSlots'][number]) {
   const parseTime = (time: string) => {
     const [hours, minutes] = time.split(':').map(Number);
     return hours * 60 + minutes;
@@ -476,8 +476,8 @@ function getSettings(schedule?: Schedule[]) {
   let hasSaturday = false;
   let hasSunday = false;
   schedule.forEach(item => {
-    if (item.timeslots.some(time => time.dayOfWeeks === '토')) hasSaturday = true;
-    if (item.timeslots.some(time => time.dayOfWeeks === '일')) hasSunday = true;
+    if (item.timeSlots.some(time => time.dayOfWeeks === '토')) hasSaturday = true;
+    if (item.timeSlots.some(time => time.dayOfWeeks === '일')) hasSunday = true;
   });
 
   const colNames: Day[] = ['월', '화', '수', '목', '금'];
@@ -491,7 +491,7 @@ function getSettings(schedule?: Schedule[]) {
   // Timetable의 시작시간, 종료시간을 계산
   const { minTime, maxTime } = schedule.reduce(
     (acc, item) => {
-      item.timeslots.forEach(time => {
+      item.timeSlots.forEach(time => {
         const start = parseInt(time.startTime.split(':')[0]);
         const end = parseInt(time.endTime.split(':')[0]);
         acc.minTime = Math.min(acc.minTime, start);
@@ -523,7 +523,7 @@ export function scheduleAsApiSchedule(schedule: Schedule): ScheduleApiResponse {
       subjectName: null,
       professorName: null,
       location: null,
-      timeslots: [],
+      timeSlots: [],
     };
   } else {
     return {

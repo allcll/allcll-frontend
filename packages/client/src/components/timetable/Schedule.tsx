@@ -62,7 +62,7 @@ function Schedule({
       subjectName: '',
       professorName: '',
       location: '',
-      timeslots: [],
+      timeSlots: [],
     });
   };
 

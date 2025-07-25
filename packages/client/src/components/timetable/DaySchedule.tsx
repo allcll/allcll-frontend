@@ -12,7 +12,7 @@ interface IDayScheduleProps {
 }
 
 const DaySchedule = ({ dayOfWeeks, scheduleTimes }: Readonly<IDayScheduleProps>) => {
-  const Timeslots = scheduleTimes;
+  const timeSlots = scheduleTimes;
   const { setOptimisticSchedule, openScheduleModal } = useScheduleModal();
   const { getTimeslot } = useScheduleTimeslot();
 
@@ -20,7 +20,7 @@ const DaySchedule = ({ dayOfWeeks, scheduleTimes }: Readonly<IDayScheduleProps>)
     const { startTime, endTime } = getTimeslot(startY, nowY, 1);
     setOptimisticSchedule({
       ...initCustomSchedule,
-      timeslots: [{ dayOfWeeks, startTime, endTime }],
+      timeSlots: [{ dayOfWeeks, startTime, endTime }],
     });
   };
 
@@ -28,7 +28,7 @@ const DaySchedule = ({ dayOfWeeks, scheduleTimes }: Readonly<IDayScheduleProps>)
     const { startTime, endTime } = getTimeslot(startY, nowY, 1);
     openScheduleModal({
       ...initCustomSchedule,
-      timeslots: [{ dayOfWeeks, startTime, endTime }],
+      timeSlots: [{ dayOfWeeks, startTime, endTime }],
     });
   };
 
@@ -43,7 +43,7 @@ const DaySchedule = ({ dayOfWeeks, scheduleTimes }: Readonly<IDayScheduleProps>)
   return (
     <div className="relative flex-auto px-[2px]" tabIndex={0} onMouseDown={onMouseDown} onKeyDown={onKeyDown}>
       <WireSchedules dayOfWeeks={dayOfWeeks} />
-      {Timeslots.map(({ title, professor, location, color, width, height, top, schedule }, index) => (
+      {timeSlots.map(({ title, professor, location, color, width, height, top, schedule }, index) => (
         <Schedule
           key={'schedule-' + index}
           title={title}

@@ -49,18 +49,18 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
   };
 
   const toggleDay = (day: Day) => {
-    const exists = scheduleForm.timeslots.find(slot => slot.dayOfWeeks === day);
+    const exists = scheduleForm.timeSlots.find(slot => slot.dayOfWeeks === day);
 
     if (exists) {
       setScheduleForm(prev => ({
         ...prev,
-        timeslots: prev.timeslots.filter(slot => slot.dayOfWeeks !== day),
+        timeSlots: prev.timeSlots.filter(slot => slot.dayOfWeeks !== day),
       }));
     } else {
       setScheduleForm(prev => ({
         ...prev,
-        timeslots: [
-          ...prev.timeslots,
+        timeSlots: [
+          ...prev.timeSlots,
           {
             dayOfWeeks: day,
             startTime: '',
@@ -73,7 +73,7 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
 
   const onScheduleFormChange = (key: keyof TimeRange, value: string, targetDay?: Day) => {
     setScheduleForm(prev => {
-      const updated = prev.timeslots.map(slot => {
+      const updated = prev.timeSlots.map(slot => {
         console.log(slot);
 
         if (slot.dayOfWeeks !== targetDay) return slot;
@@ -96,7 +96,7 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
         };
       });
 
-      return { ...prev, timeslots: updated };
+      return { ...prev, timeSlots: updated };
     });
   };
 
@@ -132,14 +132,14 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
             <Chip
               key={day}
               label={day}
-              selected={scheduleForm.timeslots.some(slot => slot.dayOfWeeks === day)}
+              selected={scheduleForm.timeSlots.some(slot => slot.dayOfWeeks === day)}
               onClick={() => toggleDay(day)}
             />
           ))}
         </div>
       </div>
 
-      {scheduleForm.timeslots.map(slot => {
+      {scheduleForm.timeSlots.map(slot => {
         return (
           <>
             <p className="text-blue-500 text-xs">{slot.dayOfWeeks}</p>

@@ -76,7 +76,7 @@ function useScheduleModal() {
     if (e) e.preventDefault();
 
     // Schedule 시간 Validation
-    const isTimeslotValid = prevSchedule.timeslots.every(slot => slot.startTime <= slot.endTime);
+    const isTimeslotValid = prevSchedule.timeSlots.every(slot => slot.startTime <= slot.endTime);
 
     if (!isTimeslotValid) {
       alert('시작 시간이 종료 시간 보다 늦지 않아야 합니다.');
@@ -88,7 +88,7 @@ function useScheduleModal() {
     // 생성 및 수정 로직
     if (mode === ScheduleMutateType.CREATE) {
       console.log('SaveSchedule:', 'newSchedult', schedule, 'prevTimetable', prevTimetable);
-      console.log('SaveSchedule: timeSlot', schedule.timeslots);
+      console.log('SaveSchedule: timeSlot', schedule.timeSlots);
 
       createScheduleData({ schedule, prevTimetable: prevTimetable.current });
     } else if (mode === ScheduleMutateType.EDIT) {
