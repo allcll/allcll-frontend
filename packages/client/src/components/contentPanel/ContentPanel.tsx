@@ -22,7 +22,9 @@ const initSchedule: Schedule = {
 };
 
 function ContentPanel() {
-  const { data: subjects = [], isPending } = useSubject();
+  const subjects: Subject[] = [];
+  const isPending = false;
+  //  const { data: subjects = [], isPending } = useSubject();
   const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
   const [searchKeywords, setSearchKeywords] = useState('');
   const [filteredData, setFilteredData] = useState<Subject[]>(subjects ?? []);
@@ -34,6 +36,11 @@ function ContentPanel() {
   };
 
   useEffect(() => {
+    if (!subjects) {
+      setFilteredData([]);
+      return;
+    }
+
     const result = subjects.filter(subject => {
       const filteringDays = (lesn_time: string): boolean => {
         if (selectedDays.length === 0) return true;
@@ -54,10 +61,12 @@ function ContentPanel() {
         return false;
       };
 
-      const clearnSearchInput = searchKeywords?.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-      const disassembledSearchInput = disassemble(clearnSearchInput).toLowerCase();
-
       const filteringSearchKeywords = (subject: Subject): boolean => {
+        if (!searchKeywords) return true;
+
+        const clearnSearchInput = searchKeywords?.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+        const disassembledSearchInput = disassemble(clearnSearchInput).toLowerCase();
+
         const disassembledProfessorName = subject.professorName ? disassemble(subject.professorName).toLowerCase() : '';
         const cleanSubjectName = subject.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
         const disassembledSubjectName = disassemble(cleanSubjectName).toLowerCase();

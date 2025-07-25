@@ -40,7 +40,7 @@ function SearchBottomSheet() {
   const [filteredData, setFilteredData] = useState<Subject[]>([]);
 
   const { data: subjects = [], isPending } = useSubject();
-  const { selectedDepartment, /*selectedGrades,*/ selectedDays } = useFilterScheduleStore();
+  const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
   const { openScheduleModal } = useScheduleModal();
   const { openBottomSheet } = useBottomSheetStore();
 
@@ -52,67 +52,65 @@ function SearchBottomSheet() {
     openScheduleModal(initSchedule);
   };
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setSearchKeywords(searchKeywords);
-    }, 700);
+  // useEffect(() => {
+  //   const handler = setTimeout(() => {
+  //     setSearchKeywords(searchKeywords);
+  //   }, 700);
 
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [searchKeywords, setSearchKeywords]);
+  //   return () => {
+  //     clearTimeout(handler);
+  //   };
+  // }, [searchKeywords, setSearchKeywords]);
 
   useEffect(() => {
+    if (!subjects) {
+      setFilteredData([]);
+      return;
+    }
+
     const result = subjects.filter(subject => {
       const filteringDays = (lesn_time: string): boolean => {
         if (selectedDays.length === 0) return true;
-        const match = lesn_time.match(/^([가-힣]+)(\d{1,2}):\d{2}-(\d{1,2}):\d{2}$/);
-        if (!match) return false;
-        const [_, dayStr] = match;
-        const days = dayStr.split('');
+        const days: string[] = lesn_time.match(/[가-힣]{1}(?=\d)/g) || [];
+
+        if (!days) return false;
         return selectedDays.some(d => days.includes(d));
       };
 
-      // const filteringGrades = (subject: Subject): boolean => {
-      //   if (selectedGrades.length === 0) return true;
-      //   const sem = subject.studentYear;
-      //   if (selectedGrades.includes(1) && sem === 1) return true;
-      //   if (selectedGrades.includes(2) && sem === 2) return true;
-      //   if (selectedGrades.includes(3) && sem === 3) return true;
-      //   if (selectedGrades.includes(4) && sem === 4) return true;
-      //   return false;
-      // };
-
-      const filteringDepartment = (departmentName: string): boolean => {
-        if (selectedDepartment === '전체') return true;
-        if (selectedDepartment === departmentName) return true;
+      const filteringGrades = (subject: Subject): boolean => {
+        if (selectedGrades.length === 0) return true;
+        const sem = subject.studentYear;
+        if (selectedGrades.includes('전체')) return true;
+        if (selectedGrades.includes(1) && sem === '1') return true;
+        if (selectedGrades.includes(2) && sem === '2') return true;
+        if (selectedGrades.includes(3) && sem === '3') return true;
+        if (selectedGrades.includes(4) && sem === '4') return true;
         return false;
       };
 
-      //TODO: filteringGrades 추가하기
-      return filteringDays(subject.lesnTime) && filteringDepartment(subject.manageDeptNm);
+      const filteringSearchKeywords = (subject: Subject): boolean => {
+        if (!searchKeywords) return true;
+
+        const clearnSearchInput = searchKeywords?.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+        const disassembledSearchInput = disassemble(clearnSearchInput).toLowerCase();
+
+        const disassembledProfessorName = subject.professorName ? disassemble(subject.professorName).toLowerCase() : '';
+        const cleanSubjectName = subject.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+        const disassembledSubjectName = disassemble(cleanSubjectName).toLowerCase();
+
+        const matchesProfessor = disassembledProfessorName.includes(disassembledSearchInput);
+        const matchesSubject = disassembledSubjectName.includes(disassembledSearchInput);
+        return matchesProfessor || matchesSubject;
+      };
+
+      return filteringGrades(subject) && filteringDays(subject.lesnTime) && filteringSearchKeywords(subject);
     });
 
+    if (result.length === 0) {
+      return;
+    }
     setFilteredData(result);
-  }, []);
-
-  //TODO: 바텀 시트는 저장하는 순간, 적용하면 된다. -> useEfftect가 최선인가?
-  useEffect(() => {
-    const cleanSearchInput = searchKeywords?.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-    const disassembledSearchInput = disassemble(cleanSearchInput).toLowerCase();
-
-    const filtered = (subjects ?? []).filter(subject => {
-      const disassembledProfessorName = subject.professorName ? disassemble(subject.professorName).toLowerCase() : '';
-      const cleanSubjectName = subject.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-      const disassembledSubjectName = disassemble(cleanSubjectName).toLowerCase();
-
-      const matchesProfessor = disassembledProfessorName.includes(disassembledSearchInput);
-      const matchesSubject = disassembledSubjectName.includes(disassembledSearchInput);
-      return matchesProfessor || matchesSubject;
-    });
-
-    setFilteredData(filtered);
-  }, [searchKeywords]);
+  }, [subjects, selectedDepartment, selectedGrades, selectedDays, searchKeywords]);
 
   return (
     <BottomSheet>
