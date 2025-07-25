@@ -11,6 +11,10 @@ export async function fetchJsonOnAPI<T>(url: string, options?: RequestInit): Pro
   const response = await fetch(BaseUrl + url, {
     credentials: 'include',
     ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options?.headers,
+    },
   });
 
   if (!response.ok) {
