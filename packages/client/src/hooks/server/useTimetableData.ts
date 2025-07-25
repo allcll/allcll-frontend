@@ -257,6 +257,8 @@ export function useCreateSchedule(timetableId?: number) {
         setTimetableId(timetable);
       }
 
+      console.log('POST요청 전 스케줄', schedule, schedule.timeslots);
+
       await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${newTimetableId}/schedules`, {
         method: 'POST',
         body: JSON.stringify(schedule),
