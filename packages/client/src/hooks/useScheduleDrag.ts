@@ -49,13 +49,25 @@ export function useScheduleDrag(onAreaChanged: UpdateFunction, onDragEnd: Update
     if (onAreaChanged) onAreaChanged(dragData.startX, dragData.startY, x, y);
   };
 
+  const onTouchMove = (e: TouchEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    // 터치 이벤트에서 첫 번째 터치 포인트를 사용합니다.
+    const touch = e.touches[0];
+    const { x, y } = getDragPosition(touch, timetableOptions);
+    if (onAreaChanged) onAreaChanged(dragData.startX, dragData.startY, x, y);
+  };
+
   useEffect(() => {
     if (!dragData.dragging) return;
 
     document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('touchmove', onTouchMove);
     document.addEventListener('mousemove', onMouseMove);
     return () => {
       document.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('touchmove', onTouchMove);
       document.removeEventListener('mousemove', onMouseMove);
     };
   }, [dragData, onAreaChanged, onDragEnd]); // 의존성 배열에서 dragData 제거
@@ -118,7 +130,7 @@ export const useUpdateScheduleOptions = (
 
 const TIME_DIV_COUNT = 6;
 function getDragPosition(
-  e: MouseEvent | React.MouseEvent<HTMLDivElement>,
+  e: MouseEvent | React.MouseEvent<HTMLDivElement> | React.Touch,
   timetableOptions: IMutateScheduleState['options'],
 ) {
   const { tableX, tableY, width, height, cols, rows } = timetableOptions;
