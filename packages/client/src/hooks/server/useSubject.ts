@@ -3,8 +3,7 @@ import { Subject } from '@/utils/types';
 import { useQuery } from '@tanstack/react-query';
 
 type SubjectResponse = {
-  default: Subject[];
-  subjects: Subject[];
+  subjectResponses: Subject[];
 };
 
 const fetchSubjects = async () => {
@@ -16,7 +15,7 @@ function useSubject() {
     queryKey: ['subjects'],
     queryFn: fetchSubjects,
     staleTime: Infinity,
-    select: data => data.subjects,
+    select: data => data.subjectResponses,
   });
 }
 
