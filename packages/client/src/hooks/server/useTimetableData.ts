@@ -134,8 +134,10 @@ export function useUpdateTimetable() {
     onError: (error, _variables, context) => {
       console.error(`시간표 수정 실패 (id: ${context?.timeTableId})`, error);
       queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+      queryClient.invalidateQueries({ queryKey: ['timetableList', context?.timeTableId] });
     },
     onSuccess: (_, __, context) => {
+      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
       queryClient.invalidateQueries({ queryKey: ['timetableList', context?.timeTableId] });
     },
   });
