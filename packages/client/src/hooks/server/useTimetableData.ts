@@ -130,6 +130,7 @@ export function useUpdateTimetable() {
     },
     onError: (error, _variables, context) => {
       console.error(`시간표 수정 실패 (id: ${context?.timeTableId})`, error);
+      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
     },
     onSuccess: (_, __, context) => {
       queryClient.invalidateQueries({ queryKey: ['timetableList', context?.timeTableId] });
@@ -157,6 +158,8 @@ export function useDeleteTimetable() {
     },
     onError: (error, timeTableId) => {
       console.error(`시간표 삭제 실패 (id: ${timeTableId})`, error);
+      queryClient.invalidateQueries({ queryKey: ['timetableList', timeTableId] });
+      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
     },
     onSuccess: (_, timeTableId) => {
       queryClient.invalidateQueries({ queryKey: ['timetableList', timeTableId] });
@@ -198,7 +201,7 @@ export function useCreateTimetable() {
       return { previousTimetables };
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['timetableList'] }).then();
+      // queryClient.invalidateQueries({ queryKey: ['timetableList'] }).then();
     },
     onError: error => {
       try {
@@ -207,6 +210,7 @@ export function useCreateTimetable() {
       } catch {
         alert('Error adding Timetable');
       }
+      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
     },
   });
 }

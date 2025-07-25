@@ -1,7 +1,7 @@
 import SearchBox from '@/components/common/SearchBox';
 import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
-import FilterSvg from '@/assets/Filter.svg?react';
+import FilterSvg from '@/assets/filter.svg?react';
 import { FilteredSubjectCards } from '../subject/FilteredSubjectCards';
 import { useEffect, useState } from 'react';
 import { Day, Subject } from '@/utils/types';

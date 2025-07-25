@@ -29,7 +29,7 @@ export interface IMutateScheduleState {
 }
 
 export const useScheduleState = create<IMutateScheduleState>(set => ({
-  timetableId: 1,
+  timetableId: -1,
   options: {
     timetableRef: null,
     colNames: [],

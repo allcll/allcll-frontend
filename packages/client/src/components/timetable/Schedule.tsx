@@ -56,7 +56,7 @@ function Schedule({
     e.stopPropagation();
 
     openScheduleModal({
-      scheduleId: 0,
+      scheduleId: -1,
       scheduleType: 'custom',
       subjectId: null,
       subjectName: '',
