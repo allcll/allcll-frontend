@@ -86,14 +86,15 @@ export const getTimetables = async (): Promise<TimetableListResponse> => {
 };
 
 export const useTimetables = () => {
-  const timetableId = useScheduleState(state => state.timetableId);
-  const setTimetableId = useScheduleState(state => state.setTimetableId);
+  const currentTimetable = useScheduleState(state => state.currentTimetable);
+  const timetableId = currentTimetable?.timeTableId ?? -1;
+  const pickTimetable = useScheduleState(state => state.pickTimetable);
 
   const onSelect = (res: TimetableListResponse) => {
     const { timeTables } = res;
 
-    if ((!timetableId || timetableId === -1) && timeTables.length > 0) {
-      setTimetableId(timeTables[0].timeTableId);
+    if (timetableId === -1 && timeTables.length > 0) {
+      pickTimetable(timeTables[0]);
     }
 
     return timeTables;
@@ -244,7 +245,7 @@ interface ScheduleMutationData {
  */
 export function useCreateSchedule(timetableId?: number) {
   const queryClient = useQueryClient();
-  const setTimetableId = useScheduleState(state => state.setTimetableId);
+  const setTimetableId = useScheduleState(state => state.pickTimetable);
   const { mutateAsync: createTimetable } = useCreateTimetable();
 
   return useMutation({
@@ -253,8 +254,7 @@ export function useCreateSchedule(timetableId?: number) {
 
       if (!timetableId) {
         const timetable = await createTimetable({ timeTableName: '새 시간표', semester: '2025-2' });
-        newTimetableId = timetable.timeTableId;
-        setTimetableId(newTimetableId);
+        setTimetableId(timetable);
       }
 
       await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${newTimetableId}/schuedules`, {

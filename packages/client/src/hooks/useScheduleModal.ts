@@ -15,7 +15,8 @@ import { useBottomSheetStore } from '@/store/useBottomSheetStore.ts';
 
 function useScheduleModal() {
   const queryClient = useQueryClient();
-  const { timetableId, schedule: prevSchedule, mode, changeScheduleData } = useScheduleState();
+  const { currentTimetable, schedule: prevSchedule, mode, changeScheduleData } = useScheduleState();
+  const timetableId = currentTimetable?.timeTableId;
   const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
   const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
   const [, startTransition] = useTransition();
@@ -73,10 +74,6 @@ function useScheduleModal() {
    */
   const saveSchedule = (e?: React.MouseEvent<HTMLButtonElement> | React.FormEvent) => {
     if (e) e.preventDefault();
-
-    if (!prevTimetable.current) {
-      throw new Error('Previous timetable data is not available.');
-    }
 
     // Schedule 시간 Validation
     const isTimeslotValid = prevSchedule.timeslots.every(slot => slot.startTime <= slot.endTime);

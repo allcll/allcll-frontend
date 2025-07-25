@@ -8,7 +8,7 @@ import FormBottomSheet from '@/components/contentPanel/bottomSheet/FormBottomShe
 import ScheduleFormModal from '@/components/contentPanel/ScheduleFormModal';
 import ContentPanel from '@/components/contentPanel/ContentPanel';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
-import { TimetableType, useDeleteTimetable, useTimetables } from '@/hooks/server/useTimetableData';
+import { useDeleteTimetable, useTimetables } from '@/hooks/server/useTimetableData';
 import EditTimetable from '@/components/contentPanel/EditTimetable';
 import AddGraySvg from '@/assets/add-gray.svg?react';
 import { useScheduleState } from '@/store/useScheduleState';
@@ -22,22 +22,19 @@ function Timetable() {
   const [isOpenModal, setIsOpenModal] = useState<modalType>(null);
   const bottomSheetType = useBottomSheetStore(state => state.type);
 
-  const setTimetableId = useScheduleState(state => state.setTimetableId);
-
-  const [currentTimetable, setCurrentTimetable] = useState<TimetableType | undefined>(timetables[0]);
+  const currentTimetable = useScheduleState(state => state.currentTimetable);
+  const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
 
   useEffect(() => {
-    if (timetables.length > 0 && !currentTimetable) {
+    if (timetables.length > 0 && (!currentTimetable || currentTimetable.timeTableId <= -1)) {
       setCurrentTimetable(timetables[0]);
-      setTimetableId(timetables[0].timeTableId);
     }
   }, [timetables]);
 
   const handleSelect = (optionId: number) => {
     const selectedTimetable = timetables.find(timetable => timetable.timeTableId === optionId);
 
-    setCurrentTimetable(selectedTimetable);
-    setTimetableId(selectedTimetable?.timeTableId ?? -1);
+    if (selectedTimetable) setCurrentTimetable(selectedTimetable);
   };
 
   const handleEdit = () => {

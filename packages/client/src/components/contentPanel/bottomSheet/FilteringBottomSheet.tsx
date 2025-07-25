@@ -89,6 +89,7 @@ function FilteringBottomSheet() {
           {DAYS.map(day => {
             return (
               <Chip
+                key={day}
                 label={day}
                 selected={selectedDays.includes(day)}
                 onClick={() => setFilterSchedule('selectedDays', toggleSelectedValue(selectedDays, day))}

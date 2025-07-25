@@ -11,7 +11,7 @@ export const HEADER_WIDTH = 60;
 export const ROW_HEIGHT = 40;
 
 function Timetable() {
-  const timetableId = useScheduleState(state => state.timetableId);
+  const timetableId = useScheduleState(state => state.currentTimetable?.timeTableId);
 
   const { data: timetable } = useTimetableData(timetableId);
   const { scheduleTimes, colNames, rowNames } = timetable ?? {};
