@@ -40,7 +40,7 @@ function WeekTable({
   const scheduleTime = scheduleTimes ?? DefaultScheduleTimes;
 
   return colNames.map(dayName => (
-    <DaySchedule key={'day-schedule-' + dayName} scheduleTimes={scheduleTime[dayName]} dayOfWeek={dayName} />
+    <DaySchedule key={'day-schedule-' + dayName} scheduleTimes={scheduleTime[dayName] ?? []} dayOfWeek={dayName} />
   ));
 }
 
