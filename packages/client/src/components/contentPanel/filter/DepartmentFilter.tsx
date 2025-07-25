@@ -3,7 +3,7 @@ import Filtering from './Filtering';
 import SearchBox from '../../common/SearchBox';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import { DepartmentType } from '@/utils/types';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { disassemble } from 'es-hangul';
 
 function DepartmentFilter() {
@@ -16,11 +16,14 @@ function DepartmentFilter() {
 
   const [searchKeywords, setSearchKeywords] = useState('');
 
-  const departmentsList = [{ departmentName: '전체 학과', departmentCode: '' }, ...(departments ?? [])];
+  const departmentsList = useMemo(
+    () => [{ departmentName: '전체 학과', departmentCode: '' }, ...(departments ?? [])],
+    [departments],
+  );
+
   const [filterDepartment, setFilterDepartment] = useState(departmentsList);
 
   const { selectedDepartment } = useFilterScheduleStore();
-
   const customDepartmentLabel = selectedDepartment === '전체' ? '전체' : pickCollegeOrMajor(selectedDepartment);
 
   useEffect(() => {
@@ -36,7 +39,7 @@ function DepartmentFilter() {
     });
 
     setFilterDepartment(result);
-  }, [departmentsList, searchKeywords]);
+  }, [departments, searchKeywords]);
 
   return (
     <>
