@@ -202,6 +202,9 @@ export function useCreateTimetable() {
 
       return { previousTimetables };
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+    },
     onError: error => {
       try {
         const e = JSON.parse(error.message);
