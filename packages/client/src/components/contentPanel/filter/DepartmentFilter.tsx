@@ -24,7 +24,7 @@ function DepartmentFilter() {
   const [filterDepartment, setFilterDepartment] = useState(departmentsList);
 
   const { selectedDepartment } = useFilterScheduleStore();
-  const customDepartmentLabel = selectedDepartment === '전체' ? '전체' : pickCollegeOrMajor(selectedDepartment);
+  const customDepartmentLabel = selectedDepartment === '전체' ? '학과' : pickCollegeOrMajor(selectedDepartment);
 
   useEffect(() => {
     const result = departmentsList.filter(department => {
@@ -92,7 +92,7 @@ export function SelectSubject({ departments }: ISelectSubject) {
           key={department.departmentCode}
           role="option"
           aria-selected={selected === department.departmentName}
-          className={`flex items-center gap-1 px-2 py-2 rounded cursor-pointer text-sm ${
+          className={`flex items-center gap-1 px-2 py-2 rounded cursor-pointer text-xs ${
             selected === department.departmentName
               ? 'bg-blue-50 text-blue-500 font-medium'
               : 'hover:bg-gray-50 text-gray-700'

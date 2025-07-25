@@ -12,7 +12,7 @@ function ScheduleFormModal() {
     cancelSchedule(e);
   };
 
-  const title = modalActionType === ScheduleMutateType.CREATE ? '등록' : '수정';
+  const title = modalActionType === ScheduleMutateType.CREATE ? '생성' : '수정';
 
   return (
     <div

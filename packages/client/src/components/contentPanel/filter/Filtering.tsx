@@ -20,14 +20,18 @@ function Filtering({ label, selected, children, className = '' }: Readonly<IFilt
     initialState: false,
   });
 
+  const handleClickChip = () => {
+    setIsChipOpen(!isChipOpen);
+  };
+
   return (
     <div className="relative inline-block">
       <Chip
         label={label}
         containerRef={containerRef}
-        chipType="select"
+        chipType={selected ? 'cancel' : 'select'}
         selected={selected}
-        onClick={() => setIsChipOpen(!isChipOpen)}
+        onClick={handleClickChip}
       />
       {isChipOpen && (
         <FilterOption contentRef={contentRef} className={className}>

@@ -93,7 +93,7 @@ function ContentPanel() {
         <DayFilter />
       </div>
       <button type="button" className="text-blue-500 cursor-pointer text-sm" onClick={handleCreateSchedule}>
-        + 직접추가
+        + 과목 생성
       </button>
       <div className="overflow-y-auto max-h-[80vh]">
         <FilteredSubjectCards subjects={filteredData} isPending={isPending} />

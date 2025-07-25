@@ -22,7 +22,7 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
   const { openScheduleModal } = useScheduleModal();
 
   if (isPending || !subjects) {
-    return <div className="w-full h-100 bg-blue-100"></div>;
+    return <div className="w-full h-10"></div>;
   }
 
   if (!subjects.length) {
@@ -52,7 +52,7 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
       expandToMax();
 
       setTimeout(() => {
-        selectedCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        selectedCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 100);
     }
   };

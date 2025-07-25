@@ -41,9 +41,8 @@ const DropdownSelect: React.FC<DropdownSelectProps> = ({ timetables, onSelect, o
         <Filtering
           label={currentTimetable.timeTableName}
           selected={currentTimetable.timeTableId !== -1}
-          className="gap-4"
+          className="gap-4 max-w-20 max-h-80 overflow-y-auto"
         >
-          <h3 className="font-semiblod">{currentTimetable.timeTableName}</h3>
           {timetables.map(option => (
             <div className="flex gap-5">
               <Checkbox
