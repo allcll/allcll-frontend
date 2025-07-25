@@ -49,18 +49,18 @@ export interface SimulationSubject {
 export interface Subject {
   subjectId: number; // 과목 ID
   subjectName: string; // 과목명
-  departmentName: string; // 학과명
-  departmentCode: string; // 학과 코드
-  subjectCode: string; // 과목코드
+  subjectCode: string; // 과목 코드
   classCode: string; // 분반
   professorName: string; // 교수명
-  //새로 추가되는 필드
-  language: string; // 수업 언어
-  subjectType: string; // 수업 유형
-  studentYear: number; // 학기
-  lesn_time: string; // 수업 시간
-  lesn_room: string; // 수업실
-  tm_num: string; // 학점
+  deptCd: string; // 학과 코드 (deptCd)
+  manageDeptNm: string; // 학과명 (manageDeptNm)
+  studentYear: number; // 수강 학년 (string → number로 변환 필요)
+  lesnTime: string; // 수업 시간
+  lesnRoom: string; // 수업실
+  tmNum: string; // 학점 (tmNum)
+  language?: string;
+  subjectType?: string;
+  totalCount?: number;
 }
 
 export type SimulationStatusType = 'before' | 'start' | 'progress' | 'finish';
