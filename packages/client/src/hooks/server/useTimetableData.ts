@@ -3,7 +3,6 @@ import { fetchJsonOnAPI } from '@/utils/api.ts';
 import { Day, Wishes } from '@/utils/types.ts';
 import { ROW_HEIGHT } from '@/components/timetable/Timetable.tsx';
 import useWishes from '@/hooks/server/useWishes.ts';
-import { timetableAPIDummies } from '@/utils/timetable/dummies.ts';
 
 export interface Timetable {
   timetableId: number;

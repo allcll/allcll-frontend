@@ -40,7 +40,7 @@ function SearchBottomSheet() {
   const [filteredData, setFilteredData] = useState<Subject[]>([]);
 
   const { data: subjects = [], isPending } = useSubject();
-  const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
+  const { selectedDepartment, /*selectedGrades,*/ selectedDays } = useFilterScheduleStore();
   const { openScheduleModal } = useScheduleModal();
   const { openBottomSheet } = useBottomSheetStore();
 
@@ -73,15 +73,15 @@ function SearchBottomSheet() {
         return selectedDays.some(d => days.includes(d));
       };
 
-      const filteringGrades = (subject: Subject): boolean => {
-        if (selectedGrades.length === 0) return true;
-        const sem = subject.studentYear;
-        if (selectedGrades.includes(1) && sem === 1) return true;
-        if (selectedGrades.includes(2) && sem === 2) return true;
-        if (selectedGrades.includes(3) && sem === 3) return true;
-        if (selectedGrades.includes(4) && sem === 4) return true;
-        return false;
-      };
+      // const filteringGrades = (subject: Subject): boolean => {
+      //   if (selectedGrades.length === 0) return true;
+      //   const sem = subject.studentYear;
+      //   if (selectedGrades.includes(1) && sem === 1) return true;
+      //   if (selectedGrades.includes(2) && sem === 2) return true;
+      //   if (selectedGrades.includes(3) && sem === 3) return true;
+      //   if (selectedGrades.includes(4) && sem === 4) return true;
+      //   return false;
+      // };
 
       const filteringDepartment = (departmentName: string): boolean => {
         if (selectedDepartment === '전체') return true;
