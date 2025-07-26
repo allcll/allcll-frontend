@@ -1,8 +1,10 @@
 import SearchSvg from '@/assets/search.svg?react';
-import { useBottomSheetStore } from '@/store/useBottomSheetStore';
+import useScheduleModal from '@/hooks/useScheduleModal';
+import { ScheduleAdapter } from '@/utils/timetable/adapter';
 
 function ZeroListError() {
-  const { openBottomSheet } = useBottomSheetStore();
+  const { openScheduleModal } = useScheduleModal();
+  const initSchedule = new ScheduleAdapter().toUiData();
 
   return (
     <div className="flex flex-col h-full gap-2 pt-5 w-full items-center justify-center">
@@ -12,7 +14,7 @@ function ZeroListError() {
 
       <button
         className="bg-blue-500 text-white text-sm px-4 py-1 rounded-lg  hover:bg-blue-500 cursor-pointer justify-center items-center"
-        onClick={() => openBottomSheet('edit')}
+        onClick={() => openScheduleModal(initSchedule)}
       >
         등록하기
       </button>

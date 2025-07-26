@@ -4,36 +4,13 @@ import BottomSheetHeader from './BottomSheetHeader';
 import FilterSvg from '@/assets/filter.svg?react';
 import { FilteredSubjectCards } from '../subject/FilteredSubjectCards';
 import { useEffect, useState } from 'react';
-import { Day, Subject } from '@/utils/types';
+import { Subject } from '@/utils/types';
 import { disassemble } from 'es-hangul';
 import useSubject from '@/hooks/server/useSubject';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import useScheduleModal from '@/hooks/useScheduleModal';
 import { BottomSheetType } from '@/store/useBottomSheetStore';
-
-export interface Schedule {
-  scheduleId: number;
-  scheduleType: 'official' | 'custom';
-  subjectId: number | null;
-  subjectName: string;
-  professorName: string;
-  location: string;
-  timeSlots: {
-    dayOfWeeks: Day;
-    startTime: string;
-    endTime: string;
-  }[];
-}
-
-const initSchedule: Schedule = {
-  scheduleId: -1,
-  scheduleType: 'custom',
-  subjectId: null,
-  subjectName: '',
-  professorName: '',
-  location: '',
-  timeSlots: [],
-};
+import { ScheduleAdapter } from '@/utils/timetable/adapter';
 
 interface ISearchBottomSheet {
   onClose: (bottomSheetType: BottomSheetType) => void;
@@ -46,6 +23,8 @@ function SearchBottomSheet({ onClose }: ISearchBottomSheet) {
   const { data: subjects = [], isPending } = useSubject();
   const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
   const { openScheduleModal } = useScheduleModal();
+
+  const initSchedule = new ScheduleAdapter().toUiData();
 
   const handleCreateSchedule = () => {
     openScheduleModal(initSchedule);
