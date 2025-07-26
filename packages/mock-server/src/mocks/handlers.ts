@@ -5,6 +5,7 @@ import { handlers as wishHandlers } from '../api/wishes.ts';
 import { handlers as departmentHandlers } from '../api/departments.ts';
 import { getRandomSubjects } from '../data/subjects.ts';
 import { handlers as subjectHandlers } from '../api/subjects.ts';
+import { handlers as timetableHandlers } from '../api/timetables.ts';
 
 const TopMajors = getRandomSubjects(10);
 
@@ -39,4 +40,5 @@ export const handlers = [
   ...subjectHandlers,
   ...wishHandlers,
   ...departmentHandlers,
+  ...timetableHandlers,
 ];
