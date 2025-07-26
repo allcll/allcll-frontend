@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import Checkbox from '../common/Checkbox';
 import Filtering from '../contentPanel/filter/Filtering';
 import { TimetableType } from '@/hooks/server/useTimetableSchedules.ts';
@@ -12,7 +12,7 @@ interface DropdownSelectProps {
 }
 
 // Fixme : 기존에 있는 Chip 형태의 Selectbox 와 통합하기
-const DropdownSelect: React.FC<DropdownSelectProps> = ({ timetables, onSelect, onEdit, onDelete }) => {
+const DropdownSelect = ({ timetables, onSelect, onEdit, onDelete }: DropdownSelectProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const currentTimetable = useScheduleState(state => state.currentTimetable);
   const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
@@ -46,7 +46,7 @@ const DropdownSelect: React.FC<DropdownSelectProps> = ({ timetables, onSelect, o
           {timetables.length === 0 && <div> 새로운 시간표를 추가해주세요.</div>}
           {timetables.length !== 0 &&
             timetables.map(option => (
-              <div className="flex gap-5">
+              <div className="flex gap-5" key={option.timeTableName + option.timeTableId}>
                 <Checkbox
                   key={option.timeTableId}
                   label={option.timeTableName}

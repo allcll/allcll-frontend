@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Chip from '../common/Chip';
 import TextField from '../common/TextField';
 import SelectTime from './SelectTime';
@@ -69,14 +69,26 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
   };
 
   const onScheduleFormChange = (key: keyof TimeRange, value: string, targetDay?: Day) => {
+    const parseValue = (timeSlot: string) => {
+      return timeSlot.split(':').map(value => {
+        const parsed = parseInt(value, 10);
+        return isNaN(parsed) ? '00' : parsed.toString().padStart(2, '0');
+      });
+    };
+
+    const reconcileTimeString = (timeString: string) => {
+      const [hour, minute] = parseValue(timeString);
+      return `${hour}:${minute}`;
+    };
+
     setScheduleForm(prev => {
       const updated = prev.timeSlots.map(slot => {
         console.log(slot);
 
         if (slot.dayOfWeeks !== targetDay) return slot;
 
-        const [startHour, startMinute] = slot.startTime.split(':');
-        const [endHour, endMinute] = slot.endTime.split(':');
+        const [startHour, startMinute] = parseValue(slot.startTime);
+        const [endHour, endMinute] = parseValue(slot.endTime); // 기본값 처리
 
         let newStartTime = slot.startTime;
         let newEndTime = slot.endTime;
@@ -88,8 +100,8 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
 
         return {
           ...slot,
-          startTime: newStartTime,
-          endTime: newEndTime,
+          startTime: reconcileTimeString(newStartTime),
+          endTime: reconcileTimeString(newEndTime),
         };
       });
 
@@ -110,7 +122,7 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
       {textFields.map(({ id, placeholder, value }) => (
         <TextField
-          key={id}
+          key={'text-field' + id}
           id={id}
           required
           placeholder={placeholder}
@@ -135,15 +147,14 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
 
       {scheduleForm.timeSlots.map(slot => {
         return (
-          <>
+          <Fragment key={slot.dayOfWeeks}>
             <p className="text-blue-500 text-xs">{slot.dayOfWeeks}</p>
             <SelectTime
-              key={slot.dayOfWeeks}
               day={slot.dayOfWeeks}
               timeRange={extractTimeParts(slot.startTime, slot.endTime)}
               onChange={onScheduleFormChange}
             />
-          </>
+          </Fragment>
         );
       })}
 

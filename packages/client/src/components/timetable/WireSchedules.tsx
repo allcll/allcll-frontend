@@ -38,11 +38,12 @@ function WireSchedules({ dayOfWeeks }: Readonly<IWireSchedulesProps>) {
 }
 
 function WireSchedule({ title, professor, location, ...attrs }: Readonly<IScheduleProps>) {
+  const { timeslotIndex: _, ...rest } = attrs;
   return (
     <div
       className={`flex absolute rounded-md border-4 border-violet-500 z-20 ` + attrs.className}
       style={{ width: 'calc(100% - 4px)', ...attrs.style }}
-      {...attrs}
+      {...rest}
     >
       <div className={`flex-auto p-2 bg-violet-50 rounded-md animate-pulse`}>
         <h3 className={`text-violet-500 font-semibold text-sm`}>{title}</h3>
