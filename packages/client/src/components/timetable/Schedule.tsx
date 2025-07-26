@@ -2,8 +2,8 @@ import React, { HTMLAttributes, useRef } from 'react';
 import { useScheduleDrag } from '@/hooks/useScheduleDrag.ts';
 import useScheduleModal from '@/hooks/useScheduleModal';
 import { ROW_HEIGHT } from '@/components/timetable/Timetable.tsx';
-import { Schedule as ScheduleType, useDeleteSchedule } from '@/hooks/server/useTimetableSchedules.ts';
-import { moveTimeSlot, ScheduleAdapter } from '@/utils/timetable/adapter.ts';
+import { Schedule as ScheduleType } from '@/hooks/server/useTimetableSchedules.ts';
+import { moveTimeSlot } from '@/utils/timetable/adapter.ts';
 import { useScheduleState } from '@/store/useScheduleState';
 
 type ColorType = 'rose' | 'amber' | 'green' | 'emerald' | 'blue' | 'violet';
@@ -31,9 +31,7 @@ function Schedule({
   const { text, bgLight, bg } = getColors(color);
   const ref = useRef<HTMLDivElement>(null);
   const { openScheduleModal } = useScheduleModal();
-  const currentTimetable = useScheduleState(state => state.currentTimetable);
   const selectedSchedule = useScheduleState(state => state.schedule);
-  const { mutate: deleteSchedule } = useDeleteSchedule(currentTimetable.timeTableId);
 
   const isSelected = selected || selectedSchedule.scheduleId === schedule.scheduleId;
 
