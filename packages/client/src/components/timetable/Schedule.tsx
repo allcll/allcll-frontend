@@ -2,7 +2,7 @@ import React, { HTMLAttributes, useRef } from 'react';
 import { useScheduleDrag } from '@/hooks/useScheduleDrag.ts';
 import useScheduleModal from '@/hooks/useScheduleModal';
 import { ROW_HEIGHT } from '@/components/timetable/Timetable.tsx';
-import { Schedule as ScheduleType } from '@/hooks/server/useTimetableSchedules.ts';
+import { Schedule as ScheduleType, useDeleteSchedule } from '@/hooks/server/useTimetableSchedules.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 
 type ColorType = 'rose' | 'amber' | 'green' | 'emerald' | 'blue' | 'violet';
@@ -28,6 +28,7 @@ function Schedule({
   const { text, bgLight, bg } = getColors(color);
   const ref = useRef<HTMLDivElement>(null);
   const { openScheduleModal } = useScheduleModal();
+  const { mutate: deleteSchedule } = useDeleteSchedule();
 
   const onAreaChanged = (startX: number, startY: number, nowX: number, nowY: number) => {
     if (!ref.current) return;
@@ -57,8 +58,12 @@ function Schedule({
     e.stopPropagation();
 
     if (schedule.scheduleType === 'official') {
-      confirm('해당과목을 삭제 하시겠습니까?');
-      //TODO: 확인누르면 official 삭제
+      const confirmed = confirm('해당 과목을 삭제하시겠습니까?');
+      if (!confirmed) return;
+
+      const apiSchedule = new ScheduleAdapter(schedule).toApiData();
+
+      deleteSchedule({ schedule: apiSchedule });
       return;
     }
     const initSchedule = new ScheduleAdapter().toUiData();
