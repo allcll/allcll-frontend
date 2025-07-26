@@ -4,36 +4,15 @@ import BottomSheetHeader from './BottomSheetHeader';
 import FilterSvg from '@/assets/filter.svg?react';
 import { FilteredSubjectCards } from '../subject/FilteredSubjectCards';
 import { useEffect, useState } from 'react';
-import { Day, Subject } from '@/utils/types';
+import { Subject } from '@/utils/types';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import { disassemble } from 'es-hangul';
 import useSubject from '@/hooks/server/useSubject';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import useScheduleModal from '@/hooks/useScheduleModal';
+import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 
-export interface Schedule {
-  scheduleId: number;
-  scheduleType: 'official' | 'custom';
-  subjectId: number | null;
-  subjectName: string;
-  professorName: string;
-  location: string;
-  timeSlots: {
-    dayOfWeeks: Day;
-    startTime: string;
-    endTime: string;
-  }[];
-}
-
-const initSchedule: Schedule = {
-  scheduleId: -1,
-  scheduleType: 'custom',
-  subjectId: null,
-  subjectName: '',
-  professorName: '',
-  location: '',
-  timeSlots: [],
-};
+const initSchedule = new ScheduleAdapter().toUiData();
 
 function SearchBottomSheet() {
   const [searchKeywords, setSearchKeywords] = useState<string>('');
@@ -131,7 +110,7 @@ function SearchBottomSheet() {
             onClick={handleCreateSchedule}
           />
 
-          <div className="flex items-center flex gap-2 py-3">
+          <div className="flex items-center gap-2 py-3">
             <SearchBox
               type="text"
               placeholder="과목명 및 교수명 검색"

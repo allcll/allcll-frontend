@@ -1,8 +1,9 @@
-import { HTMLAttributes, useRef } from 'react';
+import React, { HTMLAttributes, useRef } from 'react';
 import { useScheduleDrag } from '@/hooks/useScheduleDrag.ts';
 import useScheduleModal from '@/hooks/useScheduleModal';
 import { ROW_HEIGHT } from '@/components/timetable/Timetable.tsx';
 import { Schedule as ScheduleType } from '@/hooks/server/useTimetableData.ts';
+import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 
 type ColorType = 'rose' | 'amber' | 'green' | 'emerald' | 'blue' | 'violet';
 
@@ -55,15 +56,8 @@ function Schedule({
   const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
 
-    openScheduleModal({
-      scheduleId: -1,
-      scheduleType: 'custom',
-      subjectId: null,
-      subjectName: '',
-      professorName: '',
-      location: '',
-      timeSlots: [],
-    });
+    const initSchedule = new ScheduleAdapter().toUiData();
+    openScheduleModal(initSchedule);
   };
 
   return (
