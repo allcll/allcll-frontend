@@ -403,6 +403,8 @@ export function scheduleTimeAdapter(timetable: IApiScheduleData, subjects?: Subj
   const mergedData = mergeTimetableData(timetable, subjects);
   const settings = getSettings(mergedData);
 
+  console.log('timetable', timetable, subjects, mergedData, settings);
+
   if (!mergedData) return undefined;
 
   mergedData.forEach((schedule, index) => {

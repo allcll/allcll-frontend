@@ -16,8 +16,6 @@ function Timetable() {
   const { data: timetable } = useTimetableSchedules(timetableId);
   const { scheduleTimes, colNames, rowNames } = timetable ?? {};
 
-  console.log('Timetable data:', timetable);
-
   return (
     <TimetableGrid colNames={colNames} rowNames={rowNames}>
       <WeekTable colNames={colNames} scheduleTimes={scheduleTimes} />
