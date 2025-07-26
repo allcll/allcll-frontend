@@ -52,16 +52,6 @@ function SearchBottomSheet() {
     openScheduleModal(initSchedule);
   };
 
-  // useEffect(() => {
-  //   const handler = setTimeout(() => {
-  //     setSearchKeywords(searchKeywords);
-  //   }, 700);
-
-  //   return () => {
-  //     clearTimeout(handler);
-  //   };
-  // }, [searchKeywords, setSearchKeywords]);
-
   useEffect(() => {
     if (!subjects) {
       setFilteredData([]);
@@ -155,7 +145,7 @@ function SearchBottomSheet() {
             </button>
           </div>
 
-          <div className="overflow-y-auto max-h-screen">
+          <div className="overflow-y-auto max-h-[70vh]">
             <FilteredSubjectCards expandToMax={expandToMax} subjects={filteredData} isPending={isPending} />
           </div>
         </>

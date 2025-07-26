@@ -16,9 +16,7 @@ function DepartmentFilter() {
   );
 
   function pickCollegeOrMajor(selectedDepartment: string) {
-    const department = departmentsList.find(department => {
-      department.departmentCode === selectedDepartment;
-    });
+    const department = departmentsList.find(department => department.departmentCode === selectedDepartment);
 
     if (!department) {
       return '학과가 없습니다.';

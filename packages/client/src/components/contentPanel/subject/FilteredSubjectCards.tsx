@@ -52,8 +52,8 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
       expandToMax();
 
       setTimeout(() => {
-        selectedCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 100);
+        selectedCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 300);
     }
   };
 
@@ -73,7 +73,7 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
         );
       })}
 
-      {isMore && <div className="load-more-trigger h-10 mt-4 bg-transparent" />}
+      {isMore && <div className="load-more-trigger mt-0 h-10 bg-transparent" style={{ minHeight: '20px' }} />}
     </div>
   );
 }
@@ -104,11 +104,10 @@ function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: ISubj
         <span className="text-xs sm:text-sm text-gray-500">{subject.professorName}</span>
       </div>
 
+      <span className="text-xs sm:text-sm text-gray-500">{subject.lesnTime}</span>
+      <span className="text-xs sm:text-sm text-gray-500">{subject.lesnRoom}</span>
       <span className="text-xs sm:text-sm text-gray-500">
-        {subject.lesnRoom}/{subject.lesnRoom}
-      </span>
-      <span className="text-xs sm:text-sm text-gray-500">
-        {subject.studentYear}학년/{subject.tmNum}학점/{subject.manageDeptNm}
+        {subject.studentYear}학년/{subject.manageDeptNm}
       </span>
 
       <div className="flex justify-between items-center">
@@ -117,7 +116,7 @@ function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: ISubj
             isActive ? '' : 'bg-gray-100 px-2 py-0.5 sm:px-2.5 sm:py-0.5'
           }`}
         >
-          {subject.tmNum}학점
+          {subject.tmNum[0]}학점
         </div>
 
         {isActive && (
