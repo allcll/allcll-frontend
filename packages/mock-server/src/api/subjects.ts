@@ -4,7 +4,7 @@ import { ISubjects } from '../data/letures.ts';
 
 export const handlers = [
   http.get('/api/subjects', async () => {
-    const mockCartData = (await getData(DataType.LECTURES)) as ISubjects;
-    return HttpResponse.json(mockCartData);
+    const { subjectResponses } = (await getData(DataType.LECTURES)) as ISubjects;
+    return HttpResponse.json({ subjectResponses });
   }),
 ];

@@ -1,7 +1,7 @@
 import lectures from '../../public/subjects.json';
 
 export interface ISubjects {
-  subjects: Subject[];
+  subjectResponses: Subject[];
 }
 
 interface Subject {
