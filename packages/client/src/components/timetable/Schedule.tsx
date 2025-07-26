@@ -32,7 +32,10 @@ function Schedule({
   const ref = useRef<HTMLDivElement>(null);
   const { openScheduleModal } = useScheduleModal();
   const currentTimetable = useScheduleState(state => state.currentTimetable);
+  const selectedSchedule = useScheduleState(state => state.schedule);
   const { mutate: deleteSchedule } = useDeleteSchedule(currentTimetable.timeTableId);
+
+  const isSelected = selected || selectedSchedule.scheduleId === schedule.scheduleId;
 
   const onAreaChanged = (startX: number, startY: number, nowX: number, nowY: number) => {
     if (!ref.current) return;
@@ -91,7 +94,7 @@ function Schedule({
       {...attrs}
     >
       <div className={`w-1 h-full rounded-xs ${bg}`} />
-      <div className={'flex-auto p-2 ' + (selected ? 'animate-pulse' : '') + (dragging ? 'opacity-50' : '')}>
+      <div className={'flex-auto p-2 ' + (isSelected ? 'animate-pulse' : '') + (dragging ? 'opacity-50' : '')}>
         <h3 className={`${text} font-semibold text-sm`}>{title}</h3>
         <p className="text-xs text-gray-500">
           {professor} {location}
