@@ -39,6 +39,7 @@ function useScheduleModal() {
 
     prevTimetable.current = queryClient.getQueryData<Timetable>(['timetableData', timetableId]);
     console.log('prevTimetable', prevTimetable.current);
+    console.log('selectedSchedule', targetSchedule);
 
     let currentMode;
     if (!targetSchedule.scheduleId || targetSchedule.scheduleId <= 0) {
