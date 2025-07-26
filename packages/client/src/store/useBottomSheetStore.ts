@@ -11,7 +11,7 @@ interface IBottomSheetStore {
 }
 
 export const useBottomSheetStore = create<IBottomSheetStore>((set, get) => ({
-  type: 'search',
+  type: null,
   openBottomSheet: (type, props) => {
     set({ type, props });
   },
