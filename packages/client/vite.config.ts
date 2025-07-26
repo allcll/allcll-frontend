@@ -1,6 +1,7 @@
 import { ConfigEnv, defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import basicSsl from '@vitejs/plugin-basic-ssl';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { sentryVitePlugin } from '@sentry/vite-plugin';
@@ -12,7 +13,6 @@ export default ({ mode }: ConfigEnv) => {
   const TargetHost = env.VITE_TARGET_HOST ?? 'localhost:8080';
   const TargetServer = `https://${TargetHost}`;
 
-  const ScoreServer = env.VITE_SCORE_API_URL ?? 'http://localhost:8081';
   const isProduction = mode === 'production';
 
   return defineConfig({
@@ -31,9 +31,18 @@ export default ({ mode }: ConfigEnv) => {
         },
         telemetry: false,
       }),
+      basicSsl({
+        name: 'localhost',
+        domains: ['localhost'],
+        certDir: '.cert',
+      }),
     ],
     server: {
       open: true,
+      https: {
+        key: '.cert/localhost-key.pem',
+        cert: '.cert/localhost.pem',
+      },
       proxy: {
         '/api': {
           target: TargetServer,
@@ -44,11 +53,6 @@ export default ({ mode }: ConfigEnv) => {
           target: TargetServer,
           changeOrigin: true,
           // rewrite: (path) => path.replace(/^\/sse/, '')
-        },
-        '/scoreApi': {
-          target: ScoreServer,
-          changeOrigin: true,
-          rewrite: path => path.replace(/^\/scoreApi/, '/api'),
         },
       },
     },
