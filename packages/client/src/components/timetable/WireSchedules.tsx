@@ -44,13 +44,16 @@ function WireSchedule({ title, professor, location, ...attrs }: Readonly<ISchedu
   const { timeslotIndex: _, ...rest } = attrs;
   return (
     <div
-      className={`flex absolute rounded-md border-4 border-violet-500 z-20 ` + attrs.className}
+      className={`flex absolute rounded-md z-20 
+      border-0 p-0
+      md:border-4 md:border-violet-500 md:p-2 
+      ${attrs.className}`}
       style={{ width: 'calc(100% - 4px)', ...attrs.style }}
       {...rest}
     >
-      <div className={`flex-auto p-2 bg-violet-50 rounded-md animate-pulse`}>
-        <h3 className={`text-violet-500 font-semibold text-sm`}>{title}</h3>
-        <p className="text-xs text-gray-500">
+      <div className={`flex-auto p-2 bg-violet-50  rounded-md animate-pulse`}>
+        <h3 className={`text-violet-500 font-semibold  text-[10px] sm:text-sm`}>{title}</h3>
+        <p className=" sm:text-xs text-[8px]  text-gray-500">
           {professor} {location}
         </p>
       </div>

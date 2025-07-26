@@ -95,8 +95,8 @@ function Schedule({
     >
       <div className={`w-1 h-full rounded-xs ${bg}`} />
       <div className={'flex-auto p-2 ' + (isSelected ? 'animate-pulse' : '') + (dragging ? 'opacity-50' : '')}>
-        <h3 className={`${text} font-semibold text-sm`}>{title}</h3>
-        <p className="text-xs text-gray-500">
+        <h3 className={`${text} font-semibold text-[8px] sm:text-sm`}>{title}</h3>
+        <p className="sm:text-xs text-[6px] text-gray-500">
           {professor} {location}
         </p>
       </div>

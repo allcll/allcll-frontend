@@ -89,22 +89,19 @@ function TimetableGrid({
       </div>
 
       {/*row lines*/}
-      <div>
-        {rowNames.map((rowName, i) => (
-          <div
-            key={'timetable-grid-row-' + i}
-            className="border-b border-gray-200"
-            style={{ height: `${rowHeight}px` }} // 100% / 12 rows
+      {rowNames.map((rowName, i) => (
+        <div key={'timetable-grid-row-' + i} className="border-b border-gray-200" style={{ height: `${rowHeight}px` }}>
+          <span
+            className={`flex items-center justify-center h-full text-gray-400 ${
+              Number(rowName) >= 9 && Number(rowName) <= 20
+                ? 'w-[20px] md:w-[60px] text-[10px] md:text-sm'
+                : `w-[60px] text-sm`
+            }`}
           >
-            <span
-              className="flex items-center justify-center h-full text-gray-400"
-              style={{ width: `${headerWidth}px` }}
-            >
-              {rowName}
-            </span>
-          </div>
-        ))}
-      </div>
+            {rowName}
+          </span>
+        </div>
+      ))}
 
       {/*children*/}
       <div
