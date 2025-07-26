@@ -54,7 +54,7 @@ export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, Schedu
     }
 
     const subj =
-      subjects instanceof Array ? subjects.find(s => s.subjectId === schedule.scheduleId) : (subjects as Subject);
+      subjects instanceof Array ? subjects.find(s => s.subjectId === schedule.subjectId) : (subjects as Subject);
 
     return {
       scheduleId: schedule.scheduleId,
