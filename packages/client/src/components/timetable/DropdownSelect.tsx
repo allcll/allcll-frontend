@@ -43,32 +43,34 @@ const DropdownSelect: React.FC<DropdownSelectProps> = ({ timetables, onSelect, o
           selected={currentTimetable.timeTableId !== -1}
           className="gap-4 max-w-20 max-h-80 overflow-y-auto"
         >
-          {timetables.map(option => (
-            <div className="flex gap-5">
-              <Checkbox
-                key={option.timeTableId}
-                label={option.timeTableName}
-                isChecked={currentTimetable.timeTableId === option.timeTableId}
-                onChange={() => handleOptionClick(option)}
-              />
-              {currentTimetable.timeTableId === option.timeTableId && (
-                <div className="flex gap-4 text-sm">
-                  <button
-                    className="text-stone-500 text-sm hover:text-stone-600 font-medium cursor-pointer"
-                    onClick={() => handleEditClick(option.timeTableId)}
-                  >
-                    수정
-                  </button>
-                  <button
-                    className="text-red-500  text-sm  hover:text-red-600 font-medium cursor-pointer"
-                    onClick={() => handleDeleteClick(option.timeTableId)}
-                  >
-                    삭제
-                  </button>
-                </div>
-              )}
-            </div>
-          ))}
+          {timetables.length === 0 && <div> 새로운 시간표를 추가해주세요.</div>}
+          {timetables.length !== 0 &&
+            timetables.map(option => (
+              <div className="flex gap-5">
+                <Checkbox
+                  key={option.timeTableId}
+                  label={option.timeTableName}
+                  isChecked={currentTimetable.timeTableId === option.timeTableId}
+                  onChange={() => handleOptionClick(option)}
+                />
+                {currentTimetable.timeTableId === option.timeTableId && (
+                  <div className="flex gap-4 text-sm">
+                    <button
+                      className="text-stone-500 text-sm hover:text-stone-600 font-medium cursor-pointer"
+                      onClick={() => handleEditClick(option.timeTableId)}
+                    >
+                      수정
+                    </button>
+                    <button
+                      className="text-red-500  text-sm  hover:text-red-600 font-medium cursor-pointer"
+                      onClick={() => handleDeleteClick(option.timeTableId)}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
         </Filtering>
       </>
     </div>
