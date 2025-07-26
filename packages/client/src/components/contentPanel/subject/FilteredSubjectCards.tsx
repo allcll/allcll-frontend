@@ -5,6 +5,7 @@ import useScheduleModal from '@/hooks/useScheduleModal';
 import { useScheduleState } from '@/store/useScheduleState';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 import { Subject } from '@/utils/types';
+import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 
 interface ISubjectCards {
   subjects: Subject[];
@@ -89,9 +90,11 @@ interface ISubjectCard {
 function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: ISubjectCard) {
   const color = isActive ? 'text-blue-500 bg-blue-50' : 'text-gray-700 bg-white';
   const { saveSchedule } = useScheduleModal();
+  const { closeBottomSheet } = useBottomSheetStore();
 
   const handleAddOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
     saveSchedule(e);
+    closeBottomSheet('search');
   };
 
   return (

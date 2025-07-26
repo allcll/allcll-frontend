@@ -93,10 +93,12 @@ function Schedule({
       tabIndex={0}
       {...attrs}
     >
-      <div className={`w-1 h-full rounded-xs ${bg}`} />
-      <div className={'flex-auto p-2 ' + (isSelected ? 'animate-pulse' : '') + (dragging ? 'opacity-50' : '')}>
-        <h3 className={`${text} font-semibold text-[8px] sm:text-sm`}>{title}</h3>
-        <p className="sm:text-xs text-[6px] text-gray-500">
+      <div className={`w-[2px] h-full sm:w-1 sm:rounded-xs  ${bg}`} />
+      <div
+        className={'flex-auto sm:p-2 p-[1px] ' + (isSelected ? 'animate-pulse' : '') + (dragging ? 'opacity-50' : '')}
+      >
+        <h3 className={`${text} font-semibold text-[9px] sm:text-sm`}>{title}</h3>
+        <p className="sm:text-xs text-[7px] text-gray-500">
           {professor} {location}
         </p>
       </div>
