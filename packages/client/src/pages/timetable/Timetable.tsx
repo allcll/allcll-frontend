@@ -56,7 +56,7 @@ function Timetable() {
   return (
     <div className="w-full p-4 ">
       <div className="grid md:grid-cols-4 gap-4">
-        <div className="md:col-span-3 w-full h-screen">
+        <div className="md:col-span-3 w-full h-full">
           <Card className="px-2 relative overflow-hidden">
             <header className="flex pb-2 justify-between items-center">
               <DropdownSelect
