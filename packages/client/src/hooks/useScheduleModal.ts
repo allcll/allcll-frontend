@@ -117,7 +117,7 @@ function useScheduleModal() {
     closeBottomSheet();
   };
 
-  const cancelSchedule = (e?: React.MouseEvent<HTMLButtonElement>) => {
+  const cancelSchedule = (e?: React.MouseEvent) => {
     if (e) e.preventDefault();
 
     // timetable 롤백
