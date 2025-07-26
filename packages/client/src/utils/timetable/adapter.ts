@@ -1,5 +1,5 @@
 import { CustomSchedule, OfficialSchedule, Schedule, TimeSlot } from '@/hooks/server/useTimetableData.ts';
-import { Day, Wishes } from '@/utils/types.ts';
+import { Day, Subject } from '@/utils/types.ts';
 import { ROW_HEIGHT } from '@/components/timetable/Timetable.tsx';
 
 interface ApiUiAdapter<T, U> {
@@ -19,9 +19,9 @@ export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, Schedu
   /**
    * Schedule 을 변환하는 어댑터 클래스입니다.
    * @param data - Schedule 또는 ScheduleApiResponse 타입의 데이터, 빈 경우 기본값으로 초기화됩니다.
-   * @param wishes - data가 ScheduleApiResponse 인 경우, Wishes 배열이 필요합니다.
+   * @param subjects - data가 ScheduleApiResponse 인 경우, Wishes 배열이 필요합니다.
    */
-  constructor(data?: Schedule | ScheduleApiResponse, wishes?: Wishes[]) {
+  constructor(data?: Schedule | ScheduleApiResponse, subjects?: Subject | Subject[]) {
     if (!data) {
       this.data = this.#toDefaultData();
       return;
@@ -29,7 +29,7 @@ export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, Schedu
 
     const isApiResponse = data.scheduleType === 'official' && !data.subjectName;
     if (isApiResponse) {
-      this.data = this.#apiToUiData(data as ScheduleApiResponse, wishes);
+      this.data = this.#apiToUiData(data as ScheduleApiResponse, subjects);
       return;
     }
 
@@ -48,22 +48,22 @@ export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, Schedu
     };
   }
 
-  #apiToUiData(schedule: ScheduleApiResponse, wishes?: Wishes[]): Schedule {
-    if (!wishes) {
-      throw new TypeError('Wishes must be provided for API to UI conversion');
+  #apiToUiData(schedule: ScheduleApiResponse, subjects?: Subject | Subject[]): Schedule {
+    if (!subjects) {
+      throw new TypeError('Subjects must be provided for API to UI conversion');
     }
 
-    const wish = wishes.find(w => w.subjectId === schedule.scheduleId);
+    const subj =
+      subjects instanceof Array ? subjects.find(s => s.subjectId === schedule.scheduleId) : (subjects as Subject);
 
-    // Todo: Add Location Parsing Logic / timeslots
     return {
       scheduleId: schedule.scheduleId,
       scheduleType: schedule.scheduleType,
       subjectId: schedule.subjectId,
-      subjectName: wish?.subjectName ?? '',
-      professorName: wish?.professorName ?? '',
-      location: wish ? '센B209' : '',
-      timeSlots: [],
+      subjectName: subj?.subjectName ?? '',
+      professorName: subj?.professorName ?? '',
+      location: subj?.lesnRoom ?? '',
+      timeSlots: new TimeslotAdapter(subj?.lesnTime).toApiData(),
     };
   }
 
@@ -103,15 +103,26 @@ interface TimeslotGeneric {
 }
 
 export class TimeslotAdapter {
-  data: TimeslotGeneric;
+  data: TimeslotGeneric[];
 
-  constructor(data?: TimeSlot) {
+  constructor(data?: TimeSlot | TimeSlot[] | string) {
     if (!data) {
-      this.data = this.#toDefaultData();
+      this.data = [this.#toDefaultData()];
       return;
     }
 
-    this.data = this.#apiToGenericData(data);
+    // lsentime 형식
+    if (typeof data === 'string') {
+      this.data = this.#parseLsentime(data);
+      return;
+    }
+
+    if (Array.isArray(data)) {
+      this.data = data.map(d => this.#apiToGenericData(d));
+      return;
+    }
+
+    this.data = [this.#apiToGenericData(data)];
   }
 
   #toDefaultData(): TimeslotGeneric {
@@ -137,28 +148,55 @@ export class TimeslotAdapter {
     };
   }
 
-  toApiData(): TimeSlot {
+  #parseLsentime(lsenTM: string) {
+    const pattern = /([월화수목금토일]+)(\d{1,2}:\d{2})-(\d{1,2}:\d{2})/g;
+
+    const result = [];
+    let match;
+
+    while ((match = pattern.exec(lsenTM)) !== null) {
+      const daysStr = match[1]; // '화목' 또는 '금'
+      const start = match[2]; // '13:30'
+      const end = match[3]; // '15:00'
+
+      const days = daysStr.split(''); // ['화', '목']
+      for (const day of days) {
+        result.push(
+          this.#apiToGenericData({
+            dayOfWeeks: day as Day,
+            startTime: start,
+            endTime: end,
+          }),
+        );
+      }
+    }
+
+    return result;
+  }
+
+  toApiData(): TimeSlot[] {
     const pad = (num: number) => num.toString().padStart(2, '0');
 
-    return {
-      dayOfWeeks: this.data.dayOfWeeks,
-      startTime: `${pad(this.data.startHour)}:${pad(this.data.startMinute)}`,
-      endTime: `${pad(this.data.endHour)}:${pad(this.data.endMinute)}`,
-    };
+    return this.data.map(d => ({
+      dayOfWeeks: d.dayOfWeeks,
+      startTime: `${pad(d.startHour)}:${pad(d.startMinute)}`,
+      endTime: `${pad(d.endHour)}:${pad(d.endMinute)}`,
+    }));
   }
 
   /** Schedule의 시작 시간과 종료 시간을 계산하여, Schedule의 위치와 크기를 반환합니다.
    * @param minTime
    */
   toUiData(minTime: number) {
-    const { startHour, startMinute, endHour, endMinute } = this.data;
-
-    const start = (startHour * 60 + startMinute) / 60;
-    const end = (endHour * 60 + endMinute) / 60;
-    return {
-      width: 'calc(100% - 4px)',
-      height: `${(end - start) * ROW_HEIGHT}px`,
-      top: `${(start - minTime) * ROW_HEIGHT}px`,
-    };
+    return this.data.map(({ startHour, startMinute, endHour, endMinute, dayOfWeeks }) => {
+      const start = (startHour * 60 + startMinute) / 60;
+      const end = (endHour * 60 + endMinute) / 60;
+      return {
+        dayOfWeek: dayOfWeeks,
+        width: 'calc(100% - 4px)',
+        height: `${(end - start) * ROW_HEIGHT}px`,
+        top: `${(start - minTime) * ROW_HEIGHT}px`,
+      };
+    });
   }
 }

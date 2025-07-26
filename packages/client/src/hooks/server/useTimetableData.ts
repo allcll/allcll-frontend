@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api.ts';
-import { Day, Wishes } from '@/utils/types.ts';
-import useWishes from '@/hooks/server/useWishes.ts';
+import useSubject from '@/hooks/server/useSubject.ts';
 import { useScheduleState } from '@/store/useScheduleState.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
+import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api.ts';
+import { Day, Subject } from '@/utils/types.ts';
 
 export interface Timetable {
   timetableId: number;
@@ -115,13 +115,13 @@ export const useTimetables = () => {
  * @param timetableId
  */
 export function useTimetableData(timetableId?: number) {
-  const { data: wishes } = useWishes();
+  const { data: subjects } = useSubject();
 
   return useQuery({
     queryKey: ['timetableData', timetableId],
     queryFn: async () => await fetchJsonOnAPI<Timetable>(`/api/timetables/${timetableId}/schedules`),
 
-    select: data => scheduleTimeAdapter(data, wishes),
+    select: data => scheduleTimeAdapter(data, subjects),
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5,
     enabled: !!timetableId && timetableId > 0,
@@ -392,23 +392,23 @@ interface IApiScheduleData {
 
 /** API에서 받은 Timetable 데이터를 Wishes와 병합하여, Schedule 배열을 반환합니다.
  * @param apiScheduleData
- * @param wishes
+ * @param subjects
  */
-function mergeTimetableData(apiScheduleData?: IApiScheduleData, wishes?: Wishes[]) {
-  if (!apiScheduleData || !wishes) return undefined;
+function mergeTimetableData(apiScheduleData?: IApiScheduleData, subjects?: Subject[]) {
+  if (!apiScheduleData || !subjects) return undefined;
 
-  return apiScheduleData.schedules.map(schedule => new ScheduleAdapter(schedule, wishes).toUiData());
+  return apiScheduleData.schedules.map(schedule => new ScheduleAdapter(schedule, subjects).toUiData());
 }
 
 /** timetable 데이터를 ScheduleTime 형태로 변환합니다.
  * @param timetable
- * @param wishes
+ * @param subjects
  */
-export function scheduleTimeAdapter(timetable: IApiScheduleData, wishes?: Wishes[]) {
+export function scheduleTimeAdapter(timetable: IApiScheduleData, subjects?: Subject[]) {
   const colors: ScheduleTime['color'][] = ['rose', 'amber', 'green', 'emerald', 'blue', 'violet'];
 
   const scheduleTimes: Record<string, ScheduleTime[]> = {};
-  const mergedData = mergeTimetableData(timetable, wishes);
+  const mergedData = mergeTimetableData(timetable, subjects);
   const settings = getSettings(mergedData);
 
   if (!mergedData) return undefined;
@@ -417,18 +417,20 @@ export function scheduleTimeAdapter(timetable: IApiScheduleData, wishes?: Wishes
     const color = colors[index % colors.length];
     const { subjectName: title, professorName: professor, location } = schedule;
 
-    schedule.timeSlots.forEach(time => {
-      if (!scheduleTimes[time.dayOfWeeks]) {
-        scheduleTimes[time.dayOfWeeks] = [];
+    const timeslots = new TimeslotAdapter(schedule.timeSlots).toUiData(settings?.minTime ?? 9);
+
+    timeslots.forEach(slot => {
+      if (!scheduleTimes[slot.dayOfWeek]) {
+        scheduleTimes[slot.dayOfWeek] = [];
       }
 
-      scheduleTimes[time.dayOfWeeks].push({
+      scheduleTimes[slot.dayOfWeek].push({
         title,
         professor,
         location,
         schedule,
         color,
-        ...new TimeslotAdapter(time).toUiData(settings?.minTime ?? 9),
+        ...slot,
       });
     });
   });

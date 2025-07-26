@@ -1,10 +1,10 @@
-import useInfScroll from '@/hooks/useInfScroll';
-import { Subject, Wishes } from '@/utils/types';
-import { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import ZeroListError from '../errors/ZeroListError';
+import useInfScroll from '@/hooks/useInfScroll';
 import useScheduleModal from '@/hooks/useScheduleModal';
 import { useScheduleState } from '@/store/useScheduleState';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
+import { Subject } from '@/utils/types';
 
 interface ISubjectCards {
   subjects: Subject[];
@@ -16,9 +16,10 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
   const { visibleRows } = useInfScroll(subjects);
   const data = subjects ? subjects.slice(0, visibleRows) : [];
   const isMore = data.length < subjects.length;
-  const [selectedSubjectId, setSelectedSubjectId] = useState<number>();
+
   const selectedCardRef = useRef<HTMLDivElement>(null);
   const schedule = useScheduleState(state => state.schedule);
+  const selectedSubjectId = schedule.subjectId;
   const { openScheduleModal } = useScheduleModal();
 
   if (isPending || !subjects) {
@@ -30,24 +31,19 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
   }
 
   const handleCardClick = (subject: Subject) => {
-    setSelectedSubjectId(subject.subjectId);
-    // Todo: Schedule 추가하는 기능 넣기 => Adapter 사용
     const newSchedule = new ScheduleAdapter(
       {
+        ...new ScheduleAdapter().toApiData(), // Default schedule
         scheduleId: -1,
         scheduleType: 'official',
         subjectId: subject.subjectId,
-        subjectName: subject.subjectName,
-        professorName: subject.professorName ?? '',
-        location: subject.lesnRoom,
-        timeSlots: [], // Todo: 파싱 기능 사용하기 -> adopter
       },
-      data as unknown as Wishes[],
+      subject,
     );
 
     openScheduleModal(newSchedule.toUiData());
     console.log('official', schedule);
-    // openScheduleModal(subject);
+
     if (expandToMax) {
       expandToMax();
 
@@ -95,12 +91,12 @@ function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: ISubj
 
   return (
     <div
-      className={`border border-gray-200 rounded-lg cursor-pointer p-3 sm:p-4 gap-2 sm:gap-3 flex flex-col cursor-pointer ${color}`}
+      className={`border border-gray-200 rounded-lg p-3 sm:p-4 gap-2 sm:gap-3 flex flex-col cursor-pointer ${color}`}
       onClick={onClick}
       ref={forwardedRef}
     >
       <div className="flex justify-between items-center">
-        <h3 className="text-base text-sm  sm:text-lg font-semibold">{subject.subjectName}</h3>
+        <h3 className="text-sm sm:text-lg font-semibold">{subject.subjectName}</h3>
         <span className="text-xs sm:text-sm text-gray-500">{subject.professorName}</span>
       </div>
 
