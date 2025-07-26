@@ -24,7 +24,11 @@ export async function fetchJsonOnAPI<T>(url: string, options?: RequestInit): Pro
   return await response.json();
 }
 
-export async function fetchDeleteJsonOnAPI<T>(url: string, options?: RequestInit): Promise<T | null> {
+export async function fetchDeleteJsonOnAPI<T>(
+  url: string,
+  body?: any,
+  options?: Omit<RequestInit, 'method' | 'body'>,
+): Promise<T | null> {
   const response = await fetch(BaseUrl + url, {
     method: 'DELETE',
     credentials: 'include',
@@ -32,6 +36,8 @@ export async function fetchDeleteJsonOnAPI<T>(url: string, options?: RequestInit
       'Content-Type': 'application/json',
       ...(options?.headers ?? {}),
     },
+    body: body ? JSON.stringify(body) : undefined,
+    ...options,
   });
 
   if (!response.ok) {
