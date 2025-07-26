@@ -1,10 +1,9 @@
+import React from 'react';
 import Chip from '../common/Chip';
 import TextField from '../common/TextField';
 import SelectTime from './SelectTime';
 import { Day, DAYS } from '@/utils/types';
-import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
-import React from 'react';
 import { ScheduleMutateType } from '@/store/useScheduleState';
 
 interface TimeRange {
@@ -19,8 +18,6 @@ interface IScheduleFormContent {
 }
 
 function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
-  const { closeBottomSheet } = useBottomSheetStore();
-
   const { schedule: scheduleForm, editSchedule: setScheduleForm, saveSchedule, deleteSchedule } = useScheduleModal();
 
   const textFields = [
@@ -100,12 +97,9 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
     });
   };
 
+  // create / edit schedule 동시에 처리 (save)
   const handleSubmit = (e: React.FormEvent) => {
-    // create / edit schedule 동시에 처리
-    console.log(e.target);
-    console.log('폼 제출 전 스케줄 확인', scheduleForm);
     saveSchedule(e);
-    closeBottomSheet('edit');
   };
 
   const handleDeleteSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
