@@ -90,11 +90,8 @@ function useScheduleModal() {
 
     const schedule = new ScheduleAdapter(prevSchedule).toApiData();
 
-    console.log('official 과목 추가', schedule);
-
     // 생성 및 수정 로직
     if (mode === ScheduleMutateType.CREATE) {
-      console.log('official 과목 추가, CREATE', schedule);
       createScheduleData({ schedule, prevTimetable: prevTimetable.current });
     } else if (mode === ScheduleMutateType.EDIT) {
       updateScheduleData({ schedule, prevTimetable: prevTimetable.current });
@@ -107,6 +104,9 @@ function useScheduleModal() {
 
   const deleteSchedule = (e?: React.MouseEvent<HTMLButtonElement>) => {
     if (e) e.preventDefault();
+
+    prevTimetable.current = queryClient.getQueryData<Timetable>(['timetableData', timetableId]);
+    console.log('prevTimetableIndelete', prevTimetable.current);
 
     if (!prevTimetable.current) {
       throw new Error('Previous timetable data is not available.');
