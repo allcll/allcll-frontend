@@ -5,7 +5,6 @@ import { getScheduleSlots, ScheduleTime, useTimetableSchedules } from '@/hooks/s
 import { useScheduleState } from '@/store/useScheduleState.ts';
 import { Day } from '@/utils/types.ts';
 
-export const HEADER_WIDTH = 60;
 export const ROW_HEIGHT = 40;
 
 function Timetable() {
@@ -48,20 +47,19 @@ interface ITimetableGridProps {
   children?: React.ReactNode;
 }
 
-function TimetableGrid({
-  headerWidth = HEADER_WIDTH,
-  rowHeight = ROW_HEIGHT,
-  children,
-}: Readonly<ITimetableGridProps>) {
+function TimetableGrid({ rowHeight = ROW_HEIGHT, children }: Readonly<ITimetableGridProps>) {
   const timetableRef = useRef<HTMLDivElement | null>(null);
   const { colNames, rowNames } = useScheduleState(state => state.options);
+  const isMobile = useUpdateTimetableRef(timetableRef);
 
-  useUpdateTimetableRef(timetableRef);
+  const { headerWidth, headerHeight } = isMobile
+    ? { headerWidth: 20, headerHeight: 20 }
+    : { headerWidth: 60, headerHeight: 40 };
 
   return (
     <div className="relative w-full">
       {/*header*/}
-      <div className="flex bg-gray-50 rounded-t-md" style={{ height: `${rowHeight}px` }}>
+      <div className="flex bg-gray-50 rounded-t-md" style={{ height: `${headerHeight}px` }}>
         <div
           className="flex items-center justify-center font-semibold text-gray-700"
           style={{ width: `${headerWidth}px` }}
@@ -70,7 +68,7 @@ function TimetableGrid({
         {colNames.map((name, i) => (
           <div
             key={'timetable-grid-header-' + i}
-            className="flex flex-auto items-center justify-center font-semibold text-gray-400"
+            className="flex flex-auto items-center justify-center font-semibold text-gray-400 text-[10px] md:text-sm"
           >
             {name}
           </div>
@@ -78,7 +76,7 @@ function TimetableGrid({
       </div>
 
       {/*col lines*/}
-      <div className="flex absolute inset-0" style={{ top: `${rowHeight}px`, left: `${headerWidth}px` }}>
+      <div className="flex absolute inset-0" style={{ top: `${headerHeight}px`, left: `${headerWidth}px` }}>
         {colNames.map((_, i) => (
           <div key={'timetable-grid-col-' + i} className="flex-auto border-l border-gray-200 h-full" />
         ))}
@@ -88,12 +86,13 @@ function TimetableGrid({
       {rowNames.map((rowName, i) => (
         <div key={'timetable-grid-row-' + i} className="border-b border-gray-200" style={{ height: `${rowHeight}px` }}>
           <span
-            className={`flex items-center justify-center h-full text-gray-400 ${
-              Number(rowName) >= 9 && Number(rowName) <= 20
-                ? 'w-[20px] md:w-[60px] text-[10px] md:text-sm'
-                : `w-[60px] text-sm`
-            }`}
+            className={`flex items-center justify-center h-full text-gray-400 w-[20px] md:w-[60px] text-[10px] md:text-sm`}
           >
+            {/*   ${*/}
+            {/*  Number(rowName) >= 9 && Number(rowName) <= 20*/}
+            {/*    ? 'w-[20px] md:w-[60px] text-[10px] md:text-sm'*/}
+            {/*    : `w-[60px] text-sm`*/}
+            {/*}*/}
             {rowName}
           </span>
         </div>
@@ -104,7 +103,7 @@ function TimetableGrid({
         id="timetable"
         ref={timetableRef}
         className="absolute inset-0 flex z-10"
-        style={{ top: `${rowHeight}px`, left: `${headerWidth}px` }}
+        style={{ top: `${headerHeight}px`, left: `${headerWidth}px` }}
       >
         {children}
       </div>
