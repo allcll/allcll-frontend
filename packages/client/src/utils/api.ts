@@ -24,6 +24,27 @@ export async function fetchJsonOnAPI<T>(url: string, options?: RequestInit): Pro
   return await response.json();
 }
 
+export async function fetchDeleteJsonOnAPI<T>(url: string, options?: RequestInit): Promise<T | null> {
+  const response = await fetch(BaseUrl + url, {
+    method: 'DELETE',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(options?.headers ?? {}),
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+
+  if (response.status === 204) {
+    return null;
+  }
+
+  return await response.json();
+}
+
 export function fetchEventSource(url: string, options?: EventSourceInit): EventSource {
   return new EventSource(BaseUrl + url, {
     withCredentials: true,
