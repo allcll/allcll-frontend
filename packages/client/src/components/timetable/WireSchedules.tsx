@@ -10,14 +10,17 @@ interface IWireSchedulesProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 function WireSchedules({ dayOfWeeks }: Readonly<IWireSchedulesProps>) {
-  const { schedule } = useScheduleState();
+  const { schedule, options } = useScheduleState();
   const { data: subjects } = useSubject();
 
   if (!subjects || !schedule.timeSlots || schedule.timeSlots.length <= 0) return null;
 
+  let minTime = parseInt(options.rowNames[0].replace('시', ''));
+  if (Number.isNaN(minTime)) minTime = 9;
+
   // Fixme: schedule 형태 통일
   const newSchedule = new ScheduleAdapter(schedule, subjects).toUiData();
-  const timeSlots = new TimeslotAdapter(newSchedule.timeSlots).toUiData(9); // Todo: getMinTime
+  const timeSlots = new TimeslotAdapter(newSchedule.timeSlots).toUiData(minTime);
   const scheduleTime = timeSlots.filter(({ dayOfWeek: day }) => day === dayOfWeeks);
 
   if (!scheduleTime) return null;

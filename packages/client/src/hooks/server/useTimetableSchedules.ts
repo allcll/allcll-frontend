@@ -108,12 +108,20 @@ export const useTimetables = () => {
  * @param timetableId
  */
 export function useTimetableSchedules(timetableId?: number) {
+  const schedule = useScheduleState(state => state.schedule);
   const { data: subjects } = useSubject();
 
   return useQuery({
     queryKey: ['timetableData', timetableId],
     queryFn: async () => await fetchJsonOnAPI<Timetable>(`/api/timetables/${timetableId}/schedules`),
-    select: data => scheduleTimeAdapter(data, subjects),
+    select: data =>
+      scheduleTimeAdapter(
+        {
+          ...data,
+          schedules: [...data.schedules, schedule as ScheduleApiResponse],
+        },
+        subjects,
+      ),
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5,
     enabled: !!timetableId && timetableId > 0,

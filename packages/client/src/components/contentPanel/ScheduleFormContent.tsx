@@ -70,10 +70,12 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
 
   const onScheduleFormChange = (key: keyof TimeRange, value: string, targetDay?: Day) => {
     const parseValue = (timeSlot: string) => {
-      return timeSlot.split(':').map(value => {
-        const parsed = parseInt(value, 10);
-        return isNaN(parsed) ? '00' : parsed.toString().padStart(2, '0');
-      });
+      let [hour, minute] = timeSlot.split(':').map(Number);
+
+      if (isNaN(hour)) hour = 9;
+      if (isNaN(minute)) minute = 0;
+
+      return [hour.toString(), minute.toString().padStart(2, '0')];
     };
 
     const reconcileTimeString = (timeString: string) => {
