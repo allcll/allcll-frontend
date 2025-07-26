@@ -4,6 +4,7 @@ import useScheduleModal from '@/hooks/useScheduleModal';
 import { ROW_HEIGHT } from '@/components/timetable/Timetable.tsx';
 import { Schedule as ScheduleType, useDeleteSchedule } from '@/hooks/server/useTimetableSchedules.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
+import { useScheduleState } from '@/store/useScheduleState';
 
 type ColorType = 'rose' | 'amber' | 'green' | 'emerald' | 'blue' | 'violet';
 
@@ -28,7 +29,8 @@ function Schedule({
   const { text, bgLight, bg } = getColors(color);
   const ref = useRef<HTMLDivElement>(null);
   const { openScheduleModal } = useScheduleModal();
-  const { mutate: deleteSchedule } = useDeleteSchedule();
+  const currentTimetable = useScheduleState(state => state.currentTimetable);
+  const { mutate: deleteSchedule } = useDeleteSchedule(currentTimetable.timeTableId);
 
   const onAreaChanged = (startX: number, startY: number, nowX: number, nowY: number) => {
     if (!ref.current) return;
