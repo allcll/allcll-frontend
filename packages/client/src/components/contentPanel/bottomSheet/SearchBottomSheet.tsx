@@ -107,7 +107,7 @@ function SearchBottomSheet({ onClose }: ISearchBottomSheet) {
             onClick={handleCreateSchedule}
           />
 
-          <div className="flex items-center flex gap-2 py-3">
+          <div className="sticky top-0 bg-white z-10 flex items-center gap-2 py-3">
             <SearchBox
               type="text"
               placeholder="과목명 및 교수명 검색"
@@ -121,7 +121,7 @@ function SearchBottomSheet({ onClose }: ISearchBottomSheet) {
             </button>
           </div>
 
-          <div className="overflow-y-auto max-h-[70vh]">
+          <div className="flex-1 overflow-y-auto">
             <FilteredSubjectCards expandToMax={expandToMax} subjects={filteredData} isPending={isPending} />
           </div>
         </>

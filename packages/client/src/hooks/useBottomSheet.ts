@@ -147,6 +147,13 @@ export default function useBottomSheet() {
       metrics.current!.isContentAreaTouched = true;
     };
     content.current!.addEventListener('touchstart', handleTouchStart);
+
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = originalStyle;
+    };
   }, []);
 
   return { sheet, content, expandToMax, collapseToMin };

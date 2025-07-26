@@ -3,7 +3,7 @@ import ZeroListError from '../errors/ZeroListError';
 import useInfScroll from '@/hooks/useInfScroll';
 import useScheduleModal from '@/hooks/useScheduleModal';
 import { useScheduleState } from '@/store/useScheduleState';
-import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
+import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 import { Subject } from '@/utils/types';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 
@@ -45,15 +45,17 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
     openScheduleModal(newSchedule.toUiData());
     console.log('official', schedule);
 
+    const MIN_TIME = 9;
+    const timeslotUI = new TimeslotAdapter(subject.lesnTime).toUiData(MIN_TIME);
+    const top = timeslotUI[0]?.top;
+
     if (expandToMax) {
       expandToMax();
 
       setTimeout(() => {
-        if (selectedCardRef.current) {
-          selectedCardRef.current.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-          });
+        if (top) {
+          const topPx = parseFloat(top); // '180px' → 180
+          window.scrollTo({ top: topPx, behavior: 'smooth' });
         }
       }, 400);
     }
@@ -75,7 +77,7 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
         );
       })}
 
-      {isMore && <div className="load-more-trigger mt-0 h-10 bg-transparent" style={{ minHeight: '20px' }} />}
+      {isMore && <div className="load-more-trigger mt-0 h-5 bg-transparent" style={{ minHeight: '20px' }} />}
     </div>
   );
 }
