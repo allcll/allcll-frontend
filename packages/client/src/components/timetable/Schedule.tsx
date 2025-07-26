@@ -9,6 +9,7 @@ import { useScheduleState } from '@/store/useScheduleState';
 type ColorType = 'rose' | 'amber' | 'green' | 'emerald' | 'blue' | 'violet';
 
 export interface IScheduleProps extends HTMLAttributes<HTMLDivElement> {
+  timeslotIndex: number;
   title: string;
   professor: string;
   location: string;
@@ -24,6 +25,7 @@ function Schedule({
   color = 'blue',
   schedule,
   selected = false,
+  timeslotIndex,
   ...attrs
 }: Readonly<IScheduleProps>) {
   const { text, bgLight, bg } = getColors(color);
@@ -49,6 +51,7 @@ function Schedule({
 
     // Todo: schedule 감지, schedule 업데이트 로직 추가
     const updatedSchedule = { ...schedule };
+    console.log('onDragEnd', updatedSchedule, timeslotIndex, nowX, nowY);
 
     openScheduleModal(updatedSchedule);
     ref.current.style.setProperty('transform', '');

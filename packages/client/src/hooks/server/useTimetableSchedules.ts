@@ -250,6 +250,7 @@ interface ScheduleMutationData {
 export function useCreateSchedule(timetableId?: number) {
   const queryClient = useQueryClient();
   const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
+  const setSelectedSchedule = useScheduleState(state => state.changeScheduleData);
   const { mutateAsync: createTimetable } = useCreateTimetable();
 
   return useMutation({
@@ -289,8 +290,10 @@ export function useCreateSchedule(timetableId?: number) {
         queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
         return;
       }
-
       console.log('POST요청 전 이전 데이터와 새 데이터 합치는 스케줄', [...context.prevTimetable.schedules, schedule]);
+
+      // Fixme: schedule 이 생성되기 전, 다른 스케줄이 생성되면 버그 처럼 보일 수 있음.
+      setSelectedSchedule(new ScheduleAdapter().toUiData());
 
       queryClient.setQueryData(['timetableData', timetableId], {
         ...context.prevTimetable,
