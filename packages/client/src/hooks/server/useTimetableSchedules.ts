@@ -171,8 +171,11 @@ export function useDeleteTimetable() {
       queryClient.invalidateQueries({ queryKey: ['timetableList'] });
     },
     onSuccess: (_, timeTableId) => {
-      const { currentTimetable, pickTimetable } = useScheduleState.getState();
+      queryClient.invalidateQueries({ queryKey: ['timetableList', timeTableId] });
+      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+      queryClient.invalidateQueries({ queryKey: ['timetableData', timeTableId] });
 
+      const { currentTimetable, pickTimetable } = useScheduleState.getState();
       if (currentTimetable?.timeTableId === timeTableId) {
         pickTimetable({
           timeTableId: -1,
@@ -180,10 +183,6 @@ export function useDeleteTimetable() {
           semester: '',
         });
       }
-
-      queryClient.invalidateQueries({ queryKey: ['timetableList', timeTableId] });
-      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
-      queryClient.invalidateQueries({ queryKey: ['timetableData', timeTableId] });
     },
   });
 }
