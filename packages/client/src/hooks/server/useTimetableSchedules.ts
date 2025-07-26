@@ -4,6 +4,7 @@ import { useScheduleState } from '@/store/useScheduleState.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api.ts';
 import { Day, Subject } from '@/utils/types.ts';
+import { timeSleep } from '@/utils/time.ts';
 
 export interface Timetable {
   timetableId: number;
@@ -258,6 +259,9 @@ export function useCreateSchedule(timetableId?: number) {
       if (!timetableId || timetableId <= 0) {
         const timetable = await createTimetable({ timeTableName: '새 시간표', semester: '2025-2' });
         setTimetableId(timetable);
+
+        // timetable 생성 후, transaction을 위해 잠시 대기
+        await timeSleep(300);
       }
 
       console.log('POST요청 전 새로운 스케줄', schedule, schedule.timeSlots);
