@@ -355,7 +355,7 @@ export function useDeleteSchedule(timetableId?: number) {
 
   return useMutation({
     mutationFn: async ({ schedule }: ScheduleMutationData) =>
-      await fetchOnAPI(`/api/timetables/${timetableId}/schedules/${schedule.scheduleId}`, {
+      await fetchJsonOnAPI(`/api/timetables/${timetableId}/schedules/${schedule.scheduleId}`, {
         method: 'DELETE',
         body: JSON.stringify({
           scheduleType: schedule.scheduleType,
