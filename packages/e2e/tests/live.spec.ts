@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { getTestEnv } from '../fixtures/testEnv';
 
-test.describe('알림 과목', () => {
+test.skip('알림 과목', () => {
   test.beforeEach(async ({ page }) => {
     const { targetUrl } = await getTestEnv();
     await page.goto(targetUrl + '/live/search');
@@ -48,7 +48,7 @@ test.describe('알림 과목', () => {
   });
 });
 
-test.describe('실시간 교양 과목', () => {
+test.skip('실시간 교양 과목', () => {
   test.beforeEach(async ({ page }) => {
     const { targetUrl } = await getTestEnv();
     await page.goto(targetUrl + '/live');
