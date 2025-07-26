@@ -19,7 +19,7 @@ export interface OfficialSchedule {
   subjectName: null;
   professorName: null;
   location: null;
-  timeSlots: never[];
+  timeSlots: never[] | null;
 }
 
 export interface CustomSchedule extends Schedule {
@@ -58,15 +58,8 @@ export interface ScheduleTime {
   top: string;
 }
 
-export const initCustomSchedule: Schedule = {
-  scheduleId: -1,
-  scheduleType: 'custom',
-  subjectId: null,
-  subjectName: '',
-  professorName: '',
-  location: '',
-  timeSlots: [],
-};
+/** @deprecated new ScheduleAdapter를 이용하세요*/
+export const initCustomSchedule: Schedule = new ScheduleAdapter().toUiData();
 
 export interface TimetableType {
   timeTableId: number;

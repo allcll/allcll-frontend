@@ -9,17 +9,9 @@ import useSubject from '@/hooks/server/useSubject';
 import { Subject } from '@/utils/types';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import useScheduleModal from '@/hooks/useScheduleModal';
-import { Schedule } from '@/hooks/server/useTimetableData';
+import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 
-const initSchedule: Schedule = {
-  scheduleId: -1,
-  scheduleType: 'custom',
-  subjectId: null,
-  subjectName: '',
-  professorName: '',
-  location: '',
-  timeSlots: [],
-};
+const initSchedule = new ScheduleAdapter().toUiData();
 
 function ContentPanel() {
   const { data: subjects = [], isPending } = useSubject();

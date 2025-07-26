@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { Schedule, TimetableType } from '@/hooks/server/useTimetableData.ts';
+import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 
 export enum ScheduleMutateType {
   NONE = 'none',
@@ -46,15 +47,7 @@ export const useScheduleState = create<IMutateScheduleState>(set => ({
     rows: 11,
   },
   mode: ScheduleMutateType.NONE,
-  schedule: {
-    scheduleId: 0,
-    scheduleType: 'official',
-    subjectId: 0,
-    subjectName: '',
-    professorName: '',
-    location: '',
-    timeSlots: [],
-  },
+  schedule: new ScheduleAdapter().toUiData(),
 
   pickTimetable: (timetable: TimetableType) => {
     set(state => ({

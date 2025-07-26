@@ -105,9 +105,9 @@ interface TimeslotGeneric {
 export class TimeslotAdapter {
   data: TimeslotGeneric[];
 
-  constructor(data?: TimeSlot | TimeSlot[] | string) {
+  constructor(data?: TimeSlot | TimeSlot[] | string | null) {
     if (!data) {
-      this.data = [this.#toDefaultData()];
+      this.data = [];
       return;
     }
 
@@ -125,15 +125,15 @@ export class TimeslotAdapter {
     this.data = [this.#apiToGenericData(data)];
   }
 
-  #toDefaultData(): TimeslotGeneric {
-    return {
-      dayOfWeeks: '월',
-      startHour: 9,
-      startMinute: 0,
-      endHour: 10,
-      endMinute: 0,
-    };
-  }
+  // #toDefaultData(): TimeslotGeneric {
+  //   return {
+  //     dayOfWeeks: '월',
+  //     startHour: 9,
+  //     startMinute: 0,
+  //     endHour: 10,
+  //     endMinute: 0,
+  //   };
+  // }
 
   #apiToGenericData(data: TimeSlot): TimeslotGeneric {
     const [sh, sm] = data.startTime.split(':');
