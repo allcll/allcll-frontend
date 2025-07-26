@@ -49,6 +49,7 @@ const DaySchedule = ({ dayOfWeeks, scheduleTimes }: Readonly<IDayScheduleProps>)
       {timeSlots.map(({ title, professor, location, color, width, height, top, schedule }, index) => (
         <Schedule
           key={'schedule-' + index}
+          timeslotIndex={index}
           title={title}
           professor={professor ?? ''}
           location={location ?? ''}
