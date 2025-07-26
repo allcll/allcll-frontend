@@ -81,6 +81,13 @@ function SearchBottomSheet() {
         return selectedDays.some(d => days.includes(d));
       };
 
+      const filteringDepartment = (subject: Subject): boolean => {
+        if (!selectedDepartment || selectedDepartment === '') return true;
+        if (selectedDepartment === subject.deptCd) return true;
+
+        return false;
+      };
+
       const filteringGrades = (subject: Subject): boolean => {
         if (selectedGrades.length === 0) return true;
         const sem = subject.studentYear;
@@ -107,7 +114,12 @@ function SearchBottomSheet() {
         return matchesProfessor || matchesSubject;
       };
 
-      return filteringGrades(subject) && filteringDays(subject.lesnTime) && filteringSearchKeywords(subject);
+      return (
+        filteringGrades(subject) &&
+        filteringDays(subject.lesnTime) &&
+        filteringSearchKeywords(subject) &&
+        filteringDepartment(subject)
+      );
     });
 
     if (result.length === 0) {

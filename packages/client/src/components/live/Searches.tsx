@@ -21,7 +21,7 @@ function Searches() {
 
   const { data: departments } = useDepartments();
 
-  const departmentsList = [{ departmentName: '전체 학과', departmentCode: '' }, ...(departments ?? [])];
+  const departmentsList = [{ departmentName: '전체', departmentCode: '' }, ...(departments ?? [])];
 
   useEffect(() => {
     const handler = setTimeout(() => {

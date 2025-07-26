@@ -13,18 +13,16 @@ function DepartmentFilter() {
   }
 
   const { data: departments } = useDepartments();
-
   const [searchKeywords, setSearchKeywords] = useState('');
 
   const departmentsList = useMemo(
-    () => [{ departmentName: '전체 학과', departmentCode: '' }, ...(departments ?? [])],
+    () => [{ departmentName: '전체', departmentCode: '' }, ...(departments ?? [])],
     [departments],
   );
-
   const [filterDepartment, setFilterDepartment] = useState(departmentsList);
 
   const { selectedDepartment } = useFilterScheduleStore();
-  const customDepartmentLabel = selectedDepartment === '전체' ? '학과' : pickCollegeOrMajor(selectedDepartment);
+  const customDepartmentLabel = selectedDepartment === '' ? '전체' : pickCollegeOrMajor(selectedDepartment);
 
   useEffect(() => {
     const result = departmentsList.filter(department => {
@@ -82,7 +80,7 @@ export function SelectSubject({ departments }: ISelectSubject) {
   const { setFilterSchedule } = useFilterScheduleStore();
 
   const handleChangeDepartment = (department: string) => {
-    setFilterSchedule('selectedDepartment', department || '전체');
+    setFilterSchedule('selectedDepartment', department || '');
   };
 
   return (
@@ -92,12 +90,12 @@ export function SelectSubject({ departments }: ISelectSubject) {
           key={department.departmentCode}
           role="option"
           aria-selected={selected === department.departmentName}
-          className={`flex items-center gap-1 px-2 py-2 rounded cursor-pointer text-xs ${
+          className={`flex items-center gap-1 px-2 py-2 rounded cursor-pointer text-sm ${
             selected === department.departmentName
               ? 'bg-blue-50 text-blue-500 font-medium'
               : 'hover:bg-gray-50 text-gray-700'
           }`}
-          onClick={() => handleChangeDepartment(department.departmentName)}
+          onClick={() => handleChangeDepartment(department.departmentCode)}
         >
           {department.departmentName}
         </div>

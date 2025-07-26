@@ -48,6 +48,13 @@ function ContentPanel() {
         return selectedDays.some(d => days.includes(d));
       };
 
+      const filteringDepartment = (subject: Subject): boolean => {
+        if (!selectedDepartment && selectedDepartment === '') return true;
+        if (selectedDepartment === subject.deptCd) return true;
+
+        return false;
+      };
+
       const filteringGrades = (subject: Subject): boolean => {
         if (selectedGrades.length === 0) return true;
         const sem = subject.studentYear;
@@ -58,6 +65,7 @@ function ContentPanel() {
         if (selectedGrades.includes(4) && sem === '4') return true;
         return false;
       };
+
       const filteringSearchKeywords = (subject: Subject): boolean => {
         if (!searchKeywords) return true;
 
@@ -74,7 +82,12 @@ function ContentPanel() {
         );
       };
 
-      return filteringGrades(subject) && filteringDays(subject.lesnTime) && filteringSearchKeywords(subject);
+      return (
+        filteringGrades(subject) &&
+        filteringDays(subject.lesnTime) &&
+        filteringSearchKeywords(subject) &&
+        filteringDepartment(subject)
+      );
     });
   }, [subjects, selectedDepartment, selectedGrades, selectedDays, searchKeywords]);
 
