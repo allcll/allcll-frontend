@@ -371,6 +371,7 @@ export function useDeleteSchedule(timetableId?: number) {
       queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetable);
       console.error(error);
     },
+
     onSuccess: async (_, { schedule }, context) => {
       if (!context?.prevTimetable) {
         queryClient.invalidateQueries({ queryKey: ['timetableList'] });
@@ -382,6 +383,8 @@ export function useDeleteSchedule(timetableId?: number) {
         ...context.prevTimetable,
         schedules: context.prevTimetable.schedules.filter(sch => sch.scheduleId !== schedule.scheduleId),
       });
+
+      queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
     },
   });
 }
