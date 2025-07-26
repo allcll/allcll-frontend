@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { SimulationSubject, Subject, Wishes } from '@/utils/types.ts';
 
 // 스크롤 3번 정도 사이즈 : 45
-const PAGE_SIZE = 400;
+const PAGE_SIZE = 200;
 
 // .load-more-trigger 인 항목 추가
 function useInfScroll(data: Wishes[] | Subject[] | SimulationSubject[]) {
