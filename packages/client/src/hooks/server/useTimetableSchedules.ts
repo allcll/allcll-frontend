@@ -249,7 +249,7 @@ interface ScheduleMutationData {
  */
 export function useCreateSchedule(timetableId?: number) {
   const queryClient = useQueryClient();
-  const setTimetableId = useScheduleState(state => state.pickTimetable);
+  const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
   const { mutateAsync: createTimetable } = useCreateTimetable();
 
   return useMutation({
@@ -258,7 +258,8 @@ export function useCreateSchedule(timetableId?: number) {
 
       if (!timetableId || timetableId <= 0) {
         const timetable = await createTimetable({ timeTableName: '새 시간표', semester: '2025-2' });
-        setTimetableId(timetable);
+        setCurrentTimetable(timetable);
+        newTimetableId = timetable.timeTableId;
 
         // timetable 생성 후, transaction을 위해 잠시 대기
         await timeSleep(300);
@@ -405,8 +406,6 @@ export function scheduleTimeAdapter(timetable: IApiScheduleData, subjects?: Subj
   const scheduleTimes: Record<string, ScheduleTime[]> = {};
   const mergedData = mergeTimetableData(timetable, subjects);
   const settings = getSettings(mergedData);
-
-  console.log('timetable', timetable, subjects, mergedData, settings);
 
   if (!mergedData) return undefined;
 
