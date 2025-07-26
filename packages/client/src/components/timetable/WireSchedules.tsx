@@ -13,7 +13,7 @@ function WireSchedules({ dayOfWeeks }: Readonly<IWireSchedulesProps>) {
   const { schedule, options } = useScheduleState();
   const { data: subjects } = useSubject();
 
-  if (!subjects || !schedule.timeSlots || schedule.timeSlots.length <= 0) return null;
+  if (!subjects || schedule.scheduleId > 0 || !schedule.timeSlots || schedule.timeSlots.length <= 0) return null;
 
   let minTime = parseInt(options.rowNames[0].replace('시', ''));
   if (Number.isNaN(minTime)) minTime = 9;
