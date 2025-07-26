@@ -34,6 +34,7 @@ export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, Schedu
     }
 
     this.data = data as Schedule;
+    if (!this.data.timeSlots) this.data.timeSlots = [];
   }
 
   #toDefaultData(): Schedule {

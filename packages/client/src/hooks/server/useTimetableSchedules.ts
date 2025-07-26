@@ -112,7 +112,6 @@ export function useTimetableSchedules(timetableId?: number) {
   return useQuery({
     queryKey: ['timetableData', timetableId],
     queryFn: async () => await fetchJsonOnAPI<Timetable>(`/api/timetables/${timetableId}/schedules`),
-
     select: data => scheduleTimeAdapter(data, subjects),
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5,
@@ -477,12 +476,4 @@ function getSettings(schedule?: Schedule[]) {
     maxTime,
     minTime,
   };
-}
-
-/** Schedule을 API에서 사용하는 형식으로 변환합니다.
- * Todo: Adapter 형식으로 변환하기
- * @param schedule
- */
-export function scheduleAsApiSchedule(schedule: Schedule): ScheduleApiResponse {
-  return new ScheduleAdapter(schedule).toApiData();
 }
