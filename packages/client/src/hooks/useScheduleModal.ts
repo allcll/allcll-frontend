@@ -11,7 +11,7 @@ import {
 } from '@/hooks/server/useTimetableSchedules.ts';
 import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState.ts';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore.ts';
-import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
+import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 
 function useScheduleModal() {
   const queryClient = useQueryClient();
@@ -78,7 +78,7 @@ function useScheduleModal() {
     if (e) e.preventDefault();
 
     // Schedule 시간 Validation
-    const isTimeslotValid = prevSchedule.timeSlots.every(slot => slot.startTime <= slot.endTime);
+    const isTimeslotValid = new TimeslotAdapter(prevSchedule.timeSlots).validate();
 
     if (!isTimeslotValid) {
       alert('시작 시간이 종료 시간 보다 늦지 않아야 합니다.');
