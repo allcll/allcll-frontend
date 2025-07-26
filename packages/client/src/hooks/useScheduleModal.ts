@@ -122,7 +122,7 @@ function useScheduleModal() {
     closeBottomSheet();
   };
 
-  const cancelSchedule = (e?: React.MouseEvent | React.KeyboardEvent) => {
+  const cancelSchedule = (e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent) => {
     if (e) e.preventDefault();
 
     // timetable 롤백
