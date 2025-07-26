@@ -7,11 +7,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { disassemble } from 'es-hangul';
 
 function DepartmentFilter() {
-  function pickCollegeOrMajor(selectedDepartment: string) {
-    const splitDepartment = selectedDepartment.split(' ');
-    return splitDepartment[splitDepartment.length - 1];
-  }
-
   const { data: departments } = useDepartments();
   const [searchKeywords, setSearchKeywords] = useState('');
 
@@ -19,6 +14,20 @@ function DepartmentFilter() {
     () => [{ departmentName: '전체', departmentCode: '' }, ...(departments ?? [])],
     [departments],
   );
+
+  function pickCollegeOrMajor(selectedDepartment: string) {
+    const department = departmentsList.find(department => {
+      department.departmentCode === selectedDepartment;
+    });
+
+    if (!department) {
+      return '학과가 없습니다.';
+    }
+
+    const splitDepartment = department.departmentName.split(' ');
+    return splitDepartment[splitDepartment.length - 1];
+  }
+
   const [filterDepartment, setFilterDepartment] = useState(departmentsList);
 
   const { selectedDepartment } = useFilterScheduleStore();
