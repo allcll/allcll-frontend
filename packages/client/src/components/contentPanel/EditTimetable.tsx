@@ -2,21 +2,18 @@ import XDarkGraySvg from '@/assets/x-darkgray.svg?react';
 import TextField from '../common/TextField';
 import React, { useState } from 'react';
 import Chip from '../common/Chip';
-import {
-  TimetableType,
-  useCreateTimetable,
-  useDeleteTimetable,
-  useUpdateTimetable,
-} from '@/hooks/server/useTimetableSchedules.ts';
+import { useCreateTimetable, useDeleteTimetable, useUpdateTimetable } from '@/hooks/server/useTimetableSchedules.ts';
+import { useScheduleState } from '@/store/useScheduleState.ts';
 
 interface IEditTimetable {
   onClose: () => void;
-  timeTable?: TimetableType | null;
   type: 'edit' | 'create';
 }
 
-function EditTimetable({ onClose, type, timeTable }: Readonly<IEditTimetable>) {
+function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
   const [timeTableName, setTimeTableName] = useState('');
+  const timeTable = useScheduleState(state => state.currentTimetable);
+
   const { mutate: updateTimetable } = useUpdateTimetable();
   const { mutate: deleteTimetable } = useDeleteTimetable();
   const { mutate: createTimetable } = useCreateTimetable();
