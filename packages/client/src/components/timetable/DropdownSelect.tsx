@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import Checkbox from '../common/Checkbox';
 import Filtering from '../contentPanel/filter/Filtering';
-import { TimetableType } from '@/hooks/server/useTimetableData';
+import { TimetableType } from '@/hooks/server/useTimetableSchedules.ts';
 import { useScheduleState } from '@/store/useScheduleState';
 
 interface DropdownSelectProps {

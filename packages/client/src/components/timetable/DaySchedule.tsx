@@ -1,15 +1,18 @@
 import React from 'react';
 import Schedule from '@/components/timetable/Schedule.tsx';
 import WireSchedules from '@/components/timetable/WireSchedules.tsx';
-import { initCustomSchedule, ScheduleTime } from '@/hooks/server/useTimetableData.ts';
+import { ScheduleTime } from '@/hooks/server/useTimetableSchedules.ts';
 import { useScheduleDrag } from '@/hooks/useScheduleDrag.ts';
 import useScheduleModal, { useScheduleTimeslot } from '@/hooks/useScheduleModal.ts';
+import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 import { Day } from '@/utils/types.ts';
 
 interface IDayScheduleProps {
   dayOfWeeks: Day;
   scheduleTimes: ScheduleTime[];
 }
+
+const initCustomSchedule = new ScheduleAdapter().toUiData();
 
 const DaySchedule = ({ dayOfWeeks, scheduleTimes }: Readonly<IDayScheduleProps>) => {
   const timeSlots = scheduleTimes;

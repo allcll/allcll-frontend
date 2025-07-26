@@ -103,11 +103,10 @@ export const useTimetables = () => {
   });
 };
 
-// Fixme: useTimetableSchedules로 이름 변경하기
 /** timetableId에 대한 Timetable 데이터를 가져옵니다.
  * @param timetableId
  */
-export function useTimetableData(timetableId?: number) {
+export function useTimetableSchedules(timetableId?: number) {
   const { data: subjects } = useSubject();
 
   return useQuery({

@@ -7,7 +7,7 @@ import {
   useCreateTimetable,
   useDeleteTimetable,
   useUpdateTimetable,
-} from '@/hooks/server/useTimetableData';
+} from '@/hooks/server/useTimetableSchedules.ts';
 
 interface IEditTimetable {
   onClose: () => void;

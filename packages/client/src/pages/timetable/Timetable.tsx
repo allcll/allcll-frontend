@@ -8,7 +8,7 @@ import FormBottomSheet from '@/components/contentPanel/bottomSheet/FormBottomShe
 import ScheduleFormModal from '@/components/contentPanel/ScheduleFormModal';
 import ContentPanel from '@/components/contentPanel/ContentPanel';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
-import { useDeleteTimetable, useTimetables } from '@/hooks/server/useTimetableData';
+import { useDeleteTimetable, useTimetables } from '@/hooks/server/useTimetableSchedules.ts';
 import EditTimetable from '@/components/contentPanel/EditTimetable';
 import AddGraySvg from '@/assets/add-gray.svg?react';
 import { useScheduleState } from '@/store/useScheduleState';

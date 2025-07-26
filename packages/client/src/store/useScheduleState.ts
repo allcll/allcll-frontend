@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Schedule, TimetableType } from '@/hooks/server/useTimetableData.ts';
+import { Schedule, TimetableType } from '@/hooks/server/useTimetableSchedules.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 
 export enum ScheduleMutateType {

@@ -1,4 +1,4 @@
-import { CustomSchedule, OfficialSchedule, Schedule, TimeSlot } from '@/hooks/server/useTimetableData.ts';
+import { CustomSchedule, OfficialSchedule, Schedule, TimeSlot } from '@/hooks/server/useTimetableSchedules.ts';
 import { Day, Subject } from '@/utils/types.ts';
 import { ROW_HEIGHT } from '@/components/timetable/Timetable.tsx';
 

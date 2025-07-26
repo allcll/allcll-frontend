@@ -2,7 +2,7 @@ import React, { HTMLAttributes, useRef } from 'react';
 import { useScheduleDrag } from '@/hooks/useScheduleDrag.ts';
 import useScheduleModal from '@/hooks/useScheduleModal';
 import { ROW_HEIGHT } from '@/components/timetable/Timetable.tsx';
-import { Schedule as ScheduleType } from '@/hooks/server/useTimetableData.ts';
+import { Schedule as ScheduleType } from '@/hooks/server/useTimetableSchedules.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 
 type ColorType = 'rose' | 'amber' | 'green' | 'emerald' | 'blue' | 'violet';

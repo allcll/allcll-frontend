@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import DaySchedule from '@/components/timetable/DaySchedule.tsx';
 import { useUpdateScheduleOptions } from '@/hooks/useScheduleDrag.ts';
-import { ScheduleTime, useTimetableData } from '@/hooks/server/useTimetableData.ts';
+import { ScheduleTime, useTimetableSchedules } from '@/hooks/server/useTimetableSchedules.ts';
 import { useScheduleState } from '@/store/useScheduleState.ts';
 import { Day, DAYS } from '@/utils/types.ts';
 
@@ -13,8 +13,10 @@ export const ROW_HEIGHT = 40;
 function Timetable() {
   const timetableId = useScheduleState(state => state.currentTimetable?.timeTableId);
 
-  const { data: timetable } = useTimetableData(timetableId);
+  const { data: timetable } = useTimetableSchedules(timetableId);
   const { scheduleTimes, colNames, rowNames } = timetable ?? {};
+
+  console.log('Timetable data:', timetable);
 
   return (
     <TimetableGrid colNames={colNames} rowNames={rowNames}>
