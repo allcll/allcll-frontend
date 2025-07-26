@@ -13,27 +13,29 @@ interface TimeRange {
   endMinute: string;
 }
 
-interface IScheduleFormContent {
-  modalActionType?: ScheduleMutateType;
-}
-
-function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
-  const { schedule: scheduleForm, editSchedule: setScheduleForm, saveSchedule, deleteSchedule } = useScheduleModal();
+function ScheduleFormContent() {
+  const {
+    schedule: scheduleForm,
+    editSchedule: setScheduleForm,
+    saveSchedule,
+    deleteSchedule,
+    modalActionType,
+  } = useScheduleModal();
 
   const textFields = [
     {
       id: 'subjectName',
-      placeholder: '과목명',
+      name: '과목명',
       value: scheduleForm?.subjectName ?? '',
     },
     {
       id: 'professorName',
-      placeholder: '교수명',
+      name: '교수명',
       value: scheduleForm?.professorName ?? '',
     },
     {
       id: 'location',
-      placeholder: '장소',
+      name: '장소',
       value: scheduleForm?.location ?? '',
     },
   ];
@@ -90,7 +92,7 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
         if (slot.dayOfWeeks !== targetDay) return slot;
 
         const [startHour, startMinute] = parseValue(slot.startTime);
-        const [endHour, endMinute] = parseValue(slot.endTime); // 기본값 처리
+        const [endHour, endMinute] = parseValue(slot.endTime);
 
         let newStartTime = slot.startTime;
         let newEndTime = slot.endTime;
@@ -111,7 +113,6 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
     });
   };
 
-  // create / edit schedule 동시에 처리 (save)
   const handleSubmit = (e: React.FormEvent) => {
     saveSchedule(e);
   };
@@ -122,15 +123,17 @@ function ScheduleFormContent({ modalActionType }: IScheduleFormContent) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      {textFields.map(({ id, placeholder, value }) => (
-        <TextField
-          key={'text-field' + id}
-          id={id}
-          required
-          placeholder={placeholder}
-          value={value}
-          onChange={e => setScheduleForm(prev => ({ ...prev, [id]: e.target.value }))}
-        />
+      {textFields.map(({ id, name, value }) => (
+        <div key={'text-field' + id} className="flex gap-3">
+          <TextField
+            id={id}
+            placeholder={name}
+            value={value}
+            label={name}
+            onChange={e => setScheduleForm(prev => ({ ...prev, [id]: e.target.value }))}
+            required
+          />
+        </div>
       ))}
 
       <div className="flex gap-2 flex-col">

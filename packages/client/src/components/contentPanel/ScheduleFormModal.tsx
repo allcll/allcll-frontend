@@ -40,7 +40,7 @@ function ScheduleFormModal() {
           </button>
         </div>
 
-        <ScheduleFormContent modalActionType={modalActionType} />
+        <ScheduleFormContent />
       </div>
     </div>
   );

@@ -12,6 +12,8 @@ import { useDeleteTimetable, useTimetables } from '@/hooks/server/useTimetableSc
 import EditTimetable from '@/components/contentPanel/EditTimetable';
 import AddGraySvg from '@/assets/add-gray.svg?react';
 import { useScheduleState } from '@/store/useScheduleState';
+import ScheduleInfoModal from '@/components/contentPanel/ScheduleInfoModal';
+import ScheduleInfoBottomSheet from '@/components/contentPanel/bottomSheet/ScheduleDetailBottomSheet';
 
 type modalType = 'edit' | 'create' | null;
 
@@ -82,10 +84,12 @@ function Timetable() {
             {bottomSheetType === 'search' && <SearchBottomSheet onClose={handleClickFiltering} />}
             {bottomSheetType === 'filter' && <FilteringBottomSheet />}
             {bottomSheetType === 'edit' && <FormBottomSheet />}
+            {bottomSheetType === 'Info' && <ScheduleInfoBottomSheet />}
           </div>
         </div>
 
         {bottomSheetType === 'edit' && <ScheduleFormModal />}
+        {bottomSheetType === 'Info' && <ScheduleInfoModal />}
       </div>
 
       {isOpenModal && (

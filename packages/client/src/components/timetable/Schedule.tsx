@@ -52,13 +52,6 @@ function Schedule({
 
     if (schedule.scheduleType === 'official') {
       ref.current.style.setProperty('transform', '');
-
-      const confirmed = confirm('해당 과목을 삭제하시겠습니까?');
-      if (!confirmed) return;
-
-      const apiSchedule = new ScheduleAdapter(schedule).toApiData();
-      deleteSchedule({ schedule: apiSchedule });
-      return;
     }
 
     // 옮긴 시간대에 대한 시간 계산

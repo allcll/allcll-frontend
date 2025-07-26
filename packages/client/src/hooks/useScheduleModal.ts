@@ -36,11 +36,8 @@ function useScheduleModal() {
   /** schedule 설정하면서 모달 열기 */
   const openScheduleModal = (targetSchedule: Schedule) => {
     // caching previous timetable data
-    console.log('timetableId', timetableId);
 
     prevTimetable.current = queryClient.getQueryData<Timetable>(['timetableData', timetableId]);
-    console.log('prevTimetable', prevTimetable.current);
-    console.log('selectedSchedule', targetSchedule);
 
     let currentMode;
     if (!targetSchedule.scheduleId || targetSchedule.scheduleId <= 0) {
