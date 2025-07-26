@@ -1,24 +1,17 @@
 import React, { useRef } from 'react';
 import DaySchedule from '@/components/timetable/DaySchedule.tsx';
-import { useUpdateScheduleOptions } from '@/hooks/useScheduleDrag.ts';
-import { ScheduleTime, useTimetableSchedules } from '@/hooks/server/useTimetableSchedules.ts';
+import { useUpdateTimetableRef, useUpdateTimetableOptions } from '@/hooks/timetable/useUpdateTimetableOptions.ts';
+import { getScheduleSlots, ScheduleTime, useTimetableSchedules } from '@/hooks/server/useTimetableSchedules.ts';
 import { useScheduleState } from '@/store/useScheduleState.ts';
-import { Day, DAYS } from '@/utils/types.ts';
+import { Day } from '@/utils/types.ts';
 
-const DEFAULT_DAY_NAMES = DAYS.slice(0, 5); // Default to weekdays
-const DEFAULT_ROW_NAMES = Array.from({ length: 12 }, (_, i) => `${i + 9}`);
 export const HEADER_WIDTH = 60;
 export const ROW_HEIGHT = 40;
 
 function Timetable() {
-  const timetableId = useScheduleState(state => state.currentTimetable?.timeTableId);
-
-  const { data: timetable } = useTimetableSchedules(timetableId);
-  const { scheduleTimes, colNames, rowNames } = timetable ?? {};
-
   return (
-    <TimetableGrid colNames={colNames} rowNames={rowNames}>
-      <WeekTable colNames={colNames} scheduleTimes={scheduleTimes} />
+    <TimetableGrid>
+      <WeekTable />
     </TimetableGrid>
   );
 }
@@ -33,14 +26,17 @@ const DefaultScheduleTimes: Record<Day, ScheduleTime[]> = {
   일: [],
 };
 
-function WeekTable({
-  colNames = DEFAULT_DAY_NAMES,
-  scheduleTimes,
-}: Readonly<{ colNames?: Day[]; scheduleTimes?: Record<Day, ScheduleTime[]> }>) {
-  const scheduleTime = scheduleTimes ?? DefaultScheduleTimes;
+function WeekTable() {
+  const timetableId = useScheduleState(state => state.currentTimetable?.timeTableId);
+  const { colNames } = useScheduleState(state => state.options);
+
+  const { data: schedules } = useTimetableSchedules(timetableId);
+  const scheduleSlots = getScheduleSlots(schedules) ?? DefaultScheduleTimes;
+
+  useUpdateTimetableOptions(schedules);
 
   return colNames.map(dayName => (
-    <DaySchedule key={'day-schedule-' + dayName} scheduleTimes={scheduleTime[dayName] ?? []} dayOfWeeks={dayName} />
+    <DaySchedule key={'day-schedule-' + dayName} scheduleTimes={scheduleSlots[dayName] ?? []} dayOfWeeks={dayName} />
   ));
 }
 
@@ -53,14 +49,14 @@ interface ITimetableGridProps {
 }
 
 function TimetableGrid({
-  colNames = DEFAULT_DAY_NAMES,
-  rowNames = DEFAULT_ROW_NAMES,
   headerWidth = HEADER_WIDTH,
   rowHeight = ROW_HEIGHT,
   children,
 }: Readonly<ITimetableGridProps>) {
   const timetableRef = useRef<HTMLDivElement | null>(null);
-  useUpdateScheduleOptions(timetableRef, colNames, rowNames);
+  const { colNames, rowNames } = useScheduleState(state => state.options);
+
+  useUpdateTimetableRef(timetableRef);
 
   return (
     <div className="relative w-full">

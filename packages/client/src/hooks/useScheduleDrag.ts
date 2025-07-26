@@ -78,56 +78,6 @@ export function useScheduleDrag(onAreaChanged: UpdateFunction, onDragEnd: Update
   };
 }
 
-let timer: ReturnType<typeof setTimeout> | null = null;
-
-/** 테이블 크기와 옵션을 업데이트하는 훅 */
-export const useUpdateScheduleOptions = (
-  timetableRef: React.RefObject<HTMLDivElement | null>,
-  colNames: string[],
-  rowNames: string[],
-) => {
-  const setOptions = useScheduleState(state => state.setOptions);
-
-  useEffect(() => {
-    setOptions({
-      rowNames,
-      colNames,
-      cols: colNames.length || 5,
-      rows: rowNames.length || 11,
-    });
-  }, [colNames, rowNames]);
-
-  // 테이블 크기 측정 / 저장하는 함수
-  const updateSizeOptions = () => {
-    if (!timetableRef.current) return;
-
-    const rect = timetableRef.current.getBoundingClientRect();
-    setOptions({
-      width: rect.width,
-      height: rect.height,
-      tableX: rect.left + window.pageXOffset,
-      tableY: rect.top + window.pageYOffset,
-    });
-
-    timer = null;
-  };
-
-  useEffect(() => {
-    if (!timetableRef.current) return;
-
-    const onResize = () => {
-      if (timer) return;
-      timer = setTimeout(updateSizeOptions, 300);
-    };
-
-    onResize();
-    window.addEventListener('resize', onResize);
-    return () => {
-      window.removeEventListener('resize', onResize);
-    };
-  }, [timetableRef]);
-};
-
 const TIME_DIV_COUNT = 6;
 function getDragPosition(
   e: MouseEvent | React.MouseEvent<HTMLDivElement> | React.Touch,

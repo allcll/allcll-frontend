@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useSubject from '@/hooks/server/useSubject.ts';
-import { useScheduleState } from '@/store/useScheduleState.ts';
+import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 import { fetchDeleteJsonOnAPI, fetchJsonOnAPI, fetchOnAPI } from '@/utils/api.ts';
 import { Day, Subject } from '@/utils/types.ts';
@@ -30,7 +30,8 @@ export interface CustomSchedule extends Schedule {
 
 type ScheduleApiResponse = OfficialSchedule | CustomSchedule;
 
-// 정보를 모두 담는 Schedule 인터페이스 - 코드 전반에 사용
+// 정보를 모두 담는 GeneralSchedule 인터페이스 - 코드 전반에 사용
+// Todo: GeneralSchedule 로 이름 변경하기
 export interface Schedule {
   scheduleId: number;
   scheduleType: 'official' | 'custom';
@@ -38,7 +39,7 @@ export interface Schedule {
   subjectName: string;
   professorName: string;
   location: string;
-  timeSlots: TimeSlot[];
+  timeSlots: TimeSlot[]; // Todo: GeneralTimeSlot 으로 변경하기
 }
 
 export interface TimeSlot {
@@ -58,9 +59,6 @@ export interface ScheduleTime {
   height: string;
   top: string;
 }
-
-/** @deprecated new ScheduleAdapter를 이용하세요*/
-export const initCustomSchedule: Schedule = new ScheduleAdapter().toUiData();
 
 export interface TimetableType {
   timeTableId: number;
@@ -83,8 +81,8 @@ export const getTimetables = async (): Promise<TimetableListResponse> => {
 
 export const useTimetables = () => {
   const currentTimetable = useScheduleState(state => state.currentTimetable);
-  const timetableId = currentTimetable?.timeTableId ?? -1;
   const pickTimetable = useScheduleState(state => state.pickTimetable);
+  const timetableId = currentTimetable?.timeTableId ?? -1;
 
   const onSelect = (res: TimetableListResponse) => {
     const { timeTables } = res;
@@ -108,20 +106,12 @@ export const useTimetables = () => {
  * @param timetableId
  */
 export function useTimetableSchedules(timetableId?: number) {
-  const schedule = useScheduleState(state => state.schedule);
   const { data: subjects } = useSubject();
 
   return useQuery({
     queryKey: ['timetableData', timetableId],
     queryFn: async () => await fetchJsonOnAPI<Timetable>(`/api/timetables/${timetableId}/schedules`),
-    select: data =>
-      scheduleTimeAdapter(
-        {
-          ...data,
-          schedules: [...data.schedules, schedule as ScheduleApiResponse],
-        },
-        subjects,
-      ),
+    select: data => toGeneralSchedules(data, subjects),
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5,
     enabled: !!timetableId && timetableId > 0,
@@ -411,40 +401,46 @@ export function useDeleteSchedule(timetableId?: number) {
   });
 }
 
-//// api 데이터 변경 로직
-
-interface IApiScheduleData {
-  schedules: ScheduleApiResponse[];
-}
+//// 데이터 변경 로직
 
 /** API에서 받은 Timetable 데이터를 Wishes와 병합하여, Schedule 배열을 반환합니다.
- * @param apiScheduleData
- * @param subjects
- */
-function mergeTimetableData(apiScheduleData?: IApiScheduleData, subjects?: Subject[]) {
-  if (!apiScheduleData || !subjects) return undefined;
-
-  return apiScheduleData.schedules.map(schedule => new ScheduleAdapter(schedule, subjects).toUiData());
-}
-
-/** timetable 데이터를 ScheduleTime 형태로 변환합니다.
  * @param timetable
  * @param subjects
  */
-export function scheduleTimeAdapter(timetable: IApiScheduleData, subjects?: Subject[]) {
+function toGeneralSchedules(timetable: Timetable, subjects?: Subject[]): Schedule[] {
+  if (!timetable || !subjects) return [];
+
+  const { schedules } = timetable;
+  return schedules.map(schedule => new ScheduleAdapter(schedule, subjects).toUiData());
+}
+
+/** timetable 데이터를 ScheduleSlots 형태 (UI Data)로 변환합니다.
+ * @param generalSchedules - Schedule 배열
+ */
+export function getScheduleSlots(generalSchedules?: Schedule[]) {
+  const minTime = useScheduleState(state => state.options.minTime);
+  const selectedSchedule = useScheduleState(state => state.schedule);
+  const selectMode = useScheduleState(state => state.mode);
   const colors: ScheduleTime['color'][] = ['rose', 'amber', 'green', 'emerald', 'blue', 'violet'];
-
   const scheduleTimes: Record<string, ScheduleTime[]> = {};
-  const mergedData = mergeTimetableData(timetable, subjects);
-  const settings = getSettings(mergedData);
 
-  if (!mergedData) return undefined;
+  if (!generalSchedules) return undefined;
 
-  mergedData.forEach((schedule, index) => {
+  let joinedSchedules = generalSchedules;
+  if (selectMode === ScheduleMutateType.EDIT || selectMode === ScheduleMutateType.VIEW) {
+    joinedSchedules = generalSchedules.map(schedule => {
+      if (schedule.scheduleId === selectedSchedule.scheduleId) {
+        return selectedSchedule;
+      }
+      return schedule;
+    });
+  }
+
+  joinedSchedules.forEach((schedule, index) => {
     const color = colors[index % colors.length];
     const { subjectName: title, professorName: professor, location } = schedule;
 
-    const timeslots = new TimeslotAdapter(schedule.timeSlots).toUiData(settings?.minTime ?? 9);
+    const timeslots = new TimeslotAdapter(schedule.timeSlots).toUiData(minTime);
 
     timeslots.forEach(slot => {
       if (!scheduleTimes[slot.dayOfWeek]) {
@@ -462,52 +458,5 @@ export function scheduleTimeAdapter(timetable: IApiScheduleData, subjects?: Subj
     });
   });
 
-  return {
-    ...settings,
-    scheduleTimes,
-  };
-}
-
-/** Timetable을 렌더링 할 때 필요한 정보 (위치, 크기)를 반환합니다.
- * @param schedule
- */
-function getSettings(schedule?: Schedule[]) {
-  if (!schedule) return undefined;
-
-  // 요일을 활성화 할지 판단하는 로직
-  let hasSaturday = false;
-  let hasSunday = false;
-  schedule.forEach(item => {
-    if (item.timeSlots.some(time => time.dayOfWeeks === '토')) hasSaturday = true;
-    if (item.timeSlots.some(time => time.dayOfWeeks === '일')) hasSunday = true;
-  });
-
-  const colNames: Day[] = ['월', '화', '수', '목', '금'];
-  if (hasSunday) {
-    colNames.push('토');
-    colNames.push('일');
-  } else if (hasSaturday) {
-    colNames.push('토');
-  }
-
-  // Timetable의 시작시간, 종료시간을 계산
-  const { minTime, maxTime } = schedule.reduce(
-    (acc, item) => {
-      item.timeSlots.forEach(time => {
-        const start = parseInt(time.startTime.split(':')[0]);
-        const end = parseInt(time.endTime.split(':')[0]);
-        acc.minTime = Math.min(acc.minTime, start);
-        acc.maxTime = Math.max(acc.maxTime, end);
-      });
-      return acc;
-    },
-    { minTime: 9, maxTime: 20 },
-  );
-
-  return {
-    colNames,
-    rowNames: Array.from({ length: maxTime - minTime + 1 }, (_, i) => `${i + minTime}`),
-    maxTime,
-    minTime,
-  };
+  return scheduleTimes;
 }

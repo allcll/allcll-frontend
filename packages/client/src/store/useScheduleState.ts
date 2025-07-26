@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { Schedule, TimetableType } from '@/hooks/server/useTimetableSchedules.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
+import { Day, DAYS } from '@/utils/types.ts';
 
 export enum ScheduleMutateType {
   NONE = 'none',
@@ -13,8 +14,10 @@ export interface IMutateScheduleState {
   currentTimetable: TimetableType;
   options: {
     timetableRef: HTMLDivElement | null;
-    colNames: string[];
+    colNames: Day[];
     rowNames: string[];
+    minTime: number;
+    maxTime: number;
     tableX: number;
     tableY: number;
     width: number;
@@ -37,8 +40,10 @@ export const useScheduleState = create<IMutateScheduleState>(set => ({
   },
   options: {
     timetableRef: null,
-    colNames: [],
-    rowNames: [],
+    colNames: DAYS.slice(0, 5),
+    rowNames: Array.from({ length: 12 }, (_, i) => `${i + 9}`),
+    minTime: 9,
+    maxTime: 20,
     tableX: 0,
     tableY: 0,
     width: 0,
