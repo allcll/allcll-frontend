@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Card from '@/components/common/Card.tsx';
 import TimetableComponent from '@/components/timetable/Timetable.tsx';
 import DropdownSelect from '@/components/timetable/DropdownSelect.tsx';
@@ -18,15 +18,65 @@ import ScheduleInfoBottomSheet from '@/components/contentPanel/bottomSheet/Sched
 type modalType = 'edit' | 'create' | null;
 
 function Timetable() {
-  const { mutate: deleteTimetable } = useDeleteTimetable();
-  const { data: timetables = [] } = useTimetables();
-
   const [isOpenModal, setIsOpenModal] = useState<modalType>(null);
   const bottomSheetType = useBottomSheetStore(state => state.type);
   const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
   const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
 
-  const currentTimetable = useScheduleState(state => state.currentTimetable);
+  const handleClickFiltering = (bottomSheetType: BottomSheetType) => {
+    closeBottomSheet('search');
+
+    openBottomSheet(bottomSheetType);
+  };
+
+  return (
+    <div className="w-full p-4 ">
+      <div className="grid md:grid-cols-4 gap-4">
+        <div className="md:col-span-3 w-full h-full">
+          <Card className="px-2 relative overflow-hidden">
+            <TimetableHeader setIsOpenModal={setIsOpenModal} />
+            <TimetableComponent />
+          </Card>
+        </div>
+
+        <div className="md:col-span-1 w-full">
+          <div className="hidden md:block">
+            <ContentPanel />
+          </div>
+          <div className="md:hidden">
+            {bottomSheetType === 'search' && <SearchBottomSheet onClose={handleClickFiltering} />}
+            {bottomSheetType === 'filter' && <FilteringBottomSheet />}
+            {bottomSheetType === 'edit' && <FormBottomSheet />}
+            {bottomSheetType === 'Info' && <ScheduleInfoBottomSheet />}
+          </div>
+        </div>
+
+        {bottomSheetType === 'edit' && <ScheduleFormModal />}
+        {bottomSheetType === 'Info' && <ScheduleInfoModal />}
+      </div>
+
+      {isOpenModal && <EditTimetable type={isOpenModal} onClose={() => setIsOpenModal(null)} />}
+
+      {bottomSheetType === null && (
+        <button
+          className="fixed bottom-4 right-4 z-50 rounded-full w-12 h-12 bg-gray-200 shadow-md flex items-center justify-center"
+          onClick={() => openBottomSheet('search')}
+        >
+          <AddGraySvg className="w-6 h-6" />
+        </button>
+      )}
+    </div>
+  );
+}
+
+interface ITimetableHeaderProps {
+  setIsOpenModal: React.Dispatch<React.SetStateAction<modalType>>;
+}
+
+function TimetableHeader({ setIsOpenModal }: ITimetableHeaderProps) {
+  const { mutate: deleteTimetable } = useDeleteTimetable();
+  const { data: timetables = [] } = useTimetables();
+
   const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
 
   const handleSelect = (optionId: number) => {
@@ -49,62 +99,13 @@ function Timetable() {
     setIsOpenModal('create');
   };
 
-  const handleClickFiltering = (bottomSheetType: BottomSheetType) => {
-    closeBottomSheet('search');
-
-    openBottomSheet(bottomSheetType);
-  };
-
   return (
-    <div className="w-full p-4 ">
-      <div className="grid md:grid-cols-4 gap-4">
-        <div className="md:col-span-3 w-full h-full">
-          <Card className="px-2 relative overflow-hidden">
-            <header className="flex pb-2 justify-between items-center">
-              <DropdownSelect
-                timetables={timetables}
-                onSelect={handleSelect}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-              />
-              <button className="p-1 h-fit cursor-pointer" onClick={handleCreateTimetable}>
-                <AddGraySvg className="w-5 h-5 cursor-pointer" />
-              </button>
-            </header>
-
-            <TimetableComponent />
-          </Card>
-        </div>
-
-        <div className="md:col-span-1 w-full">
-          <div className="hidden md:block">
-            <ContentPanel />
-          </div>
-          <div className="md:hidden">
-            {bottomSheetType === 'search' && <SearchBottomSheet onClose={handleClickFiltering} />}
-            {bottomSheetType === 'filter' && <FilteringBottomSheet />}
-            {bottomSheetType === 'edit' && <FormBottomSheet />}
-            {bottomSheetType === 'Info' && <ScheduleInfoBottomSheet />}
-          </div>
-        </div>
-
-        {bottomSheetType === 'edit' && <ScheduleFormModal />}
-        {bottomSheetType === 'Info' && <ScheduleInfoModal />}
-      </div>
-
-      {isOpenModal && (
-        <EditTimetable type={isOpenModal} timeTable={currentTimetable} onClose={() => setIsOpenModal(null)} />
-      )}
-
-      {bottomSheetType === null && (
-        <button
-          className="fixed bottom-4 right-4 z-50 rounded-full w-12 h-12 bg-gray-200 shadow-md flex items-center justify-center"
-          onClick={() => openBottomSheet('search')}
-        >
-          <AddGraySvg className="w-6 h-6" />
-        </button>
-      )}
-    </div>
+    <header className="flex pb-2 justify-between items-center">
+      <DropdownSelect timetables={timetables} onSelect={handleSelect} onEdit={handleEdit} onDelete={handleDelete} />
+      <button className="p-1 h-fit cursor-pointer" onClick={handleCreateTimetable}>
+        <AddGraySvg className="w-5 h-5 cursor-pointer" />
+      </button>
+    </header>
   );
 }
 
