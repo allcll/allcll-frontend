@@ -371,20 +371,21 @@ export function useDeleteSchedule(timetableId?: number) {
       queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetable);
       console.error(error);
     },
-
     onSuccess: async (_, { schedule }, context) => {
+      console.log('스케줄 삭제 성공! timetableId:', timetableId);
       if (!context?.prevTimetable) {
         queryClient.invalidateQueries({ queryKey: ['timetableList'] });
         queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
         return;
       }
 
+      console.log('스케줄 삭제 성공! 이전 데이터 있음. timetableId:', timetableId, context.prevTimetable);
       queryClient.setQueryData(['timetableData', timetableId], {
         ...context.prevTimetable,
         schedules: context.prevTimetable.schedules.filter(sch => sch.scheduleId !== schedule.scheduleId),
       });
 
-      queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
     },
   });
 }
