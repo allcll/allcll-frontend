@@ -175,6 +175,13 @@ export class TimeslotAdapter {
     return result;
   }
 
+  validate() {
+    return this.data.every(slot => {
+      const { startHour, startMinute, endHour, endMinute } = slot;
+      return startHour < endHour || (startHour === endHour && startMinute < endMinute);
+    });
+  }
+
   toApiData(): TimeSlot[] {
     const pad = (num: number) => num.toString().padStart(2, '0');
 

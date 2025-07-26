@@ -1,6 +1,6 @@
 import XDarkGraySvg from '@/assets/x-darkgray.svg?react';
 import TextField from '../common/TextField';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Chip from '../common/Chip';
 import {
   TimetableType,
