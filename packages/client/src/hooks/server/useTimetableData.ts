@@ -191,6 +191,7 @@ export function useDeleteTimetable() {
 
       queryClient.invalidateQueries({ queryKey: ['timetableList', timeTableId] });
       queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+      queryClient.invalidateQueries({ queryKey: ['timetableData', timeTableId] });
     },
   });
 }
