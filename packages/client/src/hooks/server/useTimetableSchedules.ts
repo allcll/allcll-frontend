@@ -187,6 +187,10 @@ export function useDeleteTimetable() {
   });
 }
 
+/**
+ * 시간표 생성 훅
+ * 시간표를 생성합니다..
+ */
 export function useCreateTimetable() {
   const queryClient = useQueryClient();
 
@@ -221,7 +225,15 @@ export function useCreateTimetable() {
 
       return { previousTimetables };
     },
-    onSuccess: () => {
+    onSuccess: (data: TimetableType) => {
+      const { pickTimetable } = useScheduleState.getState();
+
+      pickTimetable({
+        timeTableId: data.timeTableId,
+        timeTableName: data.timeTableName,
+        semester: data.semester,
+      });
+
       queryClient.invalidateQueries({ queryKey: ['timetableList'] });
     },
     onError: error => {

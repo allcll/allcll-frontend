@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Card from '@/components/common/Card.tsx';
 import TimetableComponent from '@/components/timetable/Timetable.tsx';
 import DropdownSelect from '@/components/timetable/DropdownSelect.tsx';
@@ -25,16 +25,12 @@ function Timetable() {
   const currentTimetable = useScheduleState(state => state.currentTimetable);
   const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
 
-  useEffect(() => {
-    if (timetables.length > 0 && (!currentTimetable || currentTimetable.timeTableId <= -1)) {
-      setCurrentTimetable(timetables[0]);
-    }
-  }, [timetables]);
-
   const handleSelect = (optionId: number) => {
     const selectedTimetable = timetables.find(timetable => timetable.timeTableId === optionId);
 
-    if (selectedTimetable) setCurrentTimetable(selectedTimetable);
+    if (selectedTimetable) {
+      setCurrentTimetable(selectedTimetable);
+    }
   };
 
   const handleEdit = () => {
@@ -47,7 +43,6 @@ function Timetable() {
 
   const handleCreateTimetable = () => {
     setIsOpenModal('create');
-    //TOOD: 시간표 추가 연결
   };
 
   return (
