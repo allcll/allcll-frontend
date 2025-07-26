@@ -49,7 +49,7 @@ function ContentPanel() {
       };
 
       const filteringDepartment = (subject: Subject): boolean => {
-        if (!selectedDepartment && selectedDepartment === '') return true;
+        if (!selectedDepartment || selectedDepartment === '') return true;
         if (selectedDepartment === subject.deptCd) return true;
 
         return false;

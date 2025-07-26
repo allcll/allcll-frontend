@@ -23,7 +23,7 @@ interface FilterState {
 }
 
 const initialState: Omit<FilterState, 'setFilterSchedule' | 'resetFilterSchedule' | 'getFilterSchedule'> = {
-  selectedDepartment: '전체',
+  selectedDepartment: '',
   selectedGrades: [],
   isMajor: undefined,
   selectedDays: [],
