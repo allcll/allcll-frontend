@@ -56,6 +56,11 @@ function Schedule({
   const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
 
+    if (schedule.scheduleType === 'official') {
+      confirm('해당과목을 삭제 하시겠습니까?');
+      //TODO: 확인누르면 official 삭제
+      return;
+    }
     const initSchedule = new ScheduleAdapter().toUiData();
     openScheduleModal(initSchedule);
   };
