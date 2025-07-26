@@ -4,28 +4,48 @@ import BottomSheetHeader from './BottomSheetHeader';
 import FilterSvg from '@/assets/filter.svg?react';
 import { FilteredSubjectCards } from '../subject/FilteredSubjectCards';
 import { useEffect, useState } from 'react';
-import { Subject } from '@/utils/types';
-import { useBottomSheetStore } from '@/store/useBottomSheetStore';
+import { Day, Subject } from '@/utils/types';
 import { disassemble } from 'es-hangul';
 import useSubject from '@/hooks/server/useSubject';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import useScheduleModal from '@/hooks/useScheduleModal';
-import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
+import { BottomSheetType } from '@/store/useBottomSheetStore';
 
-const initSchedule = new ScheduleAdapter().toUiData();
+export interface Schedule {
+  scheduleId: number;
+  scheduleType: 'official' | 'custom';
+  subjectId: number | null;
+  subjectName: string;
+  professorName: string;
+  location: string;
+  timeSlots: {
+    dayOfWeeks: Day;
+    startTime: string;
+    endTime: string;
+  }[];
+}
 
-function SearchBottomSheet() {
+const initSchedule: Schedule = {
+  scheduleId: -1,
+  scheduleType: 'custom',
+  subjectId: null,
+  subjectName: '',
+  professorName: '',
+  location: '',
+  timeSlots: [],
+};
+
+interface ISearchBottomSheet {
+  onClose: (bottomSheetType: BottomSheetType) => void;
+}
+
+function SearchBottomSheet({ onClose }: ISearchBottomSheet) {
   const [searchKeywords, setSearchKeywords] = useState<string>('');
   const [filteredData, setFilteredData] = useState<Subject[]>([]);
 
   const { data: subjects = [], isPending } = useSubject();
   const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
   const { openScheduleModal } = useScheduleModal();
-  const { openBottomSheet } = useBottomSheetStore();
-
-  const handleClickFiltering = () => {
-    openBottomSheet('filter');
-  };
 
   const handleCreateSchedule = () => {
     openScheduleModal(initSchedule);
@@ -104,13 +124,11 @@ function SearchBottomSheet() {
           <BottomSheetHeader
             title="과목검색"
             headerType="add"
-            onClose={() => {
-              openBottomSheet('edit');
-            }}
+            onClose={() => onClose('edit')}
             onClick={handleCreateSchedule}
           />
 
-          <div className="flex items-center gap-2 py-3">
+          <div className="flex items-center flex gap-2 py-3">
             <SearchBox
               type="text"
               placeholder="과목명 및 교수명 검색"
@@ -119,7 +137,7 @@ function SearchBottomSheet() {
               onDelete={() => setSearchKeywords('')}
               className="pl-10 pr-6 py-2 rounded-md w-full bg-white border border-gray-400 text-sm"
             />
-            <button className="w-20 justify-center flex cursor-pointer" onClick={handleClickFiltering}>
+            <button className="w-20 justify-center flex cursor-pointer" onClick={() => onClose('filter')}>
               <FilterSvg className="w-6 h-6" />
             </button>
           </div>

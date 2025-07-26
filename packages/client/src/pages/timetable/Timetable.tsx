@@ -7,7 +7,7 @@ import FilteringBottomSheet from '@/components/contentPanel/bottomSheet/Filterin
 import FormBottomSheet from '@/components/contentPanel/bottomSheet/FormBottomSheet';
 import ScheduleFormModal from '@/components/contentPanel/ScheduleFormModal';
 import ContentPanel from '@/components/contentPanel/ContentPanel';
-import { useBottomSheetStore } from '@/store/useBottomSheetStore';
+import { BottomSheetType, useBottomSheetStore } from '@/store/useBottomSheetStore';
 import { useDeleteTimetable, useTimetables } from '@/hooks/server/useTimetableSchedules.ts';
 import EditTimetable from '@/components/contentPanel/EditTimetable';
 import AddGraySvg from '@/assets/add-gray.svg?react';
@@ -21,6 +21,8 @@ function Timetable() {
 
   const [isOpenModal, setIsOpenModal] = useState<modalType>(null);
   const bottomSheetType = useBottomSheetStore(state => state.type);
+  const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
+  const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
 
   const currentTimetable = useScheduleState(state => state.currentTimetable);
   const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
@@ -43,6 +45,12 @@ function Timetable() {
 
   const handleCreateTimetable = () => {
     setIsOpenModal('create');
+  };
+
+  const handleClickFiltering = (bottomSheetType: BottomSheetType) => {
+    closeBottomSheet('search');
+
+    openBottomSheet(bottomSheetType);
   };
 
   return (
@@ -71,7 +79,7 @@ function Timetable() {
             <ContentPanel />
           </div>
           <div className="md:hidden">
-            <SearchBottomSheet />
+            {bottomSheetType === 'search' && <SearchBottomSheet onClose={handleClickFiltering} />}
             {bottomSheetType === 'filter' && <FilteringBottomSheet />}
             {bottomSheetType === 'edit' && <FormBottomSheet />}
           </div>
@@ -82,6 +90,15 @@ function Timetable() {
 
       {isOpenModal && (
         <EditTimetable type={isOpenModal} timeTable={currentTimetable} onClose={() => setIsOpenModal(null)} />
+      )}
+
+      {bottomSheetType === null && (
+        <button
+          className="fixed bottom-4 right-4 z-50 rounded-full w-12 h-12 bg-gray-200 shadow-md flex items-center justify-center"
+          onClick={() => openBottomSheet('search')}
+        >
+          <AddGraySvg className="w-6 h-6" />
+        </button>
       )}
     </div>
   );

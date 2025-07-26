@@ -48,8 +48,13 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
       expandToMax();
 
       setTimeout(() => {
-        selectedCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 300);
+        if (selectedCardRef.current) {
+          selectedCardRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          });
+        }
+      }, 400);
     }
   };
 

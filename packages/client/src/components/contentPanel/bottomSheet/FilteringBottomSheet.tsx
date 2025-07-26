@@ -19,6 +19,11 @@ function FilteringBottomSheet() {
     return array.includes(value) ? array.filter(item => item !== value) : [...array, value];
   }
 
+  const handleClickSave = () => {
+    closeBottomSheet('filter');
+    openBottomSheet('search');
+  };
+
   return (
     <BottomSheet>
       <BottomSheetHeader
@@ -101,7 +106,7 @@ function FilteringBottomSheet() {
 
       <div className="flex justify-end gap-3">
         <button
-          onClick={() => closeBottomSheet('filter')}
+          onClick={handleClickSave}
           type="submit"
           className="text-blue-500 text-xs w-15 rounded px-4 py-2 cursor-pointer "
         >

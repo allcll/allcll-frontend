@@ -101,7 +101,7 @@ function useScheduleModal() {
 
     // 모달 state 초기화
     changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);
-    closeBottomSheet();
+    closeBottomSheet('edit');
   };
 
   const deleteSchedule = (e?: React.MouseEvent<HTMLButtonElement>) => {

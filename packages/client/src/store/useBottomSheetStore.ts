@@ -1,12 +1,13 @@
 import { create } from 'zustand';
 
-type BottomSheetType = 'filter' | 'search' | 'edit' | 'Info' | null;
+export type BottomSheetType = 'filter' | 'search' | 'edit' | 'Info' | null;
 
 interface IBottomSheetStore {
   type: BottomSheetType;
   props?: unknown;
   openBottomSheet: (type: BottomSheetType, props?: unknown) => void;
   closeBottomSheet: (targetType?: BottomSheetType) => void;
+  resetBottomSheet: () => void;
 }
 
 export const useBottomSheetStore = create<IBottomSheetStore>((set, get) => ({
@@ -19,5 +20,8 @@ export const useBottomSheetStore = create<IBottomSheetStore>((set, get) => ({
     if (!targetType || currentType === targetType) {
       set({ type: null, props: undefined });
     }
+  },
+  resetBottomSheet: () => {
+    set({ type: null });
   },
 }));

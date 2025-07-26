@@ -103,11 +103,11 @@ export default function useBottomSheet() {
 
       if (currentSheetY !== MIN_Y) {
         if (touchMove.movingDirection === 'down') {
-          sheet.current!.style.setProperty('transform', `translateY(${MAX_Y}px)`);
+          sheet.current!.style.setProperty('transform', `translateY( ${window.innerHeight - 100}px)`);
         }
 
         if (touchMove.movingDirection === 'up') {
-          sheet.current!.style.setProperty('transform', `translateY(${MIN_Y}px)`);
+          sheet.current!.style.setProperty('transform', `translateY(0px)`);
         }
       }
 
