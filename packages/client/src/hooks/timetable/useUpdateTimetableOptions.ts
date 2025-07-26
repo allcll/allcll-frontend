@@ -39,8 +39,6 @@ export function useUpdateTimetableOptions(schedule?: Schedule[]) {
     { minTime: 9, maxTime: 20 },
   );
 
-  console.log('useUpdateTimetableOptions', { minTime, maxTime, maxDayIndex });
-
   useEffect(() => {
     setOptions({
       rowNames: Array.from({ length: maxTime - minTime + 1 }, (_, i) => `${minTime + i}`),
