@@ -2,7 +2,6 @@
 import React, { useRef, useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
-  initCustomSchedule,
   Schedule,
   Timetable,
   useCreateSchedule,
@@ -12,6 +11,8 @@ import {
 import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState.ts';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
+
+const initCustomSchedule = new ScheduleAdapter().toUiData();
 
 function useScheduleModal() {
   const queryClient = useQueryClient();
@@ -39,6 +40,7 @@ function useScheduleModal() {
 
     prevTimetable.current = queryClient.getQueryData<Timetable>(['timetableData', timetableId]);
     console.log('prevTimetable', prevTimetable.current);
+    console.log('selectedSchedule', targetSchedule);
 
     let currentMode;
     if (!targetSchedule.scheduleId || targetSchedule.scheduleId <= 0) {
@@ -120,7 +122,7 @@ function useScheduleModal() {
     closeBottomSheet();
   };
 
-  const cancelSchedule = (e?: React.MouseEvent) => {
+  const cancelSchedule = (e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent) => {
     if (e) e.preventDefault();
 
     // timetable 롤백

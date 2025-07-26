@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import ScheduleFormContent from './ScheduleFormContent';
 import XDarkGraySvg from '@/assets/x-darkgray.svg?react';
 import useScheduleModal from '@/hooks/useScheduleModal';
@@ -7,6 +8,17 @@ function ScheduleFormModal() {
   const { cancelSchedule, modalActionType } = useScheduleModal();
   const title = modalActionType === ScheduleMutateType.CREATE ? '생성' : '수정';
 
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') cancelSchedule(e);
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, []);
+
   return (
     <div
       className="fixed inset-0 z-50  hidden md:flex items-center justify-center  bg-black/10"
@@ -15,6 +27,8 @@ function ScheduleFormModal() {
       <div
         className="bg-white flex border border-gray-200 rounded-xl flex-col gap-2 w-[90%] max-w-md p-8 shadow-xl relative"
         onClick={e => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
       >
         <div className="flex w-full justify-between">
           <h3 className="font-semibold">과목 {title}</h3>

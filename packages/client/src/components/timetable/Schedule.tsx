@@ -3,7 +3,7 @@ import { useScheduleDrag } from '@/hooks/useScheduleDrag.ts';
 import useScheduleModal from '@/hooks/useScheduleModal';
 import { ROW_HEIGHT } from '@/components/timetable/Timetable.tsx';
 import { Schedule as ScheduleType, useDeleteSchedule } from '@/hooks/server/useTimetableSchedules.ts';
-import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
+import { moveTimeSlot, ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 import { useScheduleState } from '@/store/useScheduleState';
 
 type ColorType = 'rose' | 'amber' | 'green' | 'emerald' | 'blue' | 'violet';
@@ -44,43 +44,49 @@ function Schedule({
     ref.current.style.setProperty('transform', `translate(calc(100% * ${diffX}), ${diffY}px)`);
   };
 
-  const onDragEnd = (_: number, __: number, nowX: number, nowY: number) => {
+  const onDragEnd = (startX: number, startY: number, nowX: number, nowY: number) => {
     if (!ref.current) return;
 
-    console.log(nowX, nowY);
+    if (schedule.scheduleType === 'official') {
+      ref.current.style.setProperty('transform', '');
 
-    // Todo: schedule 감지, schedule 업데이트 로직 추가
-    const updatedSchedule = { ...schedule };
-    console.log('onDragEnd', updatedSchedule, timeslotIndex, nowX, nowY);
+      const confirmed = confirm('해당 과목을 삭제하시겠습니까?');
+      if (!confirmed) return;
+
+      const apiSchedule = new ScheduleAdapter(schedule).toApiData();
+      deleteSchedule({ schedule: apiSchedule });
+      return;
+    }
+
+    // 옮긴 시간대에 대한 시간 계산
+    const updatedSchedule = {
+      ...schedule,
+      timeSlots: schedule.timeSlots.map((ts, index) => {
+        if (index !== timeslotIndex) return ts;
+        return moveTimeSlot(ts, nowX - startX, nowY - startY);
+      }),
+    };
 
     openScheduleModal(updatedSchedule);
     ref.current.style.setProperty('transform', '');
   };
 
-  const { dragging, onMouseDown } = useScheduleDrag(onAreaChanged, onDragEnd);
-
-  const onClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-
-    if (schedule.scheduleType === 'official') {
-      const confirmed = confirm('해당 과목을 삭제하시겠습니까?');
-      if (!confirmed) return;
-
-      const apiSchedule = new ScheduleAdapter(schedule).toApiData();
-
-      deleteSchedule({ schedule: apiSchedule });
-      return;
+  const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.stopPropagation();
+      onDragEnd(0, 0, 0, 0); // 임시로 0, 0 으로 설정
     }
-    const initSchedule = new ScheduleAdapter().toUiData();
-    openScheduleModal(initSchedule);
   };
+
+  const { dragging, onMouseDown } = useScheduleDrag(onAreaChanged, onDragEnd);
 
   return (
     <div
       ref={ref}
       className={`flex absolute ${bgLight} rounded-l-xs cursor-pointer ` + attrs.className}
-      onClick={onClick}
       onMouseDown={onMouseDown}
+      onKeyDown={onKeyDown}
       tabIndex={0}
       {...attrs}
     >

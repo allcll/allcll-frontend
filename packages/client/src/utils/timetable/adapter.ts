@@ -208,3 +208,29 @@ export class TimeslotAdapter {
     });
   }
 }
+export function moveTimeSlot(timeSlots: TimeSlot, diffDay: number, diffTime: number): TimeSlot {
+  const { dayOfWeeks, startTime, endTime } = timeSlots;
+  const [startHour, startMinute] = startTime.split(':').map(Number);
+  const [endHour, endMinute] = endTime.split(':').map(Number);
+
+  // 시간 이동
+  const newStart = Math.min(24, startHour + startMinute / 60 + diffTime);
+  const newEnd = Math.min(24, endHour + endMinute / 60 + diffTime);
+
+  const newStartHour = Math.floor(newStart);
+  const newStartMinute = Math.round((newStart - newStartHour) * 60);
+  const newEndHour = Math.floor(newEnd);
+  const newEndMinute = Math.round((newEnd - newEndHour) * 60);
+
+  // 요일 이동
+  const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
+  const currentIndex = daysOfWeek.indexOf(dayOfWeeks);
+  const newIndex = (currentIndex + diffDay + daysOfWeek.length) % daysOfWeek.length;
+  const newDayOfWeeks = daysOfWeek[newIndex];
+
+  return {
+    dayOfWeeks: newDayOfWeeks as Day,
+    startTime: `${newStartHour.toString().padStart(2, '0')}:${newStartMinute.toString().padStart(2, '0')}`,
+    endTime: `${newEndHour.toString().padStart(2, '0')}:${newEndMinute.toString().padStart(2, '0')}`,
+  };
+}
