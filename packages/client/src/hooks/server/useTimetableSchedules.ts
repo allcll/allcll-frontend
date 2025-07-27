@@ -87,11 +87,17 @@ export const useTimetables = () => {
 
     const exists = timeTables.some(timetable => timetable.timeTableId === currentTimetable?.timeTableId);
 
+    /**
+     * currentTimetable이 timeTables에 존재하지 않을 때
+     */
     if (!exists) {
       pickTimetable(timeTables[timeTables.length - 1]);
       return;
     }
 
+    /**
+     * currentTimetable이 존재하는데, timetables가 없을 떄
+     */
     if (timeTables.length <= 0 && currentTimetable.timeTableId !== -1) {
       pickTimetable({
         timeTableId: -1,
@@ -134,6 +140,7 @@ export function useTimetableSchedules(timetableId?: number) {
  */
 export function useUpdateTimetable() {
   const queryClient = useQueryClient();
+  const { currentTimetable, pickTimetable } = useScheduleState.getState();
 
   return useMutation({
     mutationFn: async ({ timeTableId, timeTableName }: { timeTableId: number; timeTableName: string }) => {
@@ -142,16 +149,29 @@ export function useUpdateTimetable() {
         body: JSON.stringify({ timeTableName }),
       });
     },
+
     onMutate: async ({ timeTableId }) => {
       await queryClient.cancelQueries({ queryKey: ['timetableList', timeTableId] });
       return { timeTableId };
     },
+
+    onSuccess: (updated, _variables, context) => {
+      const updatedId = context?.timeTableId;
+
+      if (currentTimetable?.timeTableId === updatedId) {
+        pickTimetable({
+          timeTableId: updated.timeTableId,
+          timeTableName: updated.timeTableName,
+          semester: updated.semester,
+        });
+      }
+
+      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+      queryClient.invalidateQueries({ queryKey: ['timetableList', updatedId] });
+    },
+
     onError: (error, _variables, context) => {
       console.error(`시간표 수정 실패 (id: ${context?.timeTableId})`, error);
-      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
-      queryClient.invalidateQueries({ queryKey: ['timetableList', context?.timeTableId] });
-    },
-    onSuccess: (_, __, context) => {
       queryClient.invalidateQueries({ queryKey: ['timetableList'] });
       queryClient.invalidateQueries({ queryKey: ['timetableList', context?.timeTableId] });
     },
@@ -180,15 +200,7 @@ export function useDeleteTimetable() {
       queryClient.invalidateQueries({ queryKey: ['timetableList'] });
     },
     onSuccess: (_, __, context) => {
-      const store = useScheduleState.getState();
-      // const
-      // 삭제된 시간표가 현재 선택된 시간표라면 초기화
-      if (store.currentTimetable?.timeTableId === context?.timeTableId) {
-        // store.pickTimetable();
-      }
-
       queryClient.invalidateQueries({ queryKey: ['timetableList'] });
-
       queryClient.invalidateQueries({ queryKey: ['timetableData', context?.timeTableId] });
     },
   });
@@ -196,7 +208,7 @@ export function useDeleteTimetable() {
 
 /**
  * 시간표 생성 훅
- * 시간표를 생성합니다..
+ * 시간표를 생성합니다.
  */
 export function useCreateTimetable() {
   const queryClient = useQueryClient();
