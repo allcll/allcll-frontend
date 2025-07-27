@@ -39,8 +39,8 @@ const DropdownSelect = ({ timetables, onSelect, onEdit, onDelete }: DropdownSele
       {/* Select Box (보여지는 부분) */}
       <>
         <Filtering
-          label={currentTimetable.timeTableName}
-          selected={currentTimetable.timeTableId !== -1}
+          label={currentTimetable?.timeTableName ?? '새 시간표'}
+          selected={currentTimetable?.timeTableId > -1}
           className="gap-4 max-w-20 max-h-80 overflow-y-auto"
         >
           {timetables.length === 0 && <div> 새로운 시간표를 추가해주세요.</div>}

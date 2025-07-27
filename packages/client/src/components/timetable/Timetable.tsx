@@ -26,10 +26,10 @@ const DefaultScheduleTimes: Record<Day, ScheduleTime[]> = {
 };
 
 function WeekTable() {
-  const timetableId = useScheduleState(state => state.currentTimetable?.timeTableId);
+  const currentTimetable = useScheduleState(s => s.currentTimetable);
   const { colNames } = useScheduleState(state => state.options);
 
-  const { data: schedules } = useTimetableSchedules(timetableId);
+  const { data: schedules } = useTimetableSchedules(currentTimetable?.timeTableId);
   const scheduleSlots = getScheduleSlots(schedules) ?? DefaultScheduleTimes;
 
   useUpdateTimetableOptions(schedules);

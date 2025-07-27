@@ -80,15 +80,25 @@ export const getTimetables = async (): Promise<TimetableListResponse> => {
 };
 
 export const useTimetables = () => {
-  const currentTimetable = useScheduleState(state => state.currentTimetable);
   const pickTimetable = useScheduleState(state => state.pickTimetable);
-  const timetableId = currentTimetable?.timeTableId ?? -1;
-
+  const currentTimetable = useScheduleState(state => state.currentTimetable);
   const onSelect = (res: TimetableListResponse) => {
     const { timeTables } = res;
 
-    if (timetableId === -1 && timeTables.length > 0) {
-      pickTimetable(timeTables[0]);
+    const exists = timeTables.some(timetable => timetable.timeTableId === currentTimetable?.timeTableId);
+
+    if (!exists) {
+      pickTimetable(timeTables[timeTables.length - 1]);
+      return;
+    }
+
+    if (timeTables.length <= 0 && currentTimetable.timeTableId !== -1) {
+      pickTimetable({
+        timeTableId: -1,
+        timeTableName: '새 시간표',
+        semester: '',
+      });
+      return;
     }
 
     return timeTables;
@@ -160,27 +170,26 @@ export function useDeleteTimetable() {
       return await fetchOnAPI(`/api/timetables/${timeTableId}`, { method: 'DELETE' });
     },
     onMutate: async (timeTableId: number) => {
-      await queryClient.cancelQueries({ queryKey: ['timetableList', timeTableId] });
+      await queryClient.cancelQueries({ queryKey: ['timetableList'] });
+      await queryClient.cancelQueries({ queryKey: ['timetableData', timeTableId] });
       return { timeTableId };
     },
-    onError: (error, timeTableId) => {
-      console.error(`시간표 삭제 실패 (id: ${timeTableId})`, error);
-      queryClient.invalidateQueries({ queryKey: ['timetableList', timeTableId] });
+    onError: (error, _variables, context) => {
+      console.error(`시간표 삭제 실패 (id: ${context?.timeTableId})`, error);
+      queryClient.invalidateQueries({ queryKey: ['timetableList', context?.timeTableId] });
       queryClient.invalidateQueries({ queryKey: ['timetableList'] });
     },
-    onSuccess: (_, timeTableId) => {
-      queryClient.invalidateQueries({ queryKey: ['timetableList', timeTableId] });
-      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
-      queryClient.invalidateQueries({ queryKey: ['timetableData', timeTableId] });
-
-      const { currentTimetable, pickTimetable } = useScheduleState.getState();
-      if (currentTimetable?.timeTableId === timeTableId) {
-        pickTimetable({
-          timeTableId: -1,
-          timeTableName: '새 시간표',
-          semester: '',
-        });
+    onSuccess: (_, __, context) => {
+      const store = useScheduleState.getState();
+      // const
+      // 삭제된 시간표가 현재 선택된 시간표라면 초기화
+      if (store.currentTimetable?.timeTableId === context?.timeTableId) {
+        // store.pickTimetable();
       }
+
+      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+
+      queryClient.invalidateQueries({ queryKey: ['timetableData', context?.timeTableId] });
     },
   });
 }
