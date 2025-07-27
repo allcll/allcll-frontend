@@ -39,6 +39,7 @@ function SearchBottomSheet({ onClose }: ISearchBottomSheet) {
     const result = subjects.filter(subject => {
       const filteringDays = (lesnTime: string): boolean => {
         if (!lesnTime) return true;
+
         if (selectedDays.length === 0) return true;
 
         const match = lesnTime.match(/^([가-힣]+)(\d{1,2}):\d{2}-(\d{1,2}):\d{2}$/);

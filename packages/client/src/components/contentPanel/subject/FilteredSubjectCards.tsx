@@ -14,8 +14,8 @@ interface ISubjectCards {
 }
 
 export function FilteredSubjectCards({ subjects, expandToMax, isPending = false }: ISubjectCards) {
-  // useInfScroll에서 visibleRows와 loadMoreRef를 가져옴
   const { visibleRows, loadMoreRef } = useInfScroll(subjects);
+
 
   const selectedCardRef = useRef<HTMLDivElement>(null);
   const schedule = useScheduleState(state => state.schedule);
@@ -63,6 +63,7 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
   return (
     <div className="flex flex-col gap-2">
       {subjects.slice(0, visibleRows).map(subject => {
+
         const isActive = selectedSubjectId === subject.subjectId;
 
         return (
@@ -75,13 +76,13 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
           />
         );
       })}
-      {/* loadMoreRef를 여기에 연결 */}
+
       {visibleRows < subjects.length && <div ref={loadMoreRef} className="load-more-trigger w-full h-10"></div>}
+
     </div>
   );
 }
 
-// ... (FilteredSubjectCard 컴포넌트는 변경 없음)
 interface ISubjectCard {
   isActive?: boolean;
   subject: Subject;
