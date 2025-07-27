@@ -10,12 +10,12 @@ function TextField({ label, required, id, ...rest }: TextFieldProps) {
       {label && (
         <label
           htmlFor={id}
-          className={`text-xs text-gray-400 after:ml-0.5 ${required ? 'after:content-["*"] after:text-red-500' : ''}`}
+          className={`text-xs  text-gray-400 after:ml-0.5 ${required ? 'after:content-["*"] after:text-red-500' : ''}`}
         >
           {label}
         </label>
       )}
-      <input id={id} required={required} {...rest} className="placeholder:text-gray-400 w-full p-2 text-sm" />
+      <input id={id} required={required} {...rest} className="text-[16px] placeholder:text-gray-400 w-full p-2 " />
     </div>
   );
 }

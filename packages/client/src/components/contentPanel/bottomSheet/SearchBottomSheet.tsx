@@ -114,7 +114,7 @@ function SearchBottomSheet({ onClose }: ISearchBottomSheet) {
               value={searchKeywords}
               onChange={e => setSearchKeywords(e.target.value)}
               onDelete={() => setSearchKeywords('')}
-              className="pl-10 pr-6 py-2 rounded-md w-full bg-white border border-gray-400 text-sm"
+              className="pl-10 pr-6 py-2 rounded-md w-full bg-white border border-gray-400 text-[16px]"
             />
             <button className="w-20 justify-center flex cursor-pointer" onClick={() => onClose('filter')}>
               <FilterSvg className="w-6 h-6" />
