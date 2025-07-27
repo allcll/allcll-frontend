@@ -61,6 +61,7 @@ function DepartmentFilter() {
               onDelete={() => {
                 setSearchKeywords('');
               }}
+              value={searchKeywords}
               onChange={e => {
                 setSearchKeywords(e.target.value);
               }}
