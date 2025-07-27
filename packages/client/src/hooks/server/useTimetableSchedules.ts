@@ -332,12 +332,12 @@ export function useCreateSchedule(timetableId?: number) {
         await timeSleep(300);
       }
 
-      await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${newTimetableId}/schedules`, {
+      const newSchedule = await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${newTimetableId}/schedules`, {
         method: 'POST',
         body: JSON.stringify(schedule),
       });
 
-      return { schedule, newTimetableId };
+      return { schedule: newSchedule, newTimetableId };
     },
     // Fixme: timetable 도 같이 생성 될 때 오류 처리하기
     onMutate: async mutateData => {
@@ -362,7 +362,7 @@ export function useCreateSchedule(timetableId?: number) {
 
       queryClient.setQueryData(['timetableData', timetableId], {
         ...context.prevTimetable,
-        schedules: [...context.prevTimetable.schedules, schedule],
+        schedules: [...context.prevTimetable.schedules.filter(s => s.scheduleId > 0), schedule],
       });
     },
   });
