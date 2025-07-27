@@ -4,14 +4,18 @@ import { useUpdateTimetableRef, useUpdateTimetableOptions } from '@/hooks/timeta
 import { getScheduleSlots, ScheduleTime, useTimetableSchedules } from '@/hooks/server/useTimetableSchedules.ts';
 import { useScheduleState } from '@/store/useScheduleState.ts';
 import { Day } from '@/utils/types.ts';
+import ScheduleSlotList from '@/components/timetable/ScheduleSlotList.tsx';
 
 export const ROW_HEIGHT = 40;
 
 function Timetable() {
   return (
-    <TimetableGrid>
-      <WeekTable />
-    </TimetableGrid>
+    <>
+      <TimetableGrid>
+        <WeekTable />
+      </TimetableGrid>
+      <ScheduleSlotList />
+    </>
   );
 }
 

@@ -480,6 +480,7 @@ export function getScheduleSlots(generalSchedules?: Schedule[]) {
 
   if (!generalSchedules) return undefined;
 
+  // Select Edit Schedule
   let joinedSchedules = generalSchedules;
   if (selectMode === ScheduleMutateType.EDIT || selectMode === ScheduleMutateType.VIEW) {
     joinedSchedules = generalSchedules.map(schedule => {
@@ -572,4 +573,36 @@ function applyScheduleDepth(ScheduleSlots: ScheduleTime[]): ScheduleTime[] {
       top: slot.top, // top은 그대로 유지
     };
   });
+}
+
+/** 시간표의 Timeslot이 비어있는 ScheduleSlot 을 가져오는 훅입니다.
+ * @param generalSchedules - Schedule 배열
+ */
+export function getEmptyScheduleSlots(generalSchedules?: Schedule[]): Schedule[] {
+  if (!generalSchedules) return [];
+
+  const emptySlots: Schedule[] = [];
+  const colors: ScheduleTime['color'][] = ['rose', 'amber', 'green', 'emerald', 'blue', 'violet'];
+
+  generalSchedules.forEach((schedule, index) => {
+    const color = colors[index % colors.length];
+    const { subjectName: title, professorName: professor, location } = schedule;
+
+    // 빈 Timeslot을 생성
+    const emptySlot: Schedule = {
+      ...schedule,
+      timeSlots: [],
+      subjectName: title || '빈 시간',
+      professorName: professor || null,
+      location: location || null,
+      scheduleType: schedule.scheduleType,
+    };
+
+    emptySlots.push({
+      ...emptySlot,
+      color,
+    });
+  });
+
+  return emptySlots;
 }
