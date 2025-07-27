@@ -1,14 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { SimulationSubject, Subject, Wishes } from '@/utils/types.ts';
+import { Subject, Wishes } from '@/utils/types.ts';
 
-// 스크롤 3번 정도 사이즈 : 45
-const PAGE_SIZE = 200;
+const PAGE_SIZE = 45;
 
-// .load-more-trigger 인 항목 추가
-function useInfScroll(data: Wishes[] | Subject[] | SimulationSubject[]) {
+function useInfScroll(data: Wishes[] | Subject[]) {
   const [visibleRows, setVisibleRows] = useState(PAGE_SIZE);
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const scrollContainerRef = useRef<HTMLElement | null>(null);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setVisibleRows(PAGE_SIZE);
@@ -23,31 +20,22 @@ function useInfScroll(data: Wishes[] | Subject[] | SimulationSubject[]) {
           }
         });
       },
-      {
-        root: scrollContainerRef.current ?? null,
-        rootMargin: '0px',
-        threshold: 0.5,
-      },
+      { root: null, rootMargin: '0px', threshold: 1.0 },
     );
 
-    const tryObserve = () => {
-      const target = scrollContainerRef.current?.querySelector('.load-more-trigger');
-      if (target) {
-        observer.observe(target);
-      } else {
-        requestAnimationFrame(tryObserve);
-      }
-    };
-
-    tryObserve();
-    observerRef.current = observer;
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
 
     return () => {
+      if (loadMoreRef.current) {
+        observer.unobserve(loadMoreRef.current);
+      }
       observer.disconnect();
     };
-  }, [scrollContainerRef.current]);
+  }, [data]); // data가 변경될 때마다 옵저버를 다시 설정
 
-  return { visibleRows, scrollContainerRef };
+  return { visibleRows, loadMoreRef };
 }
 
 export default useInfScroll;

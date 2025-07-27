@@ -100,8 +100,11 @@ function ContentPanel() {
       <button type="button" className="text-blue-500 cursor-pointer text-sm" onClick={handleCreateSchedule}>
         + 과목 생성
       </button>
-      <div className="overflow-y-auto max-h-[80vh]">
-        <FilteredSubjectCards subjects={filteredData} isPending={isPending} />
+
+      <div className="flex flex-col h-full overflow-hidden">
+        <div className="overflow-y-auto flex-grow">
+          <FilteredSubjectCards subjects={filteredData} isPending={isPending} />
+        </div>
       </div>
     </div>
   );
