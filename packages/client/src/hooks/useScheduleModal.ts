@@ -145,7 +145,7 @@ function useScheduleModal() {
 }
 
 export function useScheduleTimeslot() {
-  const { rowNames } = useScheduleState(state => state.options);
+  const { minTime } = useScheduleState(state => state.options);
 
   /**
    * number type Timeslot 을 string type Timeslot 으로 변환합니다.
@@ -162,18 +162,24 @@ export function useScheduleTimeslot() {
       endX = startX + minIntervalY;
     }
 
-    const startHour = rowNames[Math.floor(startX)];
-    const startMinute = Math.floor((startX - Math.floor(startX)) * 60);
-    const endHour = rowNames[Math.floor(endX)];
-    const endMinute = Math.floor((endX - Math.floor(endX)) * 60);
+    const startTime = getTimeHM(minTime, startX);
+    const endTime = getTimeHM(minTime, endX);
 
-    return {
-      startTime: `${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')}`,
-      endTime: `${endHour.toString().padStart(2, '0')}:${endMinute.toString().padStart(2, '0')}`,
-    };
+    return { startTime, endTime };
   };
 
   return { getTimeslot };
+}
+
+function getTimeHM(minTime: number, time: number) {
+  const hour = minTime + Math.floor(time);
+  const minute = Math.floor((time - Math.floor(time)) * 60);
+
+  if (hour < 0) return '00:00';
+
+  if (hour > 23) return '23:50';
+
+  return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
 }
 
 export default useScheduleModal;
