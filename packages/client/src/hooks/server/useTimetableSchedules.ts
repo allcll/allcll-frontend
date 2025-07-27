@@ -575,34 +575,27 @@ function applyScheduleDepth(ScheduleSlots: ScheduleTime[]): ScheduleTime[] {
   });
 }
 
+export interface EmptyScheduleSlot extends Schedule {
+  selected: boolean; // 수정 중인 스케줄인지 여부
+}
 /** 시간표의 Timeslot이 비어있는 ScheduleSlot 을 가져오는 훅입니다.
  * @param generalSchedules - Schedule 배열
  */
-export function getEmptyScheduleSlots(generalSchedules?: Schedule[]): Schedule[] {
+export function getEmptyScheduleSlots(generalSchedules?: Schedule[]): EmptyScheduleSlot[] {
+  const schedule = useScheduleState(state => state.schedule);
+  const mode = useScheduleState(state => state.mode);
+
   if (!generalSchedules) return [];
 
-  const emptySlots: Schedule[] = [];
-  const colors: ScheduleTime['color'][] = ['rose', 'amber', 'green', 'emerald', 'blue', 'violet'];
+  const emptySlots = generalSchedules.filter(
+    schedule => schedule.timeSlots === null || schedule.timeSlots.length === 0,
+  );
 
-  generalSchedules.forEach((schedule, index) => {
-    const color = colors[index % colors.length];
-    const { subjectName: title, professorName: professor, location } = schedule;
+  if (mode === ScheduleMutateType.NONE || schedule.timeSlots.length > 0)
+    return emptySlots.map(slot => ({ ...slot, selected: false }));
 
-    // 빈 Timeslot을 생성
-    const emptySlot: Schedule = {
-      ...schedule,
-      timeSlots: [],
-      subjectName: title || '빈 시간',
-      professorName: professor || null,
-      location: location || null,
-      scheduleType: schedule.scheduleType,
-    };
+  if (schedule.scheduleId <= 0)
+    return [...emptySlots.map(slot => ({ ...slot, selected: false })), { ...schedule, selected: true }];
 
-    emptySlots.push({
-      ...emptySlot,
-      color,
-    });
-  });
-
-  return emptySlots;
+  return emptySlots.map(slot => ({ ...slot, selected: slot.scheduleId === schedule.scheduleId }));
 }
