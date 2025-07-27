@@ -49,8 +49,8 @@ interface ITimetableGridProps {
 
 function TimetableGrid({ rowHeight = ROW_HEIGHT, children }: Readonly<ITimetableGridProps>) {
   const timetableRef = useRef<HTMLDivElement | null>(null);
-  const { colNames, rowNames } = useScheduleState(state => state.options);
-  const isMobile = useUpdateTimetableRef(timetableRef);
+  const { colNames, rowNames, isMobile } = useScheduleState(state => state.options);
+  useUpdateTimetableRef(timetableRef);
 
   const { headerWidth, headerHeight } = isMobile
     ? { headerWidth: 20, headerHeight: 20 }

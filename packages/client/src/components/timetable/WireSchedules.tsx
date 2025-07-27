@@ -27,7 +27,7 @@ function WireSchedules({ dayOfWeeks }: Readonly<IWireSchedulesProps>) {
 
   const { subjectName, professorName, location } = newSchedule;
 
-  return scheduleTime.map(({ width, height, top }, index) => (
+  return scheduleTime.map(({ height, top, left, right }, index) => (
     <WireSchedule
       key={`wire-schedule-${dayOfWeeks}-${index}`}
       timeslotIndex={index}
@@ -35,7 +35,7 @@ function WireSchedules({ dayOfWeeks }: Readonly<IWireSchedulesProps>) {
       professor={professorName ?? ''}
       location={location ?? ''}
       schedule={schedule}
-      style={{ width, height, top }}
+      style={{ height, top, left, right }}
     />
   ));
 }

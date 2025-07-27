@@ -48,14 +48,17 @@ export interface TimeSlot {
   endTime: string;
 }
 
-// Todo: Render에 필요한 데이터로 변환 / 필요 없는 정보 제거하기
+// Todo: Render에 필요한 데이터로 변환 / 필요 없는 정보 제거하기,
+// Fixme: ScheduleSlot 로 이름 변경하기
 export interface ScheduleTime {
   title: string;
   professor: string | null;
   location: string | null;
   schedule: Schedule;
   color: 'rose' | 'amber' | 'green' | 'emerald' | 'blue' | 'violet';
-  width: string;
+  depth: number;
+  left: string;
+  right: string;
   height: string;
   top: string;
 }
@@ -478,5 +481,64 @@ export function getScheduleSlots(generalSchedules?: Schedule[]) {
     });
   });
 
+  // 요일 별 depth 기능 적용
+  Object.keys(scheduleTimes).forEach(day => {
+    scheduleTimes[day] = applyScheduleDepth(scheduleTimes[day]);
+  });
+
   return scheduleTimes;
+}
+
+interface ExtendedScheduleTime extends ScheduleTime {
+  depth: number;
+}
+
+function applyScheduleDepth(ScheduleSlots: ScheduleTime[]): ScheduleTime[] {
+  const isMobile = useScheduleState.getState().options.isMobile;
+  const DepthSize = isMobile ? 8 : 16;
+
+  const parsePixel = (value: string) => {
+    return parseFloat(value.replace('px', ''));
+  };
+
+  // 영역이 큰 순서대로 배치
+  const SortedScheduleSlots = ScheduleSlots.sort((a, b) => {
+    const aStart = parsePixel(a.height);
+    const bStart = parsePixel(b.height);
+    return bStart - aStart; // Sort by start time in descending order
+  });
+
+  // depth 계산
+  const ScheduleWithDepth = SortedScheduleSlots.reduce((acc, slot) => {
+    const targetTop = parsePixel(slot.top);
+    const targetBottom = targetTop + parsePixel(slot.height);
+
+    // maxDepth + 1 로 설정
+    const maxDepth = acc.reduce((max, curr) => {
+      const currTop = parsePixel(curr.top);
+      const currBottom = currTop + parsePixel(curr.height);
+
+      if ((currTop <= targetTop && targetTop < currBottom) || (currTop < targetBottom && targetBottom <= currBottom)) {
+        return Math.max(max, curr.depth);
+      }
+
+      return max;
+    }, -1);
+
+    const depth = maxDepth + 1;
+
+    return [...acc, { ...slot, depth: depth }];
+  }, [] as ExtendedScheduleTime[]);
+
+  // depth에 따라 width 계산
+  return ScheduleWithDepth.map(slot => {
+    const left = DepthSize * slot.depth;
+    return {
+      ...slot,
+      left: `${left}px`,
+      right: '0px',
+      height: slot.height, // height는 그대로 유지
+      top: slot.top, // top은 그대로 유지
+    };
+  });
 }
