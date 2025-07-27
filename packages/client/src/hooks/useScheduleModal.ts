@@ -1,5 +1,5 @@
 // This hook is used to manage the schedule modal state and actions
-import React, { useRef, useTransition } from 'react';
+import React, { useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   Schedule,
