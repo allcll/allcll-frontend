@@ -87,6 +87,13 @@ function useScheduleModal() {
       return;
     }
 
+    const isSelectedDay = prevSchedule.timeSlots.length !== 0;
+
+    if (!isSelectedDay) {
+      alert('요일을 선택해주세요!.');
+      return;
+    }
+
     const schedule = new ScheduleAdapter(prevSchedule).toApiData();
 
     // 생성 및 수정 로직
