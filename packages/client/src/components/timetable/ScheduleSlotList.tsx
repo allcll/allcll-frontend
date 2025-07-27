@@ -7,8 +7,6 @@ function ScheduleSlotList() {
   const { data: schedules } = useTimetableSchedules(currentTimetable?.timeTableId);
   const scheduleSlots = getEmptyScheduleSlots(schedules);
 
-  console.log('ScheduleSlotList', scheduleSlots);
-
   const handleDeleteEmptySlot = () => {
     //시간표 삭제 로직
   };
