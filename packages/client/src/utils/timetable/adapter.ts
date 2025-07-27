@@ -201,7 +201,9 @@ export class TimeslotAdapter {
       const end = (endHour * 60 + endMinute) / 60;
       return {
         dayOfWeek: dayOfWeeks,
-        width: 'calc(100% - 4px)',
+        depth: 0,
+        left: '0px',
+        right: '0px',
         height: `${(end - start) * ROW_HEIGHT}px`,
         top: `${(start - minTime) * ROW_HEIGHT}px`,
       };

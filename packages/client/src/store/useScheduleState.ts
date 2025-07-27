@@ -24,6 +24,7 @@ export interface IMutateScheduleState {
     height: number;
     cols: number;
     rows: number;
+    isMobile: boolean;
   };
   mode: ScheduleMutateType;
   pickTimetable: (timetable: TimetableType) => void;
@@ -50,6 +51,7 @@ export const useScheduleState = create<IMutateScheduleState>(set => ({
     height: 0,
     cols: 5,
     rows: 11,
+    isMobile: false,
   },
   mode: ScheduleMutateType.NONE,
   schedule: new ScheduleAdapter().toUiData(),

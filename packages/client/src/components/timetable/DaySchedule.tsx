@@ -46,7 +46,7 @@ const DaySchedule = ({ dayOfWeeks, scheduleTimes }: Readonly<IDayScheduleProps>)
   return (
     <div className="relative flex-auto px-[2px]" tabIndex={0} onMouseDown={onMouseDown} onKeyDown={onKeyDown}>
       <WireSchedules dayOfWeeks={dayOfWeeks} />
-      {timeSlots.map(({ title, professor, location, color, width, height, top, schedule }, index) => (
+      {timeSlots.map(({ title, professor, location, color, height, top, left, right, schedule }, index) => (
         <Schedule
           key={'schedule-' + index}
           timeslotIndex={index}
@@ -55,7 +55,7 @@ const DaySchedule = ({ dayOfWeeks, scheduleTimes }: Readonly<IDayScheduleProps>)
           location={location ?? ''}
           schedule={schedule}
           color={color}
-          style={{ height, top, width }}
+          style={{ height, top, left, right }}
         />
       ))}
     </div>

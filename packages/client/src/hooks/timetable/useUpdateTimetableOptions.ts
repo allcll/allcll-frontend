@@ -1,7 +1,7 @@
+import React, { useEffect } from 'react';
 import { Schedule } from '@/hooks/server/useTimetableSchedules.ts';
-import { DAYS } from '@/utils/types.ts';
 import { useScheduleState } from '@/store/useScheduleState.ts';
-import React, { useEffect, useState } from 'react';
+import { DAYS } from '@/utils/types.ts';
 
 /** 이 부분은 useUpdateTimetableOptions.tsx 파일에서 테이블의 옵션을 업데이트하는 훅입니다.
  * @param schedule
@@ -62,7 +62,6 @@ let timer: ReturnType<typeof setTimeout> | null = null;
 /** 테이블 크기와 옵션을 업데이트하는 훅 */
 export const useUpdateTimetableRef = (timetableRef: React.RefObject<HTMLDivElement | null>) => {
   const setOptions = useScheduleState(state => state.setOptions);
-  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   // 테이블 크기 측정 / 저장하는 함수
   const updateSizeOptions = () => {
@@ -86,7 +85,7 @@ export const useUpdateTimetableRef = (timetableRef: React.RefObject<HTMLDivEleme
       if (timer) return;
       timer = setTimeout(updateSizeOptions, 300);
 
-      setIsMobile(window.innerWidth < 480);
+      setOptions({ isMobile: window.innerWidth < 480 });
     };
 
     onResize();
@@ -95,6 +94,4 @@ export const useUpdateTimetableRef = (timetableRef: React.RefObject<HTMLDivEleme
       window.removeEventListener('resize', onResize);
     };
   }, [timetableRef]);
-
-  return isMobile;
 };
