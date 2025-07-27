@@ -351,7 +351,7 @@ export function useCreateSchedule(timetableId?: number) {
     },
     onSuccess: async ({ schedule, newTimetableId }, _, context) => {
       // Fixme: schedule 이 생성되기 전, 다른 스케줄이 생성되면 버그 처럼 보일 수 있음.
-      setSelectedSchedule(new ScheduleAdapter().toUiData());
+      setSelectedSchedule(new ScheduleAdapter().toUiData(), ScheduleMutateType.NONE);
 
       if (!context?.prevTimetable) {
         queryClient.invalidateQueries({ queryKey: ['timetableList'] });
@@ -584,6 +584,8 @@ export interface EmptyScheduleSlot extends Schedule {
 export function getEmptyScheduleSlots(generalSchedules?: Schedule[]): EmptyScheduleSlot[] {
   const schedule = useScheduleState(state => state.schedule);
   const mode = useScheduleState(state => state.mode);
+
+  console.log('getEmptyScheduleSlots', schedule, mode);
 
   if (!generalSchedules) return [];
 

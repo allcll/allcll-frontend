@@ -1,13 +1,12 @@
 import useScheduleModal from '@/hooks/useScheduleModal';
-import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import XDarkGraySvg from '@/assets/x-darkgray.svg?react';
 import ClockGraySvg from '@/assets/clock-gray.svg?react';
 import HouseSvg from '@/assets/house.svg?react';
 import useSubject from '@/hooks/server/useSubject';
+import React from 'react';
 
 function ScheduleInfoModal() {
-  const { schedule, deleteSchedule } = useScheduleModal();
-  const { closeBottomSheet } = useBottomSheetStore();
+  const { schedule, deleteSchedule, cancelSchedule } = useScheduleModal();
   const { data: subjects } = useSubject();
 
   const handleDeleteOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -31,7 +30,7 @@ function ScheduleInfoModal() {
           <h3 className="font-semibold text-lg">{schedule.subjectName}</h3>
           <button
             className="w-6 h-6 cursor-pointer flex items-center justify-center bg-gray-100 rounded-full"
-            onClick={() => closeBottomSheet()}
+            onClick={cancelSchedule}
           >
             <XDarkGraySvg />
           </button>
