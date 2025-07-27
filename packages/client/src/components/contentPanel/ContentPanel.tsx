@@ -29,7 +29,7 @@ function ContentPanel() {
 
     return subjects.filter(subject => {
       const filteringDays = (lesnTime: string): boolean => {
-        if (!lesnTime) return false;
+        if (!lesnTime) return true;
         if (selectedDays.length === 0) return true;
 
         const match = lesnTime.match(/^([가-힣]+)(\d{1,2}):\d{2}-(\d{1,2}):\d{2}$/);
