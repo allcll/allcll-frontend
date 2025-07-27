@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api.ts';
 
 const PinLimit = 5;
 
@@ -69,6 +70,7 @@ export const useRemovePinned = () => {
       return { previousData };
     },
     onSettled: () => {
+      console.log('pin removed onSettled');
       queryClient.invalidateQueries({ queryKey: ['pinnedSubjects'] }).then();
     },
     onError: error => {
@@ -85,37 +87,21 @@ interface PinnedSubjectResponse {
   subjects: PinnedSubject[];
 }
 
-const fetchPinnedSubjects = async (): Promise<PinnedSubjectResponse> => {
-  const response = await fetch('/api/pins', {
-    headers: {
-      Cookie: `sessionId=${document.cookie.split('=')[1]}`,
-    },
-  });
-  if (!response.ok) {
-    throw new Error(await response.text());
-  }
-  return response.json();
+const fetchPinnedSubjects = async () => {
+  return await fetchJsonOnAPI<PinnedSubjectResponse>('/api/pins');
 };
 
-const addPinnedSubject = async (subjectId: number): Promise<void> => {
-  const response = await fetch(`/api/pin?subjectId=${subjectId}`, {
-    method: 'POST',
-    headers: {
-      Cookie: `sessionId=${document.cookie.split('=')[1]}`,
-    },
-  });
+const addPinnedSubject = async (subjectId: number) => {
+  const response = await fetchOnAPI(`/api/pin?subjectId=${subjectId}`, { method: 'POST' });
+
   if (!response.ok) {
     throw new Error(await response.text());
   }
 };
 
-const removePinnedSubject = async (subjectId: number): Promise<void> => {
-  const response = await fetch(`/api/pin/${subjectId}`, {
-    method: 'DELETE',
-    headers: {
-      Cookie: `sessionId=${document.cookie.split('=')[1]}`,
-    },
-  });
+const removePinnedSubject = async (subjectId: number) => {
+  const response = await fetchOnAPI(`/api/pin/${subjectId}`, { method: 'DELETE' });
+
   if (!response.ok) {
     throw new Error(await response.text());
   }

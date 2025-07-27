@@ -3,7 +3,9 @@ import { handlers as pinHandlers } from '../api/pin.ts';
 import { handlers as sseHandlers } from '../api/sse.ts';
 import { handlers as wishHandlers } from '../api/wishes.ts';
 import { handlers as departmentHandlers } from '../api/departments.ts';
-import { getRandomSubjects, subjects as SubjectDummies } from '../data/subjects.ts';
+import { getRandomSubjects } from '../data/subjects.ts';
+import { handlers as subjectHandlers } from '../api/subjects.ts';
+import { handlers as timetableHandlers } from '../api/timetables.ts';
 
 const TopMajors = getRandomSubjects(10);
 
@@ -20,12 +22,12 @@ export const handlers = [
     return HttpResponse.json(TopMajors);
   }),
 
-  // GET /api/subjects
-  http.get('/api/subjects', () => {
-    // const param = req.url.searchParams.get('param')
-    // Return subjects based on the param
-    return HttpResponse.json(SubjectDummies);
-  }),
+  // // GET /api/subjects
+  // http.get('/api/subjects', () => {
+  //   // const param = req.url.searchParams.get('param')
+  //   // Return subjects based on the param
+  //   return HttpResponse.json(SubjectDummies);
+  // }),
 
   // POST /api/subjects/upload
   http.post('/api/subjects/upload', () => {
@@ -35,6 +37,8 @@ export const handlers = [
 
   ...pinHandlers,
   ...sseHandlers,
+  ...subjectHandlers,
   ...wishHandlers,
   ...departmentHandlers,
+  ...timetableHandlers,
 ];

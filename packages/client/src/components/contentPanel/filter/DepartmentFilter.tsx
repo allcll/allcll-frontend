@@ -1,0 +1,113 @@
+import useDepartments from '@/hooks/server/useDepartments';
+import Filtering from './Filtering';
+import SearchBox from '../../common/SearchBox';
+import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
+import { DepartmentType } from '@/utils/types';
+import { useEffect, useMemo, useState } from 'react';
+import { disassemble } from 'es-hangul';
+
+function DepartmentFilter() {
+  const { data: departments } = useDepartments();
+  const [searchKeywords, setSearchKeywords] = useState('');
+
+  const departmentsList = useMemo(
+    () => [{ departmentName: '전체', departmentCode: '' }, ...(departments ?? [])],
+    [departments],
+  );
+
+  function pickCollegeOrMajor(selectedDepartment: string) {
+    const department = departmentsList.find(department => department.departmentCode === selectedDepartment);
+
+    if (!department) {
+      return '학과가 없습니다.';
+    }
+
+    const splitDepartment = department.departmentName.split(' ');
+    return splitDepartment[splitDepartment.length - 1];
+  }
+
+  const [filterDepartment, setFilterDepartment] = useState(departmentsList);
+
+  const { selectedDepartment } = useFilterScheduleStore();
+  const customDepartmentLabel = selectedDepartment === '' ? '전체' : pickCollegeOrMajor(selectedDepartment);
+
+  useEffect(() => {
+    const result = departmentsList.filter(department => {
+      const clearnSearchInput = searchKeywords?.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+      const disassembledSearchInput = disassemble(clearnSearchInput).toLowerCase();
+
+      const cleanDepartmentName = department.departmentName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+      const disassembledDepartmentName = disassemble(cleanDepartmentName).toLowerCase();
+
+      const matchesDeparment = disassembledDepartmentName.includes(disassembledSearchInput);
+      return matchesDeparment;
+    });
+
+    setFilterDepartment(result);
+  }, [departments, searchKeywords]);
+
+  return (
+    <>
+      <Filtering
+        label={customDepartmentLabel}
+        className="max-h-120 overflow-y-auto"
+        selected={selectedDepartment.length !== 0}
+      >
+        <div className="flex flex-col h-80">
+          <div className="shrink-0 px-2 py-2 bg-white">
+            <SearchBox
+              type="text"
+              placeholder="학과 검색"
+              onDelete={() => {
+                setSearchKeywords('');
+              }}
+              value={searchKeywords}
+              onChange={e => {
+                setSearchKeywords(e.target.value);
+              }}
+            />
+          </div>
+
+          <div className="overflow-y-auto flex-1 px-2 py-2">
+            <SelectSubject departments={filterDepartment} />
+          </div>
+        </div>
+      </Filtering>
+    </>
+  );
+}
+
+export default DepartmentFilter;
+
+interface ISelectSubject {
+  departments: DepartmentType[];
+}
+
+export function SelectSubject({ departments }: ISelectSubject) {
+  const selected = '전체';
+  const { setFilterSchedule } = useFilterScheduleStore();
+
+  const handleChangeDepartment = (department: string) => {
+    setFilterSchedule('selectedDepartment', department || '');
+  };
+
+  return (
+    <>
+      {departments?.map(department => (
+        <div
+          key={department.departmentCode}
+          role="option"
+          aria-selected={selected === department.departmentName}
+          className={`flex items-center gap-1 px-2 py-2 rounded cursor-pointer text-sm ${
+            selected === department.departmentName
+              ? 'bg-blue-50 text-blue-500 font-medium'
+              : 'hover:bg-gray-50 text-gray-700'
+          }`}
+          onClick={() => handleChangeDepartment(department.departmentCode)}
+        >
+          {department.departmentName}
+        </div>
+      ))}
+    </>
+  );
+}

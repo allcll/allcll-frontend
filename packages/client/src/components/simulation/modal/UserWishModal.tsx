@@ -138,12 +138,6 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
         },
       });
     }
-
-    if (currentSimulation.department.departmentName !== '') {
-      setCurrentSimulation({
-        simulationStatus: 'selectedDepartment',
-      });
-    }
   };
 
   return (

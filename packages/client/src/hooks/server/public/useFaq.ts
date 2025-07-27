@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { fetchJsonOnPublic } from '@/utils/api.ts';
 
 export interface FaqElement {
   question: string;
@@ -18,14 +19,8 @@ function useFaq() {
   });
 }
 
-const fetchFaq = async (): Promise<FaqAPIResponse> => {
-  const response = await fetch('/faq.json');
-
-  if (!response.ok) {
-    throw new Error(await response.text());
-  }
-
-  return response.json();
+const fetchFaq = async () => {
+  return await fetchJsonOnPublic<FaqAPIResponse>('/faq.json');
 };
 
 export default useFaq;

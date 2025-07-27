@@ -2,6 +2,7 @@
 export const DataType = {
   BASKETS: { key: 'baskets', path: '../../../client/public/baskets.json' },
   DEPARTMENTS: { key: 'departments', path: '../../public/departments.json' },
+  LECTURES: { key: 'lectures', path: '../../public/subjects.json' },
 };
 
 const data: Record<string, any> = {};

@@ -49,3 +49,9 @@ function getTextBgColor(color: string) {
       return 'bg-gray-100 text-gray-500';
   }
 }
+
+export function getSelectedColor(selected: boolean) {
+  return selected
+    ? 'bg-blue-100 text-blue-500 focus:outline-blue-500'
+    : 'bg-gray-100 text-gray-700 focus:outline-gray-400';
+}
