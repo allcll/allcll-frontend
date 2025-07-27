@@ -60,10 +60,6 @@ function useScheduleModal() {
     // state 변경 로직
     console.log('캐시에서 timetableData 조회:', queryClient.getQueryData(['timetableData', timetableId]));
 
-    if (!prevTimetable.current) {
-      prevTimetable.current = queryClient.getQueryData(['timetableData', timetableId]);
-    }
-
     let newSchedule = schedule instanceof Function ? schedule(prevSchedule) : schedule;
     changeScheduleData(newSchedule);
 
@@ -116,6 +112,9 @@ function useScheduleModal() {
 
   const deleteSchedule = (e?: React.MouseEvent<HTMLButtonElement>) => {
     if (e) e.preventDefault();
+
+    prevTimetable.current = queryClient.getQueryData<Timetable>(['timetableData', timetableId]);
+    console.log('prevTimetableIndelete', prevTimetable.current);
 
     if (!prevTimetable.current) {
       throw new Error('Previous timetable data is not available.');
