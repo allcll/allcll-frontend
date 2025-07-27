@@ -31,8 +31,8 @@ function Timetable() {
 
   return (
     <div className="w-full p-4 ">
-      <div className="grid md:grid-cols-4 gap-4">
-        <div className="md:col-span-3 w-full h-full">
+      <div className="grid md:grid-cols-3 gap-4">
+        <div className="md:col-span-2 w-full h-full">
           <Card className="px-2 relative overflow-hidden">
             <TimetableHeader setIsOpenModal={setIsOpenModal} />
             <TimetableComponent />

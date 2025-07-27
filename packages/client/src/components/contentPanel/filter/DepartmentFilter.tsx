@@ -50,7 +50,7 @@ function DepartmentFilter() {
     <>
       <Filtering
         label={customDepartmentLabel}
-        className="max-h-80 overflow-y-auto"
+        className="max-h-120 overflow-y-auto"
         selected={selectedDepartment.length !== 0}
       >
         <div className="flex flex-col h-80">
