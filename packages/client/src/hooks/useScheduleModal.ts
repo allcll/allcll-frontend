@@ -26,7 +26,8 @@ function useScheduleModal() {
   const { mutate: updateScheduleData } = useUpdateSchedule(timetableId);
   const { mutate: deleteScheduleData } = useDeleteSchedule(timetableId);
 
-  const prevTimetable = useRef<Timetable | undefined>(undefined);
+  // const prevTimetable = useRef<Timetable | undefined>(undefined);
+  let globalPrevTimetable: Timetable | undefined = undefined;
 
   /** Schedule Time 만 제어할 때 사용. 모달을 열고 싶지 않을 때 사용*/
   const setOptimisticSchedule = (targetSchedule: Schedule) => {
@@ -36,8 +37,7 @@ function useScheduleModal() {
   /** schedule 설정하면서 모달 열기 */
   const openScheduleModal = (targetSchedule: Schedule) => {
     // caching previous timetable data
-
-    prevTimetable.current = queryClient.getQueryData<Timetable>(['timetableData', timetableId]);
+    globalPrevTimetable = queryClient.getQueryData<Timetable>(['timetableData', timetableId]);
 
     let currentMode;
     if (!targetSchedule.scheduleId || targetSchedule.scheduleId <= 0) {
@@ -47,6 +47,7 @@ function useScheduleModal() {
       }
     } else if (targetSchedule.scheduleType === 'official') {
       currentMode = ScheduleMutateType.VIEW;
+      console.log(globalPrevTimetable);
       openBottomSheet('Info');
     } else {
       currentMode = ScheduleMutateType.EDIT;
@@ -58,15 +59,14 @@ function useScheduleModal() {
   type SetScheduleAction = Schedule | ((prevState: Schedule) => Schedule);
   const editSchedule = (schedule: SetScheduleAction) => {
     // state 변경 로직
-    console.log('캐시에서 timetableData 조회:', queryClient.getQueryData(['timetableData', timetableId]));
 
     let newSchedule = schedule instanceof Function ? schedule(prevSchedule) : schedule;
     changeScheduleData(newSchedule);
 
     // 데이터 변경 로직
     queryClient.setQueryData(['timetableData', timetableId], {
-      ...prevTimetable,
-      schedules: prevTimetable.current?.schedules.map(sch => {
+      ...globalPrevTimetable,
+      schedules: globalPrevTimetable?.schedules.map(sch => {
         if (sch.scheduleId === newSchedule.scheduleId) {
           return { ...sch, ...newSchedule }; // Update the specific schedule
         }
@@ -100,9 +100,9 @@ function useScheduleModal() {
 
     // 생성 및 수정 로직
     if (mode === ScheduleMutateType.CREATE) {
-      createScheduleData({ schedule, prevTimetable: prevTimetable.current });
+      createScheduleData({ schedule, prevTimetable: globalPrevTimetable });
     } else if (mode === ScheduleMutateType.EDIT) {
-      updateScheduleData({ schedule, prevTimetable: prevTimetable.current });
+      updateScheduleData({ schedule, prevTimetable: globalPrevTimetable });
     }
 
     // 모달 state 초기화
@@ -113,15 +113,8 @@ function useScheduleModal() {
   const deleteSchedule = (e?: React.MouseEvent<HTMLButtonElement>) => {
     if (e) e.preventDefault();
 
-    prevTimetable.current = queryClient.getQueryData<Timetable>(['timetableData', timetableId]);
-    console.log('prevTimetableIndelete', prevTimetable.current);
-
-    if (!prevTimetable.current) {
-      throw new Error('Previous timetable data is not available.');
-    }
-
     const schedule = new ScheduleAdapter(prevSchedule).toApiData();
-    deleteScheduleData({ schedule, prevTimetable: prevTimetable.current });
+    deleteScheduleData({ schedule, prevTimetable: globalPrevTimetable });
 
     // 모달 state 초기화
     changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);
@@ -132,7 +125,7 @@ function useScheduleModal() {
     if (e) e.preventDefault();
 
     // timetable 롤백
-    queryClient.setQueryData(['timetableData', timetableId], prevTimetable.current);
+    queryClient.setQueryData(['timetableData', timetableId], globalPrevTimetable);
 
     // 모달 state 초기화
     changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);

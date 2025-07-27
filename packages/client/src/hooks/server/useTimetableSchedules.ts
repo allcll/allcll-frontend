@@ -297,12 +297,12 @@ export function useCreateSchedule(timetableId?: number) {
         await timeSleep(300);
       }
 
-      console.log('POST요청 전 새로운 스케줄', schedule, schedule.timeSlots);
-
       await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${newTimetableId}/schedules`, {
         method: 'POST',
         body: JSON.stringify(schedule),
       });
+
+      return schedule;
     },
     // Fixme: timetable 도 같이 생성 될 때 오류 처리하기
     onMutate: async mutateData => {
@@ -315,8 +315,6 @@ export function useCreateSchedule(timetableId?: number) {
       console.error(error);
     },
     onSuccess: async (schedule, _, context) => {
-      console.log('요청 성공:', schedule);
-
       // Fixme: schedule 이 생성되기 전, 다른 스케줄이 생성되면 버그 처럼 보일 수 있음.
       setSelectedSchedule(new ScheduleAdapter().toUiData());
 
@@ -325,7 +323,8 @@ export function useCreateSchedule(timetableId?: number) {
         queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
         return;
       }
-      console.log('POST요청 전 이전 데이터와 새 데이터 합치는 스케줄', [...context.prevTimetable.schedules, schedule]);
+
+      console.log('prev', ...context.prevTimetable.schedules, 'current', schedule);
 
       queryClient.setQueryData(['timetableData', timetableId], {
         ...context.prevTimetable,

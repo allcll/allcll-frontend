@@ -19,9 +19,9 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
   const { mutate: createTimetable } = useCreateTimetable();
 
   const handleDeleteTimetable = () => {
-    const result = confirm('시간표를 삭제하시겠습니까?');
+    // const result = confirm('시간표를 삭제하시겠습니까?');
 
-    if (result && type === 'edit' && timeTable) {
+    if (type === 'edit' && timeTable) {
       deleteTimetable(timeTable.timeTableId);
       onClose();
     }
