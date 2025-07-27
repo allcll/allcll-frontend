@@ -33,23 +33,25 @@ function Landing() {
       <Section className="flex flex-col md:flex-row items-center justify-between" bgColor="bg-banner-skysoft">
         <div className="max-w-lg">
           <div className="flex flex-row gap-2 items-center">
-            <img src="/calendar.png" alt="calendar" className="w-20 h-20" />
+            <img src="/calendar.png" alt="calendar" className="w-15 h-15" />
             <span className="italic text-stone-500 ">
-              계절학기 수강 신청 변경 기간 <br /> 6월 12일(목) ~ 6월 13일(금)
+              2025년 2학기 수강 신청 기간 <br /> 8월 11일(월) ~ 8월 18일(월)
             </span>
           </div>
-          <h2 className="text-xl sm:text-2xl md:text-4xl leading-snug font-bold mb-3 ">하계 계절학기 수강신청,</h2>
+          <h2 className="text-xl sm:text-2xl md:text-4xl leading-snug font-bold mb-3 ">2025학년 2학기 수강신청,</h2>
           <div className="flex flex-row justify-center items-center text-xl sm:text-2xl md:text-4xl leading-snug font-bold mb-3">
             <img src="/logo-name.svg" alt="logo-name" className="w-20 sm:w-32 md:w-40 lg:w-48 mr-2 animate-updown" />이
           </div>
           <h2 className="text-xl sm:text-2xl md:text-4xl leading-snug font-bold ">도와드립니다!</h2>
-          <p className="text-gray-400 mt-4">실시간 여석 확인부터 수강신청 연습까지 ALLCLL이 여러분과 함께합니다.</p>
-          <div className="flex flex-col gap-4 ">
+          <p className="text-gray-400 mt-4">
+            시간표 만들기부터 수강 신청 연습, 실시간 여석 확인까지 ALLCLL이 여러분과 함께합니다.
+          </p>
+          <div className="flex flex-col md:flex-row gap-4 ">
             <Link
               to="/live"
               className="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-6 py-3 mt-6 flex items-center gap-2 w-fit"
             >
-              수강 여석 확인하기
+              나만의 시간표 만들기
               <RightArrowSvg className="w-4 h-4" />
             </Link>
             <Link
@@ -61,7 +63,7 @@ function Landing() {
             </Link>
           </div>
         </div>
-        <img src="/summer-banner.png" alt="summer-banner" className="w-90 md:w-106 mt-8 md:mt-4" />
+        <img src="/summer-banner.png" alt="summer-banner" className="w-90 hidden sm:block  mt-8 md:mt-4" />
       </Section>
 
       {/* 관심과목 분석 Section */}
@@ -291,7 +293,7 @@ function Section({ bgColor, className, children }: Readonly<SectionProps>) {
   const additionalClass = className ? ` ${className}` : '';
   return (
     <section className={additionalStyle}>
-      <div className={`mx-auto max-w-7xl px-4 md:px-16 py-24 ${additionalClass}`}>{children}</div>
+      <div className={`mx-auto max-w-7xl px-4 md:px-8 py-10 ${additionalClass}`}>{children}</div>
     </section>
   );
 }
