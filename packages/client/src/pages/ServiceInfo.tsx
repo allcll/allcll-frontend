@@ -12,7 +12,7 @@ function ServiceInfo() {
 
       <div className="mx-auto flex flex-col justify-center bg-blue-100 h-max">
         <iframe
-          src="https://gleaming-clock-379.notion.site/ebd/191802357b238006b813dc9792c1ce9d"
+          src="https://resilient-may-c73.notion.site/ebd/1f2acf7c316280939afed2657259c817"
           // allowFullScreen
           width="100%"
           height={isLoaded ? '1000' : '0'}

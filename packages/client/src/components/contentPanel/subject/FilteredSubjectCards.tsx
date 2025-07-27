@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import ZeroListError from '../errors/ZeroListError';
-import useInfScroll from '@/hooks/useInfScroll';
+import useInfScroll from '@/hooks/useInfScroll'; // 수정된 useInfScroll import
 import useScheduleModal from '@/hooks/useScheduleModal';
 import { useScheduleState } from '@/store/useScheduleState';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
@@ -14,9 +14,8 @@ interface ISubjectCards {
 }
 
 export function FilteredSubjectCards({ subjects, expandToMax, isPending = false }: ISubjectCards) {
-  const { visibleRows } = useInfScroll(subjects);
-  const data = subjects ? subjects.slice(0, visibleRows) : [];
-  const isMore = data.length < subjects.length;
+  const { visibleRows, loadMoreRef } = useInfScroll(subjects);
+
 
   const selectedCardRef = useRef<HTMLDivElement>(null);
   const schedule = useScheduleState(state => state.schedule);
@@ -62,8 +61,9 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
   };
 
   return (
-    <div className="w-full flex flex-col gap-1">
-      {data.map(subject => {
+    <div className="flex flex-col gap-2">
+      {subjects.slice(0, visibleRows).map(subject => {
+
         const isActive = selectedSubjectId === subject.subjectId;
 
         return (
@@ -77,7 +77,8 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
         );
       })}
 
-      {isMore && <div className="load-more-trigger mt-0 h-5 bg-transparent" style={{ minHeight: '20px' }} />}
+      {visibleRows < subjects.length && <div ref={loadMoreRef} className="load-more-trigger w-full h-10"></div>}
+
     </div>
   );
 }
