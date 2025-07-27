@@ -127,13 +127,25 @@ export const useTimetables = () => {
 export function useTimetableSchedules(timetableId?: number) {
   const { data: subjects } = useSubject();
 
+  const queryFn = async () => {
+    if (!timetableId || timetableId <= 0) {
+      return {
+        timetableId: -1,
+        timetableName: '새 시간표',
+        semester: '',
+        schedules: [],
+      };
+    }
+
+    return await fetchJsonOnAPI<Timetable>(`/api/timetables/${timetableId}/schedules`);
+  };
+
   return useQuery({
     queryKey: ['timetableData', timetableId],
-    queryFn: async () => await fetchJsonOnAPI<Timetable>(`/api/timetables/${timetableId}/schedules`),
+    queryFn: queryFn,
     select: data => toGeneralSchedules(data, subjects),
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5,
-    enabled: !!timetableId && timetableId > 0,
   });
 }
 
