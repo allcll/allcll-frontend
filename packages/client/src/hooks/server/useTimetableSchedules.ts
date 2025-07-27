@@ -187,6 +187,7 @@ export function useUpdateTimetable() {
  */
 export function useDeleteTimetable() {
   const queryClient = useQueryClient();
+  const setTimetable = useScheduleState(state => state.pickTimetable);
 
   return useMutation({
     mutationFn: async (timeTableId: number) => {
@@ -203,6 +204,25 @@ export function useDeleteTimetable() {
       queryClient.invalidateQueries({ queryKey: ['timetableList'] });
     },
     onSuccess: (_, __, context) => {
+      const { timeTables } = queryClient.getQueryData(['timetableList']) as TimetableListResponse;
+
+      // 현재 시간표가 삭제된 시간표와 일치하는 경우, 마지막 시간표로 변경
+      if (timeTables && timeTables.length > 1 && context?.timeTableId) {
+        const filtered = timeTables.filter(timetable => timetable.timeTableId !== context.timeTableId);
+        const lastTimetable = filtered[filtered.length - 1];
+        setTimetable({
+          timeTableId: lastTimetable.timeTableId,
+          timeTableName: lastTimetable.timeTableName,
+          semester: lastTimetable.semester,
+        });
+      } else {
+        setTimetable({
+          timeTableId: -1,
+          timeTableName: '새 시간표',
+          semester: '',
+        });
+      }
+
       queryClient.invalidateQueries({ queryKey: ['timetableList'] });
       queryClient.invalidateQueries({ queryKey: ['timetableData', context?.timeTableId] });
     },
@@ -305,7 +325,7 @@ export function useCreateSchedule(timetableId?: number) {
         body: JSON.stringify(schedule),
       });
 
-      return schedule;
+      return { schedule, newTimetableId };
     },
     // Fixme: timetable 도 같이 생성 될 때 오류 처리하기
     onMutate: async mutateData => {
@@ -317,17 +337,16 @@ export function useCreateSchedule(timetableId?: number) {
       queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetable);
       console.error(error);
     },
-    onSuccess: async (schedule, _, context) => {
+    onSuccess: async ({ schedule, newTimetableId }, _, context) => {
       // Fixme: schedule 이 생성되기 전, 다른 스케줄이 생성되면 버그 처럼 보일 수 있음.
       setSelectedSchedule(new ScheduleAdapter().toUiData());
 
       if (!context?.prevTimetable) {
         queryClient.invalidateQueries({ queryKey: ['timetableList'] });
         queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
+        queryClient.invalidateQueries({ queryKey: ['timetableData', newTimetableId] });
         return;
       }
-
-      console.log('prev', ...context.prevTimetable.schedules, 'current', schedule);
 
       queryClient.setQueryData(['timetableData', timetableId], {
         ...context.prevTimetable,
