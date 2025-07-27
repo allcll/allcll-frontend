@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { SimulationSubject, Subject, Wishes } from '@/utils/types.ts';
+import { Subject, Wishes } from '@/utils/types.ts';
 
 const PAGE_SIZE = 45;
 
 function useInfScroll(data: Wishes[] | Subject[]) {
   const [visibleRows, setVisibleRows] = useState(PAGE_SIZE);
   const loadMoreRef = useRef<HTMLDivElement>(null);
-
 
   useEffect(() => {
     setVisibleRows(PAGE_SIZE);
@@ -22,7 +21,7 @@ function useInfScroll(data: Wishes[] | Subject[]) {
         });
       },
       {
-        root: scrollContainerRef.current ?? null,
+        root: null,
         rootMargin: '0px',
         threshold: 0.5,
       },
@@ -41,7 +40,6 @@ function useInfScroll(data: Wishes[] | Subject[]) {
   }, [data]); // data가 변경될 때마다 옵저버를 다시 설정
 
   return { visibleRows, loadMoreRef };
-
 }
 
 export default useInfScroll;
