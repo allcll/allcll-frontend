@@ -2,6 +2,8 @@
 import React, { useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
+  CustomSchedule,
+  OfficialSchedule,
   Schedule,
   Timetable,
   useCreateSchedule,
@@ -98,13 +100,15 @@ function useScheduleModal() {
 
     // 생성 및 수정 로직
     if (mode === ScheduleMutateType.CREATE) {
+      // 생성중인 Schedule 구분 용 - unique negative id 생성
+      schedule.scheduleId = getUniqueNegativeId(globalPrevTimetable?.schedules ?? []);
       createScheduleData({ schedule, prevTimetable: globalPrevTimetable });
     } else if (mode === ScheduleMutateType.EDIT) {
       updateScheduleData({ schedule, prevTimetable: globalPrevTimetable });
+      changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);
     }
 
     // 모달 state 초기화
-    changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);
     closeBottomSheet('edit');
   };
 
@@ -180,4 +184,12 @@ function getTimeHM(minTime: number, time: number) {
   return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
 }
 
+function getUniqueNegativeId(schedules: (CustomSchedule | OfficialSchedule)[]) {
+  let tmpScheduleId = -Math.floor(Math.random() * 1000000);
+  while (schedules.some(s => s.scheduleId === tmpScheduleId)) {
+    tmpScheduleId = -Math.floor(Math.random() * 1000000);
+  }
+
+  return tmpScheduleId;
+}
 export default useScheduleModal;
