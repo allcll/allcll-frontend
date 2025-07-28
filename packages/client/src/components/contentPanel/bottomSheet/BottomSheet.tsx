@@ -16,11 +16,11 @@ export const BOTTOM_SHEET_HEIGHT = window.innerHeight - MIN_Y;
 
 function BottomSheet({ children }: IBottomSheet) {
   const { sheet, content, expandToMax, collapseToMin } = useBottomSheet();
-  const { closeBottomSheet, type } = useBottomSheetStore();
+  const { closeBottomSheet, type, resetBottomSheet } = useBottomSheetStore();
 
   return (
     <div className="fixed inset-0 z-[200]">
-      {type && <div className="absolute inset-0 bg-black/5 bg-opacity-80" onClick={() => closeBottomSheet('search')} />}
+      {type && <div className="absolute inset-0 bg-black/5 bg-opacity-80" onClick={() => resetBottomSheet()} />}
 
       <div
         ref={sheet}
