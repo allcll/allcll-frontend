@@ -11,6 +11,7 @@ function DepartmentFilter() {
   const [searchKeywords, setSearchKeywords] = useState('');
   const [category, setCategory] = useState<'전체' | '전공' | '교양'>('전공');
 
+
   const departmentsList = useMemo(
     () => [{ departmentName: '전체학과', departmentCode: '' }, ...(departments ?? [])],
     [departments],
