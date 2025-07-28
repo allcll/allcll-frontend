@@ -9,7 +9,7 @@ import { disassemble } from 'es-hangul';
 function DepartmentFilter() {
   const { data: departments } = useDepartments();
   const [searchKeywords, setSearchKeywords] = useState('');
-  const [category, setCategory] = useState<'전체' | '전공' | '교양'>('전체');
+  const [category, setCategory] = useState<'전체' | '전공' | '교양'>('전공');
 
   const departmentsList = useMemo(
     () => [{ departmentName: '전체학과', departmentCode: '' }, ...(departments ?? [])],
