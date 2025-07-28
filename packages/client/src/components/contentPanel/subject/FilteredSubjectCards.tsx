@@ -60,7 +60,7 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
   };
 
   return (
-    <div className="flex flex-col gap-2 h-[2000px]">
+    <div className="flex flex-col gap-2">
       {subjects.slice(0, visibleRows).map(subject => {
         const isActive = selectedSubjectId === subject.subjectId;
 
