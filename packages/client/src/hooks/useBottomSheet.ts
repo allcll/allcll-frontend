@@ -78,7 +78,7 @@ export default function useBottomSheet() {
 
       if (canUserMoveBottomSheet()) {
         e.stopPropagation();
-        e.preventDefault();
+        // e.preventDefault();
 
         const touchOffset = currentTouch.clientY - touchStart.touchY;
         let nextSheetY = touchStart.sheetY + touchOffset;
