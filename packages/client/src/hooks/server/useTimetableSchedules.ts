@@ -315,54 +315,68 @@ interface ScheduleMutationData {
  */
 export function useCreateSchedule(timetableId?: number) {
   const queryClient = useQueryClient();
-  const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
   const setSelectedSchedule = useScheduleState(state => state.changeScheduleData);
   const { mutateAsync: createTimetable } = useCreateTimetable();
 
   return useMutation({
     mutationFn: async ({ schedule }: ScheduleMutationData) => {
-      let newTimetableId = timetableId;
+      let targetTimetableId = timetableId;
 
       if (!timetableId || timetableId <= 0) {
         const timetable = await createTimetable({ timeTableName: '새 시간표', semester: '2025-2' });
-        setCurrentTimetable(timetable);
-        newTimetableId = timetable.timeTableId;
+        targetTimetableId = timetable.timeTableId;
+
+        // 시간표 생성 후, optimistic하게 스케줄을 설정합니다.
+        queryClient.setQueryData(['timetableData', targetTimetableId], {
+          timetableId: targetTimetableId,
+          timetableName: timetable.timeTableName,
+          semester: timetable.semester,
+          schedules: [schedule],
+        });
 
         // timetable 생성 후, transaction을 위해 잠시 대기
         await timeSleep(300);
       }
 
-      const newSchedule = await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${newTimetableId}/schedules`, {
+      const newSchedule = await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${targetTimetableId}/schedules`, {
         method: 'POST',
         body: JSON.stringify(schedule),
       });
 
-      return { schedule: newSchedule, newTimetableId };
+      return { schedule: newSchedule, targetTimetableId };
     },
-    // Fixme: timetable 도 같이 생성 될 때 오류 처리하기
     onMutate: async mutateData => {
       // Optimistically update the timetable data
-      await queryClient.cancelQueries({ queryKey: ['timetableData', timetableId] });
+      // Todo: Timetable 같이 생성 시 코드를 간단히 처리할 수 있도록 수정
+      if (timetableId && timetableId > 0) {
+        await queryClient.cancelQueries({ queryKey: ['timetableData', timetableId] });
+
+        queryClient.setQueryData(['timetableData', timetableId], {
+          ...mutateData.prevTimetable,
+          schedules: [...(mutateData.prevTimetable?.schedules ?? []), mutateData.schedule],
+        });
+
+        setSelectedSchedule(new ScheduleAdapter().toUiData(), ScheduleMutateType.NONE);
+      }
+
       return mutateData;
     },
     onError: (error, __, context) => {
       queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetable);
       console.error(error);
     },
-    onSuccess: async ({ schedule, newTimetableId }, _, context) => {
+    onSuccess: async ({ schedule, targetTimetableId }, _, context) => {
+      const timetable = queryClient.getQueryData<Timetable>(['timetableData', targetTimetableId]);
+
       // Fixme: schedule 이 생성되기 전, 다른 스케줄이 생성되면 버그 처럼 보일 수 있음.
       setSelectedSchedule(new ScheduleAdapter().toUiData(), ScheduleMutateType.NONE);
 
-      if (!context?.prevTimetable) {
-        queryClient.invalidateQueries({ queryKey: ['timetableList'] });
-        queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
-        queryClient.invalidateQueries({ queryKey: ['timetableData', newTimetableId] });
-        return;
-      }
-
-      queryClient.setQueryData(['timetableData', timetableId], {
-        ...context.prevTimetable,
-        schedules: [...context.prevTimetable.schedules.filter(s => s.scheduleId > 0), schedule],
+      queryClient.setQueryData(['timetableData', targetTimetableId], {
+        ...timetable,
+        schedules: timetable?.schedules.map(sch => {
+          if (sch.scheduleId === context.schedule.scheduleId) return schedule; // Update the specific schedule
+          return sch; // Return unchanged schedules
+        }),
       });
     },
   });
@@ -538,7 +552,7 @@ function applyScheduleDepth(ScheduleSlots: ScheduleTime[]): ScheduleTime[] {
     const aStart = parsePixel(a.height);
     const bStart = parsePixel(b.height);
     return bStart - aStart; // Sort by start time in descending order
-  });
+  }) as ScheduleTime[];
 
   // depth 계산
   const ScheduleWithDepth = SortedScheduleSlots.reduce((acc, slot) => {
@@ -584,8 +598,6 @@ export interface EmptyScheduleSlot extends Schedule {
 export function getEmptyScheduleSlots(generalSchedules?: Schedule[]): EmptyScheduleSlot[] {
   const schedule = useScheduleState(state => state.schedule);
   const mode = useScheduleState(state => state.mode);
-
-  console.log('getEmptyScheduleSlots', schedule, mode);
 
   if (!generalSchedules) return [];
 
