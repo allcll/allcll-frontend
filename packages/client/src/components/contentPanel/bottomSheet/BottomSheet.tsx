@@ -37,7 +37,7 @@ function BottomSheet({ children }: IBottomSheet) {
           />
         </div>
 
-        <div ref={content} className="flex-1 overflow-y-auto  pb-[5rem]">
+        <div ref={content} className="flex-1 overflow-y-auto ">
           {typeof children === 'function' ? children({ expandToMax, collapseToMin }) : children}
         </div>
       </div>

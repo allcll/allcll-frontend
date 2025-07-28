@@ -125,7 +125,7 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
             </button>
           </div>
 
-          <div className="h-[100dvh] min-h-0 px-2 overflow-y-auto touch-auto flex flex-col">
+          <div className="max-h-[70vh] min-h-0 px-2 overflow-y-auto touch-auto flex flex-col">
             <FilteredSubjectCards expandToMax={expandToMax} subjects={filteredData} isPending={isPending} />
           </div>
         </>
