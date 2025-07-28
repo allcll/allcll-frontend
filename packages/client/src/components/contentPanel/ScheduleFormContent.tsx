@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Chip from '../common/Chip';
 import TextField from '../common/TextField';
 import SelectTime from './SelectTime';
@@ -122,12 +122,12 @@ function ScheduleFormContent() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       {textFields.map(({ id, name, value }) => (
-        <div key={'text-field' + id} className="flex gap-3">
+        <div key={'text-field' + id} className="flex gap-6">
           <TextField
             id={id}
-            placeholder={name}
+            placeholder={`${name}을 입력해주세요`}
             value={value}
             label={name}
             onChange={e => setScheduleForm(prev => ({ ...prev, [id]: e.target.value }))}
@@ -136,9 +136,9 @@ function ScheduleFormContent() {
         </div>
       ))}
 
-      <div className="flex gap-2 flex-col">
-        <p className="text-gray-400 text-xs">요일</p>
+      <div className="flex gap-2 flex-row">
         <div className="flex gap-2 items-center">
+          <p className="text-gray-400 text-xs">요일</p>
           {DAYS.map(day => (
             <Chip
               key={day}
@@ -152,19 +152,19 @@ function ScheduleFormContent() {
 
       {scheduleForm.timeSlots.map(slot => {
         return (
-          <Fragment key={slot.dayOfWeeks}>
-            <p className="text-blue-500 text-xs">{slot.dayOfWeeks}</p>
+          <div key={slot.dayOfWeeks} className="flex gap-2 ">
+            <p className="text-xs text-gray-400">{slot.dayOfWeeks}</p>
             <SelectTime
               day={slot.dayOfWeeks}
               timeRange={extractTimeParts(slot.startTime, slot.endTime)}
               onChange={onScheduleFormChange}
             />
-          </Fragment>
+          </div>
         );
       })}
 
       <div className="flex  justify-end gap-3">
-        <button type="submit" className="text-blue-500 text-xs w-15 rounded px-4 py-2 cursor-pointer ">
+        <button type="submit" className="text-white bg-blue-500 text-xs w-15 rounded-lg px-4 py-2 cursor-pointer ">
           저장
         </button>
         {(modalActionType === ScheduleMutateType.EDIT || modalActionType === ScheduleMutateType.VIEW) && (

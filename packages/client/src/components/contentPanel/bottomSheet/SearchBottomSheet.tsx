@@ -9,24 +9,27 @@ import { disassemble } from 'es-hangul';
 import useSubject from '@/hooks/server/useSubject';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import useScheduleModal from '@/hooks/useScheduleModal';
-import { BottomSheetType } from '@/store/useBottomSheetStore';
+import { BottomSheetType, useBottomSheetStore } from '@/store/useBottomSheetStore';
 import { ScheduleAdapter } from '@/utils/timetable/adapter';
 
 interface ISearchBottomSheet {
-  onClose: (bottomSheetType: BottomSheetType) => void;
+  onCloseSearch: (bottomSheetType: BottomSheetType) => void;
 }
 
-function SearchBottomSheet({ onClose }: ISearchBottomSheet) {
+function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
   const [searchKeywords, setSearchKeywords] = useState<string>('');
   const [filteredData, setFilteredData] = useState<Subject[]>([]);
 
   const { data: subjects = [], isPending } = useSubject();
   const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
   const { openScheduleModal } = useScheduleModal();
+  const { openBottomSheet, closeBottomSheet } = useBottomSheetStore();
 
   const initSchedule = new ScheduleAdapter().toUiData();
 
   const handleCreateSchedule = () => {
+    openBottomSheet('edit');
+
     openScheduleModal(initSchedule);
   };
 
@@ -104,11 +107,11 @@ function SearchBottomSheet({ onClose }: ISearchBottomSheet) {
           <BottomSheetHeader
             title="과목검색"
             headerType="add"
-            onClose={() => onClose('edit')}
+            onClose={() => closeBottomSheet('search')}
             onClick={handleCreateSchedule}
           />
 
-          <div className="sticky top-0 bg-white z-10 flex items-center gap-2 py-3">
+          <div className="sticky px-2 top-0 bg-white z-10 flex items-center gap-2 py-3">
             <SearchBox
               type="text"
               placeholder="과목명 및 교수명 검색"
@@ -117,12 +120,12 @@ function SearchBottomSheet({ onClose }: ISearchBottomSheet) {
               onDelete={() => setSearchKeywords('')}
               className="pl-10 pr-6 py-2 rounded-md w-full bg-white border border-gray-400 text-[16px]"
             />
-            <button className="w-20 justify-center flex cursor-pointer" onClick={() => onClose('filter')}>
+            <button className="w-20 justify-center flex cursor-pointer" onClick={() => onCloseSearch('filter')}>
               <FilterSvg className="w-6 h-6" />
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto">
+          <div className="h-[100dvh] min-h-0 px-2 overflow-y-auto touch-auto flex flex-col">
             <FilteredSubjectCards expandToMax={expandToMax} subjects={filteredData} isPending={isPending} />
           </div>
         </>

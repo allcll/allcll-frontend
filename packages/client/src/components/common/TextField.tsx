@@ -15,7 +15,12 @@ function TextField({ label, required, id, ...rest }: TextFieldProps) {
           {label}
         </label>
       )}
-      <input id={id} required={required} {...rest} className="text-[16px] placeholder:text-gray-400 w-full p-2 " />
+      <input
+        id={id}
+        required={required}
+        {...rest}
+        className="text-[16px] placeholder:text-gray-400 placeholder:text-sm w-full p-2 "
+      />
     </div>
   );
 }

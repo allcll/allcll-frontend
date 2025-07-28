@@ -19,7 +19,9 @@ function FormBottomSheet() {
   return (
     <BottomSheet>
       <BottomSheetHeader title={`과목 ${title}`} headerType="close" onClose={handleCancelSchedule} />
-      <ScheduleFormContent />
+      <div className="flex flex-col py-5 px-5 gap-5 overflow-y-auto max-h-[70vh]">
+        <ScheduleFormContent />
+      </div>
     </BottomSheet>
   );
 }

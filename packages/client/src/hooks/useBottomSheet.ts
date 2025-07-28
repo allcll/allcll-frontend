@@ -1,5 +1,4 @@
 import { MIN_Y, MAX_Y } from '@/components/contentPanel/bottomSheet/BottomSheet';
-import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import { useRef, useEffect } from 'react';
 
 interface BottomSheetMetrics {
@@ -16,10 +15,9 @@ interface BottomSheetMetrics {
 }
 
 export default function useBottomSheet() {
-  const sheet = useRef<HTMLDivElement | null>(null);
+  const sheet = useRef<HTMLDivElement>(null);
 
-  const content = useRef<HTMLDivElement | null>(null);
-  const { closeBottomSheet } = useBottomSheetStore();
+  const content = useRef<HTMLDivElement>(null);
 
   const metrics = useRef<BottomSheetMetrics>({
     touchStart: {
@@ -41,7 +39,7 @@ export default function useBottomSheet() {
         return true;
       }
 
-      if (sheet.current?.getBoundingClientRect().y !== MIN_Y) {
+      if (sheet.current!.getBoundingClientRect().y !== MIN_Y) {
         return true;
       }
 
@@ -62,7 +60,9 @@ export default function useBottomSheet() {
       const { touchStart, touchMove } = metrics.current;
       const currentTouch = e.touches[0];
 
-      touchMove.prevTouchY ??= touchStart.touchY;
+      if (touchMove.prevTouchY === undefined) {
+        touchMove.prevTouchY = touchStart.touchY;
+      }
 
       if (touchMove.prevTouchY === 0) {
         touchMove.prevTouchY = touchStart.touchY;
@@ -90,7 +90,7 @@ export default function useBottomSheet() {
           nextSheetY = MAX_Y;
         }
 
-        sheet.current?.style.setProperty('transform', `translateY(${nextSheetY}px)`);
+        sheet.current!.style.setProperty('transform', `translateY(${nextSheetY}px)`);
       } else {
         document.body.style.overflowY = 'hidden';
       }
@@ -99,16 +99,14 @@ export default function useBottomSheet() {
     const handleTouchEnd = () => {
       const { touchMove } = metrics.current;
 
-      const currentSheetY = sheet.current?.getBoundingClientRect().y;
-
+      const currentSheetY = sheet.current!.getBoundingClientRect().y;
       if (currentSheetY !== MIN_Y) {
         if (touchMove.movingDirection === 'down') {
-          sheet.current?.style.setProperty('transform', `translateY( ${window.innerHeight - 100}px)`);
-          closeBottomSheet();
+          sheet.current!.style.setProperty('transform', `translateY(${MAX_Y}px)`);
         }
 
         if (touchMove.movingDirection === 'up') {
-          sheet.current?.style.setProperty('transform', `translateY(0px)`);
+          sheet.current!.style.setProperty('transform', `translateY(${MIN_Y}px)`);
         }
       }
 
@@ -126,9 +124,9 @@ export default function useBottomSheet() {
       };
     };
 
-    sheet.current?.addEventListener('touchstart', handleTouchStart);
-    sheet.current?.addEventListener('touchmove', handleTouchMove);
-    sheet.current?.addEventListener('touchend', handleTouchEnd);
+    sheet.current!.addEventListener('touchstart', handleTouchStart);
+    sheet.current!.addEventListener('touchmove', handleTouchMove);
+    sheet.current!.addEventListener('touchend', handleTouchEnd);
   }, []);
 
   const expandToMax = () => {
@@ -145,7 +143,7 @@ export default function useBottomSheet() {
 
   useEffect(() => {
     const handleTouchStart = () => {
-      metrics.current.isContentAreaTouched = true;
+      metrics.current!.isContentAreaTouched = true;
     };
     content.current!.addEventListener('touchstart', handleTouchStart);
 
