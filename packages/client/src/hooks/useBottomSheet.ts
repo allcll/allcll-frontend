@@ -1,5 +1,4 @@
 import { MIN_Y, MAX_Y } from '@/components/contentPanel/bottomSheet/BottomSheet';
-import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import { useRef, useEffect } from 'react';
 
 interface BottomSheetMetrics {
@@ -19,7 +18,6 @@ export default function useBottomSheet() {
   const sheet = useRef<HTMLDivElement>(null);
 
   const content = useRef<HTMLDivElement>(null);
-  const { closeBottomSheet } = useBottomSheetStore();
 
   const metrics = useRef<BottomSheetMetrics>({
     touchStart: {
@@ -79,7 +77,7 @@ export default function useBottomSheet() {
       }
 
       if (canUserMoveBottomSheet()) {
-        e.preventDefault();
+        e.stopPropagation();
 
         const touchOffset = currentTouch.clientY - touchStart.touchY;
         let nextSheetY = touchStart.sheetY + touchOffset;
@@ -102,15 +100,13 @@ export default function useBottomSheet() {
       const { touchMove } = metrics.current;
 
       const currentSheetY = sheet.current!.getBoundingClientRect().y;
-
       if (currentSheetY !== MIN_Y) {
         if (touchMove.movingDirection === 'down') {
-          sheet.current!.style.setProperty('transform', `translateY( ${window.innerHeight - 100}px)`);
-          closeBottomSheet();
+          sheet.current!.style.setProperty('transform', `translateY(${MAX_Y}px)`);
         }
 
         if (touchMove.movingDirection === 'up') {
-          sheet.current!.style.setProperty('transform', `translateY(0px)`);
+          sheet.current!.style.setProperty('transform', `translateY(${MIN_Y}px)`);
         }
       }
 

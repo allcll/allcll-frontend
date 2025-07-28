@@ -7,11 +7,12 @@ import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 
 function FormBottomSheet() {
   const { cancelSchedule, modalActionType } = useScheduleModal();
-  const { closeBottomSheet } = useBottomSheetStore();
+  const { closeBottomSheet, openBottomSheet } = useBottomSheetStore();
 
   const handleCancelSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
     cancelSchedule(e);
     closeBottomSheet('edit');
+    openBottomSheet('search');
   };
 
   const title = modalActionType === ScheduleMutateType.CREATE ? '등록' : '수정';
@@ -19,7 +20,9 @@ function FormBottomSheet() {
   return (
     <BottomSheet>
       <BottomSheetHeader title={`과목 ${title}`} headerType="close" onClose={handleCancelSchedule} />
-      <ScheduleFormContent />
+      <div className="flex flex-col py-5 px-5 gap-5 overflow-y-auto max-h-[70vh]">
+        <ScheduleFormContent />
+      </div>
     </BottomSheet>
   );
 }

@@ -332,12 +332,12 @@ export function useCreateSchedule(timetableId?: number) {
         await timeSleep(300);
       }
 
-      await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${newTimetableId}/schedules`, {
+      const newSchedule = await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${newTimetableId}/schedules`, {
         method: 'POST',
         body: JSON.stringify(schedule),
       });
 
-      return { schedule, newTimetableId };
+      return { schedule: newSchedule, newTimetableId };
     },
     // Fixme: timetable 도 같이 생성 될 때 오류 처리하기
     onMutate: async mutateData => {
@@ -351,7 +351,7 @@ export function useCreateSchedule(timetableId?: number) {
     },
     onSuccess: async ({ schedule, newTimetableId }, _, context) => {
       // Fixme: schedule 이 생성되기 전, 다른 스케줄이 생성되면 버그 처럼 보일 수 있음.
-      setSelectedSchedule(new ScheduleAdapter().toUiData());
+      setSelectedSchedule(new ScheduleAdapter().toUiData(), ScheduleMutateType.NONE);
 
       if (!context?.prevTimetable) {
         queryClient.invalidateQueries({ queryKey: ['timetableList'] });
@@ -362,7 +362,7 @@ export function useCreateSchedule(timetableId?: number) {
 
       queryClient.setQueryData(['timetableData', timetableId], {
         ...context.prevTimetable,
-        schedules: [...context.prevTimetable.schedules, schedule],
+        schedules: [...context.prevTimetable.schedules.filter(s => s.scheduleId > 0), schedule],
       });
     },
   });
@@ -480,6 +480,7 @@ export function getScheduleSlots(generalSchedules?: Schedule[]) {
 
   if (!generalSchedules) return undefined;
 
+  // Select Edit Schedule
   let joinedSchedules = generalSchedules;
   if (selectMode === ScheduleMutateType.EDIT || selectMode === ScheduleMutateType.VIEW) {
     joinedSchedules = generalSchedules.map(schedule => {
@@ -572,4 +573,31 @@ function applyScheduleDepth(ScheduleSlots: ScheduleTime[]): ScheduleTime[] {
       top: slot.top, // top은 그대로 유지
     };
   });
+}
+
+export interface EmptyScheduleSlot extends Schedule {
+  selected: boolean; // 수정 중인 스케줄인지 여부
+}
+/** 시간표의 Timeslot이 비어있는 ScheduleSlot 을 가져오는 훅입니다.
+ * @param generalSchedules - Schedule 배열
+ */
+export function getEmptyScheduleSlots(generalSchedules?: Schedule[]): EmptyScheduleSlot[] {
+  const schedule = useScheduleState(state => state.schedule);
+  const mode = useScheduleState(state => state.mode);
+
+  console.log('getEmptyScheduleSlots', schedule, mode);
+
+  if (!generalSchedules) return [];
+
+  const emptySlots = generalSchedules.filter(
+    schedule => schedule.timeSlots === null || schedule.timeSlots.length === 0,
+  );
+
+  if (mode === ScheduleMutateType.NONE || schedule.timeSlots.length > 0)
+    return emptySlots.map(slot => ({ ...slot, selected: false }));
+
+  if (schedule.scheduleId <= 0)
+    return [...emptySlots.map(slot => ({ ...slot, selected: false })), { ...schedule, selected: true }];
+
+  return emptySlots.map(slot => ({ ...slot, selected: slot.scheduleId === schedule.scheduleId }));
 }

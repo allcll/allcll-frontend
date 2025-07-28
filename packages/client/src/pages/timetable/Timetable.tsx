@@ -44,7 +44,7 @@ function Timetable() {
             <ContentPanel />
           </div>
           <div className="md:hidden">
-            {bottomSheetType === 'search' && <SearchBottomSheet onClose={handleClickFiltering} />}
+            {bottomSheetType === 'search' && <SearchBottomSheet onCloseSearch={handleClickFiltering} />}
             {bottomSheetType === 'filter' && <FilteringBottomSheet />}
             {bottomSheetType === 'edit' && <FormBottomSheet />}
             {bottomSheetType === 'Info' && <ScheduleInfoBottomSheet />}

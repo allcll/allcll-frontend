@@ -4,11 +4,9 @@ import ClockGraySvg from '@/assets/clock-gray.svg?react';
 import HouseSvg from '@/assets/house.svg?react';
 import useSubject from '@/hooks/server/useSubject';
 import useScheduleModal from '@/hooks/useScheduleModal';
-import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 
 function ScheduleInfoBottomSheet() {
-  const { schedule, deleteSchedule } = useScheduleModal();
-  const { closeBottomSheet } = useBottomSheetStore();
+  const { schedule, deleteSchedule, cancelSchedule } = useScheduleModal();
   const { data: subjects } = useSubject();
 
   const handleDeleteOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -22,7 +20,7 @@ function ScheduleInfoBottomSheet() {
 
   return (
     <BottomSheet>
-      <BottomSheetHeader headerType="close" onClose={() => closeBottomSheet()} />
+      <BottomSheetHeader headerType="close" onClose={cancelSchedule} />
       <div className="w-full flex items-center gap-2 border-b border-gray-200 p-2 h-12">
         <h3 className="font-semibold text-md">{findSubjectById?.subjectName}</h3>
       </div>

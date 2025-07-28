@@ -51,7 +51,6 @@ export function useScheduleDrag(onAreaChanged: UpdateFunction, onDragEnd: Update
 
   const onTouchMove = (e: TouchEvent) => {
     e.stopPropagation();
-    e.preventDefault();
 
     // 터치 이벤트에서 첫 번째 터치 포인트를 사용합니다.
     const touch = e.touches[0];

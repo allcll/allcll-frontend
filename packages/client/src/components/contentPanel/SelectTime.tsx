@@ -27,8 +27,7 @@ function SelectTime({ timeRange, onChange, day }: Readonly<ISelectTime>) {
   };
 
   return (
-    <div className=" w-full h-15 flex gap-2 flex-col justify-center">
-      <label className="text-xs text-gray-400">시간</label>
+    <div className=" w-full h-3 flex gap-2 flex-col justify-center">
       <div className="relative w-full flex gap-2 flex-wrap">
         <select
           name="startHour"
