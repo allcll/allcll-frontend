@@ -9,9 +9,10 @@ import { disassemble } from 'es-hangul';
 function DepartmentFilter() {
   const { data: departments } = useDepartments();
   const [searchKeywords, setSearchKeywords] = useState('');
+  const [category, setCategory] = useState<'전체' | '전공' | '교양'>('전체');
 
   const departmentsList = useMemo(
-    () => [{ departmentName: '전체', departmentCode: '' }, ...(departments ?? [])],
+    () => [{ departmentName: '전체학과', departmentCode: '' }, ...(departments ?? [])],
     [departments],
   );
 
@@ -27,24 +28,32 @@ function DepartmentFilter() {
   }
 
   const [filterDepartment, setFilterDepartment] = useState(departmentsList);
-
-  const { selectedDepartment } = useFilterScheduleStore();
-  const customDepartmentLabel = selectedDepartment === '' ? '전체' : pickCollegeOrMajor(selectedDepartment);
+  const { selectedDepartment, setFilterSchedule } = useFilterScheduleStore();
+  const customDepartmentLabel = selectedDepartment === '' ? '전체학과' : pickCollegeOrMajor(selectedDepartment);
 
   useEffect(() => {
-    const result = departmentsList.filter(department => {
-      const clearnSearchInput = searchKeywords?.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-      const disassembledSearchInput = disassemble(clearnSearchInput).toLowerCase();
+    const result = departmentsList
+      .filter(department => {
+        if (category === '교양') {
+          return department.departmentCode === '9005';
+        } else if (category === '전공') {
+          return department.departmentCode !== '9005';
+        }
 
-      const cleanDepartmentName = department.departmentName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-      const disassembledDepartmentName = disassemble(cleanDepartmentName).toLowerCase();
+        return true;
+      })
+      .filter(department => {
+        const cleanInput = searchKeywords?.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+        const disassembledSearchInput = disassemble(cleanInput).toLowerCase();
 
-      const matchesDeparment = disassembledDepartmentName.includes(disassembledSearchInput);
-      return matchesDeparment;
-    });
+        const cleanDepartmentName = department.departmentName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+        const disassembledDepartmentName = disassemble(cleanDepartmentName).toLowerCase();
+
+        return disassembledDepartmentName.includes(disassembledSearchInput);
+      });
 
     setFilterDepartment(result);
-  }, [departments, searchKeywords]);
+  }, [departments, searchKeywords, category]);
 
   return (
     <>
@@ -54,7 +63,19 @@ function DepartmentFilter() {
         selected={selectedDepartment.length !== 0}
       >
         <div className="flex flex-col h-80">
-          <div className="shrink-0 px-2 py-2 bg-white">
+          <div className="shrink-0 gap-2 flex px-2 py-2 bg-white">
+            <select
+              value={category}
+              className="border border-gray-300 rounded-md px-2 py-1 text-sm text-gray-700 bg-white"
+              onChange={e => {
+                const value = e.target.value as '전체' | '전공' | '교양';
+                setCategory(value);
+                setFilterSchedule('selectedDepartment', '');
+              }}
+            >
+              <option value="전공">전공</option>
+              <option value="교양">교양</option>
+            </select>
             <SearchBox
               type="text"
               placeholder="학과 검색"
@@ -69,7 +90,7 @@ function DepartmentFilter() {
           </div>
 
           <div className="overflow-y-auto flex-1 px-2 py-2">
-            <SelectSubject departments={filterDepartment} />
+            {(category === '전공' || category === '교양') && <SelectSubject departments={filterDepartment} />}{' '}
           </div>
         </div>
       </Filtering>
@@ -84,7 +105,7 @@ interface ISelectSubject {
 }
 
 export function SelectSubject({ departments }: ISelectSubject) {
-  const selected = '전체';
+  const selected = '전체학과';
   const { setFilterSchedule } = useFilterScheduleStore();
 
   const handleChangeDepartment = (department: string) => {
