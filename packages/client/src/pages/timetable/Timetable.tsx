@@ -11,6 +11,8 @@ import { BottomSheetType, useBottomSheetStore } from '@/store/useBottomSheetStor
 import { useDeleteTimetable, useTimetables } from '@/hooks/server/useTimetableSchedules.ts';
 import EditTimetable from '@/components/contentPanel/EditTimetable';
 import AddGraySvg from '@/assets/add-gray.svg?react';
+import AddWhiteSvg from '@/assets/add-white.svg?react';
+
 import { useScheduleState } from '@/store/useScheduleState';
 import ScheduleInfoModal from '@/components/contentPanel/ScheduleInfoModal';
 import ScheduleInfoBottomSheet from '@/components/contentPanel/bottomSheet/ScheduleDetailBottomSheet';
@@ -59,10 +61,10 @@ function Timetable() {
 
       {bottomSheetType === null && (
         <button
-          className="fixed bottom-4 right-4 z-50 rounded-full w-12 h-12 bg-gray-200 shadow-md flex items-center justify-center"
+          className="fixed bottom-4 right-4 z-50 w-15 h-15 rounded-full bg-blue-500 flex justify-center items-center shadow-lg block md:hidden"
           onClick={() => openBottomSheet('search')}
         >
-          <AddGraySvg className="w-6 h-6" />
+          <AddWhiteSvg className="w-10 h-10 cursor-pointer" />
         </button>
       )}
     </div>
