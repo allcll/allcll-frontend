@@ -7,11 +7,12 @@ import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 
 function FormBottomSheet() {
   const { cancelSchedule, modalActionType } = useScheduleModal();
-  const { closeBottomSheet } = useBottomSheetStore();
+  const { closeBottomSheet, openBottomSheet } = useBottomSheetStore();
 
   const handleCancelSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
     cancelSchedule(e);
     closeBottomSheet('edit');
+    openBottomSheet('search');
   };
 
   const title = modalActionType === ScheduleMutateType.CREATE ? '등록' : '수정';
