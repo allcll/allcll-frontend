@@ -192,5 +192,4 @@ function getUniqueNegativeId(schedules: (CustomSchedule | OfficialSchedule)[]) {
 
   return tmpScheduleId;
 }
-
 export default useScheduleModal;
