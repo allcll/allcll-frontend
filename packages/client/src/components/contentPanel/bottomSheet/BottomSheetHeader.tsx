@@ -15,9 +15,7 @@ function BottomSheetHeader({ title, headerType, onClose, onClick }: IBottomSheet
         <div className="w-full h-8 flex items-center  justify-between ">
           {/* add 버튼 */}
           <HeaderTypeIcon headerType="add" onClick={onClick!} />
-
           {title && <h3 className="text-sm font-semibold">{title}</h3>}
-
           {/* close 버튼 */}
           <HeaderTypeIcon headerType="close" onClick={onClose} />
         </div>
