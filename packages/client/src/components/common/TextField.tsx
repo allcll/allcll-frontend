@@ -6,7 +6,7 @@ interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
 
 function TextField({ label, required, id, ...rest }: TextFieldProps) {
   return (
-    <div className="h-12 w-full flex flex-col border-b border-gray-200">
+    <div className="h-12 w-full flex flex-col">
       {label && (
         <label
           htmlFor={id}
@@ -19,7 +19,7 @@ function TextField({ label, required, id, ...rest }: TextFieldProps) {
         id={id}
         required={required}
         {...rest}
-        className="text-[16px] placeholder:text-gray-400 placeholder:text-sm w-full p-2 "
+        className="text-[16px] placeholder:text-gray-400 placeholder:text-sm w-full m-2 bg-transparent focus:outline-none border-b border-gray-200 focus:border-blue-500 focus:border-b-2"
       />
     </div>
   );

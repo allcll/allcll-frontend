@@ -3,16 +3,12 @@ import BottomSheetHeader from './BottomSheetHeader';
 import ScheduleFormContent from '../ScheduleFormContent';
 import useScheduleModal from '@/hooks/useScheduleModal';
 import { ScheduleMutateType } from '@/store/useScheduleState.ts';
-import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 
 function FormBottomSheet() {
   const { cancelSchedule, modalActionType } = useScheduleModal();
-  const { closeBottomSheet, openBottomSheet } = useBottomSheetStore();
 
   const handleCancelSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
     cancelSchedule(e);
-    closeBottomSheet('edit');
-    openBottomSheet('search');
   };
 
   const title = modalActionType === ScheduleMutateType.CREATE ? '생성' : '수정';

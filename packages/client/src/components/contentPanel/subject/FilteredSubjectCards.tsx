@@ -88,7 +88,7 @@ interface ISubjectCard {
 }
 
 function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: ISubjectCard) {
-  const color = isActive ? 'text-blue-500 bg-blue-50' : 'text-gray-700 bg-white';
+  const color = isActive ? 'text-blue-500 bg-blue-50' : 'text-gray-700 bg-white hover:bg-gray-50';
   const { saveSchedule } = useScheduleModal();
   const { closeBottomSheet } = useBottomSheetStore();
 

@@ -30,7 +30,6 @@ function Timetable() {
 
   const handleClickFiltering = (bottomSheetType: BottomSheetType) => {
     closeBottomSheet('search');
-
     openBottomSheet(bottomSheetType);
   };
 
