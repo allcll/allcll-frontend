@@ -3,7 +3,7 @@ import Chip from '../common/Chip';
 import TextField from '../common/TextField';
 import SelectTime from './SelectTime';
 import { Day, DAYS } from '@/utils/types';
-import useScheduleModal from '@/hooks/useScheduleModal.ts';
+import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
 import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore.ts';
 
@@ -15,14 +15,8 @@ interface TimeRange {
 }
 
 function ScheduleFormContent() {
-  const {
-    schedule: scheduleForm,
-    editSchedule: setScheduleForm,
-    saveSchedule,
-    deleteSchedule,
-    cancelSchedule,
-    modalActionType,
-  } = useScheduleModal();
+  const { schedule: scheduleForm, modalActionType } = useScheduleModalData();
+  const { editSchedule: setScheduleForm, saveSchedule, deleteSchedule, cancelSchedule } = useScheduleModal();
 
   const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
 

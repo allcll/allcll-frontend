@@ -1,5 +1,5 @@
 import SearchSvg from '@/assets/search.svg?react';
-import useScheduleModal from '@/hooks/useScheduleModal';
+import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter';
 
 function ZeroListError() {

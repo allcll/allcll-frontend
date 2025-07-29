@@ -1,11 +1,12 @@
 import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
 import ScheduleFormContent from '../ScheduleFormContent';
-import useScheduleModal from '@/hooks/useScheduleModal';
+import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
 import { ScheduleMutateType } from '@/store/useScheduleState.ts';
 
 function FormBottomSheet() {
-  const { cancelSchedule, modalActionType } = useScheduleModal();
+  const { modalActionType } = useScheduleModalData();
+  const { cancelSchedule } = useScheduleModal();
 
   const handleCancelSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
     cancelSchedule(e);

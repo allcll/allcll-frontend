@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import ZeroListError from '../errors/ZeroListError';
 import useInfScroll from '@/hooks/useInfScroll'; // 수정된 useInfScroll import
-import useScheduleModal from '@/hooks/useScheduleModal';
+import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { useScheduleState } from '@/store/useScheduleState';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 import { Subject } from '@/utils/types';
@@ -17,8 +17,7 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
   const { visibleRows, loadMoreRef } = useInfScroll(subjects);
 
   const selectedCardRef = useRef<HTMLDivElement>(null);
-  const schedule = useScheduleState(state => state.schedule);
-  const selectedSubjectId = schedule.subjectId;
+  const selectedSubjectId = useScheduleState(state => state.schedule.subjectId);
   const { openScheduleModal } = useScheduleModal();
 
   if (isPending || !subjects) {
@@ -41,7 +40,7 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
     );
 
     openScheduleModal(newSchedule.toUiData());
-    console.log('official', schedule);
+    console.log('official', selectedSubjectId);
 
     const MIN_TIME = 9;
     const timeslotUI = new TimeslotAdapter(subject.lesnTime).toUiData(MIN_TIME);

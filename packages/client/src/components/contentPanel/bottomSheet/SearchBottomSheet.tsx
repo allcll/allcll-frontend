@@ -8,7 +8,7 @@ import { Subject } from '@/utils/types';
 import { disassemble } from 'es-hangul';
 import useSubject from '@/hooks/server/useSubject';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
-import useScheduleModal from '@/hooks/useScheduleModal';
+import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { BottomSheetType, useBottomSheetStore } from '@/store/useBottomSheetStore';
 import { ScheduleAdapter } from '@/utils/timetable/adapter';
 

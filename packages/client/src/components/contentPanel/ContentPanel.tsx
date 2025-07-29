@@ -8,7 +8,7 @@ import { disassemble } from 'es-hangul';
 import useSubject from '@/hooks/server/useSubject';
 import { Subject } from '@/utils/types';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
-import useScheduleModal from '@/hooks/useScheduleModal';
+import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 
 const initSchedule = new ScheduleAdapter().toUiData();

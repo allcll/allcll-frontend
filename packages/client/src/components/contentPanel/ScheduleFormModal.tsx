@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import ScheduleFormContent from './ScheduleFormContent';
 import XDarkGraySvg from '@/assets/x-darkgray.svg?react';
-import useScheduleModal from '@/hooks/useScheduleModal';
+import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
 import { ScheduleMutateType } from '@/store/useScheduleState.ts';
 
 function ScheduleFormModal() {
-  const { cancelSchedule, modalActionType } = useScheduleModal();
+  const { modalActionType } = useScheduleModalData();
+  const { cancelSchedule } = useScheduleModal();
   const title = modalActionType === ScheduleMutateType.CREATE ? '생성' : '수정';
 
   const onKeyDown = (e: KeyboardEvent) => {

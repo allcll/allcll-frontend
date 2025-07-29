@@ -1,4 +1,4 @@
-import useScheduleModal from '@/hooks/useScheduleModal';
+import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
 import XDarkGraySvg from '@/assets/x-darkgray.svg?react';
 import ClockGraySvg from '@/assets/clock-gray.svg?react';
 import HouseSvg from '@/assets/house.svg?react';
@@ -6,7 +6,8 @@ import useSubject from '@/hooks/server/useSubject';
 import React from 'react';
 
 function ScheduleInfoModal() {
-  const { schedule, deleteSchedule, cancelSchedule } = useScheduleModal();
+  const { schedule } = useScheduleModalData();
+  const { deleteSchedule, cancelSchedule } = useScheduleModal();
   const { data: subjects } = useSubject();
 
   const handleDeleteOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {

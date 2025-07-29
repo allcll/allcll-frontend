@@ -1,6 +1,6 @@
 import React, { HTMLAttributes, useRef } from 'react';
 import { useScheduleDrag } from '@/hooks/useScheduleDrag.ts';
-import useScheduleModal from '@/hooks/useScheduleModal';
+import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { ROW_HEIGHT } from '@/components/timetable/Timetable.tsx';
 import { Schedule as ScheduleType } from '@/hooks/server/useTimetableSchedules.ts';
 import { moveTimeSlot } from '@/utils/timetable/adapter.ts';
