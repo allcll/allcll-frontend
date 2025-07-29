@@ -1,6 +1,7 @@
 import React from 'react';
 import useBottomSheet from '@/hooks/useBottomSheet';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
+import useCloseBottomSheetOnBackKey from '@/components/contentPanel/bottomSheet/useCloseBottomSheetOnBackKey.ts';
 
 type IBottomSheetChildren =
   | React.ReactNode
@@ -17,6 +18,8 @@ export const BOTTOM_SHEET_HEIGHT = window.innerHeight - MIN_Y;
 function BottomSheet({ children }: IBottomSheet) {
   const { sheet, content, expandToMax, collapseToMin } = useBottomSheet();
   const { closeBottomSheet, type, resetBottomSheet } = useBottomSheetStore();
+
+  useCloseBottomSheetOnBackKey();
 
   return (
     <div className="fixed inset-0 z-[200]">
