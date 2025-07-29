@@ -121,7 +121,7 @@ function TimetableHeader({ setIsOpenModal }: ITimetableHeaderProps) {
         openCreateModal={handleCreateTimetable}
       />
       <div className="flex items-center gap-1">
-        <button className="p-1 h-fit cursor-pointer" onClick={handleCreateSchedule} title="커스텀 일정 추가">
+        <button className="p-1 h-fit cursor-pointer" onClick={handleCreateSchedule} title="커스텀 일정 생성">
           <AddGraySvg className="w-5 h-5" />
         </button>
         {isMobile && (

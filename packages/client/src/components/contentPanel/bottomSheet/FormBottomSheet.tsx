@@ -15,11 +15,11 @@ function FormBottomSheet() {
     openBottomSheet('search');
   };
 
-  const title = modalActionType === ScheduleMutateType.CREATE ? '등록' : '수정';
+  const title = modalActionType === ScheduleMutateType.CREATE ? '생성' : '수정';
 
   return (
     <BottomSheet>
-      <BottomSheetHeader title={`과목 ${title}`} headerType="close" onClose={handleCancelSchedule} />
+      <BottomSheetHeader title={`커스텀 일정 ${title}`} headerType="close" onClose={handleCancelSchedule} />
       <div className="flex flex-col py-5 px-5 gap-5 overflow-y-auto max-h-[70vh]">
         <ScheduleFormContent />
       </div>
