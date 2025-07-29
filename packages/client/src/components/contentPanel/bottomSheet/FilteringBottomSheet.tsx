@@ -36,7 +36,7 @@ function FilteringBottomSheet() {
       />
 
       <section className="w-full flex flex-col px-4 gap-5">
-        <div className="w-full  h-15 flex gap-2 flex flex-col justify-center mt-2">
+        <div className="w-full  h-15 flex gap-2 flex-col justify-center mt-2">
           <label className="text-xs text-gray-500">학과</label>
           <div className="w-full flex flex-col gap-2 justify-center">
             <select
@@ -54,7 +54,7 @@ function FilteringBottomSheet() {
           </div>
         </div>
 
-        <div className="w-full h-15 flex gap-2 flex flex-col justify-center">
+        <div className="w-full h-15 flex gap-2 flex-col justify-center">
           <label className="text-xs text-gray-500">학년</label>
           <div className="flex gap-2">
             <Chip
@@ -77,7 +77,7 @@ function FilteringBottomSheet() {
           </div>
         </div>
 
-        <div className="w-full h-15 flex gap-2 flex flex-col justify-center">
+        <div className="w-full h-15 flex gap-2 flex-col justify-center">
           <label className="text-xs text-gray-500">요일</label>
           <div className="flex gap-2">
             <Chip
@@ -105,7 +105,7 @@ function FilteringBottomSheet() {
           <button
             onClick={handleClickSave}
             type="submit"
-            className="bg-blue-500 mt-5 font-semibold rounded-xl text-xs w-15 text-white rounded px-4 py-2 cursor-pointer "
+            className="bg-blue-500 mt-5 font-semibold text-xs w-15 text-white rounded px-4 py-2 cursor-pointer "
           >
             저장
           </button>

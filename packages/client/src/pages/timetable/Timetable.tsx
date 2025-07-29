@@ -103,7 +103,13 @@ function TimetableHeader({ setIsOpenModal }: ITimetableHeaderProps) {
 
   return (
     <header className="flex pb-2 justify-between items-center">
-      <DropdownSelect timetables={timetables} onSelect={handleSelect} onEdit={handleEdit} onDelete={handleDelete} />
+      <DropdownSelect
+        timetables={timetables}
+        onSelect={handleSelect}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        openCreateModal={handleCreateTimetable}
+      />
       <button className="p-1 h-fit cursor-pointer" onClick={handleCreateTimetable}>
         <AddGraySvg className="w-5 h-5 cursor-pointer" />
       </button>
