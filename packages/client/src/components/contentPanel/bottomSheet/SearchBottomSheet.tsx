@@ -22,8 +22,8 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
 
   const { data: subjects = [], isPending } = useSubject();
   const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
-  const { openScheduleModal } = useScheduleModal();
-  const { openBottomSheet, closeBottomSheet } = useBottomSheetStore();
+  const { openScheduleModal, cancelSchedule } = useScheduleModal();
+  const { openBottomSheet } = useBottomSheetStore();
 
   const initSchedule = new ScheduleAdapter().toUiData();
 
@@ -107,7 +107,7 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
           <BottomSheetHeader
             title="과목검색"
             headerType="add"
-            onClose={() => closeBottomSheet('search')}
+            onClose={cancelSchedule}
             onClick={handleCreateSchedule}
           />
 
