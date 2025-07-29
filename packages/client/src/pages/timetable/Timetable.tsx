@@ -12,10 +12,13 @@ import { useDeleteTimetable, useTimetables } from '@/hooks/server/useTimetableSc
 import EditTimetable from '@/components/contentPanel/EditTimetable';
 import AddGraySvg from '@/assets/add-gray.svg?react';
 import AddWhiteSvg from '@/assets/add-white.svg?react';
+import SearchSvg from '@/assets/search.svg?react';
 
 import { useScheduleState } from '@/store/useScheduleState';
 import ScheduleInfoModal from '@/components/contentPanel/ScheduleInfoModal';
 import ScheduleInfoBottomSheet from '@/components/contentPanel/bottomSheet/ScheduleDetailBottomSheet';
+import useScheduleModal from '@/hooks/useScheduleModal.ts';
+import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 
 type modalType = 'edit' | 'create' | null;
 
@@ -61,7 +64,7 @@ function Timetable() {
 
       {bottomSheetType === null && (
         <button
-          className="fixed bottom-4 right-4 z-50 w-15 h-15 rounded-full bg-blue-500 flex justify-center items-center shadow-lg block md:hidden"
+          className="fixed bottom-4 right-4 z-50 w-15 h-15 rounded-full bg-blue-500 flex justify-center items-center shadow-lg md:hidden"
           onClick={() => openBottomSheet('search')}
         >
           <AddWhiteSvg className="w-10 h-10 cursor-pointer" />
@@ -79,7 +82,10 @@ function TimetableHeader({ setIsOpenModal }: ITimetableHeaderProps) {
   const { mutate: deleteTimetable } = useDeleteTimetable();
   const { data: timetables = [] } = useTimetables();
 
+  const isMobile = useScheduleState(state => state.options.isMobile);
   const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
+  const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
+  const { openScheduleModal } = useScheduleModal();
 
   const handleSelect = (optionId: number) => {
     const selectedTimetable = timetables.find(timetable => timetable.timeTableId === optionId);
@@ -101,6 +107,10 @@ function TimetableHeader({ setIsOpenModal }: ITimetableHeaderProps) {
     setIsOpenModal('create');
   };
 
+  const handleCreateSchedule = () => {
+    openScheduleModal(new ScheduleAdapter().toUiData());
+  };
+
   return (
     <header className="flex pb-2 justify-between items-center">
       <DropdownSelect
@@ -110,9 +120,16 @@ function TimetableHeader({ setIsOpenModal }: ITimetableHeaderProps) {
         onDelete={handleDelete}
         openCreateModal={handleCreateTimetable}
       />
-      <button className="p-1 h-fit cursor-pointer" onClick={handleCreateTimetable}>
-        <AddGraySvg className="w-5 h-5 cursor-pointer" />
-      </button>
+      <div className="flex items-center gap-1">
+        <button className="p-1 h-fit cursor-pointer" onClick={handleCreateSchedule} title="커스텀 일정 추가">
+          <AddGraySvg className="w-5 h-5" />
+        </button>
+        {isMobile && (
+          <button className="p-2 h-fit cursor-pointer" onClick={() => openBottomSheet('search')} title="과목 검색">
+            <SearchSvg className="w-3 h-3" />
+          </button>
+        )}
+      </div>
     </header>
   );
 }
