@@ -8,9 +8,10 @@ interface ICheckbox {
 
 function Checkbox({ label = 'checkbox', isChecked = false, onChange, ...props }: ICheckbox) {
   return (
-    <label htmlFor="checkbox" className="flex flex-row items-center gap-3 text-md ">
+    <label htmlFor={'checkbox-' + label} className="flex flex-row items-center gap-3 text-md ">
       <div className="relative w-5 h-5">
         <input
+          id={'checkbox-' + label}
           type="checkbox"
           checked={isChecked}
           onChange={onChange}

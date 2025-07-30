@@ -13,7 +13,10 @@ function FilteringBottomSheet() {
   const { data: departments } = useDepartments();
   const { openBottomSheet, closeBottomSheet } = useBottomSheetStore();
 
-  const { selectedDepartment, selectedGrades, selectedDays, setFilterSchedule } = useFilterScheduleStore();
+  const { selectedDepartment, selectedGrades, selectedDays, setFilterSchedule, resetFilterSchedule } =
+    useFilterScheduleStore();
+
+  const isFiltered = (selectedDepartment.length || selectedGrades.length || selectedDays.length) > 0;
 
   function toggleSelectedValue<T>(array: T[], value: T): T[] {
     return array.includes(value) ? array.filter(item => item !== value) : [...array, value];
@@ -101,11 +104,20 @@ function FilteringBottomSheet() {
           </div>
         </div>
 
-        <div className="flex justify-end gap-3">
+        <div className="flex justify-end items-center gap-3 mt-5">
+          {isFiltered && (
+            <button
+              className="text-xs text-blue-500 hover:text-blue-600 hover:underline cursor-pointer"
+              onClick={resetFilterSchedule}
+            >
+              필터 초기화
+            </button>
+          )}
+
           <button
             onClick={handleClickSave}
             type="submit"
-            className="bg-blue-500 mt-5 font-semibold text-xs w-15 text-white rounded px-4 py-2 cursor-pointer "
+            className="bg-blue-500 font-semibold text-xs w-15 text-white rounded px-4 py-2 cursor-pointer "
           >
             저장
           </button>
