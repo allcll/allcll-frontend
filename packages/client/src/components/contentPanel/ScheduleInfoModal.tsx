@@ -3,7 +3,7 @@ import XDarkGraySvg from '@/assets/x-darkgray.svg?react';
 import ClockGraySvg from '@/assets/clock-gray.svg?react';
 import HouseSvg from '@/assets/house.svg?react';
 import useSubject from '@/hooks/server/useSubject';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 function ScheduleInfoModal() {
   const { schedule } = useScheduleModalData();
@@ -16,6 +16,17 @@ function ScheduleInfoModal() {
 
     deleteSchedule(e);
   };
+
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') cancelSchedule(e);
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, []);
 
   const findSubjectById = subjects?.find(subject => subject.subjectId === schedule.subjectId);
 
