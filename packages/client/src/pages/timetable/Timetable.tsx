@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Card from '@/components/common/Card.tsx';
-import TimetableComponent from '@/components/timetable/Timetable.tsx';
+import TimetableComponent from '@/components/timetable/TimetableComponent.tsx';
 import DropdownSelect from '@/components/timetable/DropdownSelect.tsx';
 import SearchBottomSheet from '@/components/contentPanel/bottomSheet/SearchBottomSheet';
 import FilteringBottomSheet from '@/components/contentPanel/bottomSheet/FilteringBottomSheet';
@@ -13,12 +13,14 @@ import EditTimetable from '@/components/contentPanel/EditTimetable';
 import AddGraySvg from '@/assets/add-gray.svg?react';
 import AddWhiteSvg from '@/assets/add-white.svg?react';
 import SearchSvg from '@/assets/search.svg?react';
+import DownloadSvg from '@/assets/download.svg?react';
 
 import { useScheduleState } from '@/store/useScheduleState';
 import ScheduleInfoModal from '@/components/contentPanel/ScheduleInfoModal';
 import ScheduleInfoBottomSheet from '@/components/contentPanel/bottomSheet/ScheduleDetailBottomSheet';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
+import { saveImageFromElement } from '@/utils/saveImage.ts';
 
 type modalType = 'edit' | 'create' | null;
 
@@ -102,6 +104,12 @@ function TimetableHeader({ setIsOpenModal }: ITimetableHeaderProps) {
     deleteTimetable(optionId);
   };
 
+  const handleSaveImage = () => {
+    const name = useScheduleState.getState().currentTimetable.timeTableName;
+    const containerRef = useScheduleState.getState().options.containerRef;
+    saveImageFromElement(containerRef, name ? name + '.png' : '시간표.png');
+  };
+
   const handleCreateTimetable = () => {
     setIsOpenModal('create');
   };
@@ -120,11 +128,26 @@ function TimetableHeader({ setIsOpenModal }: ITimetableHeaderProps) {
         openCreateModal={handleCreateTimetable}
       />
       <div className="flex items-center gap-1">
-        <button className="p-1 h-fit cursor-pointer" onClick={handleCreateSchedule} title="커스텀 일정 생성">
+        <button
+          className="rounded-md hover:bg-gray-100 p-1 h-fit cursor-pointer"
+          onClick={handleSaveImage}
+          title="시간표 이미지 저장"
+        >
+          <DownloadSvg className="w-5 h-5" />
+        </button>
+        <button
+          className="rounded-md hover:bg-gray-100 p-1 h-fit cursor-pointer"
+          onClick={handleCreateSchedule}
+          title="커스텀 일정 생성"
+        >
           <AddGraySvg className="w-5 h-5" />
         </button>
         {isMobile && (
-          <button className="p-2 h-fit cursor-pointer" onClick={() => openBottomSheet('search')} title="과목 검색">
+          <button
+            className="rounded-md hover:bg-gray-100 p-2 h-fit cursor-pointer"
+            onClick={() => openBottomSheet('search')}
+            title="과목 검색"
+          >
             <SearchSvg className="w-3 h-3" />
           </button>
         )}

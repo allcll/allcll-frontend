@@ -13,6 +13,7 @@ export enum ScheduleMutateType {
 export interface IMutateScheduleState {
   currentTimetable: TimetableType;
   options: {
+    containerRef: HTMLDivElement | null;
     timetableRef: HTMLDivElement | null;
     colNames: Day[];
     rowNames: string[];
@@ -40,6 +41,7 @@ export const useScheduleState = create<IMutateScheduleState>(set => ({
     semester: '',
   },
   options: {
+    containerRef: null,
     timetableRef: null,
     colNames: DAYS.slice(0, 5),
     rowNames: Array.from({ length: 12 }, (_, i) => `${i + 9}`),
