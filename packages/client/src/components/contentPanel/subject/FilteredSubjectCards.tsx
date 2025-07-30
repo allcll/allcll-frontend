@@ -18,7 +18,7 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
 
   const selectedCardRef = useRef<HTMLDivElement>(null);
   const selectedSubjectId = useScheduleState(state => state.schedule.subjectId);
-  const { openScheduleModal } = useScheduleModal();
+  const { openScheduleModal, cancelSchedule } = useScheduleModal();
 
   if (isPending || !subjects) {
     return <div className="w-full h-10"></div>;
@@ -29,10 +29,14 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
   }
 
   const handleCardClick = (subject: Subject) => {
+    if (selectedSubjectId === subject.subjectId) {
+      cancelSchedule();
+      return; // 이미 선택된 과목이면 아무 동작도 하지 않음
+    }
+
     const newSchedule = new ScheduleAdapter(
       {
         ...new ScheduleAdapter().toApiData(), // Default schedule
-        scheduleId: -1,
         scheduleType: 'official',
         subjectId: subject.subjectId,
       },
