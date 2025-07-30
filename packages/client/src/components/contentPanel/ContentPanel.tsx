@@ -10,6 +10,7 @@ import { Subject } from '@/utils/types';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
+import FilterDelete from '@/components/contentPanel/filter/FilterDelete.tsx';
 
 const initSchedule = new ScheduleAdapter().toUiData();
 
@@ -91,6 +92,7 @@ function ContentPanel() {
         onChange={e => setSearchKeywords(e.target.value)}
       />
       <div className="flex flex-wrap gap-3 w-full">
+        <FilterDelete />
         <DepartmentFilter />
         <GradeFilter />
         <DayFilter />

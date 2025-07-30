@@ -1,11 +1,11 @@
 import ArrowIcon from '@/components/svgs/ArrowIcon';
 import CancelIcon from '@/components/svgs/CancelIcon';
 import { getSelectedColor } from '@/utils/colors';
-import { ButtonHTMLAttributes, RefObject } from 'react';
+import { ButtonHTMLAttributes, ReactNode, RefObject } from 'react';
 
 interface IChip extends ButtonHTMLAttributes<HTMLButtonElement> {
   containerRef?: RefObject<HTMLButtonElement | null>;
-  label: string;
+  label: string | ReactNode;
   selected: boolean;
   chipType?: 'select' | 'cancel';
   onClick?: () => void;
