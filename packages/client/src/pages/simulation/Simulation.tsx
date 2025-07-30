@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import SimulationSearchForm from '@/components/simulation/SimulationSearchForm';
 import { useReloadSimulation } from '@/hooks/useReloadSimulation';
+import useLectures from '@/hooks/server/useLectures.ts';
 
 const SUBJECTS_COLUMNS_HEADER = [
   '순번',
@@ -47,6 +48,7 @@ function Simulation() {
   const { type, openModal, closeModal } = useSimulationModalStore();
   const { currentSimulation } = useSimulationProcessStore();
   const { reloadSimulationStatus } = useReloadSimulation();
+  useLectures();
 
   const currentModal = useSimulationModalStore(state => state.type);
 
