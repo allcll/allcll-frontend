@@ -58,6 +58,11 @@ export interface Subject {
   lesnTime: string; // 수업 시간
   lesnRoom: string; // 수업실
   tmNum: string; // 학점 (tmNum)
+  remark: string | null; // 비고
+  curiTypeCdNm: string; // 수업 유형 코드명 ('공필'/'전필'/'전선' 등)
+  curiLangNm: null | string; // 수업 언어 코드명 ('한국어'/'영어' 등)
+  isDeleted: boolean; // 삭제 여부
+
   language?: string;
   subjectType?: string;
   totalCount?: number;
