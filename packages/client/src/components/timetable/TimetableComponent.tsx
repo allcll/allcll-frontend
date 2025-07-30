@@ -5,6 +5,7 @@ import { getScheduleSlots, ScheduleTime, useTimetableSchedules } from '@/hooks/s
 import { useScheduleState } from '@/store/useScheduleState.ts';
 import { Day } from '@/utils/types.ts';
 import ScheduleSlotList from '@/components/timetable/ScheduleSlotList.tsx';
+import TmNumsComponent from '@/components/timetable/TmNumsComponent.tsx';
 
 export const ROW_HEIGHT = 40;
 
@@ -17,12 +18,15 @@ function TimetableComponent() {
   }, [containerRef]);
 
   return (
-    <div ref={containerRef}>
-      <TimetableGrid>
-        <WeekTable />
-      </TimetableGrid>
-      <ScheduleSlotList />
-    </div>
+    <>
+      <div ref={containerRef}>
+        <TimetableGrid>
+          <WeekTable />
+        </TimetableGrid>
+        <ScheduleSlotList />
+      </div>
+      <TmNumsComponent />
+    </>
   );
 }
 
