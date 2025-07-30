@@ -12,12 +12,11 @@ const HeaderContents = [
 ];
 
 const ButtonContents = [
-  { icon: <HelpDeskSvg className="w-4 h-4" />, title: '오류 및 제안', path: '/survey', end: true },
+  { icon: <HelpDeskSvg className="w-4 h-4" />, title: '오류 및 제안', path: '/survey' },
   {
     icon: <HelpChatSvg className="w-4 h-4" />,
     title: '공지 채팅방',
     path: 'https://open.kakao.com/o/g3MztXfh',
-    end: false,
   },
 ];
 
