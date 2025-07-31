@@ -67,17 +67,6 @@ function useScheduleModal() {
 
     let newSchedule = schedule instanceof Function ? schedule(prevSchedule) : schedule;
     changeScheduleData(newSchedule);
-
-    // 데이터 변경 로직
-    queryClient.setQueryData(['timetableData', timetableId], {
-      ...globalPrevTimetable,
-      schedules: globalPrevTimetable?.schedules.map(sch => {
-        if (sch.scheduleId === newSchedule.scheduleId) {
-          return { ...sch, ...newSchedule }; // Update the specific schedule
-        }
-        return sch; // Return unchanged schedules
-      }),
-    });
   };
 
   /** Schedule 의 생성 / 수정 로직
@@ -114,9 +103,9 @@ function useScheduleModal() {
     if (mode === ScheduleMutateType.CREATE) {
       // 생성중인 Schedule 구분 용 - unique negative id 생성
       schedule.scheduleId = getUniqueNegativeId(globalPrevTimetable?.schedules ?? []);
-      createScheduleData({ schedule, prevTimetable: globalPrevTimetable });
+      createScheduleData({ schedule });
     } else if (mode === ScheduleMutateType.EDIT) {
-      updateScheduleData({ schedule, prevTimetable: globalPrevTimetable });
+      updateScheduleData({ schedule });
       changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);
     }
 
@@ -130,7 +119,7 @@ function useScheduleModal() {
     if (e) e.preventDefault();
 
     const schedule = new ScheduleAdapter(prevSchedule).toApiData();
-    deleteScheduleData({ schedule, prevTimetable: globalPrevTimetable });
+    deleteScheduleData({ schedule });
 
     // 모달 state 초기화
     changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);
@@ -142,9 +131,6 @@ function useScheduleModal() {
     close: boolean | undefined = true,
   ) => {
     if (e) e.preventDefault();
-
-    // timetable 롤백
-    queryClient.setQueryData(['timetableData', timetableId], globalPrevTimetable);
 
     // 모달 state 초기화
     changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);

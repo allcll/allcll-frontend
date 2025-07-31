@@ -82,6 +82,13 @@ export interface InitTimetableType {
   semester: string;
 }
 
+const InitTimetableSchedules = {
+  timeTableId: -1,
+  timeTableName: '새 시간표',
+  semester: '',
+  schedules: [],
+};
+
 export const getTimetables = async (): Promise<TimetableListResponse> => {
   return await fetchJsonOnAPI<TimetableListResponse>('/api/timetables');
 };
@@ -306,9 +313,8 @@ export function useCreateTimetable() {
   });
 }
 
-interface ScheduleMutationData {
+interface ScheduleMutationProps {
   schedule: ScheduleApiResponse;
-  prevTimetable?: Timetable;
 }
 
 /** 스케줄을 생성하는 Mutation 훅입니다.
@@ -323,7 +329,7 @@ export function useCreateSchedule(timetableId?: number) {
   const { mutateAsync: createTimetable } = useCreateTimetable();
 
   return useMutation({
-    mutationFn: async ({ schedule }: ScheduleMutationData) => {
+    mutationFn: async ({ schedule }: ScheduleMutationProps) => {
       let targetTimetableId = timetableId;
 
       if (!timetableId || timetableId <= 0) {
@@ -350,23 +356,27 @@ export function useCreateSchedule(timetableId?: number) {
       return { schedule: newSchedule, targetTimetableId };
     },
     onMutate: async mutateData => {
+      const prevTimetableSchedules = queryClient.getQueryData<Timetable>(['timetableData', timetableId]) ?? {
+        ...InitTimetableSchedules,
+      };
+
       // Optimistically update the timetable data
       // Todo: Timetable 같이 생성 시 코드를 간단히 처리할 수 있도록 수정
       if (timetableId && timetableId > 0) {
         await queryClient.cancelQueries({ queryKey: ['timetableData', timetableId] });
 
         queryClient.setQueryData(['timetableData', timetableId], {
-          ...mutateData.prevTimetable,
-          schedules: [...(mutateData.prevTimetable?.schedules ?? []), mutateData.schedule],
+          ...prevTimetableSchedules,
+          schedules: [...prevTimetableSchedules.schedules, mutateData.schedule],
         });
 
         setSelectedSchedule(new ScheduleAdapter().toUiData(), ScheduleMutateType.NONE);
       }
 
-      return mutateData;
+      return { ...mutateData, prevTimetableSchedules };
     },
     onError: (error, __, context) => {
-      queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetable);
+      queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetableSchedules); // 롤백
       console.error(error);
     },
     onSuccess: async ({ schedule, targetTimetableId }, _, context) => {
@@ -396,30 +406,33 @@ export function useUpdateSchedule(timetableId?: number) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ schedule }: ScheduleMutationData) =>
+    mutationFn: async ({ schedule }: ScheduleMutationProps) =>
       await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${timetableId}/schedules/${schedule.scheduleId}`, {
         method: 'PATCH',
         body: JSON.stringify(schedule),
       }),
     onMutate: async mutateData => {
+      const prevTimetableSchedules = queryClient.getQueryData<Timetable>(['timetableData', timetableId]) ?? {
+        ...InitTimetableSchedules,
+      };
       // Optimistically update the timetable data
       await queryClient.cancelQueries({ queryKey: ['timetableData', timetableId] });
-      return mutateData;
+      return { ...mutateData, prevTimetableSchedules };
     },
     onError: (error, __, context) => {
-      queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetable);
+      queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetableSchedules);
       console.error(error);
     },
     onSuccess: async (schedule, _, context) => {
-      if (!context?.prevTimetable) {
+      if (!context?.prevTimetableSchedules) {
         await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
         await queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
         return;
       }
 
       queryClient.setQueryData(['timetableData', timetableId], {
-        ...context.prevTimetable,
-        schedules: context.prevTimetable.schedules.map(sch => {
+        ...context.prevTimetableSchedules,
+        schedules: context.prevTimetableSchedules.schedules.map(sch => {
           if (sch.scheduleId === schedule.scheduleId) {
             return { ...sch, ...schedule }; // Update the specific schedule
           }
@@ -440,32 +453,35 @@ export function useDeleteSchedule(timetableId?: number) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ schedule }: ScheduleMutationData) =>
+    mutationFn: async ({ schedule }: ScheduleMutationProps) =>
       await fetchDeleteJsonOnAPI(`/api/timetables/${timetableId}/schedules/${schedule.scheduleId}`, {
         scheduleType: schedule.scheduleType,
       }),
 
     onMutate: async mutateData => {
+      const prevTimetableSchedules = queryClient.getQueryData<Timetable>(['timetableData', timetableId]) ?? {
+        ...InitTimetableSchedules,
+      };
       // Optimistically update the timetable data
       await queryClient.cancelQueries({ queryKey: ['timetableData', timetableId] });
-      return mutateData;
+      return { ...mutateData, prevTimetableSchedules };
     },
     onError: (error, __, context) => {
-      queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetable);
+      queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetableSchedules);
       console.error(error);
     },
     onSuccess: async (_, { schedule }, context) => {
       console.log('스케줄 삭제 성공! timetableId:', timetableId);
-      if (!context?.prevTimetable) {
+      if (!context?.prevTimetableSchedules) {
         await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
         await queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
         return;
       }
 
-      console.log('스케줄 삭제 성공! 이전 데이터 있음. timetableId:', timetableId, context.prevTimetable);
+      console.log('스케줄 삭제 성공! 이전 데이터 있음. timetableId:', timetableId, context.prevTimetableSchedules);
       queryClient.setQueryData(['timetableData', timetableId], {
-        ...context.prevTimetable,
-        schedules: context.prevTimetable.schedules.filter(sch => sch.scheduleId !== schedule.scheduleId),
+        ...context.prevTimetableSchedules,
+        schedules: context.prevTimetableSchedules.schedules.filter(sch => sch.scheduleId !== schedule.scheduleId),
       });
 
       await queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
