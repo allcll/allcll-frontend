@@ -5,7 +5,6 @@ import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { useScheduleState } from '@/store/useScheduleState';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 import { Subject } from '@/utils/types';
-import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 
 interface ISubjectCards {
   subjects: Subject[];
@@ -30,7 +29,7 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
 
   const handleCardClick = (subject: Subject) => {
     if (selectedSubjectId === subject.subjectId) {
-      cancelSchedule();
+      cancelSchedule(undefined, false);
       return; // 이미 선택된 과목이면 아무 동작도 하지 않음
     }
 
@@ -93,11 +92,9 @@ interface ISubjectCard {
 function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: ISubjectCard) {
   const color = isActive ? 'text-blue-500 bg-blue-50' : 'text-gray-700 bg-white hover:bg-gray-50';
   const { saveSchedule } = useScheduleModal();
-  const { closeBottomSheet } = useBottomSheetStore();
 
   const handleAddOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
-    saveSchedule(e);
-    closeBottomSheet('search');
+    saveSchedule(e, false);
   };
 
   return (

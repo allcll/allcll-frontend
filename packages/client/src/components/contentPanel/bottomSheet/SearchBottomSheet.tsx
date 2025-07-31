@@ -9,7 +9,7 @@ import { disassemble } from 'es-hangul';
 import useSubject from '@/hooks/server/useSubject';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
-import { BottomSheetType, useBottomSheetStore } from '@/store/useBottomSheetStore';
+import { BottomSheetType } from '@/store/useBottomSheetStore';
 import { ScheduleAdapter } from '@/utils/timetable/adapter';
 
 interface ISearchBottomSheet {
@@ -23,13 +23,10 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
   const { data: subjects = [], isPending } = useSubject();
   const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
   const { openScheduleModal, cancelSchedule } = useScheduleModal();
-  const { openBottomSheet } = useBottomSheetStore();
 
   const initSchedule = new ScheduleAdapter().toUiData();
 
   const handleCreateSchedule = () => {
-    openBottomSheet('edit');
-
     openScheduleModal(initSchedule);
   };
 

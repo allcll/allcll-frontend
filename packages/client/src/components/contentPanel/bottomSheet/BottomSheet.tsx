@@ -2,6 +2,7 @@ import React from 'react';
 import useBottomSheet from '@/hooks/useBottomSheet';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import useCloseBottomSheetOnBackKey from '@/components/contentPanel/bottomSheet/useCloseBottomSheetOnBackKey.ts';
+import useScheduleModal from '@/hooks/useScheduleModal.ts';
 
 type IBottomSheetChildren =
   | React.ReactNode
@@ -17,13 +18,19 @@ export const BOTTOM_SHEET_HEIGHT = window.innerHeight - MIN_Y;
 
 function BottomSheet({ children }: IBottomSheet) {
   const { sheet, content, expandToMax, collapseToMin } = useBottomSheet();
-  const { closeBottomSheet, type, resetBottomSheet } = useBottomSheetStore();
+  const { type, resetBottomSheet } = useBottomSheetStore();
+  const { cancelSchedule } = useScheduleModal();
+
+  function handleCloseBottomSheet() {
+    cancelSchedule();
+    resetBottomSheet();
+  }
 
   useCloseBottomSheetOnBackKey();
 
   return (
     <div className="fixed inset-0 z-[200]">
-      {type && <div className="absolute inset-0 bg-black/5 bg-opacity-80" onClick={() => resetBottomSheet()} />}
+      {type && <div className="absolute inset-0 bg-black/5 bg-opacity-80" onClick={handleCloseBottomSheet} />}
 
       <div
         ref={sheet}
@@ -33,11 +40,9 @@ function BottomSheet({ children }: IBottomSheet) {
           transform: `translateY(${MIN_Y}px)`,
         }}
       >
+        {/* header button*/}
         <div className="w-full flex justify-center py-2 h-7 shrink-0">
-          <div
-            className="w-20 h-2 cursor-pointer bg-gray-300 rounded-full"
-            onClick={() => closeBottomSheet('search')}
-          />
+          <div className="w-20 h-2 cursor-pointer bg-gray-300 rounded-full" onClick={cancelSchedule} />
         </div>
 
         <div ref={content} className="flex-1 overflow-y-auto ">

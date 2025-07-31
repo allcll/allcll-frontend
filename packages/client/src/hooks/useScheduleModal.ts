@@ -82,8 +82,12 @@ function useScheduleModal() {
 
   /** Schedule 의 생성 / 수정 로직
    * @param e - React.MouseEvent<HTMLButtonElement> | React.FormEvent
+   * @param close - 모달을 닫을지 여부 (기본값: true)
    */
-  const saveSchedule = (e?: React.MouseEvent<HTMLButtonElement> | React.FormEvent) => {
+  const saveSchedule = (
+    e?: React.MouseEvent<HTMLButtonElement> | React.FormEvent,
+    close: boolean | undefined = true,
+  ) => {
     const prevSchedule = useScheduleState.getState().schedule;
     const mode = useScheduleState.getState().mode;
 
@@ -117,7 +121,7 @@ function useScheduleModal() {
     }
 
     // 모달 state 초기화
-    closeBottomSheet('edit');
+    if (close) closeBottomSheet('edit');
   };
 
   const deleteSchedule = (e?: React.MouseEvent<HTMLButtonElement>) => {
@@ -133,7 +137,10 @@ function useScheduleModal() {
     closeBottomSheet();
   };
 
-  const cancelSchedule = (e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent) => {
+  const cancelSchedule = (
+    e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent,
+    close: boolean | undefined = true,
+  ) => {
     if (e) e.preventDefault();
 
     // timetable 롤백
@@ -141,7 +148,7 @@ function useScheduleModal() {
 
     // 모달 state 초기화
     changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);
-    closeBottomSheet();
+    if (close) closeBottomSheet();
   };
 
   return {
