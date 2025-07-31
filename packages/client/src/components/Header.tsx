@@ -48,7 +48,7 @@ function Header() {
 
         <div className="items-center space-x-2 hidden sm:flex">
           {ButtonContents.map(({ icon, title, path }) => (
-            <Link to={path} className="p-2 rounded-md hover:bg-gray-100" aria-label={title} title={title}>
+            <Link key={path} to={path} className="p-2 rounded-md hover:bg-gray-100" aria-label={title} title={title}>
               {icon}
             </Link>
           ))}
