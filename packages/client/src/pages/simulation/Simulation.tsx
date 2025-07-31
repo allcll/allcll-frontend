@@ -70,7 +70,7 @@ function Simulation() {
     checkHasSimulation();
   }, [currentSimulation.simulationStatus]);
 
-  const totalCredits = currentSimulation.registeredSubjects.reduce((acc, subject) => {
+  const totalCredits = currentSimulation.successedSubjects.reduce((acc, subject) => {
     const firstNumber = subject.tm_num.split('/')[0];
     return acc + parseInt(firstNumber, 10);
   }, 0);
