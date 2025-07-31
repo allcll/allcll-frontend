@@ -6,6 +6,7 @@ import { useUpdateTimetableRef, useUpdateTimetableOptions } from '@/hooks/timeta
 import { getScheduleSlots, ScheduleSlot, useTimetableSchedules } from '@/hooks/server/useTimetableSchedules.ts';
 import { useScheduleState } from '@/store/useScheduleState.ts';
 import { Day, DAYS } from '@/utils/types.ts';
+import useNotifyDeletedSchedule from '@/hooks/server/useNotifyDeletedSchedule.ts';
 
 export const ROW_HEIGHT = 40;
 
@@ -45,6 +46,7 @@ function WeekTable() {
   const { data: schedules } = useTimetableSchedules(currentTimetable?.timeTableId);
   const scheduleSlots = getScheduleSlots(schedules) ?? DefaultScheduleTimes;
 
+  useNotifyDeletedSchedule(schedules);
   useUpdateTimetableOptions(schedules);
 
   return colNames.map(dayName => (

@@ -510,7 +510,7 @@ export function getScheduleSlots(generalSchedules?: GeneralSchedule[]) {
   }
 
   joinedSchedules.forEach((schedule, index) => {
-    const color = colors[index % colors.length];
+    const color = schedule.isDeleted ? 'gray' : colors[index % colors.length];
     const { subjectName: title, professorName: professor, location } = schedule;
 
     const timeslots = new TimeslotAdapter(schedule.timeSlots).toUiData(minTime);
