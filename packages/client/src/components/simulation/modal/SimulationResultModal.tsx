@@ -6,7 +6,7 @@ import ProcessingModal from './Processing';
 import { NavLink } from 'react-router-dom';
 
 function SimulationResultModal({ simulationId }: { simulationId: number }) {
-  const { closeModal } = useSimulationModalStore();
+  const { closeModal, openModal } = useSimulationModalStore();
   const [result, setResult] = useState<{ accuracy: number; score: number; total_elapsed: number } | null>(null);
   const [logParam, setLogParam] = useState<number>();
 
@@ -79,6 +79,7 @@ function SimulationResultModal({ simulationId }: { simulationId: number }) {
               className="px-4 py-2 border border-gray-400 text-gray-800 rounded-md hover:bg-gray-100 text-sm"
               onClick={() => {
                 closeModal('result');
+                openModal('wish');
               }}
             >
               다시 하기

@@ -6,12 +6,11 @@ const SUBJECT_COUNT = 5;
 async function startSimulation(page: Page) {
   const { targetUrl } = await getTestEnv();
 
-  await page.goto(targetUrl);
+  await page.goto(targetUrl + '/simulation', { waitUntil: 'networkidle' });
+  await page.waitForTimeout(500);
 
-  await page.getByRole('link', { name: '수강연습' }).click();
-  await page.getByRole('checkbox', { name: '수강 신청 과목을 확인하였습니다' }).check();
-  await page.getByRole('button', { name: '시작하기' }).click();
-  await page.getByRole('button', { name: '검색' }).click();
+  await page.getByRole('button', { name: '시작하기' }).click({ delay: 300 });
+  await page.getByRole('button', { name: '검색' }).click({ delay: 500 });
 }
 
 async function fillCaptchaAndConfirm(page: Page, code: string) {
@@ -22,7 +21,7 @@ async function fillCaptchaAndConfirm(page: Page, code: string) {
 }
 
 async function applyWithCaptcha(page: Page, index: number) {
-  await page.getByRole('button', { name: '신청', exact: true }).nth(index).click();
+  await page.getByRole('button', { name: '신청', exact: true }).nth(index).click({ delay: 300 });
   await page.getByRole('textbox', { name: '코드를 입력하세요' }).click();
   await page.getByRole('textbox', { name: '코드를 입력하세요' }).fill('1234');
 
@@ -34,13 +33,13 @@ async function applyWithCaptcha(page: Page, index: number) {
 
   //모달 뜰 때까지 대기
   await page.waitForTimeout(300);
-  const failedModal = await page.getByText('수강여석이 없습니다!', { exact: false });
+  const failedModal = await page.getByText('수강 여석이 없습니다!', { exact: false });
   const doubledModal = await page.getByText('이미 수강신청 된 과목입니다!', { exact: false });
 
   if ((await failedModal.isVisible().catch(() => false)) || (await doubledModal.isVisible().catch(() => false))) {
-    await page.getByRole('button', { name: '확인' }).click();
+    await page.getByRole('button', { name: '확인' }).click({ delay: 300, timeout: 500 });
   } else {
-    await page.getByRole('button', { name: '취소' }).click();
+    await page.getByRole('button', { name: '취소' }).click({ delay: 300, timeout: 500 });
   }
 }
 
