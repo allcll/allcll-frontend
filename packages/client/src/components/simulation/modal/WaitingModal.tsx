@@ -126,7 +126,7 @@ function WaitingModal() {
           <div
             className="h-full bg-blue-500 transition-all duration-300"
             style={{ width: `${(timer / (waitTime + timer)) * 100}%` }}
-          ></div>
+          />
         </div>
 
         <div className="text-gray-700 text-sm md:text-base leading-relaxed">
