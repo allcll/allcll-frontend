@@ -3,7 +3,7 @@ import DaySchedule from '@/components/timetable/DaySchedule.tsx';
 import { useUpdateTimetableRef, useUpdateTimetableOptions } from '@/hooks/timetable/useUpdateTimetableOptions.ts';
 import { getScheduleSlots, ScheduleTime, useTimetableSchedules } from '@/hooks/server/useTimetableSchedules.ts';
 import { useScheduleState } from '@/store/useScheduleState.ts';
-import { Day } from '@/utils/types.ts';
+import { Day, DAYS } from '@/utils/types.ts';
 import ScheduleSlotList from '@/components/timetable/ScheduleSlotList.tsx';
 import TmNumsComponent from '@/components/timetable/TmNumsComponent.tsx';
 
@@ -30,15 +30,13 @@ function TimetableComponent() {
   );
 }
 
-const DefaultScheduleTimes: Record<Day, ScheduleTime[]> = {
-  월: [],
-  화: [],
-  수: [],
-  목: [],
-  금: [],
-  토: [],
-  일: [],
-};
+const DefaultScheduleTimes: Record<Day, ScheduleTime[]> = DAYS.reduce(
+  (acc, day) => {
+    acc[day] = [];
+    return acc;
+  },
+  {} as Record<Day, ScheduleTime[]>,
+);
 
 function WeekTable() {
   const currentTimetable = useScheduleState(s => s.currentTimetable);
