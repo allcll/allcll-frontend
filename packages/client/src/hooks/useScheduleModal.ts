@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import {
   CustomSchedule,
   OfficialSchedule,
-  Schedule,
+  GeneralSchedule,
   Timetable,
   useCreateSchedule,
   useDeleteSchedule,
@@ -34,12 +34,12 @@ function useScheduleModal() {
   const { mutate: deleteScheduleData } = useDeleteSchedule(timetableId);
 
   /** Schedule Time 만 제어할 때 사용. 모달을 열고 싶지 않을 때 사용*/
-  const setOptimisticSchedule = (targetSchedule: Schedule) => {
+  const setOptimisticSchedule = (targetSchedule: GeneralSchedule) => {
     startTransition(() => changeScheduleData(targetSchedule, ScheduleMutateType.NONE));
   };
 
   /** schedule 설정하면서 모달 열기 */
-  const openScheduleModal = (targetSchedule: Schedule) => {
+  const openScheduleModal = (targetSchedule: GeneralSchedule) => {
     // caching previous timetable data
     globalPrevTimetable = queryClient.getQueryData<Timetable>(['timetableData', timetableId]);
 
@@ -60,24 +60,13 @@ function useScheduleModal() {
     changeScheduleData(targetSchedule, currentMode);
   };
 
-  type SetScheduleAction = Schedule | ((prevState: Schedule) => Schedule);
+  type SetScheduleAction = GeneralSchedule | ((prevState: GeneralSchedule) => GeneralSchedule);
   const editSchedule = (schedule: SetScheduleAction) => {
     const prevSchedule = useScheduleState.getState().schedule;
     // state 변경 로직
 
     let newSchedule = schedule instanceof Function ? schedule(prevSchedule) : schedule;
     changeScheduleData(newSchedule);
-
-    // 데이터 변경 로직
-    queryClient.setQueryData(['timetableData', timetableId], {
-      ...globalPrevTimetable,
-      schedules: globalPrevTimetable?.schedules.map(sch => {
-        if (sch.scheduleId === newSchedule.scheduleId) {
-          return { ...sch, ...newSchedule }; // Update the specific schedule
-        }
-        return sch; // Return unchanged schedules
-      }),
-    });
   };
 
   /** Schedule 의 생성 / 수정 로직
@@ -114,9 +103,9 @@ function useScheduleModal() {
     if (mode === ScheduleMutateType.CREATE) {
       // 생성중인 Schedule 구분 용 - unique negative id 생성
       schedule.scheduleId = getUniqueNegativeId(globalPrevTimetable?.schedules ?? []);
-      createScheduleData({ schedule, prevTimetable: globalPrevTimetable });
+      createScheduleData({ schedule });
     } else if (mode === ScheduleMutateType.EDIT) {
-      updateScheduleData({ schedule, prevTimetable: globalPrevTimetable });
+      updateScheduleData({ schedule });
       changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);
     }
 
@@ -130,7 +119,7 @@ function useScheduleModal() {
     if (e) e.preventDefault();
 
     const schedule = new ScheduleAdapter(prevSchedule).toApiData();
-    deleteScheduleData({ schedule, prevTimetable: globalPrevTimetable });
+    deleteScheduleData({ schedule });
 
     // 모달 state 초기화
     changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);
@@ -142,9 +131,6 @@ function useScheduleModal() {
     close: boolean | undefined = true,
   ) => {
     if (e) e.preventDefault();
-
-    // timetable 롤백
-    queryClient.setQueryData(['timetableData', timetableId], globalPrevTimetable);
 
     // 모달 state 초기화
     changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);

@@ -4,10 +4,11 @@ import useInfScroll from '@/hooks/useInfScroll'; // 수정된 useInfScroll impor
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { useScheduleState } from '@/store/useScheduleState';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
-import { Subject } from '@/utils/types';
+import { SubjectApiResponse } from '@/utils/types';
+import { OfficialSchedule } from '@/hooks/server/useTimetableSchedules.ts';
 
 interface ISubjectCards {
-  subjects: Subject[];
+  subjects: SubjectApiResponse[];
   isPending: boolean;
   expandToMax?: () => void;
 }
@@ -27,7 +28,7 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
     return <ZeroListError />;
   }
 
-  const handleCardClick = (subject: Subject) => {
+  const handleCardClick = (subject: SubjectApiResponse) => {
     if (selectedSubjectId === subject.subjectId) {
       cancelSchedule(undefined, false);
       return; // 이미 선택된 과목이면 아무 동작도 하지 않음
@@ -37,8 +38,8 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
       {
         ...new ScheduleAdapter().toApiData(), // Default schedule
         scheduleType: 'official',
-        subjectId: subject.subjectId,
-      },
+        subjectId: subject.subjectId ?? -1,
+      } as OfficialSchedule,
       subject,
     );
 
@@ -84,7 +85,7 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
 
 interface ISubjectCard {
   isActive?: boolean;
-  subject: Subject;
+  subject: SubjectApiResponse;
   onClick: () => void;
   forwardedRef?: React.Ref<HTMLDivElement>;
 }

@@ -46,7 +46,7 @@ export interface SimulationSubject {
   tm_num: string;
 }
 
-export interface Subject {
+export interface SubjectApiResponse {
   subjectId: number; // 과목 ID
   subjectName: string; // 과목명
   subjectCode: string; // 과목 코드
@@ -62,10 +62,6 @@ export interface Subject {
   curiTypeCdNm: string; // 수업 유형 코드명 ('공필'/'전필'/'전선' 등)
   curiLangNm: null | string; // 수업 언어 코드명 ('한국어'/'영어' 등)
   isDeleted: boolean; // 삭제 여부
-
-  language?: string;
-  subjectType?: string;
-  totalCount?: number;
 }
 
 export type SimulationStatusType = 'before' | 'start' | 'progress' | 'finish';

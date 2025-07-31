@@ -1,12 +1,10 @@
 import React, { HTMLAttributes, useRef } from 'react';
 import { useScheduleDrag } from '@/hooks/useScheduleDrag.ts';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
+import { GeneralSchedule as ScheduleType, ScheduleSlot } from '@/hooks/server/useTimetableSchedules.ts';
 import { ROW_HEIGHT } from '@/components/timetable/TimetableComponent.tsx';
-import { Schedule as ScheduleType } from '@/hooks/server/useTimetableSchedules.ts';
 import { moveTimeSlot } from '@/utils/timetable/adapter.ts';
 import { useScheduleState } from '@/store/useScheduleState';
-
-type ColorType = 'rose' | 'amber' | 'green' | 'emerald' | 'blue' | 'violet';
 
 export interface IScheduleProps extends HTMLAttributes<HTMLDivElement> {
   timeslotIndex: number;
@@ -15,7 +13,7 @@ export interface IScheduleProps extends HTMLAttributes<HTMLDivElement> {
   location: string;
   schedule: ScheduleType;
   selected?: boolean;
-  color?: ColorType;
+  color?: ScheduleSlot['color'];
 }
 
 function Schedule({
@@ -104,7 +102,7 @@ interface Colors {
 }
 
 // Todo: 색상을 colors.ts 로 분리하기
-export function getColors(color: ColorType): Colors {
+export function getColors(color: ScheduleSlot['color']): Colors {
   switch (color) {
     case 'rose':
       return { text: 'text-rose-500', bgLight: 'bg-rose-50', bg: 'bg-rose-500' };
