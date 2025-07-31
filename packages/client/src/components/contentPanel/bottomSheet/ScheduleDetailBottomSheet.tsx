@@ -1,12 +1,14 @@
+import React from 'react';
 import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
 import ClockGraySvg from '@/assets/clock-gray.svg?react';
 import HouseSvg from '@/assets/house.svg?react';
 import useSubject from '@/hooks/server/useSubject';
-import useScheduleModal from '@/hooks/useScheduleModal';
+import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
 
 function ScheduleInfoBottomSheet() {
-  const { schedule, deleteSchedule, cancelSchedule } = useScheduleModal();
+  const { schedule } = useScheduleModalData();
+  const { deleteSchedule, cancelSchedule } = useScheduleModal();
   const { data: subjects } = useSubject();
 
   const handleDeleteOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {

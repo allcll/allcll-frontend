@@ -1,11 +1,10 @@
 import React, { useRef } from 'react';
 import ZeroListError from '../errors/ZeroListError';
 import useInfScroll from '@/hooks/useInfScroll'; // 수정된 useInfScroll import
-import useScheduleModal from '@/hooks/useScheduleModal';
+import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { useScheduleState } from '@/store/useScheduleState';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 import { Subject } from '@/utils/types';
-import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 
 interface ISubjectCards {
   subjects: Subject[];
@@ -17,9 +16,8 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
   const { visibleRows, loadMoreRef } = useInfScroll(subjects);
 
   const selectedCardRef = useRef<HTMLDivElement>(null);
-  const schedule = useScheduleState(state => state.schedule);
-  const selectedSubjectId = schedule.subjectId;
-  const { openScheduleModal } = useScheduleModal();
+  const selectedSubjectId = useScheduleState(state => state.schedule.subjectId);
+  const { openScheduleModal, cancelSchedule } = useScheduleModal();
 
   if (isPending || !subjects) {
     return <div className="w-full h-10"></div>;
@@ -30,10 +28,14 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
   }
 
   const handleCardClick = (subject: Subject) => {
+    if (selectedSubjectId === subject.subjectId) {
+      cancelSchedule(undefined, false);
+      return; // 이미 선택된 과목이면 아무 동작도 하지 않음
+    }
+
     const newSchedule = new ScheduleAdapter(
       {
         ...new ScheduleAdapter().toApiData(), // Default schedule
-        scheduleId: -1,
         scheduleType: 'official',
         subjectId: subject.subjectId,
       },
@@ -41,7 +43,7 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
     );
 
     openScheduleModal(newSchedule.toUiData());
-    console.log('official', schedule);
+    console.log('official', selectedSubjectId);
 
     const MIN_TIME = 9;
     const timeslotUI = new TimeslotAdapter(subject.lesnTime).toUiData(MIN_TIME);
@@ -88,13 +90,11 @@ interface ISubjectCard {
 }
 
 function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: ISubjectCard) {
-  const color = isActive ? 'text-blue-500 bg-blue-50' : 'text-gray-700 bg-white';
+  const color = isActive ? 'text-blue-500 bg-blue-50' : 'text-gray-700 bg-white hover:bg-gray-50';
   const { saveSchedule } = useScheduleModal();
-  const { closeBottomSheet } = useBottomSheetStore();
 
   const handleAddOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
-    saveSchedule(e);
-    closeBottomSheet('search');
+    saveSchedule(e, false);
   };
 
   return (

@@ -17,10 +17,14 @@ import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 const initCustomSchedule = new ScheduleAdapter().toUiData();
 let globalPrevTimetable: Timetable | undefined = undefined;
 
+/** schedule, modalActionType 을 사용하고 싶다면, useScheduleModalData를 사용해주세요*/
 function useScheduleModal() {
   const queryClient = useQueryClient();
-  const { currentTimetable, schedule: prevSchedule, mode, changeScheduleData } = useScheduleState();
-  const timetableId = currentTimetable?.timeTableId;
+
+  const changeScheduleData = useScheduleState(state => state.changeScheduleData);
+  const currentTimetable = useScheduleState(state => state.currentTimetable);
+  const timetableId = currentTimetable?.timeTableId ?? -1;
+
   const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
   const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
   const [, startTransition] = useTransition();
@@ -58,6 +62,7 @@ function useScheduleModal() {
 
   type SetScheduleAction = Schedule | ((prevState: Schedule) => Schedule);
   const editSchedule = (schedule: SetScheduleAction) => {
+    const prevSchedule = useScheduleState.getState().schedule;
     // state 변경 로직
 
     let newSchedule = schedule instanceof Function ? schedule(prevSchedule) : schedule;
@@ -77,8 +82,15 @@ function useScheduleModal() {
 
   /** Schedule 의 생성 / 수정 로직
    * @param e - React.MouseEvent<HTMLButtonElement> | React.FormEvent
+   * @param close - 모달을 닫을지 여부 (기본값: true)
    */
-  const saveSchedule = (e?: React.MouseEvent<HTMLButtonElement> | React.FormEvent) => {
+  const saveSchedule = (
+    e?: React.MouseEvent<HTMLButtonElement> | React.FormEvent,
+    close: boolean | undefined = true,
+  ) => {
+    const prevSchedule = useScheduleState.getState().schedule;
+    const mode = useScheduleState.getState().mode;
+
     if (e) e.preventDefault();
 
     // Schedule 시간 Validation
@@ -109,10 +121,12 @@ function useScheduleModal() {
     }
 
     // 모달 state 초기화
-    closeBottomSheet('edit');
+    if (close) closeBottomSheet('edit');
   };
 
   const deleteSchedule = (e?: React.MouseEvent<HTMLButtonElement>) => {
+    const prevSchedule = useScheduleState.getState().schedule;
+
     if (e) e.preventDefault();
 
     const schedule = new ScheduleAdapter(prevSchedule).toApiData();
@@ -123,7 +137,10 @@ function useScheduleModal() {
     closeBottomSheet();
   };
 
-  const cancelSchedule = (e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent) => {
+  const cancelSchedule = (
+    e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent,
+    close: boolean | undefined = true,
+  ) => {
     if (e) e.preventDefault();
 
     // timetable 롤백
@@ -131,18 +148,26 @@ function useScheduleModal() {
 
     // 모달 state 초기화
     changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);
-    closeBottomSheet();
+    if (close) closeBottomSheet();
   };
 
   return {
-    modalActionType: mode,
-    schedule: prevSchedule,
     setOptimisticSchedule,
     openScheduleModal,
     editSchedule,
     saveSchedule,
     deleteSchedule,
     cancelSchedule,
+  };
+}
+
+export function useScheduleModalData() {
+  const modalActionType = useScheduleState(state => state.mode);
+  const schedule = useScheduleState(state => state.schedule);
+
+  return {
+    modalActionType,
+    schedule,
   };
 }
 
@@ -192,4 +217,5 @@ function getUniqueNegativeId(schedules: (CustomSchedule | OfficialSchedule)[]) {
 
   return tmpScheduleId;
 }
+
 export default useScheduleModal;

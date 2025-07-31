@@ -45,10 +45,9 @@ function WireSchedule({ title, professor, location, ...attrs }: Readonly<ISchedu
   return (
     <div
       className={`flex absolute rounded-md z-20 
-      border-0 p-0
-      md:border-4 md:border-violet-500 md:p-2 
+      border-violet-500 border-2 md:border-4
       ${attrs.className}`}
-      style={{ width: 'calc(100% - 4px)', ...attrs.style }}
+      style={{ ...attrs.style }}
       {...rest}
     >
       <div className={`flex-auto p-2 bg-violet-50  rounded-md animate-pulse`}>

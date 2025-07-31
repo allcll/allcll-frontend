@@ -1,8 +1,8 @@
+import React, { useEffect, useState } from 'react';
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import CheckSvg from '@/assets/check.svg?react';
 import ResetSvg from '@/assets/reset.svg?react';
-import { useEffect, useState } from 'react';
 import { DepartmentType, SimulationSubject } from '@/utils/types';
 import {
   checkExistDepartment,
