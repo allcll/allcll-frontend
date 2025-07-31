@@ -4,7 +4,7 @@ import BottomSheetHeader from './BottomSheetHeader';
 import FilterSvg from '@/assets/filter.svg?react';
 import { FilteredSubjectCards } from '../subject/FilteredSubjectCards';
 import { useEffect, useState } from 'react';
-import { Subject } from '@/utils/types';
+import { SubjectApiResponse } from '@/utils/types';
 import { disassemble } from 'es-hangul';
 import useSubject from '@/hooks/server/useSubject';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
@@ -18,7 +18,7 @@ interface ISearchBottomSheet {
 
 function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
   const [searchKeywords, setSearchKeywords] = useState<string>('');
-  const [filteredData, setFilteredData] = useState<Subject[]>([]);
+  const [filteredData, setFilteredData] = useState<SubjectApiResponse[]>([]);
 
   const { data: subjects = [], isPending } = useSubject();
   const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
@@ -50,14 +50,14 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
         return selectedDays.some(d => days.includes(d));
       };
 
-      const filteringDepartment = (subject: Subject): boolean => {
+      const filteringDepartment = (subject: SubjectApiResponse): boolean => {
         if (!selectedDepartment || selectedDepartment === '') return true;
         if (selectedDepartment === subject.deptCd) return true;
 
         return false;
       };
 
-      const filteringGrades = (subject: Subject): boolean => {
+      const filteringGrades = (subject: SubjectApiResponse): boolean => {
         if (selectedGrades.length === 0) return true;
         const sem = subject.studentYear;
         if (selectedGrades.includes('전체')) return true;
@@ -68,7 +68,7 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
         return false;
       };
 
-      const filteringSearchKeywords = (subject: Subject): boolean => {
+      const filteringSearchKeywords = (subject: SubjectApiResponse): boolean => {
         if (!searchKeywords) return true;
 
         const clearnSearchInput = searchKeywords?.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');

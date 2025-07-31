@@ -1,6 +1,6 @@
-import { CustomSchedule, OfficialSchedule, Schedule, TimeSlot } from '@/hooks/server/useTimetableSchedules.ts';
-import { Day, Subject } from '@/utils/types.ts';
+import { CustomSchedule, OfficialSchedule, GeneralSchedule, TimeSlot } from '@/hooks/server/useTimetableSchedules.ts';
 import { ROW_HEIGHT } from '@/components/timetable/TimetableComponent.tsx';
+import { Day, SubjectApiResponse } from '@/utils/types.ts';
 
 interface ApiUiAdapter<T, U> {
   data: U; // Initial data
@@ -13,15 +13,15 @@ interface ApiUiAdapter<T, U> {
 
 type ScheduleApiResponse = OfficialSchedule | CustomSchedule;
 
-export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, Schedule> {
-  data: Schedule;
+export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, GeneralSchedule> {
+  data: GeneralSchedule;
 
   /**
    * Schedule 을 변환하는 어댑터 클래스입니다.
    * @param data - Schedule 또는 ScheduleApiResponse 타입의 데이터, 빈 경우 기본값으로 초기화됩니다.
    * @param subjects - data가 ScheduleApiResponse 인 경우, Wishes 배열이 필요합니다.
    */
-  constructor(data?: Schedule | ScheduleApiResponse, subjects?: Subject | Subject[]) {
+  constructor(data?: GeneralSchedule | ScheduleApiResponse, subjects?: SubjectApiResponse | SubjectApiResponse[]) {
     if (!data) {
       this.data = this.#toDefaultData();
       return;
@@ -33,11 +33,11 @@ export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, Schedu
       return;
     }
 
-    this.data = data as Schedule;
+    this.data = data as GeneralSchedule;
     if (!this.data.timeSlots) this.data.timeSlots = [];
   }
 
-  #toDefaultData(): Schedule {
+  #toDefaultData(): GeneralSchedule {
     return {
       scheduleId: -1,
       scheduleType: 'custom',
@@ -45,17 +45,21 @@ export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, Schedu
       subjectName: '',
       professorName: '',
       location: '',
+      tmNum: '',
+      isDeleted: false,
       timeSlots: [],
     };
   }
 
-  #apiToUiData(schedule: ScheduleApiResponse, subjects?: Subject | Subject[]): Schedule {
+  #apiToUiData(schedule: ScheduleApiResponse, subjects?: SubjectApiResponse | SubjectApiResponse[]): GeneralSchedule {
     if (!subjects) {
       throw new TypeError('Subjects must be provided for API to UI conversion');
     }
 
     const subj =
-      subjects instanceof Array ? subjects.find(s => s.subjectId === schedule.subjectId) : (subjects as Subject);
+      subjects instanceof Array
+        ? subjects.find(s => s.subjectId === schedule.subjectId)
+        : (subjects as SubjectApiResponse);
 
     return {
       scheduleId: schedule.scheduleId,
@@ -64,6 +68,8 @@ export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, Schedu
       subjectName: subj?.subjectName ?? '',
       professorName: subj?.professorName ?? '',
       location: subj?.lesnRoom ?? '',
+      tmNum: subj?.tmNum ?? '',
+      isDeleted: subj?.isDeleted ?? false,
       timeSlots: new TimeslotAdapter(subj?.lesnTime).toApiData(),
     };
   }
@@ -90,12 +96,12 @@ export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, Schedu
     };
   }
 
-  toUiData(): Schedule {
+  toUiData(): GeneralSchedule {
     return this.data;
   }
 }
 
-interface TimeslotGeneric {
+interface GeneralTimeslot {
   dayOfWeeks: Day;
   startHour: number;
   startMinute: number;
@@ -104,7 +110,7 @@ interface TimeslotGeneric {
 }
 
 export class TimeslotAdapter {
-  data: TimeslotGeneric[];
+  data: GeneralTimeslot[];
 
   constructor(data?: TimeSlot | TimeSlot[] | string | null) {
     if (!data) {
@@ -112,9 +118,9 @@ export class TimeslotAdapter {
       return;
     }
 
-    // lsentime 형식
+    // lesnTime 형식
     if (typeof data === 'string') {
-      this.data = this.#parseLsentime(data);
+      this.data = this.#parseLesnTime(data);
       return;
     }
 
@@ -126,7 +132,7 @@ export class TimeslotAdapter {
     this.data = [this.#apiToGenericData(data)];
   }
 
-  // #toDefaultData(): TimeslotGeneric {
+  // #toDefaultData(): GeneralTimeslot {
   //   return {
   //     dayOfWeeks: '월',
   //     startHour: 9,
@@ -136,7 +142,7 @@ export class TimeslotAdapter {
   //   };
   // }
 
-  #apiToGenericData(data: TimeSlot): TimeslotGeneric {
+  #apiToGenericData(data: TimeSlot): GeneralTimeslot {
     const [sh, sm] = data.startTime.split(':');
     const [eh, em] = data.endTime.split(':');
 
@@ -149,13 +155,13 @@ export class TimeslotAdapter {
     };
   }
 
-  #parseLsentime(lsenTM: string) {
+  #parseLesnTime(lesnTM: string) {
     const pattern = /([월화수목금토일]+)(\d{1,2}:\d{2})-(\d{1,2}:\d{2})/g;
 
     const result = [];
     let match;
 
-    while ((match = pattern.exec(lsenTM)) !== null) {
+    while ((match = pattern.exec(lesnTM)) !== null) {
       const daysStr = match[1]; // '화목' 또는 '금'
       const start = match[2]; // '13:30'
       const end = match[3]; // '15:00'

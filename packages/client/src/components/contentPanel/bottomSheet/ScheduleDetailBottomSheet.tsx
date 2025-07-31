@@ -31,7 +31,7 @@ function ScheduleInfoBottomSheet() {
         <p className="text-sm text-gray-500">{findSubjectById?.professorName ?? '교수 정보 없음'}</p>
         <div className="flex items-center gap-1">
           <ClockGraySvg className="w-4 h-4 text-gray-400" />
-          <span className="text-gray-500 text-sm">{findSubjectById?.lesnTime}</span>;
+          <span className="text-gray-500 text-sm">{findSubjectById?.lesnTime}</span>
         </div>
         <div className="flex items-center gap-1">
           <HouseSvg className="w-4 h-4 text-gray-400" />
@@ -44,8 +44,8 @@ function ScheduleInfoBottomSheet() {
           <span className="text-blue-500 text-sm">{findSubjectById?.tmNum[0] + '학점'}</span>
         </div>
         <div className="flex items-center gap-1">
-          <span className="text-gray-500 text-sm">{findSubjectById?.language}</span>
-          <span className="text-gray-500 text-sm">{findSubjectById?.subjectType}</span>
+          <span className="text-gray-500 text-sm">{findSubjectById?.remark ?? ''}</span>
+          <span className="text-gray-500 text-sm">{findSubjectById?.curiTypeCdNm ?? ''}</span>
         </div>
       </div>
       <div className="px-4 py-4">

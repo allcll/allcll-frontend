@@ -6,7 +6,7 @@ import DayFilter from './filter/DayFilter';
 import { FilteredSubjectCards } from './subject/FilteredSubjectCards';
 import { disassemble } from 'es-hangul';
 import useSubject from '@/hooks/server/useSubject';
-import { Subject } from '@/utils/types';
+import { SubjectApiResponse } from '@/utils/types';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
@@ -42,11 +42,11 @@ function ContentPanel() {
         return selectedDays.some(d => days.includes(d));
       };
 
-      const filteringDepartment = (subject: Subject): boolean => {
+      const filteringDepartment = (subject: SubjectApiResponse): boolean => {
         return !selectedDepartment || selectedDepartment === '' || selectedDepartment === subject.deptCd;
       };
 
-      const filteringGrades = (subject: Subject): boolean => {
+      const filteringGrades = (subject: SubjectApiResponse): boolean => {
         if (selectedGrades.length === 0) return true;
         const sem = subject.studentYear;
         if (selectedGrades.includes('전체')) return true;
@@ -57,7 +57,7 @@ function ContentPanel() {
         return false;
       };
 
-      const filteringSearchKeywords = (subject: Subject): boolean => {
+      const filteringSearchKeywords = (subject: SubjectApiResponse): boolean => {
         if (!searchKeywords) return true;
 
         const clearnSearchInput = searchKeywords.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');

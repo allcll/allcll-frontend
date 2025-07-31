@@ -65,8 +65,8 @@ function ScheduleInfoModal() {
             <span className="text-blue-500 text-sm">{findSubjectById?.tmNum[0] + '학점'}</span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-gray-500 text-sm">{findSubjectById?.language}</span>
-            <span className="text-gray-500 text-sm">{findSubjectById?.subjectType}</span>
+            <span className="text-gray-500 text-sm">{findSubjectById?.remark ?? ''}</span>
+            <span className="text-gray-500 text-sm">{findSubjectById?.curiTypeCdNm}</span>
           </div>
         </div>
         <div className="px-4 py-4">

@@ -1,5 +1,5 @@
 import { useScheduleState } from '@/store/useScheduleState.ts';
-import { useTimetableSchedules, getEmptyScheduleSlots, Schedule } from '@/hooks/server/useTimetableSchedules.ts';
+import { useTimetableSchedules, getEmptyScheduleSlots, GeneralSchedule } from '@/hooks/server/useTimetableSchedules.ts';
 import XGraySvg from '@/assets/x-darkgray.svg?react';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
 
@@ -20,7 +20,7 @@ function ScheduleSlotList() {
   );
 }
 
-function EmptyScheduleSlot({ schedule, selected }: { schedule: Schedule; selected: boolean }) {
+function EmptyScheduleSlot({ schedule, selected }: { schedule: GeneralSchedule; selected: boolean }) {
   const { openScheduleModal } = useScheduleModal();
 
   const handleDeleteEmptySlot = () => {

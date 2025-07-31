@@ -3,10 +3,10 @@ import useTick from '@/hooks/useTick.ts';
 import { useRemovePinned } from '@/store/usePinned.ts';
 import { getTimeDiffString } from '@/utils/stringFormats.ts';
 import { getSeatColor } from '@/utils/colors.ts';
-import { Subject, Wishes } from '@/utils/types.ts';
+import { SubjectApiResponse, Wishes } from '@/utils/types.ts';
 
 interface IPinCard {
-  subject: Subject | Wishes;
+  subject: SubjectApiResponse | Wishes;
   seats: number;
   queryTime?: string;
   disableSeat?: boolean;
