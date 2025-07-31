@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { Subject, Wishes } from '@/utils/types.ts';
+import { SubjectApiResponse, Wishes } from '@/utils/types.ts';
 
 const PAGE_SIZE = 45;
 
-function useInfScroll(data: Wishes[] | Subject[]) {
+function useInfScroll(data: Wishes[] | SubjectApiResponse[]) {
   const [visibleRows, setVisibleRows] = useState(PAGE_SIZE);
   const loadMoreRef = useRef<HTMLDivElement>(null);
 

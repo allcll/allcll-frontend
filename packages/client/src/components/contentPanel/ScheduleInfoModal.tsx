@@ -1,12 +1,13 @@
-import useScheduleModal from '@/hooks/useScheduleModal';
+import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
 import XDarkGraySvg from '@/assets/x-darkgray.svg?react';
 import ClockGraySvg from '@/assets/clock-gray.svg?react';
 import HouseSvg from '@/assets/house.svg?react';
 import useSubject from '@/hooks/server/useSubject';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 function ScheduleInfoModal() {
-  const { schedule, deleteSchedule, cancelSchedule } = useScheduleModal();
+  const { schedule } = useScheduleModalData();
+  const { deleteSchedule, cancelSchedule } = useScheduleModal();
   const { data: subjects } = useSubject();
 
   const handleDeleteOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -15,6 +16,17 @@ function ScheduleInfoModal() {
 
     deleteSchedule(e);
   };
+
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') cancelSchedule(e);
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, []);
 
   const findSubjectById = subjects?.find(subject => subject.subjectId === schedule.subjectId);
 
@@ -37,10 +49,10 @@ function ScheduleInfoModal() {
         </div>
 
         <div className="flex flex-col gap-1 px-2 py-3 text-gray-500 text-sm">
-          <p className="text-sm text-gray-500">{findSubjectById?.professorName ?? '교수 정보 없음'}</p>
+          <p className="text-sm text-gray-500">{schedule.professorName ?? '교수 정보 없음'}</p>
           <div className="flex items-center gap-1">
             <ClockGraySvg className="w-4 h-4 text-gray-400" />
-            <span className="text-gray-500 text-sm">{findSubjectById?.lesnTime}</span>;
+            <span className="text-gray-500 text-sm">{findSubjectById?.lesnTime}</span>
           </div>
           <div className="flex items-center gap-1">
             <HouseSvg className="w-4 h-4 text-gray-400" />
@@ -53,8 +65,8 @@ function ScheduleInfoModal() {
             <span className="text-blue-500 text-sm">{findSubjectById?.tmNum[0] + '학점'}</span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-gray-500 text-sm">{findSubjectById?.language}</span>
-            <span className="text-gray-500 text-sm">{findSubjectById?.subjectType}</span>
+            <span className="text-gray-500 text-sm font-bold">{findSubjectById?.curiTypeCdNm} </span>
+            <span className="text-gray-500 text-sm">{findSubjectById?.remark ?? ''}</span>
           </div>
         </div>
         <div className="px-4 py-4">

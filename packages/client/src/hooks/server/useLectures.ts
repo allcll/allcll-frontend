@@ -1,6 +1,6 @@
 import useSubject from '@/hooks/server/useSubject.ts';
 import useDepartments, { Department } from '@/hooks/server/useDepartments.ts';
-import { Subject } from '@/utils/types.ts';
+import { SubjectApiResponse } from '@/utils/types.ts';
 
 interface Lecture {
   subjectId: number;
@@ -21,7 +21,7 @@ function useLectures() {
   const { data: subjects } = useSubject();
   const { data: departments } = useDepartments();
 
-  const getLectures = (subjects?: Subject[], departments?: Department[]): Lecture[] => {
+  const getLectures = (subjects?: SubjectApiResponse[], departments?: Department[]): Lecture[] => {
     if (!subjects || !departments) {
       return [];
     }

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Schedule, TimetableType } from '@/hooks/server/useTimetableSchedules.ts';
+import { GeneralSchedule, TimetableType } from '@/hooks/server/useTimetableSchedules.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 import { Day, DAYS } from '@/utils/types.ts';
 
@@ -13,6 +13,7 @@ export enum ScheduleMutateType {
 export interface IMutateScheduleState {
   currentTimetable: TimetableType;
   options: {
+    containerRef: HTMLDivElement | null;
     timetableRef: HTMLDivElement | null;
     colNames: Day[];
     rowNames: string[];
@@ -29,8 +30,8 @@ export interface IMutateScheduleState {
   mode: ScheduleMutateType;
   pickTimetable: (timetable: TimetableType) => void;
   setOptions: (options: Partial<IMutateScheduleState['options']>) => void;
-  changeScheduleData: (schedule: Partial<Schedule>, mode?: ScheduleMutateType) => void;
-  schedule: Schedule;
+  changeScheduleData: (schedule: Partial<GeneralSchedule>, mode?: ScheduleMutateType) => void;
+  schedule: GeneralSchedule;
 }
 
 export const useScheduleState = create<IMutateScheduleState>(set => ({
@@ -40,6 +41,7 @@ export const useScheduleState = create<IMutateScheduleState>(set => ({
     semester: '',
   },
   options: {
+    containerRef: null,
     timetableRef: null,
     colNames: DAYS.slice(0, 5),
     rowNames: Array.from({ length: 12 }, (_, i) => `${i + 9}`),

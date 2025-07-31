@@ -40,7 +40,7 @@ function WaitingModal() {
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const { closeModal } = useSimulationModalStore();
-  const { currentSimulation } = useSimulationProcessStore();
+  const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore();
 
   const unit = 0.2;
   const peoplePerUnit = 98;
@@ -107,7 +107,8 @@ function WaitingModal() {
   }, [waitTime]);
 
   const handleClickStopButton = () => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
+    setCurrentSimulation({ simulationStatus: 'before' });
+    closeModal('waiting');
   };
 
   return (
@@ -125,7 +126,7 @@ function WaitingModal() {
           <div
             className="h-full bg-blue-500 transition-all duration-300"
             style={{ width: `${(timer / (waitTime + timer)) * 100}%` }}
-          ></div>
+          />
         </div>
 
         <div className="text-gray-700 text-sm md:text-base leading-relaxed">

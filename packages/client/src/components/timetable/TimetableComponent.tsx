@@ -1,33 +1,43 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import DaySchedule from '@/components/timetable/DaySchedule.tsx';
-import { useUpdateTimetableRef, useUpdateTimetableOptions } from '@/hooks/timetable/useUpdateTimetableOptions.ts';
-import { getScheduleSlots, ScheduleTime, useTimetableSchedules } from '@/hooks/server/useTimetableSchedules.ts';
-import { useScheduleState } from '@/store/useScheduleState.ts';
-import { Day } from '@/utils/types.ts';
+import TmNumsComponent from '@/components/timetable/TmNumsComponent.tsx';
 import ScheduleSlotList from '@/components/timetable/ScheduleSlotList.tsx';
+import { useUpdateTimetableRef, useUpdateTimetableOptions } from '@/hooks/timetable/useUpdateTimetableOptions.ts';
+import { getScheduleSlots, ScheduleSlot, useTimetableSchedules } from '@/hooks/server/useTimetableSchedules.ts';
+import { useScheduleState } from '@/store/useScheduleState.ts';
+import { Day, DAYS } from '@/utils/types.ts';
+import useNotifyDeletedSchedule from '@/hooks/server/useNotifyDeletedSchedule.ts';
 
 export const ROW_HEIGHT = 40;
 
-function Timetable() {
+function TimetableComponent() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const setOptions = useScheduleState(state => state.setOptions);
+
+  useEffect(() => {
+    setOptions({ containerRef: containerRef?.current ?? null });
+  }, [containerRef]);
+
   return (
     <>
-      <TimetableGrid>
-        <WeekTable />
-      </TimetableGrid>
-      <ScheduleSlotList />
+      <div className="bg-white" ref={containerRef}>
+        <TimetableGrid>
+          <WeekTable />
+        </TimetableGrid>
+        <ScheduleSlotList />
+      </div>
+      <TmNumsComponent />
     </>
   );
 }
 
-const DefaultScheduleTimes: Record<Day, ScheduleTime[]> = {
-  월: [],
-  화: [],
-  수: [],
-  목: [],
-  금: [],
-  토: [],
-  일: [],
-};
+const DefaultScheduleTimes: Record<Day, ScheduleSlot[]> = DAYS.reduce(
+  (acc, day) => {
+    acc[day] = [];
+    return acc;
+  },
+  {} as Record<Day, ScheduleSlot[]>,
+);
 
 function WeekTable() {
   const currentTimetable = useScheduleState(s => s.currentTimetable);
@@ -36,6 +46,7 @@ function WeekTable() {
   const { data: schedules } = useTimetableSchedules(currentTimetable?.timeTableId);
   const scheduleSlots = getScheduleSlots(schedules) ?? DefaultScheduleTimes;
 
+  useNotifyDeletedSchedule(schedules);
   useUpdateTimetableOptions(schedules);
 
   return colNames.map(dayName => (
@@ -54,6 +65,7 @@ interface ITimetableGridProps {
 function TimetableGrid({ rowHeight = ROW_HEIGHT, children }: Readonly<ITimetableGridProps>) {
   const timetableRef = useRef<HTMLDivElement | null>(null);
   const { colNames, rowNames, isMobile } = useScheduleState(state => state.options);
+
   useUpdateTimetableRef(timetableRef);
 
   const { headerWidth, headerHeight } = isMobile
@@ -61,7 +73,7 @@ function TimetableGrid({ rowHeight = ROW_HEIGHT, children }: Readonly<ITimetable
     : { headerWidth: 60, headerHeight: 40 };
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full bg-white">
       {/*header*/}
       <div className="flex bg-gray-50 rounded-t-md" style={{ height: `${headerHeight}px` }}>
         <div
@@ -92,11 +104,6 @@ function TimetableGrid({ rowHeight = ROW_HEIGHT, children }: Readonly<ITimetable
           <span
             className={`flex items-center justify-center h-full text-gray-400 w-[20px] md:w-[60px] text-[10px] md:text-sm`}
           >
-            {/*   ${*/}
-            {/*  Number(rowName) >= 9 && Number(rowName) <= 20*/}
-            {/*    ? 'w-[20px] md:w-[60px] text-[10px] md:text-sm'*/}
-            {/*    : `w-[60px] text-sm`*/}
-            {/*}*/}
             {rowName}
           </span>
         </div>
@@ -115,4 +122,4 @@ function TimetableGrid({ rowHeight = ROW_HEIGHT, children }: Readonly<ITimetable
   );
 }
 
-export default Timetable;
+export default TimetableComponent;

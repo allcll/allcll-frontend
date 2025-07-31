@@ -1,23 +1,26 @@
 import { Link, NavLink } from 'react-router-dom';
 import LogoSvg from '@public/ci.svg?react';
 import LogoName from '@public/logo-name.svg?react';
+import HelpDeskSvg from '@/assets/help-desk.svg?react';
+import HelpChatSvg from '@/assets/chat-help.svg?react';
 
 const HeaderContents = [
   // { title: '과목검색', path: '/wishes', end: false },
   { title: '시간표', path: '/timetable', end: false },
-  { title: '수강연습', path: '/simulation', end: false },
+  { title: '올클연습', path: '/simulation', end: false },
   { title: '실시간', path: '/live', end: true },
 ];
 
 const ButtonContents = [
-  { title: '공지 채팅방', path: 'https://open.kakao.com/o/g3MztXfh', end: false },
-  { title: '오류 및 제안', path: '/survey', end: true },
+  { icon: <HelpDeskSvg className="w-4 h-4" />, title: '오류 및 제안', path: '/survey' },
+  {
+    icon: <HelpChatSvg className="w-4 h-4" />,
+    title: '공지 채팅방',
+    path: 'https://open.kakao.com/o/g3MztXfh',
+  },
 ];
 
 function Header() {
-  const randomButtonNum = Math.floor(Math.random() * ButtonContents.length);
-  const randomButton = ButtonContents[randomButtonNum];
-
   return (
     <header className="bg-white shadow-sm z-50 sticky top-0">
       <div className="container flex items-center justify-between mx-auto max-w-7xl px-4 md:px-16">
@@ -43,10 +46,12 @@ function Header() {
           </ul>
         </div>
 
-        <div className="items-center space-x-4 hidden sm:flex">
-          <Link to={randomButton.path} className="px-4 py-2 text-sm text-white bg-blue-500 rounded-md">
-            {randomButton.title}
-          </Link>
+        <div className="items-center space-x-2 hidden sm:flex">
+          {ButtonContents.map(({ icon, title, path }) => (
+            <Link key={path} to={path} className="p-2 rounded-md hover:bg-gray-100" aria-label={title} title={title}>
+              {icon}
+            </Link>
+          ))}
         </div>
       </div>
     </header>
