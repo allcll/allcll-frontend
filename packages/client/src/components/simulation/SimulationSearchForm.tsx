@@ -2,12 +2,19 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { useLiveQuery } from 'dexie-react-hooks';
 import SearchSvg from '@/assets/search-white.svg?react';
-import { BUTTON_EVENT, checkOngoingSimulation, triggerButtonEvent } from '@/utils/simulation/simulation';
+import {
+  BUTTON_EVENT,
+  checkOngoingSimulation,
+  forceStopSimulation,
+  triggerButtonEvent,
+} from '@/utils/simulation/simulation';
+import { useReloadSimulation } from '@/hooks/useReloadSimulation';
 
 function SimulationSearchForm() {
   const { currentSimulation, setCurrentSimulation, resetSimulation } = useSimulationProcessStore();
   const { openModal } = useSimulationModalStore();
   const ongoingSimulation = useLiveQuery(checkOngoingSimulation);
+  const { reloadSimulationStatus } = useReloadSimulation();
 
   const hasRunningSimulationId =
     ongoingSimulation && 'simulationId' in ongoingSimulation ? ongoingSimulation.simulationId : -1;
@@ -24,8 +31,18 @@ function SimulationSearchForm() {
     resetSimulation();
   };
 
+  const checkHasSimulation = () => {
+    checkOngoingSimulation().then(simulation => {
+      if (simulation && 'simulationId' in simulation && simulation.simulationId !== -1) {
+        reloadSimulationStatus();
+      }
+    });
+  };
+
   const handleStartSimulation = async () => {
     //버튼이벤트 : 검색 후 시뮬레이션 시작
+    checkHasSimulation();
+
     triggerButtonEvent({ eventType: BUTTON_EVENT.SEARCH })
       .then(result => {
         if ('errMsg' in result) {
@@ -44,6 +61,21 @@ function SimulationSearchForm() {
       .catch(e => {
         console.error('예외 발생:', e);
       });
+  };
+
+  const handleForceSimulation = async () => {
+    try {
+      await forceStopSimulation();
+
+      setCurrentSimulation({
+        simulationStatus: 'finish',
+      });
+      openModal('result');
+    } catch (error) {
+      console.error(error);
+
+      alert('Failed to delete the database.');
+    }
   };
 
   return (
@@ -66,14 +98,20 @@ function SimulationSearchForm() {
 
         <div className="flex flex-col sm:flex-row gap-1 sm:gap-8">
           <div className="flex justify-end items-center sm:justify-start gap-2">
-            <span className="font-bold">주전공(교직)</span>
-            <select className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed" disabled>
+            <span className="font-bold ">주전공(교직)</span>
+            <select
+              className="border-gray-300 text-gray-400 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed"
+              disabled
+            >
               <option>컴퓨터공학전공</option>
             </select>
           </div>
           <div className="flex justify-end items-center sm:justify-start gap-2">
             <span className="font-bold">복수전공(교직)</span>
-            <select className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed" disabled>
+            <select
+              className="border-gray-300 text-gray-400 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed"
+              disabled
+            >
               <option>없음</option>
             </select>
           </div>
@@ -84,7 +122,7 @@ function SimulationSearchForm() {
             <div className="flex justify-end items-center sm:justify-start gap-2">
               <span className="font-bold">검색구분</span>
               <select
-                className="border-gray-300 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed"
+                className="border-gray-300  text-gray-400 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed"
                 disabled
               >
                 <option>주전공검색</option>
@@ -95,7 +133,7 @@ function SimulationSearchForm() {
 
               <div className="flex flex-col sm:flex-row gap-1">
                 <select
-                  className="border-gray-300 border px-2 py-1 w-48 sm:w-30 disabled:bg-gray-100 cursor-not-allowed"
+                  className="border-gray-300  text-gray-400 border px-2 py-1 w-48 sm:w-30 disabled:bg-gray-100 cursor-not-allowed"
                   disabled
                 >
                   <option>학부</option>
@@ -115,15 +153,21 @@ function SimulationSearchForm() {
 
           <div className="flex flex-row justify-between gap-2">
             <div className="flex flex-row ">
-              <button
-                onClick={handleClickRestart}
-                className={`px-3 py-2 rounded flex flex-row gap-1 text-white ${
-                  hasRunningSimulationId !== -1 ? 'bg-gray-200 cursor-not-allowed' : 'bg-blue-500 cursor-pointer'
-                }`}
-                disabled={hasRunningSimulationId !== -1}
-              >
-                재시작
-              </button>
+              {hasRunningSimulationId !== -1 ? (
+                <button
+                  onClick={handleForceSimulation}
+                  className={`px-3 py-2 bg-blue-500 cursor-pointer rounded flex flex-row gap-1 text-white`}
+                >
+                  연습 중지
+                </button>
+              ) : (
+                <button
+                  className={`px-3 py-2 bg-blue-500 cursor-pointer rounded flex flex-row gap-1 text-white`}
+                  onClick={handleClickRestart}
+                >
+                  재시작
+                </button>
+              )}
             </div>
             <button
               onClick={handleStartSimulation}

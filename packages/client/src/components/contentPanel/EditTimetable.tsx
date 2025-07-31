@@ -1,6 +1,6 @@
 import XDarkGraySvg from '@/assets/x-darkgray.svg?react';
 import TextField from '../common/TextField';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Chip from '../common/Chip';
 import { useCreateTimetable, useDeleteTimetable, useUpdateTimetable } from '@/hooks/server/useTimetableSchedules.ts';
 import { useScheduleState } from '@/store/useScheduleState.ts';
@@ -43,6 +43,17 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
       onClose();
     }
   };
+
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') onClose();
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, []);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/10" onClick={onClose}>

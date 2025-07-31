@@ -1,7 +1,7 @@
 import React from 'react';
 import Schedule from '@/components/timetable/Schedule.tsx';
 import WireSchedules from '@/components/timetable/WireSchedules.tsx';
-import { ScheduleTime } from '@/hooks/server/useTimetableSchedules.ts';
+import { ScheduleSlot } from '@/hooks/server/useTimetableSchedules.ts';
 import { useScheduleDrag } from '@/hooks/useScheduleDrag.ts';
 import useScheduleModal, { useScheduleTimeslot } from '@/hooks/useScheduleModal.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
@@ -9,7 +9,7 @@ import { Day } from '@/utils/types.ts';
 
 interface IDayScheduleProps {
   dayOfWeeks: Day;
-  scheduleTimes: ScheduleTime[];
+  scheduleTimes: ScheduleSlot[];
 }
 
 const initCustomSchedule = new ScheduleAdapter().toUiData();

@@ -13,6 +13,8 @@ interface SimulationState {
   simulatonSubjects: SimulationSubject[];
   registeredSubjects: SimulationSubject[];
   nonRegisteredSubjects: SimulationSubject[];
+  successedSubjects: SimulationSubject[];
+  failedSubjects: SimulationSubject[];
   simulationStatus: SimulationStatusType;
   clickedTime: number;
 }
@@ -30,6 +32,8 @@ const defaultSimulation: SimulationState = {
   simulatonSubjects: [],
   registeredSubjects: [],
   nonRegisteredSubjects: [],
+  successedSubjects: [],
+  failedSubjects: [],
   simulationStatus: 'before',
   clickedTime: 0,
 };

@@ -3,7 +3,7 @@ import useSubject from '@/hooks/server/useSubject.ts';
 import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 import { fetchDeleteJsonOnAPI, fetchJsonOnAPI, fetchOnAPI } from '@/utils/api.ts';
-import { Day, Subject } from '@/utils/types.ts';
+import { Day, SubjectApiResponse } from '@/utils/types.ts';
 import { timeSleep } from '@/utils/time.ts';
 
 export interface Timetable {
@@ -23,23 +23,29 @@ export interface OfficialSchedule {
   timeSlots: never[] | null;
 }
 
-export interface CustomSchedule extends Schedule {
+export interface CustomSchedule {
+  scheduleId: number;
   scheduleType: 'custom';
   subjectId: null;
+  subjectName: string;
+  professorName: string;
+  location: string;
+  timeSlots: TimeSlot[];
 }
 
 type ScheduleApiResponse = OfficialSchedule | CustomSchedule;
 
 // 정보를 모두 담는 GeneralSchedule 인터페이스 - 코드 전반에 사용
-// Todo: GeneralSchedule 로 이름 변경하기
-export interface Schedule {
+export interface GeneralSchedule {
   scheduleId: number;
   scheduleType: 'official' | 'custom';
   subjectId: number | null;
   subjectName: string;
   professorName: string;
   location: string;
-  timeSlots: TimeSlot[]; // Todo: GeneralTimeSlot 으로 변경하기
+  tmNum: string;
+  isDeleted: boolean;
+  timeSlots: TimeSlot[]; // Todo: GeneralTimeSlot 으로 형태 변경하기 (Refactor 필요)
 }
 
 export interface TimeSlot {
@@ -48,14 +54,12 @@ export interface TimeSlot {
   endTime: string;
 }
 
-// Todo: Render에 필요한 데이터로 변환 / 필요 없는 정보 제거하기,
-// Fixme: ScheduleSlot 로 이름 변경하기
-export interface ScheduleTime {
+export interface ScheduleSlot {
   title: string;
   professor: string | null;
   location: string | null;
-  schedule: Schedule;
-  color: 'rose' | 'amber' | 'green' | 'emerald' | 'blue' | 'violet';
+  schedule: GeneralSchedule;
+  color: 'rose' | 'amber' | 'green' | 'emerald' | 'blue' | 'violet' | 'gray';
   depth: number;
   left: string;
   right: string;
@@ -77,6 +81,13 @@ export interface InitTimetableType {
   timeTableName: string;
   semester: string;
 }
+
+const InitTimetableSchedules = {
+  timeTableId: -1,
+  timeTableName: '새 시간표',
+  semester: '',
+  schedules: [],
+};
 
 export const getTimetables = async (): Promise<TimetableListResponse> => {
   return await fetchJsonOnAPI<TimetableListResponse>('/api/timetables');
@@ -170,7 +181,7 @@ export function useUpdateTimetable() {
       return { timeTableId };
     },
 
-    onSuccess: (updated, _variables, context) => {
+    onSuccess: async (updated, _variables, context) => {
       const updatedId = context?.timeTableId;
 
       if (currentTimetable?.timeTableId === updatedId) {
@@ -181,14 +192,14 @@ export function useUpdateTimetable() {
         });
       }
 
-      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
-      queryClient.invalidateQueries({ queryKey: ['timetableList', updatedId] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableList', updatedId] });
     },
 
-    onError: (error, _variables, context) => {
+    onError: async (error, _variables, context) => {
       console.error(`시간표 수정 실패 (id: ${context?.timeTableId})`, error);
-      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
-      queryClient.invalidateQueries({ queryKey: ['timetableList', context?.timeTableId] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableList', context?.timeTableId] });
     },
   });
 }
@@ -210,12 +221,12 @@ export function useDeleteTimetable() {
       await queryClient.cancelQueries({ queryKey: ['timetableData', timeTableId] });
       return { timeTableId };
     },
-    onError: (error, _variables, context) => {
+    onError: async (error, _variables, context) => {
       console.error(`시간표 삭제 실패 (id: ${context?.timeTableId})`, error);
-      queryClient.invalidateQueries({ queryKey: ['timetableList', context?.timeTableId] });
-      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableList', context?.timeTableId] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
     },
-    onSuccess: (_, __, context) => {
+    onSuccess: async (_, __, context) => {
       const { timeTables } = queryClient.getQueryData(['timetableList']) as TimetableListResponse;
 
       // 현재 시간표가 삭제된 시간표와 일치하는 경우, 마지막 시간표로 변경
@@ -235,8 +246,8 @@ export function useDeleteTimetable() {
         });
       }
 
-      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
-      queryClient.invalidateQueries({ queryKey: ['timetableData', context?.timeTableId] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableData', context?.timeTableId] });
     },
   });
 }
@@ -279,7 +290,7 @@ export function useCreateTimetable() {
 
       return { previousTimetables };
     },
-    onSuccess: (data: TimetableType) => {
+    onSuccess: async (data: TimetableType) => {
       const { pickTimetable } = useScheduleState.getState();
 
       pickTimetable({
@@ -288,23 +299,22 @@ export function useCreateTimetable() {
         semester: data.semester,
       });
 
-      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
     },
-    onError: error => {
+    onError: async error => {
       try {
         const e = JSON.parse(error.message);
         alert(e.message);
       } catch {
         alert('Error adding Timetable');
       }
-      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
     },
   });
 }
 
-interface ScheduleMutationData {
+interface ScheduleMutationProps {
   schedule: ScheduleApiResponse;
-  prevTimetable?: Timetable;
 }
 
 /** 스케줄을 생성하는 Mutation 훅입니다.
@@ -319,7 +329,7 @@ export function useCreateSchedule(timetableId?: number) {
   const { mutateAsync: createTimetable } = useCreateTimetable();
 
   return useMutation({
-    mutationFn: async ({ schedule }: ScheduleMutationData) => {
+    mutationFn: async ({ schedule }: ScheduleMutationProps) => {
       let targetTimetableId = timetableId;
 
       if (!timetableId || timetableId <= 0) {
@@ -346,23 +356,27 @@ export function useCreateSchedule(timetableId?: number) {
       return { schedule: newSchedule, targetTimetableId };
     },
     onMutate: async mutateData => {
+      const prevTimetableSchedules = queryClient.getQueryData<Timetable>(['timetableData', timetableId]) ?? {
+        ...InitTimetableSchedules,
+      };
+
       // Optimistically update the timetable data
       // Todo: Timetable 같이 생성 시 코드를 간단히 처리할 수 있도록 수정
       if (timetableId && timetableId > 0) {
         await queryClient.cancelQueries({ queryKey: ['timetableData', timetableId] });
 
         queryClient.setQueryData(['timetableData', timetableId], {
-          ...mutateData.prevTimetable,
-          schedules: [...(mutateData.prevTimetable?.schedules ?? []), mutateData.schedule],
+          ...prevTimetableSchedules,
+          schedules: [...prevTimetableSchedules.schedules, mutateData.schedule],
         });
 
         setSelectedSchedule(new ScheduleAdapter().toUiData(), ScheduleMutateType.NONE);
       }
 
-      return mutateData;
+      return { ...mutateData, prevTimetableSchedules };
     },
     onError: (error, __, context) => {
-      queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetable);
+      queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetableSchedules); // 롤백
       console.error(error);
     },
     onSuccess: async ({ schedule, targetTimetableId }, _, context) => {
@@ -392,30 +406,33 @@ export function useUpdateSchedule(timetableId?: number) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ schedule }: ScheduleMutationData) =>
+    mutationFn: async ({ schedule }: ScheduleMutationProps) =>
       await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${timetableId}/schedules/${schedule.scheduleId}`, {
         method: 'PATCH',
         body: JSON.stringify(schedule),
       }),
     onMutate: async mutateData => {
+      const prevTimetableSchedules = queryClient.getQueryData<Timetable>(['timetableData', timetableId]) ?? {
+        ...InitTimetableSchedules,
+      };
       // Optimistically update the timetable data
       await queryClient.cancelQueries({ queryKey: ['timetableData', timetableId] });
-      return mutateData;
+      return { ...mutateData, prevTimetableSchedules };
     },
     onError: (error, __, context) => {
-      queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetable);
+      queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetableSchedules);
       console.error(error);
     },
     onSuccess: async (schedule, _, context) => {
-      if (!context?.prevTimetable) {
-        queryClient.invalidateQueries({ queryKey: ['timetableList'] });
-        queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
+      if (!context?.prevTimetableSchedules) {
+        await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+        await queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
         return;
       }
 
       queryClient.setQueryData(['timetableData', timetableId], {
-        ...context.prevTimetable,
-        schedules: context.prevTimetable.schedules.map(sch => {
+        ...context.prevTimetableSchedules,
+        schedules: context.prevTimetableSchedules.schedules.map(sch => {
           if (sch.scheduleId === schedule.scheduleId) {
             return { ...sch, ...schedule }; // Update the specific schedule
           }
@@ -436,32 +453,35 @@ export function useDeleteSchedule(timetableId?: number) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ schedule }: ScheduleMutationData) =>
+    mutationFn: async ({ schedule }: ScheduleMutationProps) =>
       await fetchDeleteJsonOnAPI(`/api/timetables/${timetableId}/schedules/${schedule.scheduleId}`, {
         scheduleType: schedule.scheduleType,
       }),
 
     onMutate: async mutateData => {
+      const prevTimetableSchedules = queryClient.getQueryData<Timetable>(['timetableData', timetableId]) ?? {
+        ...InitTimetableSchedules,
+      };
       // Optimistically update the timetable data
       await queryClient.cancelQueries({ queryKey: ['timetableData', timetableId] });
-      return mutateData;
+      return { ...mutateData, prevTimetableSchedules };
     },
     onError: (error, __, context) => {
-      queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetable);
+      queryClient.setQueryData(['timetableData', timetableId], context?.prevTimetableSchedules);
       console.error(error);
     },
     onSuccess: async (_, { schedule }, context) => {
       console.log('스케줄 삭제 성공! timetableId:', timetableId);
-      if (!context?.prevTimetable) {
-        queryClient.invalidateQueries({ queryKey: ['timetableList'] });
-        queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
+      if (!context?.prevTimetableSchedules) {
+        await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+        await queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
         return;
       }
 
-      console.log('스케줄 삭제 성공! 이전 데이터 있음. timetableId:', timetableId, context.prevTimetable);
+      console.log('스케줄 삭제 성공! 이전 데이터 있음. timetableId:', timetableId, context.prevTimetableSchedules);
       queryClient.setQueryData(['timetableData', timetableId], {
-        ...context.prevTimetable,
-        schedules: context.prevTimetable.schedules.filter(sch => sch.scheduleId !== schedule.scheduleId),
+        ...context.prevTimetableSchedules,
+        schedules: context.prevTimetableSchedules.schedules.filter(sch => sch.scheduleId !== schedule.scheduleId),
       });
 
       await queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
@@ -475,7 +495,7 @@ export function useDeleteSchedule(timetableId?: number) {
  * @param timetable
  * @param subjects
  */
-function toGeneralSchedules(timetable: Timetable, subjects?: Subject[]): Schedule[] {
+function toGeneralSchedules(timetable: Timetable, subjects?: SubjectApiResponse[]): GeneralSchedule[] {
   if (!timetable || !subjects) return [];
 
   const { schedules } = timetable;
@@ -485,12 +505,12 @@ function toGeneralSchedules(timetable: Timetable, subjects?: Subject[]): Schedul
 /** timetable 데이터를 ScheduleSlots 형태 (UI Data)로 변환합니다.
  * @param generalSchedules - Schedule 배열
  */
-export function getScheduleSlots(generalSchedules?: Schedule[]) {
+export function getScheduleSlots(generalSchedules?: GeneralSchedule[]) {
   const minTime = useScheduleState(state => state.options.minTime);
   const selectedSchedule = useScheduleState(state => state.schedule);
   const selectMode = useScheduleState(state => state.mode);
-  const colors: ScheduleTime['color'][] = ['rose', 'amber', 'green', 'emerald', 'blue', 'violet'];
-  const scheduleTimes: Record<string, ScheduleTime[]> = {};
+  const colors: ScheduleSlot['color'][] = ['rose', 'amber', 'green', 'emerald', 'blue', 'violet'];
+  const scheduleTimes: Record<string, ScheduleSlot[]> = {};
 
   if (!generalSchedules) return undefined;
 
@@ -506,7 +526,7 @@ export function getScheduleSlots(generalSchedules?: Schedule[]) {
   }
 
   joinedSchedules.forEach((schedule, index) => {
-    const color = colors[index % colors.length];
+    const color = schedule.isDeleted ? 'gray' : colors[index % colors.length];
     const { subjectName: title, professorName: professor, location } = schedule;
 
     const timeslots = new TimeslotAdapter(schedule.timeSlots).toUiData(minTime);
@@ -535,11 +555,11 @@ export function getScheduleSlots(generalSchedules?: Schedule[]) {
   return scheduleTimes;
 }
 
-interface ExtendedScheduleTime extends ScheduleTime {
+interface ExtendedScheduleTime extends ScheduleSlot {
   depth: number;
 }
 
-function applyScheduleDepth(ScheduleSlots: ScheduleTime[]): ScheduleTime[] {
+function applyScheduleDepth(ScheduleSlots: ScheduleSlot[]): ScheduleSlot[] {
   const isMobile = useScheduleState.getState().options.isMobile;
   const DepthSize = isMobile ? 8 : 16;
 
@@ -552,7 +572,7 @@ function applyScheduleDepth(ScheduleSlots: ScheduleTime[]): ScheduleTime[] {
     const aStart = parsePixel(a.height);
     const bStart = parsePixel(b.height);
     return bStart - aStart; // Sort by start time in descending order
-  }) as ScheduleTime[];
+  }) as ScheduleSlot[];
 
   // depth 계산
   const ScheduleWithDepth = SortedScheduleSlots.reduce((acc, slot) => {
@@ -589,13 +609,13 @@ function applyScheduleDepth(ScheduleSlots: ScheduleTime[]): ScheduleTime[] {
   });
 }
 
-export interface EmptyScheduleSlot extends Schedule {
+export interface EmptyScheduleSlot extends GeneralSchedule {
   selected: boolean; // 수정 중인 스케줄인지 여부
 }
 /** 시간표의 Timeslot이 비어있는 ScheduleSlot 을 가져오는 훅입니다.
  * @param generalSchedules - Schedule 배열
  */
-export function getEmptyScheduleSlots(generalSchedules?: Schedule[]): EmptyScheduleSlot[] {
+export function getEmptyScheduleSlots(generalSchedules?: GeneralSchedule[]): EmptyScheduleSlot[] {
   const schedule = useScheduleState(state => state.schedule);
   const mode = useScheduleState(state => state.mode);
 

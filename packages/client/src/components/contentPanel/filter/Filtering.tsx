@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import FilterOption from './FilterOption';
 import Chip from '@/components/common/Chip';
 import useDetectClose from '@/hooks/useDetectClose';

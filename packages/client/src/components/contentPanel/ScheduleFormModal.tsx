@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import ScheduleFormContent from './ScheduleFormContent';
 import XDarkGraySvg from '@/assets/x-darkgray.svg?react';
-import useScheduleModal from '@/hooks/useScheduleModal';
+import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
 import { ScheduleMutateType } from '@/store/useScheduleState.ts';
 
 function ScheduleFormModal() {
-  const { cancelSchedule, modalActionType } = useScheduleModal();
+  const { modalActionType } = useScheduleModalData();
+  const { cancelSchedule } = useScheduleModal();
   const title = modalActionType === ScheduleMutateType.CREATE ? '생성' : '수정';
 
   const onKeyDown = (e: KeyboardEvent) => {
@@ -31,7 +32,7 @@ function ScheduleFormModal() {
         aria-modal="true"
       >
         <div className="flex w-full justify-between">
-          <h3 className="font-semibold">과목 {title}</h3>
+          <h3 className="font-semibold">커스텀 일정 {title}</h3>
           <button
             className="w-6 h-6 cursor-pointer flex items-center justify-center bg-gray-100 rounded-full"
             onClick={cancelSchedule}

@@ -6,10 +6,11 @@ import DayFilter from './filter/DayFilter';
 import { FilteredSubjectCards } from './subject/FilteredSubjectCards';
 import { disassemble } from 'es-hangul';
 import useSubject from '@/hooks/server/useSubject';
-import { Subject } from '@/utils/types';
+import { SubjectApiResponse } from '@/utils/types';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
-import useScheduleModal from '@/hooks/useScheduleModal';
+import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
+import FilterDelete from '@/components/contentPanel/filter/FilterDelete.tsx';
 
 const initSchedule = new ScheduleAdapter().toUiData();
 
@@ -41,14 +42,11 @@ function ContentPanel() {
         return selectedDays.some(d => days.includes(d));
       };
 
-      const filteringDepartment = (subject: Subject): boolean => {
-        if (!selectedDepartment || selectedDepartment === '') return true;
-        if (selectedDepartment === subject.deptCd) return true;
-
-        return false;
+      const filteringDepartment = (subject: SubjectApiResponse): boolean => {
+        return !selectedDepartment || selectedDepartment === '' || selectedDepartment === subject.deptCd;
       };
 
-      const filteringGrades = (subject: Subject): boolean => {
+      const filteringGrades = (subject: SubjectApiResponse): boolean => {
         if (selectedGrades.length === 0) return true;
         const sem = subject.studentYear;
         if (selectedGrades.includes('전체')) return true;
@@ -59,7 +57,7 @@ function ContentPanel() {
         return false;
       };
 
-      const filteringSearchKeywords = (subject: Subject): boolean => {
+      const filteringSearchKeywords = (subject: SubjectApiResponse): boolean => {
         if (!searchKeywords) return true;
 
         const clearnSearchInput = searchKeywords.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
@@ -94,19 +92,19 @@ function ContentPanel() {
         onChange={e => setSearchKeywords(e.target.value)}
       />
       <div className="flex flex-wrap gap-3 w-full">
+        <FilterDelete />
         <DepartmentFilter />
         <GradeFilter />
         <DayFilter />
       </div>
       <button type="button" className="text-blue-500 cursor-pointer text-sm" onClick={handleCreateSchedule}>
-        + 과목 생성
+        + 커스텀 일정 생성
       </button>
 
       <div className="flex flex-col h-full overflow-hidden">
         <div className="overflow-y-auto flex-grow">
           <FilteredSubjectCards subjects={filteredData} isPending={isPending} />
         </div>
-
       </div>
     </div>
   );
