@@ -85,7 +85,7 @@ export const useUpdateTimetableRef = (timetableRef: React.RefObject<HTMLDivEleme
       if (timer) return;
       timer = setTimeout(updateSizeOptions, 300);
 
-      setOptions({ isMobile: window.innerWidth < 480 });
+      setOptions({ isMobile: window.innerWidth < 768 });
     };
 
     onResize();

@@ -1,3 +1,4 @@
+import React from 'react';
 import XDarkGraySvg from '@/assets/x-darkgray.svg?react';
 import AddGraySvg from '@/assets/add-gray.svg?react';
 

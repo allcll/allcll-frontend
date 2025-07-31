@@ -3,8 +3,9 @@ import Chip from '../common/Chip';
 import TextField from '../common/TextField';
 import SelectTime from './SelectTime';
 import { Day, DAYS } from '@/utils/types';
-import useScheduleModal from '@/hooks/useScheduleModal.ts';
-import { ScheduleMutateType } from '@/store/useScheduleState';
+import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
+import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState';
+import { useBottomSheetStore } from '@/store/useBottomSheetStore.ts';
 
 interface TimeRange {
   startHour: string;
@@ -14,13 +15,12 @@ interface TimeRange {
 }
 
 function ScheduleFormContent() {
-  const {
-    schedule: scheduleForm,
-    editSchedule: setScheduleForm,
-    saveSchedule,
-    deleteSchedule,
-    modalActionType,
-  } = useScheduleModal();
+  const { schedule: scheduleForm, modalActionType } = useScheduleModalData();
+  const { editSchedule: setScheduleForm, saveSchedule, deleteSchedule, cancelSchedule } = useScheduleModal();
+
+  const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
+
+  const isMobile = useScheduleState(state => state.options.isMobile);
 
   const textFields = [
     {
@@ -121,6 +121,11 @@ function ScheduleFormContent() {
     deleteSchedule(e);
   };
 
+  const gotoSearchContents = () => {
+    cancelSchedule();
+    openBottomSheet('search');
+  };
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       {textFields.map(({ id, name, value }) => (
@@ -163,19 +168,36 @@ function ScheduleFormContent() {
         );
       })}
 
-      <div className="flex  justify-end gap-3">
-        <button type="submit" className="text-white bg-blue-500 text-xs w-15 rounded-lg px-4 py-2 cursor-pointer ">
-          저장
-        </button>
-        {(modalActionType === ScheduleMutateType.EDIT || modalActionType === ScheduleMutateType.VIEW) && (
+      <div className="flex justify-between items-center">
+        <div>
+          {isMobile && (
+            <button
+              type="button"
+              className="text-xs text-blue-500 hover:text-blue-600 hover:underline cursor-pointer"
+              onClick={gotoSearchContents}
+            >
+              + 과목 일정 추가
+            </button>
+          )}
+        </div>
+        <div className="flex justify-end gap-3">
+          {(modalActionType === ScheduleMutateType.EDIT || modalActionType === ScheduleMutateType.VIEW) && (
+            <button
+              type="button"
+              onClick={handleDeleteSchedule}
+              className="text-xs text-white bg-red-500 hover:bg-red-600 w-15 rounded-lg px-4 py-2 cursor-pointer "
+            >
+              삭제
+            </button>
+          )}
+
           <button
-            type="button"
-            onClick={handleDeleteSchedule}
-            className="text-red-500 text-xs w-15 rounded px-3 py-2 cursor-pointer "
+            type="submit"
+            className="text-xs text-white bg-blue-500 hover:bg-blue-600 w-15 rounded-lg px-4 py-2 cursor-pointer "
           >
-            삭제
+            저장
           </button>
-        )}
+        </div>
       </div>
     </form>
   );

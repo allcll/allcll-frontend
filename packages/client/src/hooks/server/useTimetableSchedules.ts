@@ -170,7 +170,7 @@ export function useUpdateTimetable() {
       return { timeTableId };
     },
 
-    onSuccess: (updated, _variables, context) => {
+    onSuccess: async (updated, _variables, context) => {
       const updatedId = context?.timeTableId;
 
       if (currentTimetable?.timeTableId === updatedId) {
@@ -181,14 +181,14 @@ export function useUpdateTimetable() {
         });
       }
 
-      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
-      queryClient.invalidateQueries({ queryKey: ['timetableList', updatedId] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableList', updatedId] });
     },
 
-    onError: (error, _variables, context) => {
+    onError: async (error, _variables, context) => {
       console.error(`시간표 수정 실패 (id: ${context?.timeTableId})`, error);
-      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
-      queryClient.invalidateQueries({ queryKey: ['timetableList', context?.timeTableId] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableList', context?.timeTableId] });
     },
   });
 }
@@ -210,12 +210,12 @@ export function useDeleteTimetable() {
       await queryClient.cancelQueries({ queryKey: ['timetableData', timeTableId] });
       return { timeTableId };
     },
-    onError: (error, _variables, context) => {
+    onError: async (error, _variables, context) => {
       console.error(`시간표 삭제 실패 (id: ${context?.timeTableId})`, error);
-      queryClient.invalidateQueries({ queryKey: ['timetableList', context?.timeTableId] });
-      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableList', context?.timeTableId] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
     },
-    onSuccess: (_, __, context) => {
+    onSuccess: async (_, __, context) => {
       const { timeTables } = queryClient.getQueryData(['timetableList']) as TimetableListResponse;
 
       // 현재 시간표가 삭제된 시간표와 일치하는 경우, 마지막 시간표로 변경
@@ -235,8 +235,8 @@ export function useDeleteTimetable() {
         });
       }
 
-      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
-      queryClient.invalidateQueries({ queryKey: ['timetableData', context?.timeTableId] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableData', context?.timeTableId] });
     },
   });
 }
@@ -279,7 +279,7 @@ export function useCreateTimetable() {
 
       return { previousTimetables };
     },
-    onSuccess: (data: TimetableType) => {
+    onSuccess: async (data: TimetableType) => {
       const { pickTimetable } = useScheduleState.getState();
 
       pickTimetable({
@@ -288,16 +288,16 @@ export function useCreateTimetable() {
         semester: data.semester,
       });
 
-      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
     },
-    onError: error => {
+    onError: async error => {
       try {
         const e = JSON.parse(error.message);
         alert(e.message);
       } catch {
         alert('Error adding Timetable');
       }
-      queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+      await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
     },
   });
 }
@@ -408,8 +408,8 @@ export function useUpdateSchedule(timetableId?: number) {
     },
     onSuccess: async (schedule, _, context) => {
       if (!context?.prevTimetable) {
-        queryClient.invalidateQueries({ queryKey: ['timetableList'] });
-        queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
+        await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+        await queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
         return;
       }
 
@@ -453,8 +453,8 @@ export function useDeleteSchedule(timetableId?: number) {
     onSuccess: async (_, { schedule }, context) => {
       console.log('스케줄 삭제 성공! timetableId:', timetableId);
       if (!context?.prevTimetable) {
-        queryClient.invalidateQueries({ queryKey: ['timetableList'] });
-        queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
+        await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+        await queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
         return;
       }
 

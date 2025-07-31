@@ -8,8 +8,8 @@ import { Subject } from '@/utils/types';
 import { disassemble } from 'es-hangul';
 import useSubject from '@/hooks/server/useSubject';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
-import useScheduleModal from '@/hooks/useScheduleModal';
-import { BottomSheetType, useBottomSheetStore } from '@/store/useBottomSheetStore';
+import useScheduleModal from '@/hooks/useScheduleModal.ts';
+import { BottomSheetType } from '@/store/useBottomSheetStore';
 import { ScheduleAdapter } from '@/utils/timetable/adapter';
 
 interface ISearchBottomSheet {
@@ -22,14 +22,11 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
 
   const { data: subjects = [], isPending } = useSubject();
   const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
-  const { openScheduleModal } = useScheduleModal();
-  const { openBottomSheet, closeBottomSheet } = useBottomSheetStore();
+  const { openScheduleModal, cancelSchedule } = useScheduleModal();
 
   const initSchedule = new ScheduleAdapter().toUiData();
 
   const handleCreateSchedule = () => {
-    openBottomSheet('edit');
-
     openScheduleModal(initSchedule);
   };
 
@@ -107,7 +104,7 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
           <BottomSheetHeader
             title="과목검색"
             headerType="add"
-            onClose={() => closeBottomSheet('search')}
+            onClose={cancelSchedule}
             onClick={handleCreateSchedule}
           />
 

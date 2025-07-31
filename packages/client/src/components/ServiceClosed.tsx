@@ -7,12 +7,14 @@ interface IServiceClosed {
 }
 
 function ServiceClosed({ data }: IServiceClosed) {
-  const isSemesterExpired = new Date(data.period.endDate) > new Date();
+  const isSemesterExpired = new Date(data.period.endDate) < new Date();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
       <main className="text-center">
-        <h1 className="text-3xl mb-4 font-bold text-gray-900">수강신청 기간이 아닙니다</h1>
+        <h1 className="text-3xl mb-4 font-bold text-gray-900">
+          {isSemesterExpired ? '수강신청 고생 많으셨습니다' : '서비스 준비중입니다'}
+        </h1>
         <p className="text-gray-600 mt-2">
           현재는 서비스를 이용할 수 없습니다
           <br />
@@ -28,7 +30,7 @@ function ServiceClosed({ data }: IServiceClosed) {
             </>
           ) : (
             <>
-              <h2 className="text-lg font-semibold text-gray-900">다음 수강신청 안내</h2>
+              <h2 className="text-lg font-semibold text-gray-900">다음 서비스 기간 안내</h2>
               <p className="text-gray-600 mt-1">{data.semester} 수강신청</p>
               <p className="text-gray-500 text-sm mt-1">
                 {data.period.startDate} ~ {data.period.endDate}
@@ -38,7 +40,7 @@ function ServiceClosed({ data }: IServiceClosed) {
 
           <hr className="my-4 border-gray-200" />
 
-          <h3 className="text-md font-semibold text-gray-900">문의 안내</h3>
+          <h3 className="text-md font-semibold text-gray-900">문의</h3>
           <p className="text-gray-600 flex items-center justify-center gap-2 mt-2">allcllclla@google.com</p>
           <Link
             to="/survey"
