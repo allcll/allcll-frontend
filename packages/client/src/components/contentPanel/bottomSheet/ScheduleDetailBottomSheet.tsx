@@ -1,3 +1,4 @@
+import React from 'react';
 import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
 import ClockGraySvg from '@/assets/clock-gray.svg?react';

@@ -1,3 +1,4 @@
+import React from 'react';
 import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
 import ScheduleFormContent from '../ScheduleFormContent';

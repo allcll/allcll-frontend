@@ -1,4 +1,5 @@
 import CheckSvg from '@/assets/checkbox-blue.svg?react';
+import React from 'react';
 
 interface ICheckbox {
   label: string;
