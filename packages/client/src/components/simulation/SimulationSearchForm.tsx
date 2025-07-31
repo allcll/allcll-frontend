@@ -2,7 +2,12 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { useLiveQuery } from 'dexie-react-hooks';
 import SearchSvg from '@/assets/search-white.svg?react';
-import { BUTTON_EVENT, checkOngoingSimulation, triggerButtonEvent } from '@/utils/simulation/simulation';
+import {
+  BUTTON_EVENT,
+  checkOngoingSimulation,
+  forceStopSimulation,
+  triggerButtonEvent,
+} from '@/utils/simulation/simulation';
 import { useReloadSimulation } from '@/hooks/useReloadSimulation';
 
 function SimulationSearchForm() {
@@ -56,6 +61,21 @@ function SimulationSearchForm() {
       .catch(e => {
         console.error('예외 발생:', e);
       });
+  };
+
+  const handleForceSimulation = async () => {
+    try {
+      await forceStopSimulation();
+
+      setCurrentSimulation({
+        simulationStatus: 'finish',
+      });
+      openModal('result');
+    } catch (error) {
+      console.error(error);
+
+      alert('Failed to delete the database.');
+    }
   };
 
   return (
@@ -133,15 +153,21 @@ function SimulationSearchForm() {
 
           <div className="flex flex-row justify-between gap-2">
             <div className="flex flex-row ">
-              <button
-                onClick={handleClickRestart}
-                className={`px-3 py-2 rounded flex flex-row gap-1 text-white ${
-                  hasRunningSimulationId !== -1 ? 'bg-gray-200 cursor-not-allowed' : 'bg-blue-500 cursor-pointer'
-                }`}
-                disabled={hasRunningSimulationId !== -1}
-              >
-                재시작
-              </button>
+              {currentSimulation.simulationStatus === 'progress' ? (
+                <button
+                  onClick={handleForceSimulation}
+                  className={`px-3 py-2 bg-blue-500 cursor-pointer rounded flex flex-row gap-1 text-white`}
+                >
+                  연습 중지
+                </button>
+              ) : (
+                <button
+                  className={`px-3 py-2 bg-blue-500 cursor-pointer rounded flex flex-row gap-1 text-white`}
+                  onClick={handleClickRestart}
+                >
+                  재시작
+                </button>
+              )}
             </div>
             <button
               onClick={handleStartSimulation}

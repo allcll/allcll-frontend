@@ -7,7 +7,7 @@ import HelpChatSvg from '@/assets/chat-help.svg?react';
 const HeaderContents = [
   // { title: '과목검색', path: '/wishes', end: false },
   { title: '시간표', path: '/timetable', end: false },
-  { title: '수강연습', path: '/simulation', end: false },
+  { title: '올클연습', path: '/simulation', end: false },
   { title: '실시간', path: '/live', end: true },
 ];
 

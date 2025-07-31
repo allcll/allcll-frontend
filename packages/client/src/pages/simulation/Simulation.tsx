@@ -13,6 +13,7 @@ import { Helmet } from 'react-helmet';
 import SimulationSearchForm from '@/components/simulation/SimulationSearchForm';
 import { useReloadSimulation } from '@/hooks/useReloadSimulation';
 import useLectures from '@/hooks/server/useLectures.ts';
+import Stopwatch from '@/components/simulation/Stopwatch';
 
 const SUBJECTS_COLUMNS_HEADER = [
   '순번',
@@ -48,6 +49,7 @@ function Simulation() {
   const { type, openModal, closeModal } = useSimulationModalStore();
   const { currentSimulation } = useSimulationProcessStore();
   const { reloadSimulationStatus } = useReloadSimulation();
+
   useLectures();
 
   const currentModal = useSimulationModalStore(state => state.type);
@@ -70,7 +72,7 @@ function Simulation() {
     checkHasSimulation();
   }, [currentSimulation.simulationStatus]);
 
-  const totalCredits = currentSimulation.registeredSubjects.reduce((acc, subject) => {
+  const totalCredits = currentSimulation.successedSubjects.reduce((acc, subject) => {
     const firstNumber = subject.tm_num.split('/')[0];
     return acc + parseInt(firstNumber, 10);
   }, 0);
@@ -99,8 +101,10 @@ function Simulation() {
       </Helmet>
 
       {renderModal()}
-      <h1 className="font-bold text-lg">수강신청</h1>
-
+      <div className="flex gap-5">
+        <h1 className="font-bold text-lg">수강신청</h1>
+        <Stopwatch />
+      </div>
       <SimulationSearchForm />
 
       <section className="mt-4 ">
