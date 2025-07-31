@@ -6,7 +6,6 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation';
 
-
 function generateNumericText() {
   return Math.floor(1000 + Math.random() * 9000).toString();
 }
@@ -61,6 +60,7 @@ function CaptchaInput() {
       .then(() => {
         if (captchaInput?.toString() === codeRef.current) {
           setSubjectStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
+          setCaptchaFailed(false);
         } else {
           setSubjectStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
 
