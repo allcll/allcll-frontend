@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import {
   CustomSchedule,
   OfficialSchedule,
-  Schedule,
+  GeneralSchedule,
   Timetable,
   useCreateSchedule,
   useDeleteSchedule,
@@ -34,12 +34,12 @@ function useScheduleModal() {
   const { mutate: deleteScheduleData } = useDeleteSchedule(timetableId);
 
   /** Schedule Time 만 제어할 때 사용. 모달을 열고 싶지 않을 때 사용*/
-  const setOptimisticSchedule = (targetSchedule: Schedule) => {
+  const setOptimisticSchedule = (targetSchedule: GeneralSchedule) => {
     startTransition(() => changeScheduleData(targetSchedule, ScheduleMutateType.NONE));
   };
 
   /** schedule 설정하면서 모달 열기 */
-  const openScheduleModal = (targetSchedule: Schedule) => {
+  const openScheduleModal = (targetSchedule: GeneralSchedule) => {
     // caching previous timetable data
     globalPrevTimetable = queryClient.getQueryData<Timetable>(['timetableData', timetableId]);
 
@@ -60,7 +60,7 @@ function useScheduleModal() {
     changeScheduleData(targetSchedule, currentMode);
   };
 
-  type SetScheduleAction = Schedule | ((prevState: Schedule) => Schedule);
+  type SetScheduleAction = GeneralSchedule | ((prevState: GeneralSchedule) => GeneralSchedule);
   const editSchedule = (schedule: SetScheduleAction) => {
     const prevSchedule = useScheduleState.getState().schedule;
     // state 변경 로직

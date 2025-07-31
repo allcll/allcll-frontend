@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Schedule, TimetableType } from '@/hooks/server/useTimetableSchedules.ts';
+import { GeneralSchedule, TimetableType } from '@/hooks/server/useTimetableSchedules.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 import { Day, DAYS } from '@/utils/types.ts';
 
@@ -30,8 +30,8 @@ export interface IMutateScheduleState {
   mode: ScheduleMutateType;
   pickTimetable: (timetable: TimetableType) => void;
   setOptions: (options: Partial<IMutateScheduleState['options']>) => void;
-  changeScheduleData: (schedule: Partial<Schedule>, mode?: ScheduleMutateType) => void;
-  schedule: Schedule;
+  changeScheduleData: (schedule: Partial<GeneralSchedule>, mode?: ScheduleMutateType) => void;
+  schedule: GeneralSchedule;
 }
 
 export const useScheduleState = create<IMutateScheduleState>(set => ({

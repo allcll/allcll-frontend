@@ -3,7 +3,7 @@ import useSubject from '@/hooks/server/useSubject.ts';
 import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 import { fetchDeleteJsonOnAPI, fetchJsonOnAPI, fetchOnAPI } from '@/utils/api.ts';
-import { Day, Subject } from '@/utils/types.ts';
+import { Day, SubjectApiResponse } from '@/utils/types.ts';
 import { timeSleep } from '@/utils/time.ts';
 
 export interface Timetable {
@@ -23,23 +23,29 @@ export interface OfficialSchedule {
   timeSlots: never[] | null;
 }
 
-export interface CustomSchedule extends Schedule {
+export interface CustomSchedule {
+  scheduleId: number;
   scheduleType: 'custom';
   subjectId: null;
+  subjectName: string;
+  professorName: string;
+  location: string;
+  timeSlots: TimeSlot[];
 }
 
 type ScheduleApiResponse = OfficialSchedule | CustomSchedule;
 
 // 정보를 모두 담는 GeneralSchedule 인터페이스 - 코드 전반에 사용
-// Todo: GeneralSchedule 로 이름 변경하기
-export interface Schedule {
+export interface GeneralSchedule {
   scheduleId: number;
   scheduleType: 'official' | 'custom';
   subjectId: number | null;
   subjectName: string;
   professorName: string;
   location: string;
-  timeSlots: TimeSlot[]; // Todo: GeneralTimeSlot 으로 변경하기
+  tmNum: string;
+  isDeleted: boolean;
+  timeSlots: TimeSlot[]; // Todo: GeneralTimeSlot 으로 형태 변경하기 (Refactor 필요)
 }
 
 export interface TimeSlot {
@@ -48,14 +54,12 @@ export interface TimeSlot {
   endTime: string;
 }
 
-// Todo: Render에 필요한 데이터로 변환 / 필요 없는 정보 제거하기,
-// Fixme: ScheduleSlot 로 이름 변경하기
-export interface ScheduleTime {
+export interface ScheduleSlot {
   title: string;
   professor: string | null;
   location: string | null;
-  schedule: Schedule;
-  color: 'rose' | 'amber' | 'green' | 'emerald' | 'blue' | 'violet';
+  schedule: GeneralSchedule;
+  color: 'rose' | 'amber' | 'green' | 'emerald' | 'blue' | 'violet' | 'gray';
   depth: number;
   left: string;
   right: string;
@@ -475,7 +479,7 @@ export function useDeleteSchedule(timetableId?: number) {
  * @param timetable
  * @param subjects
  */
-function toGeneralSchedules(timetable: Timetable, subjects?: Subject[]): Schedule[] {
+function toGeneralSchedules(timetable: Timetable, subjects?: SubjectApiResponse[]): GeneralSchedule[] {
   if (!timetable || !subjects) return [];
 
   const { schedules } = timetable;
@@ -485,12 +489,12 @@ function toGeneralSchedules(timetable: Timetable, subjects?: Subject[]): Schedul
 /** timetable 데이터를 ScheduleSlots 형태 (UI Data)로 변환합니다.
  * @param generalSchedules - Schedule 배열
  */
-export function getScheduleSlots(generalSchedules?: Schedule[]) {
+export function getScheduleSlots(generalSchedules?: GeneralSchedule[]) {
   const minTime = useScheduleState(state => state.options.minTime);
   const selectedSchedule = useScheduleState(state => state.schedule);
   const selectMode = useScheduleState(state => state.mode);
-  const colors: ScheduleTime['color'][] = ['rose', 'amber', 'green', 'emerald', 'blue', 'violet'];
-  const scheduleTimes: Record<string, ScheduleTime[]> = {};
+  const colors: ScheduleSlot['color'][] = ['rose', 'amber', 'green', 'emerald', 'blue', 'violet'];
+  const scheduleTimes: Record<string, ScheduleSlot[]> = {};
 
   if (!generalSchedules) return undefined;
 
@@ -535,11 +539,11 @@ export function getScheduleSlots(generalSchedules?: Schedule[]) {
   return scheduleTimes;
 }
 
-interface ExtendedScheduleTime extends ScheduleTime {
+interface ExtendedScheduleTime extends ScheduleSlot {
   depth: number;
 }
 
-function applyScheduleDepth(ScheduleSlots: ScheduleTime[]): ScheduleTime[] {
+function applyScheduleDepth(ScheduleSlots: ScheduleSlot[]): ScheduleSlot[] {
   const isMobile = useScheduleState.getState().options.isMobile;
   const DepthSize = isMobile ? 8 : 16;
 
@@ -552,7 +556,7 @@ function applyScheduleDepth(ScheduleSlots: ScheduleTime[]): ScheduleTime[] {
     const aStart = parsePixel(a.height);
     const bStart = parsePixel(b.height);
     return bStart - aStart; // Sort by start time in descending order
-  }) as ScheduleTime[];
+  }) as ScheduleSlot[];
 
   // depth 계산
   const ScheduleWithDepth = SortedScheduleSlots.reduce((acc, slot) => {
@@ -589,13 +593,13 @@ function applyScheduleDepth(ScheduleSlots: ScheduleTime[]): ScheduleTime[] {
   });
 }
 
-export interface EmptyScheduleSlot extends Schedule {
+export interface EmptyScheduleSlot extends GeneralSchedule {
   selected: boolean; // 수정 중인 스케줄인지 여부
 }
 /** 시간표의 Timeslot이 비어있는 ScheduleSlot 을 가져오는 훅입니다.
  * @param generalSchedules - Schedule 배열
  */
-export function getEmptyScheduleSlots(generalSchedules?: Schedule[]): EmptyScheduleSlot[] {
+export function getEmptyScheduleSlots(generalSchedules?: GeneralSchedule[]): EmptyScheduleSlot[] {
   const schedule = useScheduleState(state => state.schedule);
   const mode = useScheduleState(state => state.mode);
 

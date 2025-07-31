@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { Schedule } from '@/hooks/server/useTimetableSchedules.ts';
+import { GeneralSchedule } from '@/hooks/server/useTimetableSchedules.ts';
 import { useScheduleState } from '@/store/useScheduleState.ts';
 import { DAYS } from '@/utils/types.ts';
 
 /** 이 부분은 useUpdateTimetableOptions.tsx 파일에서 테이블의 옵션을 업데이트하는 훅입니다.
  * @param schedule
  */
-export function useUpdateTimetableOptions(schedule?: Schedule[]) {
+export function useUpdateTimetableOptions(schedule?: GeneralSchedule[]) {
   const selectedSchedule = useScheduleState(state => state.schedule);
   const setOptions = useScheduleState(state => state.setOptions);
 
