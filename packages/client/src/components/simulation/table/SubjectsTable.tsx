@@ -29,13 +29,9 @@ const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
     openModal('captcha');
   };
 
-  const filteredNonRegistered = currentSimulation.nonRegisteredSubjects.filter(subject => {
-    return !currentSimulation.registeredSubjects.some(
-      registeredSubject => registeredSubject.subjectId === subject.subjectId,
-    );
-  });
+  const mergeNonRegisteredAndFailed = currentSimulation.nonRegisteredSubjects.concat(currentSimulation.failedSubjects);
 
-  const subjectsToRender = isRegisteredTable ? currentSimulation.registeredSubjects : filteredNonRegistered;
+  const subjectsToRender = isRegisteredTable ? currentSimulation.successedSubjects : mergeNonRegisteredAndFailed;
 
   return (
     <>
