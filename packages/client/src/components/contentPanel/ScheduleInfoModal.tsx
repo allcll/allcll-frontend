@@ -40,7 +40,7 @@ function ScheduleInfoModal() {
           <p className="text-sm text-gray-500">{findSubjectById?.professorName ?? '교수 정보 없음'}</p>
           <div className="flex items-center gap-1">
             <ClockGraySvg className="w-4 h-4 text-gray-400" />
-            <span className="text-gray-500 text-sm">{findSubjectById?.lesnTime}</span>;
+            <span className="text-gray-500 text-sm">{findSubjectById?.lesnTime}</span>
           </div>
           <div className="flex items-center gap-1">
             <HouseSvg className="w-4 h-4 text-gray-400" />
