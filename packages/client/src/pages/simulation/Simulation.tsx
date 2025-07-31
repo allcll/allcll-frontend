@@ -49,6 +49,7 @@ function Simulation() {
   const { type, openModal, closeModal } = useSimulationModalStore();
   const { currentSimulation } = useSimulationProcessStore();
   const { reloadSimulationStatus } = useReloadSimulation();
+  useLectures();
 
   useLectures();
 
