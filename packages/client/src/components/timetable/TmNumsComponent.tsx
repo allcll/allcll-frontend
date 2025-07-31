@@ -14,7 +14,7 @@ function TmNumsComponent() {
   );
 
   return (
-    <div className="flex items-center gap-4 text-xs text-gray-500 bg-blue-50 p-2 rounded-md">
+    <div className="flex items-center gap-4 text-xs text-gray-500 bg-blue-50 rounded-md p-2 mt-3">
       <span>총 학점: {tmNums?.[0] ?? 0}</span>
       <span>이론: {tmNums?.[1] ?? 0}</span>
       <span>실습: {tmNums?.[2] ?? 0}</span>

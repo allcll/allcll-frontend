@@ -19,7 +19,7 @@ function TimetableComponent() {
 
   return (
     <>
-      <div ref={containerRef}>
+      <div className="bg-white" ref={containerRef}>
         <TimetableGrid>
           <WeekTable />
         </TimetableGrid>
