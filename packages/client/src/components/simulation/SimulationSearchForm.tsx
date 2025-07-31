@@ -94,8 +94,6 @@ function SimulationSearchForm() {
             >
               <option>없음</option>
             </select>
-
-            {/* <div className="text-red-500 font-semibold text-xl">09 : 55</div> */}
           </div>
         </div>
 
