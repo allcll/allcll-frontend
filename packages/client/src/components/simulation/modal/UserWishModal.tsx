@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import CheckSvg from '@/assets/check.svg?react';
@@ -69,7 +69,6 @@ const GameTips = () => (
 
 function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
   const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore();
-  const [isCheckedSubject, setIsCheckedSubject] = useState(false);
   const { closeModal } = useSimulationModalStore();
 
   const { data: departments } = useDepartments();
@@ -178,26 +177,12 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
             <SubjectTable subjects={currentSimulation.simulatonSubjects} />
           </div>
 
-          <div className="mt-4 flex items-center">
-            <input
-              type="checkbox"
-              id="confirm"
-              className="mr-2 cursor-pointer"
-              checked={isCheckedSubject}
-              onChange={() => setIsCheckedSubject(!isCheckedSubject)}
-            />
-            <label htmlFor="confirm" className="mr-2 cursor-pointer text-sm text-gray-700">
-              수강 신청 과목을 확인하였습니다.
-            </label>
-          </div>
-
-          {isCheckedSubject && <GameTips />}
+          <GameTips />
 
           <div className="pt-6 text-right">
             <button
               onClick={handleStartGame}
-              className={`px-6 py-2 bg-blue-500 cursor-pointer text-white font-semibold rounded-md hover:bg-blue-600 ${isCheckedSubject ? '' : 'opacity-50 cursor-not-allowed'}`} // 체크되지 않으면 비활성화
-              disabled={!isCheckedSubject}
+              className={`px-6 py-2 bg-blue-500 cursor-pointer text-white font-semibold rounded-md hover:bg-blue-60`} // 체크되지 않으면 비활성화
             >
               시작하기
             </button>
