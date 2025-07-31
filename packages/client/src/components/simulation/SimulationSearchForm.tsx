@@ -153,7 +153,7 @@ function SimulationSearchForm() {
 
           <div className="flex flex-row justify-between gap-2">
             <div className="flex flex-row ">
-              {currentSimulation.simulationStatus === 'progress' ? (
+              {hasRunningSimulationId !== -1 ? (
                 <button
                   onClick={handleForceSimulation}
                   className={`px-3 py-2 bg-blue-500 cursor-pointer rounded flex flex-row gap-1 text-white`}
