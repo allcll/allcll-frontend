@@ -45,7 +45,7 @@ function Stopwatch() {
       }
     };
 
-    initTimer();
+    initTimer().then();
 
     return () => {
       if (intervalRef.current) {
