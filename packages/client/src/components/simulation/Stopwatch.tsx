@@ -22,7 +22,6 @@ function Stopwatch() {
 
       try {
         const result = await getOngoingSimulation();
-        console.log('result', result, 'currentSimulation', currentSimulation);
         if (!result || !result.started_at || result.simulation_run_id !== currentSimulation.simulationId) {
           return;
         }

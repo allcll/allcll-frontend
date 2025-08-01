@@ -31,9 +31,9 @@ export const checkSubjectResult = (currentSubjectId: number, elapsedTime: number
     const isPopular = POPULAR_SUBJECTS.includes(findSubject.subjectName);
 
     if (isPopular) {
-      limitTime = 4.6 * 2;
-    } else {
       limitTime = 4.6 * 3;
+    } else {
+      limitTime = 4.6 * 4;
     }
   }
 
