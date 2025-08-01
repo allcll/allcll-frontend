@@ -3,9 +3,16 @@ import { SubjectApiResponse, Wishes } from '@/utils/types.ts';
 
 const PAGE_SIZE = 45;
 
-function useInfScroll(data: Wishes[] | SubjectApiResponse[]) {
+type UseInfiniteScrollMode = 'ref' | 'selector';
+
+function useInfScroll(
+  data: Wishes[] | SubjectApiResponse[],
+  mode: UseInfiniteScrollMode = 'ref',
+  selector: string = '.load-more-trigger',
+) {
   const [visibleRows, setVisibleRows] = useState(PAGE_SIZE);
-  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     setVisibleRows(PAGE_SIZE);
@@ -20,26 +27,27 @@ function useInfScroll(data: Wishes[] | SubjectApiResponse[]) {
           }
         });
       },
-      {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.5,
-      },
+      { root: null, rootMargin: '0px', threshold: 0.5 },
     );
 
-    if (loadMoreRef.current) {
+    observerRef.current = observer;
+
+    if (mode === 'ref' && loadMoreRef.current) {
       observer.observe(loadMoreRef.current);
+    } else if (mode === 'selector') {
+      const targets = document.querySelectorAll(selector);
+      targets.forEach(target => observer.observe(target));
     }
 
     return () => {
-      if (loadMoreRef.current) {
-        observer.unobserve(loadMoreRef.current);
-      }
       observer.disconnect();
     };
-  }, [data]); // data가 변경될 때마다 옵저버를 다시 설정
+  }, [data, mode, selector]);
 
-  return { visibleRows, loadMoreRef };
+  return {
+    visibleRows,
+    ...(mode === 'ref' ? { loadMoreRef } : {}),
+  };
 }
 
 export default useInfScroll;
