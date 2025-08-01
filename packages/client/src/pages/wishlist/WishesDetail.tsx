@@ -10,7 +10,6 @@ import useDetailWishes, { DEFAULT_WISH } from '@/hooks/server/useDetailWishes';
 import useRecommendWishes from '@/hooks/server/useRecommendWishes';
 import useDetailRegisters from '@/hooks/server/useDetailRegisters.ts';
 import { getWishesColor } from '@/utils/colors.ts';
-import LinkWhiteSvg from '@/assets/link-white.svg?react';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
