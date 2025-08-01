@@ -22,15 +22,13 @@ const POPULAR_SUBJECTS = [
   'English Reading',
 ];
 
-export const checkSubjectResult = (currentSubjectId: number, elaspedTime: number) => {
+export const checkSubjectResult = (currentSubjectId: number, elapsedTime: number) => {
   const findSubject = lecturesData.subjects.find(subject => subject.subjectId === currentSubjectId);
 
   let limitTime = 40;
 
   if (findSubject?.departmentName === '대양휴머니티칼리지') {
-    const isPopular = POPULAR_SUBJECTS.find(subject => {
-      subject === findSubject.subjectName;
-    });
+    const isPopular = POPULAR_SUBJECTS.includes(findSubject.subjectName);
 
     if (isPopular) {
       limitTime = 4.6 * 2;
@@ -39,8 +37,7 @@ export const checkSubjectResult = (currentSubjectId: number, elaspedTime: number
     }
   }
 
-  console.log(elaspedTime, limitTime);
-  if (elaspedTime < limitTime) return true;
+  console.log(elapsedTime, limitTime);
 
-  return false;
+  return elapsedTime < limitTime;
 };

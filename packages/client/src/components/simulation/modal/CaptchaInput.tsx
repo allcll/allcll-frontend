@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Modal from '@/components/simulation/modal/Modal';
 import ModalHeader from '@/components/simulation/modal/ModalHeader';
 import { drawCaptcha } from '@/utils/captcha';

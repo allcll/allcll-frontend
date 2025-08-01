@@ -21,7 +21,7 @@ function SimulationResultModal({ simulationId }: { simulationId: number }) {
         }
       });
     }
-    fetchResult();
+    fetchResult().then();
   }, []);
 
   if (!result) {
