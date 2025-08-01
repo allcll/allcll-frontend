@@ -4,7 +4,7 @@ import LogoName from '@public/logo-name.svg?react';
 import HelpDeskSvg from '@/assets/help-desk.svg?react';
 import HelpChatSvg from '@/assets/chat-help.svg?react';
 
-const HeaderContents = [
+export const HeaderContents = [
   // { title: '과목검색', path: '/wishes', end: false },
   { title: '시간표', path: '/timetable', end: false },
   { title: '올클연습', path: '/simulation', end: false },
