@@ -14,7 +14,7 @@ interface ISubjectCards {
 }
 
 export function FilteredSubjectCards({ subjects, expandToMax, isPending = false }: ISubjectCards) {
-  const { visibleRows, loadMoreRef } = useInfScroll(subjects);
+  const { visibleRows, loadMoreRef } = useInfScroll(subjects, 'ref');
 
   const selectedCardRef = useRef<HTMLDivElement>(null);
   const selectedSubjectId = useScheduleState(state => state.schedule.subjectId);

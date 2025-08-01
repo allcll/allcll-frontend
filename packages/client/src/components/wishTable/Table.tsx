@@ -5,8 +5,8 @@ import useFavorites from '@/store/useFavorites.ts';
 import StarIcon from '@/components/svgs/StarIcon.tsx';
 import SearchSvg from '@/assets/search.svg?react';
 import SkeletonRows from '@/components/live/skeletons/SkeletonRows.tsx';
-import useInfScroll from '@/hooks/useInfScroll.ts';
 import { getWishesColor } from '@/utils/colors.ts';
+import useInfScroll from '@/hooks/useInfScroll';
 
 interface ITable {
   data: Wishes[] | undefined;
@@ -43,7 +43,7 @@ function Table({ data, isPending = false }: Readonly<ITable>) {
 }
 
 function TableBody({ data, isPending = false }: Readonly<ITable>) {
-  const { visibleRows } = useInfScroll(data ?? []);
+  const { visibleRows } = useInfScroll(data ?? [], 'selector');
   const wishes = data ? data.slice(0, visibleRows) : [];
 
   if (isPending || !data) {
