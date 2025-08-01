@@ -46,7 +46,7 @@ const router = createBrowserRouter([
   },
   {
     path: 'wishes',
-    element: <ServiceLayout />,
+    element: <MainLayout />,
     errorElement: <ErrorPageWith404 />,
     children: [
       {
