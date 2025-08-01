@@ -1,4 +1,4 @@
-import lecturesData from '@public/lectures.json';
+import { Lecture } from '@/hooks/server/useLectures';
 
 const POPULAR_SUBJECTS = [
   '현대인의정신건강과자기발견',
@@ -22,8 +22,8 @@ const POPULAR_SUBJECTS = [
   'English Reading',
 ];
 
-export const checkSubjectResult = (currentSubjectId: number, elapsedTime: number) => {
-  const findSubject = lecturesData.subjects.find(subject => subject.subjectId === currentSubjectId);
+export const checkSubjectResult = (lectures: Lecture[], currentSubjectId: number, elapsedTime: number) => {
+  const findSubject = lectures.find(subject => subject.subjectId === currentSubjectId);
 
   let limitTime = 40;
 

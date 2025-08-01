@@ -5,6 +5,7 @@ import { drawCaptcha } from '@/utils/captcha';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation';
+import useLectures from '@/hooks/server/useLectures';
 
 function generateNumericText() {
   return Math.floor(1000 + Math.random() * 9000).toString();
@@ -17,6 +18,7 @@ function CaptchaInput() {
   const [captchaInput, setCaptchaInput] = useState<string | number>();
   const [infoMessage, setInfoMessage] = useState<string>('');
   const codeRef = useRef<string>('');
+  const lectures = useLectures();
 
   const { closeModal, openModal } = useSimulationModalStore();
   const { currentSubjectId, setSubjectStatus, setCaptchaFailed } = useSimulationSubjectStore();
@@ -56,7 +58,7 @@ function CaptchaInput() {
   }, []);
 
   function handleConfirmCaptcha() {
-    triggerButtonEvent({ eventType: BUTTON_EVENT.CAPTCHA, subjectId: currentSubjectId })
+    triggerButtonEvent({ eventType: BUTTON_EVENT.CAPTCHA, subjectId: currentSubjectId }, lectures)
       .then(() => {
         if (captchaInput?.toString() === codeRef.current) {
           setSubjectStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
