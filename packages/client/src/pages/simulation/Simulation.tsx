@@ -49,7 +49,7 @@ function Simulation() {
   const { type, openModal, closeModal } = useSimulationModalStore();
   const { currentSimulation } = useSimulationProcessStore();
   const { reloadSimulationStatus } = useReloadSimulation();
-  useLectures();
+  const lectures = useLectures();
 
   const currentModal = useSimulationModalStore(state => state.type);
 
@@ -83,7 +83,7 @@ function Simulation() {
       case 'captcha':
         return <CaptchaInput />;
       case 'wish':
-        return <UserWishModal setIsModalOpen={() => closeModal()} />;
+        return <UserWishModal lectures={lectures} setIsModalOpen={() => closeModal()} />;
       case 'simulation':
         return <SimulationModal reloadSimulationStatus={reloadSimulationStatus} />;
       case 'result':
