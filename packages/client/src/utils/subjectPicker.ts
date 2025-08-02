@@ -112,3 +112,19 @@ export const pickNonRandomSubjects = (lectures: Lecture[], departmentName: strin
 
   return [...uniqueDepartmentSubjects, ...uniqueHumanitySubjects];
 };
+
+export const applyCreditLimit = (subjects: Lecture[]) => {
+  let totalCredit = 0;
+  const limitedSubjects: Lecture[] = [];
+
+  for (const subject of subjects) {
+    const subjectCredit = Number(subject.tm_num.split('/')[0]) || 0;
+    if (totalCredit + subjectCredit > 24) {
+      break;
+    }
+    totalCredit += subjectCredit;
+    limitedSubjects.push(subject);
+  }
+
+  return limitedSubjects;
+};

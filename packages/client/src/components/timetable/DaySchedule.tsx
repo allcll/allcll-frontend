@@ -12,7 +12,7 @@ interface IDayScheduleProps {
   scheduleTimes: ScheduleSlot[];
 }
 
-const initCustomSchedule = new ScheduleAdapter().toUiData();
+const getScheduleAdapter = () => new ScheduleAdapter().toUiData();
 
 const DaySchedule = ({ dayOfWeeks, scheduleTimes }: Readonly<IDayScheduleProps>) => {
   const timeSlots = scheduleTimes;
@@ -22,7 +22,7 @@ const DaySchedule = ({ dayOfWeeks, scheduleTimes }: Readonly<IDayScheduleProps>)
   const onDragChange = (_: number, startY: number, __: number, nowY: number) => {
     const { startTime, endTime } = getTimeslot(startY, nowY, 1);
     setOptimisticSchedule({
-      ...initCustomSchedule,
+      ...getScheduleAdapter(),
       timeSlots: [{ dayOfWeeks, startTime, endTime }],
     });
   };
@@ -30,14 +30,14 @@ const DaySchedule = ({ dayOfWeeks, scheduleTimes }: Readonly<IDayScheduleProps>)
   const onDragEnd = (_: number, startY: number, __: number, nowY: number) => {
     const { startTime, endTime } = getTimeslot(startY, nowY, 1);
     openScheduleModal({
-      ...initCustomSchedule,
+      ...getScheduleAdapter(),
       timeSlots: [{ dayOfWeeks, startTime, endTime }],
     });
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter' || e.key === ' ') {
-      openScheduleModal({ ...initCustomSchedule });
+      openScheduleModal({ ...getScheduleAdapter() });
     }
   };
 

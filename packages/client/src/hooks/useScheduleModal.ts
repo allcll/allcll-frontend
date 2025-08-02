@@ -14,7 +14,7 @@ import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState.t
 import { useBottomSheetStore } from '@/store/useBottomSheetStore.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 
-const initCustomSchedule = new ScheduleAdapter().toUiData();
+const getInitCustomSchedule = () => new ScheduleAdapter().toUiData();
 let globalPrevTimetable: Timetable | undefined = undefined;
 
 /** schedule, modalActionType 을 사용하고 싶다면, useScheduleModalData를 사용해주세요*/
@@ -106,7 +106,7 @@ function useScheduleModal() {
       createScheduleData({ schedule });
     } else if (mode === ScheduleMutateType.EDIT) {
       updateScheduleData({ schedule });
-      changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);
+      changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);
     }
 
     // 모달 state 초기화
@@ -122,7 +122,7 @@ function useScheduleModal() {
     deleteScheduleData({ schedule });
 
     // 모달 state 초기화
-    changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);
+    changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);
     closeBottomSheet();
   };
 
@@ -133,7 +133,7 @@ function useScheduleModal() {
     if (e) e.preventDefault();
 
     // 모달 state 초기화
-    changeScheduleData({ ...initCustomSchedule }, ScheduleMutateType.NONE);
+    changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);
     if (close) closeBottomSheet();
   };
 

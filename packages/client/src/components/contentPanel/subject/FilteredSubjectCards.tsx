@@ -9,7 +9,7 @@ import { OfficialSchedule } from '@/hooks/server/useTimetableSchedules.ts';
 
 interface ISubjectCards {
   subjects: SubjectApiResponse[];
-  isPending: boolean;
+  isPending?: boolean;
   expandToMax?: () => void;
 }
 
