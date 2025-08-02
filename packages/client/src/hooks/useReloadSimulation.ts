@@ -50,10 +50,6 @@ export function useReloadSimulation() {
 
         setCurrentSimulation({
           simulationId: result.simulationId,
-          department: {
-            departmentCode: result?.userStatus?.departmentCode ?? '',
-            departmentName: result?.userStatus?.departmentName ?? '',
-          },
         });
 
         if (result?.nonRegisteredSubjects) {

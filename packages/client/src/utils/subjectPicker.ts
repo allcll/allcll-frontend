@@ -1,11 +1,6 @@
 import { SimulationSubject } from '@/utils/types';
 import { Lecture } from '@/hooks/server/useLectures';
 
-type Department = {
-  departmentCode: string;
-  departmentName: string;
-};
-
 const TOTAL_SUBJECTS = 5;
 
 function getRandomItems(lectures: Lecture[], count: number) {
@@ -44,13 +39,15 @@ function checkMajorCount(count: number) {
   return TOTAL_SUBJECTS - count + 1;
 }
 
-export const pickRandomsubjects = (subjects: Lecture[], department: Department) => {
-  const collegeName = pickCollege(department.departmentName);
+export const pickRandomsubjects = (subjects: Lecture[], departmentName: string) => {
+  if (departmentName === '') {
+    return pickRandomSubjectsByAll(subjects);
+  }
+
+  const collegeName = pickCollege(departmentName);
 
   const departmentSubjects = subjects.filter(subject => checkSameDepartment(subject.departmentName, collegeName));
-
   const humanitySubjects = subjects.filter(subject => subject.departmentName === '대양휴머니티칼리지');
-
   const validDepartmentSubjects = departmentSubjects.filter(
     subject => subject.professorName !== null && subject.lesn_time !== null,
   );
@@ -76,30 +73,6 @@ export const pickRandomsubjects = (subjects: Lecture[], department: Department) 
   return allRandomSubjects;
 };
 
-export const checkExistDepartment = (lectures: Lecture[], departments: Department[] | undefined) => {
-  const arr: Department[] = [];
-  departments?.forEach(department => {
-    const randomSubject = pickRandomsubjects(lectures, department);
-
-    if (randomSubject.length === 2) {
-      arr.push(department);
-    }
-  });
-
-  return arr;
-};
-
-export const makeValidateDepartment = (
-  departments: Department[] | undefined,
-  notExistDepartment: Department[] | undefined,
-) => {
-  if (!departments) return [];
-  if (!notExistDepartment || notExistDepartment.length === 0) return departments;
-
-  const notExistIds = new Set(notExistDepartment.map(dep => dep.departmentCode));
-  return departments.filter(dep => !notExistIds.has(dep.departmentCode));
-};
-
 /**
  * 문제점 : subjectId만 판별할 경우, 분반은 001로 통일 된다.
  * @param subjectId
@@ -108,15 +81,15 @@ export const findSubjectsById = (lectures: Lecture[], subjectId: number) => {
   return lectures.find(subject => subjectId === subject.subjectId);
 };
 
-// export const pickRandomSubjectsByAll = () => {
-//   return getRandomItems(lectures, 5);
-// };
+export const pickRandomSubjectsByAll = (lectures: Lecture[]) => {
+  return getRandomItems(lectures, 5);
+};
 
-export const pickNonRandomSubjects = (lectures: Lecture[], department: Department) => {
-  const collegeName = pickCollege(department.departmentName);
+export const pickNonRandomSubjects = (lectures: Lecture[], departmentName: string) => {
+  const collegeName = pickCollege(departmentName);
 
-  if (collegeName === '학과를 선택하지 않았습니다.') {
-    return [];
+  if (collegeName === '') {
+    return pickRandomSubjectsByAll(lectures);
   }
 
   const departmentSubjects = lectures.filter(subject => checkSameDepartment(subject.departmentName, collegeName));

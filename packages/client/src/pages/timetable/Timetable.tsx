@@ -105,7 +105,7 @@ function TimetableHeader({ setIsOpenModal }: ITimetableHeaderProps) {
   };
 
   const handleSaveImage = () => {
-    const name = useScheduleState.getState().currentTimetable.timeTableName;
+    const name = useScheduleState.getState()?.currentTimetable?.timeTableName;
     const containerRef = useScheduleState.getState().options.containerRef;
     saveImageFromElement(containerRef, name ? name + '.png' : '시간표.png');
   };
