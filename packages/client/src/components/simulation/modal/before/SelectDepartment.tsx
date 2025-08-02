@@ -25,7 +25,7 @@ function SelectDepartment({ department, setDepartment, saveRandomSubjects }: ISe
 
   return (
     <div className="flex flex-col gap-2">
-      <h2 className="text-left font-semibold mb-2">학과 검색</h2>
+      <h2 className="text-left font-semibold text-sm sm:text-md">학과 검색</h2>
       <select
         className="cursor-pointer border border-gray-300 rounded-sm px-2 py-1 w-50 sm:w-120 bg-white mb-4"
         value={

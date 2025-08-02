@@ -21,7 +21,7 @@ function TimetableChip({ selectedTimetable, onSelect, setSelectedTimetable, time
 
   return (
     <div className="flex flex-col gap-2">
-      <h2 className="text-left pt-2 font-semibold flex items-center">시간표를 선택해주세요.</h2>
+      <h2 className="text-left font-semibold text-sm sm:text-md">시간표를 선택해주세요.</h2>
       <div className="relative inline-block max-w-sm" ref={dropdownRef}>
         <Filtering
           label={selectedTimetable.timeTableName}

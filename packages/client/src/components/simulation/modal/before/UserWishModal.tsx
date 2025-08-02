@@ -172,9 +172,9 @@ function UserWishModal({ lectures, timetables, setIsModalOpen }: UserWishModalIP
           setIsModalOpen(false);
         }}
       />
-      <div className="flex flex-row gap-4 p-1 sm:p-6">
+      <div className="flex flex-row gap-4 p-2 sm:p-6">
         <div className="flex flex-col gap-2">
-          <h2 className="text-left font-semibold">어떤 과목으로 진행하시겠습니까?</h2>
+          <h2 className="text-left font-semibold text-sm sm:text-md">어떤 과목으로 진행하시겠습니까?</h2>
           <div className="flex gap-2 py-2">
             <Chip
               label="시간표 과목"
