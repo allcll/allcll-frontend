@@ -2,20 +2,22 @@ import { useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
-import useWishes from '@/hooks/server/useWishes.ts';
+// import useWishes from '@/hooks/server/useWishes.ts';
 import { getSimulationResult, ResultResponse } from '@/utils/simulation/result.ts';
-import { Wishes } from '@/utils/types.ts';
+// import { Wishes } from '@/utils/types.ts';
 import { findSubjectsById } from '@/utils/subjectPicker.ts';
 import Timeline from '@/components/simulation/detail/Timeline.tsx';
 import RadarChart from '@/components/simulation/detail/RadarChart.tsx';
 import SubjectDetailResult from '@/components/simulation/detail/SubjectDetailResult.tsx';
+import useLectures, { Lecture } from '@/hooks/server/useLectures';
 
 function DashboardDetail() {
   const { runId } = useParams();
-  const { data: subjects } = useWishes();
+  const lectures = useLectures();
+
   const result = useLiveQuery(() => getSimulationResult(Number(runId)));
 
-  const resultInfo = useMemo(() => joinSubjectInfo(subjects, result), [subjects, result]);
+  const resultInfo = useMemo(() => joinSubjectInfo(lectures, result), [lectures, result]);
 
   return (
     <>
@@ -74,7 +76,7 @@ export interface ExtendedResultResponse extends ResultResponse {
   result?: ExtendedResultResponse;
 }
 
-function joinSubjectInfo(subjects?: Wishes[], result?: ResultResponse | null): ExtendedResultResponse | undefined {
+function joinSubjectInfo(subjects?: Lecture[], result?: ResultResponse | null): ExtendedResultResponse | undefined {
   if (!result || !subjects) return undefined;
 
   // const searchSubject = (subjectId: number) => {
@@ -85,11 +87,11 @@ function joinSubjectInfo(subjects?: Wishes[], result?: ResultResponse | null): E
     ...result,
     timeline: result.timeline.map(item => ({
       ...item,
-      subjectInfo: findSubjectsById(item.subject_id),
+      subjectInfo: findSubjectsById(subjects, item.subject_id),
     })),
     subject_results: result.subject_results.map(item => ({
       ...item,
-      subjectInfo: findSubjectsById(item.subject_id),
+      subjectInfo: findSubjectsById(subjects, item.subject_id),
     })),
   };
 }

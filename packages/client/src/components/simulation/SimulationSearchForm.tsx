@@ -9,12 +9,14 @@ import {
   triggerButtonEvent,
 } from '@/utils/simulation/simulation';
 import { useReloadSimulation } from '@/hooks/useReloadSimulation';
+import useLectures from '@/hooks/server/useLectures';
 
 function SimulationSearchForm() {
   const { currentSimulation, setCurrentSimulation, resetSimulation } = useSimulationProcessStore();
   const { openModal } = useSimulationModalStore();
   const ongoingSimulation = useLiveQuery(checkOngoingSimulation);
   const { reloadSimulationStatus } = useReloadSimulation();
+  const lectures = useLectures();
 
   const hasRunningSimulationId =
     ongoingSimulation && 'simulationId' in ongoingSimulation ? ongoingSimulation.simulationId : -1;
@@ -43,7 +45,7 @@ function SimulationSearchForm() {
     //버튼이벤트 : 검색 후 시뮬레이션 시작
     checkHasSimulation();
 
-    triggerButtonEvent({ eventType: BUTTON_EVENT.SEARCH })
+    triggerButtonEvent({ eventType: BUTTON_EVENT.SEARCH }, lectures)
       .then(result => {
         if ('errMsg' in result) {
           alert('시뮬레이션이 존재하지 않습니다. 학과 검색을 먼저 진행해주세요!');

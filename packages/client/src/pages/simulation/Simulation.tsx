@@ -51,8 +51,6 @@ function Simulation() {
   const { reloadSimulationStatus } = useReloadSimulation();
   useLectures();
 
-  useLectures();
-
   const currentModal = useSimulationModalStore(state => state.type);
 
   const checkHasSimulation = () => {

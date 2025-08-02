@@ -1,4 +1,4 @@
-import lecturesData from '@public/lectures.json';
+import { Lecture } from '@/hooks/server/useLectures';
 
 const POPULAR_SUBJECTS = [
   '현대인의정신건강과자기발견',
@@ -22,25 +22,22 @@ const POPULAR_SUBJECTS = [
   'English Reading',
 ];
 
-export const checkSubjectResult = (currentSubjectId: number, elaspedTime: number) => {
-  const findSubject = lecturesData.subjects.find(subject => subject.subjectId === currentSubjectId);
+export const checkSubjectResult = (lectures: Lecture[], currentSubjectId: number, elapsedTime: number) => {
+  const findSubject = lectures.find(subject => subject.subjectId === currentSubjectId);
 
   let limitTime = 40;
 
   if (findSubject?.departmentName === '대양휴머니티칼리지') {
-    const isPopular = POPULAR_SUBJECTS.find(subject => {
-      subject === findSubject.subjectName;
-    });
+    const isPopular = POPULAR_SUBJECTS.includes(findSubject.subjectName);
 
     if (isPopular) {
-      limitTime = 4.6 * 2;
-    } else {
       limitTime = 4.6 * 3;
+    } else {
+      limitTime = 4.6 * 4;
     }
   }
 
-  console.log(elaspedTime, limitTime);
-  if (elaspedTime < limitTime) return true;
+  console.log(elapsedTime, limitTime);
 
-  return false;
+  return elapsedTime < limitTime;
 };

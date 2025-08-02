@@ -53,7 +53,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
       },
       {
         type: 'bar',
-        label: '캡차 인증 속도',
+        label: '매크로 방지 인증 속도',
         data: captchaTimes,
         barThickness,
         backgroundColor: 'rgba(255, 99, 132, 0.7)',
@@ -90,7 +90,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
       },
       {
         type: 'line',
-        label: '캡차 완료',
+        label: '매크로 완료',
         data: captchaTimes,
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 2,

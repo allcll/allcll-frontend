@@ -15,6 +15,7 @@ import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { saveInterestedSnapshot } from '@/utils/simulation/subjects';
 import { startSimulation } from '@/utils/simulation/simulation';
 import useDepartments from '@/hooks/server/useDepartments';
+import useLectures from '@/hooks/server/useLectures';
 
 interface UserWishModalIProp {
   department: DepartmentType;
@@ -72,16 +73,18 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
   const { closeModal } = useSimulationModalStore();
 
   const { data: departments } = useDepartments();
-  const notExistDepartments = checkExistDepartment(departments);
+  const lectures = useLectures();
+
+  const notExistDepartments = checkExistDepartment(lectures, departments);
   const newDepartments = makeValidateDepartment(departments, notExistDepartments);
 
   useEffect(() => {
-    const randomSubjects = pickNonRandomSubjects(department);
+    const randomSubjects = pickNonRandomSubjects(lectures, department);
     setCurrentSimulation({ simulatonSubjects: randomSubjects });
   }, [department]);
 
   const handleResetRandomSubjects = () => {
-    const randomSubjects = pickRandomsubjects(department);
+    const randomSubjects = pickRandomsubjects(lectures, department);
     setCurrentSimulation({ simulatonSubjects: randomSubjects });
   };
 
@@ -155,7 +158,6 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
             value={department.departmentName}
             onChange={e => handleChangeDepartment(e.target.value)}
           >
-            <option value="학과를 선택하지 않았습니다.">학과가 목록에 없어요</option>
             {newDepartments?.map(dept => (
               <option key={dept.departmentCode} value={dept.departmentName}>
                 {dept.departmentName}
@@ -163,7 +165,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
             ))}
           </select>
           <div className="flex flex-row justify-between mb-4">
-            <h2 className="text-left font-semibold flex items-center">수강 신청 과목 리스트</h2>
+            <h2 className="text-left font-semibold flex items-center">시간표 과목 리스트</h2>
             <button
               onClick={handleResetRandomSubjects}
               className="flex hover:font-bold hover:text-blue-500 items-center gap-2 cursor-pointer"
