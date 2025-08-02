@@ -12,7 +12,7 @@ import { useReloadSimulation } from '@/hooks/useReloadSimulation';
 import useLectures from '@/hooks/server/useLectures';
 
 function SimulationSearchForm() {
-  const { currentSimulation, setCurrentSimulation, resetSimulation } = useSimulationProcessStore();
+  const { setCurrentSimulation, resetSimulation } = useSimulationProcessStore();
   const { openModal } = useSimulationModalStore();
   const ongoingSimulation = useLiveQuery(checkOngoingSimulation);
   const { reloadSimulationStatus } = useReloadSimulation();
@@ -142,11 +142,7 @@ function SimulationSearchForm() {
                 </select>
                 <select
                   className="cursor-not-allowed border px-2 py-1 w-40 lg:w-90 border-gray-300 disabled:bg-gray-100 "
-                  value={
-                    currentSimulation.department.departmentName
-                      ? currentSimulation.department.departmentName
-                      : departmentName
-                  }
+                  value={departmentName}
                   disabled
                 ></select>
               </div>

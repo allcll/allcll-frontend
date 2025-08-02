@@ -83,7 +83,7 @@ function Simulation() {
       case 'captcha':
         return <CaptchaInput />;
       case 'wish':
-        return <UserWishModal department={currentSimulation.department} setIsModalOpen={() => closeModal()} />;
+        return <UserWishModal setIsModalOpen={() => closeModal()} />;
       case 'simulation':
         return <SimulationModal reloadSimulationStatus={reloadSimulationStatus} />;
       case 'result':

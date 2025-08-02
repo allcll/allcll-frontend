@@ -1,51 +1,51 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import CheckSvg from '@/assets/check.svg?react';
 import ResetSvg from '@/assets/reset.svg?react';
 import { DepartmentType, SimulationSubject } from '@/utils/types';
-import {
-  checkExistDepartment,
-  makeValidateDepartment,
-  pickRandomsubjects,
-  pickNonRandomSubjects,
-} from '@/utils/subjectPicker';
+import { pickRandomsubjects, pickNonRandomSubjects } from '@/utils/subjectPicker';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { saveInterestedSnapshot } from '@/utils/simulation/subjects';
 import { startSimulation } from '@/utils/simulation/simulation';
 import useDepartments from '@/hooks/server/useDepartments';
-import useLectures from '@/hooks/server/useLectures';
+import useLectures, { Lecture } from '@/hooks/server/useLectures';
 
 interface UserWishModalIProp {
-  department: DepartmentType;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SubjectTable = ({ subjects }: { subjects: SimulationSubject[] }) => (
-  <table className="min-w-full sm:text-sm text-xs text-left border-t border-b border-gray-200">
-    <thead className="bg-gray-100 text-gray-700">
-      <tr>
-        <th className="px-4 py-2 min-w-[100px]">학수번호</th>
-        <th className="px-4 py-2 min-w-[60px]">분반</th>
-        <th className="px-4 py-2 min-w-[160px]">개설학과</th>
-        <th className="px-4 py-2 min-w-[120px]">과목명</th>
-        <th className="px-4 py-2 min-w-[100px]">교수명</th>
-      </tr>
-    </thead>
-    <tbody>
-      {subjects.map(subject => (
-        <tr key={subject.subjectId}>
-          <td className="px-4 py-2 whitespace-nowrap">{subject.subjectCode}</td>
-          <td className="px-4 py-2 whitespace-nowrap">{subject.classCode}</td>
-          <td className="px-4 py-2 whitespace-nowrap">{subject.departmentName}</td>
-          <td className="px-4 py-2 whitespace-nowrap">{subject.subjectName}</td>
-          <td className="px-4 py-2 whitespace-nowrap">{subject.professorName}</td>
+const SubjectTable = ({ lectures, subjects }: { lectures: Lecture[]; subjects: SimulationSubject[] }) => {
+  if (subjects.length === 0) {
+    subjects = pickNonRandomSubjects(lectures, '');
+  }
+
+  return (
+    <table className="min-w-full sm:text-sm text-xs text-left border-t border-b border-gray-200">
+      <thead className="bg-gray-100 text-gray-700">
+        <tr>
+          <th className="px-4 py-2 min-w-[100px]">학수번호</th>
+          <th className="px-4 py-2 min-w-[60px]">분반</th>
+          <th className="px-4 py-2 min-w-[160px]">개설학과</th>
+          <th className="px-4 py-2 min-w-[120px]">과목명</th>
+          <th className="px-4 py-2 min-w-[100px]">교수명</th>
         </tr>
-      ))}
-    </tbody>
-  </table>
-);
+      </thead>
+      <tbody>
+        {subjects.map(subject => (
+          <tr key={subject.subjectId}>
+            <td className="px-4 py-2 whitespace-nowrap">{subject.subjectCode}</td>
+            <td className="px-4 py-2 whitespace-nowrap">{subject.classCode}</td>
+            <td className="px-4 py-2 whitespace-nowrap">{subject.departmentName}</td>
+            <td className="px-4 py-2 whitespace-nowrap">{subject.subjectName}</td>
+            <td className="px-4 py-2 whitespace-nowrap">{subject.professorName}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
 
 const GameTips = () => (
   <div className="mt-6 text-sm text-gray-800 space-y-2">
@@ -68,25 +68,31 @@ const GameTips = () => (
   </div>
 );
 
-function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
+function UserWishModal({ setIsModalOpen }: UserWishModalIProp) {
   const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore();
   const { closeModal } = useSimulationModalStore();
-
   const { data: departments } = useDepartments();
   const lectures = useLectures();
 
-  const notExistDepartments = checkExistDepartment(lectures, departments);
-  const newDepartments = makeValidateDepartment(departments, notExistDepartments);
+  const [department, setDepartment] = useState<DepartmentType>({
+    departmentCode: '',
+    departmentName: '',
+  });
 
-  useEffect(() => {
-    const randomSubjects = pickNonRandomSubjects(lectures, department);
+  const saveRandomSubjects = (departmentName: string) => {
+    const randomSubjects = pickNonRandomSubjects(lectures, departmentName);
     setCurrentSimulation({ simulatonSubjects: randomSubjects });
-  }, [department]);
+    return randomSubjects;
+  };
 
-  const handleResetRandomSubjects = () => {
-    const randomSubjects = pickRandomsubjects(lectures, department);
+  const handleRemakeSubjects = () => {
+    const randomSubjects = pickNonRandomSubjects(lectures, department.departmentName);
     setCurrentSimulation({ simulatonSubjects: randomSubjects });
   };
+
+  useEffect(() => {
+    saveRandomSubjects(department.departmentName);
+  }, []);
 
   const handleStartGame = async () => {
     try {
@@ -120,25 +126,16 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
     }
   };
 
-  const handleChangeDepartment = (name: string) => {
-    if (name === 'none') {
-      setCurrentSimulation({
-        department: {
-          departmentCode: '',
-          departmentName: '',
-        },
-      });
+  const handleChangeDepartment = (departmentName: string) => {
+    if (departmentName === '') {
+      saveRandomSubjects(departmentName);
       return;
     }
 
-    const selected = departments?.find(dept => dept.departmentName === name);
+    const selected = departments?.find(dept => dept.departmentName === departmentName);
     if (selected) {
-      setCurrentSimulation({
-        department: {
-          departmentCode: selected.departmentCode,
-          departmentName: selected.departmentName,
-        },
-      });
+      setDepartment({ ...department, departmentName: departmentName });
+      saveRandomSubjects(departmentName);
     }
   };
 
@@ -155,10 +152,15 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
           <h2 className="text-left font-semibold mb-2">학과 검색</h2>
           <select
             className="cursor-pointer border border-gray-300 rounded-sm px-2 py-1 w-50 sm:w-120 bg-white mb-4"
-            value={department.departmentName}
+            value={
+              departments?.some(dept => dept.departmentName === department.departmentName)
+                ? department.departmentName
+                : ''
+            }
             onChange={e => handleChangeDepartment(e.target.value)}
           >
-            {newDepartments?.map(dept => (
+            <option value="">학과가 목록에 없어요</option>
+            {departments?.map(dept => (
               <option key={dept.departmentCode} value={dept.departmentName}>
                 {dept.departmentName}
               </option>
@@ -167,7 +169,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
           <div className="flex flex-row justify-between mb-4">
             <h2 className="text-left font-semibold flex items-center">시간표 과목 리스트</h2>
             <button
-              onClick={handleResetRandomSubjects}
+              onClick={handleRemakeSubjects}
               className="flex hover:font-bold hover:text-blue-500 items-center gap-2 cursor-pointer"
             >
               랜덤 과목 재생성
@@ -176,7 +178,7 @@ function UserWishModal({ department, setIsModalOpen }: UserWishModalIProp) {
           </div>
 
           <div className="max-h-[300px]  overflow-x-auto overflow-y-auto">
-            <SubjectTable subjects={currentSimulation.simulatonSubjects} />
+            <SubjectTable lectures={lectures} subjects={currentSimulation.simulatonSubjects} />
           </div>
 
           <GameTips />
