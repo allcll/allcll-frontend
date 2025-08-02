@@ -17,8 +17,8 @@ function SubjectTable({
 
   return (
     <>
-      <div className="flex flex-row justify-between mb-4">
-        <h2 className="text-left pt-2 font-semibold flex items-center">과목 리스트</h2>
+      <div className="flex flex-row justify-between mb-4 w-full">
+        <h2 className="text-left font-semibold">과목 리스트</h2>
         {subjectMode === 'random' && (
           <button
             onClick={handleRemakeSubjects}
@@ -28,12 +28,11 @@ function SubjectTable({
             <ResetSvg />
           </button>
         )}
-      </div>
-
-      <div className="max-h-[300px]  overflow-x-auto overflow-y-auto">
         <p>
           총 연습 학점: <span className="text-blue-500">{totalCredit}</span>학점
         </p>
+      </div>
+      <div className="max-h-[250px] max-w-[350px] overflow-x-auto overflow-y-auto sm:max-w-full">
         <table className="min-w-full sm:text-sm text-xs text-left border-t border-b border-gray-200">
           <thead className="bg-gray-100 text-gray-700">
             <tr>
@@ -46,7 +45,7 @@ function SubjectTable({
           </thead>
           <tbody>
             {subjects.map(subject => (
-              <tr key={subject.subjectId}>
+              <tr key={subject.subjectId} className="border border-gray-200">
                 <td className="px-4 py-2 whitespace-nowrap">{subject.subjectCode}</td>
                 <td className="px-4 py-2 whitespace-nowrap">{subject.classCode}</td>
                 <td className="px-4 py-2 whitespace-nowrap">{subject.departmentName}</td>

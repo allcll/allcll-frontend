@@ -7,7 +7,7 @@ interface IActionButton {
 }
 
 const ActionButtons = ({ simulationSubjects, handleStartGame, setToggleTip }: IActionButton) => (
-  <div className="pt-6 justify-end flex gap-2">
+  <div className="p-6 justify-end flex gap-2">
     <button
       onClick={() => setToggleTip(true)}
       className={`px-6 py-2 ${

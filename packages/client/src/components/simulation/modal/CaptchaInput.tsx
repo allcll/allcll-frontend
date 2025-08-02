@@ -77,7 +77,7 @@ function CaptchaInput() {
 
   return (
     <Modal>
-      <div className="w-[90%] sm:w-[500px] bg-white rounded shadow">
+      <div className="sm:w-[500px] bg-white rounded shadow">
         <ModalHeader title="매크로방지 코드입력 (Arti-marco code input)" onClose={() => closeModal('captcha')} />
 
         <div className="grid grid-cols-2 gap-4 mt-4 p-4">

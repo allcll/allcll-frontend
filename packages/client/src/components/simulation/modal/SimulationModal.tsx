@@ -198,7 +198,7 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
 
   return (
     <Modal>
-      <div className="w-[95%] h-[95%] sm:h-auto flex flex-col justify-between sm:w-full max-w-md overflow-hidden bg-white border-1 border-gray-600">
+      <div className="flex flex-col justify-between overflow-hidden">
         <ModalHeader
           title=""
           onClose={() => {
