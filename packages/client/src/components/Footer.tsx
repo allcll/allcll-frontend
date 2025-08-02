@@ -1,4 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import { HeaderContents } from '@/components/Header.tsx';
+import GithubSvg from '@/assets/icon-github.svg?react';
+import InstagramSvg from '@/assets/icon-instagram.svg?react';
+import KakaoSvg from '@/assets/icon-kakao.svg?react';
 
 interface IFooterItem {
   title: string;
@@ -7,19 +11,23 @@ interface IFooterItem {
 
 const FooterItems: IFooterItem[] = [
   {
-    title: '서비스',
+    title: '고객지원',
     children: [
       { title: 'ALLCLL 소개', href: '/about' },
       { title: '자주 묻는 질문', href: '/faq' },
-    ],
-  },
-  {
-    title: '고객지원',
-    children: [
       { title: '오류 및 제안', href: '/survey' },
-      { title: '오픈 채팅', href: 'https://open.kakao.com/o/g3MztXfh' },
       { title: 'allcllclla@google.com' },
     ],
+  },
+];
+
+const OuterLinks = [
+  { icon: <GithubSvg className="w-8 h-8 m-2" />, title: '올클 github', href: 'https://github.com/allcll' },
+  { icon: <KakaoSvg className="w-8 h-8 m-2" />, title: '올클 오픈채팅', href: 'https://open.kakao.com/o/g3MztXfh' },
+  {
+    icon: <InstagramSvg className="w-8 h-8 m-2" />,
+    title: '올클 instagram',
+    href: 'https://www.instagram.com/sejong_allcll',
   },
 ];
 
@@ -27,10 +35,36 @@ function Footer() {
   return (
     <footer className="bg-white text-center text-sm text-gray-500">
       <div className="mx-auto max-w-7xl px-4 md:px-16 py-12 grid md:grid-cols-3 gap-6 text-center md:text-left">
-        <div className="flex flex-col items-center md:items-start">
-          <img src="/logo-name.svg" alt="logo" className="h-5 mb-4" />
-          <p>대학생들이 직접 만든 서비스로, 더 나은 수강신청 경험을 제공합니다. </p>
+        <div className="mx-auto md:mx-0">
+          <div className="flex items-center mb-2 h-fit justify-center md:justify-start">
+            <img src="/ci.svg" className="w-6 h-6 mr-2" alt="ci" />
+            <img src="/logo-name.svg" alt="logo" className="h-5" />
+          </div>
+
+          <ul className="flex items-center">
+            {OuterLinks.map(({ icon, title, href }) => (
+              <li key={title}>
+                <a href={href} className="h-fit rounded-md hover:bg-gray-200" aria-label={title} title={title}>
+                  {icon}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
+
+        <div>
+          <h3 className="font-bold mb-4">서비스</h3>
+          <ul>
+            {HeaderContents.map(({ title, path, end }) => (
+              <li key={title} className="mb-1">
+                <NavLink to={path} end={end} className="hover:text-blue-500 hover:underline hover:font-bold">
+                  {title}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+
         {FooterItems.map((item, index) => (
           <div className="mb-4" key={index}>
             <h5 className="font-bold mb-4">{item.title}</h5>
