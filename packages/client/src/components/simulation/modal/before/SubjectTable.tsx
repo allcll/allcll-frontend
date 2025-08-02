@@ -7,8 +7,8 @@ function SubjectTable({
   handleRemakeSubjects,
 }: {
   subjects: SimulationSubject[];
-  subjectMode: 'timetable' | 'random';
-  handleRemakeSubjects: () => void;
+  subjectMode?: 'timetable' | 'random';
+  handleRemakeSubjects?: () => void;
 }) {
   const totalCredit = subjects.reduce((acc, subject) => {
     const subjectCredit = Number(subject.tm_num.split('/')[0]) || 0;
