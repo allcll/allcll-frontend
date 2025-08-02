@@ -12,12 +12,14 @@ import {
 import { getRecentInterestedSnapshot, saveInterestedSnapshot } from '@/utils/simulation/subjects.ts';
 import { InterestedSubject } from '@/utils/dbConfig.ts';
 import { backupDatabase, restoreDatabase } from '@/utils/simulation/backupData.ts';
+import useLectures from '@/hooks/server/useLectures';
 
 export function SimulationTestUI() {
   const [log, setLog] = useState('');
   const { data: subjects } = useWishes();
   const snapshots = useRef<InterestedSubject[] | null>(null);
   const clickIndex = useRef(0);
+  const lectures = useLectures();
 
   async function handleLoadSnapshot() {
     const res = await getRecentInterestedSnapshot();
@@ -56,43 +58,55 @@ export function SimulationTestUI() {
   }
 
   async function handleSearchEvent() {
-    const res = await triggerButtonEvent({ eventType: BUTTON_EVENT.SEARCH });
+    const res = await triggerButtonEvent({ eventType: BUTTON_EVENT.SEARCH }, lectures);
     setLog(JSON.stringify(res));
   }
 
   async function handleApplyEvent() {
     // 과목 ID 예시
-    const res = await triggerButtonEvent({
-      eventType: BUTTON_EVENT.APPLY,
-      subjectId: snapshots.current?.[clickIndex.current % 7].subject_id ?? -1,
-    });
+    const res = await triggerButtonEvent(
+      {
+        eventType: BUTTON_EVENT.APPLY,
+        subjectId: snapshots.current?.[clickIndex.current % 7].subject_id ?? -1,
+      },
+      lectures,
+    );
     setLog(JSON.stringify(res));
   }
 
   // 과목 신청 이벤트
   async function handleSubmitSubject() {
-    const res = await triggerButtonEvent({
-      eventType: BUTTON_EVENT.SUBJECT_SUBMIT,
-      subjectId: snapshots.current?.[clickIndex.current % 7].subject_id ?? -1,
-    });
+    const res = await triggerButtonEvent(
+      {
+        eventType: BUTTON_EVENT.SUBJECT_SUBMIT,
+        subjectId: snapshots.current?.[clickIndex.current % 7].subject_id ?? -1,
+      },
+      lectures,
+    );
     setLog(getApplyStatusName(res.status));
   }
 
   // 과목 한번 더 담는 시뮬
   async function handleEndAgainEvent() {
-    const res = await triggerButtonEvent({
-      eventType: BUTTON_EVENT.SKIP_REFRESH,
-      subjectId: snapshots.current?.[clickIndex.current % 7].subject_id ?? -1,
-    });
+    const res = await triggerButtonEvent(
+      {
+        eventType: BUTTON_EVENT.SKIP_REFRESH,
+        subjectId: snapshots.current?.[clickIndex.current % 7].subject_id ?? -1,
+      },
+      lectures,
+    );
     setLog(JSON.stringify(res));
   }
 
   async function handleEndEvent() {
     // 과목 ID 예시
-    const res = await triggerButtonEvent({
-      eventType: BUTTON_EVENT.REFRESH,
-      subjectId: snapshots.current?.[clickIndex.current++ % 7].subject_id ?? -1,
-    });
+    const res = await triggerButtonEvent(
+      {
+        eventType: BUTTON_EVENT.REFRESH,
+        subjectId: snapshots.current?.[clickIndex.current++ % 7].subject_id ?? -1,
+      },
+      lectures,
+    );
     setLog(JSON.stringify(res));
   }
 

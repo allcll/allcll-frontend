@@ -3,6 +3,7 @@ import { getInterestedId, getRecentInterestedSnapshot } from '@/utils/simulation
 import { getAccuracy, getAccuracyScore, getSpeedScore } from '@/utils/simulation/score.ts';
 import { checkSubjectResult } from '@/utils/checkSubjectResult.ts';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
+import { Lecture } from '@/hooks/server/useLectures';
 
 export enum BUTTON_EVENT {
   SEARCH,
@@ -200,12 +201,19 @@ type ButtonEventEndReq = {
  * 버튼 이벤트 실행
  * 시뮬레이션에 있는 버튼을 클릭 할 때 마다 발생시켜야 하는 이벤트
  * */
-export async function triggerButtonEvent(input: ButtonEventSearchReq): Promise<{ elapsed_time: number }>;
-export async function triggerButtonEvent(input: ButtonEventSubmitReq): Promise<{ status: APPLY_STATUS }>;
-export async function triggerButtonEvent(input: ButtonEventApplyReq): Promise<{}>;
-export async function triggerButtonEvent(input: ButtonEventEndReq): Promise<{ finished: boolean }>;
+export async function triggerButtonEvent(
+  input: ButtonEventSearchReq,
+  lectures: Lecture[],
+): Promise<{ elapsed_time: number }>;
+export async function triggerButtonEvent(
+  input: ButtonEventSubmitReq,
+  lectures: Lecture[],
+): Promise<{ status: APPLY_STATUS }>;
+export async function triggerButtonEvent(input: ButtonEventApplyReq, lectures: Lecture[]): Promise<{}>;
+export async function triggerButtonEvent(input: ButtonEventEndReq, lectures: Lecture[]): Promise<{ finished: boolean }>;
 export async function triggerButtonEvent(
   input: ButtonEventSearchReq | ButtonEventSubmitReq | ButtonEventApplyReq | ButtonEventEndReq,
+  lectures: Lecture[],
 ) {
   const { eventType } = input;
   console.log('BUTTON EVENT', input);
@@ -304,7 +312,7 @@ export async function triggerButtonEvent(
 
     // 과목 성공 실패를 확인합니다.
     const elapsedTime = Math.floor(now - ongoing.started_at) / 1000;
-    const isSuccess = checkSubjectResult(subjectId, elapsedTime);
+    const isSuccess = checkSubjectResult(lectures, subjectId, elapsedTime);
     if (isSuccess) {
       return await saveStatus(APPLY_STATUS.SUCCESS);
     }
