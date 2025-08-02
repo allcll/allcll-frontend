@@ -17,9 +17,7 @@ function Modal({ children }: IModalProps) {
     <>
       <div className="fixed top-0 left-0 w-full h-full bg-gray-300 opacity-30 z-40"></div>
       <div className="fixed top-0 left-0 w-full h-full z-50 flex items-center justify-center">
-        <div className="w-[95%] sm:w-fit bg-white max-h-[90vh] border border-gray-200 overflow-y-auto rounded-md">
-          {children}
-        </div>
+        <div className="w-[95%] sm:w-fit bg-white max-h-[90vh] border border-gray-200 overflow-y-auto">{children}</div>
       </div>
     </>
   );

@@ -166,76 +166,78 @@ function UserWishModal({ lectures, timetables, setIsModalOpen }: UserWishModalIP
 
   return (
     <Modal>
-      <ModalHeader
-        title="수강 신청 연습을 시작하시겠습니까?"
-        onClose={() => {
-          setIsModalOpen(false);
-        }}
-      />
-      <div className="flex flex-row gap-4 p-2 sm:p-6">
-        <div className="flex flex-col gap-2">
-          <h2 className="text-left font-semibold text-sm sm:text-md">어떤 과목으로 진행하시겠습니까?</h2>
-          <div className="flex gap-2 py-2">
-            <Chip
-              label="시간표 과목"
-              selected={subjectMode === 'timetable'}
-              onClick={() => handleClickSubjectMode('timetable')}
-            />
-            <Chip
-              label="랜덤 과목"
-              selected={subjectMode === 'random'}
-              onClick={() => handleClickSubjectMode('random')}
-            />
-          </div>
+      <div className="flex flex-col min-w-lg">
+        <ModalHeader
+          title="수강 신청 연습을 시작하시겠습니까?"
+          onClose={() => {
+            setIsModalOpen(false);
+          }}
+        />
+        <div className="flex flex-row gap-4 p-2 sm:p-6">
+          <div className="flex flex-col gap-2">
+            <h2 className="text-left font-semibold text-sm sm:text-md">어떤 과목으로 진행하시겠습니까?</h2>
+            <div className="flex gap-2 py-2">
+              <Chip
+                label="시간표 과목"
+                selected={subjectMode === 'timetable'}
+                onClick={() => handleClickSubjectMode('timetable')}
+              />
+              <Chip
+                label="랜덤 과목"
+                selected={subjectMode === 'random'}
+                onClick={() => handleClickSubjectMode('random')}
+              />
+            </div>
 
-          {subjectMode === 'timetable' && (
-            <TimetableChip
-              timetables={timetables}
-              selectedTimetable={selectedTimetable}
-              onSelect={handleSelect}
-              setSelectedTimetable={setSelectedTimetable}
-            />
-          )}
+            {subjectMode === 'timetable' && (
+              <TimetableChip
+                timetables={timetables}
+                selectedTimetable={selectedTimetable}
+                onSelect={handleSelect}
+                setSelectedTimetable={setSelectedTimetable}
+              />
+            )}
 
-          {subjectMode === 'random' && (
-            <SelectDepartment
-              department={department}
-              saveRandomSubjects={saveRandomSubjects}
-              setDepartment={setDepartment}
-            />
-          )}
+            {subjectMode === 'random' && (
+              <SelectDepartment
+                department={department}
+                saveRandomSubjects={saveRandomSubjects}
+                setDepartment={setDepartment}
+              />
+            )}
 
-          {simulationSubjects.length !== 0 ? (
-            <SubjectTable
-              subjectMode={subjectMode}
-              subjects={simulationSubjects}
-              handleRemakeSubjects={handleRemakeSubjects}
-            />
-          ) : (
-            <div>아직 선택된 과목이 없습니다.</div>
-          )}
+            {simulationSubjects.length !== 0 ? (
+              <SubjectTable
+                subjectMode={subjectMode}
+                subjects={simulationSubjects}
+                handleRemakeSubjects={handleRemakeSubjects}
+              />
+            ) : (
+              <div>아직 선택된 과목이 없습니다.</div>
+            )}
 
-          {/* {simulationSubjects.length !== 0 && (
+            {/* {simulationSubjects.length !== 0 && (
               <div className="mt-5">
                 <h2 className="text-left font-semibold">과목을 추가하고 싶으신가요?</h2>
                 <Chip label="검색으로 추가" selected={toggleSearch} onClick={() => setToggleSearch(!toggleSearch)} />
               </div>
             )} */}
 
-          {toggleTip && <GameTips />}
-        </div>
+            {toggleTip && <GameTips />}
+          </div>
 
-        {/* {toggleSearch && (
+          {/* {toggleSearch && (
             <div className="flex flex-col gap-2 w-full">
               <SearchSubjects handleAddSubject={handleAddSubject} />
             </div>
           )} */}
+        </div>
+        <ActionButtons
+          simulationSubjects={simulationSubjects}
+          handleStartGame={handleStartGame}
+          setToggleTip={setToggleTip}
+        />
       </div>
-      <ActionButtons
-        simulationSubjects={simulationSubjects}
-        handleStartGame={handleStartGame}
-        setToggleTip={setToggleTip}
-      />
     </Modal>
   );
 }
