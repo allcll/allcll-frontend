@@ -2,7 +2,7 @@ import useSubject from '@/hooks/server/useSubject.ts';
 import useDepartments, { Department } from '@/hooks/server/useDepartments.ts';
 import { SubjectApiResponse } from '@/utils/types.ts';
 
-interface Lecture {
+export interface Lecture {
   subjectId: number;
   subjectCode: string;
   classCode: string;

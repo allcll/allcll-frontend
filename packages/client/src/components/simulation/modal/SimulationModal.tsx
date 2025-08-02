@@ -5,6 +5,7 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { APPLY_STATUS, BUTTON_EVENT, forceStopSimulation, triggerButtonEvent } from '@/utils/simulation/simulation';
+import useLectures from '@/hooks/server/useLectures';
 
 const SIMULATION_MODAL_CONTENTS = [
   {
@@ -44,6 +45,7 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
   const { closeModal, openModal } = useSimulationModalStore();
   const { currentSubjectId, setSubjectStatus, subjectStatusMap } = useSimulationSubjectStore();
   const { setCurrentSimulation } = useSimulationProcessStore();
+  const lectures = useLectures();
 
   const currentSubjectStatus = subjectStatusMap[currentSubjectId];
   const modalData = SIMULATION_MODAL_CONTENTS.find(data => data.status === currentSubjectStatus);
@@ -76,14 +78,14 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
   };
 
   const handleProgress = async (subjectId: number) => {
-    const result = await triggerButtonEvent({ eventType: BUTTON_EVENT.SUBJECT_SUBMIT, subjectId });
+    const result = await triggerButtonEvent({ eventType: BUTTON_EVENT.SUBJECT_SUBMIT, subjectId }, lectures);
     checkErrorValue(result);
     setSubjectStatus(subjectId, result.status);
     openModal('simulation');
   };
 
   const handleSuccess = async (subjectId: number) => {
-    const result = await triggerButtonEvent({ eventType: BUTTON_EVENT.REFRESH, subjectId });
+    const result = await triggerButtonEvent({ eventType: BUTTON_EVENT.REFRESH, subjectId }, lectures);
     checkErrorValue(result);
 
     //refresh
@@ -101,7 +103,7 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
 
   const handleSkipRefresh = async (subjectId: number) => {
     try {
-      const result = await triggerButtonEvent({ eventType: BUTTON_EVENT.SKIP_REFRESH, subjectId });
+      const result = await triggerButtonEvent({ eventType: BUTTON_EVENT.SKIP_REFRESH, subjectId }, lectures);
       if ('errMsg' in result) {
         alert(result.errMsg);
         await forceStopSimulation();
@@ -151,10 +153,13 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
     try {
       // APPLY_STATUS.SUCCESS인 경우
       if (modalData?.status === APPLY_STATUS.SUCCESS) {
-        const result = await triggerButtonEvent({
-          eventType: BUTTON_EVENT.SKIP_REFRESH,
-          subjectId: currentSubjectId,
-        });
+        const result = await triggerButtonEvent(
+          {
+            eventType: BUTTON_EVENT.SKIP_REFRESH,
+            subjectId: currentSubjectId,
+          },
+          lectures,
+        );
 
         if ('errMsg' in result) {
           alert(result.errMsg);
@@ -177,10 +182,13 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
       }
       // APPLY_STATUS.PROGRESS인 경우
       else if (modalData?.status === APPLY_STATUS.PROGRESS) {
-        const result = await triggerButtonEvent({
-          eventType: BUTTON_EVENT.CANCEL_SUBMIT,
-          subjectId: currentSubjectId,
-        });
+        const result = await triggerButtonEvent(
+          {
+            eventType: BUTTON_EVENT.CANCEL_SUBMIT,
+            subjectId: currentSubjectId,
+          },
+          lectures,
+        );
         checkErrorValue(result, true);
       }
     } catch (error) {
