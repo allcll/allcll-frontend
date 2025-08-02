@@ -19,28 +19,6 @@ import {
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, ChartTooltip, Legend);
 
-// const data = {
-//   labels: ['신청 버튼 클릭 속도', '총 소요 시간', '정확도', '캡차 인증 속도'],
-//   datasets: [
-//     {
-//       label: '평균',
-//       data: [60, 60, 60, 60],
-//       backgroundColor: 'rgba(5, 223, 114, 0.2)', // bg-blue-500 with opacity
-//       borderColor: 'rgba(5, 223, 114, 1)',
-//       borderWidth: 2,
-//       pointBackgroundColor: 'rgba(5, 223, 114, 1)',
-//     },
-//     {
-//       label: '내 능력',
-//       data: [85, 85, 85, 85],
-//       backgroundColor: 'rgb(0, 122, 255, 0.2)', // bg-blue-500 with opacity
-//       borderColor: 'rgba(0, 122, 255, 1)',
-//       borderWidth: 2,
-//       pointBackgroundColor: 'rgba(0, 122, 255, 1)',
-//     },
-//   ],
-// };
-
 const options = {
   responsive: true,
   scales: {
@@ -73,7 +51,7 @@ const options = {
 function getDataset(result: IRadarChart['result']) {
   const { user_ability } = result;
   const { searchBtnSpeed, totalSpeed, accuracy, captchaSpeed } = user_ability;
-  const labels = ['신청 버튼 클릭 속도', '전체 속도', '정확도', '캡차 인증 속도'];
+  const labels = ['신청 버튼 클릭 속도', '전체 속도', '정확도', '매크로 인증 속도'];
   const myData = [searchBtnSpeed, totalSpeed, accuracy, captchaSpeed];
 
   return {
@@ -139,7 +117,7 @@ function RadarChart({ result }: IRadarChart) {
             <span>• 정확도</span> <span>{accuracy.toFixed(2)} %</span>
           </li>
           <li className="flex justify-between">
-            <span>• 캡차 인증 속도</span> <span>{captchaSpeed.toFixed(2)} sec</span>
+            <span>• 매크로 방지 코드 인증 속도</span> <span>{captchaSpeed.toFixed(2)} sec</span>
           </li>
         </ul>
       </div>

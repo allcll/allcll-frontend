@@ -1,5 +1,5 @@
 import { APPLY_STATUS } from '@/utils/simulation/simulation';
-import { DepartmentType, SimulationStatusType, SimulationSubject } from '@/utils/types';
+import { SimulationStatusType, SimulationSubject } from '@/utils/types';
 import { create } from 'zustand';
 
 interface SubjectStatus {
@@ -9,7 +9,6 @@ interface SubjectStatus {
 
 interface SimulationState {
   simulationId: number;
-  department: DepartmentType;
   simulatonSubjects: SimulationSubject[];
   registeredSubjects: SimulationSubject[];
   nonRegisteredSubjects: SimulationSubject[];
@@ -28,7 +27,6 @@ interface IUseSimulationProcessStore {
 
 const defaultSimulation: SimulationState = {
   simulationId: -1,
-  department: { departmentCode: '', departmentName: '' },
   simulatonSubjects: [],
   registeredSubjects: [],
   nonRegisteredSubjects: [],

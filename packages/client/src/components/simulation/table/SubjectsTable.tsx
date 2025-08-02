@@ -4,6 +4,7 @@ import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import { BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation';
 import SubjectRow from './SubjectRow';
 import NothingTable from './NothingTable';
+import useLectures from '@/hooks/server/useLectures';
 
 interface ISubjectsTable {
   isRegisteredTable: boolean;
@@ -13,9 +14,10 @@ const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
   const { currentSimulation } = useSimulationProcessStore();
   const { openModal } = useSimulationModalStore();
   const { setCurrentSubjectId } = useSimulationSubjectStore();
+  const lectures = useLectures();
 
   const handleClickSubject = (subjectId: number) => {
-    triggerButtonEvent({ eventType: BUTTON_EVENT.APPLY, subjectId })
+    triggerButtonEvent({ eventType: BUTTON_EVENT.APPLY, subjectId }, lectures)
       .then(result => {
         if ('errMsg' in result) {
           alert(result.errMsg);
