@@ -72,9 +72,9 @@ function Landing() {
       <Section bgColor="bg-white">
         <div className="flex items-center gap-2">
           <h2 className="text-2xl font-semibold">관심과목 분석</h2>
-          {/*<Link to="/wishes">*/}
-          {/*  <LinkBlue className="w-4 h-4" />*/}
-          {/*</Link>*/}
+          <Link to="/wishes">
+            <LinkBlue className="w-4 h-4" />
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
