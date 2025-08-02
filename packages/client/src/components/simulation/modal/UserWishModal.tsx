@@ -4,7 +4,7 @@ import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import CheckSvg from '@/assets/check.svg?react';
 import ResetSvg from '@/assets/reset.svg?react';
 import { DepartmentType, SimulationSubject } from '@/utils/types';
-import { pickRandomsubjects, pickNonRandomSubjects } from '@/utils/subjectPicker';
+import { pickNonRandomSubjects } from '@/utils/subjectPicker';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { saveInterestedSnapshot } from '@/utils/simulation/subjects';
