@@ -56,7 +56,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GIT_TOKEN }}
-          publish_dir: ${{env.project-directory}}/build
+          publish_dir: ${{env.project-directory}}/dist
           publish_branch: 'gh-dev-pages'
 
   client-dev-deploy:
