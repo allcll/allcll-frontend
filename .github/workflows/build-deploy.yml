@@ -30,7 +30,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: '18.13.0'
+          node-version: '24'
 
       - name: Install NPM packages
         run: |
