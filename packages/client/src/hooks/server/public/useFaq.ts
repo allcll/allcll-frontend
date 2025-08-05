@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchJsonOnPublic } from '@/utils/api.ts';
 
 export interface FaqElement {
+  tag: string;
   question: string;
   answer: string;
 }
@@ -15,7 +16,7 @@ function useFaq() {
     queryKey: ['faq'],
     queryFn: fetchFaq,
     staleTime: Infinity,
-    select: (data: FaqAPIResponse) => data.faq,
+    select: (data: FaqAPIResponse) => data.faq.map((item, index) => ({ ...item, id: index })),
   });
 }
 

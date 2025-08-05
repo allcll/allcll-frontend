@@ -5,6 +5,19 @@ import ReactMarkdown from 'react-markdown';
 import useFaq from '@/hooks/server/public/useFaq.ts';
 import ArrowSvg from '@/assets/arrow-down-gray.svg?react';
 import markdownComponents from '@/utils/markdownComponents.tsx';
+import Chip from '@/components/common/Chip.tsx';
+
+const Tags = {
+  all: '전체',
+  timetable: '시간표',
+  wishes: '관심과목',
+  simulation: '올클연습',
+  live: '실시간',
+};
+
+function unique(array: string[]) {
+  return Array.from(new Set(array));
+}
 
 function FAQ() {
   const hash = window.location.hash;
@@ -13,8 +26,22 @@ function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(selectedIndex);
   const { data: faqItems } = useFaq();
 
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const faqItemsWithTags = unique(faqItems?.map(item => item.tag) ?? []);
+
+  const filteredFaqItems = selectedTag ? faqItems?.filter(item => item.tag === selectedTag) : faqItems;
+
   const toggleAnswer = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
+  };
+
+  const selectTag = (tag: string | null) => {
+    setSelectedTag(prev => {
+      if (prev === tag) {
+        return null; // Deselect if the same tag is clicked
+      }
+      return tag;
+    });
   };
 
   return (
@@ -25,13 +52,26 @@ function FAQ() {
 
       <div className="mx-auto max-w-7xl px-4 md:px-16 py-24">
         <h1 className="text-3xl font-bold mb-6">자주 묻는 질문</h1>
-        {faqItems &&
-          faqItems.map((item, index) => (
+
+        <div className="flex flex-wrap gap-2 mb-6">
+          {faqItemsWithTags.length > 0 &&
+            faqItemsWithTags.map((item, index) => (
+              <Chip
+                label={Tags[item as keyof typeof Tags] || item}
+                key={'faq-chip-' + index}
+                onClick={() => selectTag(item)}
+                selected={selectedTag === item}
+              />
+            ))}
+        </div>
+
+        {filteredFaqItems &&
+          filteredFaqItems.map(item => (
             <FaqComponent
-              key={index}
+              key={item.id}
               item={item}
-              index={index}
-              isOpen={openIndex === index}
+              index={item.id}
+              isOpen={openIndex === item.id}
               toggleAnswer={toggleAnswer}
             />
           ))}
@@ -52,7 +92,10 @@ function FaqComponent({ item, index, isOpen, toggleAnswer }: IFaqComponent) {
     <div key={index} className="mb-4 rounded-md bg-white shadow-sm">
       <button
         onClick={() => toggleAnswer(index)}
-        className="flex items-center justify-between rounded-md w-full text-left font-semibold text-sm p-4 hover:bg-gray-50 focus:outline-none cursor-pointer"
+        className={
+          'flex items-center justify-between rounded-md w-full text-left font-semibold text-md p-4 hover:bg-blue-50 focus:outline-none cursor-pointer ' +
+          (isOpen ? 'text-blue-600 font-bold' : '')
+        }
       >
         {item.question}
 
