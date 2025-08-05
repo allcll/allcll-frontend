@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  client-deploy:
+  client-dev-ci:
     name: client-build/deploy
     runs-on: ubuntu-latest
     env:
@@ -42,11 +42,6 @@ jobs:
           pnpm run build-client
           cd ${{env.project-directory}}
         env:
-          CI: ''
-#          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-#          VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-#          VITE_GOOGLE_ANALYTICS_ID: ${{ secrets.GOOGLE_ANALYTICS_ID }}
-#          VITE_CLARITY_PROJECT_ID: ${{ secrets.CLARITY_PROJECT_ID }}
           VITE_API_BASE_URL: ${{ secrets.DEV_API_BASE_URL }}
           VITE_DEV_SERVER: true
         working-directory: ${{env.working-directory}}
@@ -57,42 +52,36 @@ jobs:
           name: development-files
           path: ${{env.project-directory}}/dist
 
-#      - name: Download artifact
-#        uses: actions/download-artifact@v4
-#        with:
-#          name: production-files
-#          path: ./build
-
-#      - name: Deploy to gh-pages
-#        uses: peaceiris/actions-gh-pages@v3
-#        with:
-#          github_token: ${{ secrets.GIT_TOKEN }}
-#          publish_dir: ${{env.project-directory}}/build
-#          publish_branch: 'gh-dev-pages'
-
-      - name: Deploy to S3
-        uses: jakejarvis/s3-sync-action@master
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          args: --acl public-read --delete
-        env:
-          AWS_S3_BUCKET: ${{ secrets.DEV_AWS_BUCKET_NAME }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.DEV_AWS_DEFAULT_REGION }}
-          SOURCE_DIR: ${{env.project-directory}}/dist
+          github_token: ${{ secrets.GIT_TOKEN }}
+          publish_dir: ${{env.project-directory}}/dist
+          publish_branch: 'gh-dev-pages'
 
-      - name: Invalidate CloudFront
-        uses: chetan/invalidate-cloudfront-action@master
-        env:
-          PATHS: '/*'
-          AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.DEV_AWS_DEFAULT_REGION }}
-          DISTRIBUTION: ${{ secrets.DEV_AWS_DISTRIBUTION_ID }}
+  client-dev-deploy:
+    runs-on: ubuntu-latest
+    needs: client-dev-ci
+
+    steps:
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_SERVER_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          #passphrase: ${{ secrets.PASSPHRASE }}
+          port: 22
+          script: |
+            cd ${{ secrets.PWD }}
+            sudo git pull https://${{ secrets.GIT_TOKEN }}:x-oauth-basic@github.com/allcll/frontend.git gh-dev-pages
+            sudo systemctl reload nginx
+            # 필요한 cmd 명령어 사용
+
 
   client-test:
     runs-on: ubuntu-latest
-    needs: client-deploy
+    needs: client-dev-deploy
     timeout-minutes: 10
 
     steps:
@@ -123,3 +112,26 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
+
+### Deployment to Cloudfront
+
+#      - name: Deploy to S3
+#        uses: jakejarvis/s3-sync-action@master
+#        with:
+#          args: --acl public-read --delete
+#        env:
+#          AWS_S3_BUCKET: ${{ secrets.DEV_AWS_BUCKET_NAME }}
+#          AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
+#          AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+#          AWS_REGION: ${{ secrets.DEV_AWS_DEFAULT_REGION }}
+#          SOURCE_DIR: ${{env.project-directory}}/dist
+#
+#      - name: Invalidate CloudFront
+#        uses: chetan/invalidate-cloudfront-action@master
+#        env:
+#          PATHS: '/*'
+#          AWS_ACCESS_KEY_ID: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
+#          AWS_SECRET_ACCESS_KEY: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+#          AWS_REGION: ${{ secrets.DEV_AWS_DEFAULT_REGION }}
+#          DISTRIBUTION: ${{ secrets.DEV_AWS_DISTRIBUTION_ID }}

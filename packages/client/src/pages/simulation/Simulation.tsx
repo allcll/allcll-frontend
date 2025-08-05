@@ -1,19 +1,20 @@
 import CaptchaInput from '@/components/simulation/modal/CaptchaInput';
 import SimulationModal from '@/components/simulation/modal/SimulationModal';
 import SimulationResultModal from '@/components/simulation/modal/SimulationResultModal';
-import UserWishModal from '@/components/simulation/modal/UserWishModal';
+import UserWishModal from '@/components/simulation/modal/before/UserWishModal';
 import WaitingModal from '@/components/simulation/modal/WaitingModal';
 import NothingTable from '@/components/simulation/table/NothingTable';
 import SubjectsTable from '@/components/simulation/table/SubjectsTable';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
-import { checkOngoingSimulation } from '@/utils/simulation/simulation';
+import { checkOngoingSimulation, forceStopSimulation } from '@/utils/simulation/simulation';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import SimulationSearchForm from '@/components/simulation/SimulationSearchForm';
 import { useReloadSimulation } from '@/hooks/useReloadSimulation';
 import useLectures from '@/hooks/server/useLectures.ts';
 import Stopwatch from '@/components/simulation/Stopwatch';
+import { useTimetables } from '@/hooks/server/useTimetableSchedules';
 
 const SUBJECTS_COLUMNS_HEADER = [
   '순번',
@@ -47,16 +48,41 @@ function SimulationSubjectsHeader() {
 
 function Simulation() {
   const { type, openModal, closeModal } = useSimulationModalStore();
-  const { currentSimulation } = useSimulationProcessStore();
+  const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore();
   const { reloadSimulationStatus } = useReloadSimulation();
   const lectures = useLectures();
+  const { data: timetables = [] } = useTimetables();
 
   const currentModal = useSimulationModalStore(state => state.type);
+
+  const forceSimulation = async () => {
+    try {
+      await forceStopSimulation();
+      setCurrentSimulation({ simulationStatus: 'finish' });
+      alert('5분 경과로 시뮬레이션이 강제 종료되었습니다.');
+      openModal('result');
+    } catch (error) {
+      console.error(error);
+      alert('시뮬레이션 강제 종료에 실패했습니다.');
+    }
+  };
 
   const checkHasSimulation = () => {
     checkOngoingSimulation().then(simulation => {
       if (simulation && 'simulationId' in simulation && simulation.simulationId !== -1) {
-        reloadSimulationStatus();
+        const start = simulation.startedAt;
+        if (!start) {
+          return;
+        }
+        const now = Date.now();
+
+        const seconds = Math.floor((now - start) / 1000);
+
+        if (seconds > 5 * 60) {
+          forceSimulation();
+        } else {
+          reloadSimulationStatus();
+        }
       } else if (currentSimulation.simulationStatus === 'before') {
         openModal('wish');
       }
@@ -83,7 +109,7 @@ function Simulation() {
       case 'captcha':
         return <CaptchaInput />;
       case 'wish':
-        return <UserWishModal lectures={lectures} setIsModalOpen={() => closeModal()} />;
+        return <UserWishModal timetables={timetables} lectures={lectures} setIsModalOpen={() => closeModal()} />;
       case 'simulation':
         return <SimulationModal reloadSimulationStatus={reloadSimulationStatus} />;
       case 'result':
