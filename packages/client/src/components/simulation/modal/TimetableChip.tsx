@@ -24,8 +24,8 @@ function TimetableChip({ selectedTimetable, onSelect, setSelectedTimetable, time
       <h2 className="text-left font-semibold text-sm sm:text-md">시간표를 선택해주세요.</h2>
       <div className="relative inline-block max-w-sm" ref={dropdownRef}>
         <Filtering
-          label={selectedTimetable.timeTableName}
-          selected={selectedTimetable.timeTableId !== -1}
+          label={selectedTimetable?.timeTableName ?? '시간표를 선택해주세요.'}
+          selected={selectedTimetable?.timeTableId !== -1}
           className="gap-4 max-h-80 overflow-y-auto"
         >
           {timetables.length === 0 && <div> 새로운 시간표를 추가해주세요.</div>}

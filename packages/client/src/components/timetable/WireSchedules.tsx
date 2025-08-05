@@ -10,7 +10,9 @@ interface IWireSchedulesProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 function WireSchedules({ dayOfWeeks }: Readonly<IWireSchedulesProps>) {
-  const { schedule, options } = useScheduleState();
+  const schedule = useScheduleState(state => state.schedule);
+  const options = useScheduleState(state => state.options);
+
   const { data: subjects } = useSubject();
 
   if (!subjects || schedule.scheduleId > 0 || !schedule.timeSlots || schedule.timeSlots.length <= 0) return null;
