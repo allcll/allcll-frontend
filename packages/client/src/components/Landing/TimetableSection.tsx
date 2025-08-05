@@ -2,7 +2,7 @@ import Section from '@/components/Landing/Section.tsx';
 import SectionHeader from '@/components/Landing/SectionHeader.tsx';
 import Card from '@/components/common/Card.tsx';
 import TimetableGridComponent from '@/components/timetable/TimetableGridComponent.tsx';
-import { GeneralSchedule, getScheduleSlots } from '@/hooks/server/useTimetableSchedules.ts';
+import { GeneralSchedule, getScheduleSlots, ScheduleSlot } from '@/hooks/server/useTimetableSchedules.ts';
 import Schedule from '@/components/timetable/Schedule.tsx';
 
 const colNames = ['월', '화', '수', '목', '금'];
@@ -63,29 +63,34 @@ function TimetableSection() {
       <Card className="mt-6">
         <TimetableGridComponent colNames={colNames} rowNames={rowNames}>
           {colNames.map(dayName => (
-            <div className="relative flex-auto px-[2px]" key={'day-schedule-' + dayName} tabIndex={0}>
-              {data &&
-                data[dayName]?.map(
-                  ({ title, professor, location, color, height, top, left, right, schedule }, index) => (
-                    <Schedule
-                      key={'schedule-' + index}
-                      timeslotIndex={index}
-                      title={title}
-                      professor={professor ?? ''}
-                      location={location ?? ''}
-                      schedule={schedule}
-                      color={color}
-                      style={{ height, top, left, right }}
-                      selected={false}
-                      fixed
-                    />
-                  ),
-                )}
-            </div>
+            <DaySchedule key={dayName} data={data ? data[dayName] : []} />
           ))}
         </TimetableGridComponent>
       </Card>
     </Section>
+  );
+}
+
+function DaySchedule({ data }: Readonly<{ data?: ScheduleSlot[] }>) {
+  if (!data) return <div className="relative flex-auto px-[2px]"></div>;
+
+  return (
+    <div className="relative flex-auto px-[2px]">
+      {data.map(({ title, professor, location, color, height, top, left, right, schedule }, index) => (
+        <Schedule
+          key={'schedule-' + index}
+          timeslotIndex={index}
+          title={title}
+          professor={professor ?? ''}
+          location={location ?? ''}
+          schedule={schedule}
+          color={color}
+          style={{ height, top, left, right }}
+          selected={false}
+          fixed
+        />
+      ))}
+    </div>
   );
 }
 

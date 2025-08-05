@@ -2,7 +2,7 @@ import Section from '@/components/Landing/Section.tsx';
 import SectionHeader from '@/components/Landing/SectionHeader.tsx';
 import Card from '@/components/common/Card.tsx';
 import RadarChart from '@/components/simulation/detail/RadarChart.tsx';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ButtonHTMLAttributes, useEffect, useRef, useState } from 'react';
 import { drawCaptcha } from '@/utils/captcha.ts';
 
 const radarData = {
@@ -64,9 +64,9 @@ function CaptchaInput() {
   function handleChangeInput(event: React.ChangeEvent<HTMLInputElement>) {
     let inputValue = event.target.value;
 
-    if (/[^0-9]/.test(inputValue)) {
+    if (/\D/.test(inputValue)) {
       setInfoMessage({ message: '0~9까지의 숫자만 입력해주세요', color: 'red' });
-      setCaptchaInput(inputValue.replace(/[^0-9]/g, ''));
+      setCaptchaInput(inputValue.replace(/\D/g, ''));
       return;
     }
 
@@ -104,14 +104,9 @@ function CaptchaInput() {
     <div className="flex flex-col justify-center h-4/5">
       <div className="grid grid-cols-2 gap-4 mt-4 p-4">
         <div className="flex flex-col">
-          <div className="text-sm font-semibold flex flex-row items-center">
+          <div className="text-sm font-semibold flex flex-row items-center gap-2">
             <span className="inline-block w-1.5 h-5 bg-blue-500 mr-2 "></span>생성된 코드
-            <button
-              onClick={handleRefreshCaptcha}
-              className="ml-2 px-2 py-1 bg-blue-500 text-white text-sm rounded-xs cursor-pointer hover:bg-blue-600"
-            >
-              재생성
-            </button>
+            <SmallButton onClick={handleRefreshCaptcha}>재생성</SmallButton>
           </div>
 
           <div className="flex items-center mt-1">
@@ -145,6 +140,17 @@ function CaptchaInput() {
         </button>
       </div>
     </div>
+  );
+}
+
+function SmallButton({ className, children, ...props }: Readonly<ButtonHTMLAttributes<HTMLButtonElement>>) {
+  return (
+    <button
+      className={'px-2 py-1 bg-blue-500 text-white text-sm rounded-xs cursor-pointer hover:bg-blue-600 ' + className}
+      {...props}
+    >
+      {children}
+    </button>
   );
 }
 
