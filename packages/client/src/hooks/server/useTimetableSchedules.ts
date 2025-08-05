@@ -504,9 +504,9 @@ function toGeneralSchedules(timetable: Timetable, subjects?: SubjectApiResponse[
 
 /** timetable 데이터를 ScheduleSlots 형태 (UI Data)로 변환합니다.
  * @param generalSchedules - Schedule 배열
+ * @param minTime
  */
-export function getScheduleSlots(generalSchedules?: GeneralSchedule[]) {
-  const minTime = useScheduleState(state => state.options.minTime);
+export function getScheduleSlots(generalSchedules?: GeneralSchedule[], minTime = 9) {
   const selectedSchedule = useScheduleState(state => state.schedule);
   const selectMode = useScheduleState(state => state.mode);
   const colors: ScheduleSlot['color'][] = ['rose', 'amber', 'green', 'emerald', 'blue', 'violet'];
