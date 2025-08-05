@@ -28,7 +28,7 @@ function UserWishModal({ lectures, timetables, setIsModalOpen }: UserWishModalIP
   const { setCurrentSimulation } = useSimulationProcessStore();
   const { closeModal } = useSimulationModalStore();
 
-  const currentTimetable = useScheduleState(s => s.currentTimetable);
+  const currentTimetable = useScheduleState(state => state.currentTimetable);
   const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
 
   const [simulationSubjects, setSimulationSubjects] = useState<Lecture[]>([]);
