@@ -4,7 +4,7 @@ function GameTips() {
   return (
     <div className="mt-6 text-sm text-gray-800 space-y-2">
       <h2 className="text-left font-semibold mb-4">
-        게임 <span className="text-blue-500">Tip!</span>
+        수강신청 <span className="text-blue-500">Tip!</span>
       </h2>
       {[
         '시작 시 우측 검색 버튼을 빠르게 눌러주세요.',
