@@ -8,7 +8,7 @@ import markdownComponents from '@/utils/markdownComponents.tsx';
 import Chip from '@/components/common/Chip.tsx';
 
 const Tags = {
-  all: '전체',
+  all: '기타',
   timetable: '시간표',
   wishes: '관심과목',
   simulation: '올클연습',
