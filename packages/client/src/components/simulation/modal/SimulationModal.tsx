@@ -178,7 +178,7 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
           openModal('result');
         }
 
-        closeModal();
+        closeModal('simulation');
       }
       // APPLY_STATUS.PROGRESS인 경우
       else if (modalData?.status === APPLY_STATUS.PROGRESS) {
