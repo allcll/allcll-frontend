@@ -3,6 +3,7 @@ import Modal from '../Modal';
 import ModalHeader from '../ModalHeader';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import ArrowdownSvg from '@/assets/arrow-down-gray.svg?react';
+import YouTube from 'react-youtube';
 
 const tutorialVideos = [
   {
@@ -58,8 +59,23 @@ function TutorialModal() {
           <button className="cursor-pointer w-5 h-5" onClick={goToPrevious}>
             {currentIndex !== 0 && <ArrowdownSvg className="w-5 h-5 transform rotate-90" />}
           </button>
+          <YouTube
+            videoId={currentVideo.videoId}
+            opts={{
+              width: '600',
+              height: '338',
+              playerVars: {
+                autoplay: 1,
+                mute: 1,
+                playlist: currentVideo.videoId,
+              },
+            }}
+            onEnd={() => {
+              goToNext();
+            }}
+          />
 
-          <iframe
+          {/* <iframe
             key={currentVideo.id}
             data-testid="video-player"
             width={600}
@@ -67,7 +83,7 @@ function TutorialModal() {
             src={`https://www.youtube.com/embed/${currentVideo.videoId}?loop=1&playlist=${currentVideo.videoId}`}
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
-          />
+          /> */}
 
           <button className="cursor-pointer" onClick={goToNext}>
             {currentIndex < 3 && <ArrowdownSvg className="w-5 h-5 transform -rotate-90" />}
