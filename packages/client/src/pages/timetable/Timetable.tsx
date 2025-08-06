@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet';
 import Card from '@/components/common/Card.tsx';
 import TimetableComponent from '@/components/timetable/TimetableComponent.tsx';
 import DropdownSelect from '@/components/timetable/DropdownSelect.tsx';
@@ -7,20 +8,19 @@ import FilteringBottomSheet from '@/components/contentPanel/bottomSheet/Filterin
 import FormBottomSheet from '@/components/contentPanel/bottomSheet/FormBottomSheet';
 import ScheduleFormModal from '@/components/contentPanel/ScheduleFormModal';
 import ContentPanel from '@/components/contentPanel/ContentPanel';
+import EditTimetable from '@/components/contentPanel/EditTimetable';
+import ScheduleInfoModal from '@/components/contentPanel/ScheduleInfoModal';
+import ScheduleInfoBottomSheet from '@/components/contentPanel/bottomSheet/ScheduleDetailBottomSheet';
+import { useScheduleState } from '@/store/useScheduleState';
 import { BottomSheetType, useBottomSheetStore } from '@/store/useBottomSheetStore';
 import { useDeleteTimetable, useTimetables } from '@/hooks/server/useTimetableSchedules.ts';
-import EditTimetable from '@/components/contentPanel/EditTimetable';
+import useScheduleModal from '@/hooks/useScheduleModal.ts';
+import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
+import { saveImageFromElement } from '@/utils/saveImage.ts';
 import AddGraySvg from '@/assets/add-gray.svg?react';
 import AddWhiteSvg from '@/assets/add-white.svg?react';
 import SearchSvg from '@/assets/search.svg?react';
 import DownloadSvg from '@/assets/download.svg?react';
-
-import { useScheduleState } from '@/store/useScheduleState';
-import ScheduleInfoModal from '@/components/contentPanel/ScheduleInfoModal';
-import ScheduleInfoBottomSheet from '@/components/contentPanel/bottomSheet/ScheduleDetailBottomSheet';
-import useScheduleModal from '@/hooks/useScheduleModal.ts';
-import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
-import { saveImageFromElement } from '@/utils/saveImage.ts';
 
 type modalType = 'edit' | 'create' | null;
 
@@ -37,6 +37,10 @@ function Timetable() {
 
   return (
     <div className="w-full p-4 ">
+      <Helmet>
+        <title>ALLCLL | 시간표</title>
+      </Helmet>
+
       <div className="grid md:grid-cols-3 gap-4">
         <div className="md:col-span-2 w-full h-full">
           <Card className="px-2 relative overflow-hidden">

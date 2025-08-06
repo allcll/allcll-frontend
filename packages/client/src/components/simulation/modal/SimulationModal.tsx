@@ -98,7 +98,7 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
       openModal('result');
     }
 
-    closeModal('simulation');
+    closeModal();
   };
 
   const handleSkipRefresh = async (subjectId: number) => {
@@ -121,7 +121,7 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
     } catch (error) {
       console.error(error);
     } finally {
-      closeModal('simulation');
+      closeModal();
     }
   };
 
@@ -197,12 +197,12 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
   };
 
   return (
-    <Modal>
+    <Modal onClose={() => closeModal()}>
       <div className="flex sm:w-[450px] border-1 border-gray-800 flex-col justify-between overflow-hidden">
         <ModalHeader
           title=""
           onClose={() => {
-            closeModal('simulation');
+            closeModal();
           }}
         />
 

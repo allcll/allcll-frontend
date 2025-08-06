@@ -14,6 +14,7 @@ export interface IScheduleProps extends HTMLAttributes<HTMLDivElement> {
   schedule: ScheduleType;
   selected?: boolean;
   color?: ScheduleSlot['color'];
+  fixed?: boolean;
 }
 
 function Schedule({
@@ -24,6 +25,7 @@ function Schedule({
   schedule,
   selected = false,
   timeslotIndex,
+  fixed = false,
   ...attrs
 }: Readonly<IScheduleProps>) {
   const { text, bgLight, bg } = getColors(color);
@@ -34,7 +36,7 @@ function Schedule({
   const isSelected = selected || selectedSchedule.scheduleId === schedule.scheduleId;
 
   const onAreaChanged = (startX: number, startY: number, nowX: number, nowY: number) => {
-    if (!ref.current) return;
+    if (!ref.current || fixed) return;
 
     const diffX = nowX - startX;
     const diffY = (nowY - startY) * ROW_HEIGHT;
@@ -44,7 +46,7 @@ function Schedule({
   };
 
   const onDragEnd = (startX: number, startY: number, nowX: number, nowY: number) => {
-    if (!ref.current) return;
+    if (!ref.current || fixed) return;
 
     if (schedule.scheduleType === 'official') {
       ref.current.style.setProperty('transform', '');
@@ -76,7 +78,7 @@ function Schedule({
   return (
     <div
       ref={ref}
-      className={`flex absolute ${bgLight} rounded-l-xs cursor-pointer ` + attrs.className}
+      className={`flex absolute ${bgLight} rounded-l-xs cursor-pointer hover:z-20 focus:z-20 ` + attrs.className}
       onMouseDown={onMouseDown}
       onKeyDown={onKeyDown}
       tabIndex={0}
