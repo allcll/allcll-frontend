@@ -5,7 +5,7 @@ import RadarChart from '@/components/simulation/detail/RadarChart.tsx';
 import React, { ButtonHTMLAttributes, useEffect, useRef, useState } from 'react';
 import { drawCaptcha } from '@/utils/captcha.ts';
 
-const radarData = {
+const InitRadarData = {
   user_ability: {
     searchBtnSpeed: 1.076296,
     totalSpeed: 6.70268,
@@ -15,6 +15,8 @@ const radarData = {
 };
 
 function SimulationSection() {
+  const [radarData, setRadarData] = useState(InitRadarData);
+
   return (
     <Section>
       <SectionHeader title="올클 연습" subtitle="세종대 수강신청 연습 부터, 결과 분석까지 한 번에" href="/simulation" />
@@ -24,7 +26,7 @@ function SimulationSection() {
           <h3 className="text-lg font-semibold">수강 신청 연습</h3>
           <p className="text-gray-600 mb-4">실전처럼 연습하고, 수강 신청 성공률을 높여보세요!</p>
 
-          <CaptchaInput />
+          <CaptchaInput setRadarData={setRadarData} />
         </Card>
         <Card className="relative">
           <h3 className="text-lg font-semibold">연습 결과 분석</h3>
@@ -41,16 +43,22 @@ function generateNumericText() {
 }
 const CAPTCHA_LENGTH = 4;
 
-function CaptchaInput() {
+function CaptchaInput({
+  setRadarData,
+}: Readonly<{ setRadarData?: React.Dispatch<React.SetStateAction<typeof InitRadarData>> }>) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [captchaInput, setCaptchaInput] = useState<string | number>();
   const [infoMessage, setInfoMessage] = useState({ message: '', color: 'red' });
   const codeRef = useRef<string>('');
 
+  const captchaResult = useCaptchaResult(setRadarData);
+
   function resetCaptcha() {
     codeRef.current = generateNumericText();
     setCaptchaInput('');
     setInfoMessage({ message: '', color: 'red' });
+
+    captchaResult.resetResult();
 
     if (canvasRef.current) {
       drawCaptcha(canvasRef.current, codeRef.current);
@@ -63,6 +71,8 @@ function CaptchaInput() {
 
   function handleChangeInput(event: React.ChangeEvent<HTMLInputElement>) {
     let inputValue = event.target.value;
+
+    captchaResult.updateResult();
 
     if (/\D/.test(inputValue)) {
       setInfoMessage({ message: '0~9까지의 숫자만 입력해주세요', color: 'red' });
@@ -83,6 +93,7 @@ function CaptchaInput() {
   useEffect(() => {
     setTimeout(() => {
       codeRef.current = generateNumericText();
+      captchaResult.initResult();
 
       if (canvasRef.current) {
         drawCaptcha(canvasRef.current, codeRef.current);
@@ -91,12 +102,15 @@ function CaptchaInput() {
   }, []);
 
   function handleConfirmCaptcha() {
+    const RESET_TIME = 700;
     if (captchaInput?.toString() === codeRef.current) {
       setInfoMessage({ message: '캡차가 성공적으로 입력되었습니다.', color: 'green' });
-      setTimeout(resetCaptcha, 1500);
+      captchaResult.endResult(true);
+      setTimeout(resetCaptcha, RESET_TIME);
     } else {
       setInfoMessage({ message: '캡차 입력이 잘못되었습니다.', color: 'red' });
-      setTimeout(resetCaptcha, 1500);
+      captchaResult.endResult(false);
+      setTimeout(resetCaptcha, RESET_TIME);
     }
   }
 
@@ -152,6 +166,58 @@ function SmallButton({ className, children, ...props }: Readonly<ButtonHTMLAttri
       {children}
     </button>
   );
+}
+
+function useCaptchaResult(setRadarData?: React.Dispatch<React.SetStateAction<typeof InitRadarData>>) {
+  const captchaResult = useRef({
+    tryCount: 0,
+    successCount: 0,
+    avgTime: 0,
+    startTime: -1,
+  });
+
+  function initResult() {
+    captchaResult.current.startTime = -1;
+  }
+
+  function resetResult() {
+    captchaResult.current.startTime = Date.now();
+  }
+
+  function updateResult() {
+    if (captchaResult.current.startTime === -1) {
+      captchaResult.current.startTime = Date.now();
+    }
+  }
+
+  function endResult(success: boolean) {
+    const endTime = Date.now();
+    const elapsedTime =
+      captchaResult.current.startTime === -1 ? 4.843947 : 1 + (endTime - captchaResult.current.startTime) / 1000;
+
+    captchaResult.current.startTime = -1;
+
+    captchaResult.current.tryCount += 1;
+    captchaResult.current.avgTime = 1 + (elapsedTime - captchaResult.current.avgTime) / captchaResult.current.tryCount;
+
+    captchaResult.current.successCount += success ? 1 : 0;
+
+    if (setRadarData)
+      setRadarData(prevData => ({
+        user_ability: {
+          ...prevData.user_ability,
+          captchaSpeed: captchaResult.current.avgTime,
+          accuracy: 100 * (captchaResult.current.successCount / captchaResult.current.tryCount),
+        },
+      }));
+  }
+
+  return {
+    initResult,
+    resetResult,
+    updateResult,
+    endResult,
+  };
 }
 
 export default SimulationSection;
