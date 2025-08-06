@@ -55,9 +55,10 @@ function TutorialModal() {
       />
       <div className="w-full flex flex-col p-4">
         <div className="flex justify-center items-center gap-5">
-          <button className="cursor-pointer" onClick={goToPrevious}>
-            <ArrowdownSvg className="w-5 h-5 transform rotate-90" />
+          <button className="cursor-pointer w-5 h-5" onClick={goToPrevious}>
+            {currentIndex !== 0 && <ArrowdownSvg className="w-5 h-5 transform rotate-90" />}
           </button>
+
           <iframe
             key={currentVideo.id}
             data-testid="video-player"
@@ -67,8 +68,9 @@ function TutorialModal() {
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           />
+
           <button className="cursor-pointer" onClick={goToNext}>
-            <ArrowdownSvg className="w-5 h-5 transform -rotate-90" />
+            {currentIndex < 3 && <ArrowdownSvg className="w-5 h-5 transform -rotate-90" />}
           </button>
         </div>
 
