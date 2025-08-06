@@ -65,7 +65,7 @@ function SimulationResultModal({ simulationId }: { simulationId: number }) {
   return !modifiedResult || !simulationAllResult ? (
     <ProcessingModal />
   ) : (
-    <Modal>
+    <Modal onClose={() => closeModal()}>
       <div className="w-[100%] sm:w-full max-w-md bg-white rounded-xl shadow-xl p-6 relative overflow-hidden">
         {isSuccessSimulation && (
           <div className="absolute inset-0 pointer-events-none">
@@ -147,7 +147,7 @@ function SimulationResultModal({ simulationId }: { simulationId: number }) {
             <button
               className="px-4 py-2 border border-gray-400 text-gray-800 rounded-md hover:bg-gray-100 text-sm"
               onClick={() => {
-                closeModal('result');
+                closeModal();
                 openModal('wish');
               }}
             >
@@ -159,7 +159,7 @@ function SimulationResultModal({ simulationId }: { simulationId: number }) {
               end={false}
               className="px-4 py-2  bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm"
               onClick={() => {
-                closeModal('result');
+                closeModal();
               }}
             >
               내 능력 자세히 보기

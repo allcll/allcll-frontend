@@ -70,13 +70,13 @@ function CaptchaInput() {
         }
       })
       .then(() => {
-        closeModal('captcha');
+        closeModal();
         openModal('simulation');
       });
   }
 
   return (
-    <Modal>
+    <Modal onClose={() => closeModal()}>
       <div className="sm:w-[500px] bg-white rounded shadow">
         <ModalHeader title="매크로방지 코드입력 (Arti-marco code input)" onClose={() => closeModal('captcha')} />
 
@@ -124,7 +124,7 @@ function CaptchaInput() {
             코드입력
           </button>
           <button
-            onClick={() => closeModal('captcha')}
+            onClick={() => closeModal()}
             className="px-4 py-2 bg-white hover:bg-blue-50 rounded-xs border cursor-pointer"
           >
             닫기
