@@ -15,6 +15,7 @@ import { useReloadSimulation } from '@/hooks/useReloadSimulation';
 import useLectures from '@/hooks/server/useLectures.ts';
 import Stopwatch from '@/components/simulation/Stopwatch';
 import { useTimetables } from '@/hooks/server/useTimetableSchedules';
+import TutorialModal from '@/components/simulation/modal/before/TutorialModal';
 
 const SUBJECTS_COLUMNS_HEADER = [
   '순번',
@@ -84,7 +85,7 @@ function Simulation() {
           reloadSimulationStatus();
         }
       } else if (currentSimulation.simulationStatus === 'before') {
-        openModal('wish');
+        openModal('tutorial');
       }
     });
   };
@@ -104,6 +105,8 @@ function Simulation() {
 
   const renderModal = () => {
     switch (type) {
+      case 'tutorial':
+        return <TutorialModal />;
       case 'waiting':
         return <WaitingModal />;
       case 'captcha':

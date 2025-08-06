@@ -16,7 +16,6 @@ import { useScheduleState } from '@/store/useScheduleState';
 import Chip from '@/components/common/Chip';
 import SubjectTable from './SubjectTable';
 import ActionButtons from './ActionButton';
-// import SearchSubjects from './SearchSubjects';
 
 interface UserWishModalIProps {
   lectures: Lecture[];
@@ -40,7 +39,6 @@ function UserWishModal({ lectures, timetables, setIsModalOpen }: UserWishModalIP
   const [selectedTimetable, setSelectedTimetable] = useState<TimetableType>(currentTimetable);
   const [subjectMode, setSubjectMode] = useState<'timetable' | 'random'>('timetable');
   const [toggleTip, setToggleTip] = useState(false);
-  // const [toggleSearch, setToggleSearch] = useState(false);
 
   const { data: schedules, isLoading: isSchedulesLoading } = useTimetableSchedules(selectedTimetable?.timeTableId);
 
@@ -66,7 +64,7 @@ function UserWishModal({ lectures, timetables, setIsModalOpen }: UserWishModalIP
     }
 
     try {
-      closeModal('wish');
+      closeModal();
 
       await saveInterestedSnapshot(simulationSubjects.map(subject => subject.subjectId));
       const result = await startSimulation('', department.departmentCode, department.departmentName);
@@ -131,10 +129,6 @@ function UserWishModal({ lectures, timetables, setIsModalOpen }: UserWishModalIP
     });
   };
 
-  // const handleAddSubject = (subject: Lecture) => {
-  //   setSimulationSubjects([...simulationSubjects, subject]);
-  // };
-
   useEffect(() => {
     if (!subjectMode || isSchedulesLoading) {
       return;
@@ -165,7 +159,11 @@ function UserWishModal({ lectures, timetables, setIsModalOpen }: UserWishModalIP
   }, [subjectMode, schedules, isSchedulesLoading]);
 
   return (
-    <Modal>
+    <Modal
+      onClose={() => {
+        setIsModalOpen(false);
+      }}
+    >
       <div className="flex flex-col min-w-lg">
         <ModalHeader
           title="수강 신청 연습을 시작하시겠습니까?"
@@ -216,21 +214,8 @@ function UserWishModal({ lectures, timetables, setIsModalOpen }: UserWishModalIP
               <div>아직 선택된 과목이 없습니다.</div>
             )}
 
-            {/* {simulationSubjects.length !== 0 && (
-              <div className="mt-5">
-                <h2 className="text-left font-semibold">과목을 추가하고 싶으신가요?</h2>
-                <Chip label="검색으로 추가" selected={toggleSearch} onClick={() => setToggleSearch(!toggleSearch)} />
-              </div>
-            )} */}
-
             {toggleTip && <GameTips />}
           </div>
-
-          {/* {toggleSearch && (
-            <div className="flex flex-col gap-2 w-full">
-              <SearchSubjects handleAddSubject={handleAddSubject} />
-            </div>
-          )} */}
         </div>
         <ActionButtons
           simulationSubjects={simulationSubjects}
