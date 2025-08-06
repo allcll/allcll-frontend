@@ -7,7 +7,12 @@ const DAYS: Day[] = ['월', '화', '수', '목', '금'];
 function DayFilter() {
   const { selectedDays, setFilterSchedule } = useFilterScheduleStore();
 
-  const handleChangeCheckbox = (item: Day) => {
+  const handleChangeCheckbox = (item: Day | '전체') => {
+    if (item === '전체') {
+      setFilterSchedule('selectedDays', selectedDays.length === DAYS.length ? [] : DAYS);
+      return;
+    }
+
     const isSelected = selectedDays.includes(item);
     const updatedDays = isSelected ? selectedDays.filter(day => day !== item) : [...selectedDays, item];
 
