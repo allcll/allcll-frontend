@@ -95,10 +95,9 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
       setCurrentSimulation({
         simulationStatus: 'finish',
       });
+      console.log('시뮬레이션 완료');
       openModal('result');
     }
-
-    closeModal();
   };
 
   const handleSkipRefresh = async (subjectId: number) => {
@@ -121,7 +120,7 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
     } catch (error) {
       console.error(error);
     } finally {
-      closeModal();
+      closeModal('simulation');
     }
   };
 
@@ -176,9 +175,9 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
           });
 
           openModal('result');
+        } else {
+          closeModal('simulation');
         }
-
-        closeModal('simulation');
       }
       // APPLY_STATUS.PROGRESS인 경우
       else if (modalData?.status === APPLY_STATUS.PROGRESS) {
