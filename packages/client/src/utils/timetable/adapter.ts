@@ -1,6 +1,6 @@
 import { CustomSchedule, OfficialSchedule, GeneralSchedule, TimeSlot } from '@/hooks/server/useTimetableSchedules.ts';
 import { ROW_HEIGHT } from '@/components/timetable/TimetableComponent.tsx';
-import { Day, SubjectApiResponse } from '@/utils/types.ts';
+import { Day, Subject } from '@/utils/types.ts';
 
 interface ApiUiAdapter<T, U> {
   data: U; // Initial data
@@ -21,7 +21,7 @@ export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, Genera
    * @param data - Schedule 또는 ScheduleApiResponse 타입의 데이터, 빈 경우 기본값으로 초기화됩니다.
    * @param subjects - data가 ScheduleApiResponse 인 경우, Wishes 배열이 필요합니다.
    */
-  constructor(data?: GeneralSchedule | ScheduleApiResponse, subjects?: SubjectApiResponse | SubjectApiResponse[]) {
+  constructor(data?: GeneralSchedule | ScheduleApiResponse, subjects?: Subject | Subject[]) {
     if (!data) {
       this.data = this.#toDefaultData();
       return;
@@ -51,15 +51,13 @@ export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, Genera
     };
   }
 
-  #apiToUiData(schedule: ScheduleApiResponse, subjects?: SubjectApiResponse | SubjectApiResponse[]): GeneralSchedule {
+  #apiToUiData(schedule: ScheduleApiResponse, subjects?: Subject | Subject[]): GeneralSchedule {
     if (!subjects) {
       throw new TypeError('Subjects must be provided for API to UI conversion');
     }
 
     const subj =
-      subjects instanceof Array
-        ? subjects.find(s => s.subjectId === schedule.subjectId)
-        : (subjects as SubjectApiResponse);
+      subjects instanceof Array ? subjects.find(s => s.subjectId === schedule.subjectId) : (subjects as Subject);
 
     return {
       scheduleId: schedule.scheduleId,

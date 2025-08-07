@@ -9,6 +9,7 @@ import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { BottomSheetType } from '@/store/useBottomSheetStore';
 import { ScheduleAdapter } from '@/utils/timetable/adapter';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects';
+import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 
 interface ISearchBottomSheet {
   onCloseSearch: (bottomSheetType: BottomSheetType) => void;
@@ -18,8 +19,15 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
   const [searchKeywords, setSearchKeywords] = useState<string>('');
   const { data: subjects = [], isPending } = useSubject();
   const { openScheduleModal, cancelSchedule } = useScheduleModal();
+  const { selectedDays, selectedDepartment, selectedGrades } = useFilterScheduleStore();
 
-  const filteredData = useFilteringSubjects(subjects, searchKeywords);
+  const filteredData = useFilteringSubjects({
+    subjects,
+    searchKeywords,
+    selectedDays,
+    selectedDepartment,
+    selectedGrades,
+  });
 
   const initSchedule = new ScheduleAdapter().toUiData();
 

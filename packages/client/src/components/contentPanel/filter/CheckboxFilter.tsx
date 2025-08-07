@@ -35,7 +35,6 @@ function CheckboxFilter<T extends string | number>({
             handleChangeCheckbox('전체' as T);
           }}
         />
-
         {options.map(item => (
           <Checkbox
             key={item}

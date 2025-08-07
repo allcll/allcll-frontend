@@ -9,6 +9,7 @@ import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 import FilterDelete from '@/components/contentPanel/filter/FilterDelete.tsx';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects';
+import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 
 const initSchedule = new ScheduleAdapter().toUiData();
 
@@ -16,7 +17,16 @@ function ContentPanel() {
   const { data: subjects = [], isPending } = useSubject();
   const [searchKeywords, setSearchKeywords] = useState('');
   const { openScheduleModal } = useScheduleModal();
-  const filteredData = useFilteringSubjects(subjects, searchKeywords);
+
+  const { selectedDays, selectedDepartment, selectedGrades } = useFilterScheduleStore();
+
+  const filteredData = useFilteringSubjects({
+    subjects,
+    searchKeywords,
+    selectedDays,
+    selectedDepartment,
+    selectedGrades,
+  });
 
   return (
     <div className="w-full h-screen md:basis-1/3 p-4 md:border-t-0 flex flex-col gap-3 bg-white shadow-md rounded-lg">

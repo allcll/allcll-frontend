@@ -1,22 +1,32 @@
 import { Helmet } from 'react-helmet';
 import { useState, useEffect } from 'react';
-import { disassemble } from 'es-hangul';
 import useWishes from '@/hooks/server/useWishes.ts';
 import Table from '@/components/wishTable/Table.tsx';
-import Searches, { WishSearchParams } from '@/components/live/Searches.tsx';
+import Searches from '@/components/live/Searches.tsx';
 import { Wishes } from '@/utils/types.ts';
 import useFavorites from '@/store/useFavorites.ts';
 import useWishSearchStore from '@/store/useWishSearchStore.ts';
+import useFilteringSubjects from '@/hooks/useFilteringSubjects';
 
 function WishTable() {
   const filterParams = useWishSearchStore(state => state.searchParams);
   const [filteredData, setFilteredData] = useState<Wishes[]>([]);
   const pickedFavorites = useFavorites(state => state.isFavorite);
-  const { data: wishes, isPending } = useWishes();
+  const { data: subjects, isPending } = useWishes();
 
   useEffect(() => {
-    setFilteredData(filterData(wishes, pickedFavorites, filterParams));
-  }, [filterParams, wishes]);
+    if (!subjects) return;
+
+    setFilteredData(
+      useFilteringSubjects({
+        subjects,
+        pickedFavorites,
+        searchKeywords: filterParams.searchInput,
+        selectedDepartment: filterParams.selectedDepartment,
+        isFavorite: filterParams.isFavorite,
+      }),
+    );
+  }, [filterParams, subjects]);
 
   return (
     <>
@@ -44,31 +54,6 @@ function WishTable() {
       </div>
     </>
   );
-}
-
-// Todo: upgrade search function
-function filterData(
-  data: Wishes[] | undefined,
-  pickedFavorites: (id: number) => boolean,
-  { searchInput, selectedDepartment, isFavorite }: WishSearchParams,
-): Wishes[] {
-  if (!data) return [];
-
-  const cleanSearchInput = searchInput.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-  const disassembledSearchInput = disassemble(cleanSearchInput).toLowerCase();
-
-  return data.filter(item => {
-    const disassembledProfessorName = item.professorName ? disassemble(item.professorName).toLowerCase() : '';
-    const cleanSubjectName = item.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-    const disassembledSubjectName = disassemble(cleanSubjectName).toLowerCase();
-
-    const matchesProfessor = disassembledProfessorName.includes(disassembledSearchInput);
-    const matchesSubject = disassembledSubjectName.includes(disassembledSearchInput);
-    const matchesDepartment = selectedDepartment === '' || item.departmentCode === selectedDepartment;
-    const matchesFavorite = isFavorite ? pickedFavorites(item.subjectId) : true;
-
-    return (matchesProfessor || matchesSubject) && matchesDepartment && matchesFavorite;
-  });
 }
 
 export default WishTable;

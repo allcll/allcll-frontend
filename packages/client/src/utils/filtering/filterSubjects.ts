@@ -1,7 +1,7 @@
 import { disassemble } from 'es-hangul';
-import { Day, Grade, SubjectApiResponse } from '../types';
+import { Day, Grade, Subject, Wishes } from '../types';
 
-export function filterDays(subject: SubjectApiResponse, selectedDays: (Day | '전체')[]) {
+export function filterDays(subject: Wishes | Subject, selectedDays: (Day | '전체')[]) {
   if (!subject.lesnTime) {
     return false;
   }
@@ -11,7 +11,6 @@ export function filterDays(subject: SubjectApiResponse, selectedDays: (Day | '�
   if (!timeMatchResult) {
     return false;
   }
-
   if (selectedDays.includes('전체') || selectedDays.length === 0) {
     return true;
   }
@@ -20,7 +19,7 @@ export function filterDays(subject: SubjectApiResponse, selectedDays: (Day | '�
   return selectedDays.some(selectedDay => lessonDays.includes(selectedDay));
 }
 
-export function filterGrades(subject: SubjectApiResponse, selectedGrades: (Grade | '전체')[]) {
+export function filterGrades(subject: Wishes | Subject, selectedGrades: (Grade | '전체')[]) {
   const subjectGrade = Number(subject.studentYear);
 
   if (!subjectGrade) {
@@ -34,17 +33,17 @@ export function filterGrades(subject: SubjectApiResponse, selectedGrades: (Grade
   return selectedGrades.includes(subjectGrade as Grade);
 }
 
-export function filterDepartment(subject: SubjectApiResponse, selectedDepartment: string) {
+export function filterDepartment(subject: Wishes | Subject, selectedDepartment: string) {
   return !selectedDepartment || selectedDepartment === '' || selectedDepartment === subject.deptCd;
 }
 
-export function filterSearchKeywords(subject: SubjectApiResponse, searchKeywords: string) {
+export function filterSearchKeywords(subject: Wishes | Subject, searchKeywords: string) {
   if (!searchKeywords) {
     return true;
   }
 
-  const clearnSearchInput = searchKeywords.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-  const disassembledSearchInput = disassemble(clearnSearchInput).toLowerCase();
+  const cleanSearchInput = searchKeywords.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+  const disassembledSearchInput = disassemble(cleanSearchInput).toLowerCase();
 
   const disassembledProfessorName = subject.professorName ? disassemble(subject.professorName).toLowerCase() : '';
   const cleanSubjectName = subject.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
