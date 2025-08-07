@@ -4,6 +4,7 @@ import ModalHeader from '../ModalHeader';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import ArrowdownSvg from '@/assets/arrow-down-gray.svg?react';
 import YouTube from 'react-youtube';
+import useMobile from '@/hooks/useMobile';
 
 const tutorialVideos = [
   {
@@ -31,6 +32,7 @@ const tutorialVideos = [
 function TutorialModal() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { closeModal, openModal } = useSimulationModalStore();
+  const isMobile = useMobile();
 
   const goToPrevious = () => {
     setCurrentIndex(prevIndex => (prevIndex === 0 ? tutorialVideos.length - 1 : prevIndex - 1));
@@ -56,42 +58,52 @@ function TutorialModal() {
       />
       <div className="w-full flex flex-col p-4">
         <div className="flex justify-center items-center gap-5">
-          <button className="cursor-pointer w-5 h-5" onClick={goToPrevious}>
-            {currentIndex !== 0 && <ArrowdownSvg className="w-5 h-5 transform rotate-90" />}
-          </button>
-          <YouTube
-            videoId={currentVideo.videoId}
-            opts={{
-              width: '600',
-              height: '338',
-              playerVars: {
-                autoplay: 1,
-                mute: 1,
-                playlist: currentVideo.videoId,
-              },
-            }}
-            onEnd={() => {
-              goToNext();
-            }}
-          />
-
-          {/* <iframe
-            key={currentVideo.id}
-            data-testid="video-player"
-            width={600}
-            height={338}
-            src={`https://www.youtube.com/embed/${currentVideo.videoId}?loop=1&playlist=${currentVideo.videoId}`}
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          /> */}
-
-          <button className="cursor-pointer" onClick={goToNext}>
-            {currentIndex < 3 && <ArrowdownSvg className="w-5 h-5 transform -rotate-90" />}
-          </button>
+          {isMobile ? (
+            <YouTube
+              videoId={currentVideo.videoId}
+              opts={{
+                width: '250',
+                height: '141',
+                playerVars: {
+                  autoplay: 1,
+                  mute: 1,
+                  playlist: currentVideo.videoId,
+                },
+              }}
+              onEnd={() => {
+                goToNext();
+              }}
+            />
+          ) : (
+            <YouTube
+              videoId={currentVideo.videoId}
+              opts={{
+                width: '600',
+                height: '338',
+                playerVars: {
+                  autoplay: 1,
+                  mute: 1,
+                  playlist: currentVideo.videoId,
+                },
+              }}
+              onEnd={() => {
+                goToNext();
+              }}
+            />
+          )}
         </div>
 
         <div className="mt-4 flex flex-col justify-center items-center gap-2">
-          <h2 className="text-gray-700 text-xl font-semibold">{currentVideo.title}</h2>
+          <div className="flex justify-center items-center gap-5">
+            <button className="cursor-pointer w-5 h-5" onClick={goToPrevious}>
+              {currentIndex !== 0 && <ArrowdownSvg className="w-5 h-5 transform rotate-90" />}
+            </button>
+            <h2 className="text-gray-700 text-xl font-semibold">{currentVideo.title}</h2>
+            <button className="cursor-pointer" onClick={goToNext}>
+              {currentIndex < 3 && <ArrowdownSvg className="w-5 h-5 transform -rotate-90" />}
+            </button>
+          </div>
+
           <p className="text-gray-500 text-sm">
             올클 연습은 실제 수강신청과 유사한 환경에서 연습할 수 있는 기능입니다.
           </p>

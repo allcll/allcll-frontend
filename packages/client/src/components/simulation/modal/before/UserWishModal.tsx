@@ -164,14 +164,14 @@ function UserWishModal({ lectures, timetables, setIsModalOpen }: UserWishModalIP
         setIsModalOpen(false);
       }}
     >
-      <div className="flex flex-col min-w-lg">
+      <div className="flex flex-col w-full max-w-[900px] px-2 sm:px-6 py-2 sm:py-6 overflow-y-auto max-h-[90vh]">
         <ModalHeader
           title="수강 신청 연습을 시작하시겠습니까?"
           onClose={() => {
             setIsModalOpen(false);
           }}
         />
-        <div className="flex flex-row gap-4 p-2 sm:p-6">
+        <div className="flex flex-row p-2 sm:p-6">
           <div className="flex flex-col gap-2">
             <h2 className="text-left font-semibold text-sm sm:text-md">어떤 과목으로 진행하시겠습니까?</h2>
             <div className="flex gap-2 py-2">
