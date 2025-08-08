@@ -28,7 +28,7 @@ function Modal({ children, onClose }: Readonly<IModalProps>) {
       <div className="fixed inset-0 justify-center opacity-30 bg-gray-300 border-b-2 border-gray-400" />
       <div className="flex w-[95%] items-center justify-center ">
         <div
-          className="w-[95%] sm:w-fit z-50 bg-white max-h-[90vh] border border-gray-200 overflow-y-auto"
+          className="w-[95%] sm:w-fit sm:min-w-[600px] z-50 bg-white max-h-[90vh] border border-gray-200 overflow-y-auto"
           role="dialog"
           onClick={e => e.stopPropagation()}
         >
