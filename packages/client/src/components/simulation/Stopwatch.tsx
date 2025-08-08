@@ -36,7 +36,8 @@ function Stopwatch() {
 
       try {
         const result = await getOngoingSimulation();
-        if (!result || !result.started_at || result.simulation_run_id !== currentSimulation.simulationId) {
+
+        if (!result.started_at || result.simulation_run_id !== currentSimulation.simulationId) {
           return;
         }
 
@@ -73,7 +74,7 @@ function Stopwatch() {
         intervalRef.current = null;
       }
     };
-  }, [currentSimulation.simulationStatus]);
+  }, [currentSimulation.simulationStatus, currentSimulation.simulationId]);
 
   return <p className="font-semibold text-xl text-blue-500">{currentTime}</p>;
 }
