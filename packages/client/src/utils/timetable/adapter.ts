@@ -8,9 +8,6 @@ interface ApiUiAdapter<T, U> {
   toUiData: () => U;
 }
 
-// Todo: Implement TimetableAdapter
-// export class TimetableAdapter implements ApiUiAdapter<Timetable> {}
-
 type ScheduleApiResponse = OfficialSchedule | CustomSchedule;
 
 export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, GeneralSchedule> {
@@ -56,8 +53,7 @@ export class ScheduleAdapter implements ApiUiAdapter<ScheduleApiResponse, Genera
       throw new TypeError('Subjects must be provided for API to UI conversion');
     }
 
-    const subj =
-      subjects instanceof Array ? subjects.find(s => s.subjectId === schedule.subjectId) : (subjects as Subject);
+    const subj = subjects instanceof Array ? subjects.find(s => s.subjectId === schedule.subjectId) : subjects;
 
     return {
       scheduleId: schedule.scheduleId,

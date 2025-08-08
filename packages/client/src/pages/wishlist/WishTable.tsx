@@ -1,32 +1,23 @@
 import { Helmet } from 'react-helmet';
-import { useState, useEffect } from 'react';
 import useWishes from '@/hooks/server/useWishes.ts';
+import useFilteringSubjects from '@/hooks/useFilteringSubjects';
 import Table from '@/components/wishTable/Table.tsx';
 import Searches from '@/components/live/Searches.tsx';
-import { Wishes } from '@/utils/types.ts';
 import useFavorites from '@/store/useFavorites.ts';
 import useWishSearchStore from '@/store/useWishSearchStore.ts';
-import useFilteringSubjects from '@/hooks/useFilteringSubjects';
 
 function WishTable() {
   const filterParams = useWishSearchStore(state => state.searchParams);
-  const [filteredData, setFilteredData] = useState<Wishes[]>([]);
   const pickedFavorites = useFavorites(state => state.isFavorite);
   const { data: subjects, isPending } = useWishes();
 
-  useEffect(() => {
-    if (!subjects) return;
-
-    setFilteredData(
-      useFilteringSubjects({
-        subjects,
-        pickedFavorites,
-        searchKeywords: filterParams.searchInput,
-        selectedDepartment: filterParams.selectedDepartment,
-        isFavorite: filterParams.isFavorite,
-      }),
-    );
-  }, [filterParams, subjects]);
+  const filteredData = useFilteringSubjects({
+    subjects: subjects ?? [],
+    pickedFavorites,
+    searchKeywords: filterParams.searchInput,
+    selectedDepartment: filterParams.selectedDepartment,
+    isFavorite: filterParams.isFavorite,
+  });
 
   return (
     <>

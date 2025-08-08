@@ -6,7 +6,7 @@ export function filterDays(subject: Wishes | Subject, selectedDays: (Day | '전�
     return false;
   }
 
-  const timeMatchResult = subject.lesnTime.match(/^([가-힣]+)/);
+  const timeMatchResult = RegExp(/^([가-힣]+)/).exec(subject.lesnTime);
 
   if (!timeMatchResult) {
     return false;

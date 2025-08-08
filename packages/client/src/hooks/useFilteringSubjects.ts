@@ -1,7 +1,7 @@
 import { filterDays, filterDepartment, filterGrades, filterSearchKeywords } from '@/utils/filtering/filterSubjects';
 import { Day, Grade, Subject } from '@/utils/types';
 
-interface IuseFilteringSubjects<T extends Subject> {
+interface IUseFilteringSubjects<T extends Subject> {
   subjects: T[];
   searchKeywords: string;
   selectedDays?: (Day | '전체')[];
@@ -18,8 +18,8 @@ function useFilteringSubjects<T extends Subject>({
   selectedDepartment,
   selectedGrades,
   isFavorite,
-  pickedFavorites,
-}: IuseFilteringSubjects<T>) {
+  pickedFavorites = () => false,
+}: IUseFilteringSubjects<T>) {
   if (!subjects || subjects.length === 0) return [];
 
   return subjects.filter(subject => {
@@ -28,10 +28,8 @@ function useFilteringSubjects<T extends Subject>({
     const filteredByDays = selectedDays ? filterDays(subject, selectedDays) : true;
     const filteredBySearchKeywords = filterSearchKeywords(subject, searchKeywords);
 
-    /**
-     * Wishes의 isFavorite
-     */
-    const filteredByIsFavorite = isFavorite ? (pickedFavorites ? pickedFavorites(subject.subjectId) : false) : true;
+    // Wishes의 isFavorite
+    const filteredByIsFavorite = !isFavorite || (isFavorite && pickedFavorites(subject.subjectId));
 
     return (
       filteredByDepartment && filteredByGrades && filteredByDays && filteredBySearchKeywords && filteredByIsFavorite
