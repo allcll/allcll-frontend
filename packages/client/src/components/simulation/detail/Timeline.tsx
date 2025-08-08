@@ -23,7 +23,7 @@ type Step = {
 const TICK_WIDTH = 32;
 const HEADER_WIDTH = 200;
 
-function Timeline({ result }: { result: ExtendedResultResponse }) {
+function Timeline({ result }: Readonly<{ result: ExtendedResultResponse }>) {
   const subjects = getSubjectData(result);
 
   const totalDuration = (result.ended_at - result.started_at) / 1000;
@@ -43,9 +43,13 @@ function Timeline({ result }: { result: ExtendedResultResponse }) {
 
         {/* subject rows */}
         {subjects.map((subject, rowIndex) => (
-          <div key={rowIndex} className="flex items-center" style={{ width: `${TICK_WIDTH * timelineTicks.length}px` }}>
+          <div
+            key={'timeline-row-' + rowIndex}
+            className="flex items-center"
+            style={{ width: `${TICK_WIDTH * timelineTicks.length}px` }}
+          >
             {/* subject info */}
-            <div className={`py-2 text-sm sticky left-0 right-0 z-10 bg-white`} style={{ width: `${HEADER_WIDTH}px` }}>
+            <div className="py-2 text-sm md:sticky left-0 right-0 z-10 bg-white" style={{ width: `${HEADER_WIDTH}px` }}>
               <div className={`font-semibold ${getTextColor600(subject.color)}`}>{subject.name}</div>
               <span className={`text-xs ${getTextColor500(subject.color)}`}>{subject.code}</span>
             </div>
@@ -59,26 +63,26 @@ function Timeline({ result }: { result: ExtendedResultResponse }) {
       </div>
 
       {/* 그라데이션 */}
-      <div className="pointer-events-none absolute inset-y-4 left-[200px] w-3 bg-gradient-to-r from-white to-transparent" />
+      <div className="pointer-events-none absolute inset-y-4 left-0 md:left-[200px] w-3 bg-gradient-to-r from-white to-transparent" />
       <div className="pointer-events-none absolute inset-y-4 right-0 w-3 bg-gradient-to-l from-white to-transparent" />
     </div>
   );
 }
 
 // Timeline component
-function TimelineBar({ timelines }: { timelines: TimelineData['timelines'] }) {
+function TimelineBar({ timelines }: Readonly<{ timelines: TimelineData['timelines'] }>) {
   return timelines.map((timeline, i) => {
     const left = timeline.start * TICK_WIDTH - 12;
     const width = timeline.duration * TICK_WIDTH + 12 * 2;
 
     return (
       <div
-        key={i}
+        key={'timeline-bar-' + i}
         className={`absolute top-1 h-6 rounded-full px-3 ${getColorClass(timeline.color)}`}
         style={{ left: `${left}px`, width: `${width}px` }}
       >
         {timeline.events.map((event, j) => (
-          <TimelineDot key={j} event={event} startAt={timeline.start} color={timeline.color} />
+          <TimelineDot key={'timeline-dot-' + j} event={event} startAt={timeline.start} color={timeline.color} />
         ))}
       </div>
     );
@@ -86,7 +90,7 @@ function TimelineBar({ timelines }: { timelines: TimelineData['timelines'] }) {
 }
 
 // Timeline Dot component
-function TimelineDot({ event, startAt, color }: { event: Step; startAt: number; color: string }) {
+function TimelineDot({ event, startAt, color }: Readonly<{ event: Step; startAt: number; color: string }>) {
   const left = (event.start - startAt) * TICK_WIDTH + 6;
 
   return (

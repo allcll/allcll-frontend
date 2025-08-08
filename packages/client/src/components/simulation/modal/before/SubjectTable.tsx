@@ -36,11 +36,11 @@ function SubjectTable({
         <table className="min-w-full sm:text-sm text-xs text-left border-t border-b border-gray-200">
           <thead className="bg-gray-100 text-gray-700">
             <tr>
-              <th className="px-4 py-2 min-w-[100px]">학수번호</th>
-              <th className="px-4 py-2 min-w-[60px]">분반</th>
-              <th className="px-4 py-2 min-w-[160px]">개설학과</th>
-              <th className="px-4 py-2 min-w-[120px]">과목명</th>
-              <th className="px-4 py-2 min-w-[100px]">교수명</th>
+              <th className="px-4 py-2">학수번호</th>
+              <th className="px-4 py-2">분반</th>
+              <th className="px-4 py-2">개설학과</th>
+              <th className="px-4 py-2">과목명</th>
+              <th className="px-4 py-2">교수명</th>
             </tr>
           </thead>
           <tbody>

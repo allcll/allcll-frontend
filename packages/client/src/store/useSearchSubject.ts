@@ -1,4 +1,4 @@
-import { SubjectApiResponse } from '@/utils/types.ts';
+import { Subject } from '@/utils/types.ts';
 import { useQuery } from '@tanstack/react-query';
 import { fetchJsonOnAPI } from '@/utils/api.ts';
 
@@ -11,7 +11,7 @@ export function useSearchSubject(searchOption: SubjectOption) {
 }
 
 interface SubjectResponse {
-  subjectResponses: SubjectApiResponse[];
+  subjectResponses: Subject[];
 }
 
 interface SubjectOption {

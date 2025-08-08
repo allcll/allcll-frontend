@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { SubjectApiResponse, Wishes } from '@/utils/types.ts';
+import { Subject, Wishes } from '@/utils/types.ts';
 import { fetchJsonOnPublic } from '@/utils/api.ts';
 import useSubject from '@/hooks/server/useSubject.ts';
 
@@ -22,19 +22,15 @@ function useWishes() {
   });
 }
 
-const joinSubjects = (wishes?: WishesApiResponse, subject?: SubjectApiResponse[]): Wishes[] => {
+const joinSubjects = (wishes?: WishesApiResponse, subject?: Subject[]): Wishes[] => {
   if (!wishes || !subject) return [];
 
-  return subject.map((subject: SubjectApiResponse) => {
+  return subject.map((subject: Subject) => {
     const wish = wishes.baskets.find(wish => wish.subjectId === subject.subjectId);
     return {
-      subjectId: subject.subjectId,
-      subjectName: subject.subjectName,
-      departmentName: subject.manageDeptNm,
+      ...subject,
       departmentCode: subject.deptCd,
-      subjectCode: subject.subjectCode,
-      classCode: subject.classCode,
-      professorName: subject.professorName,
+      departmentName: subject.manageDeptNm,
       totalCount: wish?.totalCount || 0,
     };
   });

@@ -7,7 +7,7 @@ import NothingTable from '@/components/simulation/table/NothingTable';
 import SubjectsTable from '@/components/simulation/table/SubjectsTable';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
-import { checkOngoingSimulation, forceStopSimulation } from '@/utils/simulation/simulation';
+import { checkOngoingSimulation, forceStopSimulation, SIMULATION_TIME_LIMIT } from '@/utils/simulation/simulation';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import SimulationSearchForm from '@/components/simulation/SimulationSearchForm';
@@ -37,9 +37,9 @@ function SimulationSubjectsHeader() {
   return (
     <thead className="bg-gray-100">
       <tr className="text-nowrap">
-        {SUBJECTS_COLUMNS_HEADER.map(coulumn => (
-          <th key={coulumn} className="border border-gray-300 px-2 py-1">
-            {coulumn}
+        {SUBJECTS_COLUMNS_HEADER.map(column => (
+          <th key={column} className="border border-gray-300 px-2 py-1">
+            {column}
           </th>
         ))}
       </tr>
@@ -49,7 +49,8 @@ function SimulationSubjectsHeader() {
 
 function Simulation() {
   const { type, openModal, closeModal } = useSimulationModalStore();
-  const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore();
+  const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
+  const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
   const { reloadSimulationStatus } = useReloadSimulation();
   const lectures = useLectures();
   const { data: timetables = [] } = useTimetables();
@@ -79,8 +80,8 @@ function Simulation() {
 
         const seconds = Math.floor((now - start) / 1000);
 
-        if (seconds > 5 * 60) {
-          forceSimulation();
+        if (seconds > SIMULATION_TIME_LIMIT) {
+          forceSimulation().then();
         } else {
           reloadSimulationStatus();
         }

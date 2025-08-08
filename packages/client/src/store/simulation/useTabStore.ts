@@ -32,7 +32,8 @@ const useTabStore = create<IUseTabStore>(set => ({
     set(({ tabs }) => {
       const filteredTabs = tabs.filter(t => t.urlPath !== urlPath && t.realUrl !== urlPath);
       const updatedTabs = filteredTabs.length ? [...filteredTabs] : [DefaultTab];
-      const goToTab = urlPath === window.location.pathname ? updatedTabs[updatedTabs.length - 1] : null;
+      const currUrlPath = window.location.pathname.replace(/\d+/, '');
+      const goToTab = urlPath === currUrlPath ? updatedTabs[updatedTabs.length - 1] : null;
 
       if (goToTab) {
         navigate(goToTab.realUrl, { replace: true });
@@ -58,28 +59,34 @@ const DefaultTab = {
 
 export function useSimulationTab() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation() as unknown as Location;
   const tabs = useTabStore(state => state.tabs);
   const setTab = useTabStore(state => state.setTab);
 
   // 초기 탭 설정
   useEffect(() => {
     if (tabs.length === 0) {
-      setTab(DefaultTab);
-      navigate(DefaultTab.realUrl);
+      const newTab = getTab(location);
+
+      setTab(newTab);
+      navigate(newTab.realUrl);
     }
   }, [tabs]);
 
   // 현재 URL에 맞는 탭 추가 및 업데이트
   useEffect(() => {
-    const path = location.pathname.replace(/[0-9]+/, '');
-
-    setTab({
-      title: TabList.find(tab => tab.urlPath === path)?.title || '알 수 없는 탭',
-      urlPath: path,
-      realUrl: location.pathname,
-    });
+    setTab(getTab(location));
   }, [location.pathname]);
+}
+
+function getTab(currLocation: Location) {
+  const path = currLocation.pathname.replace(/\d+/, '');
+
+  return {
+    title: TabList.find(tab => tab.urlPath === path)?.title || '알 수 없는 탭',
+    urlPath: path,
+    realUrl: currLocation.pathname,
+  };
 }
 
 export default useTabStore;

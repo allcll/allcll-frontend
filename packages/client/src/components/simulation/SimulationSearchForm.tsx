@@ -69,14 +69,11 @@ function SimulationSearchForm() {
     try {
       await forceStopSimulation();
 
-      setCurrentSimulation({
-        simulationStatus: 'finish',
-      });
+      setCurrentSimulation({ simulationStatus: 'finish' });
       openModal('result');
     } catch (error) {
       console.error(error);
-
-      alert('Failed to delete the database.');
+      alert('데이터베이스 삭제에 실패했습니다.');
     }
   };
 

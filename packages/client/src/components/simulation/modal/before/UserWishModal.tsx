@@ -23,7 +23,7 @@ interface UserWishModalIProps {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function UserWishModal({ lectures, timetables, setIsModalOpen }: UserWishModalIProps) {
+function UserWishModal({ lectures, timetables, setIsModalOpen }: Readonly<UserWishModalIProps>) {
   const { setCurrentSimulation } = useSimulationProcessStore();
   const { closeModal } = useSimulationModalStore();
 
@@ -92,7 +92,7 @@ function UserWishModal({ lectures, timetables, setIsModalOpen }: UserWishModalIP
 
   /**
    * 시뮬레이션에 적용할 시간표를 선택합니다.
-   * @param scheduleSubjectId
+   * @param optionId
    */
   const handleSelect = (optionId: number) => {
     const timetable = timetables.find(timetable => timetable.timeTableId === optionId);
@@ -164,14 +164,14 @@ function UserWishModal({ lectures, timetables, setIsModalOpen }: UserWishModalIP
         setIsModalOpen(false);
       }}
     >
-      <div className="flex flex-col min-w-lg">
+      <div className="flex sm:min-w-[600px] flex-col w-full max-w-[900px] px-2 sm:px-6 py-2 sm:py-6 overflow-y-auto max-h-[90vh]">
         <ModalHeader
           title="수강 신청 연습을 시작하시겠습니까?"
           onClose={() => {
             setIsModalOpen(false);
           }}
         />
-        <div className="flex flex-row gap-4 p-2 sm:p-6">
+        <div className="flex flex-row p-2 sm:p-6">
           <div className="flex flex-col gap-2">
             <h2 className="text-left font-semibold text-sm sm:text-md">어떤 과목으로 진행하시겠습니까?</h2>
             <div className="flex gap-2 py-2">
