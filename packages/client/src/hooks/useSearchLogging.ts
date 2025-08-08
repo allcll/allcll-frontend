@@ -150,7 +150,12 @@ function useSearchLogging() {
     Logging.updateLoggingData(searchTerm, dprtCode, subjectId);
   }
 
-  return { onSearchChange, selectTarget };
+  /** 특정 대상을 선택했을 때, 검색어를 모를 때 호출 (이전 검색 데이터 이용함) */
+  function selectTargetOnly(subjectId: number) {
+    Logging.updateLoggingData(undefined, undefined, subjectId);
+  }
+
+  return { onSearchChange, selectTarget, selectTargetOnly };
 }
 
 export default useSearchLogging;
