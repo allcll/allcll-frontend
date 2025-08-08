@@ -2,10 +2,11 @@ import React, { useRef } from 'react';
 import ZeroListError from '../errors/ZeroListError';
 import useInfScroll from '@/hooks/useInfScroll'; // 수정된 useInfScroll import
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
+import useSearchLogging from '@/hooks/useSearchLogging.ts';
+import { OfficialSchedule } from '@/hooks/server/useTimetableSchedules.ts';
 import { useScheduleState } from '@/store/useScheduleState';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 import { Subject } from '@/utils/types';
-import { OfficialSchedule } from '@/hooks/server/useTimetableSchedules.ts';
 
 interface ISubjectCards {
   subjects: Subject[];
@@ -13,7 +14,7 @@ interface ISubjectCards {
   expandToMax?: () => void;
 }
 
-export function FilteredSubjectCards({ subjects, expandToMax, isPending = false }: ISubjectCards) {
+export function FilteredSubjectCards({ subjects, expandToMax, isPending = false }: Readonly<ISubjectCards>) {
   const { visibleRows, loadMoreRef } = useInfScroll(subjects, 'ref');
 
   const selectedCardRef = useRef<HTMLDivElement>(null);
@@ -90,12 +91,14 @@ interface ISubjectCard {
   forwardedRef?: React.Ref<HTMLDivElement>;
 }
 
-function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: ISubjectCard) {
+function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: Readonly<ISubjectCard>) {
   const color = isActive ? 'text-blue-500 bg-blue-50' : 'text-gray-700 bg-white hover:bg-gray-50';
   const { saveSchedule } = useScheduleModal();
+  const { selectTargetOnly } = useSearchLogging();
 
   const handleAddOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
     saveSchedule(e, false);
+    selectTargetOnly(subject.subjectId);
   };
 
   return (

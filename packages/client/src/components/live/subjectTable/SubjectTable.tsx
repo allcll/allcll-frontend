@@ -1,9 +1,10 @@
 import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
-import { useAddPinned, usePinned, useRemovePinned } from '@/store/usePinned.ts';
-import useInfScroll from '@/hooks/useInfScroll.ts';
-import { WishesWithSeat } from '@/hooks/useWishesPreSeats.ts';
 import SkeletonRows from '@/components/live/skeletons/SkeletonRows.tsx';
 import { ZeroElementRow } from '@/components/wishTable/Table.tsx';
+import { useAddPinned, usePinned, useRemovePinned } from '@/store/usePinned.ts';
+import useInfScroll from '@/hooks/useInfScroll.ts';
+import useSearchLogging from '@/hooks/useSearchLogging.ts';
+import { WishesWithSeat } from '@/hooks/useWishesPreSeats.ts';
 import { getSeatColor } from '@/utils/colors.ts';
 
 export interface ITableHead {
@@ -62,6 +63,7 @@ function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
   const { data: pinnedSubjects } = usePinned();
   const { mutate: deletePin } = useRemovePinned();
   const { mutate: addPin } = useAddPinned();
+  const { selectTargetOnly } = useSearchLogging();
 
   const isPinned = pinnedSubjects?.some(pinnedSubject => pinnedSubject.subjectId === subject.subjectId);
 
@@ -72,6 +74,8 @@ function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
     }
 
     deletePin(subject.subjectId);
+
+    selectTargetOnly(subject.subjectId);
   };
 
   return (

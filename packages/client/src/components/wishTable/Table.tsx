@@ -7,6 +7,7 @@ import SearchSvg from '@/assets/search.svg?react';
 import SkeletonRows from '@/components/live/skeletons/SkeletonRows.tsx';
 import { getWishesColor } from '@/utils/colors.ts';
 import useInfScroll from '@/hooks/useInfScroll';
+import useSearchLogging from '@/hooks/useSearchLogging.ts';
 
 interface ITable {
   data: Wishes[] | undefined;
@@ -108,17 +109,15 @@ const TableRow = ({ data }: TableRowProps) => {
 const equalComponent = (prevProps: TableRowProps, nextProps: TableRowProps) =>
   prevProps.data.subjectId === nextProps.data.subjectId;
 const MemoTableRow = memo(({ data }: TableRowProps) => {
-  return (
-    <>
-      {TableHeaders.slice(1, 10).map(({ key }) => (
-        <td className="px-4 py-2 text-center" key={key}>
-          <Link to={`/wishes/${data.subjectId}`}>
-            <UiSelector data={data} headerType={key} />
-          </Link>
-        </td>
-      ))}
-    </>
-  );
+  const { selectTargetOnly } = useSearchLogging();
+
+  return TableHeaders.slice(1, 10).map(({ key }) => (
+    <td className="px-4 py-2 text-center" key={key}>
+      <Link to={`/wishes/${data.subjectId}`} onClick={() => selectTargetOnly(data.subjectId)}>
+        <UiSelector data={data} headerType={key} />
+      </Link>
+    </td>
+  ));
 }, equalComponent);
 
 function UiSelector({ data, headerType }: Readonly<{ data: Wishes; headerType: string }>) {

@@ -1,5 +1,6 @@
 import { filterDays, filterDepartment, filterGrades, filterSearchKeywords } from '@/utils/filtering/filterSubjects';
 import { Day, Grade, Subject } from '@/utils/types';
+import useSearchLogging from '@/hooks/useSearchLogging.ts';
 
 interface IUseFilteringSubjects<T extends Subject> {
   subjects: T[];
@@ -20,7 +21,11 @@ function useFilteringSubjects<T extends Subject>({
   isFavorite,
   pickedFavorites = () => false,
 }: IUseFilteringSubjects<T>) {
+  const { onSearchChange } = useSearchLogging();
+
   if (!subjects || subjects.length === 0) return [];
+
+  onSearchChange(searchKeywords, selectedDepartment);
 
   return subjects.filter(subject => {
     const filteredByDepartment = filterDepartment(subject, selectedDepartment);
