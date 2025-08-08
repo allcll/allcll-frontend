@@ -9,7 +9,7 @@ export enum BUTTON_EVENT {
   SEARCH,
   APPLY,
   CAPTCHA,
-  CANCEL_SUBMIT,
+  CANCEL_SUBMIT, // 수강 신청 전까지의 Cancel 버튼
   SUBJECT_SUBMIT,
   REFRESH,
   SKIP_REFRESH,
@@ -51,8 +51,7 @@ function CheckError(err: unknown) {
  * 진행 중인 시뮬레이션 확인
  * 현재 진행중인 시뮬레이션이 있는지 확인합니다.
  * 진행중인 시뮬레이션이 있다면 해당 simulation_id 와 진행 정보를 반환하고, 없다면 simulation_id=-1 을 반환합니다.
- * 사용자가 시뮬레이션 페이지에 들어왔을 때 확인합니다.
- * @returns { simulationId: number } */
+ * 사용자가 시뮬레이션 페이지에 들어왔을 때 확인합니다. */
 export async function checkOngoingSimulation() {
   try {
     const ongoing = await getOngoingSimulation();
@@ -62,12 +61,6 @@ export async function checkOngoingSimulation() {
     const registeredSelections = await db.simulation_run_selections
       .filter(s => submittedFilter(s, ongoing.simulation_run_id))
       .toArray();
-
-    // // 시뮬레이션이 이미 종료된 경우를 다시 체크합니다.
-    // if (ongoing.subject_count <= registeredSelections.length) {
-    //   await forceStopSimulation();
-    //   return { simulationId: -1 };
-    // }
 
     const snapshotSubjects = await db.interested_subject.where('snapshot_id').equals(ongoing.snapshot_id).toArray();
     if (!snapshotSubjects) return errMsg(SIMULATION_ERROR.SNAPSHOT_NOT_EXIST);
@@ -260,9 +253,6 @@ export async function triggerButtonEvent(
     return {};
   }
 
-  // const selections = await db.simulation_run_selections
-  //   .filter(selection => selection.simulation_run_id === latestSimulationId && selection.interested_id === subjectId)
-  //   .toArray();
   const selections = await db.simulation_run_selections
     .filter(selection => selection.simulation_run_id === latestSimulationId)
     .toArray();
@@ -409,7 +399,7 @@ export async function isSimulationFinished() {
 
   try {
     ongoing = await getOngoingSimulation();
-  } catch (e) {
+  } catch {
     return true;
   }
 
