@@ -425,7 +425,7 @@ export async function isSimulationFinished() {
  */
 async function fixSimulation(run: SimulationRun) {
   // 시작이 안된 경우 -> 시뮬레이션 삭제
-  if (run.search_event_at < 0) {
+  if (run.simulation_run_id < 0) {
     const runId = run.simulation_run_id;
 
     await db.simulation_run_selections.where('simulation_run_id').equals(runId).delete();
