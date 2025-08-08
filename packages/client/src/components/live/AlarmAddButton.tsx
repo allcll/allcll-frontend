@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 function AlarmAddButton() {
   return (
     <Link
-      to="/live/search"
+      to="/wishes"
       className="p-2 rounded-full flex items-center justify-center"
       aria-label="여석 알림 과목 추가"
       title="여석 알림 과목 추가"
