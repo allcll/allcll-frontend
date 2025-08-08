@@ -6,6 +6,7 @@ import ArrowdownSvg from '@/assets/arrow-down-gray.svg?react';
 import YouTube from 'react-youtube';
 import useMobile from '@/hooks/useMobile';
 
+
 const tutorialVideos = [
   {
     id: 1,
@@ -34,6 +35,7 @@ function TutorialModal() {
   const { closeModal, openModal } = useSimulationModalStore();
   const isMobile = useMobile();
   const youTubeSize = isMobile ? { width: '250', height: '141' } : { width: '600', height: '338' };
+
 
   const goToPrevious = () => {
     setCurrentIndex(prevIndex => (prevIndex === 0 ? tutorialVideos.length - 1 : prevIndex - 1));
