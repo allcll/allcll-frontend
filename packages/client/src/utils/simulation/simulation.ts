@@ -36,6 +36,9 @@ export enum SIMULATION_ERROR {
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }
 
+export const SIMULATION_TIME_LIMIT = 5 * 60; // 5분
+export const SIMULATION_TIME_LIMIT_MS = SIMULATION_TIME_LIMIT * 1000; // 5분, 시뮬레이션 시간 제한
+
 function errMsg(msg: SIMULATION_ERROR) {
   return { errMsg: msg };
 }
@@ -424,14 +427,19 @@ export async function isSimulationFinished() {
  * 시뮬레이션이 삭제되는 경우 true 를 반환합니다.
  */
 async function fixSimulation(run: SimulationRun) {
+  const runId = run.simulation_run_id;
+
   // 시작이 안된 경우 -> 시뮬레이션 삭제
   if (run.search_event_at < 0) {
-    const runId = run.simulation_run_id;
-
     await db.simulation_run_selections.where('simulation_run_id').equals(runId).delete();
     await db.simulation_run.delete(runId);
 
     return true;
+  }
+
+  // 5분 이상 지난 경우 -> 시뮬레이션 강제 종료
+  if (run.started_at + SIMULATION_TIME_LIMIT_MS < Date.now()) {
+    await db.simulation_run.update(runId, { ended_at: Date.now() });
   }
 
   return false;

@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { getAggregatedSimulationResults } from '@/utils/simulation/result';
 
-function SimulationResultModal({ simulationId }: { simulationId: number }) {
+function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number }>) {
   const { closeModal, openModal } = useSimulationModalStore();
   const [result, setResult] = useState<{ accuracy: number; score: number; total_elapsed: number } | null>(null);
   const [logParam, setLogParam] = useState<number>();
