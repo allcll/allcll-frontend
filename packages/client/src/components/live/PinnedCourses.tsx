@@ -11,7 +11,7 @@ import useNotification from '@/hooks/useNotification.ts';
 import AlarmBlueIcon from '@/assets/alarm-blue.svg?react';
 import AlarmDisabledIcon from '@/assets/alarm-disabled.svg?react';
 import SettingSvg from '@/assets/settings.svg?react';
-import AlarmButton from './AlarmButton.tsx';
+import AlarmAddButton from './AlarmAddButton.tsx';
 
 const PinnedCourses = () => {
   const [isAlarmSettingOpen, setIsAlarmSettingOpen] = useState(false);
@@ -101,7 +101,7 @@ function CoursesArea() {
           queryTime={getQueryTime(subject.subjectId)}
         />
       ))}
-      {pinnedWishes.length < 5 && <AlarmButton />}
+      {pinnedWishes.length < 5 && <AlarmAddButton />}
     </div>
   );
 }

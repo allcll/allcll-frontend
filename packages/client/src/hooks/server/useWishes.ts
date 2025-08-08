@@ -1,11 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 import { Subject, Wishes } from '@/utils/types.ts';
 import { fetchJsonOnPublic } from '@/utils/api.ts';
-import useSubject from '@/hooks/server/useSubject.ts';
+import useSubject, { InitSubject } from '@/hooks/server/useSubject.ts';
 
 interface WishesApiResponse {
   baskets: { subjectId: number; totalCount: number }[];
 }
+
+export const InitWishes: Wishes = {
+  ...InitSubject,
+  departmentCode: '',
+  departmentName: '',
+  totalCount: 0,
+};
 
 const fetchWishesData = async () => {
   return await fetchJsonOnPublic<WishesApiResponse>('/baskets.json');

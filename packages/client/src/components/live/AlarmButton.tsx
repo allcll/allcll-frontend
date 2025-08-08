@@ -1,17 +1,36 @@
-import { Link } from 'react-router-dom';
+import { Subject } from '@/utils/types.ts';
+import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
+import { useAddPinned, usePinned, useRemovePinned } from '@/store/usePinned.ts';
+import useSearchLogging from '@/hooks/useSearchLogging.ts';
 
-function AlarmButton() {
+interface IAlarmButtonProps {
+  subject: Subject;
+}
+
+function AlarmButton({ subject }: IAlarmButtonProps) {
+  const { data: pinnedSubjects } = usePinned();
+  const { mutate: deletePin } = useRemovePinned();
+  const { mutate: addPin } = useAddPinned();
+  const { selectTargetOnly } = useSearchLogging();
+
+  const isPinned = pinnedSubjects?.some(pinnedSubject => pinnedSubject.subjectId === subject.subjectId);
+  const title = isPinned ? '알림 과목 해제' : '알림 과목 등록';
+
+  const handlePin = () => {
+    if (!isPinned) {
+      addPin(subject.subjectId);
+      return;
+    }
+
+    deletePin(subject.subjectId);
+
+    selectTargetOnly(subject.subjectId);
+  };
+
   return (
-    <Link
-      to="/live/search"
-      className="p-2 rounded-full flex items-center justify-center"
-      aria-label="여석 알림 과목 추가"
-      title="여석 알림 과목 추가"
-    >
-      <div className="bg-gray-50 rounded-full px-4 py-2 text-sm border border-gray-200 hover:shadow-md">
-        + 알림 과목 등록
-      </div>
-    </Link>
+    <button className="cursor-pointer" title={title} aria-label={title} onClick={handlePin}>
+      <AlarmIcon disabled={!isPinned} />
+    </button>
   );
 }
 
