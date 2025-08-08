@@ -36,6 +36,9 @@ export enum SIMULATION_ERROR {
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }
 
+export const SIMULATION_TIME_LIMIT = 5 * 60; // 5분
+export const SIMULATION_TIME_LIMIT_MS = SIMULATION_TIME_LIMIT * 1000; // 5분, 시뮬레이션 시간 제한
+
 function errMsg(msg: SIMULATION_ERROR) {
   return { errMsg: msg };
 }
@@ -106,7 +109,7 @@ export async function checkOngoingSimulation() {
  * 진행중인 시뮬레이션이 없다면, null 을 반환합니다.
  * @throws {Error} 진행중인 시뮬레이션이 2개 이상일 경우
  * @returns {SimulationRun|null} */
-export async function getOngoingSimulation() {
+export async function getOngoingSimulation(): Promise<SimulationRun | null> {
   const ongoing = await db.simulation_run.filter(run => run.ended_at === -1).toArray();
 
   if (ongoing && ongoing.length > 1) throw new Error(SIMULATION_ERROR.MULTIPLE_SIMULATION_RUNNING);
@@ -348,8 +351,6 @@ async function endCurrentSimulation() {
 
   if (!lastRun) return;
 
-  if (await fixSimulation(lastRun)) return;
-
   // 정확도, 점수 계산
   const selections = await db.simulation_run_selections
     .filter(selection => selection.simulation_run_id === lastRun.simulation_run_id)
@@ -372,6 +373,8 @@ async function endCurrentSimulation() {
     score: Math.min(100, Math.max(0, score)),
     total_elapsed: totalElapsed,
   });
+
+  await fixSimulation(lastRun);
 }
 
 /**
@@ -424,14 +427,19 @@ export async function isSimulationFinished() {
  * 시뮬레이션이 삭제되는 경우 true 를 반환합니다.
  */
 async function fixSimulation(run: SimulationRun) {
-  // 시작이 안된 경우 -> 시뮬레이션 삭제
-  if (run.simulation_run_id < 0) {
-    const runId = run.simulation_run_id;
+  const runId = run.simulation_run_id;
 
+  // 시작이 안된 경우 -> 시뮬레이션 삭제
+  if (run.search_event_at < 0) {
     await db.simulation_run_selections.where('simulation_run_id').equals(runId).delete();
     await db.simulation_run.delete(runId);
 
     return true;
+  }
+
+  // 5분 이상 지난 경우 -> 시뮬레이션 강제 종료
+  if (run.started_at + SIMULATION_TIME_LIMIT_MS < Date.now()) {
+    await db.simulation_run.update(runId, { ended_at: Date.now() });
   }
 
   return false;

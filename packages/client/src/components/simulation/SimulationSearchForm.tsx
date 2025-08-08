@@ -69,9 +69,7 @@ function SimulationSearchForm() {
     try {
       await forceStopSimulation();
 
-      setCurrentSimulation({
-        simulationStatus: 'finish',
-      });
+      setCurrentSimulation({ simulationStatus: 'finish' });
       openModal('result');
     } catch (error) {
       console.error(error);
