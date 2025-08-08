@@ -109,7 +109,7 @@ export async function checkOngoingSimulation() {
  * 진행중인 시뮬레이션이 없다면, null 을 반환합니다.
  * @throws {Error} 진행중인 시뮬레이션이 2개 이상일 경우
  * @returns {SimulationRun|null} */
-export async function getOngoingSimulation() {
+export async function getOngoingSimulation(): Promise<SimulationRun | null> {
   const ongoing = await db.simulation_run.filter(run => run.ended_at === -1).toArray();
 
   if (ongoing && ongoing.length > 1) throw new Error(SIMULATION_ERROR.MULTIPLE_SIMULATION_RUNNING);
@@ -351,8 +351,6 @@ async function endCurrentSimulation() {
 
   if (!lastRun) return;
 
-  if (await fixSimulation(lastRun)) return;
-
   // 정확도, 점수 계산
   const selections = await db.simulation_run_selections
     .filter(selection => selection.simulation_run_id === lastRun.simulation_run_id)
@@ -375,6 +373,8 @@ async function endCurrentSimulation() {
     score: Math.min(100, Math.max(0, score)),
     total_elapsed: totalElapsed,
   });
+
+  await fixSimulation(lastRun);
 }
 
 /**

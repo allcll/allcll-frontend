@@ -1,6 +1,6 @@
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
-import { getSummaryResult } from '@/utils/simulation/simulation';
+import { getSummaryResult, SIMULATION_ERROR } from '@/utils/simulation/simulation';
 import { useEffect, useState } from 'react';
 import ProcessingModal from './Processing';
 import { NavLink } from 'react-router-dom';
@@ -43,7 +43,9 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
     async function fetchResult() {
       getSummaryResult({ simulationId }).then(result => {
         if ('errMsg' in result) {
-          alert(result.errMsg);
+          if (result.errMsg === SIMULATION_ERROR.SIMULATION_NOT_FOUND) {
+            closeModal();
+          } else alert(result.errMsg);
         } else {
           setResult(result);
           setLogParam(simulationId);

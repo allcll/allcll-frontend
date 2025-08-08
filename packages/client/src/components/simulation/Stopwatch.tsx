@@ -37,7 +37,8 @@ function Stopwatch() {
       try {
         const result = await getOngoingSimulation();
 
-        if (!result.started_at || result.simulation_run_id !== currentSimulation.simulationId) {
+        const isSimulationOngoing = result?.started_at && result.simulation_run_id === currentSimulation.simulationId;
+        if (!isSimulationOngoing) {
           return;
         }
 
