@@ -14,13 +14,13 @@ function ScheduleSlotList() {
       {scheduleSlots
         // .filter(schedule => !schedule.selected)
         .map(schedule => (
-          <EmptyScheduleSlot schedule={schedule} selected={schedule.selected} />
+          <EmptyScheduleSlot key={schedule.scheduleId} schedule={schedule} selected={schedule.selected} />
         ))}
     </div>
   );
 }
 
-function EmptyScheduleSlot({ schedule, selected }: { schedule: GeneralSchedule; selected: boolean }) {
+function EmptyScheduleSlot({ schedule, selected }: Readonly<{ schedule: GeneralSchedule; selected: boolean }>) {
   const { openScheduleModal } = useScheduleModal();
 
   const handleDeleteEmptySlot = () => {

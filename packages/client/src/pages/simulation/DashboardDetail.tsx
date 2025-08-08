@@ -2,9 +2,7 @@ import { useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
-// import useWishes from '@/hooks/server/useWishes.ts';
 import { getSimulationResult, ResultResponse } from '@/utils/simulation/result.ts';
-// import { Wishes } from '@/utils/types.ts';
 import { findSubjectsById } from '@/utils/subjectPicker.ts';
 import Timeline from '@/components/simulation/detail/Timeline.tsx';
 import RadarChart from '@/components/simulation/detail/RadarChart.tsx';
@@ -40,7 +38,7 @@ function DashboardDetail() {
 
         {/* 과목별 수강 신청 담은 사람 */}
         <div className="bg-white p-6 rounded-2xl shadow-sm overflow-x-auto">
-          <h2 className="text-lg font-semibold mb-4">과목 별 분석</h2>
+          <h2 className="text-lg font-semibold mb-4 min-w-[240px] overflow-x-auto">과목 별 분석</h2>
           {resultInfo ? (
             <SubjectDetailResult result={resultInfo} />
           ) : (
@@ -78,10 +76,6 @@ export interface ExtendedResultResponse extends ResultResponse {
 
 function joinSubjectInfo(subjects?: Lecture[], result?: ResultResponse | null): ExtendedResultResponse | undefined {
   if (!result || !subjects) return undefined;
-
-  // const searchSubject = (subjectId: number) => {
-  //   return subjects.find(subject => subject.subjectId === subjectId);
-  // };
 
   return {
     ...result,

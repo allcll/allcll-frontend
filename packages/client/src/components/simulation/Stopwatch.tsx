@@ -48,7 +48,7 @@ function Stopwatch() {
           if (seconds >= 5 * 60) {
             clearInterval(intervalRef.current!);
             alert('5분 경과로 시뮬레이션이 강제 종료되었습니다.');
-            forceSimulation();
+            forceSimulation().then();
             return;
           }
 

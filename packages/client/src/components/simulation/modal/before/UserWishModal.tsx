@@ -23,7 +23,7 @@ interface UserWishModalIProps {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function UserWishModal({ lectures, timetables, setIsModalOpen }: UserWishModalIProps) {
+function UserWishModal({ lectures, timetables, setIsModalOpen }: Readonly<UserWishModalIProps>) {
   const { setCurrentSimulation } = useSimulationProcessStore();
   const { closeModal } = useSimulationModalStore();
 
@@ -92,7 +92,7 @@ function UserWishModal({ lectures, timetables, setIsModalOpen }: UserWishModalIP
 
   /**
    * 시뮬레이션에 적용할 시간표를 선택합니다.
-   * @param scheduleSubjectId
+   * @param optionId
    */
   const handleSelect = (optionId: number) => {
     const timetable = timetables.find(timetable => timetable.timeTableId === optionId);

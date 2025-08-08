@@ -1,4 +1,4 @@
-import { db, SimulationRunSelections } from '@/utils/dbConfig.ts';
+import { db, SimulationRun, SimulationRunSelections } from '@/utils/dbConfig.ts';
 import { getInterestedId, getRecentInterestedSnapshot } from '@/utils/simulation/subjects';
 import { getAccuracy, getAccuracyScore, getSpeedScore } from '@/utils/simulation/score.ts';
 import { checkSubjectResult } from '@/utils/checkSubjectResult.ts';
@@ -9,7 +9,7 @@ export enum BUTTON_EVENT {
   SEARCH,
   APPLY,
   CAPTCHA,
-  CANCEL_SUBMIT,
+  CANCEL_SUBMIT, // 수강 신청 전까지의 Cancel 버튼
   SUBJECT_SUBMIT,
   REFRESH,
   SKIP_REFRESH,
@@ -51,8 +51,7 @@ function CheckError(err: unknown) {
  * 진행 중인 시뮬레이션 확인
  * 현재 진행중인 시뮬레이션이 있는지 확인합니다.
  * 진행중인 시뮬레이션이 있다면 해당 simulation_id 와 진행 정보를 반환하고, 없다면 simulation_id=-1 을 반환합니다.
- * 사용자가 시뮬레이션 페이지에 들어왔을 때 확인합니다.
- * @returns { simulationId: number } */
+ * 사용자가 시뮬레이션 페이지에 들어왔을 때 확인합니다. */
 export async function checkOngoingSimulation() {
   try {
     const ongoing = await getOngoingSimulation();
@@ -62,12 +61,6 @@ export async function checkOngoingSimulation() {
     const registeredSelections = await db.simulation_run_selections
       .filter(s => submittedFilter(s, ongoing.simulation_run_id))
       .toArray();
-
-    // // 시뮬레이션이 이미 종료된 경우를 다시 체크합니다.
-    // if (ongoing.subject_count <= registeredSelections.length) {
-    //   await forceStopSimulation();
-    //   return { simulationId: -1 };
-    // }
 
     const snapshotSubjects = await db.interested_subject.where('snapshot_id').equals(ongoing.snapshot_id).toArray();
     if (!snapshotSubjects) return errMsg(SIMULATION_ERROR.SNAPSHOT_NOT_EXIST);
@@ -228,6 +221,7 @@ export async function triggerButtonEvent(
 
   const latestSimulationId = ongoing.simulation_run_id;
   if (eventType === BUTTON_EVENT.SEARCH) {
+    // Todo: 검색 버튼을 2번 이상 눌렀을 때, 방안 생각해보기
     const time = Date.now();
     await db.simulation_run.update(latestSimulationId, {
       search_event_at: time,
@@ -260,9 +254,6 @@ export async function triggerButtonEvent(
     return {};
   }
 
-  // const selections = await db.simulation_run_selections
-  //   .filter(selection => selection.simulation_run_id === latestSimulationId && selection.interested_id === subjectId)
-  //   .toArray();
   const selections = await db.simulation_run_selections
     .filter(selection => selection.simulation_run_id === latestSimulationId)
     .toArray();
@@ -357,6 +348,8 @@ async function endCurrentSimulation() {
 
   if (!lastRun) return;
 
+  if (await fixSimulation(lastRun)) return;
+
   // 정확도, 점수 계산
   const selections = await db.simulation_run_selections
     .filter(selection => selection.simulation_run_id === lastRun.simulation_run_id)
@@ -409,7 +402,7 @@ export async function isSimulationFinished() {
 
   try {
     ongoing = await getOngoingSimulation();
-  } catch (e) {
+  } catch {
     return true;
   }
 
@@ -424,6 +417,24 @@ export async function isSimulationFinished() {
   // debug 추가
 
   return ongoing.subject_count <= subjects.length;
+}
+
+/**
+ * 시뮬레이션이 잘못된 경우 삭제 또는 수정합니다.
+ * 시뮬레이션이 삭제되는 경우 true 를 반환합니다.
+ */
+async function fixSimulation(run: SimulationRun) {
+  // 시작이 안된 경우 -> 시뮬레이션 삭제
+  if (run.search_event_at < 0) {
+    const runId = run.simulation_run_id;
+
+    await db.simulation_run_selections.where('simulation_run_id').equals(runId).delete();
+    await db.simulation_run.delete(runId);
+
+    return true;
+  }
+
+  return false;
 }
 
 const isOngoingSection = (sections: SimulationRunSelections, simulationId: number) =>
