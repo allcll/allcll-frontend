@@ -164,7 +164,7 @@ function UserWishModal({ lectures, timetables, setIsModalOpen }: Readonly<UserWi
         setIsModalOpen(false);
       }}
     >
-      <div className="flex flex-col w-full max-w-[900px] px-2 sm:px-6 py-2 sm:py-6 overflow-y-auto max-h-[90vh]">
+      <div className="flex sm:min-w-[600px] flex-col w-full max-w-[900px] px-2 sm:px-6 py-2 sm:py-6 overflow-y-auto max-h-[90vh]">
         <ModalHeader
           title="수강 신청 연습을 시작하시겠습니까?"
           onClose={() => {
