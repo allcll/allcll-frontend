@@ -37,9 +37,9 @@ function SimulationSubjectsHeader() {
   return (
     <thead className="bg-gray-100">
       <tr className="text-nowrap">
-        {SUBJECTS_COLUMNS_HEADER.map(coulumn => (
-          <th key={coulumn} className="border border-gray-300 px-2 py-1">
-            {coulumn}
+        {SUBJECTS_COLUMNS_HEADER.map(column => (
+          <th key={column} className="border border-gray-300 px-2 py-1">
+            {column}
           </th>
         ))}
       </tr>
@@ -80,7 +80,7 @@ function Simulation() {
         const seconds = Math.floor((now - start) / 1000);
 
         if (seconds > 5 * 60) {
-          forceSimulation();
+          forceSimulation().then();
         } else {
           reloadSimulationStatus();
         }

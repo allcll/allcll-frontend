@@ -49,27 +49,22 @@ function SimulationBoard() {
     <Link
       key={'simulation-log-' + log.simulation_run_id}
       to={`/simulation/logs/${log.simulation_run_id}`}
-      className="block bg-white p-3 rounded-md text-sm shadow-md shadow-gray-300 mb-2 hover:bg-gray-100"
+      className="flex items-center justify-between bg-white p-3 rounded-md text-sm shadow-md shadow-gray-300 mb-2 hover:bg-gray-100"
     >
-      <div className="grid gap-4 grid-cols-21">
-        <div className="col-span-1">
-          <p className="hidden">id</p>
-          <span className="font-bold">{log.simulation_run_id}</span>
-        </div>
+      <div className="flex items-center gap-2">
+        <p className="hidden">id</p>
+        <span className="font-bold">{log.simulation_run_id}</span>
 
-        <div className="col-span-7">
-          <p className="hidden">학과</p>
-          <span>{log.department_name ? log.department_name.split(' ').at(-1) : '학과 정보 없음'}</span>
-        </div>
-        <div className="col-span-6">
-          {/*<label className="hidden">이름</label>*/}
-          {/*<span className="font-bold">{log.user_id}</span>*/}
-        </div>
-        <div className="col-span-4">
+        <p className="hidden">학과</p>
+        <span>{log.department_name ? log.department_name.split(' ').at(-1) : '학과 정보 없음'}</span>
+      </div>
+
+      <div className="flex items-center text-center">
+        <div className="">
           <p className="text-xs">정확도 </p>
           <span className="text-sm font-bold">{log.accuracy}%</span>
         </div>
-        <div className="col-span-3 flex items-center justify-end gap-2">
+        <div className="flex items-center justify-end gap-1 w-20">
           <p className="hidden">점수</p>
           <CursorBlue className="w-4 h-4" />
           <span className="font-bold">{log.score.toFixed(3)}</span>

@@ -63,16 +63,15 @@ function AllResult() {
   ) : (
     <>
       <div className="flex gap-3 flex-wrap">
-        <div className="relative flex-1">
+        <div className="relative flex-1 min-w-[240px]">
           <RadarChart result={modifiedResult} />
         </div>
-        <div className="flex-1">
+        <div className="flex-1 min-w-[240px] overflow-x-auto">
           <SubjectAllResult result={simulationAllResult} />
         </div>
       </div>
 
       <div>
-        {/*Timeline */}
         <StatisticsChart result={simulationAllResult} />
       </div>
     </>

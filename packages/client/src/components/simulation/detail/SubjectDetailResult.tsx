@@ -2,11 +2,11 @@ import { getStausColor } from '@/utils/colors.ts';
 import { APPLY_STATUS } from '@/utils/simulation/simulation.ts';
 import { ExtendedResultResponse } from '@/pages/simulation/DashboardDetail.tsx';
 
-function SubjectDetailResult({ result }: { result: ExtendedResultResponse }) {
+function SubjectDetailResult({ result }: Readonly<{ result: ExtendedResultResponse }>) {
   const { subject_results, started_at } = result;
 
   return (
-    <table className="min-w-full text-sm text-center">
+    <table className="min-w-full text-sm text-center text-nowrap">
       <thead className="bg-gray-100 text-gray-600">
         <tr>
           <th className="py-2 px-2">학수번호</th>
@@ -18,8 +18,8 @@ function SubjectDetailResult({ result }: { result: ExtendedResultResponse }) {
         </tr>
       </thead>
       <tbody className="text-gray-700">
-        {subject_results.map((row, i) => (
-          <tr key={i} className="border-t border-gray-200">
+        {subject_results.map(row => (
+          <tr key={'subject-detail-row-' + row.subject_id} className="border-t border-gray-200">
             <td className="py-2 px-1">{row.subjectInfo?.subjectCode + '-' + row.subjectInfo?.classCode}</td>
             <td className="py-2 px-1">{row.subjectInfo?.subjectName}</td>
             <td className="py-2 px-1">{row.subjectInfo?.professorName}</td>

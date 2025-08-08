@@ -3,7 +3,7 @@ interface IModalHeader {
   onClose: () => void;
 }
 
-function ModalHeader({ title, onClose }: IModalHeader) {
+function ModalHeader({ title, onClose }: Readonly<IModalHeader>) {
   return (
     <div className="flex justify-between p-4 border-b border-gray-200 ">
       <h2 className="font-semibold sm:text-lg text-sm text-gray-900">{title}</h2>
