@@ -1,4 +1,4 @@
-import { db, SimulationRunSelections } from '@/utils/dbConfig.ts';
+import { db, SimulationRun, SimulationRunSelections } from '@/utils/dbConfig.ts';
 import { getInterestedId, getRecentInterestedSnapshot } from '@/utils/simulation/subjects';
 import { getAccuracy, getAccuracyScore, getSpeedScore } from '@/utils/simulation/score.ts';
 import { checkSubjectResult } from '@/utils/checkSubjectResult.ts';
@@ -221,6 +221,7 @@ export async function triggerButtonEvent(
 
   const latestSimulationId = ongoing.simulation_run_id;
   if (eventType === BUTTON_EVENT.SEARCH) {
+    // Todo: 검색 버튼을 2번 이상 눌렀을 때, 방안 생각해보기
     const time = Date.now();
     await db.simulation_run.update(latestSimulationId, {
       search_event_at: time,
@@ -347,6 +348,8 @@ async function endCurrentSimulation() {
 
   if (!lastRun) return;
 
+  if (await fixSimulation(lastRun)) return;
+
   // 정확도, 점수 계산
   const selections = await db.simulation_run_selections
     .filter(selection => selection.simulation_run_id === lastRun.simulation_run_id)
@@ -414,6 +417,24 @@ export async function isSimulationFinished() {
   // debug 추가
 
   return ongoing.subject_count <= subjects.length;
+}
+
+/**
+ * 시뮬레이션이 잘못된 경우 삭제 또는 수정합니다.
+ * 시뮬레이션이 삭제되는 경우 true 를 반환합니다.
+ */
+async function fixSimulation(run: SimulationRun) {
+  // 시작이 안된 경우 -> 시뮬레이션 삭제
+  if (run.search_event_at < 0) {
+    const runId = run.simulation_run_id;
+
+    await db.simulation_run_selections.where('simulation_run_id').equals(runId).delete();
+    await db.simulation_run.delete(runId);
+
+    return true;
+  }
+
+  return false;
 }
 
 const isOngoingSection = (sections: SimulationRunSelections, simulationId: number) =>
