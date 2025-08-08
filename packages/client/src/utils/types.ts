@@ -14,14 +14,9 @@ export interface Wishlist {
   baskets: Wishes[];
 }
 
-export interface Wishes {
-  subjectId: number;
-  subjectName: string;
-  departmentName: string;
+export interface Wishes extends Subject {
   departmentCode: string;
-  subjectCode: string;
-  classCode: string;
-  professorName: string | null;
+  departmentName: string;
   totalCount: number;
 }
 
@@ -46,7 +41,7 @@ export interface SimulationSubject {
   tm_num: string;
 }
 
-export interface SubjectApiResponse {
+export interface Subject {
   subjectId: number; // 과목 ID
   subjectName: string; // 과목명
   subjectCode: string; // 과목 코드
@@ -71,6 +66,6 @@ export interface DepartmentType {
   departmentName: string;
 }
 
-export type Grade = 1 | 2 | 3 | 4 | '전체';
+export type Grade = 1 | 2 | 3 | 4;
 export type Day = '월' | '화' | '수' | '목' | '금' | '토' | '일';
 export const DAYS: Day[] = ['월', '화', '수', '목', '금', '토', '일'];

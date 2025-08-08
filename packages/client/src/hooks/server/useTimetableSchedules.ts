@@ -3,7 +3,7 @@ import useSubject from '@/hooks/server/useSubject.ts';
 import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 import { fetchDeleteJsonOnAPI, fetchJsonOnAPI, fetchOnAPI } from '@/utils/api.ts';
-import { Day, SubjectApiResponse } from '@/utils/types.ts';
+import { Day, Subject } from '@/utils/types.ts';
 import { timeSleep } from '@/utils/time.ts';
 
 export interface Timetable {
@@ -495,7 +495,7 @@ export function useDeleteSchedule(timetableId?: number) {
  * @param timetable
  * @param subjects
  */
-function toGeneralSchedules(timetable: Timetable, subjects?: SubjectApiResponse[]): GeneralSchedule[] {
+function toGeneralSchedules(timetable: Timetable, subjects?: Subject[]): GeneralSchedule[] {
   if (!timetable || !subjects) return [];
 
   const { schedules } = timetable;
