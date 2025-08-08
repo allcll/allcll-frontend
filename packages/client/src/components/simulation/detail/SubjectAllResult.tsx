@@ -3,12 +3,12 @@ import useWishes from '@/hooks/server/useWishes.ts';
 import { Wishes } from '@/utils/types.ts';
 import { useMemo } from 'react';
 
-function SubjectAllResult({ result }: { result: AggregatedResultResponse }) {
+function SubjectAllResult({ result }: Readonly<{ result: AggregatedResultResponse }>) {
   const { data: subjectNames } = useWishes();
   const resultInfo = useMemo(() => joinSubjectInfo(subjectNames, result.subjects), [subjectNames, result]);
 
   return (
-    <table className="min-w-full text-sm text-center">
+    <table className="min-w-full text-sm text-center text-nowrap">
       <thead className="bg-gray-100 text-gray-600">
         <tr>
           <th className="py-2 px-2">학수번호</th>
@@ -20,8 +20,8 @@ function SubjectAllResult({ result }: { result: AggregatedResultResponse }) {
         </tr>
       </thead>
       <tbody className="text-gray-700">
-        {resultInfo.map((row, i) => (
-          <tr key={i} className="border-t border-gray-200">
+        {resultInfo.map(row => (
+          <tr key={row.subjectId} className="border-t border-gray-200">
             <td className="py-2 px-1">{row.subjectCode + '-' + row.classCode}</td>
             <td className="py-2 px-1">{row.subjectName}</td>
             <td className="py-2 px-1">{row.professorName}</td>

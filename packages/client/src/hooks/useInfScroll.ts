@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { SubjectApiResponse, Wishes } from '@/utils/types.ts';
+import { Subject, Wishes } from '@/utils/types.ts';
 import { Lecture } from './server/useLectures';
 
 const PAGE_SIZE = 45;
@@ -7,7 +7,7 @@ const PAGE_SIZE = 45;
 type UseInfiniteScrollMode = 'ref' | 'selector';
 
 function useInfScroll(
-  data: Wishes[] | SubjectApiResponse[] | Lecture[],
+  data: Wishes[] | Subject[] | Lecture[],
   mode: UseInfiniteScrollMode = 'ref',
   selector: string = '.load-more-trigger',
 ) {

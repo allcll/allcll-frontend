@@ -2,12 +2,17 @@ import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import CheckboxFilter from './CheckboxFilter';
 import { Grade } from '@/utils/types';
 
-const GRADE: Grade[] = ['전체', 1, 2, 3, 4];
+const GRADE: Grade[] = [1, 2, 3, 4];
 
 function GradeFilter() {
   const { selectedGrades, setFilterSchedule } = useFilterScheduleStore();
 
-  const handleChangeCheckbox = (item: Grade) => {
+  const handleChangeCheckbox = (item: Grade | '전체') => {
+    if (item === '전체') {
+      setFilterSchedule('selectedGrades', selectedGrades.length === GRADE.length ? [] : GRADE);
+      return;
+    }
+
     const isSelected = selectedGrades.includes(item);
     const updateGrades = isSelected ? selectedGrades.filter(grade => grade !== item) : [...selectedGrades, item];
     setFilterSchedule('selectedGrades', updateGrades);

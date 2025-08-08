@@ -28,6 +28,13 @@ function CheckboxFilter<T extends string | number>({
   return (
     <Filtering label={label} selected={selected}>
       <>
+        <Checkbox
+          label={`전체${labelPrefix}`}
+          isChecked={selectedItems.length === options.length}
+          onChange={() => {
+            handleChangeCheckbox('전체' as T);
+          }}
+        />
         {options.map(item => (
           <Checkbox
             key={item}

@@ -41,7 +41,7 @@ interface ISimulationModal {
   reloadSimulationStatus: () => void;
 }
 
-function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
+function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>) {
   const { closeModal, openModal } = useSimulationModalStore();
   const { currentSubjectId, setSubjectStatus, subjectStatusMap } = useSimulationSubjectStore();
   const { setCurrentSimulation } = useSimulationProcessStore();
@@ -95,10 +95,9 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
       setCurrentSimulation({
         simulationStatus: 'finish',
       });
+      console.log('시뮬레이션 완료');
       openModal('result');
     }
-
-    closeModal();
   };
 
   const handleSkipRefresh = async (subjectId: number) => {
@@ -121,7 +120,7 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
     } catch (error) {
       console.error(error);
     } finally {
-      closeModal();
+      closeModal('simulation');
     }
   };
 
@@ -176,9 +175,9 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
           });
 
           openModal('result');
+        } else {
+          closeModal('simulation');
         }
-
-        closeModal();
       }
       // APPLY_STATUS.PROGRESS인 경우
       else if (modalData?.status === APPLY_STATUS.PROGRESS) {
@@ -197,14 +196,9 @@ function SimulationModal({ reloadSimulationStatus }: ISimulationModal) {
   };
 
   return (
-    <Modal onClose={() => closeModal()}>
+    <Modal onClose={() => {}}>
       <div className="flex sm:w-[450px] border-1 border-gray-800 flex-col justify-between overflow-hidden">
-        <ModalHeader
-          title=""
-          onClose={() => {
-            closeModal();
-          }}
-        />
+        <ModalHeader title="" onClose={handleClickCheck} />
 
         <div className="px-6 pb-6 text-center">
           <div className="flex justify-center mb-4 py-5">

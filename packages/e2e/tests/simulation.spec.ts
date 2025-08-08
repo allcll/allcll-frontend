@@ -9,6 +9,7 @@ async function startSimulation(page: Page) {
   await page.goto(targetUrl + '/simulation', { waitUntil: 'networkidle' });
   await page.waitForTimeout(500);
 
+  await page.getByRole('button', { name: '튜토리얼 건너뛰기' }).click({ delay: 300 });
   await page.getByRole('button', { name: '랜덤 과목' }).click({ delay: 300 });
   await page.getByRole('button', { name: '시작하기' }).click({ delay: 300 });
   await page.getByRole('button', { name: '검색' }).click({ delay: 500 });

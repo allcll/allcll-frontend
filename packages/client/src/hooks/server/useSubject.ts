@@ -1,9 +1,9 @@
 import { fetchJsonOnAPI } from '@/utils/api';
-import { SubjectApiResponse } from '@/utils/types';
+import { Subject } from '@/utils/types';
 import { useQuery } from '@tanstack/react-query';
 
 type SubjectResponse = {
-  subjectResponses: SubjectApiResponse[];
+  subjectResponses: Subject[];
 };
 
 const fetchSubjects = async () => {

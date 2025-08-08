@@ -10,7 +10,7 @@ interface TimeRange {
 
 interface FilterState {
   selectedDepartment: string;
-  selectedGrades: Grade[];
+  selectedGrades: (Grade | '전체')[];
   isMajor?: boolean;
   selectedDays: Day[];
   selectedTimeRange: TimeRange;
