@@ -5,6 +5,7 @@ import { getSeatColor, getWishesColor } from '@/utils/colors.ts';
 import useInfScroll from '@/hooks/useInfScroll';
 import useSearchLogging from '@/hooks/useSearchLogging.ts';
 import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
+import { loggingDepartment } from '@/hooks/useSearchRank.ts';
 import SkeletonRows from '@/components/live/skeletons/SkeletonRows.tsx';
 import AlarmButton from '@/components/live/AlarmButton.tsx';
 import FavoriteButton from '@/components/wishTable/FavoriteButton.tsx';
@@ -126,9 +127,14 @@ const equalComponent = (prevProps: TableRowProps, nextProps: TableRowProps) =>
 const MemoTableRow = memo(({ data, tableHeaders }: TableRowProps) => {
   const { selectTargetOnly } = useSearchLogging();
 
+  function handleClick() {
+    selectTargetOnly(data.subjectId);
+    loggingDepartment(data.departmentCode);
+  }
+
   return tableHeaders.slice(1, 10).map(({ key }) => (
     <td className="px-4 py-2 text-center" key={key}>
-      <Link to={`/wishes/${data.subjectId}`} onClick={() => selectTargetOnly(data.subjectId)}>
+      <Link to={`/wishes/${data.subjectId}`} onClick={handleClick}>
         <UiSelector data={data} headerType={key} />
       </Link>
     </td>

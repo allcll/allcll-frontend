@@ -1,8 +1,9 @@
+import React from 'react';
 import { Subject } from '@/utils/types.ts';
 import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
 import { useAddPinned, usePinned, useRemovePinned } from '@/store/usePinned.ts';
+import { loggingDepartment } from '@/hooks/useSearchRank.ts';
 import useSearchLogging from '@/hooks/useSearchLogging.ts';
-import React from 'react';
 
 interface IAlarmButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   subject: Subject;
@@ -26,6 +27,7 @@ function AlarmButton({ subject, className, onClick, ...props }: IAlarmButtonProp
     deletePin(subject.subjectId);
 
     selectTargetOnly(subject.subjectId);
+    loggingDepartment(subject.deptCd);
 
     if (onClick) onClick(e);
   };

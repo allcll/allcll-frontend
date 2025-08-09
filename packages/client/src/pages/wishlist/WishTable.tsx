@@ -6,13 +6,14 @@ import Searches from '@/components/live/Searches.tsx';
 import useFavorites from '@/store/useFavorites.ts';
 import useWishSearchStore from '@/store/useWishSearchStore.ts';
 import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
+import useSearchRank from '@/hooks/useSearchRank.ts';
 
 function WishTable() {
   const filterParams = useWishSearchStore(state => state.searchParams);
   const pickedFavorites = useFavorites(state => state.isFavorite);
   const isPinned = useWishSearchStore(state => state.isPinned);
   const { data: wishes, isPending } = useWishes();
-  const data = useJoinPreSeats(wishes, InitWishes);
+  const data = useSearchRank(useJoinPreSeats(wishes, InitWishes));
 
   const filteredData = useFilteringSubjects({
     subjects: data ?? [],
