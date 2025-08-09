@@ -27,18 +27,8 @@ function Searches() {
   const departmentsList = [{ departmentName: '전체', departmentCode: '' }, ...(departments ?? [])];
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      setSearchParams({ searchInput, selectedDepartment, isFavorite });
-    }, 700);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [searchInput, selectedDepartment]);
-
-  useEffect(() => {
     setSearchParams({ searchInput, selectedDepartment, isFavorite });
-  }, [selectedDepartment, isFavorite]);
+  }, [searchInput, selectedDepartment, isFavorite]);
 
   const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchInput(event.target.value);
