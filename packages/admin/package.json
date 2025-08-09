@@ -11,10 +11,14 @@
   },
   "dependencies": {
     "@allcll/common": "workspace:^",
-    "@svgr/webpack": "^8.1.0"
+    "@svgr/webpack": "^8.1.0",
+    "react-datepicker": "^8.4.0",
+    "react-helmet": "^6.1.0"
   },
   "devDependencies": {
     "@allcll/mock-server": "workspace:^",
+    "@types/react-datepicker": "^7.0.0",
+    "@types/react-helmet": "^6.1.11",
     "vite-plugin-svgr": "^4.3.0"
   }
 }

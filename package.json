@@ -51,7 +51,8 @@
       "..\\..\\..\\..\\packages\\mock-server",
       "public",
       "..\\..\\..\\..\\packages\\admin",
-      "..\\..\\..\\..\\packages\\client"
+      "..\\..\\..\\..\\packages\\client",
+      "..\\..\\..\\..\\packages\\common"
     ]
   }
 }
