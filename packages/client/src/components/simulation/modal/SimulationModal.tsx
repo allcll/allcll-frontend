@@ -98,7 +98,6 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
       console.log('시뮬레이션 완료');
       openModal('result');
     }
-
   };
 
   const handleSkipRefresh = async (subjectId: number) => {
@@ -121,7 +120,7 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
     } catch (error) {
       console.error(error);
     } finally {
-      closeModal();
+      closeModal('simulation');
     }
   };
 
