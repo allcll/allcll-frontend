@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 import HomeSvg from '@/assets/home-white.svg?react';
-import { ServiceSemesterWithPeriod } from '@/hooks/server/useServiceSemester.ts';
+import { ServiceSemester } from '@/hooks/server/useServiceSemester.ts';
 
 interface IServiceClosed {
-  data: ServiceSemesterWithPeriod;
+  data: ServiceSemester;
 }
 
 function ServiceClosed({ data }: IServiceClosed) {
-  const isSemesterExpired = new Date(data.period.endDate) < new Date();
+  const isSemesterExpired = data.service?.endDate && data.service.endDate < new Date();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
@@ -33,7 +33,7 @@ function ServiceClosed({ data }: IServiceClosed) {
               <h2 className="text-lg font-semibold text-gray-900">다음 서비스 기간 안내</h2>
               <p className="text-gray-600 mt-1">{data.semester} 수강신청</p>
               <p className="text-gray-500 text-sm mt-1">
-                {data.period.startDate} ~ {data.period.endDate}
+                {data.service?.startDateStr} ~ {data.service?.endDateStr}
               </p>
             </>
           )}

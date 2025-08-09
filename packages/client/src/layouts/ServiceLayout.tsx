@@ -6,18 +6,20 @@ import { Outlet } from 'react-router-dom';
 import Footer from '@/components/Footer.tsx';
 import ServiceEnabled from '@/components/ServiceEnabled.tsx';
 
-function ServiceLayout() {
+interface IServiceLayoutProps {
+  serviceId: string;
+}
+
+function ServiceLayout({ serviceId }: IServiceLayoutProps) {
   useGlobalEffect();
 
   return (
     <>
       <ToastNotification />
       <Header />
-      <ServiceEnabled>
-        <>
-          <BannerNotification />
-          <Outlet />
-        </>
+      <ServiceEnabled serviceId={serviceId}>
+        <BannerNotification />
+        <Outlet />
       </ServiceEnabled>
       <Footer />
     </>
