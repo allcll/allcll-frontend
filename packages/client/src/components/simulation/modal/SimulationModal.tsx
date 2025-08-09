@@ -121,7 +121,7 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
     } catch (error) {
       console.error(error);
     } finally {
-      closeModal();
+      closeModal('simulation');
     }
   };
 
