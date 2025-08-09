@@ -3,6 +3,7 @@ import { Wishes } from '@/utils/types.ts';
 
 let departmentRank: Record<string, number> | undefined;
 
+// 학과 클릭 순위를 불러오는 함수
 function loadDepartmentRank() {
   if (departmentRank) return departmentRank;
 
@@ -11,11 +12,13 @@ function loadDepartmentRank() {
   return departmentRank;
 }
 
+// 학과 클릭 순위를 저장하는 함수
 function saveDepartmentRank() {
   if (!departmentRank) return;
   localStorage.setItem('departmentRank', JSON.stringify(departmentRank));
 }
 
+// 학과 클릭 순위를 기록하는 함수
 export function loggingDepartment(departmentCode: string) {
   if (!departmentRank) departmentRank = loadDepartmentRank();
 
@@ -28,12 +31,15 @@ export function loggingDepartment(departmentCode: string) {
   saveDepartmentRank();
 }
 
+// 학과 클릭 순위를 가져오는 함수
 function getDepartmentRanks() {
   if (!departmentRank) departmentRank = loadDepartmentRank();
 
   return Object.entries(departmentRank).sort(([, a], [, b]) => b - a);
 }
 
+// 학과 클릭 순위를 기반으로 학수번호의 평균 totalCount를 계산하여 rank를 부여하는 함수
+// rank를 부여 후 sort된 Wishes 배열을 반환합니다.
 function useSearchRank<T extends Wishes>(wishes: T[] | undefined) {
   return useMemo(() => {
     if (!wishes) return wishes;
@@ -65,6 +71,7 @@ function useSearchRank<T extends Wishes>(wishes: T[] | undefined) {
   }, [wishes]);
 }
 
+// 학수번호-학과 의 평균 totalCount를 각각 계산하여 rank를 부여하는 함수
 function setRankByAverageTotalCount<T extends Wishes>(subjectData: T[]) {
   // 1. 데이터를 그룹화하고 각 그룹의 totalcount 합계와 개수를 계산합니다.
   const groupedData = new Map();
