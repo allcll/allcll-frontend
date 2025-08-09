@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import Navbar from '@/components/Navbar.tsx';
 import RealtimeTable from '@/components/live/RealtimeTable.tsx';
 import PinnedCourses from '@/components/live/PinnedCourses.tsx';
 import CardWrap from '@/components/CardWrap.tsx';
@@ -17,7 +16,7 @@ function Live() {
 
       <div className="max-w-screen-xl mx-auto mb-8">
         <div className="container p-4 mx-auto">
-          <Navbar />
+          {/*<Navbar />*/}
 
           {isSystemChecking ? (
             <CardWrap>

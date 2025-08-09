@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
+import { disassemble } from 'es-hangul';
 
 interface Searches {
   search: string;
@@ -10,7 +11,7 @@ interface Searches {
 
 const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
 
-const COMMIT_DELAY = 1.5 * 60 * 1000; // 이용자 페이지 사용시간 평균
+const COMMIT_DELAY = 60 * 1000; // 이용자 페이지 사용시간 평균
 const DELAY_CALC_THRESHOLD = 5; // 검색 로그 데이터가 5개 이상일 때 커밋 딜레이 계산
 const SEARCH_LOGGING_KEY = 'searchLoggingData';
 const SEARCH_LOGGING_TABLE = import.meta.env.VITE_SUPABASE_TABLE_NAME;
@@ -30,14 +31,14 @@ const Logging = {
   },
 
   /** 검색 로그 데이터를 업데이트합니다. */
-  updateLoggingData(searchTerm: string | undefined, dprtCode: string | undefined, subjectId: number) {
-    const dprtCodeValue = !dprtCode || isNaN(Number(dprtCode)) ? -1 : Number(dprtCode);
+  updateLoggingData(searchTerm: string | undefined, departmentCode: string | undefined, subjectId: number) {
+    const departmentCodeValue = !departmentCode || isNaN(Number(departmentCode)) ? -1 : Number(departmentCode);
     const term =
       searchTerm === undefined && Logging.data.length > 0
         ? Logging.data[Logging.data.length - 1].search
         : (searchTerm ?? '');
 
-    const newData = { search: term, dprt_cd: dprtCodeValue, target: subjectId, created_at: Date.now() };
+    const newData = { search: term, dprt_cd: departmentCodeValue, target: subjectId, created_at: Date.now() };
 
     /** 앞에 있는 요소를 업데이트 할 지 판단하는 함수 */
     const needUpdate = (nowData: Searches) => {
@@ -45,7 +46,8 @@ const Logging = {
 
       const lastData = Logging.data[Logging.data.length - 1];
       return (
-        lastData.target < 0 && (lastData.search.includes(nowData.search) || nowData.search.includes(lastData.search))
+        lastData.target < 0 &&
+        (koreanIncludes(lastData.search, nowData.search) || koreanIncludes(nowData.search, lastData.search))
       );
     };
 
@@ -56,7 +58,7 @@ const Logging = {
       lastData.created_at = Date.now();
 
       // 현재 검색어가 더 긴 경우, 업데이트
-      if (newData.search.includes(lastData.search)) {
+      if (koreanIncludes(newData.search, lastData.search)) {
         lastData.search = newData.search;
       }
 
@@ -135,19 +137,27 @@ const Logging = {
   },
 };
 
+/** 한글 문자열에서 검색어가 포함되어 있는지 확인하는 함수, str 이 더 큰 집합일 때 true 반환함 */
+function koreanIncludes(str: string, search: string) {
+  const normalizedStr = disassemble(str).toLowerCase();
+  const normalizedSearch = disassemble(search).toLowerCase();
+
+  return normalizedStr.includes(normalizedSearch);
+}
+
 function useSearchLogging() {
   useEffect(() => {
     Logging.loadLoggingData();
   }, []);
 
   /** 검색이 완료되었을 때 또는 검색 중일 때 호출 */
-  function onSearchChange(searchTerm: string | undefined, dprtCode?: string) {
-    Logging.updateLoggingData(searchTerm, dprtCode, -1);
+  function onSearchChange(searchTerm: string | undefined, departmentCode?: string) {
+    Logging.updateLoggingData(searchTerm, departmentCode, -1);
   }
 
   /** 검색에 대한 결과가 선택되었을 때 호출 */
-  function selectTarget(searchTerm: string | undefined, dprtCode: string | undefined, subjectId: number) {
-    Logging.updateLoggingData(searchTerm, dprtCode, subjectId);
+  function selectTarget(searchTerm: string | undefined, departmentCode: string | undefined, subjectId: number) {
+    Logging.updateLoggingData(searchTerm, departmentCode, subjectId);
   }
 
   /** 특정 대상을 선택했을 때, 검색어를 모를 때 호출 (이전 검색 데이터 이용함) */

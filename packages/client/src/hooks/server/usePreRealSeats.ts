@@ -4,7 +4,7 @@ import { fetchJsonOnPublic } from '@/utils/api.ts';
 const SEC = 1000;
 const MIN = 60 * SEC;
 
-interface IPreRealSeat {
+export interface IPreRealSeat {
   subjectId: number;
   seat: number;
 }
@@ -12,6 +12,11 @@ interface IPreRealSeat {
 interface IPreRealSeatsResponse {
   subjects: IPreRealSeat[] | null;
 }
+
+export const InitPreRealSeat: IPreRealSeat = {
+  subjectId: -1,
+  seat: -1,
+};
 
 function usePreRealSeats() {
   return useQuery({

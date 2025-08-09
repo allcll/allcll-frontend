@@ -3,6 +3,7 @@ import ZeroListError from '../errors/ZeroListError';
 import useInfScroll from '@/hooks/useInfScroll'; // 수정된 useInfScroll import
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import useSearchLogging from '@/hooks/useSearchLogging.ts';
+import { loggingDepartment } from '@/hooks/useSearchRank.ts';
 import { OfficialSchedule } from '@/hooks/server/useTimetableSchedules.ts';
 import { useScheduleState } from '@/store/useScheduleState';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
@@ -99,6 +100,7 @@ function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: Reado
   const handleAddOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
     saveSchedule(e, false);
     selectTargetOnly(subject.subjectId);
+    loggingDepartment(subject.deptCd);
   };
 
   return (

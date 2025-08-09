@@ -6,6 +6,24 @@ type SubjectResponse = {
   subjectResponses: Subject[];
 };
 
+export const InitSubject: Subject = {
+  subjectId: -1,
+  subjectName: '',
+  subjectCode: '',
+  classCode: '',
+  professorName: '',
+  deptCd: '',
+  manageDeptNm: '',
+  studentYear: '',
+  lesnTime: '', // 수업 시간
+  lesnRoom: '', // 수업실
+  tmNum: '', // 학점
+  remark: null, // 비고
+  curiTypeCdNm: '', // 수업 유형 코드명 ('공필'/'전필'/'전선' 등)
+  curiLangNm: null, // 수업 언어 코드명 ('한국어'/'영어' 등)
+  isDeleted: true, // 삭제 여부
+};
+
 const fetchSubjects = async () => {
   return await fetchJsonOnAPI<SubjectResponse>('/api/subjects');
 };

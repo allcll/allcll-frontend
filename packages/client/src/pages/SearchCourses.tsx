@@ -97,8 +97,8 @@ interface ISubjectSearchInputs {
 
 function SubjectSearchInputs({ setSearch }: Readonly<ISubjectSearchInputs>) {
   const searchKeyword = useAlarmSearchStore(state => state.searchKeyword);
-  const isAlarmWish = useAlarmSearchStore(state => state.isAlarmWish);
   const setSearchKeyword = useAlarmSearchStore(state => state.setSearchKeyword);
+  const isAlarmWish = useAlarmSearchStore(state => state.isAlarmWish);
   const toggleAlarmWish = useAlarmSearchStore(state => state.toggleAlarmWish);
 
   useEffect(() => {

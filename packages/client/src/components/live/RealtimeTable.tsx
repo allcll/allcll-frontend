@@ -69,6 +69,8 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
 function SubjectBody() {
   // major list API fetch
   // subject list SSE API fetch
+  // Todo: Pin Data -> Subject + Pin data 로 확장하기
+  // Todo: 영어 데이터, 폐강 데이터 UI 표시하기
   const { data: subjectIds, isError, isPending, refetch } = useSseData(SSEType.NON_MAJOR);
   const { data: subjectData } = useWishes();
 
@@ -124,6 +126,7 @@ function SubjectBody() {
 function SubjectRow({ subject }: Readonly<{ subject: ITableData }>) {
   const prevSeat = useRef(subject.seat);
   const [seatChanged, setSeatChanged] = useState(false);
+  const bgColor = seatChanged ? 'bg-blue-50' : '';
 
   useEffect(() => {
     if (prevSeat.current !== subject.seat) {
@@ -135,11 +138,7 @@ function SubjectRow({ subject }: Readonly<{ subject: ITableData }>) {
   }, [subject.seat]);
 
   return (
-    <tr
-      className={`border-t border-gray-200 text-black transition-colors duration-500 ${
-        seatChanged ? 'bg-blue-50' : ''
-      }`}
-    >
+    <tr className={`border-t border-gray-200 text-black transition-colors duration-500 ${bgColor}`}>
       {TableHeadTitles.map(({ key }) => {
         switch (key) {
           case 'seat':
