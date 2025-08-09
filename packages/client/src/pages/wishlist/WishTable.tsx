@@ -5,14 +5,14 @@ import Table from '@/components/wishTable/Table.tsx';
 import Searches from '@/components/live/Searches.tsx';
 import useFavorites from '@/store/useFavorites.ts';
 import useWishSearchStore from '@/store/useWishSearchStore.ts';
-import { joinPreSeats } from '@/hooks/joinSubjects.ts';
+import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
 
 function WishTable() {
   const filterParams = useWishSearchStore(state => state.searchParams);
   const pickedFavorites = useFavorites(state => state.isFavorite);
   const isPinned = useWishSearchStore(state => state.isPinned);
   const { data: wishes, isPending } = useWishes();
-  const data = joinPreSeats(wishes, InitWishes);
+  const data = useJoinPreSeats(wishes, InitWishes);
 
   const filteredData = useFilteringSubjects({
     subjects: data ?? [],

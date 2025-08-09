@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Subject } from '@/utils/types.ts';
 import usePreRealSeats, { InitPreRealSeat, IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
 import { InitSubject } from '@/hooks/server/useSubject.ts';
@@ -6,7 +7,7 @@ interface SubjectData {
   subjectId: number;
 }
 
-function joinData<T extends SubjectData, U extends SubjectData>(
+export function joinData<T extends SubjectData, U extends SubjectData>(
   dataA: T[] | undefined,
   dataB: U[] | undefined,
   DummyA: T | Exclude<T, 'subjectId'>,
@@ -45,10 +46,11 @@ function joinData<T extends SubjectData, U extends SubjectData>(
   return joinedData;
 }
 
-export function joinPreSeats<T extends Subject>(data: T[] | undefined, dummy: T | Exclude<T, 'subjectId'>) {
+export function useJoinPreSeats<T extends Subject>(data: T[] | undefined, dummy: T | Exclude<T, 'subjectId'>) {
   const { data: preSeats } = usePreRealSeats();
 
-  if (!data || !preSeats?.length) return data;
-
-  return joinData(data, preSeats, dummy ?? InitSubject, InitPreRealSeat) as (IPreRealSeat & T)[];
+  return useMemo(() => {
+    if (!data || !preSeats?.length) return data;
+    return joinData(data, preSeats, dummy ?? InitSubject, InitPreRealSeat) as (IPreRealSeat & T)[];
+  }, [data, preSeats, dummy]);
 }
