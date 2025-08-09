@@ -12,6 +12,7 @@
   "dependencies": {
     "@allcll/common": "workspace:^",
     "@svgr/webpack": "^8.1.0",
+    "@tanstack/react-query": "^5.83.0",
     "react-datepicker": "^8.4.0",
     "react-helmet": "^6.1.0"
   },
