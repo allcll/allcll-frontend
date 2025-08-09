@@ -1,0 +1,47 @@
+//인증정보 갱신 취소, 인증정보 갱신 관련 훅
+import { fetchOnAPI } from '@/utils/api';
+import { useMutation } from '@tanstack/react-query';
+
+const cancelSessionKeepAlive = async () => {
+  const response = await fetchOnAPI(`/api/admin/session/cancel`, {
+    method: 'POST',
+  });
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+};
+
+const startSessionKeepAlive = async (userId: string) => {
+  const response = await fetchOnAPI(`/api/admin/session-keep-alive?userId=${encodeURIComponent(userId)}`, {
+    method: 'POST',
+  });
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+};
+
+/**
+ * * 세션 KeepAlive 시작 요청입니다.
+ * @param userId - 대상 사용자 학번/ID
+ * @returns
+ */
+export function useStartSessionKeepAlive() {
+  return useMutation({
+    mutationFn: (userId: string) => startSessionKeepAlive(userId),
+    onError: err => console.error(err),
+  });
+}
+
+/**
+ * 세션 KeepAlive 중지를 요청합니다.
+ *@param userId - 대상 사용자 학번/ID
+ * @returns
+ */
+export function useCancelSessionKeepAlive() {
+  return useMutation({
+    mutationFn: () => cancelSessionKeepAlive(),
+    onError: err => console.error(err),
+  });
+}
