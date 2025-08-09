@@ -51,8 +51,6 @@ function useFilteringSubjects<T extends Subject>({
       filteredByIsFavorite &&
       filteredByIsPinned
     );
-
-    // TODO: pin 필터링 로직 추가
   });
 }
 
