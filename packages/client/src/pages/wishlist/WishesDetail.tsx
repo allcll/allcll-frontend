@@ -6,10 +6,13 @@ import Table from '@/components/wishTable/Table';
 import CardWrap from '@/components/CardWrap';
 import BlurComponents from '@/components/BlurComponents';
 import DepartmentDoughnut from '@/components/wishTable/DepartmentDoughnut.tsx';
-import useDetailWishes, { DEFAULT_WISH } from '@/hooks/server/useDetailWishes';
+import { InitWishes } from '@/hooks/server/useWishes.ts';
+import useDetailWishes from '@/hooks/server/useDetailWishes';
 import useRecommendWishes from '@/hooks/server/useRecommendWishes';
 import useDetailRegisters from '@/hooks/server/useDetailRegisters.ts';
 import { getWishesColor } from '@/utils/colors.ts';
+import FavoriteButton from '@/components/wishTable/FavoriteButton.tsx';
+import AlarmButton from '@/components/live/AlarmButton.tsx';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -33,7 +36,9 @@ function WishesDetail() {
     wishes?.subjectId ? [wishes.subjectId] : [],
   );
 
-  const data = wishes ?? DEFAULT_WISH;
+  const data = wishes ?? InitWishes;
+  const isEng = wishes?.curiLangNm === '영어';
+  const isDeleted = wishes?.isDeleted ?? false;
 
   if (isPending || !data) {
     return (
@@ -67,10 +72,33 @@ function WishesDetail() {
         {/* Course Info Section */}
         <div className="p-6 max-w-5xl mx-auto">
           <CardWrap>
-            <h1 className="text-2xl font-bold">{data.subjectName}</h1>
+            <div className="flex items-center justify-between">
+              <h1 className="text-2xl font-bold">{data.subjectName}</h1>
+
+              <div className="flex items-center gap-2">
+                <FavoriteButton subject={data} className="p-2 border rounded border-gray-300 hover:bg-gray-100" />
+                <AlarmButton subject={data} className="p-2 border rounded border-gray-300 hover:bg-gray-100" />
+              </div>
+            </div>
             <p className="text-gray-600">
               {data.subjectCode}-{data.classCode} | {data.departmentName} | {data.professorName}
             </p>
+            <div className="flex items-center gap-2 flex-wrap text-gray-600">
+              <span>{data.studentYear}학년</span>
+              <span>{data.curiTypeCdNm}</span>
+              <span>{Number(data.tmNum.split('/')[0].trim())}학점</span>
+              <span>
+                {' '}
+                | {data.lesnRoom} | {data.lesnTime}
+              </span>
+              {isEng && (
+                <span className="bg-green-100 rounded px-2 py-1 text-green-500 text-xs font-semibold">영어</span>
+              )}
+              {isDeleted && (
+                <span className="bg-red-100 rounded px-2 py-1 text-red-500 text-xs font-semibold">폐강</span>
+              )}
+            </div>
+            <p className="text-sm text-gray-500">{data.remark}</p>
 
             {/* Analytics Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">

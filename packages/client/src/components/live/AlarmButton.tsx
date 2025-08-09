@@ -2,12 +2,13 @@ import { Subject } from '@/utils/types.ts';
 import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
 import { useAddPinned, usePinned, useRemovePinned } from '@/store/usePinned.ts';
 import useSearchLogging from '@/hooks/useSearchLogging.ts';
+import React from 'react';
 
-interface IAlarmButtonProps {
+interface IAlarmButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   subject: Subject;
 }
 
-function AlarmButton({ subject }: IAlarmButtonProps) {
+function AlarmButton({ subject, className, onClick, ...props }: IAlarmButtonProps) {
   const { data: pinnedSubjects } = usePinned();
   const { mutate: deletePin } = useRemovePinned();
   const { mutate: addPin } = useAddPinned();
@@ -16,7 +17,7 @@ function AlarmButton({ subject }: IAlarmButtonProps) {
   const isPinned = pinnedSubjects?.some(pinnedSubject => pinnedSubject.subjectId === subject.subjectId);
   const title = isPinned ? '알림 과목 해제' : '알림 과목 등록';
 
-  const handlePin = () => {
+  const handlePin = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!isPinned) {
       addPin(subject.subjectId);
       return;
@@ -25,10 +26,18 @@ function AlarmButton({ subject }: IAlarmButtonProps) {
     deletePin(subject.subjectId);
 
     selectTargetOnly(subject.subjectId);
+
+    if (onClick) onClick(e);
   };
 
   return (
-    <button className="cursor-pointer" title={title} aria-label={title} onClick={handlePin}>
+    <button
+      className={'cursor-pointer ' + (className ?? '')}
+      title={title}
+      aria-label={title}
+      onClick={handlePin}
+      {...props}
+    >
       <AlarmIcon disabled={!isPinned} />
     </button>
   );

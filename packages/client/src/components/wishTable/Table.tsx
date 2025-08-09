@@ -99,11 +99,21 @@ interface TableRowProps {
 }
 
 const TableRow = ({ data, tableHeaders }: TableRowProps) => {
+  const isEng = data.curiLangNm === '영어';
+  const isDeleted = data.isDeleted;
+  const bgColor = isDeleted
+    ? 'bg-gray-200 hover:bg-gray-300'
+    : isEng
+      ? 'bg-green-200 hover:bg-green-300'
+      : 'bg-white hover:bg-gray-100';
+
   return (
-    <tr className="border-t border-gray-200 text-black hover:bg-gray-100">
-      <td className="flex items-center gap-2 px-4 py-2 text-center">
-        <FavoriteButton subject={data} />
-        <AlarmButton subject={data} />
+    <tr className={`border-t border-gray-200 text-black ${bgColor}`}>
+      <td className="px-4 py-2">
+        <div className="flex items-center gap-2">
+          <FavoriteButton subject={data} />
+          <AlarmButton subject={data} />
+        </div>
       </td>
 
       <MemoTableRow data={data} tableHeaders={tableHeaders} />
