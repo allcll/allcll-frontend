@@ -1,4 +1,5 @@
 import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
+import { addRequestLog } from '@/utils/log/adminApiLogs';
 import { PreiodService } from '@/utils/type';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -14,9 +15,14 @@ const editServicePeriod = async (service: ServicePeriodApi) => {
     body: JSON.stringify(service),
   });
 
+  const response_body = await response.text();
+
   if (!response.ok) {
-    throw new Error(await response.text());
+    await addRequestLog(response, 'POST', service);
+    throw new Error(response_body);
   }
+
+  await addRequestLog(response, 'POST', service);
 
   try {
     return await response.json();

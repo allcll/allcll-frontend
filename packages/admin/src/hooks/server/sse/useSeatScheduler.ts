@@ -1,17 +1,39 @@
 import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import useToastNotification from '@allcll/common/store/useToastNotification';
+import { addRequestLog } from '@/utils/log/adminApiLogs';
 
 const startSseScheduler = async () => {
-  return await fetchOnAPI('/api/admin/seat-scheduler/start', {
+  const response = await fetchOnAPI('/api/admin/seat-scheduler/start', {
     method: 'POST',
   });
+
+  const response_body = await response.text();
+
+  if (!response.ok) {
+    await addRequestLog(response, 'POST', '');
+    throw new Error(response_body);
+  }
+
+  await addRequestLog(response, 'POST', '');
+
+  return response;
 };
 
 const cancelSseScheduler = async () => {
-  return await fetchOnAPI('/api/admin/seat-scheduler/cancel', {
+  const response = await fetchOnAPI('/api/admin/seat-scheduler/cancel', {
     method: 'POST',
   });
+  const response_body = await response.text();
+
+  if (!response.ok) {
+    await addRequestLog(response, 'POST', '');
+    throw new Error(response_body);
+  }
+
+  await addRequestLog(response, 'POST', '');
+
+  return response;
 };
 
 interface CheckSseScheulerResponse {
@@ -62,5 +84,6 @@ export function useCheckSseScheduler() {
     queryKey: ['clawlers-sse-scheduler'],
     queryFn: checkSseScheduler,
     select: data => data.isSending,
+    staleTime: 0,
   });
 }

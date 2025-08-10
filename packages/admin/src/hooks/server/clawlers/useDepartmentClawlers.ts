@@ -1,4 +1,5 @@
 import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
+import { addRequestLog } from '@/utils/log/adminApiLogs';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export interface ClawlersDepartmentsParams {
@@ -8,9 +9,31 @@ export interface ClawlersDepartmentsParams {
 }
 
 const clawlersDepartments = async ({ userId, year, semesterCode }: ClawlersDepartmentsParams) => {
-  return await fetchOnAPI(`/api/admin/departments/check?userId=${userId}&year=${year}&semesterCode=${semesterCode}`, {
-    method: 'POST',
+  const response = await fetchOnAPI(
+    `/api/admin/departments/check?userId=${userId}&year=${year}&semesterCode=${semesterCode}`,
+    {
+      method: 'POST',
+    },
+  );
+
+  const response_body = await response.text();
+
+  if (!response.ok) {
+    await addRequestLog(response, 'POST', {
+      userId,
+      year,
+      semesterCode,
+    });
+    throw new Error(response_body);
+  }
+
+  await addRequestLog(response, 'POST', {
+    userId,
+    year,
+    semesterCode,
   });
+
+  return response;
 };
 
 const getDepartments = async ({ userId, year, semesterCode }: ClawlersDepartmentsParams) => {

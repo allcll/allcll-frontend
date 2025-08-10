@@ -2,21 +2,31 @@
 import { fetchOnAPI } from '@/utils/api';
 import { useMutation } from '@tanstack/react-query';
 import useToastNotification from '@allcll/common/store/useToastNotification';
+import { addRequestLog } from '@/utils/log/adminApiLogs';
 
 const cancelSessionKeepAlive = async () => {
   const response = await fetchOnAPI(`/api/admin/session/cancel`, {
     method: 'POST',
   });
 
+  const response_body = await response.text();
+
   if (!response.ok) {
-    throw new Error(await response.text());
+    await addRequestLog(response, 'POST', '');
+    throw new Error(response_body);
   }
+
+  await addRequestLog(response, 'POST', '');
+
+  return response;
 };
 
 const startSessionKeepAlive = async (userId: string) => {
   const response = await fetchOnAPI(`/api/admin/session-keep-alive?userId=${encodeURIComponent(userId)}`, {
     method: 'POST',
   });
+
+  console.log(response);
 
   if (!response.ok) {
     throw new Error(await response.text());

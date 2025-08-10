@@ -12,7 +12,9 @@ const colorClasses = {
 
 function InfoChip({ label, type, className = '' }: IInfoChip) {
   return (
-    <span className={`px-3 py-1 text-xs font-bold rounded-full inline-block ${colorClasses[type]} ${className}`}>
+    <span
+      className={`flex justify-center items-center px-3 py-1 text-xs font-bold rounded-full max-w-15 inline-block ${colorClasses[type]} ${className}`}
+    >
       {label}
     </span>
   );

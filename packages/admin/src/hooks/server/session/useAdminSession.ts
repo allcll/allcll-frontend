@@ -1,14 +1,22 @@
 //인증정보 설정, 인증정보 조회 관련 훅
 import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
+import { addRequestLog } from '@/utils/log/adminApiLogs';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { UseQueryResult } from '@tanstack/react-query';
 
 const postAdminSessions = async (sessions: Session) => {
   const response = await fetchOnAPI('/api/admin/session', { method: 'POST', body: JSON.stringify(sessions) });
 
+  const responseBody = await response.text();
+
   if (!response.ok) {
-    throw new Error(await response.text());
+    await addRequestLog(response, 'POST', sessions);
+    throw new Error(responseBody);
   }
+
+  await addRequestLog(response, 'POST', sessions);
+
+  return response;
 };
 
 const getAdminSessions = async (userId: string) => {

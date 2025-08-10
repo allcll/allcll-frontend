@@ -1,15 +1,39 @@
 import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import useToastNotification from '@allcll/common/store/useToastNotification';
+import { addRequestLog } from '@/utils/log/adminApiLogs';
 
 const startClawlersSeat = async (userId: string) => {
-  return await fetchOnAPI(`/api/admin/seat/start?userId=${userId}`);
+  const response = await fetchOnAPI(`/api/admin/seat/start?userId=${userId}`, {
+    method: 'POST',
+  });
+
+  const response_body = await response.text();
+  if (!response.ok) {
+    await addRequestLog(response, 'POST', '');
+    throw new Error(response_body);
+  }
+
+  await addRequestLog(response, 'POST', '');
+
+  return response;
 };
 
 const cancelClawlersSeat = async () => {
-  return await fetchOnAPI('/api/admin/seat/cancel', {
+  const response = await fetchOnAPI('/api/admin/seat/cancel', {
     method: 'POST',
   });
+
+  const response_body = await response.text();
+
+  if (!response.ok) {
+    await addRequestLog(response, 'POST', '');
+    throw new Error(response_body);
+  }
+
+  await addRequestLog(response, 'POST', '');
+
+  return response;
 };
 
 interface CheckedClawlerSeatResponse {
@@ -60,5 +84,6 @@ export function useCheckClawlersSeat() {
     queryKey: ['clawlers-sse'],
     queryFn: checkClawlersSeat,
     select: data => data.isActive,
+    staleTime: 0, // 항상 stale로 간주
   });
 }

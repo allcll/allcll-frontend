@@ -14,6 +14,7 @@
     "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query": "^5.83.0",
     "@vitejs/plugin-basic-ssl": "^2.1.0",
+    "dexie": "^4.0.11",
     "dotenv": "^16.6.1",
     "react-datepicker": "^8.4.0",
     "react-helmet": "^6.1.0"

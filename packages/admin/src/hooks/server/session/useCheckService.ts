@@ -14,5 +14,6 @@ export function useCheckSessionAlive(userId: string) {
     queryKey: ['session-check'],
     queryFn: () => checkSessionAlive(userId),
     select: data => data.isActive,
+    staleTime: 0, // 항상 stale로 간주
   });
 }
