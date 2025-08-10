@@ -1,7 +1,6 @@
 import 'react-datepicker/dist/react-datepicker.css';
 import SemesterSetting from '@/components/service/SemesterSetting';
 import ServicePeriod from '@/components/service/ServicePeriod';
-import CustomButton from '@allcll/common/components/Button';
 
 function ServiceSettings() {
   return (
@@ -10,11 +9,6 @@ function ServiceSettings() {
 
       <SemesterSetting />
       <ServicePeriod />
-      <div className="flex justify-end">
-        <CustomButton variants="primary" onClick={() => {}}>
-          전체 저장
-        </CustomButton>
-      </div>
     </div>
   );
 }

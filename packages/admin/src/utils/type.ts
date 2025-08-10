@@ -33,3 +33,12 @@ export interface Wishes {
   professorName: string | null;
   totalCount: number;
 }
+
+export type Service = 'timetable' | 'baskets' | 'simulation' | 'live';
+
+export interface PreiodService {
+  id: Service;
+  startDate: string;
+  endDate: string;
+  message: string;
+}
