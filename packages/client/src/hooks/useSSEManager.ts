@@ -33,14 +33,16 @@ const useSSEManager = () => {
     isConnected = true;
     fetchSSEData(queryClient, resetError)
       .then(() => {
+        // 연결이 마감 되었을 때 아님 / 언제 실행되는 지 찾아야 함.
         resetError();
         isConnected = false;
       })
       .catch(() => {
-        setError();
-        setTimeout(() => {
-          isConnected = false;
-        }, RELOAD_INTERVAL);
+        // 연결이 끊어졌을 때, 오류 상태로 변경
+        isConnected = false;
+
+        if (errorCount === 0) setError();
+        else setTimeout(setError, RELOAD_INTERVAL);
       });
   }, [alwaysReload, needCount, queryClient, setError, forceReloadNumber, resetError, errorCount]);
   // 조건이 바뀌었을 때, 연결이 끊어졌을 때 다시 연결
@@ -86,11 +88,6 @@ const fetchSSEData = (queryClient: QueryClient, resetError: () => void) => {
       resetError();
     };
 
-    eventSource.onmessage = event => {
-      const data = JSON.parse(event.data);
-      resolve(data);
-    };
-
     eventSource.onerror = error => {
       eventSource.close();
       reject(new Error('SSE connection error: ' + (error.type ?? 'Unknown error')));
@@ -98,6 +95,7 @@ const fetchSSEData = (queryClient: QueryClient, resetError: () => void) => {
 
     return () => {
       eventSource.close();
+      resolve('SSE connection closed');
     };
   });
 };
