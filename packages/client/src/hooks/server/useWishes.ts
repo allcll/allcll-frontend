@@ -1,11 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import { SubjectApiResponse, Wishes } from '@/utils/types.ts';
+import { Subject, Wishes } from '@/utils/types.ts';
 import { fetchJsonOnPublic } from '@/utils/api.ts';
-import useSubject from '@/hooks/server/useSubject.ts';
+import useSubject, { InitSubject } from '@/hooks/server/useSubject.ts';
+import { joinData } from '@/hooks/joinSubjects.ts';
 
 interface WishesApiResponse {
   baskets: { subjectId: number; totalCount: number }[];
 }
+
+export const InitWishes: Wishes = {
+  ...InitSubject,
+  departmentCode: '',
+  departmentName: '',
+  totalCount: -1,
+};
 
 const fetchWishesData = async () => {
   return await fetchJsonOnPublic<WishesApiResponse>('/baskets.json');
@@ -22,20 +30,17 @@ function useWishes() {
   });
 }
 
-const joinSubjects = (wishes?: WishesApiResponse, subject?: SubjectApiResponse[]): Wishes[] => {
+const joinSubjects = (wishes?: WishesApiResponse, subject?: Subject[]): Wishes[] => {
   if (!wishes || !subject) return [];
 
-  return subject.map((subject: SubjectApiResponse) => {
-    const wish = wishes.baskets.find(wish => wish.subjectId === subject.subjectId);
+  type preWishes = Subject & WishesApiResponse['baskets'][number];
+  const data = joinData(subject, wishes.baskets, InitSubject, InitWishes) as preWishes[];
+
+  return data.map((pw: preWishes) => {
     return {
-      subjectId: subject.subjectId,
-      subjectName: subject.subjectName,
-      departmentName: subject.manageDeptNm,
-      departmentCode: subject.deptCd,
-      subjectCode: subject.subjectCode,
-      classCode: subject.classCode,
-      professorName: subject.professorName,
-      totalCount: wish?.totalCount || 0,
+      ...pw,
+      departmentCode: pw.deptCd,
+      departmentName: pw.manageDeptNm,
     };
   });
 };

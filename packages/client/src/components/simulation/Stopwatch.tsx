@@ -1,12 +1,13 @@
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
-import { forceStopSimulation, getOngoingSimulation } from '@/utils/simulation/simulation';
+import { forceStopSimulation, getOngoingSimulation, SIMULATION_TIME_LIMIT } from '@/utils/simulation/simulation';
 import { useState, useEffect, useRef } from 'react';
 
 function Stopwatch() {
   const [currentTime, setCurrentTime] = useState('00:00');
-  const { openModal } = useSimulationModalStore();
-  const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore();
+  const openModal = useSimulationModalStore(state => state.openModal);
+  const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
+  const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const getTime = (totalSeconds: number) => {
@@ -35,7 +36,9 @@ function Stopwatch() {
 
       try {
         const result = await getOngoingSimulation();
-        if (!result || !result.started_at || result.simulation_run_id !== currentSimulation.simulationId) {
+
+        const isSimulationOngoing = result?.started_at && result.simulation_run_id === currentSimulation.simulationId;
+        if (!isSimulationOngoing) {
           return;
         }
 
@@ -45,10 +48,10 @@ function Stopwatch() {
           const now = Date.now();
           const seconds = Math.floor((now - start) / 1000);
 
-          if (seconds >= 5 * 60) {
+          if (seconds >= SIMULATION_TIME_LIMIT) {
             clearInterval(intervalRef.current!);
             alert('5분 경과로 시뮬레이션이 강제 종료되었습니다.');
-            forceSimulation();
+            forceSimulation().then();
             return;
           }
 
@@ -72,7 +75,7 @@ function Stopwatch() {
         intervalRef.current = null;
       }
     };
-  }, [currentSimulation.simulationStatus]);
+  }, [currentSimulation.simulationStatus, currentSimulation.simulationId]);
 
   return <p className="font-semibold text-xl text-blue-500">{currentTime}</p>;
 }

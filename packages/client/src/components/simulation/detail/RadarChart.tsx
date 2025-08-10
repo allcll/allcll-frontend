@@ -92,15 +92,15 @@ interface IRadarChart {
   };
 }
 
-function RadarChart({ result }: IRadarChart) {
+function RadarChart({ result }: Readonly<IRadarChart>) {
   const datasets = getDataset(result);
   const { searchBtnSpeed, totalSpeed, accuracy, captchaSpeed } = result.user_ability;
 
   return (
     <>
       {/* 레이더 차트 */}
-      <div className="flex justify-center w-full h-90">
-        <RadarChartJS data={datasets} options={options} />
+      <div className="h-90">
+        <RadarChartJS data={datasets} className="mx-auto" options={options} />
       </div>
 
       {/* 능력 설명 박스 */}

@@ -1,22 +1,28 @@
 import { Helmet } from 'react-helmet';
-import { useState, useEffect } from 'react';
-import { disassemble } from 'es-hangul';
-import useWishes from '@/hooks/server/useWishes.ts';
+import useWishes, { InitWishes } from '@/hooks/server/useWishes.ts';
+import useFilteringSubjects from '@/hooks/useFilteringSubjects';
 import Table from '@/components/wishTable/Table.tsx';
-import Searches, { WishSearchParams } from '@/components/live/Searches.tsx';
-import { Wishes } from '@/utils/types.ts';
+import Searches from '@/components/live/Searches.tsx';
 import useFavorites from '@/store/useFavorites.ts';
 import useWishSearchStore from '@/store/useWishSearchStore.ts';
+import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
+import useSearchRank from '@/hooks/useSearchRank.ts';
 
 function WishTable() {
   const filterParams = useWishSearchStore(state => state.searchParams);
-  const [filteredData, setFilteredData] = useState<Wishes[]>([]);
   const pickedFavorites = useFavorites(state => state.isFavorite);
+  const isPinned = useWishSearchStore(state => state.isPinned);
   const { data: wishes, isPending } = useWishes();
+  const data = useSearchRank(useJoinPreSeats(wishes, InitWishes));
 
-  useEffect(() => {
-    setFilteredData(filterData(wishes, pickedFavorites, filterParams));
-  }, [filterParams, wishes]);
+  const filteredData = useFilteringSubjects({
+    subjects: data ?? [],
+    pickedFavorites,
+    searchKeywords: filterParams.searchInput,
+    selectedDepartment: filterParams.selectedDepartment,
+    isFavorite: filterParams.isFavorite,
+    isPinned,
+  });
 
   return (
     <>
@@ -44,31 +50,6 @@ function WishTable() {
       </div>
     </>
   );
-}
-
-// Todo: upgrade search function
-function filterData(
-  data: Wishes[] | undefined,
-  pickedFavorites: (id: number) => boolean,
-  { searchInput, selectedDepartment, isFavorite }: WishSearchParams,
-): Wishes[] {
-  if (!data) return [];
-
-  const cleanSearchInput = searchInput.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-  const disassembledSearchInput = disassemble(cleanSearchInput).toLowerCase();
-
-  return data.filter(item => {
-    const disassembledProfessorName = item.professorName ? disassemble(item.professorName).toLowerCase() : '';
-    const cleanSubjectName = item.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-    const disassembledSubjectName = disassemble(cleanSubjectName).toLowerCase();
-
-    const matchesProfessor = disassembledProfessorName.includes(disassembledSearchInput);
-    const matchesSubject = disassembledSubjectName.includes(disassembledSearchInput);
-    const matchesDepartment = selectedDepartment === '' || item.departmentCode === selectedDepartment;
-    const matchesFavorite = isFavorite ? pickedFavorites(item.subjectId) : true;
-
-    return (matchesProfessor || matchesSubject) && matchesDepartment && matchesFavorite;
-  });
 }
 
 export default WishTable;

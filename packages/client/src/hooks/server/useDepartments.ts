@@ -16,8 +16,7 @@ function useDepartments() {
     queryFn: fetchDepartments,
     staleTime: Infinity,
     select: (data: DepartmentsAPIResponse) => {
-      // departments.sort((a, b) => a.departmentName.localeCompare(b.departmentName));
-      return data.departments;
+      return data.departments.sort((a, b) => a.departmentName.localeCompare(b.departmentName));
     },
   });
 }

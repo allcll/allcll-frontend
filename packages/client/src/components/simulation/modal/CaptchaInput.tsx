@@ -75,10 +75,18 @@ function CaptchaInput() {
       });
   }
 
+  function closeCaptcha() {
+    triggerButtonEvent({ eventType: BUTTON_EVENT.CANCEL_SUBMIT, subjectId: currentSubjectId }, lectures).then(() => {
+      closeModal('captcha');
+      setCaptchaFailed(false);
+      setSubjectStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
+    });
+  }
+
   return (
-    <Modal onClose={() => closeModal()}>
+    <Modal onClose={() => {}}>
       <div className="sm:w-[500px] bg-white rounded shadow">
-        <ModalHeader title="매크로방지 코드입력 (Arti-marco code input)" onClose={() => closeModal('captcha')} />
+        <ModalHeader title="매크로방지 코드입력 (Arti-marco code input)" onClose={closeCaptcha} />
 
         <div className="grid grid-cols-2 gap-4 mt-4 p-4">
           <div className="flex flex-col">
@@ -124,7 +132,7 @@ function CaptchaInput() {
             코드입력
           </button>
           <button
-            onClick={() => closeModal()}
+            onClick={closeCaptcha}
             className="px-4 py-2 bg-white hover:bg-blue-50 rounded-xs border cursor-pointer"
           >
             닫기

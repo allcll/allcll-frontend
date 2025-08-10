@@ -6,6 +6,7 @@ import ArrowdownSvg from '@/assets/arrow-down-gray.svg?react';
 import YouTube from 'react-youtube';
 import useMobile from '@/hooks/useMobile';
 
+
 const tutorialVideos = [
   {
     id: 1,
@@ -33,6 +34,8 @@ function TutorialModal() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { closeModal, openModal } = useSimulationModalStore();
   const isMobile = useMobile();
+  const youTubeSize = isMobile ? { width: '250', height: '141' } : { width: '600', height: '338' };
+
 
   const goToPrevious = () => {
     setCurrentIndex(prevIndex => (prevIndex === 0 ? tutorialVideos.length - 1 : prevIndex - 1));
@@ -45,52 +48,23 @@ function TutorialModal() {
   const currentVideo = tutorialVideos[currentIndex];
 
   return (
-    <Modal
-      onClose={() => {
-        closeModal();
-      }}
-    >
-      <ModalHeader
-        title="올클 소개"
-        onClose={() => {
-          closeModal();
-        }}
-      />
+    <Modal onClose={closeModal}>
+      <ModalHeader title="올클 소개" onClose={() => closeModal()} />
       <div className="w-full flex flex-col p-4">
-        <div className="flex justify-center items-center gap-5">
-          {isMobile ? (
-            <YouTube
-              videoId={currentVideo.videoId}
-              opts={{
-                width: '250',
-                height: '141',
-                playerVars: {
-                  autoplay: 1,
-                  mute: 1,
-                  playlist: currentVideo.videoId,
-                },
-              }}
-              onEnd={() => {
-                goToNext();
-              }}
-            />
-          ) : (
-            <YouTube
-              videoId={currentVideo.videoId}
-              opts={{
-                width: '600',
-                height: '338',
-                playerVars: {
-                  autoplay: 1,
-                  mute: 1,
-                  playlist: currentVideo.videoId,
-                },
-              }}
-              onEnd={() => {
-                goToNext();
-              }}
-            />
-          )}
+        <div className="mx-auto" style={{ width: youTubeSize.width + 'px', height: youTubeSize.height + 'px' }}>
+          <YouTube
+            videoId={currentVideo.videoId}
+            opts={{
+              width: youTubeSize.width,
+              height: youTubeSize.height,
+              playerVars: {
+                autoplay: 1,
+                mute: 1,
+                playlist: currentVideo.videoId,
+              },
+            }}
+            onEnd={goToNext}
+          />
         </div>
 
         <div className="mt-4 flex flex-col justify-center items-center gap-2">
