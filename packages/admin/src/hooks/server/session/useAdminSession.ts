@@ -1,6 +1,7 @@
 //인증정보 설정, 인증정보 조회 관련 훅
 import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { UseQueryResult } from '@tanstack/react-query';
 
 const postAdminSessions = async (sessions: Session) => {
   const response = await fetchOnAPI('/api/admin/session', { method: 'POST', body: JSON.stringify(sessions) });
@@ -10,7 +11,7 @@ const postAdminSessions = async (sessions: Session) => {
   }
 };
 
-const getAdminsessions = async (userId: string) => {
+const getAdminSessions = async (userId: string) => {
   return await fetchJsonOnAPI<Session>(`/api/admin/session?userId=${encodeURIComponent(userId)}`);
 };
 
@@ -19,7 +20,6 @@ const getAdminsessions = async (userId: string) => {
  * queryKey에 userId를 포함해 캐시를 사용자별로 구분합니다.
  * @param userId - 학번 또는 사용자 식별값
  */
-import type { UseQueryResult } from '@tanstack/react-query';
 
 interface Session {
   tokenJ: string;
@@ -32,7 +32,7 @@ interface Session {
 export function useAdminSession(userId: string): UseQueryResult<Session, Error> {
   return useQuery<Session, Error>({
     queryKey: ['sessions', userId],
-    queryFn: () => getAdminsessions(userId),
+    queryFn: () => getAdminSessions(userId),
     enabled: !!userId,
   });
 }
@@ -51,6 +51,7 @@ export function usePostAdminSession() {
     onSuccess: (_data, variables) => {
       if (variables?.tokenU) {
         queryClient.invalidateQueries({ queryKey: ['sessions', variables.tokenU] });
+        localStorage.setItem('userId', variables.tokenU || '');
       } else {
         queryClient.invalidateQueries({ queryKey: ['sessions'] });
       }

@@ -5,14 +5,14 @@ export interface CheckAliveApiResponse {
   isActive: boolean;
 }
 
-const checkSessionAlive = async (): Promise<CheckAliveApiResponse> => {
-  return fetchJsonOnAPI<CheckAliveApiResponse>('/api/admin/session/check');
+const checkSessionAlive = async (userId: string): Promise<CheckAliveApiResponse> => {
+  return fetchJsonOnAPI<CheckAliveApiResponse>(`/api/admin/session/check?userId=${userId}`);
 };
 
-export function useCheckSessionAlive() {
+export function useCheckSessionAlive(userId: string) {
   return useQuery<CheckAliveApiResponse, Error, boolean>({
     queryKey: ['session-check'],
-    queryFn: checkSessionAlive,
+    queryFn: () => checkSessionAlive(userId),
     select: data => data.isActive,
   });
 }

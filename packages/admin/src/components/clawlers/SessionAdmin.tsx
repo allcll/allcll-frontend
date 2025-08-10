@@ -5,14 +5,9 @@ import Card from '@allcll/common/components/Card';
 const tokenKeys = ['tokenJ', 'tokenU', 'tokenR', 'tokenL'];
 
 function SessionAdmin() {
-  const userId = '21011990';
-
+  const userId = localStorage.getItem('userId') ?? '';
   const { data, isFetching, refetch } = useAdminSession(userId);
   const { mutate: startSessionKeepAlive, isPending: isStarting } = useStartSessionKeepAlive();
-
-  if (!data) {
-    return;
-  }
 
   return (
     <section>
@@ -33,12 +28,12 @@ function SessionAdmin() {
         <div className="bg-gray-100 text-sm text-gray-700 px-4 py-3 rounded-md space-y-1">
           {tokenKeys.map(key => (
             <p key={key}>
-              토큰 {key}: <span className="font-mono break-all">{data[key] ?? '[데이터 없음]'}</span>
+              토큰 {key}: <span className="font-mono break-all">{data ? data[key] : '[데이터 없음]'}</span>
             </p>
           ))}
         </div>
-        {/* 
-        <div className="mt-4">
+
+        {/* <div className="mt-4">
           <h3 className="text-lg font-semibold mb-3">인증정보 갱신 실행 여부</h3>
           <InfoChip label={running ? 'OPEN' : 'CLOSED'} type={running ? 'success' : 'danger'} />
         </div> */}

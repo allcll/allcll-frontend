@@ -3,7 +3,7 @@ import Filtering from '@allcll/common/components/filtering/Filtering';
 import Card from '@allcll/common/components/Card';
 import Checkbox from '@allcll/common/components/filtering/Checkbox';
 
-const semesters = ['2025-1학기', '2025-2학기', '2026-1학기', '2026-2학기'];
+const semesters = ['2025-2학기'];
 
 function SemesterSetting() {
   const [semester, setSemester] = useState('2025-2학기');

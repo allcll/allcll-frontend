@@ -2,9 +2,14 @@ import Card from '@allcll/common/components/Card';
 import Toggle from '../common/Toggle';
 import { useCancelSessionKeepAlive, useStartSessionKeepAlive } from '@/hooks/server/session/useSessionKeepAlive';
 import { useState } from 'react';
-import { useCancelClawlersSeat, useStartClawlersSeat } from '@/hooks/server/clawlers/useSeatClawlers';
-import { useCancelSseScheduler, useStartSseScheduler } from '@/hooks/server/sse/useSeatScheduler';
+import {
+  useCancelClawlersSeat,
+  useCheckClawlersSeat,
+  useStartClawlersSeat,
+} from '@/hooks/server/clawlers/useSeatClawlers';
+import { useCancelSseScheduler, useCheckSseScheduler, useStartSseScheduler } from '@/hooks/server/sse/useSeatScheduler';
 import UpdateData from './UpdateData';
+import { useCheckSessionAlive } from '@/hooks/server/session/useCheckService';
 
 function Control() {
   const { mutate: startSessionKeepAlive } = useStartSessionKeepAlive();
@@ -16,10 +21,15 @@ function Control() {
   const { mutate: startSseScheduler } = useStartSseScheduler();
   const { mutate: cancelSseScheduler } = useCancelSseScheduler();
 
+  const userId = localStorage.getItem('userId');
+  const { data: isActiveSession } = useCheckSessionAlive(userId ?? '');
+  const { data: isActiveSeat } = useCheckClawlersSeat();
+  const { data: isSentSseData } = useCheckSseScheduler();
+
   const [checked, setChecked] = useState({
-    session: false,
-    seat: false,
-    sseData: false,
+    session: isActiveSession ?? false,
+    seat: isActiveSeat ?? false,
+    sseData: isSentSseData ?? false,
   });
 
   const toggleSessionKeepAlive = () => {

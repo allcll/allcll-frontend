@@ -12,8 +12,11 @@ const cancelClawlersSeat = async () => {
   });
 };
 
+interface CheckedClawlerSeatResponse {
+  isActive: boolean;
+}
 const checkClawlersSeat = async () => {
-  return await fetchJsonOnAPI('/api/admin/seat/check');
+  return await fetchJsonOnAPI<CheckedClawlerSeatResponse>('/api/admin/seat/check');
 };
 
 /**
@@ -56,5 +59,6 @@ export function useCheckClawlersSeat() {
   return useQuery({
     queryKey: ['clawlers-sse'],
     queryFn: checkClawlersSeat,
+    select: data => data.isActive,
   });
 }
