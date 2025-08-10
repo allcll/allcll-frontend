@@ -6,8 +6,8 @@ import SkeletonRows from '@/components/live/skeletons/SkeletonRows.tsx';
 import NetworkError from '@/components/live/errors/NetworkError.tsx';
 import ZeroListError from '@/components/live/errors/ZeroListError.tsx';
 import useTick from '@/hooks/useTick.ts';
-import useWishes from '@/hooks/server/useWishes.ts';
-import { SSEType, useSseData } from '@/hooks/useSSEManager.ts';
+import { SSEType } from '@/hooks/useSSEManager.ts';
+import useSSESeats, { SseSubject } from '@/hooks/server/useSSESeats.ts';
 import { getTimeDiffString } from '@/utils/stringFormats.ts';
 import { getSeatColor } from '@/utils/colors.ts';
 
@@ -23,14 +23,6 @@ const TableHeadTitles = [
   { title: '여석', key: 'seat' },
   { title: '최근갱신', key: 'queryTime' },
 ];
-
-interface ITableData {
-  code?: string;
-  name?: string;
-  professor?: string | null;
-  seat?: number;
-  queryTime?: string;
-}
 
 const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => {
   return (
@@ -67,26 +59,7 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
 };
 
 function SubjectBody() {
-  // major list API fetch
-  // subject list SSE API fetch
-  // Todo: Pin Data -> Subject + Pin data 로 확장하기
-  // Todo: 영어 데이터, 폐강 데이터 UI 표시하기
-  const { data: subjectIds, isError, isPending, refetch } = useSseData(SSEType.NON_MAJOR);
-  const { data: subjectData } = useWishes();
-
-  const tableData: ITableData[] =
-    subjectIds?.map(subject => {
-      const { subjectId, seatCount, queryTime } = subject;
-      const { subjectName, subjectCode, classCode, professorName } =
-        subjectData?.find(subject => subject.subjectId === subjectId) || {};
-      return {
-        code: `${subjectCode}-${classCode}`,
-        name: subjectName,
-        professor: professorName,
-        seat: seatCount,
-        queryTime,
-      };
-    }) ?? [];
+  const { data: tableData, isError, isPending, refetch } = useSSESeats(SSEType.NON_MAJOR);
 
   if (isError) {
     return (
@@ -98,7 +71,7 @@ function SubjectBody() {
     );
   }
 
-  if (isPending) {
+  if (isPending || !tableData) {
     return <SkeletonRows row={5} col={TableHeadTitles.length} />;
   }
 
@@ -123,10 +96,13 @@ function SubjectBody() {
   );
 }
 
-function SubjectRow({ subject }: Readonly<{ subject: ITableData }>) {
+function SubjectRow({ subject }: Readonly<{ subject: SseSubject }>) {
   const prevSeat = useRef(subject.seat);
   const [seatChanged, setSeatChanged] = useState(false);
-  const bgColor = seatChanged ? 'bg-blue-50' : '';
+
+  const isDeleted = subject.isDeleted;
+  const isEng = subject.curiLangNm === '영어';
+  const bgColor = seatChanged ? 'bg-blue-50' : isDeleted ? 'bg-gray-200' : isEng ? 'bg-green-200' : '';
 
   useEffect(() => {
     if (prevSeat.current !== subject.seat) {
@@ -154,7 +130,7 @@ function SubjectRow({ subject }: Readonly<{ subject: ITableData }>) {
           default:
             return (
               <td key={key} className="px-4 py-2 text-center">
-                {subject[key as keyof ITableData]}
+                {subject[key as keyof SseSubject]}
               </td>
             );
         }
