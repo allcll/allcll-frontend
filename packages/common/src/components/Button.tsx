@@ -4,6 +4,7 @@ interface IButton {
   className?: string;
   disabled?: boolean;
   variants?: 'primary' | 'secondary';
+  type?: 'button' | 'submit' | 'reset';
 }
 
 function getButtonColor(variants: 'primary' | 'secondary' | undefined) {
@@ -12,9 +13,10 @@ function getButtonColor(variants: 'primary' | 'secondary' | undefined) {
     : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-600';
 }
 
-function CustomButton({ children, onClick, className = '', disabled = false, variants }: IButton) {
+function CustomButton({ children, onClick, className = '', disabled = false, variants, type = 'button' }: IButton) {
   return (
     <button
+      type={type}
       onClick={onClick}
       className={`px-6 py-2 cursor-pointer rounded-lg ${getButtonColor(variants)} ${className}`}
       disabled={disabled}

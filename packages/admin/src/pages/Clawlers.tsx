@@ -2,6 +2,7 @@ import TokenSetting from '@/components/clawlers/TokenSetting';
 import SessionAdmin from '@/components/clawlers/SessionAdmin';
 import Control from '@/components/clawlers/Control';
 import TostNotification from '@allcll/common/components/toast/ToastNotification';
+import DepartmentControl from '@/components/clawlers/DepartmentControl';
 
 function CrawlerSettings() {
   return (
@@ -14,6 +15,8 @@ function CrawlerSettings() {
 
         <SessionAdmin />
         <Control />
+
+        <DepartmentControl />
       </div>
     </div>
   );

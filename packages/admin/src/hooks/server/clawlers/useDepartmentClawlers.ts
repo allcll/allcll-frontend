@@ -1,7 +1,7 @@
 import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-interface ClawlersDepartmentsParams {
+export interface ClawlersDepartmentsParams {
   userId: string;
   year: string;
   semesterCode: string;
@@ -24,15 +24,16 @@ const getDepartments = async ({ userId, year, semesterCode }: ClawlersDepartment
  * @param params
  * @returns
  */
-export function useClawlersDepartments(params: ClawlersDepartmentsParams) {
+export function useClawlersDepartments() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: clawlersDepartments,
+    mutationFn: ({ userId, year, semesterCode }: ClawlersDepartmentsParams) =>
+      clawlersDepartments({ userId, year, semesterCode }),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['clawlers-departments', params],
+        queryKey: ['clawlers-departments'],
       });
     },
 
@@ -47,7 +48,7 @@ export function useClawlersDepartments(params: ClawlersDepartmentsParams) {
  */
 export function useGetDepartments(params: ClawlersDepartmentsParams) {
   return useQuery({
-    queryKey: ['clawlers-departments', params],
+    queryKey: ['clawlers-departments'],
     queryFn: () => getDepartments(params),
   });
 }
