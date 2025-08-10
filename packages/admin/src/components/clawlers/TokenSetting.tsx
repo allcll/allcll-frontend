@@ -1,3 +1,4 @@
+import { usePostAdminSession } from '@/hooks/server/session/useAdminSession';
 import Card from '@allcll/common/components/Card';
 import { useState } from 'react';
 
@@ -20,14 +21,16 @@ const tokenType = ['tokenJ', 'tokenU', 'tokenR', 'tokenL'];
 
 function TokenSetting() {
   const [tokens, setTokens] = useState<tokensType>(initialTokens);
+  const { mutate: postAdminSession } = usePostAdminSession();
 
   const handleTokenChange = (key: keyof tokensType, value: string) => {
     setTokens(prev => ({ ...prev, [key]: value }));
-
-    console.log(tokens);
   };
 
-  const submitTokens = () => {};
+  const submitTokens = (e: React.FormEvent) => {
+    e.preventDefault();
+    postAdminSession(tokens);
+  };
 
   return (
     <Card>
@@ -49,7 +52,9 @@ function TokenSetting() {
         </div>
 
         <div className="mt-4 flex justify-end">
-          <button type="submit">토큰 설정</button>
+          <button type="submit" className="px-4 py-2 text-sm rounded-lg bg-blue-500 text-white">
+            토큰 설정
+          </button>
         </div>
       </form>
     </Card>

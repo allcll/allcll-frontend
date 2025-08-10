@@ -7,6 +7,7 @@ export async function fetchOnAPI(url: string, options?: RequestInit): Promise<Re
     ...options,
     headers: {
       ...options?.headers,
+      'Content-Type': 'application/json',
       'X-ADMIN-TOKEN': AdminToken ?? '',
     },
   });
@@ -53,6 +54,19 @@ export async function fetchDeleteJsonOnAPI<T>(
 
   if (response.status === 204) {
     return null;
+  }
+
+  return await response.json();
+}
+
+export async function fetchJsonOnPublic<T>(url: string, options?: RequestInit): Promise<T> {
+  const response = await fetch(url, {
+    credentials: 'include',
+    ...options,
+  });
+
+  if (!response.ok) {
+    throw new Error(await response.text());
   }
 
   return await response.json();

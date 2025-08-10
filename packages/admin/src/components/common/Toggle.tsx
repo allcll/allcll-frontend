@@ -1,12 +1,12 @@
 interface IToggle {
   checked: boolean;
-  onChange: (checked: boolean) => void;
+  onChange: () => void;
 }
 
 function Toggle({ checked, onChange }: IToggle) {
   return (
     <button
-      onClick={() => onChange(!checked)}
+      onClick={onChange}
       className={`w-12 h-6 flex items-center rounded-full p-1 transition-colors duration-300 ${
         checked ? 'bg-blue-500' : 'bg-gray-300'
       }`}

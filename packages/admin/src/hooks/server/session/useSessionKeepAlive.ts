@@ -1,6 +1,7 @@
 //인증정보 갱신 취소, 인증정보 갱신 관련 훅
 import { fetchOnAPI } from '@/utils/api';
 import { useMutation } from '@tanstack/react-query';
+import useToastNotification from '@allcll/common/store/useToastNotification';
 
 const cancelSessionKeepAlive = async () => {
   const response = await fetchOnAPI(`/api/admin/session/cancel`, {
@@ -28,8 +29,13 @@ const startSessionKeepAlive = async (userId: string) => {
  * @returns
  */
 export function useStartSessionKeepAlive() {
+  const toast = useToastNotification.getState().addToast;
+
   return useMutation({
     mutationFn: (userId: string) => startSessionKeepAlive(userId),
+    onSuccess: async () => {
+      toast('세션 KeepAlive이 시작되었습니다.');
+    },
     onError: err => console.error(err),
   });
 }
@@ -40,8 +46,13 @@ export function useStartSessionKeepAlive() {
  * @returns
  */
 export function useCancelSessionKeepAlive() {
+  const toast = useToastNotification.getState().addToast;
+
   return useMutation({
     mutationFn: () => cancelSessionKeepAlive(),
+    onSuccess: async () => {
+      toast('세션 KeepAlive이 중지되었습니다.');
+    },
     onError: err => console.error(err),
   });
 }

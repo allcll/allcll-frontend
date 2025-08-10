@@ -1,10 +1,86 @@
 import Card from '@allcll/common/components/Card';
 import Toggle from '../common/Toggle';
-import CustomButton from '@allcll/common/components/Button';
-
-const getResponseType = ['Baskets', 'Preseats', 'Subjects', 'Department'];
+import { useCancelSessionKeepAlive, useStartSessionKeepAlive } from '@/hooks/server/session/useSessionKeepAlive';
+import { useState } from 'react';
+import { useCancelClawlersSeat, useStartClawlersSeat } from '@/hooks/server/clawlers/useSeatClawlers';
+import { useCancelSseScheduler, useStartSseScheduler } from '@/hooks/server/sse/useSeatScheduler';
+import UpdateData from './UpdateData';
 
 function Control() {
+  const { mutate: startSessionKeepAlive } = useStartSessionKeepAlive();
+  const { mutate: cancelSessionKeepAlive } = useCancelSessionKeepAlive();
+
+  const { mutate: startClawlersSeat } = useStartClawlersSeat();
+  const { mutate: cancelClawlerSeat } = useCancelClawlersSeat();
+
+  const { mutate: startSseScheduler } = useStartSseScheduler();
+  const { mutate: cancelSseScheduler } = useCancelSseScheduler();
+
+  const [checked, setChecked] = useState({
+    session: false,
+    seat: false,
+    sseData: false,
+  });
+
+  const toggleSessionKeepAlive = () => {
+    if (checked.session) {
+      cancelSessionKeepAlive();
+      setChecked({
+        ...checked,
+        session: false,
+      });
+      return;
+    }
+
+    if (!checked.session) {
+      startSessionKeepAlive('21011990');
+      setChecked({
+        ...checked,
+        session: true,
+      });
+    }
+  };
+
+  const toggleSeatKeepAlive = () => {
+    if (checked.seat) {
+      cancelClawlerSeat();
+
+      setChecked({
+        ...checked,
+        seat: false,
+      });
+      return;
+    }
+
+    if (!checked.seat) {
+      startClawlersSeat('21011990');
+
+      setChecked({
+        ...checked,
+        seat: true,
+      });
+    }
+  };
+
+  const toggleSseSchedule = () => {
+    if (checked.sseData) {
+      cancelSseScheduler();
+      setChecked({
+        ...checked,
+        sseData: false,
+      });
+      return;
+    }
+    if (!checked.sseData) {
+      startSseScheduler();
+
+      setChecked({
+        ...checked,
+        sseData: true,
+      });
+    }
+  };
+
   return (
     <Card>
       <h3 className="text-md font-semibold mb-3">크롤러 실행 제어</h3>
@@ -12,21 +88,19 @@ function Control() {
 
       <div className="space-y-4">
         <div className="flex justify-between items-center">
-          <span className="text-sm text-gray-700">인증정보 갱신 기능</span>
-          <Toggle checked={true} onChange={() => {}} />
+          <span className="text-sm text-gray-700">인증정보 갱신 기능 제어</span>
+          <Toggle checked={checked.session} onChange={toggleSessionKeepAlive} />
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-sm text-gray-700">여석 크롤링</span>
-          <Toggle checked={false} onChange={() => {}} />
+          <span className="text-sm text-gray-700">여석 크롤링 제어</span>
+          <Toggle checked={checked.seat} onChange={toggleSeatKeepAlive} />
         </div>
-      </div>
+        <div className="flex justify-between items-center">
+          <span className="text-sm text-gray-700">여석 데이터 전송 제어</span>
+          <Toggle checked={checked.sseData} onChange={toggleSseSchedule} />
+        </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
-        {getResponseType.map(label => (
-          <CustomButton onClick={() => {}} variants="secondary" className="w-full">
-            {label} 업데이트
-          </CustomButton>
-        ))}
+        <UpdateData />
       </div>
     </Card>
   );
