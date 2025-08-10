@@ -14,8 +14,11 @@ const cancelSseScheduler = async () => {
   });
 };
 
+interface CheckSseScheulerResponse {
+  isSending: boolean;
+}
 const checkSseScheduler = async () => {
-  return await fetchJsonOnAPI('/api/admin/seat-scheduler/check');
+  return await fetchJsonOnAPI<CheckSseScheulerResponse>('/api/admin/seat-scheduler/check');
 };
 
 /**
@@ -58,5 +61,6 @@ export function useCheckSseScheduler() {
   return useQuery({
     queryKey: ['clawlers-sse-scheduler'],
     queryFn: checkSseScheduler,
+    select: data => data.isSending,
   });
 }
