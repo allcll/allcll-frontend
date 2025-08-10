@@ -9,6 +9,7 @@ import { SSEType } from '@/hooks/useSSEManager.ts';
 import useSSESeats, { SseSubject } from '@/hooks/server/useSSESeats.ts';
 import { getTimeDiffString } from '@/utils/stringFormats.ts';
 import { getSeatColor } from '@/utils/colors.ts';
+import TableColorInfo from '@/components/wishTable/TableColorInfo.tsx';
 
 interface IRealtimeTable {
   title: string;
@@ -53,6 +54,8 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
           </tbody>
         </table>
       </div>
+
+      <TableColorInfo />
     </CardWrap>
   );
 };
