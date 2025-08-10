@@ -94,7 +94,7 @@ jobs:
           #passphrase: ${{ secrets.PASSPHRASE }}
           port: 22
           script: |
-            cd ${{ secrets.PWD }}
+            cd ${{ secrets.PWD }}/frontend
             sudo git pull https://${{ secrets.GIT_TOKEN }}:x-oauth-basic@github.com/allcll/frontend.git gh-pages
             sudo systemctl reload nginx
             # 필요한 cmd 명령어 사용
