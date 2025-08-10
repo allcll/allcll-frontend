@@ -1,9 +1,9 @@
 /**
  * TODO: admin과 client에서 공통으로 사용하는 컴포넌트는 packages/common 위치시켜야 합니다.
  */
-import ArrowIcon from '@/components/svgs/ArrowIcon';
-import CancelIcon from '@/components/svgs/CancleIcon';
 import { ButtonHTMLAttributes, ReactNode, RefObject } from 'react';
+import ArrowIcon from '../svgs/ArrowIcon';
+import CancleIcon from '../svgs/CancleIcon';
 
 function getSelectedColor(selected: boolean) {
   return selected
@@ -32,7 +32,7 @@ function Chip({ label = 'Chip', selected, chipType, containerRef, onClick, ...pr
     >
       <span className="text-xs sm:text-sm truncate">{label}</span>
       {chipType === 'select' && <ArrowIcon selected={selected} className="w-4 h-4 pointer-events-none" />}
-      {chipType === 'cancel' && <CancelIcon selected={selected} className="w-4 h-4 pointer-events-none" />}
+      {chipType === 'cancel' && <CancleIcon selected={selected} className="w-4 h-4 pointer-events-none" />}
     </button>
   );
 }

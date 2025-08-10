@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import FilterOption from './FilterOption';
-import useDetectClose from '@/hooks/useDetectClose';
 import Chip from '../chip/Chip';
+import useDetectClose from '../../hooks/useDetectClose';
 
 interface IFiltering {
   label: string;
