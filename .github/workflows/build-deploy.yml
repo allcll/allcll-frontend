@@ -122,12 +122,10 @@ jobs:
           pnpm i --frozen-lockfile
         working-directory: ${{env.working-directory}}
 
-      - name: Build Client project
+      - name: Build Admin project
         run: |
           pnpm run build-admin
           cd ${{env.project-directory}}
-        env:
-          VITE_DEV_SERVER: true
         working-directory: ${{env.working-directory}}
 
       - name: Upload production-ready build files
