@@ -39,7 +39,7 @@ export function requestNotificationPermission(callback?: (permission: Notificati
   }
 }
 
-function showNotification(message: string, tag?: string) {
+export function showNotification(message: string, tag?: string) {
   const isAlarmActivated = useAlarmSettings.getState().isAlarmActivated;
 
   if (isAlarmActivated)
