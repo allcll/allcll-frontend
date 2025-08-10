@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
-import { onChangePinned } from '@/hooks/useNotification.ts';
+import { onChangePinned, showNotification } from '@/hooks/useNotification.ts';
 import { NonMajorSeats, PinnedSeats } from '@/utils/types.ts';
 import useSSECondition, { RELOAD_INTERVAL, RELOAD_MAX_COUNT } from '@/store/useSSECondition.ts';
 import { fetchEventSource } from '@/utils/api.ts';
@@ -21,6 +21,7 @@ const useSSEManager = () => {
   const errorCount = useSSECondition(state => state.errorCount);
   const setError = useSSECondition(state => state.setError);
   const resetError = useSSECondition(state => state.resetError);
+  const isError = useSSECondition(state => state.isError);
 
   // connection
   useEffect(() => {
@@ -46,6 +47,11 @@ const useSSEManager = () => {
       });
   }, [alwaysReload, needCount, queryClient, setError, forceReloadNumber, resetError, errorCount]);
   // 조건이 바뀌었을 때, 연결이 끊어졌을 때 다시 연결
+
+  // 에러가 발생했을 때, 알림을 보내주기
+  useEffect(() => {
+    if (isError) showNotification('알림이 중지되었습니다. 다시 연결해주세요.');
+  }, [isError]);
 };
 
 const fetchSSEData = (queryClient: QueryClient, resetError: () => void) => {

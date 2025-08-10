@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import CardWrap from '@/components/CardWrap.tsx';
-import Tooltip from '@/components/common/Tooltip.tsx';
 import SkeletonRows from '@/components/live/skeletons/SkeletonRows.tsx';
 import NetworkError from '@/components/live/errors/NetworkError.tsx';
 import ZeroListError from '@/components/live/errors/ZeroListError.tsx';
@@ -27,15 +26,15 @@ const TableHeadTitles = [
 const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => {
   return (
     <CardWrap>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center">
         <div className="flex items-center justify-center gap-2 mb-4">
-          <h2 className="font-bold text-lg p-2">{title} 실시간</h2>
-          <Tooltip>
-            <p className="text-sm">
-              <b className="text-green-500">전체 과목 실시간 여석</b>을 <br />
-              제공하고 있어요
-            </p>
-          </Tooltip>
+          <h2 className="font-bold text-lg">{title} 실시간</h2>
+          {/*<Tooltip>*/}
+          {/*  <p className="text-sm">*/}
+          {/*    <b className="text-green-500">전체 과목 실시간 여석</b>을 <br />*/}
+          {/*    제공하고 있어요*/}
+          {/*  </p>*/}
+          {/*</Tooltip>*/}
         </div>
       </div>
       <div className="overflow-x-auto">
