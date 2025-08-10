@@ -16,8 +16,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: build
+  client-build:
     runs-on: ubuntu-latest
     env:
       working-directory: ./
@@ -81,9 +80,9 @@ jobs:
           github_token: ${{ secrets.GIT_TOKEN }}
           publish_dir: ${{env.project-directory}}/build
 
-  Deploy:
+  client-deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: client-build
 
     steps:
       - name: executing remote ssh commands using ssh key
@@ -102,8 +101,7 @@ jobs:
 
 ### Admin page 배포
 
-  admin-ci:
-    name: client-build/deploy
+  admin-build:
     runs-on: ubuntu-latest
     env:
       working-directory: ./
@@ -140,7 +138,7 @@ jobs:
 
   admin-deploy:
     runs-on: ubuntu-latest
-    needs: admin-ci
+    needs: admin-build
     steps:
       - name: Download build artifact
         uses: actions/download-artifact@v4
