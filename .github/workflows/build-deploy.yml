@@ -16,8 +16,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: build
+  client-build:
     runs-on: ubuntu-latest
     env:
       working-directory: ./
@@ -81,9 +80,9 @@ jobs:
           github_token: ${{ secrets.GIT_TOKEN }}
           publish_dir: ${{env.project-directory}}/build
 
-  Deploy:
+  client-deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: client-build
 
     steps:
       - name: executing remote ssh commands using ssh key
@@ -95,15 +94,14 @@ jobs:
           #passphrase: ${{ secrets.PASSPHRASE }}
           port: 22
           script: |
-            cd ${{ secrets.PWD }}
+            cd ${{ secrets.PWD }}/frontend
             sudo git pull https://${{ secrets.GIT_TOKEN }}:x-oauth-basic@github.com/allcll/frontend.git gh-pages
             sudo systemctl reload nginx
             # 필요한 cmd 명령어 사용
 
 ### Admin page 배포
 
-  admin-ci:
-    name: client-build/deploy
+  admin-build:
     runs-on: ubuntu-latest
     env:
       working-directory: ./
@@ -140,7 +138,7 @@ jobs:
 
   admin-deploy:
     runs-on: ubuntu-latest
-    needs: admin-ci
+    needs: admin-build
     steps:
       - name: Download build artifact
         uses: actions/download-artifact@v4
