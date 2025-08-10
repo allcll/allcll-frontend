@@ -1,22 +1,27 @@
 import { Helmet } from 'react-helmet';
-import useWishes from '@/hooks/server/useWishes.ts';
+import useWishes, { InitWishes } from '@/hooks/server/useWishes.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects';
 import Table from '@/components/wishTable/Table.tsx';
 import Searches from '@/components/live/Searches.tsx';
 import useFavorites from '@/store/useFavorites.ts';
 import useWishSearchStore from '@/store/useWishSearchStore.ts';
+import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
+import useSearchRank from '@/hooks/useSearchRank.ts';
 
 function WishTable() {
   const filterParams = useWishSearchStore(state => state.searchParams);
   const pickedFavorites = useFavorites(state => state.isFavorite);
-  const { data: subjects, isPending } = useWishes();
+  const isPinned = useWishSearchStore(state => state.isPinned);
+  const { data: wishes, isPending } = useWishes();
+  const data = useSearchRank(useJoinPreSeats(wishes, InitWishes));
 
   const filteredData = useFilteringSubjects({
-    subjects: subjects ?? [],
+    subjects: data ?? [],
     pickedFavorites,
     searchKeywords: filterParams.searchInput,
     selectedDepartment: filterParams.selectedDepartment,
     isFavorite: filterParams.isFavorite,
+    isPinned,
   });
 
   return (

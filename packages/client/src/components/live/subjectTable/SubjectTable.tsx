@@ -4,6 +4,7 @@ import { ZeroElementRow } from '@/components/wishTable/Table.tsx';
 import { useAddPinned, usePinned, useRemovePinned } from '@/store/usePinned.ts';
 import useInfScroll from '@/hooks/useInfScroll.ts';
 import useSearchLogging from '@/hooks/useSearchLogging.ts';
+import { loggingDepartment } from '@/hooks/useSearchRank.ts';
 import { WishesWithSeat } from '@/hooks/useWishesPreSeats.ts';
 import { getSeatColor } from '@/utils/colors.ts';
 
@@ -76,6 +77,7 @@ function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
     deletePin(subject.subjectId);
 
     selectTargetOnly(subject.subjectId);
+    loggingDepartment(subject.deptCd);
   };
 
   return (
