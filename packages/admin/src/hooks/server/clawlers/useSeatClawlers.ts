@@ -1,0 +1,89 @@
+import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import useToastNotification from '@allcll/common/store/useToastNotification';
+import { addRequestLog } from '@/utils/log/adminApiLogs';
+
+const startClawlersSeat = async (userId: string) => {
+  const response = await fetchOnAPI(`/api/admin/seat/start?userId=${userId}`, {
+    method: 'POST',
+  });
+
+  const response_body = await response.text();
+  if (!response.ok) {
+    await addRequestLog(response, 'POST', '');
+    throw new Error(response_body);
+  }
+
+  await addRequestLog(response, 'POST', '');
+
+  return response;
+};
+
+const cancelClawlersSeat = async () => {
+  const response = await fetchOnAPI('/api/admin/seat/cancel', {
+    method: 'POST',
+  });
+
+  const response_body = await response.text();
+
+  if (!response.ok) {
+    await addRequestLog(response, 'POST', '');
+    throw new Error(response_body);
+  }
+
+  await addRequestLog(response, 'POST', '');
+
+  return response;
+};
+
+interface CheckedClawlerSeatResponse {
+  isActive: boolean;
+}
+const checkClawlersSeat = async () => {
+  return await fetchJsonOnAPI<CheckedClawlerSeatResponse>('/api/admin/seat/check');
+};
+
+/**
+ *여석 크롤링을 시작하는 API입니다.
+ * @returns
+ */
+export function useStartClawlersSeat() {
+  const toast = useToastNotification.getState().addToast;
+
+  return useMutation({
+    mutationFn: (userId: string) => startClawlersSeat(userId),
+    onSuccess: async () => {
+      toast('여석 크롤링이 시작되었습니다.');
+    },
+    onError: err => console.error(err),
+  });
+}
+
+/**
+ *여석 크롤링을 중단하는 API입니다.
+ * @returns
+ */
+export function useCancelClawlersSeat() {
+  const toast = useToastNotification.getState().addToast;
+
+  return useMutation({
+    mutationFn: cancelClawlersSeat,
+    onSuccess: async () => {
+      toast('여석 크롤링이 중단되었습니다.');
+    },
+    onError: err => console.error(err),
+  });
+}
+
+/**
+ *여석 크롤링 상태를 확인하는 API입니다.
+ * @returns
+ */
+export function useCheckClawlersSeat() {
+  return useQuery({
+    queryKey: ['clawlers-sse'],
+    queryFn: checkClawlersSeat,
+    select: data => data.isActive,
+    staleTime: 0, // 항상 stale로 간주
+  });
+}
