@@ -12,7 +12,6 @@
     "admin": "pnpm --filter @allcll/admin run dev",
     "build-client": "pnpm --filter @allcll/client run build",
     "build-admin": "pnpm --filter @allcll/admin run build",
-    "build-common": "pnpm --filter @allcll/common run build",
     "prettier": "npx prettier ./packages --write",
     "test": "pnpm --filter @allcll/e2e run test",
     "test:ui": "pnpm --filter @allcll/e2e run test:ui",
