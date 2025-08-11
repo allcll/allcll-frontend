@@ -1,6 +1,6 @@
-function Header() {
-  const isProduction = false;
+const isProduction = import.meta.env.VITE_DEV_SERVER === 'true';
 
+function Header() {
   return (
     <header className="bg-white shadow-xs p-4 z-50 sticky top-0">
       <div className="container flex items-center justify-between mx-auto max-w-7xl px-4 md:px-16">

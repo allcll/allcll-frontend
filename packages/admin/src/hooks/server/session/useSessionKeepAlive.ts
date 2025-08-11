@@ -3,6 +3,7 @@ import { fetchOnAPI } from '@/utils/api';
 import { useMutation } from '@tanstack/react-query';
 import useToastNotification from '@allcll/common/store/useToastNotification';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
+import { getSessionConfig } from '@/utils/sessionConfig.ts';
 
 const cancelSessionKeepAlive = async () => {
   const response = await fetchOnAPI(`/api/admin/session/cancel`, {
@@ -35,14 +36,14 @@ const startSessionKeepAlive = async (userId: string) => {
 
 /**
  * * 세션 KeepAlive 시작 요청입니다.
- * @param userId - 대상 사용자 학번/ID
  * @returns
  */
 export function useStartSessionKeepAlive() {
   const toast = useToastNotification.getState().addToast;
+  const session = getSessionConfig();
 
   return useMutation({
-    mutationFn: (userId: string) => startSessionKeepAlive(userId),
+    mutationFn: () => startSessionKeepAlive(session?.userId ?? ''),
     onSuccess: async () => {
       toast('세션 KeepAlive이 시작되었습니다.');
     },
@@ -52,7 +53,6 @@ export function useStartSessionKeepAlive() {
 
 /**
  * 세션 KeepAlive 중지를 요청합니다.
- *@param userId - 대상 사용자 학번/ID
  * @returns
  */
 export function useCancelSessionKeepAlive() {

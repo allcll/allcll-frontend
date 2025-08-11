@@ -81,9 +81,10 @@ export function useCancelSseScheduler() {
  */
 export function useCheckSseScheduler() {
   return useQuery({
-    queryKey: ['clawlers-sse-scheduler'],
+    queryKey: ['crawlers-sse-scheduler'],
     queryFn: checkSseScheduler,
     select: data => data.isSending,
     staleTime: 0,
+    enabled: true,
   });
 }

@@ -2,8 +2,9 @@ import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import useToastNotification from '@allcll/common/store/useToastNotification';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
+import { isValidSession } from '@/utils/sessionConfig.ts';
 
-const startClawlersSeat = async (userId: string) => {
+const startCrawlersSeat = async (userId: string) => {
   const response = await fetchOnAPI(`/api/admin/seat/start?userId=${userId}`, {
     method: 'POST',
   });
@@ -19,7 +20,7 @@ const startClawlersSeat = async (userId: string) => {
   return response;
 };
 
-const cancelClawlersSeat = async () => {
+const cancelCrawlersSeat = async () => {
   const response = await fetchOnAPI('/api/admin/seat/cancel', {
     method: 'POST',
   });
@@ -36,22 +37,22 @@ const cancelClawlersSeat = async () => {
   return response;
 };
 
-interface CheckedClawlerSeatResponse {
+interface CheckedCrawlerSeatResponse {
   isActive: boolean;
 }
-const checkClawlersSeat = async () => {
-  return await fetchJsonOnAPI<CheckedClawlerSeatResponse>('/api/admin/seat/check');
+const checkCrawlersSeat = async () => {
+  return await fetchJsonOnAPI<CheckedCrawlerSeatResponse>('/api/admin/seat/check');
 };
 
 /**
  *여석 크롤링을 시작하는 API입니다.
  * @returns
  */
-export function useStartClawlersSeat() {
+export function useStartCrawlersSeat() {
   const toast = useToastNotification.getState().addToast;
 
   return useMutation({
-    mutationFn: (userId: string) => startClawlersSeat(userId),
+    mutationFn: (userId: string) => startCrawlersSeat(userId),
     onSuccess: async () => {
       toast('여석 크롤링이 시작되었습니다.');
     },
@@ -63,11 +64,11 @@ export function useStartClawlersSeat() {
  *여석 크롤링을 중단하는 API입니다.
  * @returns
  */
-export function useCancelClawlersSeat() {
+export function useCancelCrawlersSeat() {
   const toast = useToastNotification.getState().addToast;
 
   return useMutation({
-    mutationFn: cancelClawlersSeat,
+    mutationFn: cancelCrawlersSeat,
     onSuccess: async () => {
       toast('여석 크롤링이 중단되었습니다.');
     },
@@ -79,11 +80,14 @@ export function useCancelClawlersSeat() {
  *여석 크롤링 상태를 확인하는 API입니다.
  * @returns
  */
-export function useCheckClawlersSeat() {
+export function useCheckCrawlerSeat() {
+  const isValid = isValidSession();
+
   return useQuery({
-    queryKey: ['clawlers-sse'],
-    queryFn: checkClawlersSeat,
+    queryKey: ['crawlers-sse'],
+    queryFn: checkCrawlersSeat,
     select: data => data.isActive,
     staleTime: 0, // 항상 stale로 간주
+    enabled: isValid,
   });
 }
