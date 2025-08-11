@@ -2,13 +2,13 @@ import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-export interface ClawlersDepartmentsParams {
+export interface ClawlersParams {
   userId: string;
   year: string;
   semesterCode: string;
 }
 
-const clawlersDepartments = async ({ userId, year, semesterCode }: ClawlersDepartmentsParams) => {
+const clawlersDepartments = async ({ userId, year, semesterCode }: ClawlersParams) => {
   const response = await fetchOnAPI(
     `/api/admin/departments/check?userId=${userId}&year=${year}&semesterCode=${semesterCode}`,
     {
@@ -36,7 +36,7 @@ const clawlersDepartments = async ({ userId, year, semesterCode }: ClawlersDepar
   return response;
 };
 
-const getDepartments = async ({ userId, year, semesterCode }: ClawlersDepartmentsParams) => {
+const getDepartments = async ({ userId, year, semesterCode }: ClawlersParams) => {
   return await fetchJsonOnAPI(
     `/api/admin/departments/check?userId=${userId}&year=${year}&semesterCode=${semesterCode}`,
   );
@@ -51,8 +51,7 @@ export function useClawlersDepartments() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ userId, year, semesterCode }: ClawlersDepartmentsParams) =>
-      clawlersDepartments({ userId, year, semesterCode }),
+    mutationFn: ({ userId, year, semesterCode }: ClawlersParams) => clawlersDepartments({ userId, year, semesterCode }),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -69,7 +68,7 @@ export function useClawlersDepartments() {
  * @param params
  * @returns
  */
-export function useGetDepartments(params: ClawlersDepartmentsParams) {
+export function useGetDepartments(params: ClawlersParams) {
   return useQuery({
     queryKey: ['clawlers-departments'],
     queryFn: () => getDepartments(params),
