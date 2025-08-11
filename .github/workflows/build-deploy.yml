@@ -142,7 +142,7 @@ jobs:
           key: ${{ secrets.MAIN_SERVER_SSH_KEY }}
           port: 22
           script: |
-            scp -r ${{env.project-directory}}/dist/* ${{ secrets.USERNAME }}@${{ secrets.MAIN_SERVER_HOST }}:${secrets.PWD}/admin
+            scp -r ${{env.project-directory}}/dist/* ${{ secrets.USERNAME }}@${{ secrets.MAIN_SERVER_HOST }}:${{secrets.PWD}}/admin
             sudo systemctl reload nginx
 
 
