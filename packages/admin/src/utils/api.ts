@@ -1,5 +1,5 @@
 const BaseUrl = import.meta.env.VITE_API_BASE_URL ?? '';
-const AdminToken = import.meta.env.VITE_ADMIN_TOKEN;
+const AdminToken = localStorage.getItem('session');
 
 export async function fetchOnAPI(url: string, options?: RequestInit): Promise<Response> {
   return await fetch(BaseUrl + url, {
