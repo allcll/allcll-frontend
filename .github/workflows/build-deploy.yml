@@ -137,12 +137,12 @@ jobs:
       - name: deploy - executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.DEV_SERVER_HOST }}
+          host: ${{ secrets.MAIN_SERVER_HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          key: ${{ secrets.MAIN_SERVER_SSH_KEY }}
           port: 22
           script: |
-            scp -r ${{env.project-directory}}/dist/* ${{ secrets.USERNAME }}@${{ secrets.DEV_SERVER_SSH_KEY }}:${secrets.PWD}/admin
+            scp -r ${{env.project-directory}}/dist/* ${{ secrets.USERNAME }}@${{ secrets.MAIN_SERVER_HOST }}:${secrets.PWD}/admin
             sudo systemctl reload nginx
 
 
