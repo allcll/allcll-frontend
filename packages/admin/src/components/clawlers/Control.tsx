@@ -21,8 +21,7 @@ function Control() {
   const { mutate: startSseScheduler } = useStartSseScheduler();
   const { mutate: cancelSseScheduler } = useCancelSseScheduler();
 
-  const userId = localStorage.getItem('userId');
-  const { data: isActiveSession } = useCheckSessionAlive(userId ?? '');
+  const { data: isActiveSession } = useCheckSessionAlive();
   const { data: isActiveSeat } = useCheckCrawlerSeat();
   const { data: isSentSseData } = useCheckSseScheduler();
 
@@ -43,7 +42,7 @@ function Control() {
     }
 
     if (!checked.session) {
-      startSessionKeepAlive('21011990');
+      startSessionKeepAlive();
       setChecked({
         ...checked,
         session: true,
@@ -63,7 +62,7 @@ function Control() {
     }
 
     if (!checked.seat) {
-      startClawlersSeat('21011990');
+      startClawlersSeat();
 
       setChecked({
         ...checked,

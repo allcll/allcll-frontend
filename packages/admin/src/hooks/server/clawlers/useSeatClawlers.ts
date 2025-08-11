@@ -2,7 +2,7 @@ import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import useToastNotification from '@allcll/common/store/useToastNotification';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
-import { isValidSession } from '@/utils/sessionConfig.ts';
+import { getSessionConfig, isValidSession } from '@/utils/sessionConfig.ts';
 
 const startCrawlersSeat = async (userId: string) => {
   const response = await fetchOnAPI(`/api/admin/seat/start?userId=${userId}`, {
@@ -50,9 +50,10 @@ const checkCrawlersSeat = async () => {
  */
 export function useStartCrawlersSeat() {
   const toast = useToastNotification.getState().addToast;
+  const session = getSessionConfig();
 
   return useMutation({
-    mutationFn: (userId: string) => startCrawlersSeat(userId),
+    mutationFn: () => startCrawlersSeat(session?.userId ?? ''),
     onSuccess: async () => {
       toast('여석 크롤링이 시작되었습니다.');
     },

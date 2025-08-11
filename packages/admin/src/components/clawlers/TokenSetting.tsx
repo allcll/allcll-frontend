@@ -22,7 +22,7 @@ const tokenType = ['tokenJ', 'tokenU', 'tokenR', 'tokenL'];
 
 function TokenSetting() {
   const userId = localStorage.getItem('userId') ?? '';
-  const { data: serverTokens } = useAdminSession(userId);
+  const { data: serverTokens } = useAdminSession();
 
   const [tokens, setTokens] = useState<tokensType>(initialTokens);
   const [session, setSession] = useState<string>(localStorage.getItem('session') || '');
