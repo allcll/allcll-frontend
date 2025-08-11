@@ -11,11 +11,13 @@ import useNotification from '@/hooks/useNotification.ts';
 import AlarmBlueIcon from '@/assets/alarm-blue.svg?react';
 import AlarmDisabledIcon from '@/assets/alarm-disabled.svg?react';
 import SettingSvg from '@/assets/settings.svg?react';
-import AlarmButton from './AlarmButton.tsx';
+import ReloadSvg from '@/assets/reload-blue.svg?react';
+import AlarmAddButton from './AlarmAddButton.tsx';
 
 const PinnedCourses = () => {
   const [isAlarmSettingOpen, setIsAlarmSettingOpen] = useState(false);
   const { isAlarm, changeAlarm } = useNotification();
+  const { isError, refetch } = useSseData(SSEType.PINNED);
 
   return (
     <>
@@ -32,6 +34,16 @@ const PinnedCourses = () => {
             </Tooltip>
           </div>
           <div className="flex gap-1 items-center">
+            {isError && (
+              <button
+                className="p-2 rounded-full hover:bg-blue-100"
+                aria-label="알림 재연결"
+                title="알림 재연결"
+                onClick={refetch}
+              >
+                <ReloadSvg className="w-5 h-5" />
+              </button>
+            )}
             <button
               className="p-2 rounded-full hover:bg-blue-100"
               aria-label="알림 설정"
@@ -101,7 +113,7 @@ function CoursesArea() {
           queryTime={getQueryTime(subject.subjectId)}
         />
       ))}
-      {pinnedWishes.length < 5 && <AlarmButton />}
+      {pinnedWishes.length < 5 && <AlarmAddButton />}
     </div>
   );
 }

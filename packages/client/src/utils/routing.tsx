@@ -4,7 +4,6 @@ import ServiceLayout from '@/layouts/ServiceLayout.tsx';
 import SimulationLayout from '@/layouts/SimulationLayout.tsx';
 import Landing from '@/pages/Landing.tsx';
 import Live from '@/pages/Live.tsx';
-import SearchCourses from '@/pages/SearchCourses.tsx';
 import ServiceInfo from '@/pages/ServiceInfo.tsx';
 import CustomerService from '@/pages/CustomerService.tsx';
 import FAQ from '@/pages/FAQ.tsx';
@@ -46,7 +45,7 @@ const router = createBrowserRouter([
   },
   {
     path: 'wishes',
-    element: <MainLayout />,
+    element: <ServiceLayout serviceId="baskets" />,
     errorElement: <ErrorPageWith404 />,
     children: [
       {
@@ -61,17 +60,17 @@ const router = createBrowserRouter([
   },
   {
     path: 'live',
-    element: <ServiceLayout />,
+    element: <ServiceLayout serviceId="live" />,
     errorElement: <ErrorPage />,
     children: [
       {
         path: '',
         element: <Live />,
       },
-      {
-        path: 'search',
-        element: <SearchCourses />,
-      },
+      // {
+      //   path: 'search',
+      //   element: <SearchCourses />,
+      // },
     ],
   },
   {

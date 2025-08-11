@@ -1,29 +1,22 @@
 import React from 'react';
-// import useServiceSemester from '@/hooks/server/useServiceSemester.ts';
+import useServiceSemester from '@/hooks/server/useServiceSemester.ts';
 import ServiceClosed from '@/components/ServiceClosed.tsx';
 
 interface IServiceEnabled {
+  serviceId: string;
   children: React.ReactNode;
 }
 
-function ServiceEnabled({ children }: IServiceEnabled) {
-  // const { data, error } = useServiceSemester();
+function ServiceEnabled({ serviceId, children }: IServiceEnabled) {
+  const { data, error } = useServiceSemester(serviceId);
 
-  // if (error) {
-  //   console.error('Semester service error:', error);
-  // }
+  if (error) {
+    console.error('Semester service error:', error);
+  }
 
-  const mockData = {
-    withinPeriod: false,
-    code: 'FALL_25',
-    semester: '2025-2',
-    period: {
-      endDate: '2025-09-30',
-      startDate: '2025-08-11',
-    },
-  };
+  if (!data || !('service' in data) || !data.service) return children;
 
-  return !mockData || mockData.withinPeriod ? children : <ServiceClosed data={mockData} />;
+  return data.service.withinPeriod ? children : <ServiceClosed data={data} />;
 }
 
 export default ServiceEnabled;

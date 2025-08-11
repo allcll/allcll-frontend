@@ -21,15 +21,4 @@ function useDetailWishes(id: string): DetailWishes {
   };
 }
 
-export const DEFAULT_WISH = {
-  subjectId: -1,
-  subjectName: '',
-  departmentName: '',
-  departmentCode: '',
-  subjectCode: '',
-  classCode: '',
-  professorName: null,
-  totalCount: 0,
-};
-
 export default useDetailWishes;

@@ -1,7 +1,7 @@
 name: ALLCLL CI/CD
 on:
   push:
-    branches: [develop]
+    branches: [ develop ]
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -16,7 +16,6 @@ concurrency:
 
 jobs:
   client-dev-ci:
-    name: client-build/deploy
     runs-on: ubuntu-latest
     env:
       working-directory: ./
@@ -76,7 +75,7 @@ jobs:
           #passphrase: ${{ secrets.PASSPHRASE }}
           port: 22
           script: |
-            cd ${{ secrets.PWD }}
+            cd ${{ secrets.PWD }}/client
             sudo git pull https://${{ secrets.GIT_TOKEN }}:x-oauth-basic@github.com/allcll/frontend.git gh-dev-pages
             sudo systemctl reload nginx
             # 필요한 cmd 명령어 사용
@@ -115,6 +114,65 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
+  ######## Admin Dev Build and Deploy ########
+
+  admin-dev-ci:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./
+      project-directory: ./packages/admin
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install NPM packages
+        run: |
+          npm install -g pnpm
+          pnpm i --frozen-lockfile
+        working-directory: ${{env.working-directory}}
+
+      - name: Build Client project
+        run: |
+          pnpm run build-admin
+          cd ${{env.project-directory}}
+        env:
+          VITE_DEV_SERVER: true
+        working-directory: ${{env.working-directory}}
+
+      - name: Upload production-ready build files
+        uses: actions/upload-artifact@v4
+        with:
+          name: admin-development-files
+          path: ${{env.project-directory}}/dist
+
+  admin-dev-deploy:
+    runs-on: ubuntu-latest
+    needs: admin-dev-ci
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: admin-development-files
+          path: .
+
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_SERVER_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          port: 22
+          script: |
+            scp -r ./build/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${secrets.PWD}/admin
+            sudo systemctl reload nginx
+#            sudo git pull https://${{ secrets.GIT_TOKEN }}:x-oauth-basic@github.com/allcll/frontend.git gh-dev-pages
 
 
 ### Deployment to Cloudfront

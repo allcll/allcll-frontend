@@ -5,10 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b",
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "react-transition-group": "^4.4.5",
+    "zustand": "^5.0.6"
+  },
+  "devDependencies": {
+    "@types/react-transition-group": "^4.4.12"
+  }
 }
