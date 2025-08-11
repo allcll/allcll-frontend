@@ -109,7 +109,7 @@ const Logging = {
 
       Logging.commitDelay = Math.min(COMMIT_DELAY_MAX, Math.max(COMMIT_DELAY_MIN, averageInterval + 10 * 1000));
     }
-    console.log(Logging.data);
+    // console.log(Logging.data);
 
     // 타이머 설정
     Logging.timer = setTimeout(() => {
@@ -126,7 +126,7 @@ const Logging = {
 
     const result = Logging.data.map(({ search, dprt_cd, target }) => ({ search, dprt_cd, target }));
 
-    console.log('Committing search logging data:', result);
+    // console.log('Committing search logging data:', result);
     supabase
       .from(SEARCH_LOGGING_TABLE)
       .insert(result)
