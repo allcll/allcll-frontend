@@ -7,6 +7,7 @@ import useFavorites from '@/store/useFavorites.ts';
 import useWishSearchStore from '@/store/useWishSearchStore.ts';
 import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
 import useSearchRank from '@/hooks/useSearchRank.ts';
+import TableColorInfo from '@/components/wishTable/TableColorInfo.tsx';
 
 function WishTable() {
   const filterParams = useWishSearchStore(state => state.searchParams);
@@ -43,6 +44,7 @@ function WishTable() {
           <Searches />
 
           {/* Course Table */}
+          <TableColorInfo />
           <div className="bg-white mt-6 shadow-md rounded-lg overflow-x-auto">
             <Table data={filteredData} isPending={isPending} />
           </div>

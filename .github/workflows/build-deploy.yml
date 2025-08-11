@@ -16,8 +16,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: build
+  client-build:
     runs-on: ubuntu-latest
     env:
       working-directory: ./
@@ -81,9 +80,9 @@ jobs:
           github_token: ${{ secrets.GIT_TOKEN }}
           publish_dir: ${{env.project-directory}}/build
 
-  Deploy:
+  client-deploy:
     runs-on: ubuntu-latest
-    needs: build
+    needs: client-build
 
     steps:
       - name: executing remote ssh commands using ssh key
@@ -95,10 +94,66 @@ jobs:
           #passphrase: ${{ secrets.PASSPHRASE }}
           port: 22
           script: |
-            cd ${{ secrets.PWD }}
+            cd ${{ secrets.PWD }}/frontend
             sudo git pull https://${{ secrets.GIT_TOKEN }}:x-oauth-basic@github.com/allcll/frontend.git gh-pages
             sudo systemctl reload nginx
             # 필요한 cmd 명령어 사용
+
+### Admin page 배포
+
+  admin-build:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./
+      project-directory: ./packages/admin
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install NPM packages
+        run: |
+          npm install -g pnpm
+          pnpm i --frozen-lockfile
+        working-directory: ${{env.working-directory}}
+
+      - name: Build Admin project
+        run: |
+          pnpm run build-admin
+          cd ${{env.project-directory}}
+        working-directory: ${{env.working-directory}}
+
+      - name: Upload production-ready build files
+        uses: actions/upload-artifact@v4
+        with:
+          name: admin-build-files
+          path: ${{env.project-directory}}/dist
+
+  admin-deploy:
+    runs-on: ubuntu-latest
+    needs: admin-build
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: admin-build-files
+          path: .
+
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_SERVER_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          port: 22
+          script: |
+            scp -r ./build/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${secrets.PWD}/admin
+            sudo systemctl reload nginx
 
 
 # cloudfront 배포
