@@ -1,4 +1,4 @@
-import { ClawlersParams, useClawlersDepartments } from '@/hooks/server/clawlers/useDepartmentClawlers';
+import { CralwersParams, useClawlersDepartments } from '@/hooks/server/clawlers/useDepartmentClawlers';
 import { useSubjectsClawlers } from '@/hooks/server/clawlers/useSubjuectClawlers';
 import CustomButton from '@allcll/common/components/Button';
 import Card from '@allcll/common/components/Card';
@@ -8,15 +8,15 @@ function SubjectAndDepartmentControl() {
   const { mutate: clawlersDepartments } = useClawlersDepartments();
   const { mutate: clawlersSubjects } = useSubjectsClawlers();
 
-  const [clawlersParams, setClawlersParams] = useState<ClawlersParams>({
+  const [clawlersParams, setClawlersParams] = useState<CralwersParams>({
     userId: '',
     year: '',
     semesterCode: '',
   });
 
-  const params: (keyof ClawlersParams)[] = ['userId', 'year', 'semesterCode'];
+  const params: (keyof CralwersParams)[] = ['userId', 'year', 'semesterCode'];
 
-  const handleParamsChange = (key: keyof ClawlersParams, value: string) => {
+  const handleParamsChange = (key: keyof CralwersParams, value: string) => {
     setClawlersParams(prev => ({ ...prev, [key]: value }));
   };
 

@@ -1,9 +1,9 @@
 import { fetchOnAPI } from '@/utils/api';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { ClawlersParams } from './useDepartmentClawlers';
+import { CralwersParams } from './useDepartmentClawlers';
 
-const subjectClawlers = async ({ userId, year, semesterCode }: ClawlersParams) => {
+const subjectClawlers = async ({ userId, year, semesterCode }: CralwersParams) => {
   const response = await fetchOnAPI(`/api/admin/subjects?userId=${userId}&year=${year}&semesterCode=${semesterCode}`, {
     method: 'POST',
   });
@@ -36,7 +36,7 @@ export function useSubjectsClawlers() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ userId, year, semesterCode }: ClawlersParams) => subjectClawlers({ userId, year, semesterCode }),
+    mutationFn: ({ userId, year, semesterCode }: CralwersParams) => subjectClawlers({ userId, year, semesterCode }),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['clawlers-subjects'],
