@@ -141,7 +141,7 @@ jobs:
       - name: Build Client project
         run: |
           pnpm run build-admin
-          cd ${{env.project-directory}}
+          # cd ${{env.project-directory}}
         env:
           VITE_DEV_SERVER: true
         working-directory: ${{env.working-directory}}
