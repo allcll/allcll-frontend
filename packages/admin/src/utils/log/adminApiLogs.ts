@@ -1,4 +1,4 @@
-import { db } from '../dbConfig';
+import { AdminApiLogs, db } from '../dbConfig';
 
 /**
  *  * 새로운 Admin에서 요청한 API 로그를 추가합니다.
@@ -31,13 +31,11 @@ export async function addRequestLog(response: Response, method: string, request_
 
 /**
  * IndexedDB에 저장된 모든 API 로그를 가져옵니다.
- * @returns {Promise<any[]>} - 로그 배열 또는 에러
+ * @returns {Promise<AdminApiLogs[]>} - 로그 배열 또는 에러
  */
-export async function getRequestLogs() {
+export async function getRequestLogs(): Promise<AdminApiLogs[]> {
   try {
-    const logs = await db.admin_api_logs.toArray();
-
-    return logs;
+    return await db.admin_api_logs.toArray();
   } catch (e) {
     console.error('Failed to get logs from IndexedDB:', e);
     throw e;
@@ -47,6 +45,7 @@ export async function getRequestLogs() {
 /**
  *IndexedDB에 저장된 API로그 중 method를 선택하여 필터링 합니다.
  * @param statusCode
+ * @param request_url
  * @returns
  */
 export async function filterRequestLogs(statusCode?: number, request_url?: string) {
@@ -57,7 +56,8 @@ export async function filterRequestLogs(statusCode?: number, request_url?: strin
       });
     }
 
-    return await db.admin_api_logs.toArray();
+    const logs = await db.admin_api_logs.toArray();
+    return logs.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
   } catch (e) {
     console.error('Failed to get logs from IndexedDB:', e);
     throw e;

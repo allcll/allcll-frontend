@@ -6,6 +6,8 @@ import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
 import { getSessionConfig } from '@/utils/sessionConfig.ts';
 
+export const REFETCH_INTERVAL = 15 * 1000; // 15초
+
 const postAdminSessions = async (sessions: Session) => {
   const response = await fetchOnAPI('/api/admin/session', { method: 'POST', body: JSON.stringify(sessions) });
 

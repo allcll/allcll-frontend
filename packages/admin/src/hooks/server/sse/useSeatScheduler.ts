@@ -2,6 +2,7 @@ import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import useToastNotification from '@allcll/common/store/useToastNotification';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
+import { REFETCH_INTERVAL } from '@/hooks/server/session/useAdminSession.ts';
 
 const startSseScheduler = async () => {
   const response = await fetchOnAPI('/api/admin/seat-scheduler/start', {
@@ -85,6 +86,7 @@ export function useCheckSseScheduler() {
     queryFn: checkSseScheduler,
     select: data => data.isSending,
     staleTime: 0,
+    refetchInterval: REFETCH_INTERVAL,
     enabled: true,
   });
 }

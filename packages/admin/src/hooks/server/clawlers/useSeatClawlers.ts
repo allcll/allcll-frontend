@@ -3,6 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import useToastNotification from '@allcll/common/store/useToastNotification';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
 import { getSessionConfig, isValidSession } from '@/utils/sessionConfig.ts';
+import { REFETCH_INTERVAL } from '@/hooks/server/session/useAdminSession.ts';
 
 const startCrawlersSeat = async (userId: string) => {
   const response = await fetchOnAPI(`/api/admin/seat/start?userId=${userId}`, {
@@ -89,6 +90,7 @@ export function useCheckCrawlerSeat() {
     queryFn: checkCrawlersSeat,
     select: data => data.isActive,
     staleTime: 0, // 항상 stale로 간주
+    refetchInterval: REFETCH_INTERVAL,
     enabled: isValid,
   });
 }
