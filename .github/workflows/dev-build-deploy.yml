@@ -160,7 +160,7 @@ jobs:
           key: ${{ secrets.DEV_SERVER_SSH_KEY }}
           port: 22
           script: |
-            scp -r ${{env.project-directory}}/dist/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${secrets.PWD}/admin
+            scp -r ${{env.project-directory}}/dist/* ${{ secrets.USERNAME }}@${{ secrets.DEV_SERVER_HOST }}:${secrets.PWD}/admin
             sudo systemctl reload nginx
 #            sudo git pull https://${{ secrets.GIT_TOKEN }}:x-oauth-basic@github.com/allcll/frontend.git gh-dev-pages
 
