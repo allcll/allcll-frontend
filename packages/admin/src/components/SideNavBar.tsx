@@ -25,7 +25,7 @@ const Menus = [
 
 function SideNavBar() {
   return (
-    <aside className="w-64 bg-white shadow-md hidden md:block">
+    <aside className="w-64 bg-white shadow-md hidden md:block sticky top-0 h-screen">
       <div className="p-6 mb-6">
         <Logo className="h-8 w-8" />
       </div>
@@ -37,8 +37,8 @@ function SideNavBar() {
                 to={menu.link}
                 className={({ isActive }) =>
                   isActive
-                    ? 'flex items-center gap-4 block px-4 py-3 text-blue-500 font-semibold bg-blue-50'
-                    : 'flex items-center gap-4 block px-4 py-3 text-gray-500'
+                    ? 'flex items-center gap-4 px-4 py-3 text-blue-500 font-semibold bg-blue-50'
+                    : 'flex items-center gap-4 px-4 py-3 text-gray-500'
                 }
               >
                 <span className="w-6">{menu.icon}</span>

@@ -24,7 +24,7 @@ interface IRequestLogs {
 
 function RequestLogs({ urlInput, setUrlInput, selectedStatusCode, setSelectedStatusCode }: IRequestLogs) {
   return (
-    <section>
+    <section className="sticky top-16">
       <Card>
         <h2 className="text-md font-semibold mb-3">API 요청 로그</h2>
         <p className="text-gray-600 mb-4">API 요청 로그를 필터링하여 조회합니다.</p>
