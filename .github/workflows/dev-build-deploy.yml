@@ -117,7 +117,7 @@ jobs:
 
   ######## Admin Dev Build and Deploy ########
 
-  admin-dev-cicd:
+  admin-dev-ci:
     runs-on: ubuntu-latest
     env:
       working-directory: ./
@@ -152,6 +152,11 @@ jobs:
           name: admin-development-files
           path: ${{env.project-directory}}/dist
 
+  admin-dev-cd:
+    runs-on: ubuntu-latest
+    needs: admin-dev-ci
+
+    steps:
       - uses: actions/download-artifact@v4
         with:
           name: admin-development-files
