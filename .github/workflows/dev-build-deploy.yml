@@ -171,7 +171,7 @@ jobs:
           key: ${{ secrets.DEV_SERVER_SSH_KEY }}
           port: 22
           source: .  # 다운로드된 아티팩트 폴더 경로
-          target: ${{secrets.PWD}}/admin # 원격 서버의 배포 경로
+          target: /usr/share/nginx/html/admin # 원격 서버의 배포 경로
 
       - name: deploy - executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
