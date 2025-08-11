@@ -31,7 +31,6 @@ function TokenSetting() {
   const submitTokens = (e: React.FormEvent) => {
     e.preventDefault();
     postAdminSession(tokens);
-    console.log(session);
     localStorage.setItem('session', session);
   };
 
