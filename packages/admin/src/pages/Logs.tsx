@@ -1,5 +1,5 @@
-import LogList from '@/components/logs/LogList';
-import RequestLogs from '@/components/logs/RequestLogs';
+import LogList from '@/components/apiLogs/LogList';
+import RequestLogs from '@/components/apiLogs/RequestLogs';
 import { AdminApiLogs } from '@/utils/dbConfig';
 import { filterRequestLogs } from '@/utils/log/adminApiLogs';
 import { useEffect, useState } from 'react';
