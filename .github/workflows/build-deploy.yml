@@ -101,7 +101,7 @@ jobs:
 
 ### Admin page 배포
 
-  admin-build:
+  admin-cicd:
     runs-on: ubuntu-latest
     env:
       working-directory: ./
@@ -134,17 +134,7 @@ jobs:
           name: admin-build-files
           path: ${{env.project-directory}}/dist
 
-  admin-deploy:
-    runs-on: ubuntu-latest
-    needs: admin-build
-    steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: admin-build-files
-          path: .
-
-      - name: executing remote ssh commands using ssh key
+      - name: deploy - executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEV_SERVER_HOST }}
@@ -152,7 +142,7 @@ jobs:
           key: ${{ secrets.DEV_SERVER_SSH_KEY }}
           port: 22
           script: |
-            scp -r ./* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${secrets.PWD}/admin
+            scp -r ${{env.project-directory}}/dist/* ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${secrets.PWD}/admin
             sudo systemctl reload nginx
 
 
