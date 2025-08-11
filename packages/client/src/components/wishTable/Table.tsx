@@ -103,9 +103,9 @@ const TableRow = ({ data, tableHeaders }: TableRowProps) => {
   const isEng = data.curiLangNm === '영어';
   const isDeleted = data.isDeleted;
   const bgColor = isDeleted
-    ? 'bg-gray-200 hover:bg-gray-300'
+    ? 'bg-gray-100 hover:bg-gray-200'
     : isEng
-      ? 'bg-green-200 hover:bg-green-300'
+      ? 'bg-green-50 hover:bg-green-100'
       : 'bg-white hover:bg-gray-100';
 
   return (
