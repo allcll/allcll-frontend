@@ -21,6 +21,7 @@ const tokenType = ['tokenJ', 'tokenU', 'tokenR', 'tokenL'];
 
 function TokenSetting() {
   const [tokens, setTokens] = useState<tokensType>(initialTokens);
+  const [session, setSession] = useState<string>('');
   const { mutate: postAdminSession } = usePostAdminSession();
 
   const handleTokenChange = (key: keyof tokensType, value: string) => {
@@ -30,6 +31,8 @@ function TokenSetting() {
   const submitTokens = (e: React.FormEvent) => {
     e.preventDefault();
     postAdminSession(tokens);
+    console.log(session);
+    localStorage.setItem('session', session);
   };
 
   return (
@@ -50,6 +53,14 @@ function TokenSetting() {
             </div>
           ))}
         </div>
+
+        <input
+          type="text"
+          value={session}
+          onChange={e => setSession(e.target.value)}
+          placeholder="어드민 인증 세션 입력"
+          className="w-full pt-2 px-3 py-2 border border-gray-300 rounded-md text-sm"
+        />
 
         <div className="mt-4 flex justify-end">
           <button type="submit" className="px-4 py-2 text-sm rounded-lg bg-blue-500 text-white">
