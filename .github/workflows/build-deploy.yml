@@ -137,7 +137,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: admin-build-files
-          path: buildAdmin
+          path: admin
 
       - name: Copy files to Server via SCP
         uses: appleboy/scp-action@v1
@@ -146,8 +146,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.MAIN_SERVER_SSH_KEY }}
           port: 22
-          source: buildAdmin/*
-          target: ${{secrets.PWD}}/admin # 원격 서버의 배포 경로
+          source: admin/* # 파일 이름으로 압축이 풀림. -> 이전 경로에서 풀어야 합쳐짐
+          target: ${{secrets.PWD}} # 원격 서버의 배포 경로
 
       - name: deploy - executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
