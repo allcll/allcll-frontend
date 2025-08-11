@@ -11,7 +11,9 @@ interface Searches {
 
 const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
 
-const COMMIT_DELAY = 60 * 1000; // 이용자 페이지 사용시간 평균
+const COMMIT_DELAY = 30 * 1000; // 이용자 페이지 사용시간 평균
+const COMMIT_DELAY_MIN = 10 * 1000; // 최소 커밋 딜레이
+const COMMIT_DELAY_MAX = 60 * 1000; // 최대 커
 const DELAY_CALC_THRESHOLD = 5; // 검색 로그 데이터가 5개 이상일 때 커밋 딜레이 계산
 const SEARCH_LOGGING_KEY = 'searchLoggingData';
 const SEARCH_LOGGING_TABLE = import.meta.env.VITE_SUPABASE_TABLE_NAME;
@@ -77,7 +79,7 @@ const Logging = {
 
   reconcileLoggingData() {
     // 의미 없는 데이터 => 기본 데이터 제거
-    Logging.data = Logging.data.filter(item => !!item.search && item.dprt_cd < 0 && item.target < 0);
+    Logging.data = Logging.data.filter(item => !(!!item.search && item.dprt_cd < 0 && item.target < 0));
 
     // 검색 후, 선택되지 않은 데이터가 남아있는 것 방지
     Logging.data = Logging.data.filter((item, index) => {
@@ -105,8 +107,9 @@ const Logging = {
       const intervals = timestamps.slice(1).map((time, index) => time - timestamps[index]);
       const averageInterval = intervals.reduce((sum, interval) => sum + interval, 0) / intervals.length;
 
-      Logging.commitDelay = Math.max(COMMIT_DELAY, averageInterval + 10 * 1000);
+      Logging.commitDelay = Math.min(COMMIT_DELAY_MAX, Math.max(COMMIT_DELAY_MIN, averageInterval + 10 * 1000));
     }
+    // console.log(Logging.data);
 
     // 타이머 설정
     Logging.timer = setTimeout(() => {
@@ -123,6 +126,7 @@ const Logging = {
 
     const result = Logging.data.map(({ search, dprt_cd, target }) => ({ search, dprt_cd, target }));
 
+    // console.log('Committing search logging data:', result);
     supabase
       .from(SEARCH_LOGGING_TABLE)
       .insert(result)

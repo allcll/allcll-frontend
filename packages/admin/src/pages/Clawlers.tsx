@@ -2,7 +2,7 @@ import TokenSetting from '@/components/clawlers/TokenSetting';
 import SessionAdmin from '@/components/clawlers/SessionAdmin';
 import Control from '@/components/clawlers/Control';
 import TostNotification from '@allcll/common/components/toast/ToastNotification';
-import DepartmentControl from '@/components/clawlers/DepartmentControl';
+import DepartmentControl from '@/components/clawlers/SubjectAndDepartmentControl';
 
 function CrawlerSettings() {
   return (

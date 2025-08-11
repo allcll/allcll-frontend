@@ -1,7 +1,8 @@
 const BaseUrl = import.meta.env.VITE_API_BASE_URL ?? '';
-const AdminToken = localStorage.getItem('session');
 
 export async function fetchOnAPI(url: string, options?: RequestInit): Promise<Response> {
+  const AdminToken = localStorage.getItem('session');
+
   return await fetch(BaseUrl + url, {
     credentials: 'include',
     ...options,
@@ -14,6 +15,8 @@ export async function fetchOnAPI(url: string, options?: RequestInit): Promise<Re
 }
 
 export async function fetchJsonOnAPI<T>(url: string, options?: RequestInit): Promise<T> {
+  const AdminToken = localStorage.getItem('session');
+
   const response = await fetch(BaseUrl + url, {
     credentials: 'include',
     ...options,
@@ -36,6 +39,7 @@ export async function fetchDeleteJsonOnAPI<T>(
   body?: any,
   options?: Omit<RequestInit, 'method' | 'body'>,
 ): Promise<T | null> {
+  const AdminToken = localStorage.getItem('session');
   const response = await fetch(BaseUrl + url, {
     method: 'DELETE',
     credentials: 'include',

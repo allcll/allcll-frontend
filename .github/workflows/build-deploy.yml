@@ -101,7 +101,7 @@ jobs:
 
 ### Admin page 배포
 
-  admin-cicd:
+  admin-build:
     runs-on: ubuntu-latest
     env:
       working-directory: ./
@@ -134,6 +134,26 @@ jobs:
           name: admin-build-files
           path: ${{env.project-directory}}/dist
 
+  admin-deploy:
+    runs-on: ubuntu-latest
+    needs: admin-build
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: admin-build-files
+          path: admin
+
+      - name: Copy files to Server via SCP
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.MAIN_SERVER_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.MAIN_SERVER_SSH_KEY }}
+          port: 22
+          source: admin/* # 파일 이름으로 압축이 풀림. -> 이전 경로에서 풀어야 합쳐짐
+          target: ${{secrets.PWD}} # 원격 서버의 배포 경로
+
       - name: deploy - executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
         with:
@@ -142,7 +162,6 @@ jobs:
           key: ${{ secrets.MAIN_SERVER_SSH_KEY }}
           port: 22
           script: |
-            scp -r ${{env.project-directory}}/dist/* ${{ secrets.USERNAME }}@${{ secrets.MAIN_SERVER_HOST }}:${{secrets.PWD}}/admin
             sudo systemctl reload nginx
 
 

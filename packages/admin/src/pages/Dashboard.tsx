@@ -2,20 +2,19 @@ import StatusCard from '@/components/dashboard/StatusCard';
 import DataUpdateSection from '@/components/dashboard/DataUpdateSection';
 import ServiceOpen from '@/components/dashboard/ServiceOpen';
 import { useCheckSessionAlive } from '@/hooks/server/session/useCheckService';
-import { useCheckClawlersSeat } from '@/hooks/server/clawlers/useSeatClawlers';
+import { useCheckCrawlerSeat } from '@/hooks/server/clawlers/useSeatClawlers';
 import { useCheckSseScheduler } from '@/hooks/server/sse/useSeatScheduler';
 
 function Dashboard() {
-  const userId = localStorage.getItem('userId');
-  const { data: isActiveSession } = useCheckSessionAlive(userId ?? '');
-  const { data: isActiveSeat } = useCheckClawlersSeat();
+  const { data: isActiveSession } = useCheckSessionAlive();
+  const { data: isActiveSeat } = useCheckCrawlerSeat();
   const { data: isSentSseData } = useCheckSseScheduler();
 
   const statusData = [
-    { title: '인증상태', status: isActiveSession ? true : false },
-    { title: '여석 크롤링', status: isActiveSeat ? true : false },
+    { title: '인증상태', status: !!isActiveSession },
+    { title: '여석 크롤링', status: !!isActiveSeat },
     { title: 'SSE 연결', status: false },
-    { title: 'SSE 여석 데이터', status: isSentSseData ? true : false },
+    { title: 'SSE 여석 데이터', status: !!isSentSseData },
   ];
 
   console.log(isActiveSession, isActiveSeat, isSentSseData);

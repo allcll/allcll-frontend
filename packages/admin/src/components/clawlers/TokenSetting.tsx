@@ -1,6 +1,7 @@
-import { usePostAdminSession } from '@/hooks/server/session/useAdminSession';
+import { useAdminSession, usePostAdminSession } from '@/hooks/server/session/useAdminSession';
 import Card from '@allcll/common/components/Card';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import * as React from 'react';
 
 const initialTokens = {
   tokenJ: '',
@@ -20,9 +21,21 @@ interface tokensType {
 const tokenType = ['tokenJ', 'tokenU', 'tokenR', 'tokenL'];
 
 function TokenSetting() {
+  const userId = localStorage.getItem('userId') ?? '';
+  const { data: serverTokens } = useAdminSession();
+
   const [tokens, setTokens] = useState<tokensType>(initialTokens);
-  const [session, setSession] = useState<string>('');
+  const [session, setSession] = useState<string>(localStorage.getItem('session') || '');
   const { mutate: postAdminSession } = usePostAdminSession();
+
+  useEffect(() => {
+    setTokens(
+      serverTokens ?? {
+        ...initialTokens,
+        tokenU: userId ?? '',
+      },
+    );
+  }, [serverTokens]);
 
   const handleTokenChange = (key: keyof tokensType, value: string) => {
     setTokens(prev => ({ ...prev, [key]: value }));
@@ -53,6 +66,7 @@ function TokenSetting() {
           ))}
         </div>
 
+        <label className="block text-sm mb-1 mt-4 text-gray-700 capitalize">어드민 인증 세션</label>
         <input
           type="text"
           value={session}

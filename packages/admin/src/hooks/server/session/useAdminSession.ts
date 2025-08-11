@@ -1,8 +1,12 @@
+import type { UseQueryResult } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
 //인증정보 설정, 인증정보 조회 관련 훅
 import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { UseQueryResult } from '@tanstack/react-query';
+import { getSessionConfig } from '@/utils/sessionConfig.ts';
+
+export const REFETCH_INTERVAL = 15 * 1000; // 15초
 
 const postAdminSessions = async (sessions: Session) => {
   const response = await fetchOnAPI('/api/admin/session', { method: 'POST', body: JSON.stringify(sessions) });
@@ -37,11 +41,13 @@ interface Session {
   [key: string]: string;
 }
 
-export function useAdminSession(userId: string): UseQueryResult<Session, Error> {
+export function useAdminSession(): UseQueryResult<Session, Error> {
+  const session = getSessionConfig();
+
   return useQuery<Session, Error>({
-    queryKey: ['sessions', userId],
-    queryFn: () => getAdminSessions(userId),
-    enabled: !!userId,
+    queryKey: ['sessions', session?.userId ?? ''],
+    queryFn: () => getAdminSessions(session?.userId ?? ''),
+    enabled: !!session && !session.session && !session.userId,
   });
 }
 
@@ -58,10 +64,10 @@ export function usePostAdminSession() {
 
     onSuccess: (_data, variables) => {
       if (variables?.tokenU) {
-        queryClient.invalidateQueries({ queryKey: ['sessions', variables.tokenU] });
+        queryClient.invalidateQueries({ queryKey: ['sessions', variables.tokenU] }).then();
         localStorage.setItem('userId', variables.tokenU || '');
       } else {
-        queryClient.invalidateQueries({ queryKey: ['sessions'] });
+        queryClient.invalidateQueries({ queryKey: ['sessions'] }).then();
       }
     },
 

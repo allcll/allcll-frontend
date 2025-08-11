@@ -1,13 +1,12 @@
 import { useAdminSession } from '@/hooks/server/session/useAdminSession';
-import { useStartSessionKeepAlive } from '@/hooks/server/session/useSessionKeepAlive';
+// import { useStartSessionKeepAlive } from '@/hooks/server/session/useSessionKeepAlive';
 import CustomButton from '@allcll/common/components/Button';
 import Card from '@allcll/common/components/Card';
 const tokenKeys = ['tokenJ', 'tokenU', 'tokenR', 'tokenL'];
 
 function SessionAdmin() {
-  const userId = localStorage.getItem('userId') ?? '';
-  const { data, isFetching, refetch } = useAdminSession(userId);
-  const { mutate: startSessionKeepAlive, isPending: isStarting } = useStartSessionKeepAlive();
+  const { data, isFetching, refetch } = useAdminSession();
+  // const { mutate: startSessionKeepAlive, isPending: isStarting } = useStartSessionKeepAlive();
 
   return (
     <section>
@@ -20,9 +19,9 @@ function SessionAdmin() {
             {isFetching ? '조회 중…' : '인증정보 조회'}
           </CustomButton>
 
-          <CustomButton onClick={() => startSessionKeepAlive(userId)} variants="secondary" disabled={isStarting}>
-            {isStarting ? '갱신 중…' : '인증정보 갱신'}
-          </CustomButton>
+          {/*<CustomButton onClick={() => startSessionKeepAlive()} variants="secondary" disabled={isStarting}>*/}
+          {/*  {isStarting ? '갱신 중…' : '인증정보 갱신'}*/}
+          {/*</CustomButton>*/}
         </div>
 
         <div className="bg-gray-100 text-sm text-gray-700 px-4 py-3 rounded-md space-y-1">

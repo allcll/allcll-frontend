@@ -3,7 +3,7 @@ import { Day, Grade, Subject, Wishes } from '../types';
 
 export function filterDays(subject: Wishes | Subject, selectedDays: (Day | '전체')[]) {
   if (!subject.lesnTime) {
-    return false;
+    return true;
   }
 
   const timeMatchResult = RegExp(/^([가-힣]+)/).exec(subject.lesnTime);
@@ -11,6 +11,7 @@ export function filterDays(subject: Wishes | Subject, selectedDays: (Day | '전�
   if (!timeMatchResult) {
     return false;
   }
+
   if (selectedDays.includes('전체') || selectedDays.length === 0) {
     return true;
   }

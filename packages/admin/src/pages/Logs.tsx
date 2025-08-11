@@ -16,15 +16,13 @@ function Logs() {
 
   const getLogs = async () => {
     filterRequestLogs(selectedStatusCode?.value, urlInput).then(logs => {
-      if (!logs) {
-        return;
-      }
+      if (!logs) return;
       setLogs(logs);
     });
   };
 
   useEffect(() => {
-    getLogs();
+    getLogs().then();
   }, [selectedStatusCode, urlInput]);
 
   return (
