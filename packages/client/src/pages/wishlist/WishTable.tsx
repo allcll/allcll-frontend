@@ -8,6 +8,7 @@ import useWishSearchStore from '@/store/useWishSearchStore.ts';
 import TableColorInfo from '@/components/wishTable/TableColorInfo.tsx';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
+import { useDeferredValue } from 'react';
 
 function WishTable() {
   return (
@@ -43,14 +44,16 @@ function WishTableComponent() {
   const { data: wishes, isPending } = useWishes();
   const data = useSearchRank(useJoinPreSeats(wishes, InitWishes));
 
-  const filteredData = useFilteringSubjects({
-    subjects: data ?? [],
-    pickedFavorites,
-    searchKeywords: filterParams.searchInput,
-    selectedDepartment: filterParams.selectedDepartment,
-    isFavorite: filterParams.isFavorite,
-    isPinned,
-  });
+  const filteredData = useDeferredValue(
+    useFilteringSubjects({
+      subjects: data ?? [],
+      pickedFavorites,
+      searchKeywords: filterParams.searchInput,
+      selectedDepartment: filterParams.selectedDepartment,
+      isFavorite: filterParams.isFavorite,
+      isPinned,
+    }),
+  );
 
   return (
     <div className="bg-white mt-6 shadow-md rounded-lg overflow-x-auto">

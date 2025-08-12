@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useTransition } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import StarIcon from '@/components/svgs/StarIcon.tsx';
 import useDepartments from '@/hooks/server/useDepartments.ts';
 import useWishSearchStore from '@/store/useWishSearchStore.ts';
@@ -23,14 +23,11 @@ function Searches() {
   const setSearchParams = useWishSearchStore(state => state.setSearchParams);
 
   const { data: departments } = useDepartments();
-  const [_, startTransition] = useTransition();
 
   const departmentsList = [{ departmentName: '전체', departmentCode: '' }, ...(departments ?? [])];
 
   useEffect(() => {
-    startTransition(() => {
-      setSearchParams({ searchInput, selectedDepartment, isFavorite });
-    });
+    setSearchParams({ searchInput, selectedDepartment, isFavorite });
   }, [searchInput, selectedDepartment, isFavorite]);
 
   const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
