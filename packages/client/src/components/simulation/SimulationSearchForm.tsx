@@ -96,8 +96,8 @@ function SimulationSearchForm() {
           </div>
         </div>
 
-        <div className="flex flex-col justify-between h-12 sm:flex-row gap-1 sm:gap-8">
-          <div className="flex gap-2">
+        <div className="flex flex-col justify-between sm:h-12 sm:flex-row gap-1 sm:gap-8">
+          <div className="flex flex-col sm:items-end sm:flex-row gap-2 ">
             <div className="flex items-center sm:justify-start gap-2">
               <span className="font-bold ">주전공(교직)</span>
               <select
@@ -116,12 +116,6 @@ function SimulationSearchForm() {
                 <option>없음</option>
               </select>
             </div>
-          </div>
-
-          <div className="pr-10">
-            {currentSimulation.simulationStatus === 'start' && (
-              <LogoSvg className="w-12 h-12 animate-bounce rotate-170" />
-            )}
           </div>
         </div>
 
@@ -175,13 +169,16 @@ function SimulationSearchForm() {
 
             <button
               onClick={handleStartSimulation}
-              className={`px-3 py-2 rounded flex flex-row gap-1 text-white ${
+              className={`relative px-3 py-2 rounded flex flex-row items-center gap-1 text-white ${
                 hasRunningSimulationId === -1
                   ? 'bg-gray-400 cursor-not-allowed'
                   : 'bg-gradient-animation cursor-pointer'
               }`}
               disabled={hasRunningSimulationId === -1}
             >
+              {currentSimulation.simulationStatus === 'start' && (
+                <LogoSvg className="absolute -top-20 right-8 w-20 h-20 animate-bounce rotate-170" />
+              )}
               <SearchSvg className="w-5 h-4" />
               검색
             </button>

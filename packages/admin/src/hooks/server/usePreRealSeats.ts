@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchJsonOnPublic } from '@/utils/api.ts';
+import { fetchJsonOnAPI } from '@/utils/api.ts';
 
 const SEC = 1000;
 const MIN = 60 * SEC;
@@ -24,7 +24,7 @@ function usePreRealSeats() {
 }
 
 async function fetchPreRealSeats(): Promise<IPreRealSeatsResponse> {
-  return await fetchJsonOnPublic<IPreRealSeatsResponse>('/preSeat.json');
+  return await fetchJsonOnAPI<IPreRealSeatsResponse>('api/preSeat');
 }
 
 export default usePreRealSeats;
