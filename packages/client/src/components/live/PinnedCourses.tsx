@@ -113,7 +113,17 @@ function CoursesArea() {
           queryTime={getQueryTime(subject.subjectId)}
         />
       ))}
-      {pinnedWishes.length < 5 && <AlarmAddButton />}
+      {pinnedWishes.length < 5 ? <AlarmAddButton /> : <AlarmCountAlert />}
+    </div>
+  );
+}
+
+function AlarmCountAlert() {
+  return (
+    <div className="p-2 rounded-full flex items-center justify-center">
+      <p className="bg-gray-50 rounded-full px-4 py-2 text-sm border border-gray-200">
+        알림 과목은 최대 5개까지 등록할 수 있어요.
+      </p>
     </div>
   );
 }
