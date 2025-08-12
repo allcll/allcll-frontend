@@ -4,17 +4,19 @@ import DepartmentFilter from './filter/DepartmentFilter';
 import GradeFilter from './filter/GradeFilter';
 import DayFilter from './filter/DayFilter';
 import { FilteredSubjectCards } from './subject/FilteredSubjectCards';
-import useSubject from '@/hooks/server/useSubject';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 import FilterDelete from '@/components/contentPanel/filter/FilterDelete.tsx';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
+import useSearchRank from '@/hooks/useSearchRank.ts';
+import useWishes from '@/hooks/server/useWishes.ts';
 
 const initSchedule = new ScheduleAdapter().toUiData();
 
 function ContentPanel() {
-  const { data: subjects = [], isPending } = useSubject();
+  const { data, isPending } = useWishes();
+  const subjects = useSearchRank(data) ?? [];
   const [searchKeywords, setSearchKeywords] = useState('');
   const { openScheduleModal } = useScheduleModal();
 
