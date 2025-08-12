@@ -10,9 +10,10 @@ import {
 } from '@/utils/simulation/simulation';
 import { useReloadSimulation } from '@/hooks/useReloadSimulation';
 import useLectures from '@/hooks/server/useLectures';
+import LogoSvg from '@public/ci.svg?react';
 
 function SimulationSearchForm() {
-  const { setCurrentSimulation, resetSimulation } = useSimulationProcessStore();
+  const { setCurrentSimulation, currentSimulation, resetSimulation } = useSimulationProcessStore();
   const { openModal } = useSimulationModalStore();
   const ongoingSimulation = useLiveQuery(checkOngoingSimulation);
   const { reloadSimulationStatus } = useReloadSimulation();
@@ -95,24 +96,32 @@ function SimulationSearchForm() {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-1 sm:gap-8">
-          <div className="flex justify-end items-center sm:justify-start gap-2">
-            <span className="font-bold ">주전공(교직)</span>
-            <select
-              className="border-gray-300 text-gray-400 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed"
-              disabled
-            >
-              <option>컴퓨터공학전공</option>
-            </select>
+        <div className="flex flex-col justify-between h-12 sm:flex-row gap-1 sm:gap-8">
+          <div className="flex gap-2">
+            <div className="flex items-center sm:justify-start gap-2">
+              <span className="font-bold ">주전공(교직)</span>
+              <select
+                className="border-gray-300 text-gray-400 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed"
+                disabled
+              >
+                <option>컴퓨터공학전공</option>
+              </select>
+            </div>
+            <div className="flex items-center sm:justify-start gap-2">
+              <span className="font-bold">복수전공(교직)</span>
+              <select
+                className="border-gray-300 text-gray-400 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed"
+                disabled
+              >
+                <option>없음</option>
+              </select>
+            </div>
           </div>
-          <div className="flex justify-end items-center sm:justify-start gap-2">
-            <span className="font-bold">복수전공(교직)</span>
-            <select
-              className="border-gray-300 text-gray-400 border px-2 py-1 w-48 disabled:bg-gray-100 cursor-not-allowed"
-              disabled
-            >
-              <option>없음</option>
-            </select>
+
+          <div className="pr-10">
+            {currentSimulation.simulationStatus === 'start' && (
+              <LogoSvg className="w-12 h-12 animate-bounce rotate-170" />
+            )}
           </div>
         </div>
 
@@ -129,7 +138,6 @@ function SimulationSearchForm() {
             </div>
             <div className="flex justify-end items-center sm:justify-start gap-1">
               <span className="font-bold">주전공</span>
-
               <div className="flex flex-col sm:flex-row gap-1">
                 <select
                   className="border-gray-300  text-gray-400 border px-2 py-1 w-48 sm:w-30 disabled:bg-gray-100 cursor-not-allowed"
@@ -151,7 +159,7 @@ function SimulationSearchForm() {
               {hasRunningSimulationId !== -1 ? (
                 <button
                   onClick={handleForceSimulation}
-                  className={`px-3 py-2 bg-blue-500 cursor-pointer rounded flex flex-row gap-1 text-white`}
+                  className="px-3 py-2 bg-white border border-gray-700 cursor-pointer rounded flex flex-row gap-1"
                 >
                   연습 중지
                 </button>
@@ -164,6 +172,7 @@ function SimulationSearchForm() {
                 </button>
               )}
             </div>
+
             <button
               onClick={handleStartSimulation}
               className={`px-3 py-2 rounded flex flex-row gap-1 text-white ${
