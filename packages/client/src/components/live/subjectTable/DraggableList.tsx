@@ -1,9 +1,9 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import EyeGray from '@/assets/eye-gray.svg?react';
 import EyeDeleteGray from '@/assets/eye-delete-gray.svg?react';
 
 interface Item {
-  title: string;
+  title: string; // Assuming title is unique
   visible: boolean;
 }
 
@@ -15,149 +15,174 @@ type Props<T extends Item> = {
 export default function DraggableList<T extends Item>({ initialItems, onChange }: Props<T>) {
   const [items, setItems] = useState(initialItems);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const draggingRef = useRef<{ index: number; height: number } | null>(null);
-  const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
+
+  // Ref to hold drag-specific data that doesn't need to trigger re-renders
+  const dragMetaRef = useRef<{
+    currentIndex: number;
+    height: number;
+    offsetY: number;
+    containerRect: DOMRect;
+  } | null>(null);
+
+  // State for the item being dragged (its data) and its initial index
+  const [draggedItemInfo, setDraggedItemInfo] = useState<{ item: T; initialIndex: number } | null>(null);
+
+  // State for the floating preview's style
   const [draggingStyle, setDraggingStyle] = useState<React.CSSProperties | null>(null);
-  const positionsRef = useRef<number[]>([]); // center Y positions of items
 
   useEffect(() => {
     onChange?.(items);
   }, [items, onChange]);
 
   useEffect(() => {
-    // recalc item positions whenever items change
-    recalcPositions();
-    // window resize -> recalc
-    const ro = new ResizeObserver(recalcPositions);
+    const recalc = () => requestAnimationFrame(recalcPositions);
+    const ro = new ResizeObserver(recalc);
     if (containerRef.current) ro.observe(containerRef.current);
+    window.addEventListener('scroll', recalc, true);
+    window.addEventListener('resize', recalc);
 
-    // recalc on scroll to handle fixed position elements
-    window.addEventListener('scroll', recalcPositions, true);
+    recalc();
+
     return () => {
       ro.disconnect();
-      window.removeEventListener('scroll', recalcPositions, true);
+      window.removeEventListener('scroll', recalc, true);
+      window.removeEventListener('resize', recalc);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items]);
+  }, []);
 
   function onVisibleChange(index: number) {
     setItems(prev => {
-      const next = prev.slice();
+      const next = [...prev];
       next[index] = { ...next[index], visible: !next[index].visible };
       return next;
     });
-    // recalc positions after visibility change
-    requestAnimationFrame(recalcPositions); // 필요한가?
   }
 
+  const positionsRef = useRef<number[]>([]);
   function recalcPositions() {
     const container = containerRef.current;
     if (!container) return;
 
-    // elements 의 위치 업데이트
     const els = Array.from(container.children) as HTMLElement[];
     positionsRef.current = els.map(el => {
       const r = el.getBoundingClientRect();
-      return r.top + r.height / 2 + window.scrollY;
+      return r.top + r.height / 2;
     });
-
-    // console.log('recalc positions:', positionsRef.current);
   }
 
   function startDrag(e: React.PointerEvent, index: number) {
-    (e.target as Element).setPointerCapture(e.pointerId);
-    const target = (e.target as HTMLElement).closest('.draggable-item') as HTMLElement;
+    if (!containerRef.current) return;
 
+    const target = (e.target as HTMLElement).closest('.draggable-item') as HTMLElement;
     if (!target) return;
 
-    const rect = target.getBoundingClientRect();
-    draggingRef.current = { index, height: rect.height };
+    (e.target as Element).setPointerCapture(e.pointerId);
 
-    setDraggingIndex(index);
+    const rect = target.getBoundingClientRect();
+    const containerRect = containerRef.current.getBoundingClientRect();
+
+    dragMetaRef.current = {
+      currentIndex: index,
+      height: rect.height,
+      offsetY: e.clientY - rect.top,
+      containerRect,
+    };
+
+    setDraggedItemInfo({ item: items[index], initialIndex: index });
+
     setDraggingStyle({
       width: rect.width,
       left: rect.left,
-      top: rect.top + window.scrollY,
-      position: 'absolute',
+      top: rect.top,
+      position: 'fixed',
       zIndex: 50,
       pointerEvents: 'none',
+      transition: 'none',
     });
 
-    // listen globally for move/up
     window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('pointerup', onPointerUp, { once: true });
   }
 
   function onPointerMove(e: PointerEvent) {
-    if (draggingRef.current == null) return;
+    if (dragMetaRef.current === null) return;
 
-    const y = e.clientY + window.scrollY;
-    setDraggingStyle(s => ({ ...(s || {}), top: y - draggingRef.current!.height / 2 }));
+    const { height, offsetY, containerRect } = dragMetaRef.current;
+    let newTop = e.clientY - offsetY;
 
-    // find hovered index by comparing center positions
+    newTop = Math.max(containerRect.top, newTop);
+    newTop = Math.min(containerRect.bottom - height, newTop);
+
+    setDraggingStyle(s => ({ ...(s || {}), top: newTop }));
+
+    recalcPositions();
+    const currentHoverY = e.clientY;
     const centers = positionsRef.current;
-    let hoverIndex = centers.findIndex(c => y < c);
-    if (hoverIndex === -1) hoverIndex = centers.length - 1;
+    let hoverIndex = centers.findIndex(c => currentHoverY < c);
+    if (hoverIndex === -1) hoverIndex = items.length;
 
-    const from = draggingRef.current.index;
-    const to = hoverIndex;
-    if (to !== from) return;
+    const fromIndex = dragMetaRef.current.currentIndex;
+    let toIndex = Math.max(0, Math.min(items.length - 1, hoverIndex > fromIndex ? hoverIndex - 1 : hoverIndex));
 
-    setItems(prev => {
-      const next = prev.slice();
-      const [moved] = next.splice(from, 1);
-      next.splice(to, 0, moved);
-
-      // update draggingRef index
-      draggingRef.current = { ...draggingRef.current!, index: to };
-
-      // update stored positions after DOM updates (next tick)
-      requestAnimationFrame(recalcPositions);
-      return next;
-    });
-  }
-
-  function onPointerUp(/*e: PointerEvent*/) {
-    window.removeEventListener('pointermove', onPointerMove);
-    window.removeEventListener('pointerup', onPointerUp);
-
-    draggingRef.current = null;
-    setDraggingIndex(null);
-    setDraggingStyle(null);
-  }
-
-  // keyboard reorder support: move item up/down with Ctrl+ArrowUp/Down when focused
-  function onKey(e: React.KeyboardEvent, index: number) {
-    if (e.ctrlKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
-      e.preventDefault();
-
+    if (toIndex !== fromIndex) {
+      dragMetaRef.current.currentIndex = toIndex;
       setItems(prev => {
-        const next = prev.slice();
-        const to = e.key === 'ArrowUp' ? Math.max(0, index - 1) : Math.min(next.length - 1, index + 1);
-        if (to === index) return prev;
-
-        const [moved] = next.splice(index, 1);
-        next.splice(to, 0, moved);
-
-        requestAnimationFrame(recalcPositions);
-
+        const next = [...prev];
+        const [moved] = next.splice(fromIndex, 1);
+        next.splice(toIndex, 0, moved);
         return next;
       });
     }
   }
 
+  function onPointerUp() {
+    window.removeEventListener('pointermove', onPointerMove);
+    dragMetaRef.current = null;
+    setDraggedItemInfo(null);
+    setDraggingStyle(null);
+  }
+
+  const currentDraggingIndex = useMemo(() => {
+    if (!draggedItemInfo) return -1;
+    // Find the current index of the dragged item in the (potentially reordered) items array
+    return items.findIndex(it => it.title === draggedItemInfo.item.title);
+  }, [items, draggedItemInfo]);
+
+  function getTransform(index: number): string {
+    if (!draggedItemInfo || !dragMetaRef.current || currentDraggingIndex === -1) return '';
+
+    const from = currentDraggingIndex;
+    const to = dragMetaRef.current.currentIndex;
+    const height = dragMetaRef.current.height;
+
+    if (index === from) return ''; // The dragged item itself doesn't transform
+
+    if (from < to) {
+      // dragging down
+      if (index > from && index <= to) return `translateY(-${height}px)`;
+    } else {
+      // dragging up
+      if (index >= to && index < from) return `translateY(${height}px)`;
+    }
+
+    return '';
+  }
+
   return (
     <>
-      <div ref={containerRef} className="bg-white divide-y divide-gray-100">
+      <div ref={containerRef} className="bg-white divide-y divide-gray-100 relative">
         {items.map((it, i) => (
           <div
-            key={it + '-' + i}
-            className="draggable-item flex items-center gap-2 rounded-md px-2 transition-transform duration-200 ease"
+            key={it.title}
+            className="draggable-item flex items-center gap-2 rounded-md px-2 transition-transform duration-1000"
             tabIndex={0}
-            onKeyDown={e => onKey(e, i)}
+            style={{
+              transform: getTransform(i),
+              opacity: currentDraggingIndex === i ? 0.4 : 1,
+            }}
           >
             <button
-              className="p-1 text-gray-500 hover:text-gray-700"
+              className="p-1 text-gray-500 hover:text-gray-700 cursor-grab"
               onPointerDown={e => startDrag(e, i)}
               aria-label={`Drag ${it.title}`}
               title="드래그 시작"
@@ -166,9 +191,8 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
             </button>
             <div className="flex items-center justify-between flex-auto">
               <span className="font-medium">{it.title}</span>
-
               <button
-                className="p-1 text-gray-500 hover:text-gray-700"
+                className="p-1 text-gray-500 hover:text-gray-700 cursor-pointer"
                 aria-label={it.visible ? '숨기기' : '보이기'}
                 title={it.visible ? '숨기기' : '보이기'}
                 onClick={() => onVisibleChange(i)}
@@ -180,21 +204,16 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
         ))}
       </div>
 
-      {/* floating drag preview */}
-      {draggingStyle && (
-        <div
-          style={draggingStyle}
-          className="pointer-events-none bg-blue-50 rounded-md shadow-lg w-full max-w-lg m-auto px-2"
-        >
+      {draggingStyle && draggedItemInfo && (
+        <div style={draggingStyle} className="bg-blue-50 rounded-md shadow-lg w-full max-w-lg m-auto px-2">
           <div className="flex items-center gap-2">
             <span className="p-1 text-gray-700">⠿</span>
-            <span className="font-medium">{items[draggingIndex ?? 0].title}</span>
+            <span className="font-medium">{draggedItemInfo.item.title}</span>
           </div>
         </div>
       )}
 
-      <div className="mt-4 text-sm text-gray-500">Tip: 보이는 테이블의 정보를 수정할 수 있습니다.</div>
-      {/*<div className="mt-4 text-sm text-gray-500">Tip: 항목을 선택한 뒤 Ctrl + ↑/↓ 로 키보드 이동도 가능합니다.</div>*/}
+      <div className="mt-4 text-sm text-gray-500">Tip: 항목을 선택한 뒤 Ctrl + ↑/↓ 로 키보드 이동도 가능합니다.</div>
     </>
   );
 }
