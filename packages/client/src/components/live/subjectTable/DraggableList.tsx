@@ -15,9 +15,9 @@ type Props<T extends Item> = {
 export default function DraggableList<T extends Item>({ initialItems, onChange }: Props<T>) {
   const [items, setItems] = useState(initialItems);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  // const draggingRef = useRef<{ index: number; height: number } | null>(null);
-  const [draggingIndex /*setDraggingIndex*/] = useState<number | null>(null);
-  const [draggingStyle /*setDraggingStyle*/] = useState<React.CSSProperties | null>(null);
+  const draggingRef = useRef<{ index: number; height: number } | null>(null);
+  const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
+  const [draggingStyle, setDraggingStyle] = useState<React.CSSProperties | null>(null);
   const positionsRef = useRef<number[]>([]); // center Y positions of items
 
   useEffect(() => {
@@ -30,6 +30,8 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
     // window resize -> recalc
     const ro = new ResizeObserver(recalcPositions);
     if (containerRef.current) ro.observe(containerRef.current);
+
+    // recalc on scroll to handle fixed position elements
     window.addEventListener('scroll', recalcPositions, true);
     return () => {
       ro.disconnect();
@@ -45,84 +47,100 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
       return next;
     });
     // recalc positions after visibility change
-    requestAnimationFrame(recalcPositions);
+    requestAnimationFrame(recalcPositions); // 필요한가?
   }
 
   function recalcPositions() {
     const container = containerRef.current;
     if (!container) return;
+
+    // elements 의 위치 업데이트
     const els = Array.from(container.children) as HTMLElement[];
     positionsRef.current = els.map(el => {
       const r = el.getBoundingClientRect();
       return r.top + r.height / 2 + window.scrollY;
     });
+
+    // console.log('recalc positions:', positionsRef.current);
   }
 
-  // function startDrag(e: React.PointerEvent, index: number) {
-  //   (e.target as Element).setPointerCapture(e.pointerId);
-  //   const target = (e.target as HTMLElement).closest('.draggable-item') as HTMLElement;
-  //   if (!target) return;
-  //   const rect = target.getBoundingClientRect();
-  //   draggingRef.current = { index, height: rect.height };
-  //   setDraggingIndex(index);
-  //   setDraggingStyle({
-  //     width: rect.width,
-  //     left: rect.left,
-  //     top: rect.top + window.scrollY,
-  //     position: 'absolute',
-  //     zIndex: 50,
-  //     pointerEvents: 'none',
-  //   });
-  //
-  //   // listen globally for move/up
-  //   window.addEventListener('pointermove', onPointerMove);
-  //   window.addEventListener('pointerup', onPointerUp);
-  // }
+  function startDrag(e: React.PointerEvent, index: number) {
+    (e.target as Element).setPointerCapture(e.pointerId);
+    const target = (e.target as HTMLElement).closest('.draggable-item') as HTMLElement;
 
-  // function onPointerMove(e: PointerEvent) {
-  //   if (draggingRef.current == null) return;
-  //   const y = e.clientY + window.scrollY;
-  //   setDraggingStyle(s => ({ ...(s || {}), top: y - draggingRef.current!.height / 2 }));
-  //
-  //   // find hovered index by comparing center positions
-  //   const centers = positionsRef.current;
-  //   let hoverIndex = centers.findIndex(c => y < c);
-  //   if (hoverIndex === -1) hoverIndex = centers.length - 1;
-  //   const from = draggingRef.current.index;
-  //   const to = hoverIndex;
-  //   if (to !== from) {
-  //     setItems(prev => {
-  //       const next = prev.slice();
-  //       const [moved] = next.splice(from, 1);
-  //       next.splice(to, 0, moved);
-  //       // update draggingRef index
-  //       draggingRef.current = { ...draggingRef.current!, index: to };
-  //       // update stored positions after DOM updates (next tick)
-  //       requestAnimationFrame(recalcPositions);
-  //       return next;
-  //     });
-  //   }
-  // }
+    if (!target) return;
 
-  // function onPointerUp(/*e: PointerEvent*/) {
-  //   window.removeEventListener('pointermove', onPointerMove);
-  //   window.removeEventListener('pointerup', onPointerUp);
-  //   draggingRef.current = null;
-  //   setDraggingIndex(null);
-  //   setDraggingStyle(null);
-  // }
+    const rect = target.getBoundingClientRect();
+    draggingRef.current = { index, height: rect.height };
+
+    setDraggingIndex(index);
+    setDraggingStyle({
+      width: rect.width,
+      left: rect.left,
+      top: rect.top + window.scrollY,
+      position: 'absolute',
+      zIndex: 50,
+      pointerEvents: 'none',
+    });
+
+    // listen globally for move/up
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+  }
+
+  function onPointerMove(e: PointerEvent) {
+    if (draggingRef.current == null) return;
+
+    const y = e.clientY + window.scrollY;
+    setDraggingStyle(s => ({ ...(s || {}), top: y - draggingRef.current!.height / 2 }));
+
+    // find hovered index by comparing center positions
+    const centers = positionsRef.current;
+    let hoverIndex = centers.findIndex(c => y < c);
+    if (hoverIndex === -1) hoverIndex = centers.length - 1;
+
+    const from = draggingRef.current.index;
+    const to = hoverIndex;
+    if (to !== from) return;
+
+    setItems(prev => {
+      const next = prev.slice();
+      const [moved] = next.splice(from, 1);
+      next.splice(to, 0, moved);
+
+      // update draggingRef index
+      draggingRef.current = { ...draggingRef.current!, index: to };
+
+      // update stored positions after DOM updates (next tick)
+      requestAnimationFrame(recalcPositions);
+      return next;
+    });
+  }
+
+  function onPointerUp(/*e: PointerEvent*/) {
+    window.removeEventListener('pointermove', onPointerMove);
+    window.removeEventListener('pointerup', onPointerUp);
+
+    draggingRef.current = null;
+    setDraggingIndex(null);
+    setDraggingStyle(null);
+  }
 
   // keyboard reorder support: move item up/down with Ctrl+ArrowUp/Down when focused
   function onKey(e: React.KeyboardEvent, index: number) {
     if (e.ctrlKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
       e.preventDefault();
+
       setItems(prev => {
         const next = prev.slice();
         const to = e.key === 'ArrowUp' ? Math.max(0, index - 1) : Math.min(next.length - 1, index + 1);
         if (to === index) return prev;
+
         const [moved] = next.splice(index, 1);
         next.splice(to, 0, moved);
+
         requestAnimationFrame(recalcPositions);
+
         return next;
       });
     }
@@ -134,19 +152,21 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
         {items.map((it, i) => (
           <div
             key={it + '-' + i}
-            className={`draggable-item flex items-center justify-between rounded-md px-2 transition-transform duration-200 ease`}
+            className="draggable-item flex items-center gap-2 rounded-md px-2 transition-transform duration-200 ease"
             tabIndex={0}
             onKeyDown={e => onKey(e, i)}
           >
-            <div className="flex items-center gap-2">
-              {/*<button*/}
-              {/*  className="p-1 text-gray-500 hover:text-gray-700"*/}
-              {/*  onPointerDown={e => startDrag(e, i)}*/}
-              {/*  aria-label={`Drag ${it.title}`}*/}
-              {/*  title="드래그 시작"*/}
-              {/*>*/}
-              {/*  ⠿*/}
-              {/*</button>*/}
+            <button
+              className="p-1 text-gray-500 hover:text-gray-700"
+              onPointerDown={e => startDrag(e, i)}
+              aria-label={`Drag ${it.title}`}
+              title="드래그 시작"
+            >
+              ⠿
+            </button>
+            <div className="flex items-center justify-between flex-auto">
+              <span className="font-medium">{it.title}</span>
+
               <button
                 className="p-1 text-gray-500 hover:text-gray-700"
                 aria-label={it.visible ? '숨기기' : '보이기'}
@@ -156,7 +176,6 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
                 {it.visible ? <EyeGray className="w-4 h-4" /> : <EyeDeleteGray className="w-4 h-4" />}
               </button>
             </div>
-            <div className="font-medium">{it.title}</div>
           </div>
         ))}
       </div>
@@ -167,9 +186,9 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
           style={draggingStyle}
           className="pointer-events-none bg-blue-50 rounded-md shadow-lg w-full max-w-lg m-auto px-2"
         >
-          <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
             <span className="p-1 text-gray-700">⠿</span>
-            <div className="font-medium">{items[draggingIndex ?? 0].title}</div>
+            <span className="font-medium">{items[draggingIndex ?? 0].title}</span>
           </div>
         </div>
       )}
