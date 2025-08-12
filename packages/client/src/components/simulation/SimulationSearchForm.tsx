@@ -30,7 +30,7 @@ function SimulationSearchForm() {
       simulationStatus: 'before',
     });
 
-    openModal('wish');
+    openModal('tutorial');
     resetSimulation();
   };
 
@@ -177,7 +177,7 @@ function SimulationSearchForm() {
               disabled={hasRunningSimulationId === -1}
             >
               {currentSimulation.simulationStatus === 'start' && (
-                <LogoSvg className="absolute -top-20 right-8 w-20 h-20 animate-bounce rotate-170" />
+                <LogoSvg className="absolute -top-20 right-8 w-15 h-15 animate-bounce rotate-170" />
               )}
               <SearchSvg className="w-5 h-4" />
               검색
