@@ -6,6 +6,7 @@ import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { APPLY_STATUS, BUTTON_EVENT, forceStopSimulation, triggerButtonEvent } from '@/utils/simulation/simulation';
 import useLectures from '@/hooks/server/useLectures';
+import { useEffect, useRef } from 'react';
 
 const SIMULATION_MODAL_CONTENTS = [
   {
@@ -63,7 +64,14 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
   );
   const isCloseDisabled = closeDisabledStatuses.includes(modalStatus);
 
+  const confirmBtnRef = useRef<HTMLButtonElement | null>(null);
+
   if (!modalData) return null;
+
+  useEffect(() => {
+    // 모달이 렌더링되면 해당 버튼에 포커스
+    confirmBtnRef.current?.focus();
+  }, []);
 
   /** 에러 체크 해주고, 에러 있으면 throw */
   const checkErrorValue = (res: Record<string, any>, forceFinish: boolean = false) => {
@@ -212,9 +220,9 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
   return (
     <Modal onClose={() => {}}>
       <div className="flex sm:w-[450px] border-1 border-gray-800 flex-col justify-between overflow-hidden">
-        <ModalHeader title="" onClose={handleClickCloseButton} tabIndex={isCloseDisabled ? -1 : 0} />
+        <ModalHeader title="" onClose={handleClickCloseButton} />
 
-        <div className="px-6 pb-6 text-center">
+        <div className="px-6 pb-6 text-center ">
           <div className="flex justify-center mb-4 py-5">
             <div className="w-10 h-10">
               <CheckBlueSvg />
