@@ -34,7 +34,7 @@ export function loggingDepartment(departmentCode: string) {
 /** 학과 클릭 순위를 가져오는 함수
  * 반환 값
  * [departmentCode, selectCount] = [string, number]*/
-function getDepartmentRanks() {
+export function getDepartmentRanks() {
   if (!departmentRank) departmentRank = loadDepartmentRank();
 
   return Object.entries(departmentRank).sort(([, a], [, b]) => b - a);
