@@ -15,6 +15,7 @@ import DraggableList from '@/components/live/subjectTable/DraggableList.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import ListSvg from '@/assets/list.svg?react';
 import { HeadTitle, useLiveTableStore } from '@/store/useLiveTableStore.ts';
+import SystemChecking from './errors/SystemChecking';
 
 interface IRealtimeTable {
   title: string;
@@ -73,9 +74,21 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
   );
 };
 
+const MAINTENANCE = true;
+
 function SubjectBody({ tableTitles }: Readonly<{ tableTitles: HeadTitle[] }>) {
   const { data: tableData, isError, isPending, refetch } = useSSESeats(SSEType.NON_MAJOR);
   const HeadTitles = tableTitles.filter(t => t.visible);
+
+  if (MAINTENANCE) {
+    return (
+      <tr>
+        <td colSpan={HeadTitles.length}>
+          <SystemChecking />;
+        </td>
+      </tr>
+    );
+  }
 
   if (isError) {
     return (
