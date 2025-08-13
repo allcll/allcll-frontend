@@ -1,28 +1,45 @@
 import 'react-datepicker/dist/react-datepicker.css';
 import { Dispatch, SetStateAction } from 'react';
-import Filtering from '@allcll/common/components/filtering/Filtering';
 import Card from '@allcll/common/components/Card';
-import Checkbox from '@allcll/common/components/filtering/Checkbox';
-import { Status } from '@/pages/Logs';
+import CheckboxFilter, { OptionType } from '@allcll/common/components/filtering/CheckboxFilter';
 
-const statusCodes = [
-  { label: '전체', value: 0 },
-  { label: '200 OK', value: 200 },
-  { label: '400 Bad Request', value: 400 },
-  { label: '401 Unauthorized', value: 401 },
-  { label: '403 Forbidden', value: 403 },
-  { label: '404 Not Found', value: 404 },
-  { label: '500 Internal Server Error', value: 500 },
+const StatusCodes: OptionType<number>[] = [
+  { id: 0, label: 0 },
+  { id: 2, label: 200 },
+  { id: 3, label: 400 },
+  { id: 4, label: 401 },
+  { id: 5, label: 403 },
+  { id: 6, label: 404 },
+  { id: 7, label: 500 },
 ];
 
 interface IRequestLogs {
   urlInput: string;
   setUrlInput: Dispatch<SetStateAction<string>>;
-  selectedStatusCode: Status | null;
-  setSelectedStatusCode: Dispatch<SetStateAction<Status | null>>;
+  selectedStatusCodes: number[];
+  setSelectedStatusCodes: Dispatch<SetStateAction<number[]>>;
 }
 
-function RequestLogs({ urlInput, setUrlInput, selectedStatusCode, setSelectedStatusCode }: IRequestLogs) {
+function RequestLogs({ urlInput, setUrlInput, selectedStatusCodes, setSelectedStatusCodes }: IRequestLogs) {
+  const handleChangeCheckbox = (item: number) => {
+    const checkedAllItems = selectedStatusCodes.length === StatusCodes.length;
+
+    if (item === 0) {
+      const updateStatusCodes = checkedAllItems ? [] : StatusCodes.map(status => status.id);
+
+      setSelectedStatusCodes(updateStatusCodes);
+
+      return;
+    }
+
+    const checked = selectedStatusCodes.includes(item);
+    const updateStatusCodes = checked
+      ? selectedStatusCodes.filter(statusCode => statusCode !== item)
+      : [...selectedStatusCodes, item];
+
+    setSelectedStatusCodes(updateStatusCodes);
+  };
+
   return (
     <section className="sticky top-16">
       <Card>
@@ -32,24 +49,13 @@ function RequestLogs({ urlInput, setUrlInput, selectedStatusCode, setSelectedSta
         <div className="w-full gap-4  justify-between max-w-3xl mx-auto space-y-4">
           <label className="block text-sm font-medium mb-1">상태 코드</label>
 
-          <Filtering
-            label={selectedStatusCode?.label ?? '상태 코드를 선택해주세요.'}
-            selected={statusCodes.length > 0}
-            className="gap-4 max-h-80 overflow-y-auto"
-          >
-            {statusCodes.length === 0 && <div> 새로운 상태 코드를 추가해주세요.</div>}
-            {statusCodes.length !== 0 &&
-              statusCodes.map(option => (
-                <div className="flex gap-5" key={option.value}>
-                  <Checkbox
-                    key={option.value}
-                    label={option.label}
-                    checked={selectedStatusCode === option}
-                    onChange={() => setSelectedStatusCode(option)}
-                  />
-                </div>
-              ))}
-          </Filtering>
+          <CheckboxFilter
+            labelPrefix=" 코드"
+            selectedItems={selectedStatusCodes}
+            handleChangeCheckbox={handleChangeCheckbox}
+            options={StatusCodes}
+            selected={selectedStatusCodes.length !== 0}
+          />
 
           <label className="block text-sm font-medium mb-1">API 요청 URL</label>
           <input

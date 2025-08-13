@@ -1,8 +1,8 @@
 import React from 'react';
-import Chip from '../common/Chip';
 import TextField from '../common/TextField';
 import SelectTime from './SelectTime';
 import { Day, DAYS } from '@/utils/types';
+import Chip from '@common/components/chip/Chip';
 import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
 import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore.ts';

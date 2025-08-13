@@ -5,7 +5,7 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import ArrowdownSvg from '@/assets/arrow-down-gray.svg?react';
 import YouTube from 'react-youtube';
 import useMobile from '@/hooks/useMobile';
-import Checkbox from '@/components/common/Checkbox';
+import Checkbox from '@common/components/filtering/Checkbox';
 
 const tutorialVideos = [
   {

@@ -1,4 +1,4 @@
-import Chip from '@/components/common/Chip.tsx';
+import Chip from '@common/components/chip/Chip';
 import RemoveFilterSvg from '@/assets/filter-remove-primary.svg?react';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore.ts';
 

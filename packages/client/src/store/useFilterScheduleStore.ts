@@ -12,7 +12,7 @@ interface FilterState {
   selectedDepartment: string;
   selectedGrades: (Grade | '전체')[];
   isMajor?: boolean;
-  selectedDays: Day[];
+  selectedDays: (Day | '전체')[];
   selectedTimeRange: TimeRange;
   setFilterSchedule: <K extends keyof Omit<FilterState, 'setFilterSchedule' | 'resetFilterSchedule'>>(
     key: K,
