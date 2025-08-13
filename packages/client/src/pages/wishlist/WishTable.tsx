@@ -1,3 +1,4 @@
+import { useDeferredValue } from 'react';
 import { Helmet } from 'react-helmet';
 import useWishes, { InitWishes } from '@/hooks/server/useWishes.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects';
@@ -8,9 +9,24 @@ import useWishSearchStore from '@/store/useWishSearchStore.ts';
 import TableColorInfo from '@/components/wishTable/TableColorInfo.tsx';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
-import { useDeferredValue } from 'react';
+
 
 function WishTable() {
+  const filterParams = useWishSearchStore(state => state.searchParams);
+  const pickedFavorites = useFavorites(state => state.isFavorite);
+  const isPinned = useWishSearchStore(state => state.isPinned);
+  const { data: wishes, isPending } = useWishes();
+  const data = useSearchRank(useJoinPreSeats(wishes, InitWishes));
+
+  const filteredData = useDeferredValue(useFilteringSubjects({
+    subjects: data ?? [],
+    pickedFavorites,
+    searchKeywords: filterParams.searchInput,
+    selectedDepartment: filterParams.selectedDepartment,
+    isFavorite: filterParams.isFavorite,
+    isPinned,
+  }));
+
   return (
     <>
       <Helmet>

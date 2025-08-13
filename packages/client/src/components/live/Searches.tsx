@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent, useEffect, useTransition } from 'react';
 import StarIcon from '@/components/svgs/StarIcon.tsx';
 import SearchBox from '@/components/common/SearchBox.tsx';
 import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
@@ -22,9 +22,10 @@ function Searches() {
   const setTogglePinned = useWishSearchStore(state => state.setTogglePinned);
   const setSearchParams = useWishSearchStore(state => state.setSearchParams);
 
-
   useEffect(() => {
-    setSearchParams({ searchInput, selectedDepartment, isFavorite });
+    startTransition(() => {
+      setSearchParams({ searchInput, selectedDepartment, isFavorite });
+    });
   }, [searchInput, selectedDepartment, isFavorite]);
 
   const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
