@@ -16,7 +16,6 @@ import DraggableList from '@/components/live/subjectTable/DraggableList.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import ListSvg from '@/assets/list.svg?react';
 import useBackSignal from '@/hooks/useBackSignal.ts';
-import { HeadTitle, useLiveTableStore } from '@/store/useLiveTableStore.ts';
 import SystemChecking from './errors/SystemChecking';
 
 interface IRealtimeTable {
