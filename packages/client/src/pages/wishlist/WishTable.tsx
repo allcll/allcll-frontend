@@ -8,23 +8,9 @@ import useWishSearchStore from '@/store/useWishSearchStore.ts';
 import TableColorInfo from '@/components/wishTable/TableColorInfo.tsx';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
+import { useDeferredValue } from 'react';
 
 function WishTable() {
-  const filterParams = useWishSearchStore(state => state.searchParams);
-  const pickedFavorites = useFavorites(state => state.isFavorite);
-  const isPinned = useWishSearchStore(state => state.isPinned);
-  const { data: wishes, isPending } = useWishes();
-  const data = useSearchRank(useJoinPreSeats(wishes, InitWishes));
-
-  const filteredData = useFilteringSubjects({
-    subjects: data ?? [],
-    pickedFavorites,
-    searchKeywords: filterParams.searchInput,
-    selectedDepartment: filterParams.selectedDepartment,
-    isFavorite: filterParams.isFavorite,
-    isPinned,
-  });
-
   return (
     <>
       <Helmet>
@@ -42,15 +28,37 @@ function WishTable() {
 
           {/* Search and Filter */}
           <Searches />
-
-          {/* Course Table */}
           <TableColorInfo />
-          <div className="bg-white mt-6 shadow-md rounded-lg overflow-x-auto">
-            <Table data={filteredData} isPending={isPending} />
-          </div>
+
+          <WishTableComponent />
         </div>
       </div>
     </>
+  );
+}
+
+function WishTableComponent() {
+  const filterParams = useWishSearchStore(state => state.searchParams);
+  const pickedFavorites = useFavorites(state => state.isFavorite);
+  const isPinned = useWishSearchStore(state => state.isPinned);
+  const { data: wishes, isPending } = useWishes();
+  const data = useSearchRank(useJoinPreSeats(wishes, InitWishes));
+
+  const filteredData = useDeferredValue(
+    useFilteringSubjects({
+      subjects: data ?? [],
+      pickedFavorites,
+      searchKeywords: filterParams.searchInput,
+      selectedDepartment: filterParams.selectedDepartment,
+      isFavorite: filterParams.isFavorite,
+      isPinned,
+    }),
+  );
+
+  return (
+    <div className="bg-white mt-6 shadow-md rounded-lg overflow-x-auto">
+      <Table data={filteredData} isPending={isPending} />
+    </div>
   );
 }
 

@@ -24,6 +24,7 @@ const config: Config = {
           '50%': { transform: 'translateY(-10px)' },
         },
       },
+
       animation: {
         marquee: 'marquee 20s linear infinite',
         updown: 'updown 2s ease-in-out infinite',

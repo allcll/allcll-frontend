@@ -32,7 +32,7 @@ function CheckboxFilter<T extends string | number>({
           <Checkbox
             key={item}
             label={`${item}${labelPrefix}`}
-            isChecked={checkSelected(item)}
+            checked={checkSelected(item)}
             onChange={() => handleChangeCheckbox(item)}
           />
         ))}

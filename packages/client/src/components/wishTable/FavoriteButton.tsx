@@ -11,7 +11,7 @@ function FavoriteButton({ subject, className, onClick, ...props }: IFavoriteButt
   const getIsFavorite = useFavorites(state => state.isFavorite);
   const toggleFavorite = useFavorites(state => state.toggleFavorite);
   const [isFavorite, setIsFavorite] = useState(getIsFavorite(subject.subjectId));
-  const title = isFavorite ? '관심목록에서 제거' : '관심목록에 추가';
+  const title = isFavorite ? '즐겨찾기에서 제거' : '즐겨찾기에 추가';
 
   const handleFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsFavorite(prevState => !prevState);
