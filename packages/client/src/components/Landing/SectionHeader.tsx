@@ -22,7 +22,7 @@ function SectionHeader({ title, subtitle, href, disabled = false }: ISectionHead
         <h2 className="text-2xl font-semibold">{title}</h2>
       )}
 
-      {subtitle && <p className="text-gray-500">{subtitle}</p>}
+      {subtitle && <h3 className="text-gray-500">{subtitle}</h3>}
     </>
   );
 }

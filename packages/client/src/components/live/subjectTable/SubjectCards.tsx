@@ -6,18 +6,19 @@ import { WishesWithSeat } from '@/hooks/useWishesPreSeats.ts';
 interface ISubjectCards {
   subjects: WishesWithSeat[];
   isPending?: boolean;
+  className?: string;
 }
 
-function SubjectCards({ subjects, isPending = false }: Readonly<ISubjectCards>) {
+function SubjectCards({ subjects, isPending = false, className = '' }: Readonly<ISubjectCards>) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className={'flex flex-col gap-2 ' + className}>
       <Cards subjects={subjects} isPending={isPending} />
     </div>
   );
 }
 
 function Cards({ subjects, isPending = false }: Readonly<ISubjectCards>) {
-  const { visibleRows } = useInfScroll(subjects);
+  const { visibleRows, loadMoreRef } = useInfScroll(subjects);
   const data = subjects ? subjects.slice(0, visibleRows) : [];
 
   if (isPending || !subjects) {
@@ -50,9 +51,12 @@ function Cards({ subjects, isPending = false }: Readonly<ISubjectCards>) {
           subject={subject}
           seats={subject.seat ?? -1}
           disableSeat={subject.seat === undefined}
+          className="bg-white"
         />
       ))}
-      <div className="load-more-trigger" />
+      <div ref={loadMoreRef} className="load-more-trigger opacity-0">
+        불러오는 중
+      </div>
     </>
   );
 }

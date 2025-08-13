@@ -15,7 +15,7 @@ import { useReloadSimulation } from '@/hooks/useReloadSimulation';
 import useLectures from '@/hooks/server/useLectures.ts';
 import Stopwatch from '@/components/simulation/Stopwatch';
 import { useTimetables } from '@/hooks/server/useTimetableSchedules';
-import TutorialModal from '@/components/simulation/modal/before/TutorialModal';
+import TutorialModal, { checkExpiredTutorialPop } from '@/components/simulation/modal/before/TutorialModal';
 
 const SUBJECTS_COLUMNS_HEADER = [
   '순번',
@@ -54,7 +54,7 @@ function Simulation() {
   const { reloadSimulationStatus } = useReloadSimulation();
   const lectures = useLectures();
   const { data: timetables = [] } = useTimetables();
-
+  const isExpiredTutorial = checkExpiredTutorialPop();
   const currentModal = useSimulationModalStore(state => state.type);
 
   const forceSimulation = async () => {
@@ -123,16 +123,28 @@ function Simulation() {
     }
   };
 
+  const handleClickShowTutorial = () => {
+    localStorage.removeItem('visitedTutorial');
+  };
+
   return (
     <>
       <Helmet>
-        <title>ALLCLL | 시뮬레이션</title>
+        <title>ALLCLL | 올클연습 - 세종대 수강신청 연습</title>
       </Helmet>
 
       {renderModal()}
-      <div className="flex gap-5">
-        <h1 className="font-bold text-lg">수강신청</h1>
-        <Stopwatch />
+      <div className="flex justify-between gap-5">
+        <div className="flex gap-5">
+          <h1 className="font-bold text-lg">수강신청</h1>
+          <Stopwatch />
+        </div>
+
+        {!isExpiredTutorial && (
+          <button className="text-gray-600 hover:text-blue-500 cursor-pointer" onClick={handleClickShowTutorial}>
+            튜토리얼 활성화
+          </button>
+        )}
       </div>
       <SimulationSearchForm />
 

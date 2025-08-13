@@ -1,5 +1,4 @@
-import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
-import { usePinned, useAddPinned, useRemovePinned } from '@/store/usePinned.ts';
+import AlarmButton from '@/components/live/AlarmButton.tsx';
 import { getTimeDiffString } from '@/utils/stringFormats.ts';
 import { Subject, Wishes } from '@/utils/types.ts';
 import { getSeatColor } from '@/utils/colors.ts';
@@ -9,31 +8,15 @@ interface IPinCard {
   seats: number;
   queryTime?: string;
   disableSeat?: boolean;
+  className?: string;
 }
 
-function PinCard({ subject, seats, queryTime, disableSeat = false }: Readonly<IPinCard>) {
-  const { data: pinnedSubjects } = usePinned();
-  const { mutate: deletePin } = useRemovePinned();
-  const { mutate: addPin } = useAddPinned();
-
-  const isPinned = pinnedSubjects?.some(pinnedSubject => pinnedSubject.subjectId === subject.subjectId);
-
-  const handlePin = () => {
-    if (!isPinned) {
-      addPin(subject.subjectId);
-      return;
-    }
-
-    deletePin(subject.subjectId);
-  };
-
+function PinCard({ subject, seats, queryTime, disableSeat = false, className }: Readonly<IPinCard>) {
   return (
-    <div className="bg-gray-50 shadow-sm rounded-lg p-4">
+    <div className={'bg-gray-50 shadow-sm rounded-lg p-4 ' + className}>
       <div className="flex justify-between">
         <h3 className="font-bold">{subject.subjectName}</h3>
-        <button aria-label="알림 과목 제거" onClick={handlePin}>
-          <AlarmIcon disabled={!isPinned} />
-        </button>
+        <AlarmButton subject={subject} />
       </div>
       <div className="mb-2 text-xs text-gray-500">
         <p>{(subject as Wishes).departmentName}</p>

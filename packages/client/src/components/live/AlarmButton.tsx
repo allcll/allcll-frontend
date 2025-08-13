@@ -19,17 +19,17 @@ function AlarmButton({ subject, className, onClick, ...props }: IAlarmButtonProp
   const title = isPinned ? '알림 과목 해제' : '알림 과목 등록';
 
   const handlePin = (e: React.MouseEvent<HTMLButtonElement>) => {
+    selectTargetOnly(subject.subjectId);
+    loggingDepartment(subject.deptCd);
+
+    if (onClick) onClick(e);
+
     if (!isPinned) {
       addPin(subject.subjectId);
       return;
     }
 
     deletePin(subject.subjectId);
-
-    selectTargetOnly(subject.subjectId);
-    loggingDepartment(subject.deptCd);
-
-    if (onClick) onClick(e);
   };
 
   return (

@@ -27,9 +27,9 @@ const ErrorPage = () => {
         <Link to="/" className="text-blue-500">
           홈으로 돌아가기
         </Link>
-        <Link to="/survey" className="text-blue-500">
+        <a href="https://forms.gle/bCDTVujEHunnvHe88" target="_blank" className="text-blue-500">
           문의하기
-        </Link>
+        </a>
       </div>
     </>
   );

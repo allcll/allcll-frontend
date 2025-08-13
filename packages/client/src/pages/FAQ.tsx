@@ -1,6 +1,7 @@
-import { Helmet } from 'react-helmet';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import remarkGfm from 'remark-gfm';
+import { Helmet } from 'react-helmet';
+import { useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import useFaq from '@/hooks/server/public/useFaq.ts';
 import ArrowSvg from '@/assets/arrow-down-gray.svg?react';
@@ -20,7 +21,8 @@ function unique(array: string[]) {
 }
 
 function FAQ() {
-  const hash = window.location.hash;
+  const location = useLocation();
+  const hash = location.hash;
   const selectedIndex = hash ? parseInt(hash.replace('#', '')) : null;
 
   const [openIndex, setOpenIndex] = useState<number | null>(selectedIndex);
@@ -34,6 +36,20 @@ function FAQ() {
   const toggleAnswer = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+
+  useEffect(() => {
+    if (location.hash) {
+      const selectedIndex = parseInt(location.hash.replace('#', ''));
+
+      setTimeout(() => {
+        const targetElement = document.getElementById('faq-container-' + selectedIndex);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+          setOpenIndex(selectedIndex);
+        }
+      }, 300);
+    }
+  }, [location.hash]);
 
   const selectTag = (tag: string | null) => {
     setSelectedTag(prev => {
@@ -89,7 +105,7 @@ interface IFaqComponent {
 
 function FaqComponent({ item, index, isOpen, toggleAnswer }: IFaqComponent) {
   return (
-    <div key={index} className="mb-4 rounded-md bg-white shadow-sm">
+    <div key={index} id={'faq-container-' + index} className="mb-4 rounded-md bg-white shadow-sm">
       <button
         onClick={() => toggleAnswer(index)}
         className={
