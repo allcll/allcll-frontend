@@ -10,6 +10,12 @@ interface IFiltering {
   selected: boolean;
 }
 
+/**
+ * 기본 필터링 컴포넌트 입니다.
+ * Chip + 필터링할 수 있는 옵션들로 이루어진 컴포넌트입니다.
+ * @param param0
+ * @returns
+ */
 function Filtering({ label, selected, children, className = '' }: Readonly<IFiltering>) {
   const containerRef = useRef<HTMLButtonElement>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
