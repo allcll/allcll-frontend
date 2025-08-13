@@ -6,7 +6,7 @@ import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { APPLY_STATUS, BUTTON_EVENT, forceStopSimulation, triggerButtonEvent } from '@/utils/simulation/simulation';
 import useLectures from '@/hooks/server/useLectures';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 const SIMULATION_MODAL_CONTENTS = [
   {
@@ -68,10 +68,7 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
 
   if (!modalData) return null;
 
-  useEffect(() => {
-    // 모달이 렌더링되면 해당 버튼에 포커스
-    confirmBtnRef.current?.focus();
-  }, []);
+  confirmBtnRef.current?.focus();
 
   /** 에러 체크 해주고, 에러 있으면 throw */
   const checkErrorValue = (res: Record<string, any>, forceFinish: boolean = false) => {
