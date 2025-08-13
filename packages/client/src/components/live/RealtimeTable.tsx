@@ -74,7 +74,7 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
   );
 };
 
-const MAINTENANCE = true;
+const MAINTENANCE = false;
 
 function SubjectBody({ tableTitles }: Readonly<{ tableTitles: HeadTitle[] }>) {
   const { data: tableData, isError, isPending, refetch } = useSSESeats(SSEType.NON_MAJOR);
