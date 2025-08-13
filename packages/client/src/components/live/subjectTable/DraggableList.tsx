@@ -14,7 +14,9 @@ type Props<T extends Item> = {
 
 export default function DraggableList<T extends Item>({ initialItems, onChange }: Props<T>) {
   const [items, setItems] = useState(initialItems);
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLUListElement | null>(null);
+  const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const [focusedItemTitle, setFocusedItemTitle] = useState<string | null>(null);
 
   // Ref to hold drag-specific data that doesn't need to trigger re-renders
   const dragMetaRef = useRef<{
@@ -33,6 +35,16 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
   useEffect(() => {
     onChange?.(items);
   }, [items, onChange]);
+
+  useEffect(() => {
+    if (focusedItemTitle) {
+      const newIndex = items.findIndex(item => item.title === focusedItemTitle);
+      if (newIndex !== -1) {
+        itemRefs.current[newIndex]?.focus();
+      }
+      setFocusedItemTitle(null); // Reset after focusing
+    }
+  }, [items, focusedItemTitle]);
 
   useEffect(() => {
     const recalc = () => requestAnimationFrame(recalcPositions);
@@ -68,6 +80,36 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
       const r = el.getBoundingClientRect();
       return r.top + r.height / 2;
     });
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent, index: number) {
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const fromIndex = index;
+      let toIndex: number;
+
+      if (e.key === 'ArrowUp') {
+        if (fromIndex === 0) return;
+        toIndex = fromIndex - 1;
+      } else {
+        // ArrowDown
+        if (fromIndex === items.length - 1) return;
+        toIndex = fromIndex + 1;
+      }
+
+      const movedItemTitle = items[fromIndex].title;
+
+      setItems(prev => {
+        const next = [...prev];
+        const [moved] = next.splice(fromIndex, 1);
+        next.splice(toIndex, 0, moved);
+        return next;
+      });
+
+      setFocusedItemTitle(movedItemTitle);
+    }
   }
 
   function startDrag(e: React.PointerEvent, index: number) {
@@ -170,12 +212,16 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
 
   return (
     <>
-      <div ref={containerRef} className="bg-white divide-y divide-gray-100 relative">
+      <ul ref={containerRef} className="bg-white divide-y divide-gray-100 relative">
         {items.map((it, i) => (
-          <div
+          <li
             key={it.title}
+            ref={el => {
+              itemRefs.current[i] = el;
+            }}
             className="draggable-item flex items-center gap-2 rounded-md px-2 transition-transform duration-1000"
             tabIndex={0}
+            onKeyDown={e => handleKeyDown(e, i)}
             style={{
               transform: getTransform(i),
               opacity: currentDraggingIndex === i ? 0.4 : 1,
@@ -200,9 +246,9 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
                 {it.visible ? <EyeGray className="w-4 h-4" /> : <EyeDeleteGray className="w-4 h-4" />}
               </button>
             </div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
 
       {draggingStyle && draggedItemInfo && (
         <div style={draggingStyle} className="bg-blue-50 rounded-md shadow-lg w-full max-w-lg m-auto px-2">
@@ -213,7 +259,7 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
         </div>
       )}
 
-      <div className="mt-4 text-sm text-gray-500">Tip: 항목을 선택한 뒤 Ctrl + ↑/↓ 로 키보드 이동도 가능합니다.</div>
+      <div className="mt-4 text-sm text-gray-500">Tip: 항목을 선택한 뒤 ↑/↓ 로 키보드 이동도 가능합니다.</div>
     </>
   );
 }
