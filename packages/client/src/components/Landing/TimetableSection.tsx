@@ -58,7 +58,7 @@ function TimetableSection() {
 
   return (
     <Section>
-      <SectionHeader title="시간표" subtitle="시간표 부터 전략적 수강신청 준비" href="/timetable" />
+      <SectionHeader title="시간표" subtitle="시간표 부터 전략적 세종대 수강신청 준비" href="/timetable" />
 
       <Card className="mt-6">
         <TimetableGridComponent colNames={colNames} rowNames={rowNames}>

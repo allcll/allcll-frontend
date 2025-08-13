@@ -1,6 +1,37 @@
 @import 'tailwindcss';
 @config "../tailwind.config.ts";
 
+/* SearchSideBar Transitions */
+.sidebar-transition-enter {
+  transform: translateX(100%);
+}
+.sidebar-transition-enter-active {
+  transform: translateX(0);
+  transition: transform 100ms ease-in-out;
+}
+.sidebar-transition-exit {
+  transform: translateX(0);
+}
+.sidebar-transition-exit-active {
+  transform: translateX(100%);
+  transition: transform 100ms ease-in-out;
+}
+
+.bottom-sheet-transition-enter {
+  transform: translateY(100%);
+}
+.bottom-sheet-transition-enter-active {
+  transform: translateY(0);
+  transition: transform 100ms ease-in-out;
+}
+.bottom-sheet-transition-exit {
+  transform: translateY(0);
+}
+.bottom-sheet-transition-exit-active {
+  transform: translateY(100%);
+  transition: transform 100ms ease-in-out;
+}
+
 body {
   margin: 0;
 }
@@ -63,7 +94,7 @@ body {
 @keyframes gradientBlink {
   0%,
   100% {
-    background-position: 0% 50%;
+    background-position: 0 50%;
     opacity: 1;
   }
   50% {

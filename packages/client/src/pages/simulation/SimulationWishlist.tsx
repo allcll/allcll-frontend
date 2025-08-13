@@ -5,7 +5,7 @@ const SimulationWishlist = () => {
   return (
     <>
       <Helmet>
-        <title>ALLCLL | 시뮬레이션 관심 과목</title>
+        <title>ALLCLL | 올클연습 - 관심 과목</title>
       </Helmet>
 
       <section className="border p-2 text-xs">

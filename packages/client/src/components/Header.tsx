@@ -13,7 +13,7 @@ export const HeaderContents = [
 ];
 
 const ButtonContents = [
-  { icon: <HelpDeskSvg className="w-4 h-4" />, title: '오류 및 제안', path: '/survey' },
+  { icon: <HelpDeskSvg className="w-4 h-4" />, title: '오류 및 제안', path: 'https://forms.gle/bCDTVujEHunnvHe88' },
   {
     icon: <HelpChatSvg className="w-4 h-4" />,
     title: '공지 채팅방',
@@ -49,9 +49,16 @@ function Header() {
 
         <div className="items-center space-x-2 hidden sm:flex">
           {ButtonContents.map(({ icon, title, path }) => (
-            <Link key={path} to={path} className="p-2 rounded-md hover:bg-gray-100" aria-label={title} title={title}>
+            <a
+              className="p-2 rounded-md hover:bg-gray-100"
+              target="_blank"
+              key={path}
+              href={path}
+              aria-label={title}
+              title={title}
+            >
               {icon}
-            </Link>
+            </a>
           ))}
         </div>
       </div>

@@ -76,7 +76,7 @@ const DatabaseOperations: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>ALLCLL | 시뮬레이션 데이터 베이스 관리</title>
+        <title>ALLCLL | 올클연습 - 데이터 베이스 관리</title>
       </Helmet>
 
       <div className="max-w-4xl min-h-screen mx-auto p-8 space-y-6">
