@@ -23,7 +23,7 @@ function CheckboxFilter<LABEL extends string | number>({
   handleChangeCheckbox,
   options,
   selected,
-}: ICheckboxFilter<LABEL>) {
+}: Readonly<ICheckboxFilter<LABEL>>) {
   const checkSelected = (item: number) => {
     return selectedItems.some(selected => selected === item);
   };

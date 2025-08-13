@@ -8,7 +8,7 @@ function getButtonColor(variants: 'primary' | 'secondary' | undefined) {
     : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-600';
 }
 
-function CustomButton({ children, variants, className = '', ...props }: IButton) {
+function CustomButton({ children, variants, className = '', ...props }: Readonly<IButton>) {
   return (
     <button
       type={props.type}

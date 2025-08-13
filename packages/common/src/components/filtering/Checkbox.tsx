@@ -4,7 +4,7 @@ interface ICheckbox extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
 }
 
-function Checkbox({ label = 'checkbox', ...props }: ICheckbox) {
+function Checkbox({ label = 'checkbox', ...props }: Readonly<ICheckbox>) {
   return (
     <label htmlFor={'checkbox-' + label} className="flex flex-row items-center gap-3 text-md ">
       <div className="relative w-5 h-5">
