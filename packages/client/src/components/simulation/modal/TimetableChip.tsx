@@ -35,7 +35,7 @@ function TimetableChip({ selectedTimetable, onSelect, setSelectedTimetable, time
                 <Checkbox
                   key={option.timeTableId}
                   label={option.timeTableName}
-                  isChecked={selectedTimetable.timeTableId === option.timeTableId}
+                  checked={selectedTimetable.timeTableId === option.timeTableId}
                   onChange={() => handleOptionClick(option)}
                 />
               </div>
