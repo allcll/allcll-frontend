@@ -20,7 +20,6 @@ function DayFilter() {
     const checked = selectedDays.length === DAYS.length;
 
     setFilterSchedule('selectedDays', checked ? [] : DAYS.map(day => day.label));
-    return;
   };
 
   const handleChangeCheckbox = (optionId: number) => {

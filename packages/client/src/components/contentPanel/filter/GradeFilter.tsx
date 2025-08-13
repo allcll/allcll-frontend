@@ -19,7 +19,6 @@ function GradeFilter() {
     const checked = selectedGrades.length === GRADE.length;
 
     setFilterSchedule('selectedGrades', checked ? [] : GRADE.map(grade => grade.label));
-    return;
   };
 
   const handleChangeCheckbox = (optionId: number) => {
