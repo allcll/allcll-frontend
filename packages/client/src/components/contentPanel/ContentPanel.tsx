@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useDeferredValue, useState } from 'react';
 import SearchBox from '../common/SearchBox';
 import DepartmentFilter from './filter/DepartmentFilter';
 import GradeFilter from './filter/GradeFilter';
@@ -22,13 +22,15 @@ function ContentPanel() {
 
   const { selectedDays, selectedDepartment, selectedGrades } = useFilterScheduleStore();
 
-  const filteredData = useFilteringSubjects({
-    subjects,
-    searchKeywords,
-    selectedDays,
-    selectedDepartment,
-    selectedGrades,
-  });
+  const filteredData = useDeferredValue(
+    useFilteringSubjects({
+      subjects,
+      searchKeywords,
+      selectedDays,
+      selectedDepartment,
+      selectedGrades,
+    }),
+  );
 
   return (
     <div className="w-full h-screen md:basis-1/3 p-4 md:border-t-0 flex flex-col gap-3 bg-white shadow-md rounded-lg">

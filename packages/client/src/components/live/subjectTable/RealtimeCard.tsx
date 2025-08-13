@@ -1,4 +1,4 @@
-import CloseIcon from '@/assets/x-gray.svg?react';
+import CloseIcon from '@/assets/x.svg?react';
 import useTick from '@/hooks/useTick.ts';
 import { useRemovePinned } from '@/store/usePinned.ts';
 import { getTimeDiffString } from '@/utils/stringFormats.ts';
@@ -24,7 +24,7 @@ function RealtimeCard({ subject, seats, queryTime, disableSeat = false }: Readon
       <div className="flex justify-between">
         <h3 className="font-bold">{subject.subjectName}</h3>
         <button className="p-2 rounded-full hover:bg-blue-100" aria-label="알림 과목 제거" onClick={handlePin}>
-          <CloseIcon />
+          <CloseIcon className="text-gray-400 w-3 h-3" />
         </button>
       </div>
       <div className="mb-2 text-xs text-gray-500">

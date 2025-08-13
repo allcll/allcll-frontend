@@ -123,7 +123,7 @@ function TutorialModal() {
             </div>
 
             <p className="text-gray-500 text-sm">
-              올클 연습은 실제 수강신청과 유사한 환경에서 연습할 수 있는 기능입니다.
+              올클연습은 실제 수강신청과 유사한 환경에서 연습할 수 있는 기능입니다.
             </p>
             <p className="text-gray-500 text-sm">
               각 영상을 통해 연습 과목 선택, 연습 시작 방법, 연습 종료 및 결과 분석 방법을 배울 수 있습니다.
