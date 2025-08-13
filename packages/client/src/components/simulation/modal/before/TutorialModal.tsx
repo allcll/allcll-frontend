@@ -129,17 +129,17 @@ function TutorialModal() {
               각 영상을 통해 연습 과목 선택, 연습 시작 방법, 연습 종료 및 결과 분석 방법을 배울 수 있습니다.
             </p>
             <div className="flex flex-row w-full gap-4 mt-4 justify-end">
+              <Checkbox
+                label="일주일 동안 보지 않기"
+                checked={popupChecked}
+                onChange={() => setPopupChecked(!popupChecked)}
+              />
               <button
                 onClick={handleClickSkipTutorial}
                 className="px-4 cursor-pointer text-white py-2 bg-blue-500 hover:bg-blue-600 rounded-md"
               >
                 튜토리얼 건너뛰기
               </button>
-              <Checkbox
-                label="일주일 동안 보지 않기"
-                checked={popupChecked}
-                onChange={() => setPopupChecked(!popupChecked)}
-              />
             </div>
           </div>
         </div>
