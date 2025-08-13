@@ -1,9 +1,9 @@
 import { ChangeEvent, useEffect } from 'react';
 import StarIcon from '@/components/svgs/StarIcon.tsx';
-import useDepartments from '@/hooks/server/useDepartments.ts';
-import useWishSearchStore from '@/store/useWishSearchStore.ts';
 import SearchBox from '@/components/common/SearchBox.tsx';
 import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
+import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
+import useWishSearchStore from '@/store/useWishSearchStore.ts';
 
 export interface WishSearchParams {
   searchInput: string;
@@ -22,9 +22,6 @@ function Searches() {
   const setTogglePinned = useWishSearchStore(state => state.setTogglePinned);
   const setSearchParams = useWishSearchStore(state => state.setSearchParams);
 
-  const { data: departments } = useDepartments();
-
-  const departmentsList = [{ departmentName: '전체', departmentCode: '' }, ...(departments ?? [])];
 
   useEffect(() => {
     setSearchParams({ searchInput, selectedDepartment, isFavorite });
@@ -48,22 +45,11 @@ function Searches() {
         onDelete={() => setSearchInput('')}
         onChange={handleSearchInputChange}
       />
-      <label htmlFor="department" className="hidden">
-        학과
-      </label>
-      <select
-        id="department"
-        className="pl-2 pr-4 py-2 rounded-md bg-white border border-gray-400"
-        style={{ maxWidth: 'calc(100vw - 64px)' }}
+      <DepartmentFilter
         value={selectedDepartment}
+        style={{ maxWidth: 'calc(100vw - 64px)' }}
         onChange={handleDepartmentChange}
-      >
-        {departmentsList.map(({ departmentName, departmentCode }) => (
-          <option key={departmentCode} value={departmentCode}>
-            {departmentName}
-          </option>
-        ))}
-      </select>
+      />
 
       <div className="flex items-center space-x-2">
         <button
