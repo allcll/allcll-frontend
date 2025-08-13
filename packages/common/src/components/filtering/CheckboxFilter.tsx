@@ -50,7 +50,7 @@ function CheckboxFilter<LABEL extends string | number>({
     <Filtering label={label} selected={selected}>
       {options.map(option => (
         <Checkbox
-          key={String(option)}
+          key={option.id}
           label={getItemLabel(option.id)}
           checked={checkSelected(option.id)}
           onChange={() => handleChangeCheckbox(option.id)}
