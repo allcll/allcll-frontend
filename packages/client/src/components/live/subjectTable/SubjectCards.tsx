@@ -18,7 +18,7 @@ function SubjectCards({ subjects, isPending = false, className = '' }: Readonly<
 }
 
 function Cards({ subjects, isPending = false }: Readonly<ISubjectCards>) {
-  const { visibleRows } = useInfScroll(subjects);
+  const { visibleRows, loadMoreRef } = useInfScroll(subjects);
   const data = subjects ? subjects.slice(0, visibleRows) : [];
 
   if (isPending || !subjects) {
@@ -54,7 +54,9 @@ function Cards({ subjects, isPending = false }: Readonly<ISubjectCards>) {
           className="bg-white"
         />
       ))}
-      <div className="load-more-trigger" />
+      <div ref={loadMoreRef} className="load-more-trigger opacity-0">
+        불러오는 중
+      </div>
     </>
   );
 }
