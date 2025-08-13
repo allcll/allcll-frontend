@@ -10,23 +10,7 @@ import TableColorInfo from '@/components/wishTable/TableColorInfo.tsx';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
 
-
 function WishTable() {
-  const filterParams = useWishSearchStore(state => state.searchParams);
-  const pickedFavorites = useFavorites(state => state.isFavorite);
-  const isPinned = useWishSearchStore(state => state.isPinned);
-  const { data: wishes, isPending } = useWishes();
-  const data = useSearchRank(useJoinPreSeats(wishes, InitWishes));
-
-  const filteredData = useDeferredValue(useFilteringSubjects({
-    subjects: data ?? [],
-    pickedFavorites,
-    searchKeywords: filterParams.searchInput,
-    selectedDepartment: filterParams.selectedDepartment,
-    isFavorite: filterParams.isFavorite,
-    isPinned,
-  }));
-
   return (
     <>
       <Helmet>
