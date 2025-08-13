@@ -26,7 +26,7 @@ function SemesterSetting() {
                 <Checkbox
                   key={option}
                   label={option}
-                  isChecked={semester === option}
+                  checked={semester === option}
                   onChange={() => setSemester(option)}
                 />
               </div>

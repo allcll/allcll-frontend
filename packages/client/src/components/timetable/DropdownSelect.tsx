@@ -51,7 +51,7 @@ const DropdownSelect = ({ timetables, onSelect, onEdit, onDelete, openCreateModa
                 <Checkbox
                   key={option.timeTableId}
                   label={option.timeTableName}
-                  isChecked={currentTimetable.timeTableId === option.timeTableId}
+                  checked={currentTimetable.timeTableId === option.timeTableId}
                   onChange={() => handleOptionClick(option)}
                 />
                 {currentTimetable.timeTableId === option.timeTableId && (

@@ -44,7 +44,7 @@ function RequestLogs({ urlInput, setUrlInput, selectedStatusCode, setSelectedSta
                   <Checkbox
                     key={option.value}
                     label={option.label}
-                    isChecked={selectedStatusCode === option}
+                    checked={selectedStatusCode === option}
                     onChange={() => setSelectedStatusCode(option)}
                   />
                 </div>
