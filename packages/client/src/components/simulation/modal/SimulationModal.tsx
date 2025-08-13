@@ -37,6 +37,13 @@ const SIMULATION_MODAL_CONTENTS = [
   },
 ];
 
+const closeDisabledStatuses = [
+  APPLY_STATUS.PROGRESS,
+  APPLY_STATUS.SUCCESS,
+  APPLY_STATUS.FAILED,
+  APPLY_STATUS.CAPTCHA_FAILED,
+];
+
 interface ISimulationModal {
   reloadSimulationStatus: () => void;
 }
@@ -54,6 +61,7 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
   const skipRefreshApplyStatus = [APPLY_STATUS.FAILED, APPLY_STATUS.DOUBLED, APPLY_STATUS.CAPTCHA_FAILED].includes(
     modalStatus,
   );
+  const isCloseDisabled = closeDisabledStatuses.includes(modalStatus);
 
   if (!modalData) return null;
 
@@ -98,7 +106,6 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
       console.log('시뮬레이션 완료');
       openModal('result');
     }
-
   };
 
   const handleSkipRefresh = async (subjectId: number) => {
@@ -196,10 +203,16 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
     }
   };
 
+  const handleClickCloseButton = () => {
+    if (!isCloseDisabled) {
+      closeModal('simulation');
+    }
+  };
+
   return (
     <Modal onClose={() => {}}>
       <div className="flex sm:w-[450px] border-1 border-gray-800 flex-col justify-between overflow-hidden">
-        <ModalHeader title="" onClose={handleClickCheck} />
+        <ModalHeader title="" onClose={handleClickCloseButton} tabIndex={isCloseDisabled ? -1 : 0} />
 
         <div className="px-6 pb-6 text-center">
           <div className="flex justify-center mb-4 py-5">
