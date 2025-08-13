@@ -130,7 +130,7 @@ function Simulation() {
   return (
     <>
       <Helmet>
-        <title>ALLCLL | 시뮬레이션</title>
+        <title>ALLCLL | 올클연습 - 세종대 수강신청 연습</title>
       </Helmet>
 
       {renderModal()}
