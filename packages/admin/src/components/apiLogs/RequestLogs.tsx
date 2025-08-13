@@ -20,7 +20,7 @@ interface IRequestLogs {
   setSelectedStatusCodes: Dispatch<SetStateAction<number[]>>;
 }
 
-function RequestLogs({ urlInput, setUrlInput, selectedStatusCodes, setSelectedStatusCodes }: IRequestLogs) {
+function RequestLogs({ urlInput, setUrlInput, selectedStatusCodes, setSelectedStatusCodes }: Readonly<IRequestLogs>) {
   const handleChangeCheckbox = (item: number) => {
     const checkedAllItems = selectedStatusCodes.length === StatusCodes.length;
 
