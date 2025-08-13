@@ -20,7 +20,7 @@ function SimulationSection() {
   return (
     <Section>
       <SectionHeader
-        title="세종대 수강신청 연습 (올클 연습)"
+        title="세종대 수강신청 연습 (올클연습)"
         subtitle="세종대 수강신청 연습 부터, 결과 분석까지 한 번에"
         href="/simulation"
       />
