@@ -3,7 +3,7 @@ import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
 import FilterSvg from '@/assets/filter.svg?react';
 import { FilteredSubjectCards } from '../subject/FilteredSubjectCards';
-import { useState } from 'react';
+import { useDeferredValue, useState } from 'react';
 import useSubject from '@/hooks/server/useSubject';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { BottomSheetType } from '@/store/useBottomSheetStore';
@@ -21,13 +21,15 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
   const { openScheduleModal, cancelSchedule } = useScheduleModal();
   const { selectedDays, selectedDepartment, selectedGrades } = useFilterScheduleStore();
 
-  const filteredData = useFilteringSubjects({
-    subjects,
-    searchKeywords,
-    selectedDays,
-    selectedDepartment,
-    selectedGrades,
-  });
+  const filteredData = useDeferredValue(
+    useFilteringSubjects({
+      subjects,
+      searchKeywords,
+      selectedDays,
+      selectedDepartment,
+      selectedGrades,
+    }),
+  );
 
   const initSchedule = new ScheduleAdapter().toUiData();
 
