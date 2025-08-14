@@ -11,7 +11,7 @@ import useLectures, { Lecture } from '@/hooks/server/useLectures';
 
 function DashboardDetail() {
   const { runId } = useParams();
-  const lectures = useLectures();
+  const { data: lectures } = useLectures();
 
   const result = useLiveQuery(() => getSimulationResult(Number(runId)));
 

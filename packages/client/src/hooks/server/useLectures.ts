@@ -14,40 +14,48 @@ export interface Lecture {
   lesn_time: string;
   professorName: string;
   lesn_room: string;
-  tm_num: string;
+  tm_num: string; // 서버에서 null일 수 있으면 ''로 정규화
 }
 
-function useLectures() {
-  const { data: subjects } = useSubject();
-  const { data: departments } = useDepartments();
+export type UseLecturesReturn = {
+  data: Lecture[];
+  isLoading: boolean;
+};
 
-  const getLectures = (subjects?: Subject[], departments?: Department[]): Lecture[] => {
-    if (!subjects || !departments) {
-      return [];
-    }
+function useLectures(): UseLecturesReturn {
+  const { data: subjects, isLoading: isLoadingSubjects } = useSubject();
+  const { data: departments, isLoading: isLoadingDepartments } = useDepartments();
 
-    return subjects.map(subject => {
-      const department = departments.find(dept => dept.departmentCode === subject.deptCd)?.departmentName || '';
-      const departmentName = department ? department.split(' ').reverse()[0] : '';
+  const isLoading = isLoadingSubjects || isLoadingDepartments;
 
-      return {
-        subjectId: subject.subjectId ?? -1,
-        subjectCode: subject.subjectCode ?? '',
-        classCode: subject.classCode ?? '',
-        departmentName,
-        subjectName: subject.subjectName ?? '',
-        language: subject.curiLangNm ?? '',
-        subjectType: subject.curiTypeCdNm ?? '',
-        semester_at: subject.studentYear ? Number(subject.studentYear) : -1,
-        lesn_time: subject.lesnTime ?? '',
-        professorName: subject.professorName ?? '',
-        lesn_room: subject.lesnRoom ?? '',
-        tm_num: subject.tmNum ?? '',
-      };
-    });
-  };
+  if (isLoading || !subjects || !departments) {
+    return { data: [], isLoading };
+  }
 
-  return getLectures(subjects, departments);
+  const data: Lecture[] = getLectures(subjects, departments);
+  return { data, isLoading: false };
+}
+
+function getLectures(subjects: Subject[], departments: Department[]): Lecture[] {
+  return subjects.map((subject): Lecture => {
+    const departmentFull = departments.find(dept => dept.departmentCode === subject.deptCd)?.departmentName || '';
+    const departmentName = departmentFull ? departmentFull.split(' ').reverse()[0] : '';
+
+    return {
+      subjectId: subject.subjectId ?? -1,
+      subjectCode: subject.subjectCode ?? '',
+      classCode: subject.classCode ?? '',
+      departmentName,
+      subjectName: subject.subjectName ?? '',
+      language: subject.curiLangNm ?? '',
+      subjectType: subject.curiTypeCdNm ?? '',
+      semester_at: subject.studentYear ? Number(subject.studentYear) : -1,
+      lesn_time: subject.lesnTime ?? '',
+      professorName: subject.professorName ?? '',
+      lesn_room: subject.lesnRoom ?? '',
+      tm_num: subject.tmNum ?? '', // null/undefined 방어
+    };
+  });
 }
 
 export default useLectures;

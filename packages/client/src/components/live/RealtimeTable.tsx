@@ -9,12 +9,13 @@ import { SSEType } from '@/hooks/useSSEManager.ts';
 import useSSESeats, { SseSubject } from '@/hooks/server/useSSESeats.ts';
 import { getTimeDiffString } from '@/utils/stringFormats.ts';
 import { getSeatColor } from '@/utils/colors.ts';
+import { HeadTitle, useLiveTableStore } from '@/store/useLiveTableStore.ts';
 import TableColorInfo from '@/components/wishTable/TableColorInfo.tsx';
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import DraggableList from '@/components/live/subjectTable/DraggableList.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import ListSvg from '@/assets/list.svg?react';
-import { HeadTitle, useLiveTableStore } from '@/store/useLiveTableStore.ts';
+import useBackSignal from '@/hooks/useBackSignal.ts';
 import SystemChecking from './errors/SystemChecking';
 
 interface IRealtimeTable {
@@ -185,6 +186,11 @@ interface ITableTitleModal {
 }
 
 function LiveTableTitleModal({ initialItems, onChange, onClose }: ITableTitleModal) {
+  useBackSignal({
+    enabled: true,
+    onClose: onClose,
+  });
+
   return (
     <Modal onClose={onClose}>
       <ModalHeader title="테이블 설정" onClose={onClose} />

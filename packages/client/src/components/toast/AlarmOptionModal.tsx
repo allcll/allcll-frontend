@@ -1,6 +1,6 @@
 import CloseSvg from '@/assets/x-gray.svg?react';
-import { useEffect } from 'react';
 import useAlarmSettings from '@/store/useAlarmSettings.ts';
+import useBackSignal from '@/hooks/useBackSignal.ts';
 
 interface IAlarmOptionModal {
   isOpen: boolean;
@@ -18,26 +18,10 @@ function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
   }
 
   // 뒤로가기 버튼 인식 후, 알림 설정 저장 후 모달 닫기
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeAndSave();
-    };
-
-    const handlePopState = (e: PopStateEvent) => {
-      e.preventDefault();
-      closeAndSave();
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('popstate', handlePopState);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('popstate', handlePopState);
-    };
-  }, []);
+  useBackSignal({
+    enabled: isOpen,
+    onClose: closeAndSave,
+  });
 
   return !isOpen ? null : (
     <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-contrast-50" onClick={closeAndSave}>

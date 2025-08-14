@@ -53,7 +53,7 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
   const { closeModal, openModal } = useSimulationModalStore();
   const { currentSubjectId, setSubjectStatus, subjectStatusMap } = useSimulationSubjectStore();
   const { setCurrentSimulation } = useSimulationProcessStore();
-  const lectures = useLectures();
+  const { data: lectures } = useLectures();
 
   const currentSubjectStatus = subjectStatusMap[currentSubjectId];
   const modalData = SIMULATION_MODAL_CONTENTS.find(data => data.status === currentSubjectStatus);
@@ -216,7 +216,7 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
 
   return (
     <Modal onClose={() => {}}>
-      <div className="flex w-full sm:w-[450px] h-[70vh] sm:h-fit border-1 border-gray-800 flex-col justify-between overflow-hidden">
+      <div className="flex sm:w-[450px] border-1 border-gray-800 flex-col justify-between overflow-hidden">
         <ModalHeader title="" onClose={handleClickCloseButton} />
 
         <div className="px-6 pb-6 text-center ">

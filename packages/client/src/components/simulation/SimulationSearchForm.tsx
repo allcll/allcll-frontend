@@ -17,7 +17,7 @@ function SimulationSearchForm() {
   const { openModal } = useSimulationModalStore();
   const ongoingSimulation = useLiveQuery(checkOngoingSimulation);
   const { reloadSimulationStatus } = useReloadSimulation();
-  const lectures = useLectures();
+  const { data: lectures } = useLectures();
 
   const hasRunningSimulationId =
     ongoingSimulation && 'simulationId' in ongoingSimulation ? ongoingSimulation.simulationId : -1;
