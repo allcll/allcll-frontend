@@ -14,7 +14,6 @@ export const test = baseTest.extend<{ page: Page }>({
   // 기존 'page' fixture를 오버라이드(재정의)합니다.
   page: async ({ page }, use) => {
     // 테스트가 실행되기 전에 광고 차단 규칙을 설정합니다.
-    console.log('광고 차단 Fixture가 적용되었습니다.');
     await Promise.all(AD_SCRIPT_URLS.map(url => page.route(url, route => route.abort())));
 
     // 설정이 완료된 page 객체를 테스트에 전달합니다.

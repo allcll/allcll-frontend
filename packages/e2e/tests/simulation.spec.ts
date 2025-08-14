@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures/ad-blocking-fixture'
+import { test, expect } from '../fixtures/adBlocking';
 import { Page, Locator } from '@playwright/test';
 import { getTestEnv } from '../fixtures/testEnv';
 
