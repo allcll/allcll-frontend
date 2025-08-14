@@ -58,7 +58,7 @@ export function SimulationTestUI() {
   }
 
   async function handleSearchEvent() {
-    const res = await triggerButtonEvent({ eventType: BUTTON_EVENT.SEARCH }, lectures);
+    const res = await triggerButtonEvent({ eventType: BUTTON_EVENT.SEARCH }, lectures.data);
     setLog(JSON.stringify(res));
   }
 
@@ -69,7 +69,7 @@ export function SimulationTestUI() {
         eventType: BUTTON_EVENT.APPLY,
         subjectId: snapshots.current?.[clickIndex.current % 7].subject_id ?? -1,
       },
-      lectures,
+      lectures.data,
     );
     setLog(JSON.stringify(res));
   }
@@ -81,7 +81,7 @@ export function SimulationTestUI() {
         eventType: BUTTON_EVENT.SUBJECT_SUBMIT,
         subjectId: snapshots.current?.[clickIndex.current % 7].subject_id ?? -1,
       },
-      lectures,
+      lectures.data,
     );
     setLog(getApplyStatusName(res.status));
   }
@@ -93,7 +93,7 @@ export function SimulationTestUI() {
         eventType: BUTTON_EVENT.SKIP_REFRESH,
         subjectId: snapshots.current?.[clickIndex.current % 7].subject_id ?? -1,
       },
-      lectures,
+      lectures.data,
     );
     setLog(JSON.stringify(res));
   }
@@ -105,7 +105,7 @@ export function SimulationTestUI() {
         eventType: BUTTON_EVENT.REFRESH,
         subjectId: snapshots.current?.[clickIndex.current++ % 7].subject_id ?? -1,
       },
-      lectures,
+      lectures.data,
     );
     setLog(JSON.stringify(res));
   }

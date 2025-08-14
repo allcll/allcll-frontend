@@ -12,7 +12,6 @@ import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import SimulationSearchForm from '@/components/simulation/SimulationSearchForm';
 import { useReloadSimulation } from '@/hooks/useReloadSimulation';
-import useLectures from '@/hooks/server/useLectures.ts';
 import Stopwatch from '@/components/simulation/Stopwatch';
 import { useTimetables } from '@/hooks/server/useTimetableSchedules';
 import TutorialModal, { checkExpiredTutorialPop } from '@/components/simulation/modal/before/TutorialModal';
@@ -52,7 +51,6 @@ function Simulation() {
   const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
   const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
   const { reloadSimulationStatus } = useReloadSimulation();
-  const lectures = useLectures();
   const { data: timetables = [] } = useTimetables();
   const isExpiredTutorial = checkExpiredTutorialPop();
   const currentModal = useSimulationModalStore(state => state.type);
@@ -113,7 +111,7 @@ function Simulation() {
       case 'captcha':
         return <CaptchaInput />;
       case 'wish':
-        return <UserWishModal timetables={timetables} lectures={lectures} setIsModalOpen={() => closeModal()} />;
+        return <UserWishModal timetables={timetables} setIsModalOpen={() => closeModal()} />;
       case 'simulation':
         return <SimulationModal reloadSimulationStatus={reloadSimulationStatus} />;
       case 'result':

@@ -24,7 +24,7 @@ export function filterGrades(subject: Wishes | Subject, selectedGrades: (Grade |
   const subjectGrade = Number(subject.studentYear);
 
   if (!subjectGrade) {
-    return false;
+    return true;
   }
 
   if (selectedGrades.includes('전체') || selectedGrades.length === 0) {
@@ -38,16 +38,17 @@ export function filterDepartment(subject: Wishes | Subject, selectedDepartment: 
   return !selectedDepartment || selectedDepartment === '' || selectedDepartment === subject.deptCd;
 }
 
+// fixme: search keyword 정제하는 로직 -> Subject 만큼 돌아가고 있음
 export function filterSearchKeywords(subject: Wishes | Subject, searchKeywords: string) {
   if (!searchKeywords) {
     return true;
   }
 
-  const cleanSearchInput = searchKeywords.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+  const cleanSearchInput = searchKeywords.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '').replace(/\s+/g, '');
   const disassembledSearchInput = disassemble(cleanSearchInput).toLowerCase();
 
   const disassembledProfessorName = subject.professorName ? disassemble(subject.professorName).toLowerCase() : '';
-  const cleanSubjectName = subject.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+  const cleanSubjectName = subject.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '').replace(/\s+/g, '');
   const disassembledSubjectName = disassemble(cleanSubjectName).toLowerCase();
 
   return (

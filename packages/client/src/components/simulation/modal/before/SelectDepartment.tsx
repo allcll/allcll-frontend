@@ -25,9 +25,10 @@ function SelectDepartment({ department, setDepartment }: ISelectDepartment) {
 
     // 초기화 시 첫 번째 학과를 선택
     const ranks = getDepartmentRanks();
-    if (ranks.length <= 0) return;
+    const filteredRanks = ranks.filter(([code]) => code !== '9005'); // 대양휴머니티칼리지는 제외
+    if (filteredRanks.length <= 0) return;
 
-    const departmentCode = ranks[0][0];
+    const departmentCode = filteredRanks[0][0];
     const departmentName = departments.find(d => d.departmentCode === departmentCode)?.departmentName ?? '';
 
     setDepartment({ departmentName, departmentCode });

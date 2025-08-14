@@ -22,21 +22,17 @@ export function joinData<T extends SubjectData, U extends SubjectData>(
   let i = 0,
     j = 0;
   while (i < sortedA.length && j < sortedB.length) {
-    const subjectId = sortedA[i].subjectId;
-
     if (sortedA[i].subjectId === sortedB[j].subjectId) {
       joinedData.push({ ...sortedA[i++], ...sortedB[j++] });
     } else if (sortedA[i].subjectId < sortedB[j].subjectId) {
-      joinedData.push({ ...sortedA[i++], ...DummyB, subjectId });
+      joinedData.push({ ...DummyB, ...sortedA[i++] });
     } else {
       joinedData.push({ ...DummyA, ...sortedB[j++] });
     }
   }
 
   while (i < sortedA.length) {
-    const subjectId = sortedA[i].subjectId;
-
-    joinedData.push({ ...sortedA[i++], ...DummyB, subjectId });
+    joinedData.push({ ...DummyB, ...sortedA[i++] });
   }
 
   while (j < sortedB.length) {

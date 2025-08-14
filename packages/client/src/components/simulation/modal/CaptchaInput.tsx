@@ -18,7 +18,7 @@ function CaptchaInput() {
   const [captchaInput, setCaptchaInput] = useState<string | number>();
   const [infoMessage, setInfoMessage] = useState<string>('');
   const codeRef = useRef<string>('');
-  const lectures = useLectures();
+  const { data: lectures } = useLectures();
 
   const { closeModal, openModal } = useSimulationModalStore();
   const { currentSubjectId, setSubjectStatus, setCaptchaFailed } = useSimulationSubjectStore();

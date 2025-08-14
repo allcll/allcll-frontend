@@ -75,6 +75,7 @@ export const pickRandomsubjects = (subjects: Lecture[], departmentName: string) 
 
 /**
  * 문제점 : subjectId만 판별할 경우, 분반은 001로 통일 된다.
+ * @param lectures
  * @param subjectId
  */
 export const findSubjectsById = (lectures: Lecture[], subjectId: number) => {

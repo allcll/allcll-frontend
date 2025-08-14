@@ -1,20 +1,26 @@
-import { SimulationSubject } from '@/utils/types';
+import { Lecture } from '@/hooks/server/useLectures.ts';
 import ResetSvg from '@/assets/reset.svg?react';
+import SkeletonRows from '@/components/live/skeletons/SkeletonRows';
 
 interface ISubjectTable {
-  subjects: SimulationSubject[];
+  isLoadingLectures: boolean;
+  subjects: Lecture[];
   handleRemakeSubjects?: () => void;
 }
 
-function SubjectTable({ subjects, handleRemakeSubjects }: Readonly<ISubjectTable>) {
-  const totalCredit = subjects.reduce((acc, subject) => {
-    const subjectCredit = Number(subject.tm_num.split('/')[0]) || 0;
+function SubjectTable({ subjects, handleRemakeSubjects, isLoadingLectures }: Readonly<ISubjectTable>) {
+  const totalCredit = subjects?.reduce((acc, subject) => {
+    if (!subject.tm_num) return acc;
+
+    const credit = subject?.tm_num.split('/')[0] ?? '0';
+    const subjectCredit = Number(credit) || 0;
+
     return acc + subjectCredit;
   }, 0);
 
   return (
     <>
-      <div className="flex flex-row justify-between mb-4 w-full overflow-auto">
+      <div className="flex flex-row justify-between items-center mb-4 w-full overflow-auto h-10">
         <h2 className="text-left font-semibold">과목 리스트</h2>
 
         {handleRemakeSubjects && (
@@ -22,7 +28,7 @@ function SubjectTable({ subjects, handleRemakeSubjects }: Readonly<ISubjectTable
             onClick={handleRemakeSubjects}
             className="flex hover:font-bold hover:text-blue-500 items-center gap-2 cursor-pointer"
           >
-            랜덤 과목 재생성
+            랜덤과목 재생성
             <ResetSvg />
           </button>
         )}
@@ -43,15 +49,19 @@ function SubjectTable({ subjects, handleRemakeSubjects }: Readonly<ISubjectTable
             </tr>
           </thead>
           <tbody>
-            {subjects.map(subject => (
-              <tr key={subject.subjectId} className="border border-gray-200">
-                <td className="px-4 py-2">{subject.subjectCode}</td>
-                <td className="px-4 py-2">{subject.classCode}</td>
-                <td className="px-4 py-2">{subject.departmentName}</td>
-                <td className="px-4 py-2">{subject.subjectName}</td>
-                <td className="px-4 py-2">{subject.professorName}</td>
-              </tr>
-            ))}
+            {!isLoadingLectures ? (
+              subjects?.map((subject, index) => (
+                <tr key={subject?.subjectId ?? index} className="border border-gray-200">
+                  <td className="px-4 py-2">{subject?.subjectCode ?? ''}</td>
+                  <td className="px-4 py-2">{subject?.classCode ?? ''}</td>
+                  <td className="px-4 py-2">{subject?.departmentName ?? ''}</td>
+                  <td className="px-4 py-2">{subject?.subjectName ?? ''}</td>
+                  <td className="px-4 py-2">{subject?.professorName ?? ''}</td>
+                </tr>
+              ))
+            ) : (
+              <SkeletonRows col={5} row={8} />
+            )}
           </tbody>
         </table>
       </div>

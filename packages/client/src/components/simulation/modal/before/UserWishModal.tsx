@@ -7,7 +7,7 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { getRecentInterestedSnapshot, saveInterestedSnapshot } from '@/utils/simulation/subjects';
 import { startSimulation } from '@/utils/simulation/simulation';
-import { Lecture } from '@/hooks/server/useLectures';
+import useLectures, { Lecture } from '@/hooks/server/useLectures';
 import GameTips from './GameTips';
 import SelectDepartment from './SelectDepartment';
 import { Department } from '@/hooks/server/useDepartments.ts';
@@ -19,7 +19,6 @@ import SubjectTable from './SubjectTable';
 import ActionButtons from './ActionButton';
 
 interface UserWishModalIProps {
-  lectures: Lecture[];
   timetables: TimetableType[];
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -28,10 +27,10 @@ type ModeType = 'previous' | 'timetable' | 'random';
 
 const InitDepartment: Department = { departmentCode: '', departmentName: '' };
 
-function UserWishModal({ lectures, timetables, setIsModalOpen }: Readonly<UserWishModalIProps>) {
+function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIProps>) {
   const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
   const closeModal = useSimulationModalStore(state => state.closeModal);
-
+  const { data: lectures, isLoading: isLoadingLectures } = useLectures();
   const currentTimetable = useScheduleState(state => state.currentTimetable);
   const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
 
@@ -113,8 +112,8 @@ function UserWishModal({ lectures, timetables, setIsModalOpen }: Readonly<UserWi
     setSubjectMode(mode);
   };
 
-  const getScheduleSubjectById = (scheduleSubjectId: number) => {
-    return lectures.find(lecture => lecture.subjectId === scheduleSubjectId);
+  const getLectureById = (lectureId: number) => {
+    return lectures.find(l => l.subjectId === lectureId);
   };
 
   // 시간표 모드일 때, 선택한 시간표의 과목을 불러옵니다.
@@ -122,13 +121,8 @@ function UserWishModal({ lectures, timetables, setIsModalOpen }: Readonly<UserWi
     if (isSchedulesLoading || subjectMode !== 'timetable') return;
     if (!schedules || schedules.length === 0) return;
 
-    const validSchedules = schedules.filter(
-      schedule => schedule.subjectId !== null && schedule.scheduleType !== 'custom',
-    );
-
-    const scheduleSubjects: Lecture[] = validSchedules.map(schedule => {
-      return getScheduleSubjectById(schedule.subjectId ?? 0)!;
-    });
+    const validSchedules = schedules.filter(schedule => schedule.scheduleType !== 'custom');
+    const scheduleSubjects = validSchedules.map(schedule => getLectureById(schedule.subjectId ?? 0)).filter(l => !!l);
 
     const limitCreditSubjects = applyCreditLimit(scheduleSubjects);
     setSimulationSubjects(limitCreditSubjects);
@@ -146,10 +140,11 @@ function UserWishModal({ lectures, timetables, setIsModalOpen }: Readonly<UserWi
     if (subjectMode !== 'previous') return;
     if (!prevSnapshot || prevSnapshot.snapshot_id < 0) return;
 
+    if (isLoadingLectures) return;
     const subjectIds = prevSnapshot.subjects.map(subject => subject.subject_id);
-    const subjects = subjectIds.map(i => lectures.find(l => l.subjectId === i) ?? null) as Lecture[];
+    const subjects = subjectIds.map(id => getLectureById(id)).filter(s => !!s);
     setSimulationSubjects(subjects);
-  }, [subjectMode, prevSnapshot]);
+  }, [subjectMode, prevSnapshot, isLoadingLectures]);
 
   // 처음 입장 시 어떤 항목으로 갈지 결정
   useEffect(() => {
@@ -200,14 +195,11 @@ function UserWishModal({ lectures, timetables, setIsModalOpen }: Readonly<UserWi
 
           {subjectMode === 'random' && <SelectDepartment department={department} setDepartment={setDepartment} />}
 
-          {simulationSubjects.length !== 0 ? (
-            <SubjectTable
-              subjects={simulationSubjects}
-              handleRemakeSubjects={subjectMode === 'random' ? handleRemakeSubjects : undefined}
-            />
-          ) : (
-            <div>아직 선택된 과목이 없습니다.</div>
-          )}
+          <SubjectTable
+            isLoadingLectures={isLoadingLectures}
+            subjects={simulationSubjects}
+            handleRemakeSubjects={subjectMode === 'random' ? handleRemakeSubjects : undefined}
+          />
 
           {toggleTip && <GameTips />}
         </div>
