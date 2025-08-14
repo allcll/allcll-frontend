@@ -28,7 +28,7 @@ function SubjectTable({ subjects, handleRemakeSubjects, isLoadingLectures }: Rea
             onClick={handleRemakeSubjects}
             className="flex hover:font-bold hover:text-blue-500 items-center gap-2 cursor-pointer"
           >
-            랜덤 과목 재생성
+            랜덤과목 재생성
             <ResetSvg />
           </button>
         )}
