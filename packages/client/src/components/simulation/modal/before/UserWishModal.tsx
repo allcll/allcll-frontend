@@ -113,8 +113,8 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
     setSubjectMode(mode);
   };
 
-  const getScheduleSubjectById = (scheduleSubjectId: number) => {
-    return lectures.find(lecture => lecture.subjectId === scheduleSubjectId);
+  const getLectureById = (lectureId: number) => {
+    return lectures.find(l => l.subjectId === lectureId);
   };
 
   // 시간표 모드일 때, 선택한 시간표의 과목을 불러옵니다.
@@ -122,13 +122,8 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
     if (isSchedulesLoading || subjectMode !== 'timetable') return;
     if (!schedules || schedules.length === 0) return;
 
-    const validSchedules = schedules.filter(
-      schedule => schedule.subjectId !== null && schedule.scheduleType !== 'custom',
-    );
-
-    const scheduleSubjects: Lecture[] = validSchedules.map(schedule => {
-      return getScheduleSubjectById(schedule.subjectId ?? 0)!;
-    });
+    const validSchedules = schedules.filter(schedule => schedule.scheduleType !== 'custom');
+    const scheduleSubjects = validSchedules.map(schedule => getLectureById(schedule.subjectId ?? 0)).filter(l => !!l);
 
     const limitCreditSubjects = applyCreditLimit(scheduleSubjects);
     setSimulationSubjects(limitCreditSubjects);
@@ -148,7 +143,7 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
 
     if (isLoadingLectures) return;
     const subjectIds = prevSnapshot.subjects.map(subject => subject.subject_id);
-    const subjects = subjectIds.map(i => lectures.find(l => l.subjectId === i) ?? null) as Lecture[];
+    const subjects = subjectIds.map(id => getLectureById(id)).filter(s => !!s);
     setSimulationSubjects(subjects);
   }, [subjectMode, prevSnapshot, isLoadingLectures]);
 

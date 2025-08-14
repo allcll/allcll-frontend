@@ -1,8 +1,8 @@
-import { SimulationSubject } from '@/utils/types';
+import { Lecture } from '@/hooks/server/useLectures.ts';
 import ResetSvg from '@/assets/reset.svg?react';
 
 interface ISubjectTable {
-  subjects: SimulationSubject[];
+  subjects: Lecture[];
   handleRemakeSubjects?: () => void;
 }
 
