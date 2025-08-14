@@ -33,7 +33,7 @@ function WishTable() {
 
           <WishTableComponent />
 
-          <ScrollToTopButton right="right-20" />
+          <ScrollToTopButton right="right-2 sm:right-20" />
         </div>
       </div>
     </>

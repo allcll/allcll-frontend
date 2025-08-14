@@ -10,8 +10,9 @@ import useMobile from '@/hooks/useMobile.ts';
 import useAlarmSearchStore from '@/store/useAlarmSearchStore.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects';
 import DepartmentFilter from '@/components/live/DepartmentFilter';
-import SearchBottomSheet from '@/components/live/SearchBottomSheet';
 import ScrollToTopButton from '@/components/common/ScrollTopButton';
+// import AddWhiteSvg from '@/assets/add-white.svg?react';
+import SubjectCards from '@/components/live/subjectTable/SubjectCards';
 
 const TableHeadTitles = [
   { title: '알림', key: 'pin' },
@@ -38,7 +39,7 @@ const SearchCourses = () => {
 
   const { data: wishes, titles, isPending } = useWishesPreSeats(TableHeadTitles);
   // const { data: pinnedSubjects } = usePinned();
-  const isSearchOpen = useAlarmSearchStore(state => state.isSearchOpen);
+  // const isSearchOpen = useAlarmSearchStore(state => state.isSearchOpen);
   const setIsSearchOpen = useAlarmSearchStore(state => state.setIsSearchOpen);
 
   const filteredData = useDeferredValue(
@@ -58,8 +59,6 @@ const SearchCourses = () => {
     }
   }, []);
 
-  const hasPreSeat = wishes?.some(subject => 'key' in subject) ?? false;
-
   return (
     <>
       <Helmet>
@@ -72,23 +71,18 @@ const SearchCourses = () => {
           <p className="text-xs font-bold text-gray-500 mb-4">전체 학년 수강신청 전, 전체 학년의 여석을 보여줍니다.</p>
 
           {/* Search Section */}
-          {!isMobile && (
-            <CardWrap>
-              <SubjectSearchInputs setSearch={setSearch} />
-            </CardWrap>
-          )}
+
+          <CardWrap>
+            <SubjectSearchInputs setSearch={setSearch} />
+          </CardWrap>
 
           {/* Course List */}
           <CardWrap>
-            {isMobile && isSearchOpen ? (
-              // <SubjectCards subjects={filteredData} isPending={isPending} />
-              <SearchBottomSheet onCloseSearch={() => setIsSearchOpen(false)} hasPreSeat={hasPreSeat} />
-            ) : (
-              <SubjectTable titles={titles} subjects={filteredData} isPending={isPending} />
-            )}
+            {isMobile && <SubjectCards subjects={filteredData} isPending={isPending} />}
+            {!isMobile && <SubjectTable titles={titles} subjects={filteredData} isPending={isPending} />}
           </CardWrap>
 
-          <ScrollToTopButton right="right-20" />
+          <ScrollToTopButton right="right-2 sm:right-10" />
         </div>
       </div>
     </>

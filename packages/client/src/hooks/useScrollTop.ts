@@ -5,7 +5,7 @@ function useScrollToTop(threshold: number = 200) {
 
   useEffect(() => {
     const onScroll = () => setIsVisible(window.scrollY > threshold);
-    onScroll(); // 초기 상태 반영
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, [threshold]);

@@ -1,5 +1,4 @@
 import AlarmButton from '@/components/live/AlarmButton.tsx';
-import { getTimeDiffString } from '@/utils/stringFormats.ts';
 import { Subject, Wishes } from '@/utils/types.ts';
 import { getSeatColor } from '@/utils/colors.ts';
 
@@ -11,7 +10,7 @@ interface IPinCard {
   className?: string;
 }
 
-function PinCard({ subject, seats, queryTime, disableSeat = false, className }: Readonly<IPinCard>) {
+function PinCard({ subject, seats, disableSeat = false, className }: Readonly<IPinCard>) {
   return (
     <div className={'bg-gray-50 shadow-sm rounded-lg p-4 ' + className}>
       <div className="flex justify-between">
@@ -27,7 +26,7 @@ function PinCard({ subject, seats, queryTime, disableSeat = false, className }: 
       {!disableSeat && (
         <div className="flex justify-between items-baseline ">
           <p className={`text-sm font-bold ${getSeatColor(seats)} rounded-full px-2`}> {seats < 0 ? '???' : seats}</p>
-          <p className={`text-xs text-gray-500`}>{getTimeDiffString(queryTime)}</p>
+          {/* <p className={`text-xs text-gray-500`}>{getTimeDiffString(queryTime)}</p> */}
         </div>
       )}
     </div>
