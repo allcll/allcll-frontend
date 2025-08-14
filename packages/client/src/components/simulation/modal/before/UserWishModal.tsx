@@ -59,7 +59,10 @@ function UserWishModal({ lectures, timetables, setIsModalOpen }: Readonly<UserWi
     try {
       closeModal();
 
-      await saveInterestedSnapshot(simulationSubjects.map(subject => subject.subjectId));
+      // Todo: 기존 과목 판별 더 정확하게 할 수 있도록 개선 (시간표 선택 -> 같은 시간표 선택 시 등)
+      if (subjectMode !== 'previous') {
+        await saveInterestedSnapshot(simulationSubjects.map(subject => subject.subjectId));
+      }
       const result = await startSimulation('', department.departmentCode, department.departmentName);
 
       const isStarted =
