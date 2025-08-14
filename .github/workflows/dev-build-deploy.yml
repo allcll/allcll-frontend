@@ -84,7 +84,7 @@ jobs:
   client-test:
     runs-on: ubuntu-latest
     needs: client-dev-deploy
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@v4

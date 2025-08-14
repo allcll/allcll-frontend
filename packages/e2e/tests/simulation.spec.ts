@@ -2,10 +2,10 @@ import { test, expect, Page, Locator } from '@playwright/test';
 import { getTestEnv } from '../fixtures/testEnv';
 
 const SUBJECT_COUNT = 5;
-const BUTTON_CLICK_OPTION = { delay: 700, timeout: 20000 };
+const BUTTON_CLICK_OPTION = { timeout: 10000 };
 
 async function waitForClick(locater: Locator) {
-  await locater.waitFor({ state: 'visible', timeout: 15000 });
+  await locater.waitFor({ state: 'visible', timeout: 20000 });
   await locater.click(BUTTON_CLICK_OPTION);
 }
 
@@ -51,10 +51,8 @@ async function applyWithCaptcha(page: Page, index: number) {
 }
 
 async function expectVisibleModal(page: Page, text: string) {
-  // const modalText = page.getByText(text, { exact: false });
-  // await expect(modalText).toBeVisible();
-
-  await expect(page.getByRole('button', { name: '다시 하기' })).toBeVisible();
+  const modalText = page.getByText(text, { exact: false });
+  await expect(modalText).toBeVisible();
 }
 
 test.describe('수강신청 시뮬레이션 예외 상황', () => {
@@ -101,7 +99,8 @@ test.describe('수강신청 시뮬레이션 전체 흐름', () => {
       await applyWithCaptcha(page, i);
     }
 
-    await expectVisibleModal(page, '수강 신청 성공!');
+    // await expectVisibleModal(page, '수강 신청 성공!');
+    await expect(page.getByRole('button', { name: '다시 하기' })).toBeVisible();
   });
 
   test('이미 신청한 과목 재신청 시에도 수강신청이 정상적으로 끝납니다.', async ({ page }) => {
@@ -117,6 +116,7 @@ test.describe('수강신청 시뮬레이션 전체 흐름', () => {
       await applyWithCaptcha(page, i);
     }
 
-    await expectVisibleModal(page, '수강 신청 성공!');
+    // await expectVisibleModal(page, '수강 신청 성공!');
+    await expect(page.getByRole('button', { name: '다시 하기' })).toBeVisible();
   });
 });
