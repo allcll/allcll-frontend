@@ -1,12 +1,10 @@
 import { useAdminSession } from '@/hooks/server/session/useAdminSession';
-// import { useStartSessionKeepAlive } from '@/hooks/server/session/useSessionKeepAlive';
 import CustomButton from '@allcll/common/components/Button';
 import Card from '@allcll/common/components/Card';
 const tokenKeys = ['tokenJ', 'tokenU', 'tokenR', 'tokenL'];
 
 function SessionAdmin() {
   const { data, isFetching, refetch } = useAdminSession();
-  // const { mutate: startSessionKeepAlive, isPending: isStarting } = useStartSessionKeepAlive();
 
   return (
     <section>
@@ -18,10 +16,6 @@ function SessionAdmin() {
           <CustomButton onClick={() => refetch()} variants="secondary" disabled={isFetching}>
             {isFetching ? '조회 중…' : '인증정보 조회'}
           </CustomButton>
-
-          {/*<CustomButton onClick={() => startSessionKeepAlive()} variants="secondary" disabled={isStarting}>*/}
-          {/*  {isStarting ? '갱신 중…' : '인증정보 갱신'}*/}
-          {/*</CustomButton>*/}
         </div>
 
         <div className="bg-gray-100 text-sm text-gray-700 px-4 py-3 rounded-md space-y-1">
@@ -31,11 +25,6 @@ function SessionAdmin() {
             </p>
           ))}
         </div>
-
-        {/* <div className="mt-4">
-          <h3 className="text-lg font-semibold mb-3">인증정보 갱신 실행 여부</h3>
-          <InfoChip label={running ? 'OPEN' : 'CLOSED'} type={running ? 'success' : 'danger'} />
-        </div> */}
       </Card>
     </section>
   );

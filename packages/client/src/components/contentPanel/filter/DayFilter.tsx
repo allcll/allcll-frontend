@@ -1,28 +1,56 @@
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
-import CheckboxFilter from './CheckboxFilter';
 import { Day } from '@/utils/types';
+import CheckboxFilter, { OptionType } from '@common/components/filtering/CheckboxFilter';
 
-const DAYS: Day[] = ['월', '화', '수', '목', '금'];
+const DAYS: OptionType<Day | '전체'>[] = [
+  { id: 0, label: '전체' },
+  { id: 1, label: '월' },
+  { id: 2, label: '화' },
+  { id: 3, label: '수' },
+  { id: 4, label: '목' },
+  { id: 5, label: '금' },
+];
 
 function DayFilter() {
   const { selectedDays, setFilterSchedule } = useFilterScheduleStore();
 
-  const handleChangeCheckbox = (item: Day | '전체') => {
-    if (item === '전체') {
-      setFilterSchedule('selectedDays', selectedDays.length === DAYS.length ? [] : DAYS);
+  const findLabelById = (id: number) => DAYS.find(day => day.id === id)?.label ?? '전체';
+
+  const selectedAll = () => {
+    const checked = selectedDays.length === DAYS.length;
+
+    setFilterSchedule('selectedDays', checked ? [] : DAYS.map(day => day.label));
+  };
+
+  const handleChangeCheckbox = (optionId: number) => {
+    const optionLabel = findLabelById(optionId);
+
+    if (optionId === 0) {
+      selectedAll();
       return;
     }
 
-    const isSelected = selectedDays.includes(item);
-    const updatedDays = isSelected ? selectedDays.filter(day => day !== item) : [...selectedDays, item];
+    const isSelected = selectedDays.includes(optionLabel);
 
-    setFilterSchedule('selectedDays', updatedDays);
+    if (isSelected) {
+      setFilterSchedule(
+        'selectedDays',
+        selectedDays.filter(day => day !== optionLabel),
+      );
+      return;
+    }
+
+    if (!isSelected) {
+      setFilterSchedule('selectedDays', [...selectedDays, optionLabel]);
+    }
   };
+
+  const selectedIds = DAYS.filter(option => selectedDays.includes(option.label)).map(option => option.id);
 
   return (
     <CheckboxFilter
       labelPrefix="요일"
-      selectedItems={selectedDays}
+      selectedItems={selectedIds}
       handleChangeCheckbox={handleChangeCheckbox}
       options={DAYS}
       selected={selectedDays.length !== 0}

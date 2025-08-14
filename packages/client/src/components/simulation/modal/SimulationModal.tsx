@@ -6,6 +6,7 @@ import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { APPLY_STATUS, BUTTON_EVENT, forceStopSimulation, triggerButtonEvent } from '@/utils/simulation/simulation';
 import useLectures from '@/hooks/server/useLectures';
+import { useRef } from 'react';
 
 const SIMULATION_MODAL_CONTENTS = [
   {
@@ -37,6 +38,13 @@ const SIMULATION_MODAL_CONTENTS = [
   },
 ];
 
+const closeDisabledStatuses = [
+  APPLY_STATUS.PROGRESS,
+  APPLY_STATUS.SUCCESS,
+  APPLY_STATUS.FAILED,
+  APPLY_STATUS.CAPTCHA_FAILED,
+];
+
 interface ISimulationModal {
   reloadSimulationStatus: () => void;
 }
@@ -54,8 +62,13 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
   const skipRefreshApplyStatus = [APPLY_STATUS.FAILED, APPLY_STATUS.DOUBLED, APPLY_STATUS.CAPTCHA_FAILED].includes(
     modalStatus,
   );
+  const isCloseDisabled = closeDisabledStatuses.includes(modalStatus);
+
+  const confirmBtnRef = useRef<HTMLButtonElement | null>(null);
 
   if (!modalData) return null;
+
+  confirmBtnRef.current?.focus();
 
   /** 에러 체크 해주고, 에러 있으면 throw */
   const checkErrorValue = (res: Record<string, any>, forceFinish: boolean = false) => {
@@ -98,7 +111,6 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
       console.log('시뮬레이션 완료');
       openModal('result');
     }
-
   };
 
   const handleSkipRefresh = async (subjectId: number) => {
@@ -196,12 +208,18 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
     }
   };
 
+  const handleClickCloseButton = () => {
+    if (!isCloseDisabled) {
+      closeModal('simulation');
+    }
+  };
+
   return (
     <Modal onClose={() => {}}>
       <div className="flex sm:w-[450px] border-1 border-gray-800 flex-col justify-between overflow-hidden">
-        <ModalHeader title="" onClose={handleClickCheck} />
+        <ModalHeader title="" onClose={handleClickCloseButton} />
 
-        <div className="px-6 pb-6 text-center">
+        <div className="px-6 pb-6 text-center ">
           <div className="flex justify-center mb-4 py-5">
             <div className="w-10 h-10">
               <CheckBlueSvg />

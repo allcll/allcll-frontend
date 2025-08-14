@@ -84,7 +84,7 @@ function CaptchaInput() {
   }
 
   return (
-    <Modal onClose={() => {}}>
+    <Modal onClose={() => {}} preventAutoFocus>
       <div className="sm:w-[500px] bg-white rounded shadow">
         <ModalHeader title="매크로방지 코드입력 (Arti-marco code input)" onClose={closeCaptcha} />
 

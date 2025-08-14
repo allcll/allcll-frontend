@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import Card from '@/components/common/Card.tsx';
 import TimetableComponent from '@/components/timetable/TimetableComponent.tsx';
 import DropdownSelect from '@/components/timetable/DropdownSelect.tsx';
 import SearchBottomSheet from '@/components/contentPanel/bottomSheet/SearchBottomSheet';
@@ -21,6 +20,7 @@ import AddGraySvg from '@/assets/add-gray.svg?react';
 import AddWhiteSvg from '@/assets/add-white.svg?react';
 import SearchSvg from '@/assets/search.svg?react';
 import DownloadSvg from '@/assets/download.svg?react';
+import Card from '@common/components/Card';
 
 type modalType = 'edit' | 'create' | null;
 

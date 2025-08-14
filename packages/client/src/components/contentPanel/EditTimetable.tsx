@@ -1,7 +1,7 @@
 import XDarkGraySvg from '@/assets/x-darkgray.svg?react';
 import TextField from '../common/TextField';
 import React, { useEffect, useState } from 'react';
-import Chip from '../common/Chip';
+import Chip from '@common/components/chip/Chip';
 import { useCreateTimetable, useDeleteTimetable, useUpdateTimetable } from '@/hooks/server/useTimetableSchedules.ts';
 import { useScheduleState } from '@/store/useScheduleState.ts';
 
