@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures/ad-blocking-fixture';
 import { getTestEnv } from '../fixtures/testEnv';
 
 test.skip('알림 과목', () => {

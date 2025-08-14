@@ -1,4 +1,5 @@
-import { test, expect, Page, Locator } from '@playwright/test';
+import { test, expect } from '../fixtures/ad-blocking-fixture'
+import { Page, Locator } from '@playwright/test';
 import { getTestEnv } from '../fixtures/testEnv';
 
 const SUBJECT_COUNT = 5;
