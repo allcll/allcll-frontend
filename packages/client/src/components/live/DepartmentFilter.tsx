@@ -4,11 +4,12 @@ import React from 'react';
 interface IDepartmentFilter
   extends React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> {
   value?: string;
+  defaultValue?: string;
 }
 
-function DepartmentFilter({ id, className, value, ...props }: IDepartmentFilter) {
+function DepartmentFilter({ id, className, value, defaultValue = '전체', ...props }: IDepartmentFilter) {
   const { data: departments } = useDepartments();
-  const departmentsList = [{ departmentName: '전체', departmentCode: '' }, ...(departments ?? [])];
+  const departmentsList = [{ departmentName: defaultValue, departmentCode: '' }, ...(departments ?? [])];
 
   const customId = id ?? 'department-filter';
 

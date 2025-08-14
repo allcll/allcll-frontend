@@ -1,45 +1,47 @@
-import useDepartments from '@/hooks/server/useDepartments';
-import { DepartmentType } from '@/utils/types';
+import React, { useEffect } from 'react';
+import useDepartments, { Department } from '@/hooks/server/useDepartments';
+import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
+import { getDepartmentRanks } from '@/hooks/useSearchRank.ts';
 
 interface ISelectDepartment {
-  department: DepartmentType;
-  saveRandomSubjects: (departmentName: string) => void;
-  setDepartment: React.Dispatch<React.SetStateAction<DepartmentType>>;
+  department: Department;
+  setDepartment: React.Dispatch<React.SetStateAction<Department>>;
 }
 
-function SelectDepartment({ department, setDepartment, saveRandomSubjects }: ISelectDepartment) {
+let isInit = false;
+
+function SelectDepartment({ department, setDepartment }: ISelectDepartment) {
   const { data: departments } = useDepartments();
 
-  const handleChangeDepartment = (departmentName: string) => {
-    if (departmentName === '') {
-      saveRandomSubjects(departmentName);
-      return;
-    }
+  function onSelectDepartment(e: React.ChangeEvent<HTMLSelectElement>) {
+    const departmentCode = e.target.value;
+    const departmentName = departments?.find(d => d.departmentCode === departmentCode)?.departmentName ?? '';
 
-    const selected = departments?.find(dept => dept.departmentName === departmentName);
-    if (selected) {
-      setDepartment({ ...department, departmentName: departmentName });
-      saveRandomSubjects(departmentName);
-    }
-  };
+    setDepartment({ departmentName, departmentCode });
+  }
+
+  useEffect(() => {
+    if (isInit || !departments) return;
+
+    // 초기화 시 첫 번째 학과를 선택
+    const ranks = getDepartmentRanks();
+    if (ranks.length <= 0) return;
+
+    const departmentCode = ranks[0][0];
+    const departmentName = departments.find(d => d.departmentCode === departmentCode)?.departmentName ?? '';
+
+    setDepartment({ departmentName, departmentCode });
+  }, [departments]);
 
   return (
     <div className="flex flex-col gap-2">
       <h2 className="text-left font-semibold text-sm sm:text-md">학과 검색</h2>
-      <select
-        className="cursor-pointer border border-gray-300 rounded-sm px-2 py-1 w-50 sm:w-120 bg-white mb-4"
-        value={
-          departments?.some(dept => dept.departmentName === department.departmentName) ? department.departmentName : ''
-        }
-        onChange={e => handleChangeDepartment(e.target.value)}
-      >
-        <option value="">학과가 목록에 없어요</option>
-        {departments?.map(dept => (
-          <option key={dept.departmentCode} value={dept.departmentName}>
-            {dept.departmentName}
-          </option>
-        ))}
-      </select>
+
+      <DepartmentFilter
+        className="cursor-pointer rounded-sm px-2 py-1 w-50 sm:w-120 bg-white mb-4"
+        value={department.departmentCode}
+        onChange={onSelectDepartment}
+      />
     </div>
   );
 }

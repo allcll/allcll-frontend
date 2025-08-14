@@ -1,4 +1,6 @@
+import React from 'react';
 import { Lecture } from '@/hooks/server/useLectures';
+import Button from '@allcll/common/src/components/Button.tsx';
 
 interface IActionButton {
   simulationSubjects: Lecture[];
@@ -7,24 +9,23 @@ interface IActionButton {
 }
 
 const ActionButtons = ({ simulationSubjects, handleStartGame, setToggleTip }: IActionButton) => (
-  <div className=" justify-end flex gap-2">
-    <button
+  <div className="flex justify-end gap-2 px-2 pb-2 sm:px-6 sm:pb-6">
+    <Button
+      variants="primary"
       onClick={() => setToggleTip(true)}
-      className={`px-6 py-2 ${
-        simulationSubjects.length === 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
-      } text-white font-semibold cursor-pointer rounded-md`}
+      className="font-semibold disabled:bg-gray-300 disabled:cursor-not-allowed"
     >
       팁 보기
-    </button>
-    <button
+    </Button>
+
+    <Button
+      variants="primary"
       onClick={handleStartGame}
       disabled={simulationSubjects.length === 0}
-      className={`px-6 py-2 ${
-        simulationSubjects.length === 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
-      } text-white font-semibold cursor-pointer rounded-md`}
+      className="font-semibold disabled:bg-gray-300 disabled:cursor-not-allowed"
     >
       시작하기
-    </button>
+    </Button>
   </div>
 );
 
