@@ -10,8 +10,8 @@ interface ISearchSubjects {
 
 function SearchSubjects({ handleAddSubject }: ISearchSubjects) {
   const [searchKeywords, setSearchKeywords] = useState('');
-  const lectures = useLectures();
-  const [filteredData, setFilteredData] = useState<Lecture[]>(lectures);
+  const { data: lectures } = useLectures();
+  const [filteredData, setFilteredData] = useState<Lecture[]>([]);
 
   const filteringSearchKeywords = (lectures: Lecture[]): Lecture[] => {
     const clearnSearchInput = searchKeywords.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');

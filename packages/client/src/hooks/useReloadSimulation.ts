@@ -8,7 +8,7 @@ import useLectures from './server/useLectures';
 export function useReloadSimulation() {
   const { setCurrentSimulation, currentSimulation } = useSimulationProcessStore();
   const { openModal } = useSimulationModalStore();
-  const lectures = useLectures();
+  const { data: lectures, isLoading: isLoadingLectures } = useLectures();
 
   const loadCurrentSimulation = (
     subjects: { subjectId: number }[],

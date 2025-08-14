@@ -14,7 +14,7 @@ const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
   const { currentSimulation } = useSimulationProcessStore();
   const { openModal } = useSimulationModalStore();
   const { setCurrentSubjectId } = useSimulationSubjectStore();
-  const lectures = useLectures();
+  const { data: lectures } = useLectures();
 
   const handleClickSubject = (subjectId: number) => {
     triggerButtonEvent({ eventType: BUTTON_EVENT.APPLY, subjectId }, lectures)

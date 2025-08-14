@@ -47,13 +47,13 @@ function SubjectTable({ subjects, handleRemakeSubjects }: Readonly<ISubjectTable
             </tr>
           </thead>
           <tbody>
-            {subjects.map(subject => (
-              <tr key={subject.subjectId} className="border border-gray-200">
-                <td className="px-4 py-2">{subject.subjectCode}</td>
-                <td className="px-4 py-2">{subject.classCode}</td>
-                <td className="px-4 py-2">{subject.departmentName}</td>
-                <td className="px-4 py-2">{subject.subjectName}</td>
-                <td className="px-4 py-2">{subject.professorName}</td>
+            {subjects?.map((subject, index) => (
+              <tr key={subject?.subjectId ?? index} className="border border-gray-200">
+                <td className="px-4 py-2">{subject?.subjectCode ?? ''}</td>
+                <td className="px-4 py-2">{subject?.classCode ?? ''}</td>
+                <td className="px-4 py-2">{subject?.departmentName ?? ''}</td>
+                <td className="px-4 py-2">{subject?.subjectName ?? ''}</td>
+                <td className="px-4 py-2">{subject?.professorName ?? ''}</td>
               </tr>
             ))}
           </tbody>

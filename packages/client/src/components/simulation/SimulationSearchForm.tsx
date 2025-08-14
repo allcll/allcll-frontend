@@ -17,7 +17,7 @@ function SimulationSearchForm() {
   const { openModal } = useSimulationModalStore();
   const ongoingSimulation = useLiveQuery(checkOngoingSimulation);
   const { reloadSimulationStatus } = useReloadSimulation();
-  const lectures = useLectures();
+  const { data: lectures } = useLectures();
 
   const hasRunningSimulationId =
     ongoingSimulation && 'simulationId' in ongoingSimulation ? ongoingSimulation.simulationId : -1;
@@ -96,7 +96,7 @@ function SimulationSearchForm() {
           </div>
         </div>
 
-        <div className="flex flex-col justify-between sm:flex-row gap-1 sm:gap-8">
+        <div className="flex flex-col justify-between sm:h-12 sm:flex-row gap-1 sm:gap-8">
           <div className="flex flex-col sm:items-end sm:flex-row gap-2 ">
             <div className="flex items-center sm:justify-start gap-2">
               <span className="font-bold ">주전공(교직)</span>

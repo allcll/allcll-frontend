@@ -24,7 +24,7 @@ export function filterGrades(subject: Wishes | Subject, selectedGrades: (Grade |
   const subjectGrade = Number(subject.studentYear);
 
   if (!subjectGrade) {
-    return false;
+    return true;
   }
 
   if (selectedGrades.includes('전체') || selectedGrades.length === 0) {
