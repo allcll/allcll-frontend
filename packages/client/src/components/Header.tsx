@@ -9,7 +9,7 @@ export const HeaderContents = [
   { title: '시간표', path: '/timetable', end: false },
   { title: '관심과목', path: '/wishes', end: true },
   { title: '올클연습', path: '/simulation', end: false },
-  { title: '실시간', path: '/live', end: true },
+  { title: '여석', path: '/live', end: false },
 ];
 
 const ButtonContents = [
