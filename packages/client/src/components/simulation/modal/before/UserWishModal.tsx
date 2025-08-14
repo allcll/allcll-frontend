@@ -17,7 +17,6 @@ import { useScheduleState } from '@/store/useScheduleState';
 import Chip from '@common/components/chip/Chip';
 import SubjectTable from './SubjectTable';
 import ActionButtons from './ActionButton';
-import SkeletonRows from '@/components/live/skeletons/SkeletonRows';
 
 interface UserWishModalIProps {
   timetables: TimetableType[];
