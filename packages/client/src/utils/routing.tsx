@@ -18,6 +18,7 @@ import NotFound from '@/pages/NotFound.tsx';
 import DatabaseOperations from '@/pages/simulation/DatabaseOperations';
 import SimulationWishlist from '@/pages/simulation/SimulationWishlist';
 import Timetable from '@/pages/timetable/Timetable.tsx';
+import SearchCourses from '@/pages/SearchCourses';
 
 const router = createBrowserRouter([
   {
@@ -67,10 +68,10 @@ const router = createBrowserRouter([
         path: '',
         element: <Live />,
       },
-      // {
-      //   path: 'search',
-      //   element: <SearchCourses />,
-      // },
+      {
+        path: 'search',
+        element: <SearchCourses />,
+      },
     ],
   },
   {

@@ -1,90 +1,94 @@
 import { Helmet } from 'react-helmet';
-import React, { useEffect, useState } from 'react';
-import { disassemble } from 'es-hangul';
+import React, { useDeferredValue, useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar.tsx';
 import CardWrap from '@/components/CardWrap.tsx';
 import SubjectTable from '@/components/live/subjectTable/SubjectTable.tsx';
-import SubjectCards from '@/components/live/subjectTable/SubjectCards.tsx';
 import SearchBox from '@/components/common/SearchBox.tsx';
 import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
 import useWishesPreSeats from '@/hooks/useWishesPreSeats.ts';
 import useMobile from '@/hooks/useMobile.ts';
-import { Wishes } from '@/utils/types.ts';
-import { usePinned } from '@/store/usePinned.ts';
 import useAlarmSearchStore from '@/store/useAlarmSearchStore.ts';
+import useFilteringSubjects from '@/hooks/useFilteringSubjects';
+import DepartmentFilter from '@/components/live/DepartmentFilter';
+import SearchBottomSheet from '@/components/live/SearchBottomSheet';
+import ScrollToTopButton from '@/components/common/ScrollTopButton';
 
 const TableHeadTitles = [
-  { title: '핀', key: 'pin' },
-  { title: '과목코드', key: 'code' },
+  { title: '알림', key: 'pin' },
+  { title: '학수번호', key: 'code' },
   { title: '개설학과', key: 'departmentName' },
   { title: '과목명', key: 'name' },
   { title: '담당교수', key: 'professor' },
-  // {title: "학점", key: "credits"}
 ];
 
 export interface ISubjectSearch {
   searchKeyword: string;
   isAlarmWish: boolean;
+  selectedDepartment: string;
 }
 
 const SearchCourses = () => {
   const isMobile = useMobile();
 
-  const [search, setSearch] = useState<ISubjectSearch>({ searchKeyword: '', isAlarmWish: false });
+  const [search, setSearch] = useState<ISubjectSearch>({
+    searchKeyword: '',
+    isAlarmWish: false,
+    selectedDepartment: '',
+  });
 
   const { data: wishes, titles, isPending } = useWishesPreSeats(TableHeadTitles);
-  const { data: pinnedSubjects } = usePinned();
+  // const { data: pinnedSubjects } = usePinned();
+  const isSearchOpen = useAlarmSearchStore(state => state.isSearchOpen);
+  const setIsSearchOpen = useAlarmSearchStore(state => state.setIsSearchOpen);
 
-  const [filteredData, setFilteredData] = useState<Wishes[]>([]);
+  const filteredData = useDeferredValue(
+    useFilteringSubjects({
+      subjects: wishes ?? [],
+      searchKeywords: search.searchKeyword,
+      selectedDays: [],
+      selectedDepartment: search.selectedDepartment,
+      selectedGrades: [],
+      isPinned: search.isAlarmWish,
+    }),
+  );
 
   useEffect(() => {
-    const cleanSearchInput = search.searchKeyword.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-    const disassembledSearchInput = disassemble(cleanSearchInput).toLowerCase();
-    const matchesPinned = (id: number) => pinnedSubjects?.some(({ subjectId }) => subjectId === id);
+    if (isMobile) {
+      setIsSearchOpen(true);
+    }
+  }, []);
 
-    const filtered =
-      wishes?.filter(wish => {
-        const disassembledProfessorName = wish.professorName ? disassemble(wish.professorName).toLowerCase() : '';
-        const cleanSubjectName = wish.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-        const disassembledSubjectName = disassemble(cleanSubjectName).toLowerCase();
-
-        const matchesProfessor = disassembledProfessorName.includes(disassembledSearchInput);
-        const matchesSubject = disassembledSubjectName.includes(disassembledSearchInput);
-        const matchesFavorite = search.isAlarmWish ? matchesPinned(wish.subjectId) : true;
-
-        return (matchesProfessor || matchesSubject) && matchesFavorite;
-      }) ?? [];
-
-    setFilteredData(filtered);
-  }, [wishes, search]);
+  const hasPreSeat = wishes?.some(subject => 'key' in subject) ?? false;
 
   return (
     <>
       <Helmet>
-        <title>ALLCLL | 알림 과목 검색</title>
+        <title>ALLCLL | 전체 여석</title>
       </Helmet>
 
       <div className="max-w-screen-xl mx-auto mb-8">
         <div className="container p-4 mx-auto">
           <Navbar />
+          <p className="text-xs font-bold text-gray-500 mb-4">전체 학년 수강신청 전, 전체 학년의 여석을 보여줍니다.</p>
 
           {/* Search Section */}
-          <CardWrap>
-            <SubjectSearchInputs setSearch={setSearch} />
-          </CardWrap>
-
-          {/*<p className="text-sm text-gray-600 mb-4 italic">*/}
-          {/*  1학년과목은, 신입생 수강 여석이 아직 제외되지 않았을 수 있습니다! 이 점 양해하고 봐주세요*/}
-          {/*</p>*/}
+          {!isMobile && (
+            <CardWrap>
+              <SubjectSearchInputs setSearch={setSearch} />
+            </CardWrap>
+          )}
 
           {/* Course List */}
           <CardWrap>
-            {isMobile ? (
-              <SubjectCards subjects={filteredData} isPending={isPending} />
+            {isMobile && isSearchOpen ? (
+              // <SubjectCards subjects={filteredData} isPending={isPending} />
+              <SearchBottomSheet onCloseSearch={() => setIsSearchOpen(false)} hasPreSeat={hasPreSeat} />
             ) : (
               <SubjectTable titles={titles} subjects={filteredData} isPending={isPending} />
             )}
           </CardWrap>
+
+          <ScrollToTopButton right="right-20" />
         </div>
       </div>
     </>
@@ -100,22 +104,24 @@ function SubjectSearchInputs({ setSearch }: Readonly<ISubjectSearchInputs>) {
   const setSearchKeyword = useAlarmSearchStore(state => state.setSearchKeyword);
   const isAlarmWish = useAlarmSearchStore(state => state.isAlarmWish);
   const toggleAlarmWish = useAlarmSearchStore(state => state.toggleAlarmWish);
+  const selectedDepartment = useAlarmSearchStore(state => state.selectedDepartment);
+  const setSelectedDepartment = useAlarmSearchStore(state => state.setSelectedDepartment); // ✅ 추가
 
   useEffect(() => {
     if (!setSearch) return;
 
     const handler = setTimeout(() => {
-      setSearch({ searchKeyword, isAlarmWish });
+      setSearch({ searchKeyword, isAlarmWish, selectedDepartment });
     }, 700);
 
     return () => {
       clearTimeout(handler);
     };
-  }, [searchKeyword, setSearch]);
+  }, [searchKeyword, setSearch, selectedDepartment]);
 
   useEffect(() => {
-    setSearch({ searchKeyword, isAlarmWish });
-  }, [isAlarmWish]);
+    setSearch({ searchKeyword, isAlarmWish, selectedDepartment });
+  }, [isAlarmWish, selectedDepartment]);
 
   return (
     <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 text-sm">
@@ -130,6 +136,7 @@ function SubjectSearchInputs({ setSearch }: Readonly<ISubjectSearchInputs>) {
         onChange={e => setSearchKeyword(e.target.value)}
       />
 
+      <DepartmentFilter value={selectedDepartment} onChange={e => setSelectedDepartment(e.target.value)} />
       <button
         className="px-4 py-2 rounded-md flex gap-2 items-center text-nowrap border border-gray-400 hover:bg-white cursor-pointer"
         onClick={toggleAlarmWish}

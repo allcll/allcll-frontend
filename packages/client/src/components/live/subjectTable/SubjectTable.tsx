@@ -39,7 +39,7 @@ function SubjectTable({ titles, subjects, isPending = false }: Readonly<ISubject
 }
 
 function TableBody({ titles, subjects, isPending = false }: Readonly<ISubjectTable>) {
-  const { visibleRows } = useInfScroll(subjects);
+  const { visibleRows } = useInfScroll(subjects ?? [], 'selector');
   const data = subjects ? subjects.slice(0, visibleRows) : [];
 
   if (isPending || !subjects) {

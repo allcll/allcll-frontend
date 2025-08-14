@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect } from 'react';
 import StarIcon from '@/components/svgs/StarIcon.tsx';
 import SearchBox from '@/components/common/SearchBox.tsx';
-import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
+// import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
 import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
 import useWishSearchStore from '@/store/useWishSearchStore.ts';
 
@@ -15,11 +15,11 @@ function Searches() {
   const selectedDepartment = useWishSearchStore(state => state.selectedDepartment);
   const searchInput = useWishSearchStore(state => state.searchInput);
   const isFavorite = useWishSearchStore(state => state.isFavorite);
-  const isPinned = useWishSearchStore(state => state.isPinned);
+  // const isPinned = useWishSearchStore(state => state.isPinned);
   const setSearchInput = useWishSearchStore(state => state.setSearchInput);
   const setSelectedDepartment = useWishSearchStore(state => state.setSelectedDepartment);
   const setToggleFavorite = useWishSearchStore(state => state.setToggleFavorite);
-  const setTogglePinned = useWishSearchStore(state => state.setTogglePinned);
+  // const setTogglePinned = useWishSearchStore(state => state.setTogglePinned);
   const setSearchParams = useWishSearchStore(state => state.setSearchParams);
 
   useEffect(() => {
@@ -60,14 +60,14 @@ function Searches() {
           <StarIcon disabled={!isFavorite} />
         </button>
 
-        <button
+        {/* <button
           className="p-2 rounded-md flex gap-2 items-center border border-gray-400 bg-white hover:bg-gray-100"
           onClick={setTogglePinned}
           aria-label={isFavorite ? '알림과목 필터 제거' : '알림과목 필터 추가'}
           title={isFavorite ? '알림과목 필터 제거' : '알림과목 필터 추가'}
         >
           <AlarmIcon disabled={!isPinned} />
-        </button>
+        </button> */}
       </div>
     </div>
   );
