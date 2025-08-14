@@ -196,20 +196,11 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
 
           {subjectMode === 'random' && <SelectDepartment department={department} setDepartment={setDepartment} />}
 
-          {!isLoadingLectures ? (
-            <SubjectTable
-              subjects={simulationSubjects}
-              handleRemakeSubjects={subjectMode === 'random' ? handleRemakeSubjects : undefined}
-            />
-          ) : (
-            <div className="h-[250px] w-[350px] sm:max-w-full">
-              <table>
-                <tbody>
-                  <SkeletonRows col={5} row={8} />
-                </tbody>
-              </table>
-            </div>
-          )}
+          <SubjectTable
+            isLoadingLectures={isLoadingLectures}
+            subjects={simulationSubjects}
+            handleRemakeSubjects={subjectMode === 'random' ? handleRemakeSubjects : undefined}
+          />
 
           {toggleTip && <GameTips />}
         </div>

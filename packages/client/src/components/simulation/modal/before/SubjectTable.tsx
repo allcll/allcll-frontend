@@ -1,12 +1,14 @@
 import { Lecture } from '@/hooks/server/useLectures.ts';
 import ResetSvg from '@/assets/reset.svg?react';
+import SkeletonRows from '@/components/live/skeletons/SkeletonRows';
 
 interface ISubjectTable {
+  isLoadingLectures: boolean;
   subjects: Lecture[];
   handleRemakeSubjects?: () => void;
 }
 
-function SubjectTable({ subjects, handleRemakeSubjects }: Readonly<ISubjectTable>) {
+function SubjectTable({ subjects, handleRemakeSubjects, isLoadingLectures }: Readonly<ISubjectTable>) {
   const totalCredit = subjects?.reduce((acc, subject) => {
     if (!subject.tm_num) return acc;
 
@@ -47,15 +49,19 @@ function SubjectTable({ subjects, handleRemakeSubjects }: Readonly<ISubjectTable
             </tr>
           </thead>
           <tbody>
-            {subjects?.map((subject, index) => (
-              <tr key={subject?.subjectId ?? index} className="border border-gray-200">
-                <td className="px-4 py-2">{subject?.subjectCode ?? ''}</td>
-                <td className="px-4 py-2">{subject?.classCode ?? ''}</td>
-                <td className="px-4 py-2">{subject?.departmentName ?? ''}</td>
-                <td className="px-4 py-2">{subject?.subjectName ?? ''}</td>
-                <td className="px-4 py-2">{subject?.professorName ?? ''}</td>
-              </tr>
-            ))}
+            {!isLoadingLectures ? (
+              subjects?.map((subject, index) => (
+                <tr key={subject?.subjectId ?? index} className="border border-gray-200">
+                  <td className="px-4 py-2">{subject?.subjectCode ?? ''}</td>
+                  <td className="px-4 py-2">{subject?.classCode ?? ''}</td>
+                  <td className="px-4 py-2">{subject?.departmentName ?? ''}</td>
+                  <td className="px-4 py-2">{subject?.subjectName ?? ''}</td>
+                  <td className="px-4 py-2">{subject?.professorName ?? ''}</td>
+                </tr>
+              ))
+            ) : (
+              <SkeletonRows col={5} row={8} />
+            )}
           </tbody>
         </table>
       </div>
