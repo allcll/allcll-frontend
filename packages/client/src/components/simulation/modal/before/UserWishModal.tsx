@@ -17,6 +17,7 @@ import { useScheduleState } from '@/store/useScheduleState';
 import Chip from '@common/components/chip/Chip';
 import SubjectTable from './SubjectTable';
 import ActionButtons from './ActionButton';
+import SkeletonRows from '@/components/live/skeletons/SkeletonRows';
 
 interface UserWishModalIProps {
   timetables: TimetableType[];
@@ -200,13 +201,19 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
 
           {subjectMode === 'random' && <SelectDepartment department={department} setDepartment={setDepartment} />}
 
-          {simulationSubjects && simulationSubjects.length !== 0 ? (
+          {!isLoadingLectures ? (
             <SubjectTable
               subjects={simulationSubjects}
               handleRemakeSubjects={subjectMode === 'random' ? handleRemakeSubjects : undefined}
             />
           ) : (
-            <div>아직 선택된 과목이 없습니다.</div>
+            <div className="h-[250px] w-[350px] sm:max-w-full">
+              <table>
+                <tbody>
+                  <SkeletonRows col={5} row={8} />
+                </tbody>
+              </table>
+            </div>
           )}
 
           {toggleTip && <GameTips />}

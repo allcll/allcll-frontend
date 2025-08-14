@@ -18,7 +18,7 @@ function SubjectTable({ subjects, handleRemakeSubjects }: Readonly<ISubjectTable
 
   return (
     <>
-      <div className="flex flex-row justify-between mb-4 w-full overflow-auto">
+      <div className="flex flex-row justify-between items-center mb-4 w-full overflow-auto h-10">
         <h2 className="text-left font-semibold">과목 리스트</h2>
 
         {handleRemakeSubjects && (
