@@ -1,7 +1,7 @@
 import { Day, Grade } from '@/utils/types';
 import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
-import Chip from '@/components/common/Chip';
+import Chip from '@common/components/chip/Chip';
 import useDepartments from '@/hooks/server/useDepartments';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';

@@ -13,7 +13,7 @@ import SelectDepartment from './SelectDepartment';
 import { TimetableType, useTimetableSchedules } from '@/hooks/server/useTimetableSchedules';
 import TimetableChip from '../TimetableChip';
 import { useScheduleState } from '@/store/useScheduleState';
-import Chip from '@/components/common/Chip';
+import Chip from '@common/components/chip/Chip';
 import SubjectTable from './SubjectTable';
 import ActionButtons from './ActionButton';
 

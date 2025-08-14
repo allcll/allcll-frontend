@@ -1,6 +1,6 @@
 import Section from '@/components/Landing/Section.tsx';
 import SectionHeader from '@/components/Landing/SectionHeader.tsx';
-import Card from '@/components/common/Card.tsx';
+import Card from '@common/components/Card';
 import TimetableGridComponent from '@/components/timetable/TimetableGridComponent.tsx';
 import { GeneralSchedule, getScheduleSlots, ScheduleSlot } from '@/hooks/server/useTimetableSchedules.ts';
 import Schedule from '@/components/timetable/Schedule.tsx';

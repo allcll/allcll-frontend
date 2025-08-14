@@ -1,10 +1,10 @@
 import useDepartments from '@/hooks/server/useDepartments';
-import Filtering from './Filtering';
 import SearchBox from '../../common/SearchBox';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import { DepartmentType } from '@/utils/types';
 import { useEffect, useMemo, useState } from 'react';
 import { disassemble } from 'es-hangul';
+import Filtering from '@common/components/filtering/Filtering';
 
 function DepartmentFilter() {
   const { data: departments } = useDepartments();

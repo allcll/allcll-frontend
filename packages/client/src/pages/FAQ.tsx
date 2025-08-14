@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import useFaq from '@/hooks/server/public/useFaq.ts';
 import ArrowSvg from '@/assets/arrow-down-gray.svg?react';
 import markdownComponents from '@/utils/markdownComponents.tsx';
-import Chip from '@/components/common/Chip.tsx';
+import Chip from '@common/components/chip/Chip';
 
 const Tags = {
   all: '기타',

@@ -48,11 +48,11 @@ export async function getRequestLogs(): Promise<AdminApiLogs[]> {
  * @param request_url
  * @returns
  */
-export async function filterRequestLogs(statusCode?: number, request_url?: string) {
+export async function filterRequestLogs(statusCodes?: number[], request_url?: string) {
   try {
-    if (statusCode) {
+    if (statusCodes) {
       return (await db.admin_api_logs.toArray()).filter(log => {
-        return log.statusCode === statusCode && log.request_url.includes(request_url ?? '');
+        return statusCodes.includes(log.statusCode) && log.request_url.includes(request_url ?? '');
       });
     }
 

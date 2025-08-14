@@ -4,18 +4,13 @@ import { AdminApiLogs } from '@/utils/dbConfig';
 import { filterRequestLogs } from '@/utils/log/adminApiLogs';
 import { useEffect, useState } from 'react';
 
-export interface Status {
-  label: string;
-  value: number;
-}
-
 function Logs() {
-  const [selectedStatusCode, setSelectedStatusCode] = useState<Status | null>(null);
+  const [selectedStatusCodes, setSelectedStatusCodes] = useState<number[]>([]);
   const [urlInput, setUrlInput] = useState<string>('');
   const [logs, setLogs] = useState<AdminApiLogs[]>([]);
 
   const getLogs = async () => {
-    filterRequestLogs(selectedStatusCode?.value, urlInput).then(logs => {
+    filterRequestLogs(selectedStatusCodes, urlInput).then(logs => {
       if (!logs) return;
       setLogs(logs);
     });
@@ -23,7 +18,7 @@ function Logs() {
 
   useEffect(() => {
     getLogs().then();
-  }, [selectedStatusCode, urlInput]);
+  }, [selectedStatusCodes, urlInput]);
 
   return (
     <div className="p-6 space-y-10">
@@ -33,8 +28,8 @@ function Logs() {
       <RequestLogs
         urlInput={urlInput}
         setUrlInput={setUrlInput}
-        selectedStatusCode={selectedStatusCode}
-        setSelectedStatusCode={setSelectedStatusCode}
+        selectedStatusCodes={selectedStatusCodes}
+        setSelectedStatusCodes={setSelectedStatusCodes}
       />
       <LogList logs={logs} />
     </div>

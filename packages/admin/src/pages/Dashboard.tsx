@@ -17,7 +17,6 @@ function Dashboard() {
     { title: 'SSE 여석 데이터', status: !!isSentSseData },
   ];
 
-  console.log(isActiveSession, isActiveSeat, isSentSseData);
   return (
     <div className="p-6 space-y-10">
       <section>
