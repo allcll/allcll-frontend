@@ -10,6 +10,11 @@ function SubjectTable({ subjects, handleRemakeSubjects }: Readonly<ISubjectTable
   const totalCredit = subjects.reduce((acc, subject) => {
     const credit = subject?.tm_num.split('/')[0] ?? '0';
     const subjectCredit = Number(credit) || 0;
+  const totalCredit = subjects?.reduce((acc, subject) => {
+    if (!subject.tm_num) {
+      return acc;
+    }
+    const subjectCredit = Number(subject.tm_num.split('/')[0]) || 0;
     return acc + subjectCredit;
   }, 0);
 
