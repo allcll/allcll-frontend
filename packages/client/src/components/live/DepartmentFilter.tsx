@@ -11,6 +11,7 @@ function DepartmentFilter({ id, className, value, defaultValue = '전체', ...pr
   const { data: departments } = useDepartments();
   const departmentsList = [{ departmentName: defaultValue, departmentCode: '' }, ...(departments ?? [])];
 
+
   const customId = id ?? 'department-filter';
 
   return (
