@@ -56,7 +56,11 @@ function SimulationBoard() {
         <span className="font-bold">{log.simulation_run_id}</span>
 
         <p className="hidden">학과</p>
-        <span>{log.department_name ? log.department_name.split(' ').at(-1) : '학과 정보 없음'}</span>
+        <span>
+          {log.department_name
+            ? log.department_name.split(' ')[log.department_name.split(' ').length - 1]
+            : '학과 정보 없음'}
+        </span>
       </div>
 
       <div className="flex items-center text-center">
