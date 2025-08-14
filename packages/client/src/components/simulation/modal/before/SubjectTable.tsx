@@ -8,7 +8,8 @@ interface ISubjectTable {
 
 function SubjectTable({ subjects, handleRemakeSubjects }: Readonly<ISubjectTable>) {
   const totalCredit = subjects.reduce((acc, subject) => {
-    const subjectCredit = Number(subject.tm_num.split('/')[0]) || 0;
+    const credit = subject?.tm_num.split('/')[0] ?? '0';
+    const subjectCredit = Number(credit) || 0;
     return acc + subjectCredit;
   }, 0);
 
