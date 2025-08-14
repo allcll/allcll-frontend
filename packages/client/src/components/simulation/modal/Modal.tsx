@@ -33,7 +33,7 @@ function Modal({ children, onClose, preventAutoFocus }: Readonly<IModalProps>) {
       onClick={handleBackdropClick}
     >
       <div className="fixed inset-0 justify-center opacity-30 bg-gray-300 border-b-2 border-gray-400" />
-      <div className="flex items-center justify-center" tabIndex={-1}>
+      <div className="flex w-full items-center justify-center" tabIndex={-1}>
         <div
           className="sm:w-fit w-[95%] z-50 bg-white max-h-[90vh] border border-gray-200 overflow-y-auto"
           role="dialog"

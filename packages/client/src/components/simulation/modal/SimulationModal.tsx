@@ -216,9 +216,8 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
 
   return (
     <Modal onClose={() => {}}>
-      <div className="flex sm:w-[450px] border-1 border-gray-800 flex-col justify-between overflow-hidden">
+      <div className="flex w-full sm:w-[450px] h-[70vh] sm:h-fit border-1 border-gray-800 flex-col justify-between overflow-hidden">
         <ModalHeader title="" onClose={handleClickCloseButton} />
-
         <div className="px-6 pb-6 text-center ">
           <div className="flex justify-center mb-4 py-5">
             <div className="w-10 h-10">
@@ -232,7 +231,6 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
             <p className="text-sm text-gray-700 whitespace-pre-line">{modalData.description}</p>
           )}
         </div>
-
         <div className="flex justify-end  px-6 py-4 gap-3 bg-gray-100 text-xs">
           {modalData.status === APPLY_STATUS.PROGRESS ||
             (modalData.status === APPLY_STATUS.SUCCESS && (
