@@ -7,6 +7,7 @@ import SearchSideBar from '@/components/live/SearchSideBar.tsx';
 import SearchBottomSheet from '@/components/live/SearchBottomSheet.tsx';
 import useWindowSize from '@/hooks/useWindowSize.ts';
 import useAlarmSearchStore from '@/store/useAlarmSearchStore.ts';
+import Navbar from '@/components/Navbar';
 
 const isSystemChecking = false;
 
@@ -24,6 +25,7 @@ function Live() {
 
       <div className="flex justify-between overflow-hidden">
         <div className="max-w-screen-xl mx-auto p-4 mb-8 container">
+          <Navbar />
           {isSystemChecking ? (
             <CardWrap>
               <SystemChecking />
@@ -55,7 +57,9 @@ function Live() {
         {!isMobile && <SearchSideBar isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />}
       </div>
 
-      {isMobile && isSearchOpen && <SearchBottomSheet onCloseSearch={() => setIsSearchOpen(false)} />}
+      {isMobile && isSearchOpen && (
+        <SearchBottomSheet onCloseSearch={() => setIsSearchOpen(false)} hasPreSeat={false} />
+      )}
     </>
   );
 }

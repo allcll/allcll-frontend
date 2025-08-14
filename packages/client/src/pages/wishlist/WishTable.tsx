@@ -9,6 +9,7 @@ import useWishSearchStore from '@/store/useWishSearchStore.ts';
 import TableColorInfo from '@/components/wishTable/TableColorInfo.tsx';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
+import ScrollToTopButton from '@/components/common/ScrollTopButton';
 
 function WishTable() {
   return (
@@ -31,6 +32,8 @@ function WishTable() {
           <TableColorInfo />
 
           <WishTableComponent />
+
+          <ScrollToTopButton right="right-20" />
         </div>
       </div>
     </>
