@@ -26,7 +26,7 @@ function PinCard({ subject, seats, disableSeat = false, className }: Readonly<IP
       {!disableSeat && (
         <div className="flex justify-between items-baseline ">
           <p className={`text-sm font-bold ${getSeatColor(seats)} rounded-full px-2`}>
-            여석: {seats < 0 ? '???' : seats}
+            여석: {seats < 0 ? '-' : seats}
           </p>
           {/* <p className={`text-xs text-gray-500`}>{getTimeDiffString(queryTime)}</p> */}
         </div>
