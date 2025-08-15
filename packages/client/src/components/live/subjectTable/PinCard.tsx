@@ -26,7 +26,9 @@ function PinCard({ subject, seats, queryTime, disableSeat = false, className }: 
       </div>
       {!disableSeat && (
         <div className="flex justify-between items-baseline">
-          <p className={`text-sm font-bold ${getSeatColor(seats)}`}>여석: {seats < 0 ? '???' : seats}</p>
+          <p className={`text-sm px-2 py-1 rounded-full font-bold ${getSeatColor(seats)}`}>
+            여석: {seats < 0 ? '???' : seats}
+          </p>
           <p className={`text-xs text-gray-500`}>{getTimeDiffString(queryTime)}</p>
         </div>
       )}
