@@ -13,6 +13,9 @@ interface IPinCard {
 }
 
 function PinCard({ subject, seats, queryTime, disableSeat = false, className, isLive = false }: Readonly<IPinCard>) {
+  const isDeleted = subject.isDeleted;
+  const isEng = subject.curiLangNm === '영어';
+
   return (
     <div className={'bg-gray-50 shadow-sm rounded-lg p-4 ' + className}>
       <div className="flex justify-between">
@@ -31,6 +34,8 @@ function PinCard({ subject, seats, queryTime, disableSeat = false, className, is
             여석: {seats < 0 ? '???' : seats}
           </p>
           {!isLive && <p className={`text-xs text-gray-500`}>{getTimeDiffString(queryTime)}</p>}
+          {isDeleted && <p className={`text-xs text-gray-500`}>폐강</p>}
+          {isEng && <p className={`text-xs text-gray-500`}>영어</p>}
         </div>
       )}
     </div>
