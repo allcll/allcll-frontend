@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 
 const NavLinks = [
   { title: '실시간', path: '/live', end: true },
-  { title: '알림과목 등록', path: '/live/search', end: false },
+  { title: '전체 학년 여석', path: '/live/search', end: false },
 ];
 
 const Navbar = () => {

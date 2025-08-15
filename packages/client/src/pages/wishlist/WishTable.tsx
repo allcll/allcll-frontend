@@ -9,8 +9,14 @@ import useWishSearchStore from '@/store/useWishSearchStore.ts';
 import TableColorInfo from '@/components/wishTable/TableColorInfo.tsx';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
+import ScrollToTopButton from '@/components/common/ScrollTopButton';
+import { NavLink } from 'react-router-dom';
+import useAlarmSearchStore from '@/store/useAlarmSearchStore';
+import AlarmIcon from '@/components/svgs/AlarmIcon';
 
 function WishTable() {
+  const setIsSearchOpen = useAlarmSearchStore(state => state.setIsSearchOpen);
+
   return (
     <>
       <Helmet>
@@ -26,11 +32,25 @@ function WishTable() {
             선택하여 분석해보세요.
           </p>
 
+          <div className="mt-4">
+            <NavLink
+              to="/live"
+              onClick={() => setIsSearchOpen(true)}
+              state={{ openSearch: true }}
+              className="inline-flex items-center gap-2 rounded-md border border-blue-500 px-3 py-2 text-sm font-medium text-blue-500 hover:bg-blue-50"
+            >
+              <AlarmIcon />
+              알림등록하러가기
+            </NavLink>
+          </div>
+
           {/* Search and Filter */}
           <Searches />
           <TableColorInfo />
 
           <WishTableComponent />
+
+          <ScrollToTopButton right="right-2 sm:right-20" />
         </div>
       </div>
     </>
