@@ -40,13 +40,15 @@ function SubjectTable({ titles, subjects, isPending = false }: Readonly<ISubject
 
 function TableBody({ titles, subjects, isPending = false }: Readonly<ISubjectTable>) {
   const { visibleRows } = useInfScroll(subjects ?? [], 'selector');
-  const data = subjects ? subjects.slice(0, visibleRows) : [];
+  const filteredSubjects = (subjects ?? []).filter(subject => !subject.isDeleted);
 
-  if (isPending || !subjects) {
+  const data = filteredSubjects ? filteredSubjects.slice(0, visibleRows) : [];
+
+  if (isPending || !filteredSubjects) {
     return <SkeletonRows row={5} col={titles.length} />;
   }
 
-  if (!subjects.length) {
+  if (!filteredSubjects.length) {
     return <ZeroElementRow col={titles.length} />;
   }
 
