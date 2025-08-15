@@ -18,7 +18,7 @@ import NotFound from '@/pages/NotFound.tsx';
 import DatabaseOperations from '@/pages/simulation/DatabaseOperations';
 import SimulationWishlist from '@/pages/simulation/SimulationWishlist';
 import Timetable from '@/pages/timetable/Timetable.tsx';
-import SearchCourses from '@/pages/SearchCourses';
+import SearchCourses from '@/pages/PreSeat';
 
 const router = createBrowserRouter([
   {

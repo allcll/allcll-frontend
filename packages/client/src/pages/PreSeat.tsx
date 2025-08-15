@@ -11,8 +11,8 @@ import useAlarmSearchStore from '@/store/useAlarmSearchStore.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects';
 import DepartmentFilter from '@/components/live/DepartmentFilter';
 import ScrollToTopButton from '@/components/common/ScrollTopButton';
-// import AddWhiteSvg from '@/assets/add-white.svg?react';
 import SubjectCards from '@/components/live/subjectTable/SubjectCards';
+import useSearchRank from '@/hooks/useSearchRank';
 
 const TableHeadTitles = [
   { title: '알림', key: 'pin' },
@@ -28,7 +28,7 @@ export interface ISubjectSearch {
   selectedDepartment: string;
 }
 
-const SearchCourses = () => {
+const PreSeat = () => {
   const isMobile = useMobile();
 
   const [search, setSearch] = useState<ISubjectSearch>({
@@ -38,13 +38,13 @@ const SearchCourses = () => {
   });
 
   const { data: wishes, titles, isPending } = useWishesPreSeats(TableHeadTitles);
-  // const { data: pinnedSubjects } = usePinned();
-  // const isSearchOpen = useAlarmSearchStore(state => state.isSearchOpen);
+  const data = useSearchRank(wishes);
+
   const setIsSearchOpen = useAlarmSearchStore(state => state.setIsSearchOpen);
 
   const filteredData = useDeferredValue(
     useFilteringSubjects({
-      subjects: wishes ?? [],
+      subjects: data ?? [],
       searchKeywords: search.searchKeyword,
       selectedDays: [],
       selectedDepartment: search.selectedDepartment,
@@ -69,10 +69,11 @@ const SearchCourses = () => {
         <div className="container p-4 mx-auto">
           <Navbar />
           <p className="text-xs font-bold text-gray-500 mb-4">전체 학년 수강신청 전, 전체 학년의 여석을 보여줍니다.</p>
-
-          <CardWrap>
-            <SubjectSearchInputs setSearch={setSearch} />
-          </CardWrap>
+          <div className="pb-2">
+            <CardWrap>
+              <SubjectSearchInputs setSearch={setSearch} />
+            </CardWrap>
+          </div>
 
           <CardWrap>
             {isMobile ? (
@@ -99,14 +100,14 @@ function SubjectSearchInputs({ setSearch }: Readonly<ISubjectSearchInputs>) {
   const isAlarmWish = useAlarmSearchStore(state => state.isAlarmWish);
   const toggleAlarmWish = useAlarmSearchStore(state => state.toggleAlarmWish);
   const selectedDepartment = useAlarmSearchStore(state => state.selectedDepartment);
-  const setSelectedDepartment = useAlarmSearchStore(state => state.setSelectedDepartment); // ✅ 추가
+  const setSelectedDepartment = useAlarmSearchStore(state => state.setSelectedDepartment);
 
   useEffect(() => {
     if (!setSearch) return;
 
     const handler = setTimeout(() => {
       setSearch({ searchKeyword, isAlarmWish, selectedDepartment });
-    }, 700);
+    }, 100);
 
     return () => {
       clearTimeout(handler);
@@ -142,4 +143,4 @@ function SubjectSearchInputs({ setSearch }: Readonly<ISubjectSearchInputs>) {
   );
 }
 
-export default SearchCourses;
+export default PreSeat;
