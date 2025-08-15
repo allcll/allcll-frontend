@@ -11,8 +11,16 @@ interface IPinCard {
 }
 
 function PinCard({ subject, seats, disableSeat = false, className }: Readonly<IPinCard>) {
+  const isEng = subject.curiLangNm === '영어';
+  const isDeleted = subject.isDeleted;
+  const bgColor = isDeleted
+    ? 'bg-gray-100 hover:bg-gray-200'
+    : isEng
+      ? 'bg-green-50 hover:bg-green-100'
+      : 'bg-white hover:bg-gray-100';
+
   return (
-    <div className={'bg-gray-50 shadow-sm rounded-lg p-4 ' + className}>
+    <div className={`${bgColor} shadow-sm rounded-lg p-4 ` + className}>
       <div className="flex justify-between">
         <h3 className="font-bold">{subject.subjectName}</h3>
         <AlarmButton subject={subject} />

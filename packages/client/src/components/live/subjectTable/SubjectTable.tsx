@@ -63,7 +63,6 @@ function TableBody({ titles, subjects, isPending = false }: Readonly<ISubjectTab
 function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
   const isEng = subject.curiLangNm === '영어';
   const isDeleted = subject.isDeleted;
-
   const bgColor = isDeleted
     ? 'bg-gray-100 hover:bg-gray-200'
     : isEng
