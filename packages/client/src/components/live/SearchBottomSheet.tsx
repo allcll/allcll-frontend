@@ -4,28 +4,17 @@ import BottomSheet from '@/components/contentPanel/bottomSheet/BottomSheet';
 import BottomSheetHeader from '@/components/contentPanel/bottomSheet/BottomSheetHeader';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects';
+import useWishes from '@/hooks/server/useWishes.ts';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
 import SubjectCards from '@/components/live/subjectTable/SubjectCards.tsx';
 import useAlarmSearchStore from '@/store/useAlarmSearchStore.ts';
-import useWishesPreSeats from '@/hooks/useWishesPreSeats';
-import useWishes from '@/hooks/server/useWishes';
 
 interface ISearchBottomSheet {
   onCloseSearch: () => void;
-  hasPreSeat: boolean;
 }
 
-const TableHeadTitles = [
-  { title: '알림', key: 'pin' },
-  { title: '학수번호', key: 'code' },
-  { title: '개설학과', key: 'departmentName' },
-  { title: '과목명', key: 'name' },
-  { title: '담당교수', key: 'professor' },
-  // {title: "학점", key: "credits"}
-];
-
-function SearchBottomSheet({ onCloseSearch, hasPreSeat }: ISearchBottomSheet) {
+function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
   const [searchInput, setSearchInput] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
   const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
@@ -33,9 +22,7 @@ function SearchBottomSheet({ onCloseSearch, hasPreSeat }: ISearchBottomSheet) {
   const isSearchOpen = useAlarmSearchStore(state => state.isSearchOpen);
 
   const { data: wishes, isPending } = useWishes();
-  const { data: preSeatWishes, isPending: preSeatIsPending } = useWishesPreSeats(TableHeadTitles);
-
-  const data = useSearchRank(hasPreSeat ? wishes : preSeatWishes);
+  const data = useSearchRank(wishes);
 
   const filteredData = useDeferredValue(
     useFilteringSubjects({
@@ -82,7 +69,7 @@ function SearchBottomSheet({ onCloseSearch, hasPreSeat }: ISearchBottomSheet) {
             <SubjectCards
               className="flex flex-full overflow-auto max-h-screen"
               subjects={filteredData}
-              isPending={hasPreSeat ? isPending : preSeatIsPending}
+              isPending={isPending}
             />
           </div>
         </>

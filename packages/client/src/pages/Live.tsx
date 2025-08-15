@@ -57,9 +57,7 @@ function Live() {
         {!isMobile && <SearchSideBar isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />}
       </div>
 
-      {isMobile && isSearchOpen && (
-        <SearchBottomSheet onCloseSearch={() => setIsSearchOpen(false)} hasPreSeat={false} />
-      )}
+      {isMobile && isSearchOpen && <SearchBottomSheet onCloseSearch={() => setIsSearchOpen(false)} />}
     </>
   );
 }

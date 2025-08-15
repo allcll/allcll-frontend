@@ -51,6 +51,7 @@ function Cards({ subjects, isPending = false }: Readonly<ISubjectCards>) {
           subject={subject}
           seats={subject.seat ?? -1}
           disableSeat={subject.seat === undefined}
+          className="bg-white"
         />
       ))}
       <div ref={loadMoreRef} className="load-more-trigger opacity-0">

@@ -1,4 +1,5 @@
 import AlarmButton from '@/components/live/AlarmButton.tsx';
+import { getTimeDiffString } from '@/utils/stringFormats.ts';
 import { Subject, Wishes } from '@/utils/types.ts';
 import { getSeatColor } from '@/utils/colors.ts';
 
@@ -10,17 +11,9 @@ interface IPinCard {
   className?: string;
 }
 
-function PinCard({ subject, seats, disableSeat = false, className }: Readonly<IPinCard>) {
-  const isEng = subject.curiLangNm === '영어';
-  const isDeleted = subject.isDeleted;
-  const bgColor = isDeleted
-    ? 'bg-gray-100 hover:bg-gray-200'
-    : isEng
-      ? 'bg-green-50 hover:bg-green-100'
-      : 'bg-white hover:bg-gray-100';
-
+function PinCard({ subject, seats, queryTime, disableSeat = false, className }: Readonly<IPinCard>) {
   return (
-    <div className={`${bgColor} shadow-sm rounded-lg p-4 ` + className}>
+    <div className={'bg-gray-50 shadow-sm rounded-lg p-4 ' + className}>
       <div className="flex justify-between">
         <h3 className="font-bold">{subject.subjectName}</h3>
         <AlarmButton subject={subject} />
@@ -32,11 +25,9 @@ function PinCard({ subject, seats, disableSeat = false, className }: Readonly<IP
         </p>
       </div>
       {!disableSeat && (
-        <div className="flex justify-between items-baseline ">
-          <p className={`text-sm font-bold ${getSeatColor(seats)} rounded-full px-2`}>
-            여석: {seats < 0 ? '-' : seats}
-          </p>
-          {/* <p className={`text-xs text-gray-500`}>{getTimeDiffString(queryTime)}</p> */}
+        <div className="flex justify-between items-baseline">
+          <p className={`text-sm font-bold ${getSeatColor(seats)}`}>여석: {seats < 0 ? '???' : seats}</p>
+          <p className={`text-xs text-gray-500`}>{getTimeDiffString(queryTime)}</p>
         </div>
       )}
     </div>
