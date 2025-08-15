@@ -9,9 +9,13 @@ interface IPinCard {
   queryTime?: string;
   disableSeat?: boolean;
   className?: string;
+  isLive?: boolean;
 }
 
-function PinCard({ subject, seats, queryTime, disableSeat = false, className }: Readonly<IPinCard>) {
+function PinCard({ subject, seats, queryTime, disableSeat = false, className, isLive = false }: Readonly<IPinCard>) {
+  const isDeleted = subject.isDeleted;
+  const isEng = subject.curiLangNm === '영어';
+
   return (
     <div className={'bg-gray-50 shadow-sm rounded-lg p-4 ' + className}>
       <div className="flex justify-between">
@@ -26,8 +30,12 @@ function PinCard({ subject, seats, queryTime, disableSeat = false, className }: 
       </div>
       {!disableSeat && (
         <div className="flex justify-between items-baseline">
-          <p className={`text-sm font-bold ${getSeatColor(seats)}`}>여석: {seats < 0 ? '???' : seats}</p>
-          <p className={`text-xs text-gray-500`}>{getTimeDiffString(queryTime)}</p>
+          <p className={`text-sm px-2 py-1 rounded-full font-bold ${getSeatColor(seats)}`}>
+            여석: {seats < 0 ? '???' : seats}
+          </p>
+          {!isLive && <p className={`text-xs text-gray-500`}>{getTimeDiffString(queryTime)}</p>}
+          {isDeleted && <p className={`text-xs text-gray-500`}>폐강</p>}
+          {isEng && <p className={`text-xs text-gray-500`}>영어</p>}
         </div>
       )}
     </div>

@@ -7,7 +7,7 @@ import useSearchLogging from '@/hooks/useSearchLogging.ts';
 import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
 import { loggingDepartment } from '@/hooks/useSearchRank.ts';
 import SkeletonRows from '@/components/live/skeletons/SkeletonRows.tsx';
-import AlarmButton from '@/components/live/AlarmButton.tsx';
+// import AlarmButton from '@/components/live/AlarmButton.tsx';
 import FavoriteButton from '@/components/wishTable/FavoriteButton.tsx';
 import SearchSvg from '@/assets/search.svg?react';
 
@@ -113,7 +113,7 @@ const TableRow = ({ data, tableHeaders }: TableRowProps) => {
       <td className="px-4 py-2">
         <div className="flex items-center gap-2">
           <FavoriteButton subject={data} />
-          <AlarmButton subject={data} />
+          {/* <AlarmButton subject={data} /> */}
         </div>
       </td>
 
