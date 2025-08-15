@@ -61,6 +61,15 @@ function TableBody({ titles, subjects, isPending = false }: Readonly<ISubjectTab
 }
 
 function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
+  const isEng = subject.curiLangNm === '영어';
+  const isDeleted = subject.isDeleted;
+
+  const bgColor = isDeleted
+    ? 'bg-gray-100 hover:bg-gray-200'
+    : isEng
+      ? 'bg-green-50 hover:bg-green-100'
+      : 'bg-white hover:bg-gray-100';
+
   const { data: pinnedSubjects } = usePinned();
   const { mutate: deletePin } = useRemovePinned();
   const { mutate: addPin } = useAddPinned();
@@ -81,7 +90,7 @@ function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
   };
 
   return (
-    <tr className="border-t border-gray-200 text-black">
+    <tr className={`border-t border-gray-200 text-black ${bgColor}`}>
       <td className="px-4 py-2 text-center">
         <button
           className="cursor-pointer"

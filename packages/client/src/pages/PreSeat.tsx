@@ -13,6 +13,7 @@ import DepartmentFilter from '@/components/live/DepartmentFilter';
 import ScrollToTopButton from '@/components/common/ScrollTopButton';
 import SubjectCards from '@/components/live/subjectTable/SubjectCards';
 import useSearchRank from '@/hooks/useSearchRank';
+import TableColorInfo from '@/components/wishTable/TableColorInfo';
 
 const TableHeadTitles = [
   { title: '알림', key: 'pin' },
@@ -72,6 +73,8 @@ const PreSeat = () => {
           <div className="pb-2">
             <CardWrap>
               <SubjectSearchInputs setSearch={setSearch} />
+
+              <TableColorInfo />
             </CardWrap>
           </div>
 
