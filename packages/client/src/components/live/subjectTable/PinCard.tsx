@@ -9,9 +9,10 @@ interface IPinCard {
   queryTime?: string;
   disableSeat?: boolean;
   className?: string;
+  isLive?: boolean;
 }
 
-function PinCard({ subject, seats, queryTime, disableSeat = false, className }: Readonly<IPinCard>) {
+function PinCard({ subject, seats, queryTime, disableSeat = false, className, isLive = false }: Readonly<IPinCard>) {
   return (
     <div className={'bg-gray-50 shadow-sm rounded-lg p-4 ' + className}>
       <div className="flex justify-between">
@@ -29,7 +30,7 @@ function PinCard({ subject, seats, queryTime, disableSeat = false, className }: 
           <p className={`text-sm px-2 py-1 rounded-full font-bold ${getSeatColor(seats)}`}>
             여석: {seats < 0 ? '???' : seats}
           </p>
-          <p className={`text-xs text-gray-500`}>{getTimeDiffString(queryTime)}</p>
+          {!isLive && <p className={`text-xs text-gray-500`}>{getTimeDiffString(queryTime)}</p>}
         </div>
       )}
     </div>

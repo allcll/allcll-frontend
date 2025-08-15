@@ -80,7 +80,7 @@ const PreSeat = () => {
 
           <CardWrap>
             {isMobile ? (
-              <SubjectCards subjects={filteredData} isPending={isPending} />
+              <SubjectCards subjects={filteredData} isPending={isPending} isLive={true} />
             ) : (
               <SubjectTable titles={titles} subjects={filteredData} isPending={isPending} />
             )}

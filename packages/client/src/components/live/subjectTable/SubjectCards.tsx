@@ -7,17 +7,18 @@ interface ISubjectCards {
   subjects: WishesWithSeat[];
   isPending?: boolean;
   className?: string;
+  isLive?: boolean;
 }
 
-function SubjectCards({ subjects, isPending = false, className = '' }: Readonly<ISubjectCards>) {
+function SubjectCards({ subjects, isPending = false, className = '', isLive = false }: Readonly<ISubjectCards>) {
   return (
     <div className={'flex flex-col gap-2 ' + className}>
-      <Cards subjects={subjects} isPending={isPending} />
+      <Cards subjects={subjects} isPending={isPending} isLive={isLive} />
     </div>
   );
 }
 
-function Cards({ subjects, isPending = false }: Readonly<ISubjectCards>) {
+function Cards({ subjects, isPending = false, isLive = false }: Readonly<ISubjectCards>) {
   const { visibleRows, loadMoreRef } = useInfScroll(subjects);
   const data = subjects ? subjects.slice(0, visibleRows) : [];
 
@@ -52,6 +53,7 @@ function Cards({ subjects, isPending = false }: Readonly<ISubjectCards>) {
           seats={subject.seat ?? -1}
           disableSeat={subject.seat === undefined}
           className="bg-white"
+          isLive={isLive}
         />
       ))}
       <div ref={loadMoreRef} className="load-more-trigger opacity-0">

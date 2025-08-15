@@ -10,6 +10,7 @@ import TableColorInfo from '@/components/wishTable/TableColorInfo.tsx';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
 import ScrollToTopButton from '@/components/common/ScrollTopButton';
+import { NavLink } from 'react-router-dom';
 
 function WishTable() {
   return (
@@ -26,6 +27,16 @@ function WishTable() {
             올클은 세종대학교의 <span className="text-blue-500 font-bold">실제 데이터</span>를 보여드립니다. 관심과목을
             선택하여 분석해보세요.
           </p>
+
+          {/* 알림설정 링크 */}
+          <div className="mt-4">
+            <NavLink
+              to="/live"
+              className="inline-flex items-center gap-2 rounded-md border border-blue-200 px-3 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50"
+            >
+              알림등록하러가기
+            </NavLink>
+          </div>
 
           {/* Search and Filter */}
           <Searches />
