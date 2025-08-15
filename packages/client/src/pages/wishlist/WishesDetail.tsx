@@ -39,8 +39,8 @@ function WishesDetail() {
     wishes?.subjectId ? [wishes.subjectId] : [],
   );
 
+  const hasPreSeats = realSeats && realSeats[0] && 'seat' in realSeats[0];
   const seats = realSeats?.find(realSeat => realSeat.subjectId === wishes?.subjectId)?.seat ?? -1;
-
   const data = wishes ?? InitWishes;
   const isEng = wishes?.curiLangNm === '영어';
   const isDeleted = wishes?.isDeleted ?? false;
@@ -96,9 +96,11 @@ function WishesDetail() {
                 {' '}
                 | {data.lesnRoom} | {data.lesnTime}
               </span>
-              <p className={`text-sm px-2 py-1 rounded-full font-bold ${getSeatColor(seats)}`}>
-                여석: {seats < 0 ? '???' : seats}
-              </p>
+              {hasPreSeats && (
+                <p className={`text-sm px-2 py-1 rounded-full font-bold ${getSeatColor(seats)}`}>
+                  여석: {seats < 0 ? '???' : seats}
+                </p>
+              )}
               {isEng && (
                 <span className="bg-green-100 rounded px-2 py-1 text-green-500 text-xs font-semibold">영어</span>
               )}
