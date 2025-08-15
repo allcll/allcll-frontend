@@ -70,16 +70,16 @@ const SearchCourses = () => {
           <Navbar />
           <p className="text-xs font-bold text-gray-500 mb-4">전체 학년 수강신청 전, 전체 학년의 여석을 보여줍니다.</p>
 
-          {/* Search Section */}
-
           <CardWrap>
             <SubjectSearchInputs setSearch={setSearch} />
           </CardWrap>
 
-          {/* Course List */}
           <CardWrap>
-            {isMobile && <SubjectCards subjects={filteredData} isPending={isPending} />}
-            {!isMobile && <SubjectTable titles={titles} subjects={filteredData} isPending={isPending} />}
+            {isMobile ? (
+              <SubjectCards subjects={filteredData} isPending={isPending} />
+            ) : (
+              <SubjectTable titles={titles} subjects={filteredData} isPending={isPending} />
+            )}
           </CardWrap>
 
           <ScrollToTopButton right="right-2 sm:right-10" />
