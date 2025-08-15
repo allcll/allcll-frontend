@@ -12,6 +12,7 @@ import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
 import ScrollToTopButton from '@/components/common/ScrollTopButton';
 import { NavLink } from 'react-router-dom';
 import useAlarmSearchStore from '@/store/useAlarmSearchStore';
+import AlarmIcon from '@/components/svgs/AlarmIcon';
 
 function WishTable() {
   const setIsSearchOpen = useAlarmSearchStore(state => state.setIsSearchOpen);
@@ -36,8 +37,9 @@ function WishTable() {
               to="/live"
               onClick={() => setIsSearchOpen(true)}
               state={{ openSearch: true }}
-              className="inline-flex items-center gap-2 rounded-md border border-blue-500 px-3 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50"
+              className="inline-flex items-center gap-2 rounded-md border border-blue-500 px-3 py-2 text-sm font-medium text-blue-500 hover:bg-blue-50"
             >
+              <AlarmIcon />
               알림등록하러가기
             </NavLink>
           </div>
