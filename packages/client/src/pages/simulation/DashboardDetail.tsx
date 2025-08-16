@@ -20,7 +20,7 @@ function DashboardDetail() {
   return (
     <>
       <Helmet>
-        <title>ALLCLL | 대시보드 상세</title>
+        <title>ALLCLL | 올클연습 - 결과 분석 상세</title>
       </Helmet>
 
       <h1 className="text-2xl font-bold mb-6">모의 수강 신청 로그</h1>
