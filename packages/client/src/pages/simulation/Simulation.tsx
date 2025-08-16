@@ -134,7 +134,7 @@ function Simulation() {
       {renderModal()}
       <div className="flex justify-between gap-5">
         <div className="flex gap-5">
-          <h1 className="font-bold text-lg">수강신청</h1>
+          <h1 className="font-bold text-lg">수강신청 연습</h1>
           <Stopwatch />
         </div>
 

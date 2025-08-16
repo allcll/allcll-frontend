@@ -67,7 +67,7 @@ function Footer() {
 
         {FooterItems.map((item, index) => (
           <div className="mb-4" key={index}>
-            <h5 className="font-bold mb-4">{item.title}</h5>
+            <h3 className="font-bold mb-4">{item.title}</h3>
             <ul>
               {item.children.map((child, index) => (
                 <li key={index} className="mb-1">
