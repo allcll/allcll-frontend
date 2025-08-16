@@ -13,7 +13,6 @@ import useDetailRegisters from '@/hooks/server/useDetailRegisters.ts';
 import { getSeatColor, getWishesColor } from '@/utils/colors.ts';
 import FavoriteButton from '@/components/wishTable/FavoriteButton.tsx';
 import AlarmButton from '@/components/live/AlarmButton.tsx';
-import usePreRealSeats from '@/hooks/server/usePreRealSeats';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -31,7 +30,6 @@ const gradeData = {
 function WishesDetail() {
   const params = useParams();
   const { data: wishes, isPending, isLastSemesterWish } = useDetailWishes(params.id ?? '-1');
-  const { data: realSeats } = usePreRealSeats();
 
   const { data: registers, error } = useDetailRegisters(params.id ?? '-1');
   const { data: recommend } = useRecommendWishes(
@@ -39,8 +37,9 @@ function WishesDetail() {
     wishes?.subjectId ? [wishes.subjectId] : [],
   );
 
-  const hasPreSeats = realSeats && realSeats[0] && 'seat' in realSeats[0];
-  const seats = realSeats?.find(realSeat => realSeat.subjectId === wishes?.subjectId)?.seat ?? -1;
+  const hasPreSeats = wishes && 'seat' in wishes;
+  const seats = hasPreSeats ? wishes.seat : -1;
+
   const data = wishes ?? InitWishes;
   const isEng = wishes?.curiLangNm === '영어';
   const isDeleted = wishes?.isDeleted ?? false;

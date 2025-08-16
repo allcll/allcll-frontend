@@ -7,6 +7,7 @@ import useSearchLogging from '@/hooks/useSearchLogging.ts';
 import { loggingDepartment } from '@/hooks/useSearchRank.ts';
 import { WishesWithSeat } from '@/hooks/useWishesPreSeats.ts';
 import { getSeatColor } from '@/utils/colors.ts';
+import { Wishes } from '@/utils/types.ts';
 
 export interface ITableHead {
   title: string;
@@ -15,7 +16,7 @@ export interface ITableHead {
 
 interface ISubjectTable {
   titles: ITableHead[];
-  subjects: WishesWithSeat[];
+  subjects: Wishes[] | WishesWithSeat[];
   isPending?: boolean;
 }
 
@@ -54,7 +55,7 @@ function TableBody({ titles, subjects, isPending = false }: Readonly<ISubjectTab
 
   return (
     <>
-      {data.map(subject => (
+      {data.map((subject: WishesWithSeat) => (
         <TableRow key={`${subject.subjectCode} ${subject.subjectId} ${subject.professorName}`} subject={subject} />
       ))}
       <tr className="load-more-trigger" />

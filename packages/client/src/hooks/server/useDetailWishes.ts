@@ -1,14 +1,19 @@
-import useWishes from '@/hooks/server/useWishes.ts';
 import { Wishes } from '@/utils/types.ts';
+import useWishes, { InitWishes } from '@/hooks/server/useWishes.ts';
+import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
+import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
 
 interface DetailWishes {
   isPending: boolean;
-  data?: Wishes;
+  data?: WishesWithSeat;
   isLastSemesterWish?: boolean;
 }
 
+type WishesWithSeat = Wishes | (Wishes & IPreRealSeat);
+
 function useDetailWishes(id: string): DetailWishes {
-  const { data } = useWishes();
+  const { data: wishes } = useWishes();
+  const data = useJoinPreSeats(wishes, InitWishes);
 
   if (!data) return { isPending: true };
 
