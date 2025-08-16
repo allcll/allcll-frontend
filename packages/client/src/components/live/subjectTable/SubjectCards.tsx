@@ -2,9 +2,10 @@ import PinCard from '@/components/live/subjectTable/PinCard.tsx';
 import useInfScroll from '@/hooks/useInfScroll.ts';
 import SearchSvg from '@/assets/search.svg?react';
 import { WishesWithSeat } from '@/hooks/useWishesPreSeats.ts';
+import { Wishes } from '@/utils/types.ts';
 
 interface ISubjectCards {
-  subjects: WishesWithSeat[];
+  subjects: Wishes[] | WishesWithSeat[];
   isPending?: boolean;
   className?: string;
   isLive?: boolean;
@@ -46,12 +47,12 @@ function Cards({ subjects, isPending = false, isLive = false }: Readonly<ISubjec
 
   return (
     <>
-      {data.map(subject => (
+      {data.map((subject: Wishes | WishesWithSeat) => (
         <PinCard
           key={subject.subjectId}
           subject={subject}
-          seats={subject.seat ?? -1}
-          disableSeat={subject.seat === undefined}
+          seats={'seat' in subject ? (subject.seat ?? -1) : -1}
+          disableSeat={!('seat' in subject)}
           className="bg-white"
           isLive={isLive}
         />

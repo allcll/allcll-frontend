@@ -20,14 +20,20 @@ const fetchWishesData = async () => {
 };
 
 function useWishes() {
-  const { data: subjects } = useSubject();
+  const { data: subjects, isPending, isLoading } = useSubject();
 
-  return useQuery({
+  const query = useQuery({
     queryKey: ['wishlist'],
     queryFn: fetchWishesData,
     staleTime: Infinity,
     select: data => joinSubjects(data, subjects),
   });
+
+  return {
+    ...query,
+    isPending: query.isPending || isPending,
+    isLoading: query.isLoading || isLoading,
+  };
 }
 
 const joinSubjects = (wishes?: WishesApiResponse, subject?: Subject[]): Wishes[] => {
@@ -37,11 +43,7 @@ const joinSubjects = (wishes?: WishesApiResponse, subject?: Subject[]): Wishes[]
   const data = joinData(subject, wishes.baskets, InitSubject, InitWishes) as preWishes[];
 
   return data.map((pw: preWishes) => {
-    return {
-      ...pw,
-      departmentCode: pw.deptCd,
-      departmentName: pw.manageDeptNm,
-    };
+    return { ...pw, departmentCode: pw.deptCd, departmentName: pw.manageDeptNm };
   });
 };
 

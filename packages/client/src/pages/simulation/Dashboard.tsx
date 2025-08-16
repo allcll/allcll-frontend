@@ -6,7 +6,7 @@ function Dashboard() {
   return (
     <>
       <Helmet>
-        <title>ALLCLL | 대시보드</title>
+        <title>ALLCLL | 올클연습 - 결과 분석</title>
       </Helmet>
 
       <section className="max-w-7xl mx-auto">

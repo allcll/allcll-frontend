@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import usePreRealSeats from '@/hooks/server/usePreRealSeats.ts';
-import useWishes from '@/hooks/server/useWishes.ts';
 import { Wishes } from '@/utils/types.ts';
+import useWishes, { InitWishes } from '@/hooks/server/useWishes.ts';
+import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
 
 interface TableNames {
   title: string;
@@ -12,27 +12,14 @@ export type WishesWithSeat = Wishes & { seat?: number };
 
 function useWishesPreSeats(tableTitles: TableNames[]) {
   const { data: wishes, isPending } = useWishes();
-  const { data: realSeats } = usePreRealSeats();
-
-  const data = useMemo((): WishesWithSeat[] | undefined => {
-    if (!realSeats || !wishes || wishes.length === 0) {
-      return wishes;
-    }
-
-    return wishes.map(wish => {
-      const target = realSeats.find(seat => seat.subjectId === wish.subjectId);
-      return {
-        ...wish,
-        seat: target?.seat ?? -1,
-      };
-    });
-  }, [realSeats, wishes]);
+  const data = useJoinPreSeats(wishes, InitWishes);
+  const hasRealSeats = data && data[0] && 'seat' in data[0];
 
   const titles = useMemo(() => {
-    if (!realSeats) return tableTitles;
+    if (!hasRealSeats) return tableTitles;
 
     return [...tableTitles, { title: '여석', key: 'seat' }];
-  }, [realSeats, tableTitles]);
+  }, [data, tableTitles]);
 
   return { data, titles, isPending };
 }
