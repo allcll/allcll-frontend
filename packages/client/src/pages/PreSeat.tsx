@@ -50,19 +50,21 @@ const PreSeatBody = ({ search, isMobile }: { search: ISubjectSearch; isMobile: b
 
   return (
     <>
-      {isPreSeatAvailable ? (
-        <CardWrap>
-          {isMobile ? (
-            <SubjectCards subjects={filteredData} isPending={isPending} isLive={true} />
-          ) : (
-            <SubjectTable titles={titles} subjects={filteredData} isPending={isPending} />
-          )}
-        </CardWrap>
-      ) : (
-        <div className="flex justify-center w-full h-96">
-          <ServiceSoon title="전체 학년 여석" />
-        </div>
-      )}
+      <CardWrap>
+        {isPreSeatAvailable ? (
+          <>
+            {isMobile ? (
+              <SubjectCards subjects={filteredData} isPending={isPending} isLive={true} />
+            ) : (
+              <SubjectTable titles={titles} subjects={filteredData} isPending={isPending} />
+            )}
+          </>
+        ) : (
+          <div className="flex justify-center w-full h-96">
+            <ServiceSoon title="전체 학년 여석" />
+          </div>
+        )}
+      </CardWrap>
     </>
   );
 };
