@@ -59,7 +59,9 @@ const PreSeatBody = ({ search, isMobile }: { search: ISubjectSearch; isMobile: b
           )}
         </CardWrap>
       ) : (
-        <ServiceSoon title="전체 학년 여석" />
+        <div className="flex justify-center w-full h-96">
+          <ServiceSoon title="전체 학년 여석" />
+        </div>
       )}
     </>
   );
