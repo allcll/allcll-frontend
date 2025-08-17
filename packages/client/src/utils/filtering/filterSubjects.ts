@@ -38,21 +38,19 @@ export function filterDepartment(subject: Wishes | Subject, selectedDepartment: 
   return !selectedDepartment || selectedDepartment === '' || selectedDepartment === subject.deptCd;
 }
 
-// fixme: search keyword 정제하는 로직 -> Subject 만큼 돌아가고 있음
-export function filterSearchKeywords(subject: Wishes | Subject, searchKeywords: string) {
-  if (!searchKeywords) {
-    return true;
-  }
-
-  const cleanSearchInput = searchKeywords.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '').replace(/\s+/g, '');
-  const disassembledSearchInput = disassemble(cleanSearchInput).toLowerCase();
+export function filterSearchKeywords(subject: Wishes | Subject, cleanedKeyword: string, keywordForCode: string) {
+  if (!cleanedKeyword) return true;
 
   const disassembledProfessorName = subject.professorName ? disassemble(subject.professorName).toLowerCase() : '';
   const cleanSubjectName = subject.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '').replace(/\s+/g, '');
   const disassembledSubjectName = disassemble(cleanSubjectName).toLowerCase();
 
+  const addSubjectAndClassCode = subject.subjectCode + subject.classCode;
+  const filteredBySubjectAndClassCode = addSubjectAndClassCode.toLowerCase().includes(keywordForCode);
+
   return (
-    disassembledProfessorName.includes(disassembledSearchInput) ||
-    disassembledSubjectName.includes(disassembledSearchInput)
+    disassembledProfessorName.includes(cleanedKeyword) ||
+    disassembledSubjectName.includes(cleanedKeyword) ||
+    filteredBySubjectAndClassCode
   );
 }

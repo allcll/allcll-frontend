@@ -2,6 +2,7 @@ import { filterDays, filterDepartment, filterGrades, filterSearchKeywords } from
 import { Day, Grade, Subject } from '@/utils/types';
 import useSearchLogging from '@/hooks/useSearchLogging.ts';
 import { usePinned } from '@/store/usePinned.ts';
+import { disassemble } from 'es-hangul';
 
 interface IUseFilteringSubjects<T extends Subject> {
   subjects: T[];
@@ -33,11 +34,16 @@ function useFilteringSubjects<T extends Subject>({
 
   const matchesPinned = (id: number) => pinnedSubjects?.some(({ subjectId }) => subjectId === id);
 
+  const cleanSearchInput = searchKeywords.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '').replace(/\s+/g, '');
+  const cleanedKeyword = disassemble(cleanSearchInput).toLowerCase();
+  const normalizeCode = (searchKeywords: string) => searchKeywords.replace(/[-\s]/g, '').toLowerCase();
+  const keywordForCode = normalizeCode(searchKeywords);
+
   return subjects.filter(subject => {
     const filteredByDepartment = filterDepartment(subject, selectedDepartment);
     const filteredByGrades = selectedGrades ? filterGrades(subject, selectedGrades) : true;
     const filteredByDays = selectedDays ? filterDays(subject, selectedDays) : true;
-    const filteredBySearchKeywords = filterSearchKeywords(subject, searchKeywords);
+    const filteredBySearchKeywords = filterSearchKeywords(subject, cleanedKeyword, keywordForCode);
 
     // Wishes의 isFavorite
     const filteredByIsFavorite = !isFavorite || pickedFavorites(subject.subjectId);

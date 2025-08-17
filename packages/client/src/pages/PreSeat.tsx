@@ -128,7 +128,7 @@ function SubjectSearchInputs({ setSearch }: Readonly<ISubjectSearchInputs>) {
       </label>
       <SearchBox
         type="text"
-        placeholder="과목명 또는 교수명 검색"
+        placeholder="과목명, 교수명 또는 학수번호 및 분반 검색"
         value={searchKeyword}
         onDelete={() => setSearchKeyword('')}
         onChange={e => setSearchKeyword(e.target.value)}
