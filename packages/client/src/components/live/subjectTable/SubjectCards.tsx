@@ -2,22 +2,24 @@ import PinCard from '@/components/live/subjectTable/PinCard.tsx';
 import useInfScroll from '@/hooks/useInfScroll.ts';
 import SearchSvg from '@/assets/search.svg?react';
 import { WishesWithSeat } from '@/hooks/useWishesPreSeats.ts';
+import { Wishes } from '@/utils/types.ts';
 
 interface ISubjectCards {
-  subjects: WishesWithSeat[];
+  subjects: Wishes[] | WishesWithSeat[];
   isPending?: boolean;
   className?: string;
+  isLive?: boolean;
 }
 
-function SubjectCards({ subjects, isPending = false, className = '' }: Readonly<ISubjectCards>) {
+function SubjectCards({ subjects, isPending = false, className = '', isLive = false }: Readonly<ISubjectCards>) {
   return (
     <div className={'flex flex-col gap-2 ' + className}>
-      <Cards subjects={subjects} isPending={isPending} />
+      <Cards subjects={subjects} isPending={isPending} isLive={isLive} />
     </div>
   );
 }
 
-function Cards({ subjects, isPending = false }: Readonly<ISubjectCards>) {
+function Cards({ subjects, isPending = false, isLive = false }: Readonly<ISubjectCards>) {
   const { visibleRows, loadMoreRef } = useInfScroll(subjects);
   const data = subjects ? subjects.slice(0, visibleRows) : [];
 
@@ -45,13 +47,14 @@ function Cards({ subjects, isPending = false }: Readonly<ISubjectCards>) {
 
   return (
     <>
-      {data.map(subject => (
+      {data.map((subject: Wishes | WishesWithSeat) => (
         <PinCard
           key={subject.subjectId}
           subject={subject}
-          seats={subject.seat ?? -1}
-          disableSeat={subject.seat === undefined}
+          seats={'seat' in subject ? (subject.seat ?? -1) : -1}
+          disableSeat={!('seat' in subject)}
           className="bg-white"
+          isLive={isLive}
         />
       ))}
       <div ref={loadMoreRef} className="load-more-trigger opacity-0">

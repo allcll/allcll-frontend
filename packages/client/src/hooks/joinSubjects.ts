@@ -42,7 +42,10 @@ export function joinData<T extends SubjectData, U extends SubjectData>(
   return joinedData;
 }
 
-export function useJoinPreSeats<T extends Subject>(data: T[] | undefined, dummy: T | Exclude<T, 'subjectId'>) {
+export function useJoinPreSeats<T extends Subject>(
+  data: T[] | undefined,
+  dummy: T | Exclude<T, 'subjectId'>,
+): (T | (IPreRealSeat & T))[] | undefined {
   const { data: preSeats } = usePreRealSeats();
 
   return useMemo(() => {

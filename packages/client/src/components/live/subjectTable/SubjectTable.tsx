@@ -7,6 +7,7 @@ import useSearchLogging from '@/hooks/useSearchLogging.ts';
 import { loggingDepartment } from '@/hooks/useSearchRank.ts';
 import { WishesWithSeat } from '@/hooks/useWishesPreSeats.ts';
 import { getSeatColor } from '@/utils/colors.ts';
+import { Wishes } from '@/utils/types.ts';
 
 export interface ITableHead {
   title: string;
@@ -15,7 +16,7 @@ export interface ITableHead {
 
 interface ISubjectTable {
   titles: ITableHead[];
-  subjects: WishesWithSeat[];
+  subjects: Wishes[] | WishesWithSeat[];
   isPending?: boolean;
 }
 
@@ -39,20 +40,22 @@ function SubjectTable({ titles, subjects, isPending = false }: Readonly<ISubject
 }
 
 function TableBody({ titles, subjects, isPending = false }: Readonly<ISubjectTable>) {
-  const { visibleRows } = useInfScroll(subjects);
-  const data = subjects ? subjects.slice(0, visibleRows) : [];
+  const { visibleRows } = useInfScroll(subjects ?? [], 'selector');
+  const filteredSubjects = (subjects ?? []).filter(subject => !subject.isDeleted);
 
-  if (isPending || !subjects) {
+  const data = filteredSubjects ? filteredSubjects.slice(0, visibleRows) : [];
+
+  if (isPending || !filteredSubjects) {
     return <SkeletonRows row={5} col={titles.length} />;
   }
 
-  if (!subjects.length) {
+  if (!filteredSubjects.length) {
     return <ZeroElementRow col={titles.length} />;
   }
 
   return (
     <>
-      {data.map(subject => (
+      {data.map((subject: WishesWithSeat) => (
         <TableRow key={`${subject.subjectCode} ${subject.subjectId} ${subject.professorName}`} subject={subject} />
       ))}
       <tr className="load-more-trigger" />
@@ -61,6 +64,14 @@ function TableBody({ titles, subjects, isPending = false }: Readonly<ISubjectTab
 }
 
 function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
+  const isEng = subject.curiLangNm === '영어';
+  const isDeleted = subject.isDeleted;
+  const bgColor = isDeleted
+    ? 'bg-gray-100 hover:bg-gray-200'
+    : isEng
+      ? 'bg-green-50 hover:bg-green-100'
+      : 'bg-white hover:bg-gray-100';
+
   const { data: pinnedSubjects } = usePinned();
   const { mutate: deletePin } = useRemovePinned();
   const { mutate: addPin } = useAddPinned();
@@ -81,7 +92,7 @@ function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
   };
 
   return (
-    <tr className="border-t border-gray-200 text-black">
+    <tr className={`border-t border-gray-200 text-black ${bgColor}`}>
       <td className="px-4 py-2 text-center">
         <button
           className="cursor-pointer"

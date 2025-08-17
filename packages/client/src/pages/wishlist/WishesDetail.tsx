@@ -10,7 +10,7 @@ import { InitWishes } from '@/hooks/server/useWishes.ts';
 import useDetailWishes from '@/hooks/server/useDetailWishes';
 import useRecommendWishes from '@/hooks/server/useRecommendWishes';
 import useDetailRegisters from '@/hooks/server/useDetailRegisters.ts';
-import { getWishesColor } from '@/utils/colors.ts';
+import { getSeatColor, getWishesColor } from '@/utils/colors.ts';
 import FavoriteButton from '@/components/wishTable/FavoriteButton.tsx';
 import AlarmButton from '@/components/live/AlarmButton.tsx';
 
@@ -30,11 +30,15 @@ const gradeData = {
 function WishesDetail() {
   const params = useParams();
   const { data: wishes, isPending, isLastSemesterWish } = useDetailWishes(params.id ?? '-1');
+
   const { data: registers, error } = useDetailRegisters(params.id ?? '-1');
   const { data: recommend } = useRecommendWishes(
     wishes?.subjectCode ?? '',
     wishes?.subjectId ? [wishes.subjectId] : [],
   );
+
+  const hasPreSeats = wishes && 'seat' in wishes;
+  const seats = hasPreSeats ? wishes.seat : -1;
 
   const data = wishes ?? InitWishes;
   const isEng = wishes?.curiLangNm === '영어';
@@ -91,6 +95,11 @@ function WishesDetail() {
                 {' '}
                 | {data.lesnRoom} | {data.lesnTime}
               </span>
+              {hasPreSeats && (
+                <p className={`text-sm px-2 py-1 rounded-full font-bold ${getSeatColor(seats)}`}>
+                  여석: {seats < 0 ? '???' : seats}
+                </p>
+              )}
               {isEng && (
                 <span className="bg-green-100 rounded px-2 py-1 text-green-500 text-xs font-semibold">영어</span>
               )}

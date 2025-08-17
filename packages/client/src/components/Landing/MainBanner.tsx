@@ -25,10 +25,10 @@ function MainBanner() {
         </p>
         <div className="flex flex-col md:flex-row gap-4 ">
           <Link
-            to="/timetable"
+            to="/live"
             className="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-6 py-3 mt-6 flex items-center gap-2 w-fit"
           >
-            나만의 시간표 만들기
+            수강 여석 확인하기
             <RightArrowSvg className="w-4 h-4" />
           </Link>
           <Link

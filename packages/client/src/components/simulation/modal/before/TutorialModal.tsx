@@ -93,7 +93,7 @@ function TutorialModal() {
   return (
     showTutorial && (
       <Modal onClose={closeModal}>
-        <ModalHeader title="올클 소개" onClose={handleCloseModal} />
+        <ModalHeader title="올클연습 소개" onClose={handleCloseModal} />
         <div className="w-full flex flex-col p-4">
           <div className="mx-auto" style={{ width: youTubeSize.width + 'px', height: youTubeSize.height + 'px' }}>
             <YouTube
@@ -113,11 +113,11 @@ function TutorialModal() {
 
           <div className="mt-4 flex flex-col justify-center items-center gap-2">
             <div className="flex justify-center items-center gap-5">
-              <button className="cursor-pointer w-5 h-5" onClick={goToPreviousTutorial}>
+              <button className="cursor-pointer w-5 h-5" aria-label="이전 튜토리얼" onClick={goToPreviousTutorial}>
                 {currentIndex !== 0 && <ArrowdownSvg className="w-5 h-5 transform rotate-90" />}
               </button>
               <h2 className="text-gray-700 text-xl font-semibold">{currentVideo.title}</h2>
-              <button className="cursor-pointer" onClick={goToNextTutorial}>
+              <button className="cursor-pointer" aria-label="이전 튜토리얼" onClick={goToNextTutorial}>
                 {currentIndex < 3 && <ArrowdownSvg className="w-5 h-5 transform -rotate-90" />}
               </button>
             </div>

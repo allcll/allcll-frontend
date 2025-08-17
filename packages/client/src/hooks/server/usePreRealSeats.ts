@@ -10,7 +10,7 @@ export interface IPreRealSeat {
 }
 
 interface IPreRealSeatsResponse {
-  subjects: IPreRealSeat[] | null;
+  preSeats: IPreRealSeat[] | null;
 }
 
 export const InitPreRealSeat: IPreRealSeat = {
@@ -23,12 +23,12 @@ function usePreRealSeats() {
     queryKey: ['preRealSeats'],
     queryFn: fetchPreRealSeats,
     staleTime: 10 * MIN,
-    select: data => data?.subjects ?? null,
+    select: data => data?.preSeats ?? null,
   });
 }
 
 async function fetchPreRealSeats(): Promise<IPreRealSeatsResponse> {
-  return await fetchJsonOnPublic<IPreRealSeatsResponse>('/preSeat.json');
+  return await fetchJsonOnPublic<IPreRealSeatsResponse>('/preSeats.json');
 }
 
 export default usePreRealSeats;

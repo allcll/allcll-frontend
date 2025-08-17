@@ -1,20 +1,20 @@
 import { Helmet } from 'react-helmet';
+import Navbar from '@/components/Navbar';
 import CardWrap from '@/components/CardWrap.tsx';
 import RealtimeTable from '@/components/live/RealtimeTable.tsx';
 import PinnedCourses from '@/components/live/PinnedCourses.tsx';
 import SystemChecking from '@/components/live/errors/SystemChecking.tsx';
 import SearchSideBar from '@/components/live/SearchSideBar.tsx';
 import SearchBottomSheet from '@/components/live/SearchBottomSheet.tsx';
-import useWindowSize from '@/hooks/useWindowSize.ts';
 import useAlarmSearchStore from '@/store/useAlarmSearchStore.ts';
+import useMobile from '@/hooks/useMobile.ts';
 
 const isSystemChecking = false;
 
 function Live() {
   const isSearchOpen = useAlarmSearchStore(state => state.isSearchOpen);
   const setIsSearchOpen = useAlarmSearchStore(state => state.setIsSearchOpen);
-  const windowSize = useWindowSize();
-  const isMobile = windowSize.width < 768;
+  const isMobile = useMobile();
 
   return (
     <>
@@ -24,6 +24,7 @@ function Live() {
 
       <div className="flex justify-between overflow-hidden">
         <div className="max-w-screen-xl mx-auto p-4 mb-8 container">
+          <Navbar />
           {isSystemChecking ? (
             <CardWrap>
               <SystemChecking />
