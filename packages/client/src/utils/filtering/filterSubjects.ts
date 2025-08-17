@@ -38,19 +38,19 @@ export function filterDepartment(subject: Wishes | Subject, selectedDepartment: 
   return !selectedDepartment || selectedDepartment === '' || selectedDepartment === subject.deptCd;
 }
 
-export function filterSearchKeywords(subject: Wishes | Subject, cleanedKeyword: string) {
+export function filterSearchKeywords(subject: Wishes | Subject, cleanedKeyword: string, keywordForCode: string) {
   if (!cleanedKeyword) return true;
 
   const disassembledProfessorName = subject.professorName ? disassemble(subject.professorName).toLowerCase() : '';
   const cleanSubjectName = subject.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '').replace(/\s+/g, '');
   const disassembledSubjectName = disassemble(cleanSubjectName).toLowerCase();
 
-  console.log(cleanedKeyword, subject.subjectCode);
-  const filteredByClassCode = subject.subjectCode.includes(cleanedKeyword);
+  const addSubjectAndClassCode = subject.subjectCode + subject.classCode;
+  const filteredBySubjectAndClassCode = addSubjectAndClassCode.toLowerCase().includes(keywordForCode);
 
   return (
     disassembledProfessorName.includes(cleanedKeyword) ||
     disassembledSubjectName.includes(cleanedKeyword) ||
-    filteredByClassCode
+    filteredBySubjectAndClassCode
   );
 }
