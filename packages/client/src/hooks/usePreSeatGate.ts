@@ -6,7 +6,6 @@ export const PRESEAT_MODE: PreSeatMode = 'force-open';
  * force-close: 항상 비활성화합니다.
  * force-open: 항상 활성화합니다.
  * auto: hasSeats가 true면 활성화, false면 비활성화합니다.
- * @param mode
  * @param opts
  * @returns
  */
