@@ -14,6 +14,8 @@ import ScrollToTopButton from '@/components/common/ScrollTopButton';
 import SubjectCards from '@/components/live/subjectTable/SubjectCards';
 import useSearchRank from '@/hooks/useSearchRank';
 import TableColorInfo from '@/components/wishTable/TableColorInfo';
+import usePreSeatGate from '@/hooks/usePreSeatGate';
+import ServiceSoon from '@/components/live/errors/ServiceSoon';
 
 const TableHeadTitles = [
   { title: '알림', key: 'pin' },
@@ -29,19 +31,11 @@ export interface ISubjectSearch {
   selectedDepartment: string;
 }
 
-const PreSeat = () => {
-  const isMobile = useMobile();
+const PreSeatBody = ({ search, isMobile }: { search: ISubjectSearch; isMobile: boolean }) => {
+  const { data: wishes, titles, isPending, hasRealSeats } = useWishesPreSeats(TableHeadTitles);
+  const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasRealSeats });
 
-  const [search, setSearch] = useState<ISubjectSearch>({
-    searchKeyword: '',
-    isAlarmWish: false,
-    selectedDepartment: '',
-  });
-
-  const { data: wishes, titles, isPending } = useWishesPreSeats(TableHeadTitles);
   const data = useSearchRank(wishes);
-
-  const setIsSearchOpen = useAlarmSearchStore(state => state.setIsSearchOpen);
 
   const filteredData = useDeferredValue(
     useFilteringSubjects({
@@ -53,6 +47,33 @@ const PreSeat = () => {
       isPinned: search.isAlarmWish,
     }),
   );
+
+  return (
+    <>
+      {isPreSeatAvailable ? (
+        <CardWrap>
+          {isMobile ? (
+            <SubjectCards subjects={filteredData} isPending={isPending} isLive={true} />
+          ) : (
+            <SubjectTable titles={titles} subjects={filteredData} isPending={isPending} />
+          )}
+        </CardWrap>
+      ) : (
+        <ServiceSoon title="전체 학년 여석" />
+      )}
+    </>
+  );
+};
+
+const PreSeat = () => {
+  const isMobile = useMobile();
+
+  const setIsSearchOpen = useAlarmSearchStore(state => state.setIsSearchOpen);
+  const [search, setSearch] = useState<ISubjectSearch>({
+    searchKeyword: '',
+    isAlarmWish: false,
+    selectedDepartment: '',
+  });
 
   useEffect(() => {
     if (isMobile) {
@@ -73,18 +94,11 @@ const PreSeat = () => {
           <div className="pb-2">
             <CardWrap>
               <SubjectSearchInputs setSearch={setSearch} />
-
               <TableColorInfo />
             </CardWrap>
           </div>
 
-          <CardWrap>
-            {isMobile ? (
-              <SubjectCards subjects={filteredData} isPending={isPending} isLive={true} />
-            ) : (
-              <SubjectTable titles={titles} subjects={filteredData} isPending={isPending} />
-            )}
-          </CardWrap>
+          <PreSeatBody search={search} isMobile={isMobile} />
 
           <ScrollToTopButton right="right-2 sm:right-10" />
         </div>

@@ -10,6 +10,7 @@ import SkeletonRows from '@/components/live/skeletons/SkeletonRows.tsx';
 // import AlarmButton from '@/components/live/AlarmButton.tsx';
 import FavoriteButton from '@/components/wishTable/FavoriteButton.tsx';
 import SearchSvg from '@/assets/search.svg?react';
+import usePreSeatGate from '@/hooks/usePreSeatGate';
 
 interface ITable {
   data: Wishes[] | (Wishes & IPreRealSeat)[] | undefined;
@@ -29,8 +30,9 @@ export const TableHeaders = [
 
 function Table({ data, isPending = false }: Readonly<ITable>) {
   const hasPreSeats = data && data[0] && 'seat' in data[0];
+  const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
 
-  const headers = hasPreSeats ? TableHeaders : TableHeaders.filter(header => header.key !== 'seat');
+  const headers = isPreSeatAvailable ? TableHeaders : TableHeaders.filter(header => header.key !== 'seat');
 
   return (
     <table className="w-full bg-white rounded-lg relative text-sm">
@@ -55,8 +57,9 @@ function TableBody({ data, isPending = false }: Readonly<ITable>) {
   const wishes = data ? data.slice(0, visibleRows) : [];
 
   const hasPreSeats = data && data[0] && 'seat' in data[0];
+  const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
 
-  const headers = hasPreSeats ? TableHeaders : TableHeaders.filter(header => header.key !== 'seat');
+  const headers = isPreSeatAvailable ? TableHeaders : TableHeaders.filter(header => header.key !== 'seat');
 
   if (isPending || !data) {
     return <SkeletonRows row={5} col={TableHeaders.length} />;
