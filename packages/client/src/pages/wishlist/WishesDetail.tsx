@@ -41,6 +41,7 @@ function WishesDetail() {
   const hasPreSeats = wishes && 'seat' in wishes;
   const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
 
+
   const seats = hasPreSeats ? wishes.seat : -1;
 
   const data = wishes ?? InitWishes;

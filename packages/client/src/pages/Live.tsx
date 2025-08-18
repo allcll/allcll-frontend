@@ -10,6 +10,7 @@ import useAlarmSearchStore from '@/store/useAlarmSearchStore.ts';
 import useMobile from '@/hooks/useMobile.ts';
 import usePreSeatGate from '@/hooks/usePreSeatGate';
 
+
 const isSystemChecking = false;
 
 function Live() {
@@ -17,6 +18,7 @@ function Live() {
   const setIsSearchOpen = useAlarmSearchStore(state => state.setIsSearchOpen);
   const isMobile = useMobile();
   const { isPreSeatAvailable } = usePreSeatGate();
+
 
   return (
     <>
