@@ -21,7 +21,7 @@ function useWishesPreSeats(tableTitles: TableNames[]) {
     return [...tableTitles, { title: '여석', key: 'seat' }];
   }, [data, tableTitles]);
 
-  return { data, titles, isPending };
+  return { data, titles, isPending, hasRealSeats };
 }
 
 export default useWishesPreSeats;

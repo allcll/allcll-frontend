@@ -13,6 +13,7 @@ import useDetailRegisters from '@/hooks/server/useDetailRegisters.ts';
 import { getSeatColor, getWishesColor } from '@/utils/colors.ts';
 import FavoriteButton from '@/components/wishTable/FavoriteButton.tsx';
 import AlarmButton from '@/components/live/AlarmButton.tsx';
+import usePreSeatGate from '@/hooks/usePreSeatGate';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -38,6 +39,9 @@ function WishesDetail() {
   );
 
   const hasPreSeats = wishes && 'seat' in wishes;
+  const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
+
+
   const seats = hasPreSeats ? wishes.seat : -1;
 
   const data = wishes ?? InitWishes;
@@ -95,7 +99,7 @@ function WishesDetail() {
                 {' '}
                 | {data.lesnRoom} | {data.lesnTime}
               </span>
-              {hasPreSeats && (
+              {isPreSeatAvailable && (
                 <p className={`text-sm px-2 py-1 rounded-full font-bold ${getSeatColor(seats)}`}>
                   여석: {seats < 0 ? '???' : seats}
                 </p>
