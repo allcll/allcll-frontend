@@ -6,7 +6,7 @@ export enum SSE_STATE {
   // PRE_SEAT = 'preseat',
 }
 
-const NODATA_TIME_MS = 7000;
+const NODATA_TIME_MS = 3000;
 let timer: NodeJS.Timeout | null = null;
 
 interface IUseSSEState {
