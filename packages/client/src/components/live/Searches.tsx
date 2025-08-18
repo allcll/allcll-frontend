@@ -38,7 +38,7 @@ function Searches() {
     <div className="flex flex-wrap gap-2 mt-4 text-sm lg:flex-nowrap lg:flex-row lg:items-center lg:gap-y-0 lg:gap-x-2">
       <SearchBox
         type="text"
-        placeholder="과목명 또는 교수명 검색"
+        placeholder="과목명, 교수명 또는 학수번호 및 분반 검색"
         className="pl-10 pr-4 py-2 rounded-md w-full bg-white border border-gray-400"
         value={searchInput}
         onDelete={() => setSearchInput('')}

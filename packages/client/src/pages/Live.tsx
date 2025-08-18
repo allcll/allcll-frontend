@@ -17,6 +17,7 @@ function Live() {
   const setIsSearchOpen = useAlarmSearchStore(state => state.setIsSearchOpen);
   const isMobile = useMobile();
   const { isPreSeatAvailable } = usePreSeatGate();
+  const { isPreSeatAvailable } = usePreSeatGate();
 
   return (
     <>
@@ -26,6 +27,7 @@ function Live() {
 
       <div className="flex justify-between overflow-hidden">
         <div className="max-w-screen-xl mx-auto p-4 mb-8 container">
+          {isPreSeatAvailable && <Navbar />}
           {isPreSeatAvailable && <Navbar />}
           {isSystemChecking ? (
             <CardWrap>
