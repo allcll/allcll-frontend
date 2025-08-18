@@ -5,7 +5,7 @@ function PreSeatWillAvailable() {
   return (
     <NoneLayout
       title="여석 알림 서비스가 종료되었습니다"
-      description="추후 과목 전체 여석을 공개할 예정입니다. 공지 채팅방을 통해 알려드리겠습니다"
+      description="추후 과목 전체 여석을 공개할 예정입니다. 여석 공개 시, 공지 채팅방을 통해 알려드립니다"
       icon={<AlarmSVG className="w-7 h-7" />}
     >
       <div className="flex justify-center">
