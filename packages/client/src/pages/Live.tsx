@@ -8,6 +8,7 @@ import SearchSideBar from '@/components/live/SearchSideBar.tsx';
 import SearchBottomSheet from '@/components/live/SearchBottomSheet.tsx';
 import useAlarmSearchStore from '@/store/useAlarmSearchStore.ts';
 import useMobile from '@/hooks/useMobile.ts';
+import usePreSeatGate from '@/hooks/usePreSeatGate';
 
 const isSystemChecking = false;
 
@@ -15,6 +16,7 @@ function Live() {
   const isSearchOpen = useAlarmSearchStore(state => state.isSearchOpen);
   const setIsSearchOpen = useAlarmSearchStore(state => state.setIsSearchOpen);
   const isMobile = useMobile();
+  const { isPreSeatAvailable } = usePreSeatGate();
 
   return (
     <>
@@ -24,7 +26,7 @@ function Live() {
 
       <div className="flex justify-between overflow-hidden">
         <div className="max-w-screen-xl mx-auto p-4 mb-8 container">
-          <Navbar />
+          {isPreSeatAvailable && <Navbar />}
           {isSystemChecking ? (
             <CardWrap>
               <SystemChecking />

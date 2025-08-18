@@ -18,7 +18,7 @@ import NotFound from '@/pages/NotFound.tsx';
 import DatabaseOperations from '@/pages/simulation/DatabaseOperations';
 import SimulationWishlist from '@/pages/simulation/SimulationWishlist';
 import Timetable from '@/pages/timetable/Timetable.tsx';
-import SearchCourses from '@/pages/PreSeat';
+import PreSeat from '@/pages/PreSeat';
 
 const router = createBrowserRouter([
   {
@@ -68,9 +68,16 @@ const router = createBrowserRouter([
         path: '',
         element: <Live />,
       },
+    ],
+  },
+  {
+    path: 'live/preSeat',
+    element: <ServiceLayout serviceId="preSeat" />,
+    errorElement: <ErrorPage />,
+    children: [
       {
-        path: 'search',
-        element: <SearchCourses />,
+        path: '',
+        element: <PreSeat />,
       },
     ],
   },

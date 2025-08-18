@@ -122,6 +122,12 @@ const SERVICE_SEMESTER_DUMMY: ServiceSemesterApiResponse = {
       endDate: '2025-09-30',
       message: null,
     },
+    {
+      id: 'preSeat',
+      startDate: '2025-08-16',
+      endDate: '2025-09-30',
+      message: null,
+    },
   ],
 };
 
