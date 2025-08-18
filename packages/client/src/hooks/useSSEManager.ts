@@ -4,6 +4,7 @@ import { onChangePinned, showNotification } from '@/hooks/useNotification.ts';
 import { NonMajorSeats, PinnedSeats } from '@/utils/types.ts';
 import useSSECondition, { RELOAD_INTERVAL, RELOAD_MAX_COUNT } from '@/store/useSSECondition.ts';
 import { fetchEventSource } from '@/utils/api.ts';
+import { useSSEState } from '@/store/useSseState.ts';
 
 export enum SSEType {
   NON_MAJOR = 'nonMajorSeats',
@@ -66,6 +67,8 @@ const fetchSSEData = (queryClient: QueryClient, resetError: () => void) => {
       queryClient.setQueryData<NonMajorSeats[]>([SSEType.NON_MAJOR as string], (prev = []) =>
         mergeUpdatedOnly(prev, next),
       );
+
+      useSSEState.getState().updated();
     });
 
     eventSource.addEventListener('majorSeats', event => {
@@ -74,6 +77,8 @@ const fetchSSEData = (queryClient: QueryClient, resetError: () => void) => {
       const next: PinnedSeats[] = json.seatResponses ?? [];
 
       queryClient.setQueryData<PinnedSeats[]>([SSEType.MAJOR as string], (prev = []) => mergeUpdatedOnly(prev, next));
+
+      useSSEState.getState().updated();
     });
 
     eventSource.addEventListener('pinSeats', event => {
@@ -88,10 +93,13 @@ const fetchSSEData = (queryClient: QueryClient, resetError: () => void) => {
 
         return nextSeats;
       });
+
+      useSSEState.getState().updated();
     });
 
     eventSource.onopen = () => {
       resetError();
+      useSSEState.getState().updated();
     };
 
     eventSource.onerror = error => {
