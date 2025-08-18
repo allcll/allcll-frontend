@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import CardWrap from '@/components/CardWrap.tsx';
 import SkeletonRows from '@/components/live/skeletons/SkeletonRows.tsx';
 import NetworkError from '@/components/live/errors/NetworkError.tsx';
 import ZeroListError from '@/components/live/errors/ZeroListError.tsx';
+import PreSeatWillAvailable from '@/components/live/errors/PreSeatWillAvailable.tsx';
 import useTick from '@/hooks/useTick.ts';
 import { SSEType } from '@/hooks/useSSEManager.ts';
 import useSSESeats, { SseSubject } from '@/hooks/server/useSSESeats.ts';
@@ -17,6 +18,8 @@ import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import ListSvg from '@/assets/list.svg?react';
 import useBackSignal from '@/hooks/useBackSignal.ts';
 import SystemChecking from './errors/SystemChecking';
+import { getDateLocale } from '@/utils/time.ts';
+import { SSE_STATE, useSSEState } from '@/store/useSseState.ts';
 
 interface IRealtimeTable {
   title: string;
@@ -81,6 +84,10 @@ function SubjectBody({ tableTitles }: Readonly<{ tableTitles: HeadTitle[] }>) {
   const { data: tableData, isError, isPending, refetch } = useSSESeats(SSEType.NON_MAJOR);
   const HeadTitles = tableTitles.filter(t => t.visible);
 
+  // Todo: 추후 변수처리 할 것
+  const isFinishLive = new Date() > getDateLocale('2025-08-18T17:00:00');
+  const sseState = useSSEState(state => state.sseState);
+
   if (MAINTENANCE) {
     return (
       <tr>
@@ -103,6 +110,16 @@ function SubjectBody({ tableTitles }: Readonly<{ tableTitles: HeadTitle[] }>) {
 
   if (isPending || !tableData) {
     return <SkeletonRows row={5} col={HeadTitles.length} />;
+  }
+
+  if (sseState === SSE_STATE.IDLE && isFinishLive) {
+    return (
+      <tr>
+        <td colSpan={HeadTitles.length} className="text-center">
+          <PreSeatWillAvailable />
+        </td>
+      </tr>
+    );
   }
 
   if (!tableData.length) {
