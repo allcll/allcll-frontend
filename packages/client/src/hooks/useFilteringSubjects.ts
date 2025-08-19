@@ -1,7 +1,7 @@
 import { filterDays, filterDepartment, filterGrades, filterSearchKeywords } from '@/utils/filtering/filterSubjects';
 import { Day, Grade, Subject } from '@/utils/types';
 import useSearchLogging from '@/hooks/useSearchLogging.ts';
-import { usePinned } from '@/store/usePinned.ts';
+import { usePinned } from '@/hooks/server/usePinned.ts';
 import { disassemble } from 'es-hangul';
 
 interface IUseFilteringSubjects<T extends Subject> {
