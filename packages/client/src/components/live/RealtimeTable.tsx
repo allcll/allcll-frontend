@@ -50,7 +50,11 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
           {/*  </p>*/}
           {/*</Tooltip>*/}
         </div>
-        <button className="p-3 rounded-full hover:bg-blue-100" onClick={() => setIsModalOpen(true)}>
+        <button
+          className="p-3 rounded-full hover:bg-blue-100"
+          aria-label="테이블 수정"
+          onClick={() => setIsModalOpen(true)}
+        >
           <ListSvg className="w-4 h-4 text-gray-600 hover:text-blue-500 transition-colors" />
         </button>
       </div>

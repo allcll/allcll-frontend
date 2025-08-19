@@ -1,9 +1,15 @@
-import { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import StarIcon from '@/components/svgs/StarIcon.tsx';
 import SearchBox from '@/components/common/SearchBox.tsx';
 // import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
 import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
 import useWishSearchStore from '@/store/useWishSearchStore.ts';
+import { useWishesTableStore, HeadTitle } from '@/store/useWishesTableStore.ts';
+import useBackSignal from '@/hooks/useBackSignal.ts';
+import Modal from '@/components/simulation/modal/Modal.tsx';
+import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
+import DraggableList from '@/components/live/subjectTable/DraggableList.tsx';
+import ListSvg from '@/assets/list.svg?react';
 
 export interface WishSearchParams {
   searchInput: string;
@@ -12,6 +18,8 @@ export interface WishSearchParams {
 }
 
 function Searches() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const selectedDepartment = useWishSearchStore(state => state.selectedDepartment);
   const searchInput = useWishSearchStore(state => state.searchInput);
   const isFavorite = useWishSearchStore(state => state.isFavorite);
@@ -21,6 +29,9 @@ function Searches() {
   const setToggleFavorite = useWishSearchStore(state => state.setToggleFavorite);
   // const setTogglePinned = useWishSearchStore(state => state.setTogglePinned);
   const setSearchParams = useWishSearchStore(state => state.setSearchParams);
+
+  const tableTitles = useWishesTableStore(state => state.tableTitles);
+  const setTableTitles = useWishesTableStore(state => state.setTableTitles);
 
   useEffect(() => {
     setSearchParams({ searchInput, selectedDepartment, isFavorite });
@@ -36,6 +47,13 @@ function Searches() {
 
   return (
     <div className="flex flex-wrap gap-2 mt-4 text-sm lg:flex-nowrap lg:flex-row lg:items-center lg:gap-y-0 lg:gap-x-2">
+      {isModalOpen && (
+        <LiveTableTitleModal
+          initialItems={tableTitles}
+          onChange={setTableTitles}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
       <SearchBox
         type="text"
         placeholder="과목명, 교수명 또는 학수번호 및 분반 검색"
@@ -68,8 +86,39 @@ function Searches() {
         >
           <AlarmIcon disabled={!isPinned} />
         </button> */}
+
+        <button
+          className="p-2 rounded-md flex gap-2 items-center border border-gray-400 bg-white hover:bg-gray-100"
+          aria-label="테이블 수정"
+          title="테이블 수정"
+          onClick={() => setIsModalOpen(true)}
+        >
+          <ListSvg className="w-4 h-4 text-gray-600 hover:text-blue-500 transition-colors" />
+        </button>
       </div>
     </div>
+  );
+}
+
+interface ITableTitleModal {
+  initialItems: HeadTitle[];
+  onChange: (items: HeadTitle[]) => void;
+  onClose: () => void;
+}
+
+function LiveTableTitleModal({ initialItems, onChange, onClose }: ITableTitleModal) {
+  useBackSignal({
+    enabled: true,
+    onClose: onClose,
+  });
+
+  return (
+    <Modal onClose={onClose}>
+      <ModalHeader title="테이블 설정" onClose={onClose} />
+      <div className="p-4">
+        <DraggableList initialItems={initialItems} onChange={onChange} />
+      </div>
+    </Modal>
   );
 }
 

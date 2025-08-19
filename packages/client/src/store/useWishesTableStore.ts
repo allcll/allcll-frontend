@@ -1,21 +1,23 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { SseSubject } from '@/hooks/server/useSSESeats.ts';
+import { Wishes } from '@/utils/types.ts';
+import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
 
 export interface HeadTitle {
   title: string;
   visible: boolean;
-  key: keyof SseSubject;
+  key: keyof (Wishes & IPreRealSeat);
 }
 
 const DefaultTableHeadTitles: HeadTitle[] = [
-  { title: '과목코드', visible: true, key: 'code' },
-  { title: '과목명', visible: true, key: 'name' },
-  { title: '담당교수', visible: true, key: 'professor' },
+  { title: '학수번호', visible: true, key: 'subjectCode' },
+  { title: '분반', visible: true, key: 'classCode' },
+  { title: '개설 학과', visible: true, key: 'departmentName' },
+  { title: '과목명', visible: true, key: 'subjectName' },
+  { title: '교수명', visible: true, key: 'professorName' },
+  { title: '관심', visible: true, key: 'totalCount' },
   { title: '여석', visible: true, key: 'seat' },
-  { title: '최근갱신', visible: true, key: 'queryTime' },
 
-  { title: '학과명', visible: false, key: 'manageDeptNm' },
   { title: '수강학년', visible: false, key: 'studentYear' },
   { title: '수업시간', visible: false, key: 'lesnTime' },
   { title: '강의실', visible: false, key: 'lesnRoom' },
@@ -25,13 +27,13 @@ const DefaultTableHeadTitles: HeadTitle[] = [
   { title: '수업언어', visible: false, key: 'curiLangNm' },
 ];
 
-export interface LiveTableStore {
+export interface WishesTableStore {
   tableTitles: HeadTitle[];
   setTableTitles: (titles: HeadTitle[]) => void;
   resetTableTitles: () => void;
 }
 
-export const useLiveTableStore = create<LiveTableStore>()(
+export const useWishesTableStore = create<WishesTableStore>()(
   persist(
     set => ({
       tableTitles: DefaultTableHeadTitles,
@@ -39,7 +41,7 @@ export const useLiveTableStore = create<LiveTableStore>()(
       resetTableTitles: () => set({ tableTitles: DefaultTableHeadTitles }),
     }),
     {
-      name: 'live-table-head-store',
+      name: 'wishes-table-head-store',
     },
   ),
 );

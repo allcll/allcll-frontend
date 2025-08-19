@@ -14,7 +14,7 @@ interface Subject {
   manageDeptNm: string; // 학과명 (manageDeptNm)
   studentYear: string; // 수강 학년 (string → number로 변환 필요)
   lesnTime: string; // 수업 시간
-  lesnRoom: string; // 수업실
+  lesnRoom: string; // 강의실
   tmNum: string; // 학점 (tmNum)
   language?: string;
   subjectType?: string;

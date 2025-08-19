@@ -11,62 +11,64 @@ import SkeletonRows from '@/components/live/skeletons/SkeletonRows.tsx';
 import FavoriteButton from '@/components/wishTable/FavoriteButton.tsx';
 import SearchSvg from '@/assets/search.svg?react';
 import usePreSeatGate from '@/hooks/usePreSeatGate';
+import { useWishesTableStore } from '@/store/useWishesTableStore.ts';
 
 interface ITable {
   data: Wishes[] | (Wishes & IPreRealSeat)[] | undefined;
   isPending?: boolean;
 }
 
-export const TableHeaders = [
-  { name: '', key: '' },
-  { name: '학수번호', key: 'subjectCode' },
-  { name: '분반', key: 'classCode' },
-  { name: '개설 학과', key: 'departmentName' },
-  { name: '과목명', key: 'subjectName' },
-  { name: '교수명', key: 'professorName' },
-  { name: '관심', key: 'totalCount' },
-  { name: '여석', key: 'seat' },
-];
+interface IBody extends ITable {
+  headers: { title: string; key: string }[];
+}
+
+// export const TableHeaders = [
+//   { title: '', key: '' },
+//   { title: '학수번호', key: 'subjectCode' },
+//   { title: '분반', key: 'classCode' },
+//   { title: '개설 학과', key: 'departmentName' },
+//   { title: '과목명', key: 'subjectName' },
+//   { title: '교수명', key: 'professorName' },
+//   { title: '관심', key: 'totalCount' },
+//   { title: '여석', key: 'seat' },
+// ];
 
 function Table({ data, isPending = false }: Readonly<ITable>) {
   const hasPreSeats = data && data[0] && 'seat' in data[0];
   const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
 
-  const headers = isPreSeatAvailable ? TableHeaders : TableHeaders.filter(header => header.key !== 'seat');
+  const tableTitles = useWishesTableStore(state => state.tableTitles);
+  const cols = [{ title: '', visible: true, key: '' }, ...tableTitles.filter(col => col.visible)];
+  const headers = isPreSeatAvailable ? cols : cols.filter(header => header.key !== 'seat');
 
   return (
     <table className="w-full bg-white rounded-lg relative text-sm">
       <thead>
         <tr className="bg-gray-50 sticky top-0 z-10 text-nowrap">
-          {headers.map(({ name }) => (
-            <th key={'table-header-name-' + name} className="px-4 py-2">
-              {name}
+          {headers.map(({ title }) => (
+            <th key={'table-header-name-' + title} className="px-4 py-2">
+              {title}
             </th>
           ))}
         </tr>
       </thead>
       <tbody>
-        <TableBody data={data} isPending={isPending} />
+        <TableBody headers={headers} data={data} isPending={isPending} />
       </tbody>
     </table>
   );
 }
 
-function TableBody({ data, isPending = false }: Readonly<ITable>) {
+function TableBody({ headers, data, isPending = false }: Readonly<IBody>) {
   const { visibleRows } = useInfScroll(data ?? [], 'selector');
   const wishes = data ? data.slice(0, visibleRows) : [];
 
-  const hasPreSeats = data && data[0] && 'seat' in data[0];
-  const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
-
-  const headers = isPreSeatAvailable ? TableHeaders : TableHeaders.filter(header => header.key !== 'seat');
-
   if (isPending || !data) {
-    return <SkeletonRows row={5} col={TableHeaders.length} />;
+    return <SkeletonRows row={5} col={headers.length} />;
   }
 
   if (!data.length) {
-    return <ZeroElementRow col={TableHeaders.length} />;
+    return <ZeroElementRow col={headers.length} />;
   }
 
   return (
@@ -99,7 +101,7 @@ export function ZeroElementRow({ col }: Readonly<{ col: number }>) {
 
 interface TableRowProps {
   data: Wishes | (Wishes & IPreRealSeat);
-  tableHeaders: { name: string; key: string }[];
+  tableHeaders: { title: string; key: string }[];
 }
 
 const TableRow = ({ data, tableHeaders }: TableRowProps) => {
@@ -126,7 +128,9 @@ const TableRow = ({ data, tableHeaders }: TableRowProps) => {
 };
 
 const equalComponent = (prevProps: TableRowProps, nextProps: TableRowProps) =>
-  prevProps.data.subjectId === nextProps.data.subjectId && 'seat' in prevProps === 'seat' in nextProps;
+  prevProps.data.subjectId === nextProps.data.subjectId &&
+  'seat' in prevProps === 'seat' in nextProps &&
+  prevProps.tableHeaders === nextProps.tableHeaders;
 const MemoTableRow = memo(({ data, tableHeaders }: TableRowProps) => {
   const { selectTargetOnly } = useSearchLogging();
 
@@ -135,7 +139,7 @@ const MemoTableRow = memo(({ data, tableHeaders }: TableRowProps) => {
     loggingDepartment(data.departmentCode);
   }
 
-  return tableHeaders.slice(1, 10).map(({ key }) => (
+  return tableHeaders.slice(1, 20).map(({ key }) => (
     <td className="px-4 py-2 text-center" key={key}>
       <Link to={`/wishes/${data.subjectId}`} onClick={handleClick}>
         <UiSelector data={data} headerType={key} />
