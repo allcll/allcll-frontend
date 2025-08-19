@@ -9,9 +9,9 @@ import { loggingDepartment } from '@/hooks/useSearchRank.ts';
 import SkeletonRows from '@/components/live/skeletons/SkeletonRows.tsx';
 // import AlarmButton from '@/components/live/AlarmButton.tsx';
 import FavoriteButton from '@/components/wishTable/FavoriteButton.tsx';
-import SearchSvg from '@/assets/search.svg?react';
+import { useWishesTableStore } from '@/store/useTableColumnStore.ts';
 import usePreSeatGate from '@/hooks/usePreSeatGate';
-import { useWishesTableStore } from '@/store/useWishesTableStore.ts';
+import SearchSvg from '@/assets/search.svg?react';
 
 interface ITable {
   data: Wishes[] | (Wishes & IPreRealSeat)[] | undefined;
@@ -21,17 +21,6 @@ interface ITable {
 interface IBody extends ITable {
   headers: { title: string; key: string }[];
 }
-
-// export const TableHeaders = [
-//   { title: '', key: '' },
-//   { title: '학수번호', key: 'subjectCode' },
-//   { title: '분반', key: 'classCode' },
-//   { title: '개설 학과', key: 'departmentName' },
-//   { title: '과목명', key: 'subjectName' },
-//   { title: '교수명', key: 'professorName' },
-//   { title: '관심', key: 'totalCount' },
-//   { title: '여석', key: 'seat' },
-// ];
 
 function Table({ data, isPending = false }: Readonly<ITable>) {
   const hasPreSeats = data && data[0] && 'seat' in data[0];

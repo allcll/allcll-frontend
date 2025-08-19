@@ -3,12 +3,14 @@ import StarIcon from '@/components/svgs/StarIcon.tsx';
 import SearchBox from '@/components/common/SearchBox.tsx';
 // import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
 import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
-import useWishSearchStore from '@/store/useWishSearchStore.ts';
-import { useWishesTableStore, HeadTitle } from '@/store/useWishesTableStore.ts';
-import useBackSignal from '@/hooks/useBackSignal.ts';
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import DraggableList from '@/components/live/subjectTable/DraggableList.tsx';
+import useWishSearchStore from '@/store/useWishSearchStore.ts';
+import { HeadTitle, useWishesTableStore } from '@/store/useTableColumnStore.ts';
+import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
+import useBackSignal from '@/hooks/useBackSignal.ts';
+import { Wishes } from '@/utils/types.ts';
 import ListSvg from '@/assets/list.svg?react';
 
 export interface WishSearchParams {
@@ -101,8 +103,8 @@ function Searches() {
 }
 
 interface ITableTitleModal {
-  initialItems: HeadTitle[];
-  onChange: (items: HeadTitle[]) => void;
+  initialItems: HeadTitle<Wishes & IPreRealSeat>[];
+  onChange: (items: HeadTitle<Wishes & IPreRealSeat>[]) => void;
   onClose: () => void;
 }
 
