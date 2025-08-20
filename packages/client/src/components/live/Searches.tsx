@@ -6,12 +6,14 @@ import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import DraggableList from '@/components/live/subjectTable/DraggableList.tsx';
+import FilteringModal from '@/components/wishTable/FilteringModal.tsx';
 import useWishSearchStore from '@/store/useWishSearchStore.ts';
 import { HeadTitle, useWishesTableStore } from '@/store/useTableColumnStore.ts';
 import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
 import useBackSignal from '@/hooks/useBackSignal.ts';
 import { Wishes } from '@/utils/types.ts';
 import ListSvg from '@/assets/list.svg?react';
+import FilterSvg from '@/assets/filter.svg?react';
 
 export interface WishSearchParams {
   searchInput: string;
@@ -21,6 +23,7 @@ export interface WishSearchParams {
 
 function Searches() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
   const selectedDepartment = useWishSearchStore(state => state.selectedDepartment);
   const searchInput = useWishSearchStore(state => state.searchInput);
@@ -56,6 +59,7 @@ function Searches() {
           onClose={() => setIsModalOpen(false)}
         />
       )}
+      {isFilterModalOpen && <FilteringModal onClose={() => setIsFilterModalOpen(false)} />}
       <SearchBox
         type="text"
         placeholder="과목명, 교수명 또는 학수번호 및 분반 검색"
@@ -88,6 +92,15 @@ function Searches() {
         >
           <AlarmIcon disabled={!isPinned} />
         </button> */}
+
+        <button
+          className="p-2 rounded-md flex gap-2 items-center border border-gray-400 bg-white hover:bg-gray-100"
+          aria-label="필터 수정"
+          title="필터 수정"
+          onClick={() => setIsFilterModalOpen(true)}
+        >
+          <FilterSvg className="w-4 h-4 text-gray-600 hover:text-blue-500 transition-colors" />
+        </button>
 
         <button
           className="p-2 rounded-md flex gap-2 items-center border border-gray-400 bg-white hover:bg-gray-100"
