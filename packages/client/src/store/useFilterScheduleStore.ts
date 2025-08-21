@@ -1,19 +1,12 @@
 import { create } from 'zustand';
-import { Day, Grade } from '@/utils/types';
-
-interface TimeRange {
-  startHour: string;
-  startMinute: string;
-  endHour: string;
-  endMinute: string;
-}
+import { Curitype, Day, Grade } from '@/utils/types';
 
 interface FilterState {
   selectedDepartment: string;
-  selectedGrades: (Grade | '전체')[];
-  isMajor?: boolean;
-  selectedDays: (Day | '전체')[];
-  selectedTimeRange: TimeRange;
+  selectedGrades: Grade[];
+  selectedDays: Day[];
+  selectedCredits: number[];
+  selectedCuriTypes: Curitype[];
   setFilterSchedule: <K extends keyof Omit<FilterState, 'setFilterSchedule' | 'resetFilterSchedule'>>(
     key: K,
     value: FilterState[K],
@@ -25,14 +18,9 @@ interface FilterState {
 const initialState: Omit<FilterState, 'setFilterSchedule' | 'resetFilterSchedule' | 'getFilterSchedule'> = {
   selectedDepartment: '',
   selectedGrades: [],
-  isMajor: undefined,
   selectedDays: [],
-  selectedTimeRange: {
-    startHour: '9',
-    startMinute: '00',
-    endHour: '10',
-    endMinute: '00',
-  },
+  selectedCredits: [],
+  selectedCuriTypes: [],
 };
 
 export const useFilterScheduleStore = create<FilterState>((set, get) => ({

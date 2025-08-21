@@ -1,59 +1,60 @@
 import Checkbox from './Checkbox';
 import Filtering from './Filtering';
 
-export interface OptionType<LABEL extends string | number> {
-  id: number;
-  label: LABEL;
+export interface OptionType<VALUE extends string | number> {
+  value: VALUE;
+  label: string;
 }
 
-interface ICheckboxFilter<LABEL extends string | number> {
+interface ICheckboxFilter<VALUE extends string | number> {
   labelPrefix: string;
-  selectedItems: number[];
-  handleChangeCheckbox: (item: number) => void;
-  options: OptionType<LABEL>[];
+  selectedValues: VALUE[];
+  field: string;
+  setFilterSchedule: (field: string, value: VALUE[]) => void;
+  options: OptionType<VALUE>[];
   selected: boolean;
 }
 
-/**
- * 필터링 컴포넌트 중 체크 박스로 이루어진 컴포넌트입니다.
- */
-function CheckboxFilter<LABEL extends string | number>({
+function CheckboxFilter<VALUE extends string | number>({
   labelPrefix,
-  selectedItems,
-  handleChangeCheckbox,
+  selectedValues,
+  field,
+  setFilterSchedule,
   options,
   selected,
-}: Readonly<ICheckboxFilter<LABEL>>) {
-  const checkSelected = (item: number) => {
-    return selectedItems.some(selected => selected === item);
+}: Readonly<ICheckboxFilter<VALUE>>) {
+  const checkSelected = (value: VALUE) => {
+    return selectedValues.includes(value);
   };
 
-  const getItemLabel = (id: number) => {
-    const option = options.find(opt => opt.id === id);
-    if (!option) {
+  const getFilteringLabel = () => {
+    if (selectedValues.length === 0) {
       return labelPrefix;
     }
-    return option.id === 0 ? '전체' : `${option.label}${labelPrefix}`;
+    if (selectedValues.length === 1) {
+      return selectedValues[0] + labelPrefix;
+    }
+
+    return `${String(selectedValues[0]) + labelPrefix} 외 ${selectedValues.length - 1}개`;
   };
 
-  let label: string;
+  const handleChangeCheckbox = (optionValue: VALUE) => {
+    const checked = selectedValues.includes(optionValue);
+    const newValues = checked
+      ? selectedValues.filter(selected => selected !== optionValue)
+      : [...selectedValues, optionValue];
 
-  if (selectedItems.length === 0) {
-    label = labelPrefix;
-  } else if (selectedItems.length > 1) {
-    label = `${getItemLabel(selectedItems[0])} 외 ${selectedItems.length - 1}개`;
-  } else {
-    label = getItemLabel(selectedItems[0]);
-  }
+    setFilterSchedule(field, newValues);
+  };
 
   return (
-    <Filtering label={label} selected={selected}>
+    <Filtering label={getFilteringLabel()} selected={selected}>
       {options.map(option => (
         <Checkbox
-          key={option.id}
-          label={getItemLabel(option.id)}
-          checked={checkSelected(option.id)}
-          onChange={() => handleChangeCheckbox(option.id)}
+          key={String(option.value)}
+          label={option.label}
+          checked={checkSelected(option.value)}
+          onChange={() => handleChangeCheckbox(option.value)}
         />
       ))}
     </Filtering>

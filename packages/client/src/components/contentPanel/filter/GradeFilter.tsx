@@ -2,55 +2,28 @@ import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import { Grade } from '@/utils/types';
 import CheckboxFilter, { OptionType } from '@common/components/filtering/CheckboxFilter';
 
-const GRADE: OptionType<Grade | '전체'>[] = [
-  { id: 0, label: '전체' },
-  { id: 1, label: 1 },
-  { id: 2, label: 2 },
-  { id: 3, label: 3 },
-  { id: 4, label: 4 },
+const GRADE: OptionType<Grade>[] = [
+  { value: 1, label: '1학년' },
+  { value: 2, label: '2학년' },
+  { value: 3, label: '3학년' },
+  { value: 4, label: '4학년' },
 ];
 
 function GradeFilter() {
   const { selectedGrades, setFilterSchedule } = useFilterScheduleStore();
 
-  const findLabelById = (id: number) => GRADE.find(grade => grade.id === id)?.label ?? '전체';
-
-  const selectedAll = () => {
-    const checked = selectedGrades.length === GRADE.length;
-
-    setFilterSchedule('selectedGrades', checked ? [] : GRADE.map(grade => grade.label));
-  };
-
-  const handleChangeCheckbox = (optionId: number) => {
-    const optionLabel = findLabelById(optionId);
-
-    if (optionId === 0) {
-      selectedAll();
-      return;
-    }
-
-    const isSelected = selectedGrades.includes(optionLabel);
-
-    if (isSelected) {
-      setFilterSchedule(
-        'selectedGrades',
-        selectedGrades.filter(grade => grade !== optionLabel),
-      );
-      return;
-    }
-
-    if (!isSelected) {
-      setFilterSchedule('selectedGrades', [...selectedGrades, optionLabel]);
+  const setFilterScheduleWrapper = (field: string, value: Grade[]) => {
+    if (field === 'selectedGrades') {
+      setFilterSchedule('selectedGrades', value);
     }
   };
-
-  const selectedIds = GRADE.filter(option => selectedGrades.includes(option.label)).map(option => option.id);
 
   return (
     <CheckboxFilter
       labelPrefix="학년"
-      selectedItems={selectedIds}
-      handleChangeCheckbox={handleChangeCheckbox}
+      selectedValues={selectedGrades}
+      field="selectedGrades"
+      setFilterSchedule={setFilterScheduleWrapper}
       options={GRADE}
       selected={selectedGrades.length !== 0}
     />
