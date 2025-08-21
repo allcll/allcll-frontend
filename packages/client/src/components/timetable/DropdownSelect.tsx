@@ -42,7 +42,7 @@ const DropdownSelect = ({ timetables, onSelect, onEdit, onDelete, openCreateModa
         <Filtering
           label={currentTimetable?.timeTableName ?? '새 시간표'}
           selected={currentTimetable?.timeTableId > -1}
-          className="gap-4 max-w-20 max-h-80 overflow-y-auto"
+          className="gap-4 max-w-20 min-w-max max-h-80 overflow-y-auto"
         >
           {timetables.length === 0 && <div> 새로운 시간표를 추가해주세요.</div>}
           {timetables.length !== 0 &&

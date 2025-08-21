@@ -6,7 +6,7 @@ export interface OptionType<VALUE extends string | number> {
   label: string;
 }
 
-interface IMultiCheckboxFilter<VALUE extends string | number> {
+interface ISingleCheckboxFilter<VALUE extends string | number> {
   labelPrefix: string;
   selectedValue: VALUE | null;
   field: string;
@@ -16,7 +16,7 @@ interface IMultiCheckboxFilter<VALUE extends string | number> {
   className?: string;
 }
 
-function MultiCheckboxFilter<VALUE extends string | number>({
+function SingleCheckboxFilter<VALUE extends string | number>({
   labelPrefix,
   selectedValue,
   field,
@@ -24,7 +24,7 @@ function MultiCheckboxFilter<VALUE extends string | number>({
   options,
   selected,
   className = '',
-}: Readonly<IMultiCheckboxFilter<VALUE>>) {
+}: Readonly<ISingleCheckboxFilter<VALUE>>) {
   const getFilteringLabel = () => {
     if (!selectedValue) {
       return labelPrefix;
@@ -54,4 +54,4 @@ function MultiCheckboxFilter<VALUE extends string | number>({
   );
 }
 
-export default MultiCheckboxFilter;
+export default SingleCheckboxFilter;
