@@ -69,3 +69,5 @@ export interface DepartmentType {
 export type Grade = 1 | 2 | 3 | 4;
 export type Day = '월' | '화' | '수' | '목' | '금' | '토' | '일';
 export const DAYS: Day[] = ['월', '화', '수', '목', '금', '토', '일'];
+
+export type Curitype = '교필' | '교선' | '전필' | '전선' | '전기' | '공필' | '균필' | '기필';

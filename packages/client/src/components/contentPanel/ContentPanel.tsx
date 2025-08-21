@@ -3,6 +3,7 @@ import SearchBox from '../common/SearchBox';
 import DepartmentFilter from './filter/DepartmentFilter';
 import GradeFilter from './filter/GradeFilter';
 import DayFilter from './filter/DayFilter';
+import CreditFilter from './filter/CreditFilter';
 import { FilteredSubjectCards } from './subject/FilteredSubjectCards';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
@@ -11,6 +12,7 @@ import useFilteringSubjects from '@/hooks/useFilteringSubjects';
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import useWishes from '@/hooks/server/useWishes.ts';
+import CuriTypeFilter from './filter/CuriTypeFilter';
 
 const initSchedule = new ScheduleAdapter().toUiData();
 
@@ -46,6 +48,8 @@ function ContentPanel() {
         <DepartmentFilter />
         <GradeFilter />
         <DayFilter />
+        <CreditFilter />
+        <CuriTypeFilter />
       </div>
       <button
         type="button"

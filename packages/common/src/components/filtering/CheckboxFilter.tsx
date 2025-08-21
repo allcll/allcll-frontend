@@ -13,6 +13,7 @@ interface ICheckboxFilter<VALUE extends string | number> {
   setFilterSchedule: (field: string, value: VALUE[]) => void;
   options: OptionType<VALUE>[];
   selected: boolean;
+  className?: string;
 }
 
 function CheckboxFilter<VALUE extends string | number>({
@@ -22,6 +23,7 @@ function CheckboxFilter<VALUE extends string | number>({
   setFilterSchedule,
   options,
   selected,
+  className = '',
 }: Readonly<ICheckboxFilter<VALUE>>) {
   const checkSelected = (value: VALUE) => {
     return selectedValues.includes(value);
@@ -48,7 +50,7 @@ function CheckboxFilter<VALUE extends string | number>({
   };
 
   return (
-    <Filtering label={getFilteringLabel()} selected={selected}>
+    <Filtering label={getFilteringLabel()} selected={selected} className={className}>
       {options.map(option => (
         <Checkbox
           key={String(option.value)}

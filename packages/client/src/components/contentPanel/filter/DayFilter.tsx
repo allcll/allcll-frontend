@@ -18,6 +18,7 @@ function DayFilter() {
       setFilterSchedule('selectedDays', value);
     }
   };
+
   return (
     <CheckboxFilter
       labelPrefix="요일"
