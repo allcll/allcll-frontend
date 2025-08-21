@@ -1,6 +1,7 @@
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import { Day } from '@/utils/types';
-import CheckboxFilter, { OptionType } from '@common/components/filtering/CheckboxFilter';
+import MultiCheckboxFilter from '@common/components/filtering/MultiCheckboxFilter';
+import { OptionType } from '@common/components/filtering/MultiCheckboxFilter';
 
 const DAYS: OptionType<Day>[] = [
   { value: '월', label: '월요일' },
@@ -20,7 +21,7 @@ function DayFilter() {
   };
 
   return (
-    <CheckboxFilter
+    <MultiCheckboxFilter<Day>
       labelPrefix="요일"
       selectedValues={selectedDays}
       field="selectedDays"

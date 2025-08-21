@@ -1,6 +1,7 @@
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import { Curitype } from '@/utils/types';
-import CheckboxFilter, { OptionType } from '@common/components/filtering/CheckboxFilter';
+import MultiCheckboxFilter from '@common/components/filtering/MultiCheckboxFilter';
+import { OptionType } from '@common/components/filtering/MultiCheckboxFilter';
 
 const CURITYPE: OptionType<Curitype>[] = [
   { value: '교필', label: '교필' },
@@ -23,7 +24,7 @@ function CuriTypeFilter() {
   };
 
   return (
-    <CheckboxFilter
+    <MultiCheckboxFilter
       labelPrefix="유형"
       selectedValues={selectedCuriTypes}
       field="selectedCuriTypes"

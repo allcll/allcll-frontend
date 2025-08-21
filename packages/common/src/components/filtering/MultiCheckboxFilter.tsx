@@ -6,7 +6,7 @@ export interface OptionType<VALUE extends string | number> {
   label: string;
 }
 
-interface ICheckboxFilter<VALUE extends string | number> {
+interface IMultiCheckboxFilter<VALUE extends string | number> {
   labelPrefix: string;
   selectedValues: VALUE[];
   field: string;
@@ -16,7 +16,7 @@ interface ICheckboxFilter<VALUE extends string | number> {
   className?: string;
 }
 
-function CheckboxFilter<VALUE extends string | number>({
+function MultiCheckboxFilter<VALUE extends string | number>({
   labelPrefix,
   selectedValues,
   field,
@@ -24,7 +24,7 @@ function CheckboxFilter<VALUE extends string | number>({
   options,
   selected,
   className = '',
-}: Readonly<ICheckboxFilter<VALUE>>) {
+}: Readonly<IMultiCheckboxFilter<VALUE>>) {
   const checkSelected = (value: VALUE) => {
     return selectedValues.includes(value);
   };
@@ -33,11 +33,13 @@ function CheckboxFilter<VALUE extends string | number>({
     if (selectedValues.length === 0) {
       return labelPrefix;
     }
+
+    const label = options.find(option => option.value === selectedValues[0])?.label || labelPrefix;
     if (selectedValues.length === 1) {
-      return selectedValues[0] + labelPrefix;
+      return label;
     }
 
-    return `${String(selectedValues[0]) + labelPrefix} 외 ${selectedValues.length - 1}개`;
+    return `${label} 외 ${selectedValues.length - 1}개`;
   };
 
   const handleChangeCheckbox = (optionValue: VALUE) => {
@@ -63,4 +65,4 @@ function CheckboxFilter<VALUE extends string | number>({
   );
 }
 
-export default CheckboxFilter;
+export default MultiCheckboxFilter;

@@ -1,5 +1,6 @@
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
-import CheckboxFilter, { OptionType } from '@common/components/filtering/CheckboxFilter';
+import MultiCheckboxFilter from '@common/components/filtering/MultiCheckboxFilter';
+import { OptionType } from '@common/components/filtering/MultiCheckboxFilter';
 
 const CREDITS: OptionType<number>[] = [
   { value: 1, label: '1학점' },
@@ -17,7 +18,7 @@ function CreditFilter() {
   };
 
   return (
-    <CheckboxFilter
+    <MultiCheckboxFilter
       labelPrefix="학점"
       selectedValues={selectedCredits}
       field="selectedCredits"

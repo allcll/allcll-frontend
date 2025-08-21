@@ -1,5 +1,5 @@
 import { TimetableType } from '@/hooks/server/useTimetableSchedules';
-import CheckboxFilter from '@common/components/filtering/CheckboxFilter';
+import SingleCheckboxFilter from '@common/components/filtering/SingleCheckbox';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -7,59 +7,40 @@ interface ITimetableChip {
   timetables: TimetableType[];
   selectedTimetable: TimetableType;
   onSelect: (optionId: number) => void;
-  setSelectedTimetable: React.Dispatch<React.SetStateAction<TimetableType>>;
 }
 
-function TimetableChip({ selectedTimetable, onSelect, setSelectedTimetable, timetables }: ITimetableChip) {
+function TimetableChip({ selectedTimetable, onSelect, timetables }: ITimetableChip) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleOptionClick = (option: TimetableType) => {
-    setSelectedTimetable(option);
-    onSelect(option.timeTableId);
+  const setFilterScheduleWrapper = (field: string, value: string | number | null) => {
+    if (field === 'selectedTimetable' && typeof value === 'number') {
+      onSelect(value);
+    }
   };
 
   const timetableOptions = timetables.map(timetable => {
     return {
-      id: timetable.timeTableId,
+      value: timetable.timeTableId,
       label: timetable.timeTableName,
     };
   });
 
-  const selectedIds = timetableOptions
-    .filter(option => option.id === selectedTimetable.timeTableId)
-    .map(option => option.id);
+  const selectedValues = timetableOptions
+    .filter(option => option.value === selectedTimetable.timeTableId)
+    .map(option => option.value);
 
   return (
     <div className="flex flex-col gap-2">
       <h2 className="text-left font-semibold text-sm sm:text-md">시간표를 선택해주세요.</h2>
       <div className="relative inline-block max-w-sm" ref={dropdownRef}>
-        {/* <Filtering
-          label={selectedTimetable?.timeTableName ?? '시간표를 선택해주세요.'}
-          selected={selectedTimetable?.timeTableId !== -1}
-          className="gap-4 max-h-80 overflow-y-auto"
-        >
-          {timetables.length === 0 && <div> 새로운 시간표를 추가해주세요.</div>}
-          {timetables.length !== 0 &&
-            timetables.map(option => (
-              <div className="flex gap-5" key={option.timeTableName + option.timeTableId}>
-                <Checkbox
-                  key={option.timeTableId}
-                  label={option.timeTableName}
-                  checked={selectedTimetable.timeTableId === option.timeTableId}
-                  onChange={() => handleOptionClick(option)}
-                />
-              </div>
-            ))}
-        </Filtering> */}
-
-        <CheckboxFilter
-          labelPrefix="시간표 선택"
-          selectedItems={selectedIds}
-          selected={selectedIds.length > 0}
-          handleChangeCheckbox={() => handleOptionClick}
+        <SingleCheckboxFilter
+          labelPrefix="시간표"
+          selectedValue={selectedTimetable.timeTableId}
+          field="selectedTimetable"
+          setFilterSchedule={setFilterScheduleWrapper}
           options={timetableOptions}
+          selected={selectedValues.length > 0}
         />
-
         <Link to="/timetable" className="px-6 py-2 hover:text-blue-500 text-gray-500 rounded-md">
           새 시간표 추가
         </Link>

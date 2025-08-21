@@ -1,6 +1,7 @@
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import { Grade } from '@/utils/types';
-import CheckboxFilter, { OptionType } from '@common/components/filtering/CheckboxFilter';
+import MultiCheckboxFilter from '@common/components/filtering/MultiCheckboxFilter';
+import { OptionType } from '@common/components/filtering/MultiCheckboxFilter';
 
 const GRADE: OptionType<Grade>[] = [
   { value: 1, label: '1학년' },
@@ -19,7 +20,7 @@ function GradeFilter() {
   };
 
   return (
-    <CheckboxFilter
+    <MultiCheckboxFilter
       labelPrefix="학년"
       selectedValues={selectedGrades}
       field="selectedGrades"
