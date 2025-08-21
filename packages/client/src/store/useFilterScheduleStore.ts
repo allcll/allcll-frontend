@@ -7,6 +7,8 @@ interface FilterState {
   selectedDays: Day[];
   selectedCredits: number[];
   selectedCuriTypes: Curitype[];
+  selectedSeatRange: string;
+  selectedWishRange: string;
   setFilterSchedule: <K extends keyof Omit<FilterState, 'setFilterSchedule' | 'resetFilterSchedule'>>(
     key: K,
     value: FilterState[K],
@@ -21,6 +23,8 @@ const initialState: Omit<FilterState, 'setFilterSchedule' | 'resetFilterSchedule
   selectedDays: [],
   selectedCredits: [],
   selectedCuriTypes: [],
+  selectedSeatRange: '',
+  selectedWishRange: '',
 };
 
 export const useFilterScheduleStore = create<FilterState>((set, get) => ({

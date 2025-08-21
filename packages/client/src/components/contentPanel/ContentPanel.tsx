@@ -13,6 +13,8 @@ import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import useWishes from '@/hooks/server/useWishes.ts';
 import CuriTypeFilter from './filter/CuriTypeFilter';
+import SeatFilter from './filter/SeatFilter';
+import WishFilter from './filter/WishFilter';
 
 const initSchedule = new ScheduleAdapter().toUiData();
 
@@ -46,10 +48,12 @@ function ContentPanel() {
       <div className="flex flex-wrap gap-3 w-full">
         <FilterDelete />
         <DepartmentFilter />
-        <GradeFilter />
-        <DayFilter />
         <CreditFilter />
         <CuriTypeFilter />
+        <GradeFilter />
+        <DayFilter />
+        <SeatFilter />
+        <WishFilter />
       </div>
       <button
         type="button"

@@ -31,7 +31,7 @@ function CuriTypeFilter() {
       setFilterSchedule={setFilterScheduleWrapper}
       options={CURITYPE}
       selected={selectedCuriTypes.length !== 0}
-      className="min-w-[130px]"
+      className="min-w-max"
     />
   );
 }
