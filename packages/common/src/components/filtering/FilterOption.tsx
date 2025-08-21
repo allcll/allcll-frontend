@@ -15,7 +15,7 @@ function FilterOption({ children, contentRef, className = '' }: IFilterOption) {
   rounded-lg border border-gray-200 bg-white shadow-lg
   p-2
   max-h-64 overflow-y-auto
-  ${className ? className : 'min-w-max'}
+  ${className ? className : 'min-w-[150px]'}
   `}
       role="listbox"
     >

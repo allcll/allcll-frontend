@@ -1,3 +1,4 @@
+import CustomButton from '../Button';
 import Checkbox from './Checkbox';
 import Filtering from './Filtering';
 
@@ -51,6 +52,10 @@ function MultiCheckboxFilter<VALUE extends string | number>({
     setFilterSchedule(field, newValues);
   };
 
+  const handleClickReset = () => {
+    setFilterSchedule(field, []);
+  };
+
   return (
     <Filtering label={getFilteringLabel()} selected={selected} className={className}>
       {options.map(option => (
@@ -61,6 +66,11 @@ function MultiCheckboxFilter<VALUE extends string | number>({
           onChange={() => handleChangeCheckbox(option.value)}
         />
       ))}
+      <div className="flex justify-end w-full">
+        <CustomButton onClick={() => handleClickReset()} variants="primary" className="text-xs px-1 py-0.5">
+          초기화
+        </CustomButton>
+      </div>
     </Filtering>
   );
 }
