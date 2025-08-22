@@ -45,7 +45,8 @@ function ContentPanel() {
         onDelete={() => setSearchKeywords('')}
         onChange={e => setSearchKeywords(e.target.value)}
       />
-      <div className="flex flex-wrap gap-3 w-full">
+      <div className="flex items-center flex-wrap gap-2 mr-20">
+        <h3 className="font-semibold text-gray-700">필터링</h3>
         <FilterDelete />
         <DepartmentFilter />
         <CreditFilter />

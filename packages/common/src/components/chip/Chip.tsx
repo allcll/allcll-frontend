@@ -7,8 +7,8 @@ import CancleIcon from '../svgs/CancleIcon';
 
 function getSelectedColor(selected: boolean) {
   return selected
-    ? 'bg-blue-100 text-blue-500 focus:outline-blue-500'
-    : 'bg-gray-100 text-gray-700 focus:outline-gray-400';
+    ? 'bg-blue-100 text-blue-500 focus:outline-blue-500 hover:bg-blue-200'
+    : 'bg-gray-100 text-gray-700 focus:outline-gray-400 hover:bg-gray-200';
 }
 
 interface IChip extends ButtonHTMLAttributes<HTMLButtonElement> {
