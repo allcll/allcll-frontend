@@ -3,7 +3,7 @@ import { Curitype } from '@/utils/types';
 import MultiCheckboxFilter from '@common/components/filtering/MultiCheckboxFilter';
 import { OptionType } from '@common/components/filtering/MultiCheckboxFilter';
 
-const CURITYPE: OptionType<Curitype>[] = [
+export const CURITYPE: OptionType<Curitype>[] = [
   { value: '교필', label: '교필' },
   { value: '교선', label: '교선' },
   { value: '전필', label: '전필' },
@@ -26,6 +26,7 @@ function CuriTypeFilter() {
   return (
     <MultiCheckboxFilter
       labelPrefix="유형"
+      variant="chip"
       selectedValues={selectedCuriTypes}
       field="selectedCuriTypes"
       setFilterSchedule={setFilterScheduleWrapper}

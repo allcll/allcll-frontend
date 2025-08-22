@@ -3,7 +3,7 @@ import { Day } from '@/utils/types';
 import MultiCheckboxFilter from '@common/components/filtering/MultiCheckboxFilter';
 import { OptionType } from '@common/components/filtering/MultiCheckboxFilter';
 
-const DAYS: OptionType<Day>[] = [
+export const DAYS: OptionType<Day>[] = [
   { value: '월', label: '월요일' },
   { value: '화', label: '화요일' },
   { value: '수', label: '수요일' },

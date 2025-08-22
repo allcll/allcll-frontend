@@ -1,42 +1,34 @@
 import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
-import Chip from '@common/components/chip/Chip';
-import Filtering from '@common/components/filtering/Filtering';
+import SingleCheckboxFilter, { OptionType } from '@common/components/filtering/SingleCheckbox';
 
-const SEAT = ['0명', '1명이상', '5명이상', '10명이상'];
+export const SEAT: OptionType<number>[] = [
+  { value: 0, label: '여석 없음' },
+  { value: 1, label: '여석 1개' },
+  { value: 2, label: '여석 2개 이상' },
+  { value: 5, label: '여석 5개 이상' },
+  { value: 10, label: '여석 10개 이상' },
+];
 
 function SeatFilter() {
   const { selectedSeatRange, setFilterSchedule } = useFilterScheduleStore();
 
-  const handleSeatRangeChange = (value: string) => {
-    const currentSelection = selectedSeatRange.includes(value);
-    if (currentSelection) {
-      setFilterSchedule('selectedSeatRange', '');
-    } else {
-      setFilterSchedule('selectedSeatRange', value);
+  const setFilterScheduleWrapper = (field: string, value: number | null) => {
+    if (field === 'selectedSeatRange') {
+      setFilterSchedule('selectedSeatRange', value || 0);
     }
-  };
-
-  const getFilteringLabel = () => {
-    if (selectedSeatRange) {
-      return `여석 ${selectedSeatRange}`;
-    }
-    return '여석';
   };
 
   return (
-    <Filtering label={getFilteringLabel()} selected={selectedSeatRange.length !== 0} className="min-w-max">
-      <h3 className="text-gray-700 font-semibold">여석</h3>
-      <div className="grid grid-cols-2 gap-2">
-        {SEAT.map(seat => (
-          <Chip
-            key={seat}
-            label={seat}
-            selected={seat === selectedSeatRange}
-            onClick={() => handleSeatRangeChange(seat)}
-          />
-        ))}
-      </div>
-    </Filtering>
+    <SingleCheckboxFilter
+      labelPrefix="여석"
+      variant="chip"
+      selectedValue={selectedSeatRange}
+      field="selectedSeatRange"
+      setFilterSchedule={setFilterScheduleWrapper}
+      options={SEAT}
+      selected={selectedSeatRange > -1}
+      className="min-w-max"
+    />
   );
 }
 
