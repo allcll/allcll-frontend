@@ -14,7 +14,6 @@ interface FilterState {
     value: FilterState[K],
   ) => void;
   resetFilterSchedule: () => void;
-  getFilterSchedule: () => Omit<FilterState, 'setFilterSchedule' | 'resetFilterSchedule' | 'getFilterSchedule'>;
 }
 
 const initialState: Omit<FilterState, 'setFilterSchedule' | 'resetFilterSchedule' | 'getFilterSchedule'> = {
@@ -27,13 +26,9 @@ const initialState: Omit<FilterState, 'setFilterSchedule' | 'resetFilterSchedule
   selectedWishRange: -1,
 };
 
-export const useFilterScheduleStore = create<FilterState>((set, get) => ({
+/** @deprecated */
+export const useFilterScheduleStore = create<FilterState>(set => ({
   ...initialState,
   setFilterSchedule: (key, value) => set(state => ({ ...state, [key]: value })),
   resetFilterSchedule: () => set(initialState),
-  getFilterSchedule: () => {
-    const state = get();
-    const { setFilterSchedule, resetFilterSchedule, getFilterSchedule, ...pureState } = state;
-    return pureState;
-  },
 }));

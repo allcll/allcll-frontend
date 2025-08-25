@@ -102,15 +102,18 @@ export function filterSchedule(subject: Wishes | Subject, selectedTime: IDayTime
     if (!lessonTime) return false;
 
     if (item.type === 'before' && item.start) {
-      return lessonTime.some(time => item.start.localeCompare(time) <= 0);
+      const start = item.start;
+      return lessonTime.some(time => start.localeCompare(time) <= 0);
     }
 
-    if (item.type === 'after' && item.end) {
-      return lessonTime.some(time => item.end.localeCompare(time) >= 0);
+    if (item.type === 'after' && item.start) {
+      const start = item.start;
+      return lessonTime.some(time => start.localeCompare(time) >= 0);
     }
 
     if (item.type === 'between' && item.start && item.end) {
-      return lessonTime.some(time => item.start.localeCompare(time) <= 0 && item.end.localeCompare(time) >= 0);
+      const { start, end } = item;
+      return lessonTime.some(time => start.localeCompare(time) <= 0 && end.localeCompare(time) >= 0);
     }
   });
 }

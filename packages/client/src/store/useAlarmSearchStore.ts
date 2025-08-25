@@ -11,6 +11,7 @@ interface IUseAlarmSearchStore {
   setSelectedDepartment: (department: string) => void;
 }
 
+/** @deprecated */
 const useAlarmSearchStore = create<IUseAlarmSearchStore>(set => ({
   searchKeyword: '',
   isAlarmWish: false,

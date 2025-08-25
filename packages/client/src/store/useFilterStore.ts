@@ -1,0 +1,52 @@
+import { Curitype, Grade, RangeFilter, RemarkType } from '@/utils/types.ts';
+import { create } from 'zustand';
+import { IDayTimeItem } from '@/components/contentPanel/filter/DayTimeFilter.tsx';
+
+export interface Filters {
+  keywords: string;
+  department: string;
+  grades: Grade[];
+  credits: number[];
+  categories: Curitype[];
+  seatRange: RangeFilter | null;
+  wishRange: RangeFilter | null;
+  time: IDayTimeItem[];
+  classroom: string[];
+  note: RemarkType | null;
+  language: string; // 한국어/영어, 영어
+  alarmOnly: boolean;
+  favoriteOnly: boolean;
+}
+
+interface IFilterStore {
+  filters: Filters;
+  setFilter: <K extends keyof Filters>(key: K, value: Filters[K]) => void;
+  resetFilters: () => void;
+}
+
+const initialFilters: Filters = {
+  keywords: '',
+  department: '',
+  grades: [],
+  credits: [],
+  categories: [],
+  seatRange: null,
+  wishRange: null,
+  time: [],
+  classroom: [],
+  note: null,
+  language: '',
+  alarmOnly: false,
+  favoriteOnly: false,
+};
+
+const createFilterStore = () =>
+  create<IFilterStore>(set => ({
+    filters: { ...initialFilters },
+    setFilter: (key, value) => set(state => ({ filters: { ...state.filters, [key]: value } })),
+    resetFilters: () => set({ filters: initialFilters }),
+  }));
+
+export const useScheduleSearchStore = createFilterStore();
+export const useAlarmSearchStore = createFilterStore();
+export const useWishSearchStore = createFilterStore();

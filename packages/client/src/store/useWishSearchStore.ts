@@ -14,6 +14,7 @@ interface IUseWishSearchStore {
   setSearchParams: (searchParams: WishSearchParams) => void;
 }
 
+/** @deprecated */
 const useWishSearchStore = create<IUseWishSearchStore>(set => ({
   searchInput: '',
   selectedDepartment: '',
