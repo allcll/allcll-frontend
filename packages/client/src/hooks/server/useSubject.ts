@@ -16,7 +16,7 @@ export const InitSubject: Subject = {
   manageDeptNm: '',
   studentYear: '',
   lesnTime: '', // 수업 시간
-  lesnRoom: '', // 수업실
+  lesnRoom: '', // 강의실
   tmNum: '', // 학점
   remark: null, // 비고
   curiTypeCdNm: '', // 수업 유형 코드명 ('공필'/'전필'/'전선' 등)

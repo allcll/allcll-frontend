@@ -4,7 +4,7 @@ import AlarmOptionModal from '@/components/toast/AlarmOptionModal.tsx';
 import RealtimeCard from '@/components/live/subjectTable/RealtimeCard.tsx';
 import NetworkError from '@/components/live/errors/NetworkError.tsx';
 import ZeroPinError from '@/components/live/errors/ZeroPinError.tsx';
-import { usePinned } from '@/store/usePinned.ts';
+import { usePinned } from '@/hooks/server/usePinned.ts';
 import useFindWishes from '@/hooks/useFindWishes.ts';
 import { SSEType, useSseData } from '@/hooks/useSSEManager.ts';
 import useNotification from '@/hooks/useNotification.ts';
