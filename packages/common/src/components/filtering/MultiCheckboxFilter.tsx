@@ -1,4 +1,4 @@
-import CustomButton from '../Button';
+import Chip from '../chip/Chip';
 import Checkbox from './Checkbox';
 import Filtering from './Filtering';
 
@@ -7,10 +7,13 @@ export interface OptionType<VALUE extends string | number> {
   label: string;
 }
 
+type Variant = 'checkbox' | 'chip';
+
 interface IMultiCheckboxFilter<VALUE extends string | number> {
   labelPrefix: string;
   selectedValues: VALUE[];
   field: string;
+  variant?: Variant;
   setFilterSchedule: (field: string, value: VALUE[]) => void;
   options: OptionType<VALUE>[];
   selected: boolean;
@@ -21,6 +24,7 @@ function MultiCheckboxFilter<VALUE extends string | number>({
   labelPrefix,
   selectedValues,
   field,
+  variant = 'checkbox',
   setFilterSchedule,
   options,
   selected,
@@ -58,18 +62,32 @@ function MultiCheckboxFilter<VALUE extends string | number>({
 
   return (
     <Filtering label={getFilteringLabel()} selected={selected} className={className}>
-      {options.map(option => (
-        <Checkbox
-          key={String(option.value)}
-          label={option.label}
-          checked={checkSelected(option.value)}
-          onChange={() => handleChangeCheckbox(option.value)}
-        />
-      ))}
-      <div className="flex justify-end w-full">
-        <CustomButton onClick={() => handleClickReset()} variants="primary" className="text-xs px-1 py-0.5">
+      <h3 className="text-md font-medium text-gray-600">{labelPrefix}</h3>
+      <div className={`${options.length > 6 ? 'grid grid-cols-2 gap-x-4' : 'flex flex-col'} gap-y-2`}>
+        {variant === 'checkbox' &&
+          options.map(option => (
+            <Checkbox
+              key={String(option.value)}
+              label={option.label}
+              checked={checkSelected(option.value)}
+              onChange={() => handleChangeCheckbox(option.value)}
+            />
+          ))}
+
+        {variant === 'chip' &&
+          options.map(option => (
+            <Chip
+              key={String(option.value)}
+              label={option.label}
+              selected={checkSelected(option.value)}
+              onClick={() => handleChangeCheckbox(option.value)}
+            />
+          ))}
+      </div>
+      <div className="flex justify-end w-full mt-2">
+        <button onClick={() => handleClickReset()} className="text-blue-500 cursor-pointer text-sm px-1 py-0.5">
           초기화
-        </CustomButton>
+        </button>
       </div>
     </Filtering>
   );

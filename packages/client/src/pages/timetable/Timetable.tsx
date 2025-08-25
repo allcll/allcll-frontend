@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import TimetableComponent from '@/components/timetable/TimetableComponent.tsx';
 import DropdownSelect from '@/components/timetable/DropdownSelect.tsx';
 import SearchBottomSheet from '@/components/contentPanel/bottomSheet/SearchBottomSheet';
-import FilteringBottomSheet from '@/components/contentPanel/bottomSheet/FilteringBottomSheet';
+import FilteringBottomSheet from '@/components/contentPanel/bottomSheet/filter/FilteringBottomSheet';
 import FormBottomSheet from '@/components/contentPanel/bottomSheet/FormBottomSheet';
 import ScheduleFormModal from '@/components/contentPanel/ScheduleFormModal';
 import ContentPanel from '@/components/contentPanel/ContentPanel';
@@ -41,19 +41,19 @@ function Timetable() {
         <title>ALLCLL | 시간표</title>
       </Helmet>
 
-      <div className="grid md:grid-cols-3 gap-4">
-        <div className="md:col-span-2 w-full h-full">
+      <div className="grid lg:grid-cols-3 gap-4">
+        <div className="lg:col-span-2 w-full h-full">
           <Card className="px-2 relative overflow-hidden">
             <TimetableHeader setIsOpenModal={setIsOpenModal} />
             <TimetableComponent />
           </Card>
         </div>
 
-        <div className="md:col-span-1 w-full">
-          <div className="hidden md:block">
+        <div className="lg:col-span-1 w-full">
+          <div className="hidden lg:block">
             <ContentPanel />
           </div>
-          <div className="md:hidden">
+          <div className="lg:hidden">
             {bottomSheetType === 'search' && <SearchBottomSheet onCloseSearch={handleClickFiltering} />}
             {bottomSheetType === 'filter' && <FilteringBottomSheet />}
             {bottomSheetType === 'edit' && <FormBottomSheet />}
@@ -69,7 +69,7 @@ function Timetable() {
 
       {bottomSheetType === null && (
         <button
-          className="fixed bottom-4 right-4 z-50 w-15 h-15 rounded-full bg-blue-500 flex justify-center items-center shadow-lg md:hidden"
+          className="fixed bottom-4 right-4 z-50 w-15 h-15 rounded-full bg-blue-500 flex justify-center items-center shadow-lg lg:hidden"
           onClick={() => openBottomSheet('search')}
         >
           <AddWhiteSvg className="w-10 h-10 cursor-pointer" />

@@ -2,7 +2,7 @@ import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
 import MultiCheckboxFilter from '@common/components/filtering/MultiCheckboxFilter';
 import { OptionType } from '@common/components/filtering/MultiCheckboxFilter';
 
-const CREDITS: OptionType<number>[] = [
+export const CREDITS: OptionType<number>[] = [
   { value: 1, label: '1학점' },
   { value: 2, label: '2학점' },
   { value: 3, label: '3학점' },

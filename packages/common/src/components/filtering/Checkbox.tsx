@@ -19,7 +19,7 @@ function Checkbox({ label = 'checkbox', ...props }: Readonly<ICheckbox>) {
         />
         {props.checked && <CheckSvg className="absolute inset-0 m-auto w-4 h-4 pointer-events-none text-white" />}
       </div>
-      <span className={props.checked ? 'text-blue-500' : 'text-gray-700'}>{label}</span>
+      <span className={`${props.checked ? 'text-blue-500' : 'text-gray-600'} cursor-pointer`}>{label}</span>
     </label>
   );
 }
