@@ -2,6 +2,8 @@ import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import { Curitype } from '@/utils/types';
 import MultiCheckboxFilter from '@common/components/filtering/MultiCheckboxFilter';
 import { OptionType } from '@common/components/filtering/MultiCheckboxFilter';
+import useSubject from '@/hooks/server/useSubject.ts';
+import { getCategories } from '@/utils/filtering/filterDomains.ts';
 
 export const CURITYPE: OptionType<Curitype>[] = [
   { value: '교필', label: '교필' },
@@ -18,9 +20,14 @@ function CuriTypeFilter() {
   const { categories } = useScheduleSearchStore(state => state.filters);
   const setFilter = useScheduleSearchStore(state => state.setFilter);
 
-  const setFilterScheduleWrapper = (field: string, value: Curitype[]) => {
+  const { data: subjects } = useSubject();
+  const categoryOptions = getCategories(subjects ?? [])
+    .sort((a, b) => a.localeCompare(b))
+    .map(cat => ({ label: cat, value: cat }));
+
+  const setFilterScheduleWrapper = (field: string, value: string[]) => {
     if (field === 'selectedCuriTypes') {
-      setFilter('categories', value);
+      setFilter('categories', value as Curitype[]);
     }
   };
 
@@ -31,7 +38,7 @@ function CuriTypeFilter() {
       selectedValues={categories}
       field="selectedCuriTypes"
       setFilterSchedule={setFilterScheduleWrapper}
-      options={CURITYPE}
+      options={categoryOptions}
       selected={categories.length !== 0}
       className="min-w-max"
     />

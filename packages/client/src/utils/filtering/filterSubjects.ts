@@ -1,30 +1,44 @@
 import { disassemble } from 'es-hangul';
-import { Day, Grade, RangeFilter, RemarkType, Subject, Wishes } from '../types';
+import { Grade, RangeFilter, RemarkType, Subject, Wishes } from '../types';
 import { IDayTimeItem } from '@/components/contentPanel/filter/DayTimeFilter.tsx';
+import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
+
+function filterRange(value: number, range: RangeFilter | null) {
+  if (!range) return true;
+
+  return (
+    (range.operator === 'over-equal' && value >= range.value) ||
+    (range.operator === 'under-equal' && value <= range.value)
+  );
+}
+
+function filterMatches<T>(value: T, matchList: T[]) {
+  return !matchList.length || matchList.includes(value);
+}
 
 export function getNormalizedKeyword(keyword: string) {
   const cleanSearchInput = keyword.replace(/[^\wㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
   return disassemble(cleanSearchInput).toLowerCase();
 }
 
-export function filterDays(subject: Wishes | Subject, selectedDays: (Day | '전체')[]) {
-  if (!subject.lesnTime) {
-    return true;
-  }
-
-  const timeMatchResult = RegExp(/^([가-힣]+)/).exec(subject.lesnTime);
-
-  if (!timeMatchResult) {
-    return false;
-  }
-
-  if (selectedDays.includes('전체') || selectedDays.length === 0) {
-    return true;
-  }
-
-  const lessonDays = timeMatchResult[1].split('');
-  return selectedDays.some(selectedDay => lessonDays.includes(selectedDay));
-}
+// export function filterDays(subject: Wishes | Subject, selectedDays: (Day | '전체')[]) {
+//   if (!subject.lesnTime) {
+//     return true;
+//   }
+//
+//   const timeMatchResult = RegExp(/^([가-힣]+)/).exec(subject.lesnTime);
+//
+//   if (!timeMatchResult) {
+//     return false;
+//   }
+//
+//   if (selectedDays.includes('전체') || selectedDays.length === 0) {
+//     return true;
+//   }
+//
+//   const lessonDays = timeMatchResult[1].split('');
+//   return selectedDays.some(selectedDay => lessonDays.includes(selectedDay));
+// }
 
 export function filterGrades(subject: Wishes | Subject, selectedGrades: (Grade | '전체')[]) {
   const subjectGrade = Number(subject.studentYear);
@@ -41,20 +55,20 @@ export function filterGrades(subject: Wishes | Subject, selectedGrades: (Grade |
 }
 
 export function filterCredits(subject: Wishes | Subject, selectedCredits: number[]) {
-  return true;
+  const credit = Number(subject.tmNum.split('/')[0]);
+  if (!credit || isNaN(credit)) return true;
+
+  return filterMatches(credit, selectedCredits);
 }
 
-export function filterCategories(subject: Wishes | Subject, selectedCategories: string[]) {
-  //return !selectedCategories.length || selectedCategories.includes(subject.curiTypeCdNm);
-  return true;
-}
-
-export function filterSeatRange(subject: Wishes | Subject, seatRange: RangeFilter | null) {
-  return true;
+export function filterSeatRange(subject: IPreRealSeat, seatRange: RangeFilter | null) {
+  if (!('seat' in subject)) return true;
+  return filterRange(subject.seat ?? 0, seatRange);
 }
 
 export function filterWishRange(subject: Wishes | Subject, wishRange: RangeFilter | null) {
-  return true;
+  if (!('totalCount' in subject)) return true;
+  return filterRange(subject.totalCount ?? 0, wishRange);
 }
 
 export function filterDepartment(subject: Wishes | Subject, selectedDepartment: string) {
@@ -78,14 +92,12 @@ export function filterSearchKeywords(subject: Wishes | Subject, cleanedKeyword: 
 }
 
 export function filterClassroom(subject: Wishes | Subject, selectedClassrooms: string[]) {
-  if (!subject.lesnRoom || selectedClassrooms.length === 0) {
-    return true;
-  }
+  if (!selectedClassrooms.length) return true;
 
-  const abbreviatedRooms = selectedClassrooms.map(r => (r === '대양AI센터' ? '센' : r.slice(0, 1)));
+  if (!subject.lesnRoom) return false;
 
-  return abbreviatedRooms.some(room => {
-    const roomRegex = new RegExp(`^${room}[\d\w]`, 'i');
+  return selectedClassrooms.some(room => {
+    const roomRegex = new RegExp(`^${room}[\\w]`, 'i');
     return roomRegex.test(subject.lesnRoom);
   });
 }
@@ -139,10 +151,10 @@ export function filterSchedule(subject: Wishes | Subject, selectedTime: IDayTime
   });
 }
 
-export function filterCategory(subject: Wishes | Subject, selectedCategories: string[]) {
-  return !selectedCategories.length || selectedCategories.includes(subject.curiTypeCdNm);
+export function filterCategories(subject: Wishes | Subject, selectedCategories: string[]) {
+  return filterMatches(subject.curiTypeCdNm, selectedCategories);
 }
 
-export function filterLanguage(subject: Wishes | Subject, selectedLanguages: string) {
-  return true;
+export function filterLanguage(subject: Wishes | Subject, selectedLanguages: string[]) {
+  return filterMatches(subject.curiLangNm ?? '', selectedLanguages);
 }

@@ -59,6 +59,33 @@ export const FilterDomains = {
 // 김: '김원관';
 // 호: '호텔스쿨';
 
+export const FilterOptions = {
+  classRoom: [
+    { label: '광개토관', value: '광' },
+    { label: '집현관', value: '집' },
+    { label: '용덕관', value: '용' },
+    { label: '군자관', value: '군' },
+    { label: '대양AI센터', value: '센' },
+    { label: '동천관(학술정보원)', value: '동' },
+    { label: '호텔스쿨', value: '호' },
+    { label: '영실관', value: '영' },
+    { label: '이당관', value: '이' },
+    { label: '충무관', value: '충' },
+    { label: '세종관', value: '세' },
+    { label: '애지헌', value: '애' },
+    { label: '진관홀', value: '진' },
+    { label: '율곡관', value: '율' },
+    { label: '김원관', value: '김' },
+    { label: '다산관', value: '다' },
+    { label: '새날관', value: '새' },
+    { label: '대양홀', value: '대' },
+    { label: '우정당', value: '우' },
+    { label: '무방관', value: '무' },
+    { label: '모짜르트홀', value: '모' },
+    { label: '학생회관', value: '학' },
+  ],
+};
+
 export function getCategories(subjects: Subject[]) {
   const categories = unique(subjects.map(s => s.curiTypeCdNm));
   return categories.filter(category => !!category);

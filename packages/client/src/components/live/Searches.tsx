@@ -51,7 +51,9 @@ function Searches() {
           onClose={() => setIsModalOpen(false)}
         />
       )}
-      {isFilterModalOpen && <FilteringModal onClose={() => setIsFilterModalOpen(false)} />}
+      {isFilterModalOpen && (
+        <FilteringModal filterStore={useWishSearchStore} onClose={() => setIsFilterModalOpen(false)} />
+      )}
       <SearchBox
         type="text"
         placeholder="과목명, 교수명 또는 학수번호 및 분반 검색"

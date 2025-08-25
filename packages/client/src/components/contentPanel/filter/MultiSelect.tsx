@@ -1,4 +1,5 @@
 import Checkbox from '@common/components/filtering/Checkbox.tsx';
+import Button from '@common/components/Button.tsx';
 
 interface ISelectItem<T> {
   label: string;
@@ -15,16 +16,6 @@ interface IMultiSelect<T> {
 /** Multi Select 를 위한 컴포넌트
  * 전체 선택기능 및 ... */
 function MultiSelect<T>({ items, selectedItems, setSelectedItems, isLoading = false }: Readonly<IMultiSelect<T>>) {
-  const isAllSelected = items.length > 0 && items.length === selectedItems.length;
-
-  const handleAll = () => {
-    if (isAllSelected) {
-      setSelectedItems([]);
-    } else {
-      setSelectedItems(items.map(i => i.value));
-    }
-  };
-
   const handleItemChange = (value: T) => {
     if (selectedItems.includes(value)) {
       setSelectedItems(selectedItems.filter(item => item !== value));
@@ -33,14 +24,16 @@ function MultiSelect<T>({ items, selectedItems, setSelectedItems, isLoading = fa
     }
   };
 
+  const handleReset = () => {
+    setSelectedItems([]);
+  };
+
   if (isLoading) {
     return <div className="text-gray-500">Loading...</div>;
   }
 
   return (
     <>
-      <Checkbox label="전체" checked={isAllSelected} onChange={handleAll} />
-
       {items.map((item, index) => (
         <Checkbox
           key={'checkbox-' + (item.value ?? index)}
@@ -49,6 +42,12 @@ function MultiSelect<T>({ items, selectedItems, setSelectedItems, isLoading = fa
           onChange={() => handleItemChange(item.value)}
         />
       ))}
+
+      <div className="mt-2 flex justify-end">
+        <Button variants="primary" onClick={handleReset}>
+          초기화
+        </Button>
+      </div>
     </>
   );
 }

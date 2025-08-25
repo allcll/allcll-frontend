@@ -1,5 +1,5 @@
+import { create, StoreApi, UseBoundStore } from 'zustand';
 import { Curitype, Grade, RangeFilter, RemarkType } from '@/utils/types.ts';
-import { create } from 'zustand';
 import { IDayTimeItem } from '@/components/contentPanel/filter/DayTimeFilter.tsx';
 
 export interface Filters {
@@ -13,7 +13,7 @@ export interface Filters {
   time: IDayTimeItem[];
   classroom: string[];
   note: RemarkType[];
-  language: string; // 한국어/영어, 영어
+  language: string[]; // 한국어/영어, 영어
   alarmOnly: boolean;
   favoriteOnly: boolean;
 }
@@ -35,7 +35,7 @@ export const initialFilters: Filters = {
   time: [],
   classroom: [],
   note: [],
-  language: '',
+  language: [],
   alarmOnly: false,
   favoriteOnly: false,
 };
@@ -46,6 +46,8 @@ const createFilterStore = () =>
     setFilter: (key, value) => set(state => ({ filters: { ...state.filters, [key]: value } })),
     resetFilters: () => set({ filters: initialFilters }),
   }));
+
+export type FilterStore = UseBoundStore<StoreApi<IFilterStore>>;
 
 export const useScheduleSearchStore = createFilterStore();
 export const useAlarmSearchStore = createFilterStore();

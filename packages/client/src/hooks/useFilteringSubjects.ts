@@ -14,10 +14,12 @@ import {
 } from '@/utils/filtering/filterSubjects';
 import useSearchLogging from '@/hooks/useSearchLogging.ts';
 import { usePinned } from '@/hooks/server/usePinned.ts';
+import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
 import useFavorites from '@/store/useFavorites.ts';
 import { Filters } from '@/store/useFilterStore.ts';
 import { Subject } from '@/utils/types';
 
+// todo: filtering 활성화 된 것만 필터링하도록 설정 (default 아닌 경우만 필터링)
 function useFilteringSubjects<T extends Subject>(subjects: T[], filters: Filters) {
   const { onSearchChange } = useSearchLogging();
   const { data: pinnedSubjects } = usePinned();
@@ -46,6 +48,7 @@ function useFilteringSubjects<T extends Subject>(subjects: T[], filters: Filters
 
   const cleanedKeyword = getNormalizedKeyword(keywords);
   const keywordForCode = keywords.replace(/[-\s]/g, '').toLowerCase();
+  console.log('filters', filters);
 
   return subjects.filter(subject => {
     const filteredBySearchKeywords = filterSearchKeywords(subject, cleanedKeyword, keywordForCode);
@@ -53,7 +56,8 @@ function useFilteringSubjects<T extends Subject>(subjects: T[], filters: Filters
     const filteredByGrades = grades ? filterGrades(subject, grades) : true;
     const filteredByCredits = credits ? filterCredits(subject, credits) : true;
     const filteredByCategories = categories ? filterCategories(subject, categories) : true;
-    const filteredBySeatRange = seatRange ? filterSeatRange(subject, seatRange) : true;
+    const filteredBySeatRange =
+      seatRange && 'seat' in subject ? filterSeatRange(subject as IPreRealSeat, seatRange) : true;
     const filteredByWishRange = wishRange ? filterWishRange(subject, wishRange) : true;
     const filteredByTime = time ? filterSchedule(subject, time) : true;
     const filteredByClassroom = filterClassroom(subject, classroom);
