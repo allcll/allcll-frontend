@@ -40,8 +40,8 @@ export default ({ mode }: ConfigEnv) => {
     server: {
       open: true,
       https: {
-        key: '.cert/localhost-key.pem',
-        cert: '.cert/localhost.pem',
+        key: '.cert/_cert-key.pem',
+        cert: '.cert/_cert.pem',
       },
       proxy: {
         '/api': {

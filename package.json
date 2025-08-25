@@ -49,10 +49,8 @@
   "msw": {
     "workerDirectory": [
       "..\\..\\..\\..\\packages\\mock-server",
-      "public",
       "..\\..\\..\\..\\packages\\admin",
-      "..\\..\\..\\..\\packages\\client",
-      "..\\..\\..\\..\\packages\\common"
+      "..\\..\\..\\..\\packages\\client"
     ]
   }
 }
