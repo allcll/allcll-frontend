@@ -1,6 +1,11 @@
 import { disassemble } from 'es-hangul';
-import { Day, Grade, Subject, Wishes } from '../types';
+import { Day, Grade, RangeFilter, RemarkType, Subject, Wishes } from '../types';
 import { IDayTimeItem } from '@/components/contentPanel/filter/DayTimeFilter.tsx';
+
+export function getNormalizedKeyword(keyword: string) {
+  const cleanSearchInput = keyword.replace(/[^\wㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+  return disassemble(cleanSearchInput).toLowerCase();
+}
 
 export function filterDays(subject: Wishes | Subject, selectedDays: (Day | '전체')[]) {
   if (!subject.lesnTime) {
@@ -35,6 +40,23 @@ export function filterGrades(subject: Wishes | Subject, selectedGrades: (Grade |
   return selectedGrades.includes(subjectGrade as Grade);
 }
 
+export function filterCredits(subject: Wishes | Subject, selectedCredits: number[]) {
+  return true;
+}
+
+export function filterCategories(subject: Wishes | Subject, selectedCategories: string[]) {
+  //return !selectedCategories.length || selectedCategories.includes(subject.curiTypeCdNm);
+  return true;
+}
+
+export function filterSeatRange(subject: Wishes | Subject, seatRange: RangeFilter | null) {
+  return true;
+}
+
+export function filterWishRange(subject: Wishes | Subject, wishRange: RangeFilter | null) {
+  return true;
+}
+
 export function filterDepartment(subject: Wishes | Subject, selectedDepartment: string) {
   return !selectedDepartment || selectedDepartment === '' || selectedDepartment === subject.deptCd;
 }
@@ -43,8 +65,7 @@ export function filterSearchKeywords(subject: Wishes | Subject, cleanedKeyword: 
   if (!cleanedKeyword) return true;
 
   const disassembledProfessorName = subject.professorName ? disassemble(subject.professorName).toLowerCase() : '';
-  const cleanSubjectName = subject.subjectName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '').replace(/\s+/g, '');
-  const disassembledSubjectName = disassemble(cleanSubjectName).toLowerCase();
+  const disassembledSubjectName = getNormalizedKeyword(subject.subjectName);
 
   const addSubjectAndClassCode = subject.subjectCode + subject.classCode;
   const filteredBySubjectAndClassCode = addSubjectAndClassCode.toLowerCase().includes(keywordForCode);
@@ -58,7 +79,7 @@ export function filterSearchKeywords(subject: Wishes | Subject, cleanedKeyword: 
 
 export function filterClassroom(subject: Wishes | Subject, selectedClassrooms: string[]) {
   if (!subject.lesnRoom || selectedClassrooms.length === 0) {
-    return false;
+    return true;
   }
 
   const abbreviatedRooms = selectedClassrooms.map(r => (r === '대양AI센터' ? '센' : r.slice(0, 1)));
@@ -69,9 +90,9 @@ export function filterClassroom(subject: Wishes | Subject, selectedClassrooms: s
   });
 }
 
-export function filterRemark(subject: Wishes | Subject, selectedNotes: string[]) {
+export function filterRemark(subject: Wishes | Subject, selectedNotes: RemarkType[]) {
   if (!selectedNotes || selectedNotes.length === 0) {
-    return false;
+    return true;
   }
 
   return selectedNotes.some(note => {
@@ -120,4 +141,8 @@ export function filterSchedule(subject: Wishes | Subject, selectedTime: IDayTime
 
 export function filterCategory(subject: Wishes | Subject, selectedCategories: string[]) {
   return !selectedCategories.length || selectedCategories.includes(subject.curiTypeCdNm);
+}
+
+export function filterLanguage(subject: Wishes | Subject, selectedLanguages: string) {
+  return true;
 }

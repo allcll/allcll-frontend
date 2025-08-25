@@ -1,10 +1,10 @@
-import useDepartments from '@/hooks/server/useDepartments';
-import SearchBox from '../../common/SearchBox';
-import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
-import { DepartmentType } from '@/utils/types';
-import { useEffect, useMemo, useState } from 'react';
 import { disassemble } from 'es-hangul';
+import { useEffect, useMemo, useState } from 'react';
+import useDepartments from '@/hooks/server/useDepartments';
+import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import Filtering from '@common/components/filtering/Filtering';
+import SearchBox from '../../common/SearchBox';
+import { DepartmentType } from '@/utils/types';
 
 function DepartmentFilter() {
   const { data: departments } = useDepartments();
@@ -28,8 +28,9 @@ function DepartmentFilter() {
   }
 
   const [filterDepartment, setFilterDepartment] = useState(departmentsList);
-  const { selectedDepartment, setFilterSchedule } = useFilterScheduleStore();
-  const customDepartmentLabel = selectedDepartment === '' ? '전체학과' : pickCollegeOrMajor(selectedDepartment);
+  const { department } = useScheduleSearchStore(state => state.filters);
+  const setFilter = useScheduleSearchStore(state => state.setFilter);
+  const customDepartmentLabel = department === '' ? '전체학과' : pickCollegeOrMajor(department);
 
   useEffect(() => {
     const result = departmentsList
@@ -60,7 +61,7 @@ function DepartmentFilter() {
       <Filtering
         label={customDepartmentLabel}
         className="max-h-120 w-[300px] overflow-y-auto"
-        selected={selectedDepartment.length !== 0}
+        selected={department.length !== 0}
       >
         <div className="flex flex-col h-80">
           <div className="shrink-0 gap-2 flex px-2 py-2 bg-white">
@@ -70,7 +71,7 @@ function DepartmentFilter() {
               onChange={e => {
                 const value = e.target.value as '전체' | '전공' | '교양';
                 setCategory(value);
-                setFilterSchedule('selectedDepartment', '');
+                setFilter('department', '');
               }}
             >
               <option value="전공">전공</option>
@@ -106,10 +107,10 @@ interface ISelectSubject {
 
 export function SelectSubject({ departments }: ISelectSubject) {
   const selected = '전체학과';
-  const { setFilterSchedule } = useFilterScheduleStore();
+  const setFilter = useScheduleSearchStore(state => state.setFilter);
 
   const handleChangeDepartment = (department: string) => {
-    setFilterSchedule('selectedDepartment', department || '');
+    setFilter('department', department || '');
   };
 
   return (

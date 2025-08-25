@@ -1,59 +1,81 @@
-import { filterDays, filterDepartment, filterGrades, filterSearchKeywords } from '@/utils/filtering/filterSubjects';
-import { Day, Grade, Subject } from '@/utils/types';
+import {
+  filterCategories,
+  filterClassroom,
+  filterCredits,
+  filterDepartment,
+  filterGrades,
+  filterLanguage,
+  filterRemark,
+  filterSchedule,
+  filterSearchKeywords,
+  filterSeatRange,
+  filterWishRange,
+  getNormalizedKeyword,
+} from '@/utils/filtering/filterSubjects';
 import useSearchLogging from '@/hooks/useSearchLogging.ts';
 import { usePinned } from '@/hooks/server/usePinned.ts';
-import { disassemble } from 'es-hangul';
+import useFavorites from '@/store/useFavorites.ts';
+import { Filters } from '@/store/useFilterStore.ts';
+import { Subject } from '@/utils/types';
 
-interface IUseFilteringSubjects<T extends Subject> {
-  subjects: T[];
-  searchKeywords: string;
-  selectedDays?: (Day | '전체')[];
-  selectedGrades?: (Grade | '전체')[];
-  isFavorite?: boolean;
-  isPinned?: boolean;
-  selectedDepartment: string;
-  pickedFavorites?: (id: number) => boolean;
-}
-
-function useFilteringSubjects<T extends Subject>({
-  subjects,
-  searchKeywords,
-  selectedDays,
-  selectedDepartment,
-  selectedGrades,
-  isFavorite,
-  isPinned,
-  pickedFavorites = () => false,
-}: IUseFilteringSubjects<T>) {
+function useFilteringSubjects<T extends Subject>(subjects: T[], filters: Filters) {
   const { onSearchChange } = useSearchLogging();
   const { data: pinnedSubjects } = usePinned();
+  const pickedFavorites = useFavorites(state => state.isFavorite);
+  const {
+    keywords,
+    department,
+    grades,
+    credits,
+    categories,
+    seatRange,
+    wishRange,
+    time,
+    classroom,
+    note,
+    language,
+    alarmOnly,
+    favoriteOnly,
+  } = filters;
 
   if (!subjects || subjects.length === 0) return [];
 
-  onSearchChange(searchKeywords, selectedDepartment);
+  onSearchChange(keywords, department);
 
   const matchesPinned = (id: number) => pinnedSubjects?.some(({ subjectId }) => subjectId === id);
 
-  const cleanSearchInput = searchKeywords.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '').replace(/\s+/g, '');
-  const cleanedKeyword = disassemble(cleanSearchInput).toLowerCase();
-  const normalizeCode = (searchKeywords: string) => searchKeywords.replace(/[-\s]/g, '').toLowerCase();
-  const keywordForCode = normalizeCode(searchKeywords);
+  const cleanedKeyword = getNormalizedKeyword(keywords);
+  const keywordForCode = keywords.replace(/[-\s]/g, '').toLowerCase();
 
   return subjects.filter(subject => {
-    const filteredByDepartment = filterDepartment(subject, selectedDepartment);
-    const filteredByGrades = selectedGrades ? filterGrades(subject, selectedGrades) : true;
-    const filteredByDays = selectedDays ? filterDays(subject, selectedDays) : true;
     const filteredBySearchKeywords = filterSearchKeywords(subject, cleanedKeyword, keywordForCode);
+    const filteredByDepartment = filterDepartment(subject, department);
+    const filteredByGrades = grades ? filterGrades(subject, grades) : true;
+    const filteredByCredits = credits ? filterCredits(subject, credits) : true;
+    const filteredByCategories = categories ? filterCategories(subject, categories) : true;
+    const filteredBySeatRange = seatRange ? filterSeatRange(subject, seatRange) : true;
+    const filteredByWishRange = wishRange ? filterWishRange(subject, wishRange) : true;
+    const filteredByTime = time ? filterSchedule(subject, time) : true;
+    const filteredByClassroom = filterClassroom(subject, classroom);
+    const filteredByNote = note ? filterRemark(subject, note) : true;
+    const filteredByLanguage = language ? filterLanguage(subject, language) : true;
 
     // Wishes의 isFavorite
-    const filteredByIsFavorite = !isFavorite || pickedFavorites(subject.subjectId);
-    const filteredByIsPinned = !isPinned || matchesPinned(subject.subjectId);
+    const filteredByIsFavorite = !favoriteOnly || pickedFavorites(subject.subjectId);
+    const filteredByIsPinned = !alarmOnly || matchesPinned(subject.subjectId);
 
     return (
+      filteredBySearchKeywords &&
       filteredByDepartment &&
       filteredByGrades &&
-      filteredByDays &&
-      filteredBySearchKeywords &&
+      filteredByCredits &&
+      filteredByCategories &&
+      filteredBySeatRange &&
+      filteredByWishRange &&
+      filteredByTime &&
+      filteredByClassroom &&
+      filteredByNote &&
+      filteredByLanguage &&
       filteredByIsFavorite &&
       filteredByIsPinned
     );

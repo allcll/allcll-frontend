@@ -1,4 +1,4 @@
-import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
+import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import MultiCheckboxFilter from '@common/components/filtering/MultiCheckboxFilter';
 import { OptionType } from '@common/components/filtering/MultiCheckboxFilter';
 
@@ -9,22 +9,23 @@ export const CREDITS: OptionType<number>[] = [
 ];
 
 function CreditFilter() {
-  const { selectedCredits, setFilterSchedule } = useFilterScheduleStore();
+  const { credits } = useScheduleSearchStore(state => state.filters);
+  const setFilters = useScheduleSearchStore(state => state.setFilter);
 
   const setFilterScheduleWrapper = (field: string, value: number[]) => {
     if (field === 'selectedCredits') {
-      setFilterSchedule('selectedCredits', value);
+      setFilters('credits', value);
     }
   };
 
   return (
     <MultiCheckboxFilter
       labelPrefix="학점"
-      selectedValues={selectedCredits}
+      selectedValues={credits}
       field="selectedCredits"
       setFilterSchedule={setFilterScheduleWrapper}
       options={CREDITS}
-      selected={selectedCredits.length !== 0}
+      selected={credits.length !== 0}
     />
   );
 }

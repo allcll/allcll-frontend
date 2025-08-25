@@ -1,7 +1,7 @@
-import useAlarmSearchStore from '@/store/useAlarmSearchStore.ts';
+import useAlarmModalStore from '@/store/useAlarmModalStore.ts';
 
 function AlarmAddButton() {
-  const setIsSearchOpen = useAlarmSearchStore(state => state.setIsSearchOpen);
+  const setIsSearchOpen = useAlarmModalStore(state => state.setIsSearchOpen);
 
   return (
     <div className="p-2 rounded-full flex items-center justify-center">

@@ -1,7 +1,7 @@
-import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
-import { Day } from '@/utils/types';
+import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import MultiCheckboxFilter from '@common/components/filtering/MultiCheckboxFilter';
 import { OptionType } from '@common/components/filtering/MultiCheckboxFilter';
+import { Day } from '@/utils/types';
 
 export const DAYS: OptionType<Day>[] = [
   { value: '월', label: '월요일' },
@@ -12,22 +12,26 @@ export const DAYS: OptionType<Day>[] = [
 ];
 
 function DayFilter() {
-  const { selectedDays, setFilterSchedule } = useFilterScheduleStore();
+  const { time } = useScheduleSearchStore(state => state.filters);
+  const setFilter = useScheduleSearchStore(state => state.setFilter);
 
   const setFilterScheduleWrapper = (field: string, value: Day[]) => {
     if (field === 'selectedDays') {
-      setFilterSchedule('selectedDays', value);
+      setFilter(
+        'time',
+        value.map(day => ({ day, type: 'all' })),
+      );
     }
   };
 
   return (
     <MultiCheckboxFilter<Day>
       labelPrefix="요일"
-      selectedValues={selectedDays}
+      selectedValues={time.map(t => t.day).filter((day): day is Day => day !== '')}
       field="selectedDays"
       setFilterSchedule={setFilterScheduleWrapper}
       options={DAYS}
-      selected={selectedDays.length !== 0}
+      selected={time.length !== 0}
     />
   );
 }

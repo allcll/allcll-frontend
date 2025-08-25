@@ -1,4 +1,4 @@
-import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
+import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import SingleCheckboxFilter, { OptionType } from '@common/components/filtering/SingleCheckbox';
 
 export const SEAT: OptionType<number>[] = [
@@ -10,11 +10,12 @@ export const SEAT: OptionType<number>[] = [
 ];
 
 function SeatFilter() {
-  const { selectedSeatRange, setFilterSchedule } = useFilterScheduleStore();
+  const { seatRange } = useScheduleSearchStore(state => state.filters);
+  const setFilter = useScheduleSearchStore(state => state.setFilter);
 
   const setFilterScheduleWrapper = (field: string, value: number | null) => {
     if (field === 'selectedSeatRange') {
-      setFilterSchedule('selectedSeatRange', value || 0);
+      setFilter('seatRange', { operator: 'over-equal', value: value || 0 });
     }
   };
 
@@ -22,11 +23,11 @@ function SeatFilter() {
     <SingleCheckboxFilter
       labelPrefix="여석"
       variant="chip"
-      selectedValue={selectedSeatRange}
+      selectedValue={seatRange?.value ?? 0}
       field="selectedSeatRange"
       setFilterSchedule={setFilterScheduleWrapper}
       options={SEAT}
-      selected={selectedSeatRange > -1}
+      selected={!!seatRange}
       className="min-w-max"
     />
   );

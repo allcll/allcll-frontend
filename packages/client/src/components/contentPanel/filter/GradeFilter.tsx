@@ -1,4 +1,4 @@
-import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
+import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import { Grade } from '@/utils/types';
 import MultiCheckboxFilter from '@common/components/filtering/MultiCheckboxFilter';
 import { OptionType } from '@common/components/filtering/MultiCheckboxFilter';
@@ -11,22 +11,23 @@ export const GRADE: OptionType<Grade>[] = [
 ];
 
 function GradeFilter() {
-  const { selectedGrades, setFilterSchedule } = useFilterScheduleStore();
+  const { grades } = useScheduleSearchStore(state => state.filters);
+  const setFilter = useScheduleSearchStore(state => state.setFilter);
 
   const setFilterScheduleWrapper = (field: string, value: Grade[]) => {
     if (field === 'selectedGrades') {
-      setFilterSchedule('selectedGrades', value);
+      setFilter('grades', value);
     }
   };
 
   return (
     <MultiCheckboxFilter
       labelPrefix="학년"
-      selectedValues={selectedGrades}
+      selectedValues={grades}
       field="selectedGrades"
       setFilterSchedule={setFilterScheduleWrapper}
       options={GRADE}
-      selected={selectedGrades.length !== 0}
+      selected={grades.length !== 0}
     />
   );
 }

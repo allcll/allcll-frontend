@@ -1,4 +1,4 @@
-import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
+import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import { Curitype } from '@/utils/types';
 import MultiCheckboxFilter from '@common/components/filtering/MultiCheckboxFilter';
 import { OptionType } from '@common/components/filtering/MultiCheckboxFilter';
@@ -15,11 +15,12 @@ export const CURITYPE: OptionType<Curitype>[] = [
 ];
 
 function CuriTypeFilter() {
-  const { selectedCuriTypes, setFilterSchedule } = useFilterScheduleStore();
+  const { categories } = useScheduleSearchStore(state => state.filters);
+  const setFilter = useScheduleSearchStore(state => state.setFilter);
 
   const setFilterScheduleWrapper = (field: string, value: Curitype[]) => {
     if (field === 'selectedCuriTypes') {
-      setFilterSchedule('selectedCuriTypes', value);
+      setFilter('categories', value);
     }
   };
 
@@ -27,11 +28,11 @@ function CuriTypeFilter() {
     <MultiCheckboxFilter
       labelPrefix="유형"
       variant="chip"
-      selectedValues={selectedCuriTypes}
+      selectedValues={categories}
       field="selectedCuriTypes"
       setFilterSchedule={setFilterScheduleWrapper}
       options={CURITYPE}
-      selected={selectedCuriTypes.length !== 0}
+      selected={categories.length !== 0}
       className="min-w-max"
     />
   );

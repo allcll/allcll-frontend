@@ -1,4 +1,4 @@
-import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
+import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import SingleCheckboxFilter, { OptionType } from '@common/components/filtering/SingleCheckbox';
 
 export const WISHRANGE: OptionType<number>[] = [
@@ -9,23 +9,24 @@ export const WISHRANGE: OptionType<number>[] = [
 ];
 
 function WishFilter() {
-  const { selectedWishRange, setFilterSchedule } = useFilterScheduleStore();
+  const { wishRange } = useScheduleSearchStore(state => state.filters);
+  const setFilter = useScheduleSearchStore(state => state.setFilter);
 
   const setFilterScheduleWrapper = (field: string, value: number | null) => {
     if (field === 'selectedWishRange') {
-      setFilterSchedule('selectedWishRange', value || 0);
+      setFilter('wishRange', { operator: 'over-equal', value: value || 0 });
     }
   };
 
   return (
     <SingleCheckboxFilter
       labelPrefix="관심과목"
-      selectedValue={selectedWishRange}
+      selectedValue={wishRange?.value ?? 0}
       field="selectedWishRange"
       variant="chip"
       setFilterSchedule={setFilterScheduleWrapper}
       options={WISHRANGE}
-      selected={selectedWishRange !== -1}
+      selected={!!wishRange}
       className="min-w-max"
     />
   );

@@ -3,7 +3,7 @@ import BottomSheet from '../BottomSheet';
 import BottomSheetHeader from '../BottomSheetHeader';
 import useDepartments from '@/hooks/server/useDepartments';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
-import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
+import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import FilterChips from './FilteringChips';
 import { GRADE } from '../../filter/GradeFilter';
 import { DAYS } from '../../filter/DayFilter';
@@ -14,22 +14,11 @@ function FilteringBottomSheet() {
   const { data: departments } = useDepartments();
   const { openBottomSheet, closeBottomSheet } = useBottomSheetStore();
 
-  const {
-    selectedDepartment,
-    selectedGrades,
-    selectedDays,
-    setFilterSchedule,
-    selectedCredits,
-    selectedCuriTypes,
-    resetFilterSchedule,
-  } = useFilterScheduleStore();
+  const { department, grades, time, credits, categories } = useScheduleSearchStore(state => state.filters);
+  const setFilter = useScheduleSearchStore(state => state.setFilter);
+  const resetFilter = useScheduleSearchStore(state => state.resetFilters);
 
-  const isFiltered =
-    (selectedDepartment.length ||
-      selectedGrades.length ||
-      selectedDays.length ||
-      selectedCredits.length ||
-      selectedCuriTypes.length) > 0;
+  const isFiltered = (department.length || grades.length || time.length || credits.length || categories.length) > 0;
 
   const handleClickSave = () => {
     closeBottomSheet('filter');
@@ -38,25 +27,28 @@ function FilteringBottomSheet() {
 
   const setFilterGradeWrapper = (field: string, value: Grade[]) => {
     if (field === 'selectedGrades') {
-      setFilterSchedule('selectedGrades', value);
+      setFilter('grades', value);
     }
   };
 
   const setFilterDayWrapper = (field: string, value: Day[]) => {
     if (field === 'selectedDays') {
-      setFilterSchedule('selectedDays', value);
+      setFilter(
+        'time',
+        value.map(day => ({ day, type: 'all' })),
+      );
     }
   };
 
   const setFilterCreditsWrapper = (field: string, value: number[]) => {
     if (field === 'selectedCredits') {
-      setFilterSchedule('selectedCredits', value);
+      setFilter('credits', value);
     }
   };
 
   const setFilterCuriTypesWrapper = (field: string, value: Curitype[]) => {
     if (field === 'selectedCuriTypes') {
-      setFilterSchedule('selectedCuriTypes', value);
+      setFilter('categories', value);
     }
   };
 
@@ -77,8 +69,8 @@ function FilteringBottomSheet() {
           <div className="w-full flex flex-col gap-2 justify-center">
             <select
               className="cursor-pointer border border-gray-300 rounded-sm px-2 py-1 w-full bg-white text-sm"
-              value={selectedDepartment}
-              onChange={e => setFilterSchedule('selectedDepartment', e.target.value)}
+              value={department}
+              onChange={e => setFilter('department', e.target.value)}
             >
               <option value="">전체</option>
               {departments?.map(department => (
@@ -93,7 +85,7 @@ function FilteringBottomSheet() {
         <FilterChips
           label="학년"
           field="selectedGrades"
-          selectedValue={selectedGrades}
+          selectedValue={grades}
           setFilterSchedule={setFilterGradeWrapper}
           options={GRADE}
         />
@@ -101,7 +93,7 @@ function FilteringBottomSheet() {
         <FilterChips
           label="요일"
           field="selectedDays"
-          selectedValue={selectedDays}
+          selectedValue={time.map(t => t.day).filter(day => day !== '')}
           setFilterSchedule={setFilterDayWrapper}
           options={DAYS}
         />
@@ -109,7 +101,7 @@ function FilteringBottomSheet() {
         <FilterChips
           label="학점"
           field="selectedCredits"
-          selectedValue={selectedCredits}
+          selectedValue={credits}
           setFilterSchedule={setFilterCreditsWrapper}
           options={CREDITS}
         />
@@ -117,7 +109,7 @@ function FilteringBottomSheet() {
         <FilterChips
           label="유형"
           field="selectedCuriTypes"
-          selectedValue={selectedCuriTypes}
+          selectedValue={categories}
           setFilterSchedule={setFilterCuriTypesWrapper}
           options={CURITYPE}
         />
@@ -126,7 +118,7 @@ function FilteringBottomSheet() {
           {isFiltered && (
             <button
               className="text-xs text-blue-500 hover:text-blue-600 hover:underline cursor-pointer"
-              onClick={resetFilterSchedule}
+              onClick={resetFilter}
             >
               필터 초기화
             </button>

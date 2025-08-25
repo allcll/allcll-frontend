@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import StarIcon from '@/components/svgs/StarIcon.tsx';
 import SearchBox from '@/components/common/SearchBox.tsx';
 // import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
@@ -7,7 +7,7 @@ import Modal from '@/components/simulation/modal/Modal.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import DraggableList from '@/components/live/subjectTable/DraggableList.tsx';
 import FilteringModal from '@/components/wishTable/FilteringModal.tsx';
-import useWishSearchStore from '@/store/useWishSearchStore.ts';
+import { useWishSearchStore } from '@/store/useFilterStore.ts';
 import { HeadTitle, useWishesTableStore } from '@/store/useTableColumnStore.ts';
 import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
 import useBackSignal from '@/hooks/useBackSignal.ts';
@@ -25,29 +25,21 @@ function Searches() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
-  const selectedDepartment = useWishSearchStore(state => state.selectedDepartment);
-  const searchInput = useWishSearchStore(state => state.searchInput);
-  const isFavorite = useWishSearchStore(state => state.isFavorite);
-  // const isPinned = useWishSearchStore(state => state.isPinned);
-  const setSearchInput = useWishSearchStore(state => state.setSearchInput);
-  const setSelectedDepartment = useWishSearchStore(state => state.setSelectedDepartment);
-  const setToggleFavorite = useWishSearchStore(state => state.setToggleFavorite);
-  // const setTogglePinned = useWishSearchStore(state => state.setTogglePinned);
-  const setSearchParams = useWishSearchStore(state => state.setSearchParams);
+  const filters = useWishSearchStore(state => state.filters);
+  const setFilter = useWishSearchStore(state => state.setFilter);
+  const { keywords, department, favoriteOnly } = filters;
 
   const tableTitles = useWishesTableStore(state => state.tableTitles);
   const setTableTitles = useWishesTableStore(state => state.setTableTitles);
 
-  useEffect(() => {
-    setSearchParams({ searchInput, selectedDepartment, isFavorite });
-  }, [searchInput, selectedDepartment, isFavorite]);
+  const setToggleFavorite = () => setFilter('favoriteOnly', !favoriteOnly);
 
   const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(event.target.value);
+    setFilter('keywords', event.target.value);
   };
 
   const handleDepartmentChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedDepartment(event.target.value);
+    setFilter('department', event.target.value);
   };
 
   return (
@@ -64,12 +56,12 @@ function Searches() {
         type="text"
         placeholder="과목명, 교수명 또는 학수번호 및 분반 검색"
         className="pl-10 pr-4 py-2 rounded-md w-full bg-white border border-gray-400"
-        value={searchInput}
-        onDelete={() => setSearchInput('')}
+        value={keywords}
+        onDelete={() => setFilter('keywords', '')}
         onChange={handleSearchInputChange}
       />
       <DepartmentFilter
-        value={selectedDepartment}
+        value={department}
         style={{ maxWidth: 'calc(100vw - 64px)' }}
         onChange={handleDepartmentChange}
       />
@@ -78,10 +70,10 @@ function Searches() {
         <button
           className="p-2 rounded-md flex gap-2 items-center border border-gray-400 bg-white hover:bg-gray-100"
           onClick={setToggleFavorite}
-          aria-label={isFavorite ? '즐겨찾기 필터 제거' : '즐겨찾기 필터 추가'}
-          title={isFavorite ? '즐겨찾기 필터 제거' : '즐겨찾기 필터 추가'}
+          aria-label={favoriteOnly ? '즐겨찾기 필터 제거' : '즐겨찾기 필터 추가'}
+          title={favoriteOnly ? '즐겨찾기 필터 제거' : '즐겨찾기 필터 추가'}
         >
-          <StarIcon disabled={!isFavorite} />
+          <StarIcon disabled={!favoriteOnly} />
         </button>
 
         {/* <button

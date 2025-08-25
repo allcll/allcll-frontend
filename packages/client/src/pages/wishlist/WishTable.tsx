@@ -4,18 +4,17 @@ import useWishes, { InitWishes } from '@/hooks/server/useWishes.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects';
 import Table from '@/components/wishTable/Table.tsx';
 import Searches from '@/components/live/Searches.tsx';
-import useFavorites from '@/store/useFavorites.ts';
-import useWishSearchStore from '@/store/useWishSearchStore.ts';
+import { useWishSearchStore } from '@/store/useFilterStore.ts';
 import TableColorInfo from '@/components/wishTable/TableColorInfo.tsx';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
 import ScrollToTopButton from '@/components/common/ScrollTopButton';
 import { NavLink } from 'react-router-dom';
-import useAlarmSearchStore from '@/store/useAlarmSearchStore';
+import useAlarmModalStore from '@/store/useAlarmModalStore.ts';
 import AlarmIcon from '@/components/svgs/AlarmIcon';
 
 function WishTable() {
-  const setIsSearchOpen = useAlarmSearchStore(state => state.setIsSearchOpen);
+  const setIsSearchOpen = useAlarmModalStore(state => state.setIsSearchOpen);
 
   return (
     <>
@@ -58,22 +57,11 @@ function WishTable() {
 }
 
 function WishTableComponent() {
-  const filterParams = useWishSearchStore(state => state.searchParams);
-  const pickedFavorites = useFavorites(state => state.isFavorite);
-  const isPinned = useWishSearchStore(state => state.isPinned);
   const { data: wishes, isPending } = useWishes();
   const data = useSearchRank(useJoinPreSeats(wishes, InitWishes));
 
-  const filteredData = useDeferredValue(
-    useFilteringSubjects({
-      subjects: data ?? [],
-      pickedFavorites,
-      searchKeywords: filterParams.searchInput,
-      selectedDepartment: filterParams.selectedDepartment,
-      isFavorite: filterParams.isFavorite,
-      isPinned,
-    }),
-  );
+  const filters = useWishSearchStore(state => state.filters);
+  const filteredData = useDeferredValue(useFilteringSubjects(data ?? [], filters));
 
   return (
     <div className="bg-white mt-6 shadow-md rounded-lg overflow-x-auto">

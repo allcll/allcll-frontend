@@ -6,19 +6,17 @@ import PinnedCourses from '@/components/live/PinnedCourses.tsx';
 import SystemChecking from '@/components/live/errors/SystemChecking.tsx';
 import SearchSideBar from '@/components/live/SearchSideBar.tsx';
 import SearchBottomSheet from '@/components/live/SearchBottomSheet.tsx';
-import useAlarmSearchStore from '@/store/useAlarmSearchStore.ts';
+import useAlarmModalStore from '@/store/useAlarmModalStore.ts';
 import useMobile from '@/hooks/useMobile.ts';
 import usePreSeatGate from '@/hooks/usePreSeatGate';
-
 
 const isSystemChecking = false;
 
 function Live() {
-  const isSearchOpen = useAlarmSearchStore(state => state.isSearchOpen);
-  const setIsSearchOpen = useAlarmSearchStore(state => state.setIsSearchOpen);
+  const isSearchOpen = useAlarmModalStore(state => state.isSearchOpen);
+  const setIsSearchOpen = useAlarmModalStore(state => state.setIsSearchOpen);
   const isMobile = useMobile();
   const { isPreSeatAvailable } = usePreSeatGate();
-
 
   return (
     <>

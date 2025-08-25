@@ -3,6 +3,7 @@ import { CSSTransition } from 'react-transition-group';
 import SearchBox from '@/components/common/SearchBox.tsx';
 import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
 import SubjectCards from '@/components/live/subjectTable/SubjectCards.tsx';
+import { initialFilters } from '@/store/useFilterStore.ts';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects.ts';
 import useWishes from '@/hooks/server/useWishes.ts';
@@ -28,10 +29,10 @@ const SearchSideBar: React.FC<SearchSideBarProps> = ({ isOpen, onClose }) => {
   const data = useSearchRank(wishes);
 
   const filteredData = useDeferredValue(
-    useFilteringSubjects({
-      subjects: data ?? [],
-      searchKeywords: searchInput,
-      selectedDepartment: selectedDepartment,
+    useFilteringSubjects(data ?? [], {
+      ...initialFilters,
+      keywords: searchInput,
+      department: selectedDepartment,
     }),
   );
 

@@ -12,7 +12,7 @@ export interface Filters {
   wishRange: RangeFilter | null;
   time: IDayTimeItem[];
   classroom: string[];
-  note: RemarkType | null;
+  note: RemarkType[];
   language: string; // 한국어/영어, 영어
   alarmOnly: boolean;
   favoriteOnly: boolean;
@@ -24,7 +24,7 @@ interface IFilterStore {
   resetFilters: () => void;
 }
 
-const initialFilters: Filters = {
+export const initialFilters: Filters = {
   keywords: '',
   department: '',
   grades: [],
@@ -34,7 +34,7 @@ const initialFilters: Filters = {
   wishRange: null,
   time: [],
   classroom: [],
-  note: null,
+  note: [],
   language: '',
   alarmOnly: false,
   favoriteOnly: false,
