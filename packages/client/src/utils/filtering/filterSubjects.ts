@@ -2,6 +2,8 @@ import { disassemble } from 'es-hangul';
 import { Grade, RangeFilter, RemarkType, Subject, Wishes } from '../types';
 import { IDayTimeItem } from '@/components/contentPanel/filter/DayTimeFilter.tsx';
 import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
+import { TimeslotAdapter } from '@/utils/timetable/adapter.ts';
+import { Time } from '@/utils/time.ts';
 
 function filterRange(value: number, range: RangeFilter | null) {
   if (!range) return true;
@@ -124,29 +126,33 @@ export function filterSchedule(subject: Wishes | Subject, selectedTime: IDayTime
     return true;
   }
 
+  const time = new TimeslotAdapter(subject.lesnTime).toApiData();
+  const schedule = time.map(t => ({
+    day: t.dayOfWeeks,
+    start: new Time(t.startTime),
+    end: new Time(t.endTime),
+  }));
+
   return selectedTime.some(item => {
     if (item.day === '') return true;
 
-    if (item.type === 'all') return subject.lesnTime.includes(item.day);
-
-    const regex = new RegExp(`${item.day}(\\d{2}:\\d{2})`);
-    const lessonTime = subject.lesnTime.match(regex);
-
-    if (!lessonTime) return false;
+    const matchedSchedule = schedule.filter(t => t.day === item.day);
+    if (item.type === 'all' || !matchedSchedule.length) return !!matchedSchedule.length;
 
     if (item.type === 'before' && item.start) {
-      const start = item.start;
-      return lessonTime.some(time => start.localeCompare(time) <= 0);
+      const threshold = new Time(item.start);
+      return matchedSchedule.some(s => s.end.compare(threshold) <= 0);
     }
 
     if (item.type === 'after' && item.start) {
-      const start = item.start;
-      return lessonTime.some(time => start.localeCompare(time) >= 0);
+      const threshold = new Time(item.start);
+      return matchedSchedule.some(s => threshold.compare(s.start) <= 0);
     }
 
     if (item.type === 'between' && item.start && item.end) {
-      const { start, end } = item;
-      return lessonTime.some(time => start.localeCompare(time) <= 0 && end.localeCompare(time) >= 0);
+      const startTime = new Time(item.start);
+      const endTime = new Time(item.end);
+      return matchedSchedule.some(s => startTime.compare(s.start) <= 0 && s.end.compare(endTime) <= 0);
     }
   });
 }
