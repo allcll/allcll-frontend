@@ -2,6 +2,7 @@ import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import MultiCheckboxFilter from '@common/components/filtering/MultiCheckboxFilter';
 import { OptionType } from '@common/components/filtering/MultiCheckboxFilter';
 import { Day } from '@/utils/types';
+import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
 
 export const DAYS: OptionType<Day>[] = [
   { value: '월', label: '월요일' },
@@ -32,6 +33,7 @@ function DayFilter() {
       setFilterSchedule={setFilterScheduleWrapper}
       options={DAYS}
       selected={time.length !== 0}
+      ItemComponent={CheckboxAdapter}
     />
   );
 }

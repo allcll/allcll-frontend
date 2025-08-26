@@ -1,5 +1,6 @@
 import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import { Grade } from '@/utils/types';
+import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
 import MultiCheckboxFilter from '@common/components/filtering/MultiCheckboxFilter';
 import { OptionType } from '@common/components/filtering/MultiCheckboxFilter';
 
@@ -28,6 +29,7 @@ function GradeFilter() {
       setFilterSchedule={setFilterScheduleWrapper}
       options={GRADE}
       selected={grades.length !== 0}
+      ItemComponent={CheckboxAdapter}
     />
   );
 }

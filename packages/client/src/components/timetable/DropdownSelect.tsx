@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { TimetableType } from '@/hooks/server/useTimetableSchedules.ts';
 import { useScheduleState } from '@/store/useScheduleState';
 import Filtering from '@common/components/filtering/Filtering';
-import Checkbox from '@common/components/filtering/Checkbox';
+import Checkbox from '@common/components/checkbox/Checkbox';
 
 interface DropdownSelectProps {
   timetables: TimetableType[];

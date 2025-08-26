@@ -1,6 +1,3 @@
-/**
- * TODO: admin과 client에서 공통으로 사용하는 컴포넌트는 packages/common 위치시켜야 합니다.
- */
 import { ButtonHTMLAttributes, ReactNode, RefObject } from 'react';
 import ArrowIcon from '../svgs/ArrowIcon';
 import CancleIcon from '../svgs/CancleIcon';

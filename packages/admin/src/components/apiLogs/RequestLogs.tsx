@@ -3,6 +3,7 @@ import { Dispatch, SetStateAction } from 'react';
 import Card from '@allcll/common/components/Card';
 import MultiCheckboxFilter from '@allcll/common/components/filtering/MultiCheckboxFilter';
 import { OptionType } from '@allcll/common/components/filtering/MultiCheckboxFilter';
+import CheckboxAdapter from '@allcll/common/components/checkbox/CheckboxAdapter';
 
 const StatusCodes: OptionType<number>[] = [
   { value: 200, label: '200' },
@@ -43,6 +44,7 @@ function RequestLogs({ urlInput, setUrlInput, selectedStatusCodes, setSelectedSt
             setFilterSchedule={setFilterScheduleWrapper}
             options={StatusCodes}
             selected={selectedStatusCodes.length !== 0}
+            ItemComponent={CheckboxAdapter}
           />
 
           <label className="block text-sm font-medium mb-1">API 요청 URL</label>

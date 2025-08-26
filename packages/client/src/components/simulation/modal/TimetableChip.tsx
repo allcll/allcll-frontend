@@ -1,4 +1,5 @@
 import { TimetableType } from '@/hooks/server/useTimetableSchedules';
+import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
 import SingleCheckboxFilter from '@common/components/filtering/SingleCheckbox';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
@@ -40,6 +41,7 @@ function TimetableChip({ selectedTimetable, onSelect, timetables }: ITimetableCh
           setFilterSchedule={setFilterScheduleWrapper}
           options={timetableOptions}
           selected={selectedValues.length > 0}
+          ItemComponent={CheckboxAdapter}
         />
         <Link to="/timetable" className="px-6 py-2 hover:text-blue-500 text-gray-500 rounded-md">
           새 시간표 추가

@@ -4,6 +4,7 @@ import MultiCheckboxFilter from '@common/components/filtering/MultiCheckboxFilte
 import { OptionType } from '@common/components/filtering/MultiCheckboxFilter';
 import useSubject from '@/hooks/server/useSubject.ts';
 import { getCategories } from '@/utils/filtering/filterDomains.ts';
+import Chip from '@common/components/chip/Chip';
 
 export const CURITYPE: OptionType<Curitype>[] = [
   { value: '교필', label: '교필' },
@@ -34,13 +35,13 @@ function CuriTypeFilter() {
   return (
     <MultiCheckboxFilter
       labelPrefix="유형"
-      variant="chip"
       selectedValues={categories}
       field="selectedCuriTypes"
       setFilterSchedule={setFilterScheduleWrapper}
       options={categoryOptions}
       selected={categories.length !== 0}
       className="min-w-max"
+      ItemComponent={Chip}
     />
   );
 }

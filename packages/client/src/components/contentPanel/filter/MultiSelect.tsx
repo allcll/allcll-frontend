@@ -1,4 +1,4 @@
-import Checkbox from '@common/components/filtering/Checkbox.tsx';
+import Checkbox from '@common/components/checkbox/Checkbox.tsx';
 import Button from '@common/components/Button.tsx';
 
 interface ISelectItem<T> {
