@@ -1,5 +1,3 @@
-import Filtering from './Filtering';
-
 export interface OptionType<VALUE extends string | number> {
   value: VALUE;
   label: string;
@@ -16,46 +14,34 @@ interface ISingleSelectFilter<VALUE extends string | number> {
   labelPrefix: string;
   selectedValue: VALUE | null;
   field: string;
-  setFilterSchedule: (field: string, value: VALUE | null) => void;
+  setFilter: (field: string, value: VALUE | null) => void;
   options: OptionType<VALUE>[];
-  selected: boolean;
   className?: string;
   ItemComponent: React.ComponentType<FilterItemProps<VALUE>>;
 }
 
-function SingleSelectFilter<VALUE extends string | number>({
+function SingleSelectFilterOption<VALUE extends string | number>({
   labelPrefix,
   selectedValue,
   field,
-  setFilterSchedule,
+  setFilter,
   options,
-  selected,
-  className = '',
   ItemComponent,
 }: Readonly<ISingleSelectFilter<VALUE>>) {
-  const getFilteringLabel = () => {
-    if (!selectedValue) {
-      return labelPrefix;
-    }
-
-    return options.find(option => option.value === selectedValue)?.label || labelPrefix;
-  };
-
   const handleChangeCheckbox = (optionValue: VALUE) => {
     const checked = selectedValue === optionValue;
     const newValue = checked ? null : optionValue;
 
-    setFilterSchedule(field, newValue);
+    setFilter(field, newValue);
   };
 
   const handleClickReset = () => {
-    setFilterSchedule(field, null);
+    setFilter(field, null);
   };
 
   return (
-    <Filtering label={getFilteringLabel()} selected={selected} className={className}>
+    <div className="relative inline-block">
       <h3 className="text-gray-700 font-semibold">{labelPrefix}</h3>
-
       <div className="grid grid-cols-2 gap-2">
         {options.map(option => (
           <ItemComponent
@@ -67,14 +53,13 @@ function SingleSelectFilter<VALUE extends string | number>({
           />
         ))}
       </div>
-
       <div className="flex justify-end w-full mt-2">
         <button onClick={() => handleClickReset()} className="text-blue-500 cursor-pointer text-sm px-1 py-0.5">
           초기화
         </button>
       </div>
-    </Filtering>
+    </div>
   );
 }
 
-export default SingleSelectFilter;
+export default SingleSelectFilterOption;

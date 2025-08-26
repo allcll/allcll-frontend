@@ -1,6 +1,7 @@
 import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import { RangeFilter } from '@/utils/types.ts';
 import Chip from '@common/components/chip/Chip';
+import Filtering from '@common/components/filtering/Filtering';
 import SingleSelectFilter, { OptionType } from '@common/components/filtering/SingleSelectFilter';
 
 const WISHRANGE: OptionType<number>[] = [
@@ -29,16 +30,16 @@ function WishFilter() {
   };
 
   return (
-    <SingleSelectFilter
-      labelPrefix="관심과목"
-      selectedValue={selectedValue}
-      field="selectedWishRange"
-      setFilterSchedule={setFilterScheduleWrapper}
-      options={WISHRANGE}
-      selected={!!wishRange}
-      className="min-w-max"
-      ItemComponent={Chip}
-    />
+    <Filtering label="관심과목" selected={selectedValue !== -1} className="min-w-max">
+      <SingleSelectFilter
+        labelPrefix="관심과목"
+        selectedValue={selectedValue}
+        field="selectedWishRange"
+        setFilter={setFilterScheduleWrapper}
+        options={WISHRANGE}
+        ItemComponent={Chip}
+      />
+    </Filtering>
   );
 }
 

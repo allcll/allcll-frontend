@@ -1,9 +1,11 @@
 import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import { Curitype } from '@/utils/types';
-import MultiSelectFilter, { OptionType } from '@common/components/filtering/MultiSelectFilter';
 import useSubject from '@/hooks/server/useSubject.ts';
 import { getCategories } from '@/utils/filtering/filterDomains.ts';
 import Chip from '@common/components/chip/Chip';
+import Filtering from '@common/components/filtering/Filtering';
+import MultiSelectFilterOption, { OptionType } from '@common/components/filtering/MultiSelectFilterOption';
+import useMobile from '@/hooks/useMobile';
 
 export const CURITYPE: OptionType<Curitype>[] = [
   { value: '교필', label: '교필' },
@@ -19,29 +21,44 @@ export const CURITYPE: OptionType<Curitype>[] = [
 function CuriTypeFilter() {
   const { categories } = useScheduleSearchStore(state => state.filters);
   const setFilter = useScheduleSearchStore(state => state.setFilter);
+  const isMobile = useMobile();
 
   const { data: subjects } = useSubject();
   const categoryOptions = getCategories(subjects ?? [])
     .sort((a, b) => a.localeCompare(b))
     .map(cat => ({ label: cat, value: cat }));
 
-  const setFilterScheduleWrapper = (field: string, value: string[]) => {
+  const setFilterScheduleWrapper = (field: string, value: (string | number)[]) => {
     if (field === 'selectedCuriTypes') {
       setFilter('categories', value as Curitype[]);
     }
   };
 
   return (
-    <MultiSelectFilter
-      labelPrefix="유형"
-      selectedValues={categories}
-      field="selectedCuriTypes"
-      setFilterSchedule={setFilterScheduleWrapper}
-      options={categoryOptions}
-      selected={categories.length !== 0}
-      className="min-w-max"
-      ItemComponent={Chip}
-    />
+    <>
+      {isMobile ? (
+        <MultiSelectFilterOption
+          labelPrefix="유형"
+          selectedValues={categories}
+          field="selectedCuriTypes"
+          setFilter={setFilterScheduleWrapper}
+          options={categoryOptions}
+          ItemComponent={Chip}
+          className="w-full flex flex-row gap-2"
+        />
+      ) : (
+        <Filtering label="유형" selected={categories.length > 0} className="min-w-max">
+          <MultiSelectFilterOption
+            labelPrefix="유형"
+            selectedValues={categories}
+            field="selectedCuriTypes"
+            setFilter={setFilterScheduleWrapper}
+            options={categoryOptions}
+            ItemComponent={Chip}
+          />
+        </Filtering>
+      )}
+    </>
   );
 }
 

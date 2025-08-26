@@ -1,13 +1,13 @@
 import React, { useRef } from 'react';
-import FilterOption from './FilterOption';
 import Chip from '../chip/Chip';
 import useDetectClose from '../../hooks/useDetectClose';
+import FilterOption from './FilterOption';
 
 interface IFiltering {
   label: string;
-  children: React.ReactNode;
   className?: string;
   selected: boolean;
+  children: React.ReactNode;
 }
 
 /**
@@ -31,7 +31,7 @@ function Filtering({ label, selected, children, className = '' }: Readonly<IFilt
   };
 
   return (
-    <div className="relative inline-block">
+    <div className={`relative inline-block ${className}`}>
       <Chip
         isChipOpen={isChipOpen}
         label={label}

@@ -1,7 +1,9 @@
+import useMobile from '@/hooks/useMobile';
 import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
-import MultiSelectFilter from '@common/components/filtering/MultiSelectFilter';
-import { OptionType } from '@common/components/filtering/MultiSelectFilter';
+import Chip from '@common/components/chip/Chip';
+import Filtering from '@common/components/filtering/Filtering';
+import MultiSelectFilterOption, { OptionType } from '@common/components/filtering/MultiSelectFilterOption';
 
 export const CREDITS: OptionType<number>[] = [
   { value: 1, label: '1학점' },
@@ -12,6 +14,7 @@ export const CREDITS: OptionType<number>[] = [
 function CreditFilter() {
   const { credits } = useScheduleSearchStore(state => state.filters);
   const setFilters = useScheduleSearchStore(state => state.setFilter);
+  const isMobile = useMobile();
 
   const setFilterScheduleWrapper = (field: string, value: number[]) => {
     if (field === 'selectedCredits') {
@@ -20,15 +23,30 @@ function CreditFilter() {
   };
 
   return (
-    <MultiSelectFilter
-      labelPrefix="학점"
-      selectedValues={credits}
-      field="selectedCredits"
-      setFilterSchedule={setFilterScheduleWrapper}
-      options={CREDITS}
-      selected={credits.length !== 0}
-      ItemComponent={CheckboxAdapter}
-    />
+    <>
+      {isMobile ? (
+        <MultiSelectFilterOption
+          labelPrefix="학점"
+          selectedValues={credits}
+          field="selectedCredits"
+          setFilter={setFilterScheduleWrapper}
+          options={CREDITS}
+          ItemComponent={Chip}
+          className="w-full flex flex-row gap-2"
+        />
+      ) : (
+        <Filtering label="학점" selected={credits.length > 0}>
+          <MultiSelectFilterOption
+            labelPrefix="학점"
+            selectedValues={credits}
+            field="selectedCredits"
+            setFilter={setFilterScheduleWrapper}
+            options={CREDITS}
+            ItemComponent={CheckboxAdapter}
+          />
+        </Filtering>
+      )}
+    </>
   );
 }
 

@@ -1,10 +1,10 @@
 import { disassemble } from 'es-hangul';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import useDepartments from '@/hooks/server/useDepartments';
 import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
-import Filtering from '@common/components/filtering/Filtering';
 import SearchBox from '../../common/SearchBox';
 import { DepartmentType } from '@/utils/types';
+import FilterOption from '@common/components/filtering/FilterOption';
 
 function DepartmentFilter() {
   const { data: departments } = useDepartments();
@@ -28,9 +28,8 @@ function DepartmentFilter() {
   }
 
   const [filterDepartment, setFilterDepartment] = useState(departmentsList);
-  const { department } = useScheduleSearchStore(state => state.filters);
   const setFilter = useScheduleSearchStore(state => state.setFilter);
-  const customDepartmentLabel = department === '' ? '전체학과' : pickCollegeOrMajor(department);
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const result = departmentsList
@@ -58,11 +57,7 @@ function DepartmentFilter() {
 
   return (
     <>
-      <Filtering
-        label={customDepartmentLabel}
-        className="max-h-120 w-[300px] overflow-y-auto"
-        selected={department.length !== 0}
-      >
+      <FilterOption isChipOpen={true} contentRef={contentRef} className="max-h-120 w-[300px] overflow-y-auto">
         <div className="flex flex-col h-80">
           <div className="shrink-0 gap-2 flex px-2 py-2 bg-white">
             <select
@@ -94,7 +89,7 @@ function DepartmentFilter() {
             {(category === '전공' || category === '교양') && <SelectSubject departments={filterDepartment} />}{' '}
           </div>
         </div>
-      </Filtering>
+      </FilterOption>
     </>
   );
 }

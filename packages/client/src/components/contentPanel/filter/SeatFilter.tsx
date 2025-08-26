@@ -1,9 +1,11 @@
 import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import { RangeFilter } from '@/utils/types.ts';
 import Chip from '@common/components/chip/Chip';
-import SingleSelectFilter, { OptionType } from '@common/components/filtering/SingleSelectFilter';
+import Filtering from '@common/components/filtering/Filtering';
+import SingleSelectFilterOption from '@common/components/filtering/SingleSelectFilter';
+import { OptionType } from '@common/components/filtering/SingleSelectFilter';
 
-const SEAT: OptionType<number>[] = [
+const SEAT_RANGE: OptionType<number>[] = [
   { value: 0, label: '전체' },
   { value: 1, label: '여석 1개 이하' },
   { value: 2, label: '여석 2개 이상' },
@@ -29,21 +31,21 @@ function SeatFilter() {
 
   const setFilterScheduleWrapper = (field: string, value: number | null) => {
     if (field === 'selectedSeatRange') {
-      setFilter('seatRange', RANGE_VALUES[value ?? 0]);
+      setFilter('seatRange', value !== null ? RANGE_VALUES[value] : null);
     }
   };
 
   return (
-    <SingleSelectFilter
-      labelPrefix="여석"
-      selectedValue={selectedValue}
-      field="selectedSeatRange"
-      setFilterSchedule={setFilterScheduleWrapper}
-      options={SEAT}
-      selected={!!seatRange}
-      ItemComponent={Chip}
-      className="min-w-max"
-    />
+    <Filtering label="여석" selected={selectedValue !== 0} className="min-w-max">
+      <SingleSelectFilterOption
+        labelPrefix="여석"
+        selectedValue={selectedValue}
+        field="selectedSeatRange"
+        setFilter={setFilterScheduleWrapper}
+        options={SEAT_RANGE}
+        ItemComponent={Chip}
+      />
+    </Filtering>
   );
 }
 

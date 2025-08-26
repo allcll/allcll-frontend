@@ -1,8 +1,10 @@
+import useMobile from '@/hooks/useMobile';
 import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import { Grade } from '@/utils/types';
 import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
-import MultiSelectFilter from '@common/components/filtering/MultiSelectFilter';
-import { OptionType } from '@common/components/filtering/MultiSelectFilter';
+import Chip from '@common/components/chip/Chip';
+import Filtering from '@common/components/filtering/Filtering';
+import MultiSelectFilterOption, { OptionType } from '@common/components/filtering/MultiSelectFilterOption';
 
 export const GRADE: OptionType<Grade>[] = [
   { value: 1, label: '1학년' },
@@ -14,6 +16,7 @@ export const GRADE: OptionType<Grade>[] = [
 function GradeFilter() {
   const { grades } = useScheduleSearchStore(state => state.filters);
   const setFilter = useScheduleSearchStore(state => state.setFilter);
+  const isMobile = useMobile();
 
   const setFilterScheduleWrapper = (field: string, value: Grade[]) => {
     if (field === 'selectedGrades') {
@@ -22,15 +25,30 @@ function GradeFilter() {
   };
 
   return (
-    <MultiSelectFilter
-      labelPrefix="학년"
-      selectedValues={grades}
-      field="selectedGrades"
-      setFilterSchedule={setFilterScheduleWrapper}
-      options={GRADE}
-      selected={grades.length !== 0}
-      ItemComponent={CheckboxAdapter}
-    />
+    <>
+      {isMobile ? (
+        <MultiSelectFilterOption<Grade>
+          labelPrefix="학년"
+          selectedValues={grades}
+          field="selectedGrades"
+          setFilter={setFilterScheduleWrapper}
+          options={GRADE}
+          ItemComponent={Chip}
+          className="w-full flex flex-row gap-2"
+        />
+      ) : (
+        <Filtering label="학년" selected={grades.length > 0}>
+          <MultiSelectFilterOption<Grade>
+            labelPrefix="학년"
+            selectedValues={grades}
+            field="selectedGrades"
+            setFilter={setFilterScheduleWrapper}
+            options={GRADE}
+            ItemComponent={CheckboxAdapter}
+          />
+        </Filtering>
+      )}
+    </>
   );
 }
 

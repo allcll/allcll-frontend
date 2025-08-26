@@ -1,9 +1,9 @@
 import 'react-datepicker/dist/react-datepicker.css';
 import { Dispatch, SetStateAction } from 'react';
 import Card from '@allcll/common/components/Card';
-import MultiSelectFilter from '@allcll/common/components/filtering/MultiSelectFilter';
-import { OptionType } from '@allcll/common/components/filtering/MultiSelectFilter';
 import CheckboxAdapter from '@allcll/common/components/checkbox/CheckboxAdapter';
+import Filtering from '@allcll/common/components/filtering/Filtering';
+import MultiSelectFilterOption, { OptionType } from '@allcll/common/components/filtering/MultiSelectFilterOption';
 
 const StatusCodes: OptionType<number>[] = [
   { value: 200, label: '200' },
@@ -37,15 +37,16 @@ function RequestLogs({ urlInput, setUrlInput, selectedStatusCodes, setSelectedSt
         <div className="w-full gap-4  justify-between max-w-3xl mx-auto space-y-4">
           <label className="block text-sm font-medium mb-1">상태 코드</label>
 
-          <MultiSelectFilter
-            labelPrefix="상태 코드"
-            selectedValues={selectedStatusCodes}
-            field="selectedStatusCodes"
-            setFilterSchedule={setFilterScheduleWrapper}
-            options={StatusCodes}
-            selected={selectedStatusCodes.length !== 0}
-            ItemComponent={CheckboxAdapter}
-          />
+          <Filtering label="상태" selected={selectedStatusCodes.length !== 0}>
+            <MultiSelectFilterOption
+              labelPrefix="상태 코드"
+              selectedValues={selectedStatusCodes}
+              field="selectedStatusCodes"
+              setFilter={setFilterScheduleWrapper}
+              options={StatusCodes}
+              ItemComponent={CheckboxAdapter}
+            />
+          </Filtering>
 
           <label className="block text-sm font-medium mb-1">API 요청 URL</label>
           <input

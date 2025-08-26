@@ -39,7 +39,7 @@ const DropdownSelect = ({ timetables, onSelect, onEdit, onDelete, openCreateModa
     <div className="relative inline-block w-full max-w-sm" ref={dropdownRef}>
       {/* Select Box (보여지는 부분) */}
       <>
-        <Filtering
+        {/* <Filtering
           label={currentTimetable?.timeTableName ?? '새 시간표'}
           selected={currentTimetable?.timeTableId > -1}
           className="gap-4 max-w-20 min-w-max max-h-80 overflow-y-auto"
@@ -75,7 +75,7 @@ const DropdownSelect = ({ timetables, onSelect, onEdit, onDelete, openCreateModa
           <button className="flex justify-center text-gray-500 text-sm hover:font-bold" onClick={openCreateModal}>
             + 시간표 추가하기
           </button>
-        </Filtering>
+        </Filtering> */}
       </>
     </div>
   );

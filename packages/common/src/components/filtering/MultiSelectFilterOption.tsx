@@ -1,5 +1,3 @@
-import Filtering from './Filtering';
-
 export interface OptionType<VALUE extends string | number> {
   value: VALUE;
   label: string;
@@ -16,38 +14,23 @@ interface IMultiSelectFilter<VALUE extends string | number> {
   labelPrefix: string;
   selectedValues: VALUE[];
   field: string;
-  setFilterSchedule: (field: string, value: VALUE[]) => void;
+  setFilter: (field: string, value: VALUE[]) => void;
   options: OptionType<VALUE>[];
   className?: string;
-  selected: boolean;
   ItemComponent: React.ComponentType<FilterItemProps<VALUE>>;
 }
 
-function MultiSelectFilter<VALUE extends string | number>({
+function MultiSelectFilterOption<VALUE extends string | number>({
   labelPrefix,
   selectedValues,
   field,
-  setFilterSchedule,
+  setFilter,
   options,
-  className = '',
-  selected,
+  className,
   ItemComponent,
 }: Readonly<IMultiSelectFilter<VALUE>>) {
   const checkSelected = (value: VALUE) => {
     return selectedValues.includes(value);
-  };
-
-  const getFilteringLabel = () => {
-    if (selectedValues.length === 0) {
-      return labelPrefix;
-    }
-
-    const label = options.find(option => option.value === selectedValues[0])?.label || labelPrefix;
-    if (selectedValues.length === 1) {
-      return label;
-    }
-
-    return `${label} 외 ${selectedValues.length - 1}개`;
   };
 
   const handleChangeCheckbox = (optionValue: VALUE) => {
@@ -56,17 +39,22 @@ function MultiSelectFilter<VALUE extends string | number>({
       ? selectedValues.filter(selected => selected !== optionValue)
       : [...selectedValues, optionValue];
 
-    setFilterSchedule(field, newValues);
+    setFilter(field, newValues);
   };
 
   const handleClickReset = () => {
-    setFilterSchedule(field, []);
+    setFilter(field, []);
   };
 
   return (
-    <Filtering label={getFilteringLabel()} selected={selected} className={className}>
-      <h3 className="text-md font-medium text-gray-600">{labelPrefix}</h3>
-      <div className={`${options.length > 6 ? 'grid grid-cols-2 gap-x-4' : 'flex flex-col'} gap-y-2`}>
+    <div className="relative inline-block">
+      <h3 className="text-xs sm:text-lg mb-2 text-gray-500 font-medium sm:text-gray-600">{labelPrefix}</h3>
+      <div
+        className={`
+        gap-y-2
+        ${(className ?? options.length > 6) ? 'grid grid-cols-2 gap-x-4' : 'flex flex-col'}
+      `}
+      >
         {options.map(option => (
           <ItemComponent
             key={String(option.value)}
@@ -78,12 +66,15 @@ function MultiSelectFilter<VALUE extends string | number>({
         ))}
       </div>
       <div className="flex justify-end w-full mt-2">
-        <button onClick={() => handleClickReset()} className="text-blue-500 cursor-pointer text-sm px-1 py-0.5">
+        <button
+          onClick={() => handleClickReset()}
+          className="text-blue-500 cursor-pointer sm:text-sm text-xs px-1 py-0.5"
+        >
           초기화
         </button>
       </div>
-    </Filtering>
+    </div>
   );
 }
 
-export default MultiSelectFilter;
+export default MultiSelectFilterOption;
