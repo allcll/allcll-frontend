@@ -51,9 +51,10 @@ function MultiSelectFilterOption<VALUE extends string | number>({
       <h3 className="text-xs sm:text-lg mb-2 text-gray-500 font-medium sm:text-gray-600">{labelPrefix}</h3>
       <div
         className={`
-        gap-y-2
-        ${(className ?? options.length > 6) ? 'grid grid-cols-2 gap-x-4' : 'flex flex-col'}
-      `}
+          gap-y-2
+          ${options.length > 6 ? 'grid grid-cols-2 gap-x-4' : 'flex flex-col'}
+          ${className}
+        `}
       >
         {options.map(option => (
           <ItemComponent

@@ -19,7 +19,7 @@ function DayFilter() {
   const setFilter = useScheduleSearchStore(state => state.setFilter);
   const isMobile = useMobile();
 
-  const setFilterScheduleWrapper = (field: string, value: Day[]) => {
+  const setFilterWrapper = (field: string, value: Day[]) => {
     if (field === 'selectedDays') {
       setFilter(
         'time',
@@ -28,6 +28,14 @@ function DayFilter() {
     }
   };
 
+  const getLabelPrefix = () => {
+    if (time.length === 0) return '요일';
+    if (time.length === 1) return time[0].day + '요일';
+    return time[0].day + '요일 외 ' + (time.length - 1) + '개';
+  };
+
+  const labelPrefix = getLabelPrefix();
+
   return (
     <>
       {isMobile ? (
@@ -35,18 +43,18 @@ function DayFilter() {
           labelPrefix="요일"
           selectedValues={time.map(t => t.day).filter((day): day is Day => day !== '')}
           field="selectedDays"
-          setFilter={setFilterScheduleWrapper}
+          setFilter={setFilterWrapper}
           options={DAYS}
           ItemComponent={Chip}
           className="w-full flex flex-row gap-2"
         />
       ) : (
-        <Filtering label="요일" selected={time.length > 0} className="min-w-max">
+        <Filtering label={labelPrefix} selected={time.length > 0} className="min-w-max">
           <MultiSelectFilterOption<Day>
             labelPrefix="요일"
             selectedValues={time.map(t => t.day).filter((day): day is Day => day !== '')}
             field="selectedDays"
-            setFilter={setFilterScheduleWrapper}
+            setFilter={setFilterWrapper}
             options={DAYS}
             ItemComponent={CheckboxAdapter}
           />

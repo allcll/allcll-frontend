@@ -24,6 +24,14 @@ function GradeFilter() {
     }
   };
 
+  const getLabelPrefix = () => {
+    if (grades.length === 0) return '학년';
+    if (grades.length === 1) return grades[0] + '학년';
+    return grades[0] + '학년 외 ' + (grades.length - 1) + '개';
+  };
+
+  const labelPrefix = getLabelPrefix();
+
   return (
     <>
       {isMobile ? (
@@ -37,7 +45,7 @@ function GradeFilter() {
           className="w-full flex flex-row gap-2"
         />
       ) : (
-        <Filtering label="학년" selected={grades.length > 0}>
+        <Filtering label={labelPrefix} selected={grades.length > 0}>
           <MultiSelectFilterOption<Grade>
             labelPrefix="학년"
             selectedValues={grades}

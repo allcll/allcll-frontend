@@ -35,8 +35,15 @@ function SeatFilter() {
     }
   };
 
+  const getLabelPrefix = () => {
+    if (seatRange) return `여석 ${seatRange.value}개 이상`;
+    return '여석';
+  };
+
+  const labelPrefix = getLabelPrefix();
+
   return (
-    <Filtering label="여석" selected={selectedValue !== 0} className="min-w-max">
+    <Filtering label={labelPrefix} selected={selectedValue !== 0} className="min-w-max">
       <SingleSelectFilterOption
         labelPrefix="여석"
         selectedValue={selectedValue}

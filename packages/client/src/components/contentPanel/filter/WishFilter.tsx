@@ -29,8 +29,15 @@ function WishFilter() {
     }
   };
 
+  const getLabelPrefix = () => {
+    if (wishRange) return `관심인원 ${wishRange.value}명 이상`;
+    return '관심인원';
+  };
+
+  const labelPrefix = getLabelPrefix();
+
   return (
-    <Filtering label="관심과목" selected={selectedValue !== -1} className="min-w-max">
+    <Filtering label={labelPrefix} selected={selectedValue !== -1} className="min-w-max">
       <SingleSelectFilter
         labelPrefix="관심과목"
         selectedValue={selectedValue}

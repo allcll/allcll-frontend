@@ -22,6 +22,14 @@ function CreditFilter() {
     }
   };
 
+  const getLabelPrefix = () => {
+    if (credits.length === 0) return '학점';
+    if (credits.length === 1) return credits[0] + '학점';
+    return credits[0] + '학점 외 ' + (credits.length - 1) + '개';
+  };
+
+  const labelPrefix = getLabelPrefix();
+
   return (
     <>
       {isMobile ? (
@@ -35,7 +43,7 @@ function CreditFilter() {
           className="w-full flex flex-row gap-2"
         />
       ) : (
-        <Filtering label="학점" selected={credits.length > 0}>
+        <Filtering label={labelPrefix} selected={credits.length > 0}>
           <MultiSelectFilterOption
             labelPrefix="학점"
             selectedValues={credits}

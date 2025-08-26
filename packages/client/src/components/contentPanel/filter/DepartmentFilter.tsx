@@ -4,7 +4,7 @@ import useDepartments from '@/hooks/server/useDepartments';
 import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import SearchBox from '../../common/SearchBox';
 import { DepartmentType } from '@/utils/types';
-import FilterOption from '@common/components/filtering/FilterOption';
+import Filtering from '@common/components/filtering/Filtering';
 
 function DepartmentFilter() {
   const { data: departments } = useDepartments();
@@ -29,7 +29,6 @@ function DepartmentFilter() {
 
   const [filterDepartment, setFilterDepartment] = useState(departmentsList);
   const setFilter = useScheduleSearchStore(state => state.setFilter);
-  const contentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const result = departmentsList
@@ -56,41 +55,39 @@ function DepartmentFilter() {
   }, [departments, searchKeywords, category]);
 
   return (
-    <>
-      <FilterOption isChipOpen={true} contentRef={contentRef} className="max-h-120 w-[300px] overflow-y-auto">
-        <div className="flex flex-col h-80">
-          <div className="shrink-0 gap-2 flex px-2 py-2 bg-white">
-            <select
-              value={category}
-              className="border border-gray-300 rounded-md px-2 py-1 text-sm text-gray-700 bg-white"
-              onChange={e => {
-                const value = e.target.value as '전체' | '전공' | '교양';
-                setCategory(value);
-                setFilter('department', '');
-              }}
-            >
-              <option value="전공">전공</option>
-              <option value="교양">교양</option>
-            </select>
-            <SearchBox
-              type="text"
-              placeholder="학과 검색"
-              onDelete={() => {
-                setSearchKeywords('');
-              }}
-              value={searchKeywords}
-              onChange={e => {
-                setSearchKeywords(e.target.value);
-              }}
-            />
-          </div>
-
-          <div className="overflow-y-auto flex-1 px-2 py-2">
-            {(category === '전공' || category === '교양') && <SelectSubject departments={filterDepartment} />}{' '}
-          </div>
+    <Filtering label="학과" selected={true}>
+      <div className="flex flex-col h-80 max-h-120 w-[300px] overflow-y-auto">
+        <div className="shrink-0 gap-2 flex px-2 py-2 bg-white">
+          <select
+            value={category}
+            className="border border-gray-300 rounded-md px-2 py-1 text-sm text-gray-700 bg-white"
+            onChange={e => {
+              const value = e.target.value as '전체' | '전공' | '교양';
+              setCategory(value);
+              setFilter('department', '');
+            }}
+          >
+            <option value="전공">전공</option>
+            <option value="교양">교양</option>
+          </select>
+          <SearchBox
+            type="text"
+            placeholder="학과 검색"
+            onDelete={() => {
+              setSearchKeywords('');
+            }}
+            value={searchKeywords}
+            onChange={e => {
+              setSearchKeywords(e.target.value);
+            }}
+          />
         </div>
-      </FilterOption>
-    </>
+
+        <div className="overflow-y-auto flex-1 px-2 py-2">
+          {(category === '전공' || category === '교양') && <SelectSubject departments={filterDepartment} />}{' '}
+        </div>
+      </div>
+    </Filtering>
   );
 }
 

@@ -28,11 +28,19 @@ function CuriTypeFilter() {
     .sort((a, b) => a.localeCompare(b))
     .map(cat => ({ label: cat, value: cat }));
 
-  const setFilterScheduleWrapper = (field: string, value: (string | number)[]) => {
+  const setFilterWrapper = (field: string, value: (string | number)[]) => {
     if (field === 'selectedCuriTypes') {
       setFilter('categories', value as Curitype[]);
     }
   };
+
+  const getLabelPrefix = () => {
+    if (categories.length === 0) return '유형';
+    if (categories.length === 1) return categories[0] + '유형';
+    return categories[0] + '유형 외 ' + (categories.length - 1) + '개';
+  };
+
+  const labelPrefix = getLabelPrefix();
 
   return (
     <>
@@ -41,18 +49,18 @@ function CuriTypeFilter() {
           labelPrefix="유형"
           selectedValues={categories}
           field="selectedCuriTypes"
-          setFilter={setFilterScheduleWrapper}
+          setFilter={setFilterWrapper}
           options={categoryOptions}
           ItemComponent={Chip}
           className="w-full flex flex-row gap-2"
         />
       ) : (
-        <Filtering label="유형" selected={categories.length > 0} className="min-w-max">
+        <Filtering label={labelPrefix} selected={categories.length > 0} className="min-w-max">
           <MultiSelectFilterOption
             labelPrefix="유형"
             selectedValues={categories}
             field="selectedCuriTypes"
-            setFilter={setFilterScheduleWrapper}
+            setFilter={setFilterWrapper}
             options={categoryOptions}
             ItemComponent={Chip}
           />
