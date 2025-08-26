@@ -2,28 +2,18 @@ import { disassemble } from 'es-hangul';
 import { Grade, RangeFilter, RemarkType, Subject, Wishes } from '../types';
 import { IDayTimeItem } from '@/components/contentPanel/filter/DayTimeFilter.tsx';
 import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
+import { usePinned } from '@/hooks/server/usePinned.ts';
+import useFavorites from '@/store/useFavorites.ts';
+import { Filters, isFilterEmpty } from '@/store/useFilterStore.ts';
 import { TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 import { Time } from '@/utils/time.ts';
-import { Filters, isFilterEmpty } from '@/store/useFilterStore.ts';
-
-const filteringFunctions: Record<keyof Filters, Function> = {
-  keywords: () => true,
-  department: filterDepartment,
-  grades: filterGrades,
-  credits: filterCredits,
-  categories: filterCategories,
-  seatRange: filterSeatRange,
-  wishRange: filterWishRange,
-  time: filterSchedule,
-  classroom: filterClassroom,
-  note: filterRemark,
-  language: filterLanguage,
-  alarmOnly: () => true,
-  favoriteOnly: () => true,
-};
 
 /** 활성화 된 필터만 실행하는 함수를 반환 (최적화) */
-export function getFilteringFunctions(filters: Filters) {
+export function useFilterFunctions(filters: Filters) {
+  const { data: pinnedSubjects } = usePinned();
+  const pickedFavorites = useFavorites(state => state.isFavorite);
+  const filteringFunctions = getFilteringFunctions(filters, pinnedSubjects, pickedFavorites);
+
   const keys = Object.keys(filters) as (keyof Filters)[];
   const active = keys.filter(key => !isFilterEmpty(key, filters[key]));
 
@@ -32,8 +22,35 @@ export function getFilteringFunctions(filters: Filters) {
       const func = filteringFunctions[key];
       if (!func) return true;
 
-      return func(subject, filters[key]);
+      return func(subject, filters[key]!);
     });
+  };
+}
+
+function getFilteringFunctions(
+  filters: Filters,
+  pinnedSubjects: { subjectId: number }[] | undefined,
+  pickedFavorites: (id: number) => boolean,
+): Record<keyof Filters, Function> {
+  const matchesPinned = (id: number) => pinnedSubjects?.some(({ subjectId }) => subjectId === id) ?? true;
+
+  const cleanedKeyword = getNormalizedKeyword(filters.keywords);
+  const keywordForCode = filters.keywords.replace(/[-\s]/g, '').toLowerCase();
+
+  return {
+    keywords: (subject: Subject) => filterSearchKeywords(subject, cleanedKeyword, keywordForCode),
+    department: filterDepartment,
+    grades: filterGrades,
+    credits: filterCredits,
+    categories: filterCategories,
+    seatRange: filterSeatRange,
+    wishRange: filterWishRange,
+    time: filterSchedule,
+    classroom: filterClassroom,
+    note: filterRemark,
+    language: filterLanguage,
+    alarmOnly: (subject: Subject) => pickedFavorites(subject.subjectId),
+    favoriteOnly: (subject: Subject) => matchesPinned(subject.subjectId),
   };
 }
 
@@ -50,7 +67,7 @@ function filterMatches<T>(value: T, matchList: T[]) {
   return !matchList.length || matchList.includes(value);
 }
 
-export function getNormalizedKeyword(keyword: string) {
+function getNormalizedKeyword(keyword: string) {
   const cleanSearchInput = keyword.replace(/[^\wㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
   return disassemble(cleanSearchInput).toLowerCase();
 }
@@ -110,7 +127,7 @@ function filterDepartment(subject: Wishes | Subject, selectedDepartment: string)
   return !selectedDepartment || selectedDepartment === '' || selectedDepartment === subject.deptCd;
 }
 
-export function filterSearchKeywords(subject: Wishes | Subject, cleanedKeyword: string, keywordForCode: string) {
+function filterSearchKeywords(subject: Wishes | Subject, cleanedKeyword: string, keywordForCode: string) {
   if (!cleanedKeyword) return true;
 
   const disassembledProfessorName = subject.professorName ? disassemble(subject.professorName).toLowerCase() : '';
