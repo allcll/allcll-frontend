@@ -1,6 +1,6 @@
 import { TimetableType } from '@/hooks/server/useTimetableSchedules';
 import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
-import SingleCheckboxFilter from '@common/components/filtering/SingleCheckbox';
+import SingleSelectFilter from '@common/components/filtering/SingleSelectFilter';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -34,7 +34,7 @@ function TimetableChip({ selectedTimetable, onSelect, timetables }: ITimetableCh
     <div className="flex flex-col gap-2">
       <h2 className="text-left font-semibold text-sm sm:text-md">시간표를 선택해주세요.</h2>
       <div className="relative inline-block max-w-sm" ref={dropdownRef}>
-        <SingleCheckboxFilter
+        <SingleSelectFilter
           labelPrefix="시간표"
           selectedValue={selectedTimetable.timeTableId}
           field="selectedTimetable"

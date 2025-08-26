@@ -1,7 +1,7 @@
 import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
-import SingleCheckboxFilter, { OptionType } from '@common/components/filtering/SingleCheckbox';
 import { RangeFilter } from '@/utils/types.ts';
 import Chip from '@common/components/chip/Chip';
+import SingleSelectFilter, { OptionType } from '@common/components/filtering/SingleSelectFilter';
 
 const WISHRANGE: OptionType<number>[] = [
   { value: 0, label: '관심인원 30명 이상' },
@@ -29,7 +29,7 @@ function WishFilter() {
   };
 
   return (
-    <SingleCheckboxFilter
+    <SingleSelectFilter
       labelPrefix="관심과목"
       selectedValue={selectedValue}
       field="selectedWishRange"

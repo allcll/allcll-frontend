@@ -1,7 +1,7 @@
 import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
-import SingleCheckboxFilter, { OptionType } from '@common/components/filtering/SingleCheckbox';
 import { RangeFilter } from '@/utils/types.ts';
 import Chip from '@common/components/chip/Chip';
+import SingleSelectFilter, { OptionType } from '@common/components/filtering/SingleSelectFilter';
 
 const SEAT: OptionType<number>[] = [
   { value: 0, label: '전체' },
@@ -34,7 +34,7 @@ function SeatFilter() {
   };
 
   return (
-    <SingleCheckboxFilter
+    <SingleSelectFilter
       labelPrefix="여석"
       selectedValue={selectedValue}
       field="selectedSeatRange"

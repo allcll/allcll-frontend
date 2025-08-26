@@ -1,6 +1,6 @@
 import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
-import MultiCheckboxFilter from '@common/components/filtering/MultiCheckboxFilter';
-import { OptionType } from '@common/components/filtering/MultiCheckboxFilter';
+import MultiSelectFilter from '@common/components/filtering/MultiSelectFilter';
+import { OptionType } from '@common/components/filtering/MultiSelectFilter';
 import { Day } from '@/utils/types';
 import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
 
@@ -26,7 +26,7 @@ function DayFilter() {
   };
 
   return (
-    <MultiCheckboxFilter<Day>
+    <MultiSelectFilter<Day>
       labelPrefix="요일"
       selectedValues={time.map(t => t.day).filter((day): day is Day => day !== '')}
       field="selectedDays"

@@ -12,7 +12,7 @@ interface FilterItemProps<VALUE extends string | number> {
   value: VALUE;
 }
 
-interface IMultiCheckboxFilter<VALUE extends string | number> {
+interface IMultiSelectFilter<VALUE extends string | number> {
   labelPrefix: string;
   selectedValues: VALUE[];
   field: string;
@@ -23,7 +23,7 @@ interface IMultiCheckboxFilter<VALUE extends string | number> {
   ItemComponent: React.ComponentType<FilterItemProps<VALUE>>;
 }
 
-function MultiCheckboxFilter<VALUE extends string | number>({
+function MultiSelectFilter<VALUE extends string | number>({
   labelPrefix,
   selectedValues,
   field,
@@ -32,7 +32,7 @@ function MultiCheckboxFilter<VALUE extends string | number>({
   className = '',
   selected,
   ItemComponent,
-}: Readonly<IMultiCheckboxFilter<VALUE>>) {
+}: Readonly<IMultiSelectFilter<VALUE>>) {
   const checkSelected = (value: VALUE) => {
     return selectedValues.includes(value);
   };
@@ -86,4 +86,4 @@ function MultiCheckboxFilter<VALUE extends string | number>({
   );
 }
 
-export default MultiCheckboxFilter;
+export default MultiSelectFilter;

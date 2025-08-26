@@ -1,7 +1,6 @@
 import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import { Curitype } from '@/utils/types';
-import MultiCheckboxFilter from '@common/components/filtering/MultiCheckboxFilter';
-import { OptionType } from '@common/components/filtering/MultiCheckboxFilter';
+import MultiSelectFilter, { OptionType } from '@common/components/filtering/MultiSelectFilter';
 import useSubject from '@/hooks/server/useSubject.ts';
 import { getCategories } from '@/utils/filtering/filterDomains.ts';
 import Chip from '@common/components/chip/Chip';
@@ -33,7 +32,7 @@ function CuriTypeFilter() {
   };
 
   return (
-    <MultiCheckboxFilter
+    <MultiSelectFilter
       labelPrefix="유형"
       selectedValues={categories}
       field="selectedCuriTypes"

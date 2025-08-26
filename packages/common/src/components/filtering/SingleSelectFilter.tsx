@@ -12,7 +12,7 @@ interface FilterItemProps<VALUE extends string | number> {
   value: VALUE;
 }
 
-interface ISingleCheckboxFilter<VALUE extends string | number> {
+interface ISingleSelectFilter<VALUE extends string | number> {
   labelPrefix: string;
   selectedValue: VALUE | null;
   field: string;
@@ -23,7 +23,7 @@ interface ISingleCheckboxFilter<VALUE extends string | number> {
   ItemComponent: React.ComponentType<FilterItemProps<VALUE>>;
 }
 
-function SingleCheckboxFilter<VALUE extends string | number>({
+function SingleSelectFilter<VALUE extends string | number>({
   labelPrefix,
   selectedValue,
   field,
@@ -32,7 +32,7 @@ function SingleCheckboxFilter<VALUE extends string | number>({
   selected,
   className = '',
   ItemComponent,
-}: Readonly<ISingleCheckboxFilter<VALUE>>) {
+}: Readonly<ISingleSelectFilter<VALUE>>) {
   const getFilteringLabel = () => {
     if (!selectedValue) {
       return labelPrefix;
@@ -77,4 +77,4 @@ function SingleCheckboxFilter<VALUE extends string | number>({
   );
 }
 
-export default SingleCheckboxFilter;
+export default SingleSelectFilter;

@@ -1,8 +1,8 @@
 import 'react-datepicker/dist/react-datepicker.css';
 import { Dispatch, SetStateAction } from 'react';
 import Card from '@allcll/common/components/Card';
-import MultiCheckboxFilter from '@allcll/common/components/filtering/MultiCheckboxFilter';
-import { OptionType } from '@allcll/common/components/filtering/MultiCheckboxFilter';
+import MultiSelectFilter from '@allcll/common/components/filtering/MultiSelectFilter';
+import { OptionType } from '@allcll/common/components/filtering/MultiSelectFilter';
 import CheckboxAdapter from '@allcll/common/components/checkbox/CheckboxAdapter';
 
 const StatusCodes: OptionType<number>[] = [
@@ -37,7 +37,7 @@ function RequestLogs({ urlInput, setUrlInput, selectedStatusCodes, setSelectedSt
         <div className="w-full gap-4  justify-between max-w-3xl mx-auto space-y-4">
           <label className="block text-sm font-medium mb-1">상태 코드</label>
 
-          <MultiCheckboxFilter
+          <MultiSelectFilter
             labelPrefix="상태 코드"
             selectedValues={selectedStatusCodes}
             field="selectedStatusCodes"
