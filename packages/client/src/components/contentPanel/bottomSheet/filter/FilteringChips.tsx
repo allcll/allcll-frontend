@@ -1,5 +1,5 @@
 import Chip from '@common/components/chip/Chip';
-import { OptionType } from '@common/components/filtering/SingleCheckbox';
+import { OptionType } from '@common/components/filtering/SingleSelectFilter';
 
 interface IFilterChips<VALUE extends string | number> {
   label: string;

@@ -40,6 +40,11 @@ export const initialFilters: Filters = {
   favoriteOnly: false,
 };
 
+export function isFilterEmpty<T extends keyof Filters>(key: T, value: Filters[T]) {
+  if (Array.isArray(initialFilters[key]) && Array.isArray(value)) return value.length === 0;
+  return !value;
+}
+
 const createFilterStore = () =>
   create<IFilterStore>(set => ({
     filters: { ...initialFilters },

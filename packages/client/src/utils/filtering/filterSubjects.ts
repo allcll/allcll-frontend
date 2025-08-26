@@ -4,6 +4,38 @@ import { IDayTimeItem } from '@/components/contentPanel/filter/DayTimeFilter.tsx
 import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
 import { TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 import { Time } from '@/utils/time.ts';
+import { Filters, isFilterEmpty } from '@/store/useFilterStore.ts';
+
+const filteringFunctions: Record<keyof Filters, Function> = {
+  keywords: () => true,
+  department: filterDepartment,
+  grades: filterGrades,
+  credits: filterCredits,
+  categories: filterCategories,
+  seatRange: filterSeatRange,
+  wishRange: filterWishRange,
+  time: filterSchedule,
+  classroom: filterClassroom,
+  note: filterRemark,
+  language: filterLanguage,
+  alarmOnly: () => true,
+  favoriteOnly: () => true,
+};
+
+/** 활성화 된 필터만 실행하는 함수를 반환 (최적화) */
+export function getFilteringFunctions(filters: Filters) {
+  const keys = Object.keys(filters) as (keyof Filters)[];
+  const active = keys.filter(key => !isFilterEmpty(key, filters[key]));
+
+  return <T extends Subject>(subject: T, filters: Filters) => {
+    return active.every(key => {
+      const func = filteringFunctions[key];
+      if (!func) return true;
+
+      return func(subject, filters[key]);
+    });
+  };
+}
 
 function filterRange(value: number, range: RangeFilter | null) {
   if (!range) return true;
@@ -42,7 +74,7 @@ export function getNormalizedKeyword(keyword: string) {
 //   return selectedDays.some(selectedDay => lessonDays.includes(selectedDay));
 // }
 
-export function filterGrades(subject: Wishes | Subject, selectedGrades: (Grade | '전체')[]) {
+function filterGrades(subject: Wishes | Subject, selectedGrades: (Grade | '전체')[]) {
   const subjectGrade = Number(subject.studentYear);
 
   if (!subjectGrade) {
@@ -56,24 +88,25 @@ export function filterGrades(subject: Wishes | Subject, selectedGrades: (Grade |
   return selectedGrades.includes(subjectGrade as Grade);
 }
 
-export function filterCredits(subject: Wishes | Subject, selectedCredits: number[]) {
+function filterCredits(subject: Wishes | Subject, selectedCredits: number[]) {
   const credit = Number(subject.tmNum.split('/')[0]);
   if (!credit || isNaN(credit)) return true;
 
   return filterMatches(credit, selectedCredits);
 }
 
-export function filterSeatRange(subject: IPreRealSeat, seatRange: RangeFilter | null) {
-  if (!('seat' in subject)) return true;
-  return filterRange(subject.seat ?? 0, seatRange);
+function filterSeatRange<T extends Subject>(subject: T, seatRange: RangeFilter | null) {
+  const s = subject as T & IPreRealSeat;
+  if (!('seat' in s)) return true;
+  return filterRange(s.seat ?? 0, seatRange);
 }
 
-export function filterWishRange(subject: Wishes | Subject, wishRange: RangeFilter | null) {
+function filterWishRange(subject: Wishes | Subject, wishRange: RangeFilter | null) {
   if (!('totalCount' in subject)) return true;
   return filterRange(subject.totalCount ?? 0, wishRange);
 }
 
-export function filterDepartment(subject: Wishes | Subject, selectedDepartment: string) {
+function filterDepartment(subject: Wishes | Subject, selectedDepartment: string) {
   return !selectedDepartment || selectedDepartment === '' || selectedDepartment === subject.deptCd;
 }
 
@@ -93,7 +126,7 @@ export function filterSearchKeywords(subject: Wishes | Subject, cleanedKeyword: 
   );
 }
 
-export function filterClassroom(subject: Wishes | Subject, selectedClassrooms: string[]) {
+function filterClassroom(subject: Wishes | Subject, selectedClassrooms: string[]) {
   if (!selectedClassrooms.length) return true;
 
   if (!subject.lesnRoom) return false;
@@ -104,7 +137,7 @@ export function filterClassroom(subject: Wishes | Subject, selectedClassrooms: s
   });
 }
 
-export function filterRemark(subject: Wishes | Subject, selectedNotes: RemarkType[]) {
+function filterRemark(subject: Wishes | Subject, selectedNotes: RemarkType[]) {
   if (!selectedNotes || selectedNotes.length === 0) {
     return true;
   }
@@ -121,7 +154,7 @@ export function filterRemark(subject: Wishes | Subject, selectedNotes: RemarkTyp
   });
 }
 
-export function filterSchedule(subject: Wishes | Subject, selectedTime: IDayTimeItem[]) {
+function filterSchedule(subject: Wishes | Subject, selectedTime: IDayTimeItem[]) {
   if (!selectedTime || selectedTime.length === 0 || !subject.lesnTime) {
     return true;
   }
@@ -157,10 +190,10 @@ export function filterSchedule(subject: Wishes | Subject, selectedTime: IDayTime
   });
 }
 
-export function filterCategories(subject: Wishes | Subject, selectedCategories: string[]) {
+function filterCategories(subject: Wishes | Subject, selectedCategories: string[]) {
   return filterMatches(subject.curiTypeCdNm, selectedCategories);
 }
 
-export function filterLanguage(subject: Wishes | Subject, selectedLanguages: string[]) {
+function filterLanguage(subject: Wishes | Subject, selectedLanguages: string[]) {
   return filterMatches(subject.curiLangNm ?? '', selectedLanguages);
 }
