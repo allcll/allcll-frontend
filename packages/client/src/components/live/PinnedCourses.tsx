@@ -4,6 +4,7 @@ import AlarmOptionModal from '@/components/toast/AlarmOptionModal.tsx';
 import RealtimeCard from '@/components/live/subjectTable/RealtimeCard.tsx';
 import NetworkError from '@/components/live/errors/NetworkError.tsx';
 import ZeroPinError from '@/components/live/errors/ZeroPinError.tsx';
+import NotificationInstructionsModal from '@/components/live/NotificationInstructionsModal.tsx';
 import { usePinned } from '@/store/usePinned.ts';
 import useFindWishes from '@/hooks/useFindWishes.ts';
 import { SSEType, useSseData } from '@/hooks/useSSEManager.ts';
@@ -22,6 +23,7 @@ const PinnedCourses = () => {
   return (
     <>
       <AlarmOptionModal isOpen={isAlarmSettingOpen} close={() => setIsAlarmSettingOpen(false)} />
+      <NotificationInstructionsModal />
       <div>
         <div className="flex justify-between align-top">
           <div className="flex items-center justify-center gap-2 mb-4">

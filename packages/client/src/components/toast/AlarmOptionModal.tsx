@@ -1,63 +1,59 @@
-import CloseSvg from '@/assets/x-gray.svg?react';
-import useAlarmSettings from '@/store/useAlarmSettings.ts';
+import React from 'react';
+import Modal from '@/components/simulation/modal/Modal.tsx';
+import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import useBackSignal from '@/hooks/useBackSignal.ts';
+import { AlarmNotification } from '@/hooks/useNotification.ts';
+import useAlarmSettings, { AlarmType } from '@/store/useAlarmSettings.ts';
 
 interface IAlarmOptionModal {
   isOpen: boolean;
   close: () => void;
 }
 
+const AlarmTypeNames = [
+  { title: '알림 없음', value: AlarmType.NONE },
+  { title: '브라우저 알림', value: AlarmType.BROWSER },
+  { title: '토스트 알림', value: AlarmType.TOAST },
+  { title: '브라우저 + 토스트 알림', value: AlarmType.BOTH },
+];
+
 function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
-  const isAlarmActivated = useAlarmSettings(state => state.isAlarmActivated);
-  const isToastActivated = useAlarmSettings(state => state.isToastActivated);
+  const alarmType = useAlarmSettings(state => state.alarmType);
   const saveSettings = useAlarmSettings(state => state.saveSettings);
 
-  function closeAndSave() {
-    saveSettings({ isAlarmActivated, isToastActivated });
+  const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    saveSettings({ alarmType: Number(e.target.value) as AlarmType });
+  };
+
+  const onClose = () => {
+    AlarmNotification.requestPermission();
     close();
-  }
+  };
 
   // 뒤로가기 버튼 인식 후, 알림 설정 저장 후 모달 닫기
-  useBackSignal({
-    enabled: isOpen,
-    onClose: closeAndSave,
-  });
+  useBackSignal({ enabled: isOpen, onClose: onClose });
 
   return !isOpen ? null : (
-    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-contrast-50" onClick={closeAndSave}>
-      <div className="bg-white p-4 rounded-lg w-96 shadow-lg" onClick={e => e.stopPropagation()}>
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="font-bold text-lg">알림 설정</h2>
-          <button aria-label="close" onClick={closeAndSave} className="rounded-full p-2 hover:bg-blue-100">
-            <CloseSvg />
-          </button>
-        </div>
-
-        <div>
-          <label className="flex items-center space-x-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={isAlarmActivated}
-              onChange={e => saveSettings({ isAlarmActivated: e.target.checked })}
-            />
-            <span className="flex items-center space-x-2">
-              <span>브라우저 알림</span>
-            </span>
-          </label>
-
-          <label className="flex items-center space-x-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={isToastActivated}
-              onChange={e => saveSettings({ isToastActivated: e.target.checked })}
-            />
-            <span className="flex items-center space-x-2">
-              <span>토스트 알림</span>
-            </span>
-          </label>
-        </div>
+    <Modal onClose={onClose}>
+      <ModalHeader title="알림설정" onClose={onClose} />
+      <div className="p-4">
+        <label className="block mb-2 font-bold text-lg" htmlFor="alarm-type-select">
+          알림 유형
+        </label>
+        <select
+          id="alarm-type-select"
+          className="w-full mb-4 p-2 border border-gray-300 rounded"
+          value={alarmType}
+          onChange={onChange}
+        >
+          {AlarmTypeNames.map(type => (
+            <option key={type.value} value={type.value}>
+              {type.title}
+            </option>
+          ))}
+        </select>
       </div>
-    </div>
+    </Modal>
   );
 }
 
