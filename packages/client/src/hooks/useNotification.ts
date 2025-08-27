@@ -46,11 +46,9 @@ export const AlarmNotification: CustomNotification = {
   },
 
   isGranted() {
-    return getNotifications().every(n => {
-      const g = n.isGranted();
-      console.log(n, g);
-      return g;
-    });
+    const granted = getNotifications().every(n => n.isGranted());
+    useNotificationInstruction.getState().setPermitted(granted);
+    return granted;
   },
 
   requestPermission(callback?: (permission: NotificationPermission) => void) {

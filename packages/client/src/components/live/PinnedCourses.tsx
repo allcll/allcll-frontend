@@ -9,11 +9,13 @@ import { usePinned } from '@/store/usePinned.ts';
 import useFindWishes from '@/hooks/useFindWishes.ts';
 import { SSEType, useSseData } from '@/hooks/useSSEManager.ts';
 import useNotification from '@/hooks/useNotification.ts';
-import AlarmBlueIcon from '@/assets/alarm-blue.svg?react';
+import AlarmSvg from '@/assets/alarm.svg?react';
 import AlarmDisabledIcon from '@/assets/alarm-disabled.svg?react';
 import SettingSvg from '@/assets/settings.svg?react';
 import ReloadSvg from '@/assets/reload-blue.svg?react';
 import AlarmAddButton from './AlarmAddButton.tsx';
+import useNotificationInstruction from '@/store/useNotificationInstruction.ts';
+import { SSE_STATE, useSSEState } from '@/store/useSseState.ts';
 
 const PinnedCourses = () => {
   const [isAlarmSettingOpen, setIsAlarmSettingOpen] = useState(false);
@@ -60,7 +62,7 @@ const PinnedCourses = () => {
               title={isAlarm ? '알림 끄기' : '알림 켜기'}
               onClick={changeAlarm}
             >
-              {isAlarm ? <AlarmBlueIcon className="w-5 h-5" /> : <AlarmDisabledIcon className="w-5 h-5" />}
+              <AlarmIcon isAlarm={isAlarm} />
             </button>
           </div>
         </div>
@@ -70,6 +72,20 @@ const PinnedCourses = () => {
     </>
   );
 };
+
+function AlarmIcon({ isAlarm }: Readonly<{ isAlarm: boolean }>) {
+  const sseState = useSSEState(state => state.sseState);
+  const isPermitted = useNotificationInstruction(state => state.isPermitted);
+  const isRealtime = sseState === SSE_STATE.LIVE;
+
+  if (!isAlarm) return <AlarmDisabledIcon className="w-5 h-5" />;
+
+  return isPermitted && isRealtime ? (
+    <AlarmSvg className="w-5 h-5 text-blue-500" />
+  ) : (
+    <AlarmSvg className="w-5 h-5 text-red-500 animate-pulse" />
+  );
+}
 
 function CoursesArea() {
   const { data, isPending, isError, refetch } = usePinned();
