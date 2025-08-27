@@ -18,7 +18,7 @@ function GradeFilter() {
   const setFilter = useScheduleSearchStore(state => state.setFilter);
   const isMobile = useMobile();
 
-  const setFilterScheduleWrapper = (field: string, value: Grade[]) => {
+  const setFilterWrapper = (field: string, value: Grade[]) => {
     if (field === 'selectedGrades') {
       setFilter('grades', value);
     }
@@ -39,7 +39,7 @@ function GradeFilter() {
           labelPrefix="학년"
           selectedValues={grades}
           field="selectedGrades"
-          setFilter={setFilterScheduleWrapper}
+          setFilter={setFilterWrapper}
           options={GRADE}
           ItemComponent={Chip}
           className="w-full flex flex-row gap-2"
@@ -50,7 +50,7 @@ function GradeFilter() {
             labelPrefix="학년"
             selectedValues={grades}
             field="selectedGrades"
-            setFilter={setFilterScheduleWrapper}
+            setFilter={setFilterWrapper}
             options={GRADE}
             ItemComponent={CheckboxAdapter}
           />

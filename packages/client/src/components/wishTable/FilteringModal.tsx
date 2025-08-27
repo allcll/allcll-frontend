@@ -1,11 +1,14 @@
-import Modal from '@/components/simulation/modal/Modal.tsx';
+import Modal from '@common/components/modal/Modal';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
-import MultiSelect from '@/components/contentPanel/filter/MultiSelect.tsx';
 import DayTimeFilter from '@/components/contentPanel/filter/DayTimeFilter.tsx';
 import { FilterDomains, FilterOptions, getCategories } from '@/utils/filtering/filterDomains.ts';
 import { FilterStore } from '@/store/useFilterStore.ts';
 import useSubject from '@/hooks/server/useSubject.ts';
 import { Curitype, RemarkType } from '@/utils/types.ts';
+import MultiSelectFilterOption from '@common/components/filtering/MultiSelectFilterOption';
+import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
+import Chip from '@common/components/chip/Chip';
+import CustomButton from '@common/components/Button';
 
 interface IModalProps {
   filterStore: FilterStore;
@@ -19,39 +22,125 @@ const RemarkOptions = FilterDomains.remark.map(rm => ({ label: rm, value: rm }))
 function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
   const { classroom, note, categories, time } = filterStore(state => state.filters);
   const setFilter = filterStore(state => state.setFilter);
+  const resetFilters = filterStore(state => state.resetFilters);
 
   const { data: subjects } = useSubject();
   const categoryOptions = getCategories(subjects ?? [])
     .sort((a, b) => a.localeCompare(b))
     .map(cat => ({ label: cat, value: cat }));
 
+  const setRemarkFilterWrapper = (field: string, value: string[]) => {
+    if (field === 'selectedRemarks') {
+      setFilter('note', value as RemarkType[]);
+    }
+  };
+
+  const setClassroomFilterWrapper = (field: string, value: string[]) => {
+    if (field === 'selectedClassrooms') {
+      setFilter('classroom', value);
+    }
+  };
+
+  const setCategoryFilterWrapper = (field: string, value: string[]) => {
+    if (field === 'selectedCategories') {
+      setFilter('categories', value as Curitype[]);
+    }
+  };
+
+  const handleChipClick = (field: string, value: string) => {
+    if (field === 'selectedCategories') {
+      setFilter(
+        'categories',
+        categories.filter(cat => cat !== value),
+      );
+    }
+    if (field === 'selectedRemarks') {
+      setFilter(
+        'note',
+        note.filter(n => n !== value),
+      );
+    }
+    if (field === 'selectedClassrooms') {
+      setFilter(
+        'classroom',
+        classroom.filter(c => c !== value),
+      );
+    }
+  };
+
   return (
     <Modal onClose={onClose}>
       <ModalHeader title="과목 필터링" onClose={onClose} />
 
-      <h3 className="font-bold text-lg">강의실 필터</h3>
-      <MultiSelect
-        items={ClassroomOptions}
-        selectedItems={classroom}
-        setSelectedItems={v => setFilter('classroom', v)}
-      />
+      <div className="flex flex-col gap-2 p-4 w-130 max-h-[500px] overflow-y-auto">
+        <div className="flex flex-wrap gap-2 mb-2 w-fit">
+          {categories.map(category => (
+            <Chip
+              key={String(category)}
+              onClick={() => handleChipClick('selectedCategories', category)}
+              chipType="cancel"
+              selected={true}
+              label={category}
+            />
+          ))}
+          {note.map(note => (
+            <Chip
+              key={String(note)}
+              onClick={() => handleChipClick('selectedRemarks', note)}
+              chipType="cancel"
+              selected={true}
+              label={note}
+            />
+          ))}
+          {classroom.map(classroom => (
+            <Chip
+              key={String(classroom)}
+              onClick={() => handleChipClick('selectedClassrooms', classroom)}
+              chipType="cancel"
+              selected={true}
+              label={classroom}
+            />
+          ))}
+        </div>
+        <h3 className="text-lg text-gray-600 font-medium sm:text-gray-600">카테고리 필터</h3>
+        <MultiSelectFilterOption
+          labelPrefix=""
+          selectedValues={categories}
+          options={categoryOptions}
+          field="selectedCategories"
+          setFilter={setCategoryFilterWrapper}
+          ItemComponent={Chip}
+        />
 
-      <h3 className="font-bold text-lg">비고 필터</h3>
-      <MultiSelect
-        items={RemarkOptions}
-        selectedItems={note}
-        setSelectedItems={v => setFilter('note', v as RemarkType[])}
-      />
+        <h3 className="text-lg text-gray-600 font-medium sm:text-gray-600">시간 필터</h3>
+        <DayTimeFilter items={time} onChange={v => setFilter('time', v)} />
 
-      <h3 className="font-bold text-lg">카테고리 필터</h3>
-      <MultiSelect
-        items={categoryOptions}
-        selectedItems={categories}
-        setSelectedItems={v => setFilter('categories', v as Curitype[])}
-      />
+        <h3 className="text-lg text-gray-600 font-medium sm:text-gray-600">비고 필터</h3>
+        <MultiSelectFilterOption
+          labelPrefix=""
+          selectedValues={note}
+          options={RemarkOptions}
+          field="selectedRemarks"
+          setFilter={setRemarkFilterWrapper}
+          ItemComponent={CheckboxAdapter}
+        />
 
-      <h3 className="font-bold text-lg">시간 필터</h3>
-      <DayTimeFilter items={time} onChange={v => setFilter('time', v)} />
+        <h3 className="text-lg text-gray-600 font-medium sm:text-gray-600">강의실 필터</h3>
+        <MultiSelectFilterOption
+          labelPrefix=""
+          selectedValues={classroom}
+          options={ClassroomOptions}
+          field="selectedClassrooms"
+          setFilter={setClassroomFilterWrapper}
+          ItemComponent={CheckboxAdapter}
+        />
+      </div>
+
+      <div className="flex justify-end bg-white p-2 border-t border-gray-200">
+        <CustomButton variants="primary" onClick={resetFilters}>
+          필터 초기화
+        </CustomButton>
+      </div>
     </Modal>
   );
 }

@@ -34,6 +34,7 @@ function MultiSelectFilterOption<VALUE extends string | number>({
   };
 
   const handleChangeCheckbox = (optionValue: VALUE) => {
+    console.log('x선택됨');
     const checked = selectedValues.includes(optionValue);
     const newValues = checked
       ? selectedValues.filter(selected => selected !== optionValue)
@@ -48,7 +49,7 @@ function MultiSelectFilterOption<VALUE extends string | number>({
 
   return (
     <div className="relative inline-block">
-      <h3 className="text-xs sm:text-lg mb-2 text-gray-500 font-medium sm:text-gray-600">{labelPrefix}</h3>
+      <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">{labelPrefix}</h3>
       <div
         className={`
           gap-y-2 
@@ -72,7 +73,7 @@ function MultiSelectFilterOption<VALUE extends string | number>({
           onClick={() => handleClickReset()}
           className="text-blue-500 cursor-pointer sm:text-sm text-xs px-1 py-0.5"
         >
-          초기화
+          필터초기화
         </button>
       </div>
     </div>

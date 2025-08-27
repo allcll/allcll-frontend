@@ -31,7 +31,7 @@ function TimetableChip({ selectedTimetable, onSelect, timetables }: ITimetableCh
     <div className="flex flex-col gap-2">
       <h2 className="text-left font-semibold text-sm sm:text-md">시간표를 선택해주세요.</h2>
       <div className="relative inline-block max-w-sm" ref={dropdownRef}>
-        <Filtering label="시간표" selected={selectedTimetable.timeTableId !== null}>
+        <Filtering label="시간표" selected={selectedTimetable.timeTableId !== null} className="min-w-max">
           <SingleSelectFilterOption
             labelPrefix="시간표"
             selectedValue={selectedTimetable.timeTableId}

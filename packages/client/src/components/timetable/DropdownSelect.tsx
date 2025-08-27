@@ -37,46 +37,43 @@ const DropdownSelect = ({ timetables, onSelect, onEdit, onDelete, openCreateModa
 
   return (
     <div className="relative inline-block w-full max-w-sm" ref={dropdownRef}>
-      {/* Select Box (보여지는 부분) */}
-      <>
-        {/* <Filtering
-          label={currentTimetable?.timeTableName ?? '새 시간표'}
-          selected={currentTimetable?.timeTableId > -1}
-          className="gap-4 max-w-20 min-w-max max-h-80 overflow-y-auto"
-        >
-          {timetables.length === 0 && <div> 새로운 시간표를 추가해주세요.</div>}
-          {timetables.length !== 0 &&
-            timetables.map(option => (
-              <div className="flex gap-5" key={option.timeTableName + option.timeTableId}>
-                <Checkbox
-                  key={option.timeTableId}
-                  label={option.timeTableName}
-                  checked={currentTimetable.timeTableId === option.timeTableId}
-                  onChange={() => handleOptionClick(option)}
-                />
-                {currentTimetable.timeTableId === option.timeTableId && (
-                  <div className="flex gap-4 text-sm">
-                    <button
-                      className="text-stone-500 text-sm hover:text-stone-600 font-medium cursor-pointer"
-                      onClick={() => handleEditClick(option.timeTableId)}
-                    >
-                      수정
-                    </button>
-                    <button
-                      className="text-red-500  text-sm  hover:text-red-600 font-medium cursor-pointer"
-                      onClick={() => handleDeleteClick(option.timeTableId)}
-                    >
-                      삭제
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
-          <button className="flex justify-center text-gray-500 text-sm hover:font-bold" onClick={openCreateModal}>
-            + 시간표 추가하기
-          </button>
-        </Filtering> */}
-      </>
+      <Filtering
+        label={currentTimetable?.timeTableName ?? '새 시간표'}
+        selected={currentTimetable?.timeTableId > -1}
+        className="min-w-max"
+      >
+        {timetables.length === 0 && <div> 새로운 시간표를 추가해주세요.</div>}
+        {timetables.length !== 0 &&
+          timetables.map(option => (
+            <div className="flex gap-5" key={option.timeTableName + option.timeTableId}>
+              <Checkbox
+                key={option.timeTableId}
+                label={option.timeTableName}
+                checked={currentTimetable.timeTableId === option.timeTableId}
+                onChange={() => handleOptionClick(option)}
+              />
+              {currentTimetable.timeTableId === option.timeTableId && (
+                <div className="flex gap-4 text-sm">
+                  <button
+                    className="text-stone-500 text-sm hover:text-stone-600 font-medium cursor-pointer"
+                    onClick={() => handleEditClick(option.timeTableId)}
+                  >
+                    수정
+                  </button>
+                  <button
+                    className="text-red-500  text-sm  hover:text-red-600 font-medium cursor-pointer"
+                    onClick={() => handleDeleteClick(option.timeTableId)}
+                  >
+                    삭제
+                  </button>
+                </div>
+              )}
+            </div>
+          ))}
+        <button className="flex justify-center text-gray-500 text-sm hover:font-bold" onClick={openCreateModal}>
+          + 시간표 추가하기
+        </button>
+      </Filtering>
     </div>
   );
 };
