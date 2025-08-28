@@ -7,6 +7,7 @@ import useBackSignal from '@/hooks/useBackSignal.ts';
 import { AlarmNotification } from '@/hooks/useNotification.ts';
 import useAlarmSettings, { AlarmType, isSubAlarmActivated, SubAlarmType } from '@/store/useAlarmSettings.ts';
 import UseNotificationInstruction from '@/store/useNotificationInstruction.ts';
+import VibrationNotification from '@/utils/notification/vibrationNotification.ts';
 
 interface IAlarmOptionModal {
   isOpen: boolean;
@@ -90,11 +91,17 @@ function AlarmOptionContent() {
 }
 
 function SubAlarmOption() {
+  const alarmType = useAlarmSettings(state => state.alarmType);
+  const isAlarmDisabled = alarmType === AlarmType.NONE;
+  const isSound = isSubAlarmActivated(SubAlarmType.SOUND);
+  const isVibrate = isSubAlarmActivated(SubAlarmType.VIBRATE);
+  const canVibrate = VibrationNotification.canNotify();
+
   const subAlarmType = useAlarmSettings(state => state.subAlarmType);
   const saveSettings = useAlarmSettings(state => state.saveSettings);
 
-  const isSoundEnabled = isSubAlarmActivated(SubAlarmType.SOUND);
-  const isVibrateEnabled = isSubAlarmActivated(SubAlarmType.VIBRATE);
+  const isSoundDisabled = isAlarmDisabled;
+  const isVibrateDisabled = isAlarmDisabled || !canVibrate;
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // checked이면 비트 연산자로 플래그 추가, 아니면 제거
@@ -109,14 +116,21 @@ function SubAlarmOption() {
       <h3 className="block mb-2 font-bold text-md">추가 알림 옵션</h3>
       <div className="flex flex-col gap-2">
         <label className="my-1 flex items-center justify-between" htmlFor="select-sound">
-          <span>소리</span>
-          <Toggle id="select-sound" name="sound" checked={isSoundEnabled} onChange={onChange} />
+          <span className={isSoundDisabled ? 'text-gray-300' : ''}>소리</span>
+          <Toggle id="select-sound" name="sound" checked={isSound} onChange={onChange} disabled={isSoundDisabled} />
         </label>
 
         <label className="my-1 flex items-center justify-between" htmlFor="select-vibrate">
-          <span>진동</span>
-          <Toggle id="select-vibrate" name="vibrate" checked={isVibrateEnabled} onChange={onChange} />
+          <span className={isVibrateDisabled ? 'text-gray-300' : ''}>진동</span>
+          <Toggle
+            id="select-vibrate"
+            name="vibrate"
+            checked={isVibrate}
+            onChange={onChange}
+            disabled={isVibrateDisabled}
+          />
         </label>
+        {!canVibrate && <p className="pl-2 pb-2 text-sm text-red-600">이 기기는 진동 기능을 지원하지 않아요.</p>}
       </div>
     </div>
   );
