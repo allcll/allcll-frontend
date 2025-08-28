@@ -35,6 +35,13 @@ const SoundNotification: CustomNotification = {
     }
   },
 
+  getDeniedMessage() {
+    if (!this.canNotify()) {
+      return ['이 브라우저는 소리 알림을 지원하지 않습니다.'];
+    }
+    return [];
+  },
+
   show(_: string, __?: string): void {
     if (this.canNotify() && currentAudio) {
       currentAudio.currentTime = 0; // Reset to start for immediate playback

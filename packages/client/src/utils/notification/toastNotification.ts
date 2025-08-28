@@ -9,6 +9,9 @@ const ToastNotification: CustomNotification = {
     return true;
   },
   requestPermission(_?: (permission: NotificationPermission) => void) {},
+  getDeniedMessage() {
+    return [];
+  },
   show(message: string, tag?: string) {
     const addToast = useToastNotification.getState().addToast;
     if (addToast) addToast(message, tag);

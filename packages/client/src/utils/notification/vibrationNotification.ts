@@ -30,6 +30,13 @@ const VibrationNotification: CustomNotification = {
     }
   },
 
+  getDeniedMessage() {
+    if (!this.canNotify()) {
+      return ['이 브라우저는 진동 알림을 지원하지 않습니다.'];
+    }
+    return [];
+  },
+
   show(_: string, __?: string): void {
     const activated = isSubAlarmActivated(SubAlarmType.VIBRATE);
 

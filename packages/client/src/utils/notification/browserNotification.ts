@@ -28,6 +28,15 @@ const BrowserNotification: CustomNotification = {
 
     if (callback) callback(Notification.permission);
   },
+  getDeniedMessage() {
+    if (!BrowserNotification.canNotify()) {
+      return ['해당 브라우저는 브라우저 알림을 지원하지 않습니다'];
+    }
+    if (!BrowserNotification.isGranted()) {
+      return ['브라우저 알림이 차단되어 있습니다. 브라우저의 알림 권한을 허용해주세요'];
+    }
+    return [];
+  },
   show(message: string, tag?: string) {
     const activated = isAlarmActivated(AlarmType.BROWSER);
     const setBanner = useBannerNotification.getState().setBanner;

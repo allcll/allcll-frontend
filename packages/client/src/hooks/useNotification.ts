@@ -18,6 +18,7 @@ export interface CustomNotification {
   canNotify(): boolean;
   isGranted(): boolean;
   requestPermission(callback?: (permission: NotificationPermission) => void): void;
+  getDeniedMessage(): string[];
   show(message: string, tag?: string): void;
   close(tag: string): void;
 }
@@ -58,6 +59,10 @@ export const AlarmNotification: CustomNotification = {
 
     getNotifications().forEach(n => n.requestPermission(callback));
     useNotificationInstruction.getState().open();
+  },
+
+  getDeniedMessage() {
+    return getNotifications().flatMap(s => s.getDeniedMessage());
   },
 
   show(message: string, tag?: string) {
