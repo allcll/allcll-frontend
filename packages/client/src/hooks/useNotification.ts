@@ -7,11 +7,12 @@ import useAlarmSettings, {
   isSubAlarmActivated,
   SubAlarmType,
 } from '@/store/useAlarmSettings.ts';
+import useNotificationInstruction from '@/store/useNotificationInstruction.ts';
 import BrowserNotification from '@/utils/notification/browserNotification.ts';
 import VibrationNotification from '@/utils/notification/vibrationNotification.ts';
 import ToastNotification from '@/utils/notification/toastNotification.ts';
+import SoundNotification from '@/utils/notification/SoundNotification.ts';
 import { PinnedSeats, Wishlist } from '@/utils/types.ts';
-import useNotificationInstruction from '@/store/useNotificationInstruction.ts';
 
 export interface CustomNotification {
   canNotify(): boolean;
@@ -24,18 +25,19 @@ export interface CustomNotification {
 // notification 변수
 let isInitialized = false;
 
+/* 사용자가 허용한 알림 목록 반환 */
 function getNotifications(): CustomNotification[] {
   const notifications: CustomNotification[] = [];
 
   const browser = isAlarmActivated(AlarmType.BROWSER);
   const toast = isAlarmActivated(AlarmType.TOAST);
   const vibration = isSubAlarmActivated(SubAlarmType.VIBRATE);
-  // const sound = isSubAlarmActivated(SubAlarmType.SOUND);
+  const sound = isSubAlarmActivated(SubAlarmType.SOUND);
 
   if (browser) notifications.push(BrowserNotification);
   if (toast) notifications.push(ToastNotification);
   if (vibration) notifications.push(VibrationNotification);
-  // if (sound) notifications.push(SoundNotification);
+  if (sound) notifications.push(SoundNotification);
 
   return notifications;
 }

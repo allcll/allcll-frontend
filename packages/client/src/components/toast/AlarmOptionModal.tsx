@@ -21,10 +21,17 @@ const AlarmTypeNames = [
 ];
 
 function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
+  const hasPermission = UseNotificationInstruction(state => state.isPermitted);
+
+  const onTestAlarm = () => {
+    AlarmNotification.show('알림 기능을 테스트합니다', 'test-alarm');
+  };
+
   const onClose = () => {
     AlarmNotification.requestPermission();
     close();
   };
+
   // 뒤로가기 버튼 인식 후, 알림 설정 저장 후 모달 닫기
   useBackSignal({ enabled: isOpen, onClose: onClose });
 
@@ -34,6 +41,12 @@ function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
       <div className="p-4 w-md max-w-full">
         <AlarmOptionContent />
         <SubAlarmOption />
+
+        <div className="mt-4 flex justify-end">
+          <Button variants="secondary" onClick={onTestAlarm} disabled={!hasPermission}>
+            알림테스트
+          </Button>
+        </div>
       </div>
     </Modal>
   );
@@ -46,10 +59,6 @@ function AlarmOptionContent() {
 
   const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     saveSettings({ alarmType: Number(e.target.value) as AlarmType });
-  };
-
-  const onTestAlarm = () => {
-    AlarmNotification.show('알림 기능을 테스트합니다', 'test-alarm');
   };
 
   return (
@@ -76,12 +85,6 @@ function AlarmOptionContent() {
       {alarmType === AlarmType.TOAST && (
         <p className="pl-2 pb-2 text-sm text-red-600">토스트 알림은 탭이 열려 있을 때에만 작동해요.</p>
       )}
-
-      <div className="flex justify-end">
-        <Button variants="secondary" onClick={onTestAlarm} disabled={!hasPermission}>
-          알림테스트
-        </Button>
-      </div>
     </div>
   );
 }
@@ -106,8 +109,8 @@ function SubAlarmOption() {
       <h3 className="block mb-2 font-bold text-md">추가 알림 옵션</h3>
       <div className="flex flex-col gap-2">
         <label className="my-1 flex items-center justify-between" htmlFor="select-sound">
-          <span className="text-gray-300">소리</span>
-          <Toggle id="select-sound" name="sound" checked={isSoundEnabled} onChange={onChange} disabled />
+          <span>소리</span>
+          <Toggle id="select-sound" name="sound" checked={isSoundEnabled} onChange={onChange} />
         </label>
 
         <label className="my-1 flex items-center justify-between" htmlFor="select-vibrate">
