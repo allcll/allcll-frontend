@@ -29,7 +29,7 @@ function getNotifications(): CustomNotification[] {
 
   const browser = isAlarmActivated(AlarmType.BROWSER);
   const toast = isAlarmActivated(AlarmType.TOAST);
-  const vibration = isSubAlarmActivated(SubAlarmType.VIBRATION);
+  const vibration = isSubAlarmActivated(SubAlarmType.VIBRATE);
   // const sound = isSubAlarmActivated(SubAlarmType.SOUND);
 
   if (browser) notifications.push(BrowserNotification);
@@ -59,6 +59,9 @@ export const AlarmNotification: CustomNotification = {
   },
 
   show(message: string, tag?: string) {
+    const alarmState = useAlarmSettings.getState().alarmType;
+    if (alarmState === AlarmType.NONE) return;
+
     getNotifications().forEach(n => n.show(message, tag));
   },
 

@@ -31,7 +31,7 @@ const VibrationNotification: CustomNotification = {
   },
 
   show(_: string, __?: string): void {
-    const activated = isSubAlarmActivated(SubAlarmType.VIBRATION);
+    const activated = isSubAlarmActivated(SubAlarmType.VIBRATE);
 
     if (vibrate && activated) {
       // Use .call to ensure 'this' is navigator

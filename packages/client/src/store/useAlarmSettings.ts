@@ -11,7 +11,7 @@ export enum AlarmType {
 
 export enum SubAlarmType {
   NONE = 0,
-  VIBRATION = 1,
+  VIBRATE = 1,
   SOUND = 2,
   ALL = 3,
 }
@@ -36,7 +36,7 @@ const getDefaultAlarmType = () => {
 
 const getDefaultSubAlarmType = () => {
   const canNotify = VibrationNotification.canNotify();
-  return (SubAlarmType.VIBRATION * Number(canNotify) + SubAlarmType.SOUND) as SubAlarmType;
+  return (SubAlarmType.VIBRATE * Number(canNotify) + SubAlarmType.SOUND) as SubAlarmType;
 };
 
 const useAlarmSettings = create<IUseAlarmSettings>()(
