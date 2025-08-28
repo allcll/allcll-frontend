@@ -68,7 +68,7 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
     <ProcessingModal />
   ) : (
     <Modal onClose={() => closeModal()}>
-      <div className="w-[100%] sm:w-full max-w-md bg-white rounded-xl shadow-xl p-6 relative overflow-hidden">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-xl p-6 relative overflow-hidden">
         {isSuccessSimulation && (
           <div className="absolute inset-0 pointer-events-none">
             <div className="animate-float1 absolute top-6 left-6 w-3 h-3 bg-red-400 rounded-full" />
