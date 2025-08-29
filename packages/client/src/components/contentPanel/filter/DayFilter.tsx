@@ -16,14 +16,15 @@ function DayFilter({ times, setFilter }: IDayFilter) {
 
   const getLabelPrefix = () => {
     if (times.length === 1 && times[0].type === 'all' && times[0].day === '') return '요일';
-    if (times.length > 0) return ` ${times[0].day}`;
+    if (times.length === 1) return ` ${times[0].day}요일`;
+    if (times.length > 1) return ` ${times[0].day}요일 외 ${times.length - 1}개`;
     return '요일';
   };
 
   const labelPrefix = getLabelPrefix();
 
   return (
-    <Filtering label={labelPrefix} selected={times.length > 0} className="min-w-max">
+    <Filtering label={labelPrefix} selected={times.length > 0 && times[0].day !== ''} className="min-w-max">
       <DayTimeFilter items={times} onChange={items => setFilterScheduleWrapper('time', items)} />
     </Filtering>
   );

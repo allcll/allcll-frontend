@@ -11,9 +11,9 @@ function FilterDelete({ filters, resetFilter }: FilterDelete) {
   const { department, grades, time, categories, credits, wishRange, seatRange } = filters;
 
   const isFiltered =
-    department.length || grades.length || time.length || categories.length || credits.length || wishRange || seatRange;
+    department.length || grades.length || categories.length || credits.length || wishRange || seatRange;
 
-  if (!isFiltered) {
+  if (!isFiltered && time.length === 1 && time[0].day === '') {
     return null;
   }
 

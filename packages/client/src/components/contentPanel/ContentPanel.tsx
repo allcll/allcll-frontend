@@ -13,6 +13,7 @@ import FilteringModal from '../wishTable/FilteringModal';
 import FilterSvg from '@/assets/filter.svg?react';
 import GenericMultiSelectFilter from './filter/common/GenericMultiSelectFilter';
 import ScheduleFilter from './filter/config/schedule';
+import DayFilter from './filter/DayFilter';
 
 const initSchedule = new ScheduleAdapter().toUiData();
 
@@ -48,7 +49,7 @@ function ContentPanel() {
         </button>
 
         <DepartmentFilter department={filters.department} setFilter={setFilters} />
-
+        <DayFilter times={filters.time} setFilter={setFilters} />
         {ScheduleFilter.map(filter => {
           if (isFilterEmpty(filter.filterKey, filters[filter.filterKey]) && !filter.default) return null;
           return (
@@ -56,7 +57,6 @@ function ContentPanel() {
               key={filter.filterKey}
               filterKey={filter.filterKey}
               options={filter.options}
-              label={filter.label ?? ''}
               labelPrefix={filter.labelPrefix}
               ItemComponent={filter.ItemComponent}
               selectedValues={
