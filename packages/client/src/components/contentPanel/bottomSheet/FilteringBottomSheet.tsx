@@ -1,9 +1,9 @@
-import BottomSheet from '../BottomSheet';
-import BottomSheetHeader from '../BottomSheetHeader';
+import BottomSheet from './BottomSheet';
+import BottomSheetHeader from './BottomSheetHeader';
 import useDepartments from '@/hooks/server/useDepartments';
 import { Filters } from '@/store/useFilterStore.ts';
-import ScheduleFilterConfing from '../../filter/config/schedule';
-import GenericMultiSelectFilter from '../../filter/common/GenericMultiSelectFilter';
+import ScheduleFilterConfing from '../filter/config/schedule';
+import GenericMultiSelectFilter from '../filter/common/GenericMultiSelectFilter';
 
 interface FilteringBottomSheetProps {
   onCloseFiltering: () => void;
@@ -37,6 +37,7 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
       />
 
       <section className="w-full flex flex-col px-4 gap-5 max-h-[85vh]  overflow-y-scroll">
+        {/* TODO: Department 공통 필터 만들기 */}
         <div className="w-full  h-15 flex gap-2 flex-col justify-center mt-2">
           <label className="text-xs text-gray-500">학과</label>
           <div className="w-full flex flex-col gap-2 justify-center">
@@ -55,7 +56,6 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
           </div>
         </div>
 
-        {/* TODO: 모바일용 상세 필터 UI구현 */}
         {ScheduleFilterConfing.map(filter => {
           return (
             <GenericMultiSelectFilter

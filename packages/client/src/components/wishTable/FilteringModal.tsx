@@ -1,6 +1,6 @@
 import Modal from '@common/components/modal/Modal';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
-import DayTimeFilter from '@/components/contentPanel/filter/DayTimeFilter.tsx';
+import DayTimeFilter, { IDayTimeItem } from '@/components/contentPanel/filter/DayTimeFilter.tsx';
 import { FilterDomains, FilterOptions, getCategories } from '@/utils/filtering/filterDomains.ts';
 import { FilterStore } from '@/store/useFilterStore.ts';
 import useSubject from '@/hooks/server/useSubject.ts';
@@ -45,6 +45,12 @@ function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
   const setCategoryFilterWrapper = (field: string, value: string[]) => {
     if (field === 'selectedCategories') {
       setFilter('categories', value as Curitype[]);
+    }
+  };
+
+  const setTimeFilterWrapper = (field: string, value: IDayTimeItem[]) => {
+    if (field === 'time') {
+      setFilter('time', value as IDayTimeItem[]);
     }
   };
 
@@ -114,7 +120,7 @@ function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
         />
 
         <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">시간</h3>
-        <DayTimeFilter items={time} onChange={v => setFilter('time', v)} />
+        <DayTimeFilter items={time} onChange={items => setTimeFilterWrapper('time', items)} />
 
         <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">비고</h3>
         <MultiSelectFilterOption

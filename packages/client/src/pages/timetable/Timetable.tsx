@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import TimetableComponent from '@/components/timetable/TimetableComponent.tsx';
 import DropdownSelect from '@/components/timetable/DropdownSelect.tsx';
 import SearchBottomSheet from '@/components/contentPanel/bottomSheet/SearchBottomSheet';
-import FilteringBottomSheet from '@/components/contentPanel/bottomSheet/filter/FilteringBottomSheet';
+import FilteringBottomSheet from '@/components/contentPanel/bottomSheet/FilteringBottomSheet';
 import FormBottomSheet from '@/components/contentPanel/bottomSheet/FormBottomSheet';
 import ScheduleFormModal from '@/components/contentPanel/ScheduleFormModal';
 import ContentPanel from '@/components/contentPanel/ContentPanel';

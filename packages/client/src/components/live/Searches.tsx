@@ -20,7 +20,7 @@ import GenericMultiSelectFilter from '../contentPanel/filter/common/GenericMulti
 import { MultiWishFilterConfig } from '../contentPanel/filter/config/wishes';
 import WishFilter from '../contentPanel/filter/WishFilter';
 import SeatFilter from '../contentPanel/filter/SeatFilter';
-import FilteringBottomSheet from '../contentPanel/bottomSheet/filter/FilteringBottomSheet';
+import FilteringBottomSheet from '../contentPanel/bottomSheet/FilteringBottomSheet';
 
 export interface WishSearchParams {
   searchInput: string;
@@ -116,7 +116,9 @@ function Searches() {
                   label={filter.label ?? ''}
                   labelPrefix={filter.labelPrefix}
                   ItemComponent={filter.ItemComponent}
-                  selectedValues={Array.isArray(value) ? (value as (string | number)[]) : []}
+                  selectedValues={
+                    Array.isArray(filters[filter.filterKey]) ? (filters[filter.filterKey] as (string | number)[]) : null
+                  }
                   setFilter={setFilter}
                   className="min-w-max"
                 />
