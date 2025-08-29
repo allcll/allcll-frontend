@@ -47,7 +47,6 @@ function ContentPanel() {
           <FilterSvg className="w-4 h-4 text-gray-600 hover:text-blue-500 transition-colors" />
         </button>
 
-        <FilterDelete filters={filters} resetFilter={resetFilter} />
         <DepartmentFilter department={filters.department} setFilter={setFilters} />
 
         {ScheduleFilter.map(filter => {
@@ -68,6 +67,7 @@ function ContentPanel() {
             />
           );
         })}
+        <FilterDelete filters={filters} resetFilter={resetFilter} />
 
         {isFilterModalOpen && (
           <FilteringModal filterStore={useScheduleSearchStore} onClose={() => setIsFilterModalOpen(false)} />

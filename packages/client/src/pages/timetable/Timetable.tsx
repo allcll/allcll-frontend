@@ -51,15 +51,15 @@ function Timetable() {
         <title>ALLCLL | 시간표</title>
       </Helmet>
 
-      <div className="grid md:grid-cols-3 gap-4">
-        <div className="md:col-span-2 w-full h-full">
+      <div className="grid md:grid-cols-5 gap-4">
+        <div className="md:col-span-3 w-full h-full">
           <Card className="px-2 relative overflow-hidden">
             <TimetableHeader setIsOpenModal={setIsOpenModal} />
             <TimetableComponent />
           </Card>
         </div>
 
-        <div className="md:col-span-1 w-full">
+        <div className="md:col-span-2 w-full">
           <div className="hidden md:block">
             <ContentPanel />
           </div>

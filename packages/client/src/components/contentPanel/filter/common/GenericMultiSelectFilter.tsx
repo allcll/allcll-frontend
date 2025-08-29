@@ -41,15 +41,18 @@ function GenericMultiSelectFilter<T extends string | number>({
 
   const getLabelPrefix = (selectedValues: T[]) => {
     if (selectedValues.length === 0) return label;
+    if (selectedValues.length === 1 && filterKey === 'classroom')
+      return options.find(opt => opt.value === selectedValues[0])?.label;
     if (selectedValues.length === 1) return selectedValues[0] + label;
 
-    if (filterKey === 'classroom')
+    if (filterKey === 'classroom') {
       return options.find(opt => opt.value === selectedValues[0])?.label + ' 외 ' + (selectedValues.length - 1) + '개';
+    }
 
     return selectedValues[0] + label + ' 외 ' + (selectedValues.length - 1) + '개';
   };
 
-  const labelValue = getLabelPrefix(selectedValues as T[]);
+  const labelValue = getLabelPrefix(selectedValues as T[]) || '';
 
   return (
     <>
