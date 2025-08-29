@@ -1,5 +1,5 @@
 import { FilterConfiguration } from '@/utils/types';
-import { CREDITS, CURITYPE, DAYS, GRADE, SEAT_RANGE, WISH_RANGE } from '../constants/Filters';
+import { CREDITS, CURITYPE, GRADE, SEAT_RANGE, WISH_RANGE } from '../constants/Filters';
 import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
 import Chip from '@common/components/chip/Chip';
 import { FilterDomains, FilterOptions } from '@/utils/filtering/filterDomains';
@@ -23,14 +23,6 @@ export const MultiWishFilterConfig: FilterConfiguration<string | number>[] = [
     labelPrefix: '학년',
     label: '학년',
     default: true,
-    ItemComponent: CheckboxAdapter,
-  },
-  {
-    filterKey: 'time',
-    options: DAYS,
-    labelPrefix: '요일',
-    label: '요일',
-    default: false,
     ItemComponent: CheckboxAdapter,
   },
   {

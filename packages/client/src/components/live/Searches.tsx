@@ -21,6 +21,7 @@ import { MultiWishFilterConfig } from '../contentPanel/filter/config/wishes';
 import WishFilter from '../contentPanel/filter/WishFilter';
 import SeatFilter from '../contentPanel/filter/SeatFilter';
 import FilteringBottomSheet from '../contentPanel/bottomSheet/FilteringBottomSheet';
+import DayFilter from '../contentPanel/filter/DayFilter';
 
 export interface WishSearchParams {
   searchInput: string;
@@ -124,6 +125,7 @@ function Searches() {
                 />
               );
             })}
+            <DayFilter times={filters.time} setFilter={setFilter} />
             <WishFilter wishRange={wishRange} setFilter={setFilter} />
             <SeatFilter seatRange={seatRange} setFilter={setFilter} />
           </>
