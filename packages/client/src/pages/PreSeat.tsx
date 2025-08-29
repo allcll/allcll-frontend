@@ -13,8 +13,6 @@ import ScrollToTopButton from '@/components/common/ScrollTopButton';
 import SubjectCards from '@/components/live/subjectTable/SubjectCards';
 import useSearchRank from '@/hooks/useSearchRank';
 import TableColorInfo from '@/components/wishTable/TableColorInfo';
-import usePreSeatGate from '@/hooks/usePreSeatGate';
-import ServiceSoon from '@/components/live/errors/ServiceSoon';
 
 const TableHeadTitles = [
   { title: '알림', key: 'pin' },
@@ -31,9 +29,7 @@ export interface ISubjectSearch {
 }
 
 const PreSeatBody = ({ search, isMobile }: { search: ISubjectSearch; isMobile: boolean }) => {
-  const { data: wishes, titles, isPending, hasRealSeats } = useWishesPreSeats(TableHeadTitles);
-  const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasRealSeats });
-
+  const { data: wishes, titles, isPending } = useWishesPreSeats(TableHeadTitles);
   const data = useSearchRank(wishes);
 
   const filteredData = useDeferredValue(
@@ -48,23 +44,13 @@ const PreSeatBody = ({ search, isMobile }: { search: ISubjectSearch; isMobile: b
   );
 
   return (
-    <>
-      <CardWrap>
-        {isPreSeatAvailable ? (
-          <>
-            {isMobile ? (
-              <SubjectCards subjects={filteredData} isPending={isPending} isLive={true} />
-            ) : (
-              <SubjectTable titles={titles} subjects={filteredData} isPending={isPending} />
-            )}
-          </>
-        ) : (
-          <div className="flex justify-center w-full h-96">
-            <ServiceSoon title="전체 학년 여석" />
-          </div>
-        )}
-      </CardWrap>
-    </>
+    <CardWrap>
+      {isMobile ? (
+        <SubjectCards subjects={filteredData} isPending={isPending} isLive={true} />
+      ) : (
+        <SubjectTable titles={titles} subjects={filteredData} isPending={isPending} />
+      )}
+    </CardWrap>
   );
 };
 
