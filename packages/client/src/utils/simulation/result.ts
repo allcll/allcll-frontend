@@ -6,9 +6,10 @@ const SEC = 1 / 1000;
 
 export async function getSimulationList() {
   const snapshots = await db.simulation_run.filter(run => run.ended_at !== -1).toArray();
+  const sortedSnapshots = snapshots.sort((a, b) => b.simulation_run_id - a.simulation_run_id);
 
   return {
-    snapshots,
+    snapshots: sortedSnapshots,
   };
 }
 
