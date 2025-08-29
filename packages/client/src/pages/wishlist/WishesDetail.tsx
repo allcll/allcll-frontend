@@ -14,7 +14,6 @@ import { getSeatColor, getWishesColor } from '@/utils/colors.ts';
 import FavoriteButton from '@/components/wishTable/FavoriteButton.tsx';
 import AlarmButton from '@/components/live/AlarmButton.tsx';
 import usePreSeatGate from '@/hooks/usePreSeatGate';
-import usePreSeatGate from '@/hooks/usePreSeatGate';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 

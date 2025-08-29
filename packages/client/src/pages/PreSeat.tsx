@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet';
 import React, { useDeferredValue, useEffect, useState } from 'react';
-import Navbar from '@/components/Navbar.tsx';
 import CardWrap from '@/components/CardWrap.tsx';
 import SubjectTable from '@/components/live/subjectTable/SubjectTable.tsx';
 import SearchBox from '@/components/common/SearchBox.tsx';
@@ -91,21 +90,17 @@ const PreSeat = () => {
         <title>ALLCLL | 전체 여석</title>
       </Helmet>
 
-      <div className="max-w-screen-xl mx-auto mb-8">
-        <div className="container p-4 mx-auto">
-          <Navbar />
-          <p className="text-xs font-bold text-gray-500 mb-4">전체 학년 수강신청 전, 전체 학년의 여석을 보여줍니다.</p>
-          <div className="pb-2">
-            <CardWrap>
-              <SubjectSearchInputs setSearch={setSearch} />
-              <TableColorInfo />
-            </CardWrap>
-          </div>
-
-          <PreSeatBody search={search} isMobile={isMobile} />
-
-          <ScrollToTopButton right="right-2 sm:right-10" />
+      <div className="container mx-auto">
+        <h2 className="font-bold text-lg">전체학년 여석</h2>
+        <p className="text-xs font-bold text-gray-500 mb-4">전체 학년 수강신청 전, 전체 학년의 여석을 보여줍니다.</p>
+        <div className="pb-2">
+          <CardWrap>
+            <SubjectSearchInputs setSearch={setSearch} />
+            <TableColorInfo />
+          </CardWrap>
         </div>
+        <PreSeatBody search={search} isMobile={isMobile} />
+        <ScrollToTopButton right="right-2 sm:right-10" />
       </div>
     </>
   );
