@@ -1,26 +1,29 @@
 import BottomSheet from '../BottomSheet';
 import BottomSheetHeader from '../BottomSheetHeader';
 import useDepartments from '@/hooks/server/useDepartments';
-import { useBottomSheetStore } from '@/store/useBottomSheetStore';
-import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
-import DayFilter from '../../filter/DayFilter';
-import CreditFilter from '../../filter/CreditFilter';
-import CuriTypeFilter from '../../filter/CuriTypeFilter';
-import GradeFilter from '../../filter/GradeFilter';
+import { Filters } from '@/store/useFilterStore.ts';
+import ScheduleFilterConfing from '../../filter/config/schedule';
+import GenericMultiSelectFilter from '../../filter/common/GenericMultiSelectFilter';
 
-function FilteringBottomSheet() {
+interface FilteringBottomSheetProps {
+  onCloseFiltering: () => void;
+  filters: Filters;
+  setFilter: (field: keyof Filters, value: Filters[keyof Filters]) => void;
+  resetFilter: () => void;
+}
+
+function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }: FilteringBottomSheetProps) {
   const { data: departments } = useDepartments();
-  const { openBottomSheet, closeBottomSheet } = useBottomSheetStore();
 
-  const { department, grades, time, credits, categories } = useScheduleSearchStore(state => state.filters);
-  const setFilter = useScheduleSearchStore(state => state.setFilter);
-  const resetFilter = useScheduleSearchStore(state => state.resetFilters);
-
-  const isFiltered = (department.length || grades.length || time.length || credits.length || categories.length) > 0;
+  const isFiltered =
+    (filters.department.length ||
+      filters.grades.length ||
+      filters.time.length ||
+      filters.credits.length ||
+      filters.categories.length) > 0;
 
   const handleClickSave = () => {
-    closeBottomSheet('filter');
-    openBottomSheet('search');
+    onCloseFiltering();
   };
 
   return (
@@ -29,8 +32,7 @@ function FilteringBottomSheet() {
         headerType="close"
         title="필터링"
         onClose={() => {
-          closeBottomSheet('filter');
-          openBottomSheet('search');
+          onCloseFiltering();
         }}
       />
 
@@ -40,7 +42,7 @@ function FilteringBottomSheet() {
           <div className="w-full flex flex-col gap-2 justify-center">
             <select
               className="cursor-pointer border border-gray-300 rounded-sm px-2 py-1 w-full bg-white text-sm"
-              value={department}
+              value={filters.department}
               onChange={e => setFilter('department', e.target.value)}
             >
               <option value="">전체</option>
@@ -53,10 +55,24 @@ function FilteringBottomSheet() {
           </div>
         </div>
 
-        <GradeFilter />
-        <DayFilter />
-        <CreditFilter />
-        <CuriTypeFilter />
+        {/* TODO: 모바일용 상세 필터 UI구현 */}
+        {ScheduleFilterConfing.map(filter => {
+          return (
+            <GenericMultiSelectFilter
+              key={filter.filterKey}
+              filterKey={filter.filterKey}
+              options={filter.options}
+              label={filter.label ?? ''}
+              labelPrefix={filter.labelPrefix ?? ''}
+              ItemComponent={filter.ItemComponent}
+              selectedValues={
+                Array.isArray(filters[filter.filterKey]) ? (filters[filter.filterKey] as (string | number)[]) : null
+              }
+              setFilter={setFilter}
+              className="min-w-max"
+            />
+          );
+        })}
 
         <div className="flex justify-end items-center gap-3 mt-5">
           {isFiltered && (

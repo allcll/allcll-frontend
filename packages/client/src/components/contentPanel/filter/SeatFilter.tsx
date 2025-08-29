@@ -1,9 +1,8 @@
-import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
-import { RangeFilter } from '@/utils/types.ts';
+import { Filters } from '@/store/useFilterStore';
+import { OptionType, RangeFilter } from '@/utils/types.ts';
 import Chip from '@common/components/chip/Chip';
 import Filtering from '@common/components/filtering/Filtering';
-import SingleSelectFilterOption from '@common/components/filtering/SingleSelectFilter';
-import { OptionType } from '@common/components/filtering/SingleSelectFilter';
+import SingleSelectFilterOption from '@/components/common/filter/SingleSelectFilter';
 
 const SEAT_RANGE: OptionType<number>[] = [
   { value: 0, label: '전체' },
@@ -21,16 +20,19 @@ const RANGE_VALUES: Array<RangeFilter | null> = [
   { operator: 'over-equal', value: 10 },
 ];
 
-function SeatFilter() {
-  const { seatRange } = useScheduleSearchStore(state => state.filters);
-  const setFilter = useScheduleSearchStore(state => state.setFilter);
+interface ISeatFilter {
+  seatRange: RangeFilter | null;
+  setFilter: (field: keyof Filters, value: RangeFilter | null) => void;
+}
+
+function SeatFilter({ seatRange, setFilter }: ISeatFilter) {
   const selectedValue = Math.max(
     0,
     RANGE_VALUES.findIndex(v => v === seatRange),
   );
 
-  const setFilterScheduleWrapper = (field: string, value: number | null) => {
-    if (field === 'selectedSeatRange') {
+  const setFilterScheduleWrapper = (field: keyof Filters, value: number | null) => {
+    if (field === 'seatRange') {
       setFilter('seatRange', value !== null ? RANGE_VALUES[value] : null);
     }
   };
@@ -47,7 +49,7 @@ function SeatFilter() {
       <SingleSelectFilterOption
         labelPrefix="여석"
         selectedValue={selectedValue}
-        field="selectedSeatRange"
+        field="seatRange"
         setFilter={setFilterScheduleWrapper}
         options={SEAT_RANGE}
         ItemComponent={Chip}

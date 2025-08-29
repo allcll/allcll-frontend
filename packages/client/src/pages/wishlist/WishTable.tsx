@@ -44,9 +44,10 @@ function WishTable() {
           </div>
 
           {/* Search and Filter */}
-          <Searches />
+          <div className="w-full">
+            <Searches />
+          </div>
           <TableColorInfo />
-
           <WishTableComponent />
 
           <ScrollToTopButton right="right-2 sm:right-20" />

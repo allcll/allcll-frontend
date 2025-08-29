@@ -1,12 +1,18 @@
 import { disassemble } from 'es-hangul';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useDepartments from '@/hooks/server/useDepartments';
-import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
+import { Filters } from '@/store/useFilterStore.ts';
 import SearchBox from '../../common/SearchBox';
 import { DepartmentType } from '@/utils/types';
 import Filtering from '@common/components/filtering/Filtering';
+import CustomButton from '@common/components/Button';
 
-function DepartmentFilter() {
+interface IDepartmentSelectFilter {
+  department: string;
+  setFilter: (key: keyof Filters, value: string | null) => void;
+}
+
+function DepartmentSelectFilter({ department, setFilter }: IDepartmentSelectFilter) {
   const { data: departments } = useDepartments();
   const [searchKeywords, setSearchKeywords] = useState('');
   const [category, setCategory] = useState<'전체' | '전공' | '교양'>('전공');
@@ -15,20 +21,19 @@ function DepartmentFilter() {
     () => [{ departmentName: '전체학과', departmentCode: '' }, ...(departments ?? [])],
     [departments],
   );
+  const [filterDepartment, setFilterDepartment] = useState(departmentsList);
 
   function pickCollegeOrMajor(selectedDepartment: string) {
-    const department = departmentsList.find(department => department.departmentCode === selectedDepartment);
+    const selectedDepartmentName = departmentsList.find(
+      department => department.departmentCode === selectedDepartment,
+    )?.departmentName;
 
-    if (!department) {
+    if (!selectedDepartmentName) {
       return '학과가 없습니다.';
     }
 
-    const splitDepartment = department.departmentName.split(' ');
-    return splitDepartment[splitDepartment.length - 1];
+    return selectedDepartmentName;
   }
-
-  const [filterDepartment, setFilterDepartment] = useState(departmentsList);
-  const setFilter = useScheduleSearchStore(state => state.setFilter);
 
   useEffect(() => {
     const result = departmentsList
@@ -55,12 +60,12 @@ function DepartmentFilter() {
   }, [departments, searchKeywords, category]);
 
   return (
-    <Filtering label="학과" selected={true}>
-      <div className="flex flex-col h-80 max-h-120 w-[300px] overflow-y-auto">
-        <div className="shrink-0 gap-2 flex px-2 py-2 bg-white">
+    <Filtering label={pickCollegeOrMajor(department)} selected={!!department}>
+      <div className="flex flex-col h-80 max-h-80 w-[300px] overflow-y-auto">
+        <div className="shrink-0 gap-2 flex py-2 bg-white">
           <select
             value={category}
-            className="border border-gray-300 rounded-md px-2 py-1 text-sm text-gray-700 bg-white"
+            className="border border-gray-300 rounded-md py-1 text-sm text-gray-700 bg-white"
             onChange={e => {
               const value = e.target.value as '전체' | '전공' | '교양';
               setCategory(value);
@@ -83,23 +88,31 @@ function DepartmentFilter() {
           />
         </div>
 
-        <div className="overflow-y-auto flex-1 px-2 py-2">
-          {(category === '전공' || category === '교양') && <SelectSubject departments={filterDepartment} />}{' '}
+        <div className="overflow-y-auto flex-1 px-2 py-2 border-t border-gray-200">
+          {(category === '전공' || category === '교양') && (
+            <SelectSubject departments={filterDepartment} setFilter={setFilter} />
+          )}{' '}
         </div>
+      </div>
+
+      <div className="flex justify-end w-full pt-1 border-t border-gray-200">
+        <CustomButton variants="primary" onClick={() => setFilter('department', '')}>
+          학과 초기화
+        </CustomButton>
       </div>
     </Filtering>
   );
 }
 
-export default DepartmentFilter;
+export default DepartmentSelectFilter;
 
 interface ISelectSubject {
   departments: DepartmentType[];
+  setFilter: (key: keyof Filters, value: string | null) => void;
 }
 
-export function SelectSubject({ departments }: ISelectSubject) {
+export function SelectSubject({ departments, setFilter }: ISelectSubject) {
   const selected = '전체학과';
-  const setFilter = useScheduleSearchStore(state => state.setFilter);
 
   const handleChangeDepartment = (department: string) => {
     setFilter('department', department || '');

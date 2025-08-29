@@ -1,8 +1,8 @@
-import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
-import { RangeFilter } from '@/utils/types.ts';
+import { OptionType, RangeFilter } from '@/utils/types.ts';
 import Chip from '@common/components/chip/Chip';
 import Filtering from '@common/components/filtering/Filtering';
-import SingleSelectFilter, { OptionType } from '@common/components/filtering/SingleSelectFilter';
+import SingleSelectFilterOption from '@/components/common/filter/SingleSelectFilter';
+import { Filters } from '@/store/useFilterStore';
 
 const WISHRANGE: OptionType<number>[] = [
   { value: 0, label: '관심인원 30명 이상' },
@@ -18,13 +18,16 @@ const RANGE_VALUES: Array<RangeFilter | null> = [
   { operator: 'over-equal', value: 200 },
 ];
 
-function WishFilter() {
-  const { wishRange } = useScheduleSearchStore(state => state.filters);
-  const setFilter = useScheduleSearchStore(state => state.setFilter);
+interface IWishFilter {
+  wishRange: RangeFilter | null;
+  setFilter: (field: keyof Filters, value: RangeFilter | null) => void;
+}
+
+function WishFilter({ wishRange, setFilter }: IWishFilter) {
   const selectedValue = RANGE_VALUES.findIndex(v => v === wishRange);
 
   const setFilterScheduleWrapper = (field: string, value: number | null) => {
-    if (field === 'selectedWishRange') {
+    if (field === 'wishRange') {
       setFilter('wishRange', value !== null ? RANGE_VALUES[value] : null);
     }
   };
@@ -38,10 +41,10 @@ function WishFilter() {
 
   return (
     <Filtering label={labelPrefix} selected={selectedValue !== -1} className="min-w-max">
-      <SingleSelectFilter
+      <SingleSelectFilterOption
         labelPrefix="관심과목"
         selectedValue={selectedValue}
-        field="selectedWishRange"
+        field="wishRange"
         setFilter={setFilterScheduleWrapper}
         options={WISHRANGE}
         ItemComponent={Chip}

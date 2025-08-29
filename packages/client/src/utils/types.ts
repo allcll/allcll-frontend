@@ -1,3 +1,5 @@
+import { Filters } from '@/store/useFilterStore';
+
 export interface PinnedSeats {
   subjectId: number;
   seatCount: number;
@@ -79,3 +81,24 @@ export const DAYS: Day[] = ['월', '화', '수', '목', '금', '토', '일'];
 
 export type Curitype = '교필' | '교선' | '전필' | '전선' | '전기' | '공필' | '균필' | '기필';
 export type Credit = 1 | 2 | 3;
+
+export interface FilterItemProps<VALUE extends string | number> {
+  label: string;
+  selected: boolean;
+  onClick: () => void;
+  value: VALUE;
+}
+
+export interface OptionType<VALUE extends string | number> {
+  label: string;
+  value: VALUE;
+}
+
+export interface FilterConfiguration<VALUE extends string | number> {
+  filterKey: keyof Filters;
+  options: OptionType<VALUE>[];
+  label?: string;
+  labelPrefix: string;
+  default: boolean;
+  ItemComponent: React.ComponentType<FilterItemProps<VALUE>>;
+}

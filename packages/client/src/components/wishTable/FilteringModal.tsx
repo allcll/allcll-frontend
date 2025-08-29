@@ -29,6 +29,7 @@ function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
     .sort((a, b) => a.localeCompare(b))
     .map(cat => ({ label: cat, value: cat }));
 
+  /**TODO: 로직 통합 및 개선 */
   const setRemarkFilterWrapper = (field: string, value: string[]) => {
     if (field === 'selectedRemarks') {
       setFilter('note', value as RemarkType[]);
@@ -70,10 +71,10 @@ function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
 
   return (
     <Modal onClose={onClose}>
-      <ModalHeader title="과목 필터링" onClose={onClose} />
+      <ModalHeader title="상세 필터링" onClose={onClose} />
 
       <div className="flex flex-col gap-2 p-4 w-130 max-h-[500px] overflow-y-auto">
-        <div className="flex flex-wrap gap-2 mb-2 w-fit">
+        <div className="flex flex-wrap gap-2 w-fit">
           {categories.map(category => (
             <Chip
               key={String(category)}
@@ -98,26 +99,25 @@ function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
               onClick={() => handleChipClick('selectedClassrooms', classroom)}
               chipType="cancel"
               selected={true}
-              label={classroom}
+              label={ClassroomOptions.find(cr => cr.value === classroom)?.label}
             />
           ))}
         </div>
-        <h3 className="text-lg text-gray-600 font-medium sm:text-gray-600">카테고리 필터</h3>
+
+        <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">수업유형</h3>
         <MultiSelectFilterOption
-          labelPrefix=""
           selectedValues={categories}
           options={categoryOptions}
           field="selectedCategories"
           setFilter={setCategoryFilterWrapper}
-          ItemComponent={Chip}
+          ItemComponent={CheckboxAdapter}
         />
 
-        <h3 className="text-lg text-gray-600 font-medium sm:text-gray-600">시간 필터</h3>
+        <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">시간</h3>
         <DayTimeFilter items={time} onChange={v => setFilter('time', v)} />
 
-        <h3 className="text-lg text-gray-600 font-medium sm:text-gray-600">비고 필터</h3>
+        <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">비고</h3>
         <MultiSelectFilterOption
-          labelPrefix=""
           selectedValues={note}
           options={RemarkOptions}
           field="selectedRemarks"
@@ -125,9 +125,8 @@ function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
           ItemComponent={CheckboxAdapter}
         />
 
-        <h3 className="text-lg text-gray-600 font-medium sm:text-gray-600">강의실 필터</h3>
+        <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">강의실</h3>
         <MultiSelectFilterOption
-          labelPrefix=""
           selectedValues={classroom}
           options={ClassroomOptions}
           field="selectedClassrooms"
@@ -138,7 +137,7 @@ function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
 
       <div className="flex justify-end bg-white p-2 border-t border-gray-200">
         <CustomButton variants="primary" onClick={resetFilters}>
-          필터 초기화
+          상세필터 초기화
         </CustomButton>
       </div>
     </Modal>

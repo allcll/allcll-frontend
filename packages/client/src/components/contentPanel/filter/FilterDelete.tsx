@@ -1,12 +1,17 @@
 import Chip from '@common/components/chip/Chip';
 import RemoveFilterSvg from '@/assets/filter-remove-primary.svg?react';
-import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
+import { Filters } from '@/store/useFilterStore.ts';
 
-function FilterDelete() {
-  const resetFilter = useScheduleSearchStore(state => state.resetFilters);
-  const { department, grades, time, categories, credits } = useScheduleSearchStore(state => state.filters);
+interface FilterDelete {
+  filters: Filters;
+  resetFilter: () => void;
+}
 
-  const isFiltered = department.length || grades.length || time.length || categories.length || credits.length;
+function FilterDelete({ filters, resetFilter }: FilterDelete) {
+  const { department, grades, time, categories, credits, wishRange, seatRange } = filters;
+
+  const isFiltered =
+    department.length || grades.length || time.length || categories.length || credits.length || wishRange || seatRange;
 
   if (!isFiltered) {
     return null;
