@@ -114,7 +114,6 @@ function Searches() {
                   key={filter.filterKey}
                   filterKey={filter.filterKey}
                   options={filter.options}
-                  label={filter.label ?? ''}
                   labelPrefix={filter.labelPrefix}
                   ItemComponent={filter.ItemComponent}
                   selectedValues={
@@ -125,6 +124,7 @@ function Searches() {
                 />
               );
             })}
+
             <DayFilter times={filters.time} setFilter={setFilter} />
             <WishFilter wishRange={wishRange} setFilter={setFilter} />
             <SeatFilter seatRange={seatRange} setFilter={setFilter} />

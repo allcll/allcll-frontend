@@ -97,7 +97,6 @@ export interface OptionType<VALUE extends string | number> {
 export interface FilterConfiguration<VALUE extends string | number> {
   filterKey: keyof Filters;
   options: OptionType<VALUE>[];
-  label?: string;
   labelPrefix: string;
   default: boolean;
   ItemComponent: React.ComponentType<FilterItemProps<VALUE>>;

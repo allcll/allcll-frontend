@@ -19,7 +19,6 @@ interface FilterItemProps<VALUE extends string | number> {
 interface GenericMultiSelectFilterProps<VALUE extends string | number> {
   filterKey: keyof Filters;
   options: OptionType<VALUE>[];
-  label: string;
   labelPrefix: string;
   ItemComponent: React.ComponentType<FilterItemProps<VALUE>>;
   selectedValues: VALUE[] | null;
@@ -30,7 +29,6 @@ interface GenericMultiSelectFilterProps<VALUE extends string | number> {
 function GenericMultiSelectFilter<T extends string | number>({
   filterKey,
   options,
-  label,
   labelPrefix,
   ItemComponent,
   selectedValues,
@@ -40,16 +38,16 @@ function GenericMultiSelectFilter<T extends string | number>({
   const isMobile = useMobile();
 
   const getLabelPrefix = (selectedValues: T[]) => {
-    if (selectedValues.length === 0) return label;
-    if (selectedValues.length === 1 && filterKey === 'classroom')
-      return options.find(opt => opt.value === selectedValues[0])?.label;
-    if (selectedValues.length === 1) return selectedValues[0] + label;
+    const firstSelectedLabel = options.find(opt => opt.value === selectedValues[0])?.label;
+    if (selectedValues.length === 0) return labelPrefix;
+    if (selectedValues.length === 1 && filterKey === 'classroom') return firstSelectedLabel;
+    if (selectedValues.length === 1) return firstSelectedLabel;
 
     if (filterKey === 'classroom') {
-      return options.find(opt => opt.value === selectedValues[0])?.label + ' 외 ' + (selectedValues.length - 1) + '개';
+      return firstSelectedLabel + ' 외 ' + (selectedValues.length - 1) + '개';
     }
 
-    return selectedValues[0] + label + ' 외 ' + (selectedValues.length - 1) + '개';
+    return firstSelectedLabel + ' 외 ' + (selectedValues.length - 1) + '개';
   };
 
   const labelValue = getLabelPrefix(selectedValues as T[]) || '';
