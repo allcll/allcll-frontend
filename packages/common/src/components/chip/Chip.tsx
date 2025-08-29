@@ -2,10 +2,10 @@ import { ButtonHTMLAttributes, ReactNode, RefObject } from 'react';
 import ArrowIcon from '../svgs/ArrowIcon';
 import CancleIcon from '../svgs/CancleIcon';
 
-function getSelectedColor(selected: boolean, chipType?: 'select' | 'cancel') {
+function getSelectedColor(selected: boolean) {
   return selected
-    ? `bg-blue-100 text-blue-500 focus:outline-blue-500 ${chipType === 'cancel' ? '' : 'hover:bg-blue-200'}`
-    : `bg-gray-100 text-gray-700 focus:outline-gray-400 ${chipType === 'cancel' ? '' : 'hover:bg-gray-200'}`;
+    ? `bg-blue-100 text-blue-500 focus:outline-blue-500 hover:bg-blue-200`
+    : `bg-gray-100 text-gray-700 focus:outline-gray-400 hover:bg-gray-200`;
 }
 
 interface IChip extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -22,7 +22,7 @@ function Chip({ label = 'Chip', selected, chipType, containerRef, onClick, isChi
     <button
       type="button"
       ref={containerRef}
-      className={`items-center justify-center px-3 py-2 rounded-lg cursor-pointer text-sm gap-4 flex flex-row ${getSelectedColor(selected, chipType)} 
+      className={`items-center justify-center px-3 py-2 rounded-lg cursor-pointer text-sm gap-4 flex flex-row ${getSelectedColor(selected)} 
      `}
       aria-pressed={selected}
       onClick={onClick}

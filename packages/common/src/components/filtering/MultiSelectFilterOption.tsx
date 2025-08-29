@@ -1,3 +1,5 @@
+import ResetSvg from '@/assets/reset-blue.svg?react';
+
 export interface OptionType<VALUE extends string | number> {
   value: VALUE;
   label: string;
@@ -11,7 +13,7 @@ interface FilterItemProps<VALUE extends string | number> {
 }
 
 interface IMultiSelectFilter<VALUE extends string | number> {
-  labelPrefix: string;
+  labelPrefix?: string;
   selectedValues: VALUE[];
   field: string;
   setFilter: (field: string, value: VALUE[]) => void;
@@ -34,7 +36,6 @@ function MultiSelectFilterOption<VALUE extends string | number>({
   };
 
   const handleChangeCheckbox = (optionValue: VALUE) => {
-    console.log('x선택됨');
     const checked = selectedValues.includes(optionValue);
     const newValues = checked
       ? selectedValues.filter(selected => selected !== optionValue)
@@ -49,7 +50,7 @@ function MultiSelectFilterOption<VALUE extends string | number>({
 
   return (
     <div className="relative inline-block">
-      <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">{labelPrefix}</h3>
+      <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">{labelPrefix ?? ''}</h3>
       <div
         className={`
           gap-y-2 
@@ -73,7 +74,8 @@ function MultiSelectFilterOption<VALUE extends string | number>({
           onClick={() => handleClickReset()}
           className="text-blue-500 cursor-pointer sm:text-sm text-xs px-1 py-0.5"
         >
-          필터초기화
+          <ResetSvg className="inline w-4 h-4 mr-1 mb-0.5" />
+          필터 초기화
         </button>
       </div>
     </div>

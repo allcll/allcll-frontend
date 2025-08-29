@@ -1,3 +1,5 @@
+import ResetSvg from '@/assets/reset-blue.svg?react';
+
 export interface OptionType<VALUE extends string | number> {
   value: VALUE;
   label: string;
@@ -54,8 +56,12 @@ function SingleSelectFilterOption<VALUE extends string | number>({
         ))}
       </div>
       <div className="flex justify-end w-full mt-2">
-        <button onClick={() => handleClickReset()} className="text-blue-500 cursor-pointer text-sm px-1 py-0.5">
-          초기화
+        <button
+          onClick={() => handleClickReset()}
+          className="text-blue-500 cursor-pointer sm:text-sm text-xs px-1 py-0.5"
+        >
+          <ResetSvg className="inline w-4 h-4 mr-1 mb-0.5" />
+          필터 초기화
         </button>
       </div>
     </div>

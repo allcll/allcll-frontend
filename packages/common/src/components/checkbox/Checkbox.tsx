@@ -12,14 +12,16 @@ function Checkbox({ label = 'checkbox', ...props }: Readonly<ICheckbox>) {
           id={'checkbox-' + label}
           type="checkbox"
           className={`
-            appearance-none w-5 h-5 rounded-sm border cursor-pointer transition-colors
+            appearance-none w-5 h-5 rounded-sm border cursor-pointer transition-colors hover:bg-gray-50
             ${props.checked ? 'bg-blue-50 border-blue-500' : 'bg-white border-gray-400'}
           `}
           {...props}
         />
         {props.checked && <CheckSvg className="absolute inset-0 m-auto w-4 h-4 pointer-events-none text-white" />}
       </div>
-      <span className={`${props.checked ? 'text-blue-500' : 'text-gray-600'} cursor-pointer`}>{label}</span>
+      <span className={`${props.checked ? 'text-blue-500' : 'text-gray-600'} cursor-pointer hover:text-gray-400`}>
+        {label}
+      </span>
     </label>
   );
 }
