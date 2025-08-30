@@ -1,9 +1,10 @@
 import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
-import useDepartments from '@/hooks/server/useDepartments';
 import { Filters } from '@/store/useFilterStore.ts';
-import ScheduleFilterConfing from '../filter/config/schedule';
+import ScheduleFilterConfig from '../filter/config/schedule';
 import GenericMultiSelectFilter from '../filter/common/GenericMultiSelectFilter';
+import CustomButton from '@common/components/Button';
+import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
 
 interface FilteringBottomSheetProps {
   onCloseFiltering: () => void;
@@ -13,15 +14,6 @@ interface FilteringBottomSheetProps {
 }
 
 function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }: FilteringBottomSheetProps) {
-  const { data: departments } = useDepartments();
-
-  const isFiltered =
-    (filters.department.length ||
-      filters.grades.length ||
-      filters.time.length ||
-      filters.credits.length ||
-      filters.categories.length) > 0;
-
   const handleClickSave = () => {
     onCloseFiltering();
   };
@@ -36,27 +28,18 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
         }}
       />
 
-      <section className="w-full flex flex-col px-4 gap-5 max-h-[85vh]  overflow-y-scroll">
-        {/* TODO: Department 공통 필터 만들기 */}
-        <div className="w-full  h-15 flex gap-2 flex-col justify-center mt-2">
+      <section className="w-full flex flex-col px-4 gap-5 max-h-[85vh] overflow-y-scroll">
+        <div className="w-full h-15 flex gap-2 flex-col justify-center mt-2">
           <label className="text-xs text-gray-500">학과</label>
-          <div className="w-full flex flex-col gap-2 justify-center">
-            <select
-              className="cursor-pointer border border-gray-300 rounded-sm px-2 py-1 w-full bg-white text-sm"
-              value={filters.department}
-              onChange={e => setFilter('department', e.target.value)}
-            >
-              <option value="">전체</option>
-              {departments?.map(department => (
-                <option key={department.departmentCode} value={department.departmentCode}>
-                  {department.departmentName}
-                </option>
-              ))}
-            </select>
-          </div>
+
+          <DepartmentFilter
+            className="cursor-pointer border-gray-100 rounded-sm py-1 text-sm"
+            value={filters.department}
+            onChange={e => setFilter('department', e.target.value)}
+          />
         </div>
 
-        {ScheduleFilterConfing.map(filter => {
+        {ScheduleFilterConfig.map(filter => {
           return (
             <GenericMultiSelectFilter
               key={filter.filterKey}
@@ -73,16 +56,13 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
           );
         })}
 
-        <div className="flex justify-end items-center gap-3 mt-5">
-          {isFiltered && (
-            <button
-              className="text-xs text-blue-500 hover:text-blue-600 hover:underline cursor-pointer"
-              onClick={resetFilter}
-            >
-              필터 초기화
-            </button>
-          )}
-
+        <div className="sticky bottom-0 bg-white flex justify-end items-center pt-2 gap-2 border-t border-gray-200">
+          <CustomButton
+            className="text-xs text-blue-500 hover:text-blue-600 hover:underline cursor-pointer"
+            onClick={resetFilter}
+          >
+            필터 초기화
+          </CustomButton>
           <button
             onClick={handleClickSave}
             type="submit"

@@ -67,6 +67,7 @@ function ContentPanel() {
             />
           );
         })}
+
         <FilterDelete filters={filters} resetFilter={resetFilter} />
 
         {isFilterModalOpen && (

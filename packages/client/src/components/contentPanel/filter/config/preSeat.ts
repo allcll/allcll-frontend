@@ -1,5 +1,5 @@
 import { FilterConfiguration } from '@/utils/types';
-import { CREDITS, CURITYPE, GRADE } from '../constants/Filters';
+import { CREDITS, CURITYPE, GRADE, SEAT_RANGE, WISH_RANGE } from '../constants/Filters';
 import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
 import Chip from '@common/components/chip/Chip';
 import { FilterDomains, FilterOptions } from '@/utils/filtering/filterDomains';
@@ -8,7 +8,7 @@ const ClassroomOptions = FilterOptions.classRoom.sort((a, b) => a.label.localeCo
 
 const RemarkOptions = FilterDomains.remark.map(rm => ({ label: rm, value: rm }));
 
-const ScheduleFilterConfig: FilterConfiguration<string | number>[] = [
+export const MultiPreSeatFilterConfig: FilterConfiguration<string | number>[] = [
   {
     filterKey: 'credits',
     options: CREDITS,
@@ -46,4 +46,19 @@ const ScheduleFilterConfig: FilterConfiguration<string | number>[] = [
   },
 ];
 
-export default ScheduleFilterConfig;
+export const SinglePreSeatConfig: FilterConfiguration<string | number>[] = [
+  {
+    filterKey: 'wishRange',
+    options: WISH_RANGE,
+    labelPrefix: '관심인원',
+    default: true,
+    ItemComponent: Chip,
+  },
+  {
+    filterKey: 'seatRange',
+    options: SEAT_RANGE,
+    labelPrefix: '여석',
+    default: true,
+    ItemComponent: Chip,
+  },
+];

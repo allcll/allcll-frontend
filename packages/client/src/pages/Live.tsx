@@ -8,7 +8,7 @@ import SearchBottomSheet from '@/components/live/SearchBottomSheet.tsx';
 import useAlarmModalStore from '@/store/useAlarmModalStore.ts';
 import useMobile from '@/hooks/useMobile.ts';
 import usePreSeatGate from '@/hooks/usePreSeatGate';
-import PreSeat from './PreSeat';
+import PreSeat from '../components/live/preSeat/PreSeat';
 const isSystemChecking = false;
 
 function Live() {

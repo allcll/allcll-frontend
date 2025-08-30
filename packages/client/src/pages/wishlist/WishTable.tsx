@@ -12,6 +12,7 @@ import ScrollToTopButton from '@/components/common/ScrollTopButton';
 import { NavLink } from 'react-router-dom';
 import useAlarmModalStore from '@/store/useAlarmModalStore.ts';
 import AlarmIcon from '@/components/svgs/AlarmIcon';
+import CardWrap from '@/components/CardWrap';
 
 function WishTable() {
   const setIsSearchOpen = useAlarmModalStore(state => state.setIsSearchOpen);
@@ -24,14 +25,14 @@ function WishTable() {
 
       <div className="mx-auto max-w-7xl px-4 md:px-16 mb-8">
         {/* Header */}
-        <div className="py-12 px-2">
-          <h1 className="text-2xl font-bold">관심과목 분석</h1>
-          <p className="text-gray-500 mt-2">
+        <div className="py-5 px-2">
+          <h1 className="text-xl font-bold">관심과목 분석</h1>
+          <p className="text-xs font-bold text-gray-500 mb-4">
             올클은 세종대학교의 <span className="text-blue-500 font-bold">실제 데이터</span>를 보여드립니다. 관심과목을
             선택하여 분석해보세요.
           </p>
 
-          <div className="mt-4">
+          <CardWrap>
             <NavLink
               to="/live"
               onClick={() => setIsSearchOpen(true)}
@@ -41,13 +42,10 @@ function WishTable() {
               <AlarmIcon />
               알림등록하러가기
             </NavLink>
-          </div>
-
-          {/* Search and Filter */}
-          <div className="w-full">
             <Searches />
-          </div>
-          <TableColorInfo />
+            <TableColorInfo />
+          </CardWrap>
+
           <WishTableComponent />
 
           <ScrollToTopButton right="right-2 sm:right-20" />
