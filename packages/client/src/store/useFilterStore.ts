@@ -41,6 +41,8 @@ export const initialFilters: Filters = {
 };
 
 export function isFilterEmpty<T extends keyof Filters>(key: T, value: Filters[T]) {
+  if (key === 'time' && Array.isArray(value))
+    return value.length === 0 || (value.length === 1 && (value[0] as IDayTimeItem).day === '');
   if (Array.isArray(initialFilters[key]) && Array.isArray(value)) return value.length === 0;
   return !value;
 }
