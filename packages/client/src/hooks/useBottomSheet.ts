@@ -34,22 +34,29 @@ export default function useBottomSheet() {
   useEffect(() => {
     const canUserMoveBottomSheet = () => {
       const { touchMove, isContentAreaTouched } = metrics.current;
+      const sheetY = sheet.current!.getBoundingClientRect().y;
 
       if (!isContentAreaTouched) {
         return true;
       }
 
-      if (sheet.current!.getBoundingClientRect().y !== MIN_Y) {
-        return true;
+      if (sheetY !== MIN_Y) return true;
+
+      const contentEl = content.current!;
+      const atTop = contentEl.scrollTop <= 0;
+      const atBottom = contentEl.scrollTop + contentEl.clientHeight >= contentEl.scrollHeight;
+
+      if (touchMove.movingDirection === 'down' && atTop) {
+        return false;
       }
 
-      if (touchMove.movingDirection === 'down') {
-        return content.current!.scrollTop <= 0;
+      if (touchMove.movingDirection === 'up' && atBottom) {
+        return false;
       }
+
       return false;
     };
 
-    //현재 바텀 시트의 위치와 터치 포인트의 위치
     const handleTouchStart = (e: TouchEvent) => {
       const { touchStart } = metrics.current;
       touchStart.sheetY = sheet.current!.getBoundingClientRect().y;
