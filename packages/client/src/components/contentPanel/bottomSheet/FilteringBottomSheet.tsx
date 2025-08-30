@@ -7,7 +7,7 @@ import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
 import { FilterConfiguration } from '@/utils/types';
 import SeatFilter from '../filter/SeatFilter';
 import WishFilter from '../filter/WishFilter';
-        
+
 interface FilteringBottomSheetProps {
   onCloseFiltering: () => void;
   filters: Filters;
@@ -23,7 +23,6 @@ function FilteringBottomSheet({
   resetFilter,
   multiFilterConfig,
 }: FilteringBottomSheetProps) {
-
   const handleClickSave = () => {
     onCloseFiltering();
   };
@@ -47,6 +46,10 @@ function FilteringBottomSheet({
             onChange={e => setFilter('department', e.target.value)}
           />
         </div>
+
+        <SeatFilter seatRange={filters.seatRange} setFilter={setFilter} />
+        <WishFilter wishRange={filters.wishRange} setFilter={setFilter} />
+
         {multiFilterConfig.map(filter => (
           <GenericMultiSelectFilter
             key={filter.filterKey}
@@ -61,14 +64,11 @@ function FilteringBottomSheet({
             className="min-w-max"
           />
         ))}
-        <WishFilter wishRange={filters.wishRange} setFilter={setFilter} />
-        <SeatFilter seatRange={filters.seatRange} setFilter={setFilter} />
 
         <div className="sticky bottom-0 pb-10 pt-5 bg-white flex justify-end items-center gap-2 border-gray-200">
           <CustomButton
             className="text-sm text-blue-500 hover:text-blue-600 hover:underline cursor-pointer"
             onClick={resetFilter}
-
           >
             필터 초기화
           </CustomButton>
