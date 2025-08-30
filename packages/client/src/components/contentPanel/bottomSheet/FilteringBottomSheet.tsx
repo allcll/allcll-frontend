@@ -1,10 +1,10 @@
 import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
-import useDepartments from '@/hooks/server/useDepartments';
 import { Filters } from '@/store/useFilterStore.ts';
 import ScheduleFilterConfing from '../filter/config/schedule';
 import GenericMultiSelectFilter from '../filter/common/GenericMultiSelectFilter';
 import CustomButton from '@common/components/Button';
+import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
 
 interface FilteringBottomSheetProps {
   onCloseFiltering: () => void;
@@ -14,8 +14,6 @@ interface FilteringBottomSheetProps {
 }
 
 function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }: FilteringBottomSheetProps) {
-  const { data: departments } = useDepartments();
-
   const handleClickSave = () => {
     onCloseFiltering();
   };
@@ -30,24 +28,15 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
         }}
       />
 
-      <section className="w-full flex flex-col px-4 gap-5 max-h-[85vh]  overflow-y-scroll">
-        {/* TODO: Department 공통 필터 만들기 */}
-        <div className="w-full  h-15 flex gap-2 flex-col justify-center mt-2">
+      <section className="w-full flex flex-col px-4 gap-5 max-h-[85vh] overflow-y-scroll">
+        <div className="w-full h-15 flex gap-2 flex-col justify-center mt-2">
           <label className="text-xs text-gray-500">학과</label>
-          <div className="w-full flex flex-col gap-2 justify-center">
-            <select
-              className="cursor-pointer border border-gray-300 rounded-sm px-2 py-1 w-full bg-white text-sm"
-              value={filters.department}
-              onChange={e => setFilter('department', e.target.value)}
-            >
-              <option value="">전체</option>
-              {departments?.map(department => (
-                <option key={department.departmentCode} value={department.departmentCode}>
-                  {department.departmentName}
-                </option>
-              ))}
-            </select>
-          </div>
+
+          <DepartmentFilter
+            className="cursor-pointer border-gray-100 rounded-sm py-1 text-sm"
+            value={filters.department}
+            onChange={e => setFilter('department', e.target.value)}
+          />
         </div>
 
         {ScheduleFilterConfing.map(filter => {
