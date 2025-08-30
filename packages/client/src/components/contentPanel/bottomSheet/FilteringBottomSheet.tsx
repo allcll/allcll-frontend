@@ -1,7 +1,7 @@
 import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
 import { Filters } from '@/store/useFilterStore.ts';
-import ScheduleFilterConfing from '../filter/config/schedule';
+import ScheduleFilterConfig from '../filter/config/schedule';
 import GenericMultiSelectFilter from '../filter/common/GenericMultiSelectFilter';
 import CustomButton from '@common/components/Button';
 import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
@@ -39,7 +39,7 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
           />
         </div>
 
-        {ScheduleFilterConfing.map(filter => {
+        {ScheduleFilterConfig.map(filter => {
           return (
             <GenericMultiSelectFilter
               key={filter.filterKey}

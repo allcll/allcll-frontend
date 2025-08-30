@@ -8,7 +8,7 @@ const ClassroomOptions = FilterOptions.classRoom.sort((a, b) => a.label.localeCo
 
 const RemarkOptions = FilterDomains.remark.map(rm => ({ label: rm, value: rm }));
 
-const ScheduleFilterConfing: FilterConfiguration<string | number>[] = [
+const ScheduleFilterConfig: FilterConfiguration<string | number>[] = [
   {
     filterKey: 'credits',
     options: CREDITS,
@@ -46,4 +46,4 @@ const ScheduleFilterConfing: FilterConfiguration<string | number>[] = [
   },
 ];
 
-export default ScheduleFilterConfing;
+export default ScheduleFilterConfig;
