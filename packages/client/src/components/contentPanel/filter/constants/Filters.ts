@@ -16,6 +16,8 @@ export const CURITYPE: OptionType<Curitype>[] = [
   { value: '공필', label: '공필' },
   { value: '균필', label: '균필' },
   { value: '기필', label: '기필' },
+  { value: '교직', label: '교직' },
+  { value: 'ROTC', label: 'ROTC' },
 ];
 
 export const DAYS: OptionType<Day>[] = [
