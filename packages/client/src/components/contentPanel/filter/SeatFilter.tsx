@@ -38,6 +38,7 @@ function SeatFilter({ seatRange, setFilter }: ISeatFilter) {
   };
 
   const getLabelPrefix = () => {
+    if (seatRange?.value === 1) return '여석 1개 이하';
     if (seatRange) return `여석 ${seatRange.value}개 이상`;
     return '여석';
   };
