@@ -16,6 +16,10 @@ function PinCard({ subject, seats, queryTime, disableSeat = false, className, is
   const isDeleted = subject.isDeleted;
   const isEng = subject.curiLangNm === '영어';
 
+  const credit = typeof subject.tmNum === 'string'
+    ? Number(subject.tmNum.split('/')[0]) || 0
+    : 0;
+
   return (
     <div className={'bg-gray-50 shadow-sm rounded-lg p-4 ' + className}>
       <div className="flex justify-between">
@@ -28,6 +32,9 @@ function PinCard({ subject, seats, queryTime, disableSeat = false, className, is
           {subject.subjectCode}-{subject.classCode} | {subject.professorName}
         </p>
       </div>
+      <p className="text-xs text-gray-500 mb-2">
+        {subject.studentYear}학년 {subject.curiTypeCdNm} | {credit}학점 | {subject.lesnTime}
+      </p>
       {!disableSeat && (
         <div className="flex justify-between items-baseline">
           <p className={`text-sm px-2 py-1 rounded-full font-bold ${getSeatColor(seats)}`}>

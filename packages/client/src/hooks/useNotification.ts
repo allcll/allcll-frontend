@@ -1,80 +1,86 @@
 import { useEffect } from 'react';
-import { PinnedSeats, Wishlist } from '@/utils/types.ts';
 import { QueryClient } from '@tanstack/react-query';
 import useSSECondition from '@/store/useSSECondition.ts';
-import useBannerNotification, { ISetBanner } from '@/store/useBannerNotification.tsx';
-import AlarmBanner from '@/components/banner/AlarmBanner.tsx';
-import useToastNotification from '@/store/useToastNotification.ts';
-import useAlarmSettings from '@/store/useAlarmSettings.ts';
+import useAlarmSettings, {
+  AlarmType,
+  isAlarmActivated,
+  isSubAlarmActivated,
+  SubAlarmType,
+} from '@/store/useAlarmSettings.ts';
+import useNotificationInstruction from '@/store/useNotificationInstruction.ts';
+import BrowserNotification from '@/utils/notification/browserNotification.ts';
+import VibrationNotification from '@/utils/notification/vibrationNotification.ts';
+import ToastNotification from '@/utils/notification/toastNotification.ts';
+import SoundNotification from '@/utils/notification/SoundNotification.ts';
+import { PinnedSeats, Wishlist } from '@/utils/types.ts';
+
+export interface CustomNotification {
+  canNotify(): boolean;
+  isGranted(): boolean;
+  requestPermission(callback?: (permission: NotificationPermission) => void): void;
+  getDeniedMessage(): string[];
+  show(message: string, tag?: string): void;
+  close(tag: string): void;
+}
 
 // notification 변수
 let isInitialized = false;
 
-export function canNotify() {
-  return 'Notification' in window;
+/* 사용자가 허용한 알림 목록 반환 */
+function getNotifications(): CustomNotification[] {
+  const notifications: CustomNotification[] = [];
+
+  const browser = isAlarmActivated(AlarmType.BROWSER);
+  const toast = isAlarmActivated(AlarmType.TOAST);
+  const vibration = isSubAlarmActivated(SubAlarmType.VIBRATE);
+  const sound = isSubAlarmActivated(SubAlarmType.SOUND);
+
+  if (browser) notifications.push(BrowserNotification);
+  if (toast) notifications.push(ToastNotification);
+  if (vibration) notifications.push(VibrationNotification);
+  if (sound) notifications.push(SoundNotification);
+
+  return notifications;
 }
 
-export function isGranted() {
-  return Notification.permission === 'granted';
-}
+export const AlarmNotification: CustomNotification = {
+  canNotify() {
+    return getNotifications().every(n => n.canNotify());
+  },
 
-export function requestNotificationPermission(callback?: (permission: NotificationPermission) => void) {
-  if (!canNotify()) {
-    alert('해당 브라우저는 알림을 받을 수 없는 브라우저입니다. 다른 브라우저를 이용해주세요');
-    return;
-  }
+  isGranted() {
+    const granted = getNotifications().every(n => n.isGranted());
+    useNotificationInstruction.getState().setPermitted(granted);
+    return granted;
+  },
 
-  if (!isGranted()) {
-    Notification.requestPermission().then(permission => {
-      if (callback) {
-        callback(permission);
-      }
-    });
+  requestPermission(callback?: (permission: NotificationPermission) => void) {
+    if (AlarmNotification.isGranted()) return;
 
-    return;
-  }
+    getNotifications().forEach(n => n.requestPermission(callback));
+    useNotificationInstruction.getState().open();
+  },
 
-  if (callback) {
-    callback(Notification.permission);
-  }
-}
+  getDeniedMessage() {
+    return getNotifications().flatMap(s => s.getDeniedMessage());
+  },
 
-export function showNotification(message: string, tag?: string) {
-  const isAlarmActivated = useAlarmSettings.getState().isAlarmActivated;
+  show(message: string, tag?: string) {
+    const alarmState = useAlarmSettings.getState().alarmType;
+    if (alarmState === AlarmType.NONE) return;
 
-  if (isAlarmActivated)
-    navigator.serviceWorker.ready.then(function (registration) {
-      registration
-        .showNotification(message, {
-          // icon: '/logo-name.svg',
-          badge: '/ci.svg',
-          tag,
-        })
-        .then();
-    });
+    getNotifications().forEach(n => n.show(message, tag));
+  },
 
-  const addToast = useToastNotification.getState().addToast;
-  const isToastActivated = useAlarmSettings.getState().isToastActivated;
-  if (isToastActivated) addToast(message, tag);
-}
-
-function closeNotification(tag: string) {
-  navigator.serviceWorker.ready.then(function (registration) {
-    registration.getNotifications({ tag }).then(function (notifications) {
-      notifications.forEach(function (notification) {
-        notification.close();
-      });
-    });
-  });
-
-  const clearToast = useToastNotification.getState().clearToast;
-  clearToast(tag);
-}
+  close(tag: string) {
+    getNotifications().forEach(n => n.close(tag));
+  },
+};
 
 export function onChangePinned(prev: Array<PinnedSeats>, newPin: Array<PinnedSeats>, queryClient: QueryClient) {
   const { alwaysReload } = useSSECondition.getState();
 
-  if (!canNotify() || !prev || !newPin || !alwaysReload) {
+  if (!prev || !newPin || !alwaysReload) {
     return;
   }
 
@@ -84,12 +90,11 @@ export function onChangePinned(prev: Array<PinnedSeats>, newPin: Array<PinnedSea
     if (hasSeat) {
       const wishes = getWishes(queryClient, pin.subjectId);
 
-      if (wishes) {
-        showNotification(`${wishes.subjectCode}-${wishes.classCode} ${wishes.subjectName} 여석이 생겼습니다`);
+      if (!wishes) {
+        AlarmNotification.show(`unknown subject의 여석이 생겼습니다`);
         return;
       }
-
-      showNotification(`unknown subject의 여석이 생겼습니다`);
+      AlarmNotification.show(`${wishes.subjectCode}-${wishes.classCode} ${wishes.subjectName} 여석이 생겼습니다`);
     }
   }
 }
@@ -109,78 +114,46 @@ function setGlobalNotification(message: string) {
 
   if (globalNotificationTimeout) {
     clearTimeout(globalNotificationTimeout);
-    closeNotification(nowTag);
+    AlarmNotification.close(nowTag);
     globalNotificationTimeout = null;
   }
 
-  showNotification(message, nextTag);
-  globalNotificationTimeout = setTimeout(() => closeNotification(nextTag) /*globalNotification?.close()*/, 3000);
-}
-
-const DAYS = 1000 * 60 * 60 * 24;
-// 맥에서 알림이 보이지 않을 때, 알림 권한을 확인합니다
-function checkSystemNotification(setBanner: ISetBanner) {
-  const ALARM_CHECK_TITLE = 'alarm-check';
-  const alarmDate = localStorage.getItem(ALARM_CHECK_TITLE);
-
-  if (alarmDate && Date.now() - Number(alarmDate) < 100 * DAYS) {
-    return;
-  }
-
-  setTimeout(() => {
-    setBanner(AlarmBanner(), () => {
-      localStorage.setItem(ALARM_CHECK_TITLE, Date.now().toString());
-    });
-  }, 5000);
+  AlarmNotification.show(message, nextTag);
+  globalNotificationTimeout = setTimeout(() => AlarmNotification.close(nextTag), 3000);
 }
 
 function useNotification() {
   const alwaysReload = useSSECondition(state => state.alwaysReload);
   const setAlwaysReload = useSSECondition(state => state.setAlwaysReload);
-  const setBanner = useBannerNotification(state => state.setBanner);
 
-  const isAlarm = canNotify() && isGranted() && alwaysReload;
+  const isAlarm = alwaysReload;
 
   // only run once
   useEffect(() => {
     if (isInitialized) return;
 
-    requestNotificationPermission(permission => {
-      if (permission !== 'granted') {
-        setAlwaysReload(false);
-        return;
-      }
-
+    if (AlarmNotification.isGranted()) {
       setGlobalNotification('알림 기능이 활성화되었습니다. 여석이 생기면 이렇게 알림을 보내드려요');
-      checkSystemNotification(setBanner);
       setAlwaysReload(true);
-    });
+    }
 
     isInitialized = true;
   }, []);
 
   const changeAlarm = () => {
-    if (isAlarm) {
-      if (isGranted()) {
-        setGlobalNotification('알림 기능이 비활성화되었습니다');
+    // 알림 기능 활성화 할 때
+    if (!isAlarm) {
+      const alarmType = useAlarmSettings.getState().alarmType;
+      if (alarmType === AlarmType.NONE) {
+        if (!confirm('알림 기능을 활성화 하시겠습니까?')) return;
+        useAlarmSettings.getState().resetSettings();
       }
-
-      setAlwaysReload(false);
-      return;
+      AlarmNotification.requestPermission();
     }
 
-    // request permission
-    requestNotificationPermission(permission => {
-      if (permission === 'granted') {
-        setGlobalNotification('알림 기능이 활성화되었습니다');
-        checkSystemNotification(setBanner);
-        setAlwaysReload(true);
-      } else if (permission === 'default') {
-        alert('알림 권한을 허용해야 알림을 받을 수 있습니다');
-      } else {
-        alert('알림 권한이 없습니다. 브라우저의 알림 권한을 확인해주세요.');
-      }
-    });
+    const message = !isAlarm ? '알림 기능이 활성화되었습니다' : '알림 기능이 비활성화되었습니다';
+    setAlwaysReload(!isAlarm);
+    setGlobalNotification(message);
   };
 
   return { isAlarm, changeAlarm };
