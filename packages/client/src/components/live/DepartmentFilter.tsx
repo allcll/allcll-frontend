@@ -11,7 +11,6 @@ function DepartmentFilter({ id, className, value, defaultValue = '전체', ...pr
   const { data: departments } = useDepartments();
   const departmentsList = [{ departmentName: defaultValue, departmentCode: '' }, ...(departments ?? [])];
 
-
   const customId = id ?? 'department-filter';
 
   return (
@@ -21,7 +20,7 @@ function DepartmentFilter({ id, className, value, defaultValue = '전체', ...pr
       </label>
       <select
         id={customId}
-        className={'pl-2 pr-4 py-2 rounded-md bg-white border border-gray-400 ' + className}
+        className={'w-full p-2 rounded-md bg-white border border-gray-400 ' + className}
         value={value}
         {...props}
       >
