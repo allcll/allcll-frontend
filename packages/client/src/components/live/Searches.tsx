@@ -79,6 +79,7 @@ function Searches() {
 
       <SearchBox
         type="text"
+        className="pl-10 pr-6 py-2 rounded-md w-full bg-white border border-gray-400 text-[16px] placeholder:text-sm"
         placeholder="과목명, 교수명 또는 학수번호 및 분반 검색"
         value={keywords}
         onDelete={() => setFilter('keywords', '')}
