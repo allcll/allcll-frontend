@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet';
 import React, { useDeferredValue, useEffect, useState } from 'react';
-import Navbar from '@/components/Navbar.tsx';
 import CardWrap from '@/components/CardWrap.tsx';
 import SubjectTable from '@/components/live/subjectTable/SubjectTable.tsx';
 import SearchBox from '@/components/common/SearchBox.tsx';
@@ -14,8 +13,6 @@ import ScrollToTopButton from '@/components/common/ScrollTopButton';
 import SubjectCards from '@/components/live/subjectTable/SubjectCards';
 import useSearchRank from '@/hooks/useSearchRank';
 import TableColorInfo from '@/components/wishTable/TableColorInfo';
-import usePreSeatGate from '@/hooks/usePreSeatGate';
-import ServiceSoon from '@/components/live/errors/ServiceSoon';
 
 const TableHeadTitles = [
   { title: '알림', key: 'pin' },
@@ -32,9 +29,7 @@ export interface ISubjectSearch {
 }
 
 const PreSeatBody = ({ search, isMobile }: { search: ISubjectSearch; isMobile: boolean }) => {
-  const { data: wishes, titles, isPending, hasRealSeats } = useWishesPreSeats(TableHeadTitles);
-  const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasRealSeats });
-
+  const { data: wishes, titles, isPending } = useWishesPreSeats(TableHeadTitles);
   const data = useSearchRank(wishes);
 
   const filteredData = useDeferredValue(
@@ -49,23 +44,13 @@ const PreSeatBody = ({ search, isMobile }: { search: ISubjectSearch; isMobile: b
   );
 
   return (
-    <>
-      <CardWrap>
-        {isPreSeatAvailable ? (
-          <>
-            {isMobile ? (
-              <SubjectCards subjects={filteredData} isPending={isPending} isLive={true} />
-            ) : (
-              <SubjectTable titles={titles} subjects={filteredData} isPending={isPending} />
-            )}
-          </>
-        ) : (
-          <div className="flex justify-center w-full h-96">
-            <ServiceSoon title="전체 학년 여석" />
-          </div>
-        )}
-      </CardWrap>
-    </>
+    <CardWrap>
+      {isMobile ? (
+        <SubjectCards subjects={filteredData} isPending={isPending} isLive={true} />
+      ) : (
+        <SubjectTable titles={titles} subjects={filteredData} isPending={isPending} />
+      )}
+    </CardWrap>
   );
 };
 
@@ -91,21 +76,17 @@ const PreSeat = () => {
         <title>ALLCLL | 전체 여석</title>
       </Helmet>
 
-      <div className="max-w-screen-xl mx-auto mb-8">
-        <div className="container p-4 mx-auto">
-          <Navbar />
-          <p className="text-xs font-bold text-gray-500 mb-4">전체 학년 수강신청 전, 전체 학년의 여석을 보여줍니다.</p>
-          <div className="pb-2">
-            <CardWrap>
-              <SubjectSearchInputs setSearch={setSearch} />
-              <TableColorInfo />
-            </CardWrap>
-          </div>
-
-          <PreSeatBody search={search} isMobile={isMobile} />
-
-          <ScrollToTopButton right="right-2 sm:right-10" />
+      <div className="container mx-auto">
+        <h2 className="font-bold text-lg">전체학년 여석</h2>
+        <p className="text-xs font-bold text-gray-500 mb-4">전체 학년 수강신청 전, 전체 학년의 여석을 보여줍니다.</p>
+        <div className="pb-2">
+          <CardWrap>
+            <SubjectSearchInputs setSearch={setSearch} />
+            <TableColorInfo />
+          </CardWrap>
         </div>
+        <PreSeatBody search={search} isMobile={isMobile} />
+        <ScrollToTopButton right="right-2 sm:right-10" />
       </div>
     </>
   );
