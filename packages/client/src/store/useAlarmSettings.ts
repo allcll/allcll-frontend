@@ -69,36 +69,5 @@ export function isSubAlarmActivated(type: SubAlarmType) {
   return Boolean(subAlarmTypes & type);
 }
 
-// const useAlarmSettings = create<IUseAlarmSettings>(set => ({
-//   alarmType: getDefaultAlarmType(),
-//   subAlarmType: getDefaultSubAlarmType(),
-//   isAlarmActivated: true,
-//   isToastActivated: false,
-//   saveSettings: settings => {
-//     set(({ ...prev }) => {
-//       const newSettings = { ...prev, settings };
-//       localStorage.setItem('AlarmSettings', JSON.stringify(newSettings));
-//
-//       return settings;
-//     });
-//   },
-//   getSettings: () => {
-//     const settings = localStorage.getItem('AlarmSettings');
-//     if (settings) {
-//       const settingJson = JSON.parse(settings);
-//       set(settingJson);
-//
-//       return settingJson;
-//     }
-//
-//     const initSettings = {
-//       isAlarmActivated: true,
-//       isToastActivated: isMobileDevice(),
-//     };
-//     set(initSettings);
-//
-//     return initSettings;
-//   },
-// }));
 
 export default useAlarmSettings;
