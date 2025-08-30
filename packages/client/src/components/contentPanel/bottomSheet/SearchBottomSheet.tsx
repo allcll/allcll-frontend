@@ -1,35 +1,28 @@
-import SearchBox from '@/components/common/SearchBox';
+import { useDeferredValue } from 'react';
 import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
-import FilterSvg from '@/assets/filter.svg?react';
 import { FilteredSubjectCards } from '../subject/FilteredSubjectCards';
-import { useDeferredValue, useState } from 'react';
+import SearchBox from '@/components/common/SearchBox';
 import useSubject from '@/hooks/server/useSubject';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
+import useFilteringSubjects from '@/hooks/useFilteringSubjects';
+import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import { BottomSheetType } from '@/store/useBottomSheetStore';
 import { ScheduleAdapter } from '@/utils/timetable/adapter';
-import useFilteringSubjects from '@/hooks/useFilteringSubjects';
-import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
+import FilterSvg from '@/assets/filter.svg?react';
 
 interface ISearchBottomSheet {
   onCloseSearch: (bottomSheetType: BottomSheetType) => void;
 }
 
 function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
-  const [searchKeywords, setSearchKeywords] = useState<string>('');
   const { data: subjects = [], isPending } = useSubject();
   const { openScheduleModal, cancelSchedule } = useScheduleModal();
-  const { selectedDays, selectedDepartment, selectedGrades } = useFilterScheduleStore();
+  const filters = useScheduleSearchStore(state => state.filters);
+  const setFilter = useScheduleSearchStore(state => state.setFilter);
+  const { keywords } = filters;
 
-  const filteredData = useDeferredValue(
-    useFilteringSubjects({
-      subjects,
-      searchKeywords,
-      selectedDays,
-      selectedDepartment,
-      selectedGrades,
-    }),
-  );
+  const filteredData = useDeferredValue(useFilteringSubjects(subjects, filters));
 
   const initSchedule = new ScheduleAdapter().toUiData();
 
@@ -48,9 +41,9 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
             <SearchBox
               type="text"
               placeholder="과목명 및 교수명 검색"
-              value={searchKeywords}
-              onChange={e => setSearchKeywords(e.target.value)}
-              onDelete={() => setSearchKeywords('')}
+              value={keywords}
+              onChange={e => setFilter('keywords', e.target.value)}
+              onDelete={() => setFilter('keywords', '')}
               className="pl-10 pr-6 py-2 rounded-md w-full bg-white border border-gray-400 text-[16px]"
             />
             <button className="w-20 justify-center flex cursor-pointer" onClick={() => onCloseSearch('filter')}>

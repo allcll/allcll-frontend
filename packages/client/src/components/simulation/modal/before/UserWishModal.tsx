@@ -37,7 +37,13 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
   const [simulationSubjects, setSimulationSubjects] = useState<Lecture[]>([]);
   const [department, setDepartment] = useState<Department>({ ...InitDepartment });
 
-  const [selectedTimetable, setSelectedTimetable] = useState<TimetableType>(currentTimetable);
+  const [selectedTimetable, setSelectedTimetable] = useState<TimetableType>(
+    currentTimetable ?? {
+      timeTableId: -1,
+      timeTableName: '선택된 시간표 없음',
+      semester: '2025-2',
+    },
+  );
   const [subjectMode, setSubjectMode] = useState<ModeType>('timetable');
   const [toggleTip, setToggleTip] = useState(false);
 
@@ -91,7 +97,11 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
    * @param optionId
    */
   const handleSelect = (optionId: number) => {
-    const timetable = timetables.find(timetable => timetable.timeTableId === optionId);
+    const timetable = timetables.find(timetable => timetable.timeTableId === optionId) ?? {
+      timeTableId: -1,
+      timeTableName: '선택된 시간표 없음',
+      semester: '2025-2',
+    };
 
     if (!timetable) {
       console.error('해당하는 시간표를 찾을 수 없습니다:', optionId);
@@ -126,7 +136,7 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
 
     const limitCreditSubjects = applyCreditLimit(scheduleSubjects);
     setSimulationSubjects(limitCreditSubjects);
-  }, [subjectMode, schedules, isSchedulesLoading]);
+  }, [subjectMode, schedules, isSchedulesLoading, selectedTimetable]);
 
   // 랜덤 과목 모드일 때, 학과를 선택한 후 과목을 불러옵니다.
   useEffect(() => {
@@ -185,12 +195,7 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
           </div>
 
           {subjectMode === 'timetable' && (
-            <TimetableChip
-              timetables={timetables}
-              selectedTimetable={selectedTimetable}
-              onSelect={handleSelect}
-              setSelectedTimetable={setSelectedTimetable}
-            />
+            <TimetableChip timetables={timetables} selectedTimetable={selectedTimetable} onSelect={handleSelect} />
           )}
 
           {subjectMode === 'random' && <SelectDepartment department={department} setDepartment={setDepartment} />}

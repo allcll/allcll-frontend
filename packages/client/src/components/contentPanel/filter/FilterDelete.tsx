@@ -1,22 +1,23 @@
 import Chip from '@common/components/chip/Chip';
 import RemoveFilterSvg from '@/assets/filter-remove-primary.svg?react';
-import { useFilterScheduleStore } from '@/store/useFilterScheduleStore.ts';
+import { Filters } from '@/store/useFilterStore.ts';
 
-function FilterDelete() {
-  const resetFilter = useFilterScheduleStore(state => state.resetFilterSchedule);
-  const { selectedDepartment, selectedGrades, selectedDays } = useFilterScheduleStore();
+interface FilterDelete {
+  filters: Filters;
+  resetFilter: () => void;
+}
 
-  const isFiltered = selectedDepartment.length || selectedGrades.length || selectedDays.length;
+function FilterDelete({ filters, resetFilter }: FilterDelete) {
+  const { department, grades, time, categories, credits, wishRange, seatRange } = filters;
 
-  if (!isFiltered) {
+  const isFiltered =
+    department.length || grades.length || categories.length || credits.length || wishRange || seatRange;
+
+  if (!isFiltered && time.length === 1 && time[0].day === '') {
     return null;
   }
 
-  const handleFilterDelete = () => {
-    resetFilter();
-  };
-
-  return <Chip label={<RemoveFilterSvg className="w-4 h-4" />} selected={true} onClick={handleFilterDelete} />;
+  return <Chip label={<RemoveFilterSvg className="w-4 h-4" />} selected={true} onClick={resetFilter} />;
 }
 
 export default FilterDelete;

@@ -1,7 +1,7 @@
 import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
 import SkeletonRows from '@/components/live/skeletons/SkeletonRows.tsx';
 import { ZeroElementRow } from '@/components/wishTable/Table.tsx';
-import { useAddPinned, usePinned, useRemovePinned } from '@/store/usePinned.ts';
+import { useAddPinned, usePinned, useRemovePinned } from '@/hooks/server/usePinned.ts';
 import useInfScroll from '@/hooks/useInfScroll.ts';
 import useSearchLogging from '@/hooks/useSearchLogging.ts';
 import { loggingDepartment } from '@/hooks/useSearchRank.ts';

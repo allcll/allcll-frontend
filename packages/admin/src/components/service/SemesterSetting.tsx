@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Filtering from '@allcll/common/components/filtering/Filtering';
 import Card from '@allcll/common/components/Card';
-import Checkbox from '@allcll/common/components/filtering/Checkbox';
+import Checkbox from '@allcll/common/components/checkbox/Checkbox';
 
 const semesters = ['2025-2학기'];
 

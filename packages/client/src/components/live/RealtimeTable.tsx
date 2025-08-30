@@ -10,7 +10,6 @@ import { SSEType } from '@/hooks/useSSEManager.ts';
 import useSSESeats, { SseSubject } from '@/hooks/server/useSSESeats.ts';
 import { getTimeDiffString } from '@/utils/stringFormats.ts';
 import { getSeatColor } from '@/utils/colors.ts';
-import { HeadTitle, useLiveTableStore } from '@/store/useLiveTableStore.ts';
 import TableColorInfo from '@/components/wishTable/TableColorInfo.tsx';
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import DraggableList from '@/components/live/subjectTable/DraggableList.tsx';
@@ -20,6 +19,7 @@ import useBackSignal from '@/hooks/useBackSignal.ts';
 import SystemChecking from './errors/SystemChecking';
 import { getDateLocale } from '@/utils/time.ts';
 import { SSE_STATE, useSSEState } from '@/store/useSseState.ts';
+import { HeadTitle, useLiveTableStore } from '@/store/useTableColumnStore.ts';
 
 interface IRealtimeTable {
   title: string;
@@ -50,7 +50,11 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
           {/*  </p>*/}
           {/*</Tooltip>*/}
         </div>
-        <button className="p-3 rounded-full hover:bg-blue-100" onClick={() => setIsModalOpen(true)}>
+        <button
+          className="p-3 rounded-full hover:bg-blue-100"
+          aria-label="테이블 수정"
+          onClick={() => setIsModalOpen(true)}
+        >
           <ListSvg className="w-4 h-4 text-gray-600 hover:text-blue-500 transition-colors" />
         </button>
       </div>
@@ -80,7 +84,7 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
 
 const MAINTENANCE = false;
 
-function SubjectBody({ tableTitles }: Readonly<{ tableTitles: HeadTitle[] }>) {
+function SubjectBody({ tableTitles }: Readonly<{ tableTitles: HeadTitle<SseSubject>[] }>) {
   const { data: tableData, isError, isPending, refetch } = useSSESeats(SSEType.NON_MAJOR);
   const HeadTitles = tableTitles.filter(t => t.visible);
 
@@ -143,7 +147,7 @@ function SubjectBody({ tableTitles }: Readonly<{ tableTitles: HeadTitle[] }>) {
   );
 }
 
-function SubjectRow({ subject, HeadTitles }: Readonly<{ subject: SseSubject; HeadTitles: HeadTitle[] }>) {
+function SubjectRow({ subject, HeadTitles }: Readonly<{ subject: SseSubject; HeadTitles: HeadTitle<SseSubject>[] }>) {
   const prevSeat = useRef(subject.seat);
   const [seatChanged, setSeatChanged] = useState(false);
 
@@ -197,8 +201,8 @@ function QueryTimeTd({ queryTime }: Readonly<{ queryTime?: string }>) {
 }
 
 interface ITableTitleModal {
-  initialItems: HeadTitle[];
-  onChange: (items: HeadTitle[]) => void;
+  initialItems: HeadTitle<SseSubject>[];
+  onChange: (items: HeadTitle<SseSubject>[]) => void;
   onClose: () => void;
 }
 
