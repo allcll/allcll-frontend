@@ -65,7 +65,7 @@ function FilteringBottomSheet({
           />
         ))}
 
-        <div className="sticky bottom-0 pb-10 pt-5 bg-white flex justify-end items-center gap-2 border-gray-200">
+        <div className="sticky bottom-0 pb-14 pt-5 bg-white flex justify-end items-center gap-2 border-gray-200">
           <CustomButton
             className="text-sm text-blue-500 hover:text-blue-600 hover:underline cursor-pointer"
             onClick={resetFilter}
