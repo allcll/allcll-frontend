@@ -4,6 +4,7 @@ import useDepartments from '@/hooks/server/useDepartments';
 import { Filters } from '@/store/useFilterStore.ts';
 import ScheduleFilterConfing from '../filter/config/schedule';
 import GenericMultiSelectFilter from '../filter/common/GenericMultiSelectFilter';
+import CustomButton from '@common/components/Button';
 
 interface FilteringBottomSheetProps {
   onCloseFiltering: () => void;
@@ -14,13 +15,6 @@ interface FilteringBottomSheetProps {
 
 function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }: FilteringBottomSheetProps) {
   const { data: departments } = useDepartments();
-
-  const isFiltered =
-    (filters.department.length ||
-      filters.grades.length ||
-      filters.time.length ||
-      filters.credits.length ||
-      filters.categories.length) > 0;
 
   const handleClickSave = () => {
     onCloseFiltering();
@@ -73,16 +67,13 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
           );
         })}
 
-        <div className="flex justify-end items-center gap-3 mt-5">
-          {isFiltered && (
-            <button
-              className="text-xs text-blue-500 hover:text-blue-600 hover:underline cursor-pointer"
-              onClick={resetFilter}
-            >
-              필터 초기화
-            </button>
-          )}
-
+        <div className="sticky bottom-0 bg-white flex justify-end items-center pt-2 gap-2 border-t border-gray-200">
+          <CustomButton
+            className="text-xs text-blue-500 hover:text-blue-600 hover:underline cursor-pointer"
+            onClick={resetFilter}
+          >
+            필터 초기화
+          </CustomButton>
           <button
             onClick={handleClickSave}
             type="submit"
