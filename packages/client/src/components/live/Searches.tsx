@@ -100,6 +100,7 @@ function Searches() {
                 filters={filters}
                 setFilter={setFilter}
                 resetFilter={resetFilter}
+                multiFilterConfig={MultiWishFilterConfig}
               />
             )}
           </>

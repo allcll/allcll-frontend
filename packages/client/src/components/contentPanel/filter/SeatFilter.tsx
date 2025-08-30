@@ -3,6 +3,7 @@ import { OptionType, RangeFilter } from '@/utils/types.ts';
 import Chip from '@common/components/chip/Chip';
 import Filtering from '@common/components/filtering/Filtering';
 import SingleSelectFilterOption from '@/components/common/filter/SingleSelectFilter';
+import useMobile from '@/hooks/useMobile';
 
 const SEAT_RANGE: OptionType<number>[] = [
   { value: 0, label: '전체' },
@@ -30,6 +31,7 @@ function SeatFilter({ seatRange, setFilter }: ISeatFilter) {
     0,
     RANGE_VALUES.findIndex(v => v === seatRange),
   );
+  const isMobile = useMobile();
 
   const setFilterScheduleWrapper = (field: keyof Filters, value: number | null) => {
     if (field === 'seatRange') {
@@ -45,7 +47,16 @@ function SeatFilter({ seatRange, setFilter }: ISeatFilter) {
 
   const labelPrefix = getLabelPrefix();
 
-  return (
+  return isMobile ? (
+    <SingleSelectFilterOption
+      labelPrefix="여석"
+      selectedValue={selectedValue}
+      field="seatRange"
+      setFilter={setFilterScheduleWrapper}
+      options={SEAT_RANGE}
+      ItemComponent={Chip}
+    />
+  ) : (
     <Filtering label={labelPrefix} selected={selectedValue !== 0} className="min-w-max">
       <SingleSelectFilterOption
         labelPrefix="여석"

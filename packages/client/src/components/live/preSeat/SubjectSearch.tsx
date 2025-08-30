@@ -70,6 +70,7 @@ function SubjectSearches() {
                 filters={filters}
                 setFilter={setFilter}
                 resetFilter={resetFilter}
+                multiFilterConfig={MultiPreSeatFilterConfig}
               />
             )}
           </>

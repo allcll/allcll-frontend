@@ -1,19 +1,28 @@
 import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
 import { Filters } from '@/store/useFilterStore.ts';
-import ScheduleFilterConfig from '../filter/config/schedule';
 import GenericMultiSelectFilter from '../filter/common/GenericMultiSelectFilter';
 import CustomButton from '@common/components/Button';
 import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
+import { FilterConfiguration } from '@/utils/types';
+import SeatFilter from '../filter/SeatFilter';
+import WishFilter from '../filter/WishFilter';
 
 interface FilteringBottomSheetProps {
   onCloseFiltering: () => void;
   filters: Filters;
   setFilter: (field: keyof Filters, value: Filters[keyof Filters]) => void;
   resetFilter: () => void;
+  multiFilterConfig: FilterConfiguration<string | number>[];
 }
 
-function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }: FilteringBottomSheetProps) {
+function FilteringBottomSheet({
+  onCloseFiltering,
+  filters,
+  setFilter,
+  resetFilter,
+  multiFilterConfig,
+}: FilteringBottomSheetProps) {
   const handleClickSave = () => {
     onCloseFiltering();
   };
@@ -37,8 +46,7 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
             onChange={e => setFilter('department', e.target.value)}
           />
         </div>
-
-        {ScheduleFilterConfig.map(filter => (
+        {multiFilterConfig.map(filter => (
           <GenericMultiSelectFilter
             key={filter.filterKey}
             filterKey={filter.filterKey}
@@ -52,6 +60,8 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
             className="min-w-max"
           />
         ))}
+        <WishFilter wishRange={filters.wishRange} setFilter={setFilter} />
+        <SeatFilter seatRange={filters.seatRange} setFilter={setFilter} />
 
         <div className="sticky bottom-0 pb-10 pt-5 bg-white flex justify-end items-center gap-2 border-gray-200">
           <CustomButton

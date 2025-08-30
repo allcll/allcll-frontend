@@ -3,6 +3,7 @@ import Chip from '@common/components/chip/Chip';
 import Filtering from '@common/components/filtering/Filtering';
 import SingleSelectFilterOption from '@/components/common/filter/SingleSelectFilter';
 import { Filters } from '@/store/useFilterStore';
+import useMobile from '@/hooks/useMobile';
 
 const WISHRANGE: OptionType<number>[] = [
   { value: 0, label: '관심인원 30명 이상' },
@@ -25,6 +26,7 @@ interface IWishFilter {
 
 function WishFilter({ wishRange, setFilter }: IWishFilter) {
   const selectedValue = RANGE_VALUES.findIndex(v => v === wishRange);
+  const isMobile = useMobile();
 
   const setFilterScheduleWrapper = (field: string, value: number | null) => {
     if (field === 'wishRange') {
@@ -39,7 +41,16 @@ function WishFilter({ wishRange, setFilter }: IWishFilter) {
 
   const labelPrefix = getLabelPrefix();
 
-  return (
+  return isMobile ? (
+    <SingleSelectFilterOption
+      labelPrefix="관심과목"
+      selectedValue={selectedValue}
+      field="wishRange"
+      setFilter={setFilterScheduleWrapper}
+      options={WISHRANGE}
+      ItemComponent={Chip}
+    />
+  ) : (
     <Filtering label={labelPrefix} selected={selectedValue !== -1} className="min-w-max">
       <SingleSelectFilterOption
         labelPrefix="관심과목"
