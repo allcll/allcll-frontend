@@ -13,6 +13,7 @@ import ScrollToTopButton from '@/components/common/ScrollTopButton';
 import SubjectCards from '@/components/live/subjectTable/SubjectCards';
 import useSearchRank from '@/hooks/useSearchRank';
 import TableColorInfo from '@/components/wishTable/TableColorInfo';
+import useAlarmModalStore from '@/store/useAlarmModalStore';
 
 const TableHeadTitles = [
   { title: '알림', key: 'pin' },
