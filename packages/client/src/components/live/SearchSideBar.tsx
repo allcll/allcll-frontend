@@ -59,6 +59,7 @@ const SearchSideBar: React.FC<SearchSideBarProps> = ({ isOpen, onClose }) => {
             <div className="flex flex-col gap-2 mb-4">
               <SearchBox
                 placeholder="과목명 교수명 검색"
+                value={searchInput}
                 onChange={e => setSearchInput(e.target.value)}
                 onDelete={() => setSearchInput('')}
               />

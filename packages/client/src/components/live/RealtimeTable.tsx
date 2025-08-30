@@ -194,8 +194,8 @@ function QueryTimeTd({ queryTime }: Readonly<{ queryTime?: string }>) {
   useTick();
 
   return (
-    <td className="px-4 py-2 text-center text-xs">
-      <span className="px-3 py-1 rounded-full text-gray-500">{getTimeDiffString(queryTime)}</span>
+    <td className="w-18 px-4 py-2 text-center text-xs">
+      <span className="text-gray-500">{getTimeDiffString(queryTime)}</span>
     </td>
   );
 }

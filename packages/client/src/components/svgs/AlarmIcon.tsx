@@ -5,11 +5,8 @@ interface IconProps {
   disabled?: boolean;
 }
 const AlarmIcon = ({ className, disabled = false }: IconProps) => {
-  return disabled ? (
-    <AlarmSvg className={'text-gray-400 ' + className} />
-  ) : (
-    <AlarmSvg className={'text-blue-500 ' + className} />
-  );
+  const style = disabled ? 'text-gray-400 ' : 'text-blue-500 ';
+  return <AlarmSvg className={style + className} />;
 };
 
 export default AlarmIcon;
