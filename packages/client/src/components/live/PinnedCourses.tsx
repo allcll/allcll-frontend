@@ -5,7 +5,6 @@ import RealtimeCard from '@/components/live/subjectTable/RealtimeCard.tsx';
 import NetworkError from '@/components/live/errors/NetworkError.tsx';
 import ZeroPinError from '@/components/live/errors/ZeroPinError.tsx';
 import NotificationInstructionsModal from '@/components/live/NotificationInstructionsModal.tsx';
-import { usePinned } from '@/store/usePinned.ts';
 import useFindWishes from '@/hooks/useFindWishes.ts';
 import { SSEType, useSseData } from '@/hooks/useSSEManager.ts';
 import useNotification, { AlarmNotification } from '@/hooks/useNotification.ts';
@@ -16,6 +15,7 @@ import ReloadSvg from '@/assets/reload-blue.svg?react';
 import AlarmAddButton from './AlarmAddButton.tsx';
 import useNotificationInstruction from '@/store/useNotificationInstruction.ts';
 import { SSE_STATE, useSSEState } from '@/store/useSseState.ts';
+import { usePinned } from '@/hooks/server/usePinned.ts';
 
 const PinnedCourses = () => {
   const [isAlarmSettingOpen, setIsAlarmSettingOpen] = useState(false);

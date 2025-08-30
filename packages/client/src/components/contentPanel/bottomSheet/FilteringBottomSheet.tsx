@@ -62,7 +62,6 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
               key={filter.filterKey}
               filterKey={filter.filterKey}
               options={filter.options}
-              label={filter.label ?? ''}
               labelPrefix={filter.labelPrefix ?? ''}
               ItemComponent={filter.ItemComponent}
               selectedValues={

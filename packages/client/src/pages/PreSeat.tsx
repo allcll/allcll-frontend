@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet';
-import React, { useDeferredValue, useEffect, useState } from 'react';
+import { useDeferredValue, useEffect } from 'react';
 import CardWrap from '@/components/CardWrap.tsx';
 import SubjectTable from '@/components/live/subjectTable/SubjectTable.tsx';
 import SearchBox from '@/components/common/SearchBox.tsx';
@@ -28,7 +28,7 @@ export interface ISubjectSearch {
   selectedDepartment: string;
 }
 
-const PreSeatBody = ({ search, isMobile }: { search: ISubjectSearch; isMobile: boolean }) => {
+const PreSeatBody = ({ isMobile, filters }: { isMobile: boolean; filters: Filters }) => {
   const { data: wishes, titles, isPending } = useWishesPreSeats(TableHeadTitles);
   const data = useSearchRank(wishes);
   const filteredData = useDeferredValue(useFilteringSubjects(data ?? [], filters));
@@ -51,8 +51,8 @@ const PreSeat = () => {
   const setIsSearchOpen = useAlarmModalStore(state => state.setIsSearchOpen);
 
   useEffect(() => {
-    if (isMobile) setIsSearchOpen(true);
-  }, []);
+    if (isMobile) setIsSearchOpen(false);
+  }, [isMobile]);
 
   return (
     <>
@@ -65,11 +65,11 @@ const PreSeat = () => {
         <p className="text-xs font-bold text-gray-500 mb-4">전체 학년 수강신청 전, 전체 학년의 여석을 보여줍니다.</p>
         <div className="pb-2">
           <CardWrap>
-            <SubjectSearchInputs setSearch={setSearch} />
+            <SubjectSearchInputs />
             <TableColorInfo />
           </CardWrap>
         </div>
-        <PreSeatBody search={search} isMobile={isMobile} />
+        <PreSeatBody isMobile={isMobile} filters={filters} />
         <ScrollToTopButton right="right-2 sm:right-10" />
       </div>
     </>
