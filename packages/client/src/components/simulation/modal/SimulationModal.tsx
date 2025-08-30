@@ -55,7 +55,7 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
   const { setCurrentSimulation } = useSimulationProcessStore();
   const { data: lectures } = useLectures();
 
-  const currentSubjectStatus = subjectStatusMap[currentSubjectId];
+  const currentSubjectStatus = subjectStatusMap[currentSubjectId]; // useSimulationSubjectStore.subjectStatusMap 여기만 사용함.
   const modalData = SIMULATION_MODAL_CONTENTS.find(data => data.status === currentSubjectStatus);
 
   const modalStatus = modalData?.status ?? APPLY_STATUS.PROGRESS;

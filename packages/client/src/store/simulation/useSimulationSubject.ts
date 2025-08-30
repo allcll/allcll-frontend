@@ -7,12 +7,12 @@ interface IUseSimulationSubjectStore {
   isCaptchaFailed: boolean;
   setCurrentSubjectId: (currentSubjectId: number) => void;
   setSubjectStatus: (currentSubjectId: number, status: APPLY_STATUS) => void;
-  getSubjectStatus: (subjectId: string) => APPLY_STATUS | undefined;
-  getIsCaptchaFailed: () => boolean;
+  // getSubjectStatus: (subjectId: string) => APPLY_STATUS | undefined;
+  // getIsCaptchaFailed: () => boolean;
   setCaptchaFailed: (failed: boolean) => void;
 }
 
-const useSimulationSubjectStore = create<IUseSimulationSubjectStore>((set, get) => ({
+const useSimulationSubjectStore = create<IUseSimulationSubjectStore>((set) => ({
   currentSubjectId: 0,
   isCaptchaFailed: false,
   subjectStatusMap: {},
@@ -24,8 +24,8 @@ const useSimulationSubjectStore = create<IUseSimulationSubjectStore>((set, get) 
         [currentSubjectId]: status,
       },
     })),
-  getSubjectStatus: currentSubjectId => get().subjectStatusMap[currentSubjectId],
-  getIsCaptchaFailed: () => get().isCaptchaFailed,
+  // getSubjectStatus: currentSubjectId => get().subjectStatusMap[currentSubjectId],
+  // getIsCaptchaFailed: () => get().isCaptchaFailed,
   setCaptchaFailed: failed => set({ isCaptchaFailed: failed }),
 }));
 
