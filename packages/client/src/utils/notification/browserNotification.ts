@@ -54,15 +54,6 @@ const BrowserNotification: CustomNotification = {
           .then();
       });
     }
-    // BrowserNotification.requestPermission(permission => {
-    //   if (permission === 'granted') {
-    //     BrowserNotification.show(message, tag);
-    //   } else if (permission === 'default') {
-    //     alert('알림 권한을 허용해야 알림을 받을 수 있습니다');
-    //   } else {
-    //     alert('알림 권한이 없습니다. 브라우저의 알림 권한을 확인해주세요.');
-    //   }
-    // });
   },
   close(tag: string) {
     if (!BrowserNotification.canNotify() || !BrowserNotification.isGranted()) return;
