@@ -23,6 +23,7 @@ function FilteringBottomSheet({
   resetFilter,
   multiFilterConfig,
 }: FilteringBottomSheetProps) {
+
   const handleClickSave = () => {
     onCloseFiltering();
   };
@@ -46,7 +47,7 @@ function FilteringBottomSheet({
             onChange={e => setFilter('department', e.target.value)}
           />
         </div>
-
+ 
         <SeatFilter seatRange={filters.seatRange} setFilter={setFilter} />
         <WishFilter wishRange={filters.wishRange} setFilter={setFilter} />
 
@@ -69,6 +70,7 @@ function FilteringBottomSheet({
           <CustomButton
             className="text-sm text-blue-500 hover:text-blue-600 hover:underline cursor-pointer"
             onClick={resetFilter}
+
           >
             필터 초기화
           </CustomButton>
