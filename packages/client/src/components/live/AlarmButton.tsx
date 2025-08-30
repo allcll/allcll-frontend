@@ -1,7 +1,7 @@
 import React from 'react';
 import { Subject } from '@/utils/types.ts';
 import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
-import { useAddPinned, usePinned, useRemovePinned } from '@/store/usePinned.ts';
+import { useAddPinned, usePinned, useRemovePinned } from '@/hooks/server/usePinned.ts';
 import { loggingDepartment } from '@/hooks/useSearchRank.ts';
 import useSearchLogging from '@/hooks/useSearchLogging.ts';
 

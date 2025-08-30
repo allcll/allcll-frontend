@@ -1,16 +1,17 @@
 import 'react-datepicker/dist/react-datepicker.css';
 import { Dispatch, SetStateAction } from 'react';
 import Card from '@allcll/common/components/Card';
-import CheckboxFilter, { OptionType } from '@allcll/common/components/filtering/CheckboxFilter';
+import CheckboxAdapter from '@allcll/common/components/checkbox/CheckboxAdapter';
+import Filtering from '@allcll/common/components/filtering/Filtering';
+import MultiSelectFilterOption, { OptionType } from '@allcll/common/components/filtering/MultiSelectFilterOption';
 
 const StatusCodes: OptionType<number>[] = [
-  { id: 0, label: 0 },
-  { id: 2, label: 200 },
-  { id: 3, label: 400 },
-  { id: 4, label: 401 },
-  { id: 5, label: 403 },
-  { id: 6, label: 404 },
-  { id: 7, label: 500 },
+  { value: 200, label: '200' },
+  { value: 400, label: '400' },
+  { value: 401, label: '401' },
+  { value: 403, label: '403' },
+  { value: 404, label: '404' },
+  { value: 500, label: '500' },
 ];
 
 interface IRequestLogs {
@@ -21,23 +22,10 @@ interface IRequestLogs {
 }
 
 function RequestLogs({ urlInput, setUrlInput, selectedStatusCodes, setSelectedStatusCodes }: Readonly<IRequestLogs>) {
-  const handleChangeCheckbox = (item: number) => {
-    const checkedAllItems = selectedStatusCodes.length === StatusCodes.length;
-
-    if (item === 0) {
-      const updateStatusCodes = checkedAllItems ? [] : StatusCodes.map(status => status.id);
-
-      setSelectedStatusCodes(updateStatusCodes);
-
-      return;
+  const setFilterScheduleWrapper = (field: string, value: number[]) => {
+    if (field === 'selectedStatusCodes') {
+      setSelectedStatusCodes(value);
     }
-
-    const checked = selectedStatusCodes.includes(item);
-    const updateStatusCodes = checked
-      ? selectedStatusCodes.filter(statusCode => statusCode !== item)
-      : [...selectedStatusCodes, item];
-
-    setSelectedStatusCodes(updateStatusCodes);
   };
 
   return (
@@ -49,13 +37,16 @@ function RequestLogs({ urlInput, setUrlInput, selectedStatusCodes, setSelectedSt
         <div className="w-full gap-4  justify-between max-w-3xl mx-auto space-y-4">
           <label className="block text-sm font-medium mb-1">상태 코드</label>
 
-          <CheckboxFilter
-            labelPrefix=" 코드"
-            selectedItems={selectedStatusCodes}
-            handleChangeCheckbox={handleChangeCheckbox}
-            options={StatusCodes}
-            selected={selectedStatusCodes.length !== 0}
-          />
+          <Filtering label="상태" selected={selectedStatusCodes.length !== 0}>
+            <MultiSelectFilterOption
+              labelPrefix="상태 코드"
+              selectedValues={selectedStatusCodes}
+              field="selectedStatusCodes"
+              setFilter={setFilterScheduleWrapper}
+              options={StatusCodes}
+              ItemComponent={CheckboxAdapter}
+            />
+          </Filtering>
 
           <label className="block text-sm font-medium mb-1">API 요청 URL</label>
           <input

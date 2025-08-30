@@ -27,16 +27,16 @@ function Modal({ children, onClose, preventAutoFocus }: Readonly<IModalProps>) {
   // Todo: aria-labelledby, aria-describedby 추가
   return (
     <div
-      className="flex items-center justify-center fixed inset-0 w-full h-full z-40"
+      className="flex items-center justify-center fixed inset-0 w-full h-full z-100"
       role="none"
       ref={containerRef}
       tabIndex={-1}
       onClick={handleBackdropClick}
     >
       <div className="fixed inset-0 justify-center opacity-30 bg-gray-300 border-b-2 border-gray-400" />
-      <div className="flex items-center justify-center" tabIndex={-1}>
+      <div className="fixed inset-x-0 top-16 bottom-0 flex items-center justify-center" tabIndex={-1}>
         <div
-          className="w-[95%] sm:w-fit z-50 bg-white max-h-[90vh] border border-gray-200 overflow-y-auto"
+          className="w-[95%] sm:w-fit z-50 bg-white max-h-[90%] border border-gray-200 overflow-y-auto"
           role="dialog"
           tabIndex={-1}
           onClick={e => e.stopPropagation()}

@@ -1,24 +1,21 @@
 import { Helmet } from 'react-helmet';
-import Navbar from '@/components/Navbar';
 import CardWrap from '@/components/CardWrap.tsx';
 import RealtimeTable from '@/components/live/RealtimeTable.tsx';
 import PinnedCourses from '@/components/live/PinnedCourses.tsx';
 import SystemChecking from '@/components/live/errors/SystemChecking.tsx';
 import SearchSideBar from '@/components/live/SearchSideBar.tsx';
 import SearchBottomSheet from '@/components/live/SearchBottomSheet.tsx';
-import useAlarmSearchStore from '@/store/useAlarmSearchStore.ts';
+import useAlarmModalStore from '@/store/useAlarmModalStore.ts';
 import useMobile from '@/hooks/useMobile.ts';
 import usePreSeatGate from '@/hooks/usePreSeatGate';
-
-
+import PreSeat from '../components/live/preSeat/PreSeat';
 const isSystemChecking = false;
 
 function Live() {
-  const isSearchOpen = useAlarmSearchStore(state => state.isSearchOpen);
-  const setIsSearchOpen = useAlarmSearchStore(state => state.setIsSearchOpen);
+  const isSearchOpen = useAlarmModalStore(state => state.isSearchOpen);
+  const setIsSearchOpen = useAlarmModalStore(state => state.setIsSearchOpen);
   const isMobile = useMobile();
   const { isPreSeatAvailable } = usePreSeatGate();
-
 
   return (
     <>
@@ -28,7 +25,6 @@ function Live() {
 
       <div className="flex justify-between overflow-hidden">
         <div className="max-w-screen-xl mx-auto p-4 mb-8 container">
-          {isPreSeatAvailable && <Navbar />}
           {isSystemChecking ? (
             <CardWrap>
               <SystemChecking />
@@ -47,12 +43,14 @@ function Live() {
                 으로 연락주세요.
               </p>
 
-              <CardWrap>
-                <PinnedCourses />
-              </CardWrap>
+              {!isPreSeatAvailable && (
+                <CardWrap>
+                  <PinnedCourses />
+                </CardWrap>
+              )}
 
               <div className="grid grid-cols-1 gap-x-4 mb-4">
-                <RealtimeTable title="교양과목" />
+                {isPreSeatAvailable ? <PreSeat /> : <RealtimeTable title="교양과목" />}
               </div>
             </>
           )}

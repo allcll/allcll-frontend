@@ -8,7 +8,8 @@ import useWishes from '@/hooks/server/useWishes.ts';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
 import SubjectCards from '@/components/live/subjectTable/SubjectCards.tsx';
-import useAlarmSearchStore from '@/store/useAlarmSearchStore.ts';
+import useAlarmModalStore from '@/store/useAlarmModalStore.ts';
+import { initialFilters } from '@/store/useFilterStore.ts';
 
 interface ISearchBottomSheet {
   onCloseSearch: () => void;
@@ -19,16 +20,16 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
   const [selectedDepartment, setSelectedDepartment] = useState('');
   const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
   const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
-  const isSearchOpen = useAlarmSearchStore(state => state.isSearchOpen);
+  const isSearchOpen = useAlarmModalStore(state => state.isSearchOpen);
 
   const { data: wishes, isPending } = useWishes();
   const data = useSearchRank(wishes);
 
   const filteredData = useDeferredValue(
-    useFilteringSubjects({
-      subjects: data ?? [],
-      searchKeywords: searchInput,
-      selectedDepartment: selectedDepartment,
+    useFilteringSubjects(data ?? [], {
+      ...initialFilters,
+      keywords: searchInput,
+      department: selectedDepartment,
     }),
   );
 

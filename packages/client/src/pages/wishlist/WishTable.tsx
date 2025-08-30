@@ -4,18 +4,18 @@ import useWishes, { InitWishes } from '@/hooks/server/useWishes.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects';
 import Table from '@/components/wishTable/Table.tsx';
 import Searches from '@/components/live/Searches.tsx';
-import useFavorites from '@/store/useFavorites.ts';
-import useWishSearchStore from '@/store/useWishSearchStore.ts';
+import { useWishSearchStore } from '@/store/useFilterStore.ts';
 import TableColorInfo from '@/components/wishTable/TableColorInfo.tsx';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
 import ScrollToTopButton from '@/components/common/ScrollTopButton';
 import { NavLink } from 'react-router-dom';
-import useAlarmSearchStore from '@/store/useAlarmSearchStore';
+import useAlarmModalStore from '@/store/useAlarmModalStore.ts';
 import AlarmIcon from '@/components/svgs/AlarmIcon';
+import CardWrap from '@/components/CardWrap';
 
 function WishTable() {
-  const setIsSearchOpen = useAlarmSearchStore(state => state.setIsSearchOpen);
+  const setIsSearchOpen = useAlarmModalStore(state => state.setIsSearchOpen);
 
   return (
     <>
@@ -25,14 +25,14 @@ function WishTable() {
 
       <div className="mx-auto max-w-7xl px-4 md:px-16 mb-8">
         {/* Header */}
-        <div className="py-12 px-2">
-          <h1 className="text-2xl font-bold">관심과목 분석</h1>
-          <p className="text-gray-500 mt-2">
+        <div className="py-5 px-2">
+          <h1 className="text-xl font-bold">관심과목 분석</h1>
+          <p className="text-xs font-bold text-gray-500 mb-4">
             올클은 세종대학교의 <span className="text-blue-500 font-bold">실제 데이터</span>를 보여드립니다. 관심과목을
             선택하여 분석해보세요.
           </p>
 
-          <div className="mt-4">
+          <CardWrap>
             <NavLink
               to="/live"
               onClick={() => setIsSearchOpen(true)}
@@ -42,11 +42,9 @@ function WishTable() {
               <AlarmIcon />
               알림등록하러가기
             </NavLink>
-          </div>
-
-          {/* Search and Filter */}
-          <Searches />
-          <TableColorInfo />
+            <Searches />
+            <TableColorInfo />
+          </CardWrap>
 
           <WishTableComponent />
 
@@ -58,22 +56,11 @@ function WishTable() {
 }
 
 function WishTableComponent() {
-  const filterParams = useWishSearchStore(state => state.searchParams);
-  const pickedFavorites = useFavorites(state => state.isFavorite);
-  const isPinned = useWishSearchStore(state => state.isPinned);
   const { data: wishes, isPending } = useWishes();
   const data = useSearchRank(useJoinPreSeats(wishes, InitWishes));
 
-  const filteredData = useDeferredValue(
-    useFilteringSubjects({
-      subjects: data ?? [],
-      pickedFavorites,
-      searchKeywords: filterParams.searchInput,
-      selectedDepartment: filterParams.selectedDepartment,
-      isFavorite: filterParams.isFavorite,
-      isPinned,
-    }),
-  );
+  const filters = useWishSearchStore(state => state.filters);
+  const filteredData = useDeferredValue(useFilteringSubjects(data ?? [], filters));
 
   return (
     <div className="bg-white mt-6 shadow-md rounded-lg overflow-x-auto">

@@ -1,3 +1,5 @@
+import { Filters } from '@/store/useFilterStore';
+
 export interface PinnedSeats {
   subjectId: number;
   seatCount: number;
@@ -51,7 +53,7 @@ export interface Subject {
   manageDeptNm: string; // 학과명 (manageDeptNm)
   studentYear: string; // 수강 학년 (string → number로 변환 필요)
   lesnTime: string; // 수업 시간
-  lesnRoom: string; // 수업실
+  lesnRoom: string; // 강의실
   tmNum: string; // 학점 (tmNum)
   remark: string | null; // 비고
   curiTypeCdNm: string; // 수업 유형 코드명 ('공필'/'전필'/'전선' 등)
@@ -66,6 +68,36 @@ export interface DepartmentType {
   departmentName: string;
 }
 
+export interface RangeFilter {
+  operator: 'over-equal' | 'under-equal';
+  value: number;
+}
+
+export type RemarkType = '외국인대상' | 'SHP대상' | '기타';
+
 export type Grade = 1 | 2 | 3 | 4;
 export type Day = '월' | '화' | '수' | '목' | '금' | '토' | '일';
 export const DAYS: Day[] = ['월', '화', '수', '목', '금', '토', '일'];
+
+export type Curitype = '교필' | '교선' | '전필' | '전선' | '전기' | '공필' | '균필' | '기필' | '교직' | 'ROTC';
+export type Credit = 1 | 2 | 3;
+
+export interface FilterItemProps<VALUE extends string | number> {
+  label: string;
+  selected: boolean;
+  onClick: () => void;
+  value: VALUE;
+}
+
+export interface OptionType<VALUE extends string | number> {
+  label: string;
+  value: VALUE;
+}
+
+export interface FilterConfiguration<VALUE extends string | number> {
+  filterKey: keyof Filters;
+  options: OptionType<VALUE>[];
+  labelPrefix: string;
+  default: boolean;
+  ItemComponent: React.ComponentType<FilterItemProps<VALUE>>;
+}

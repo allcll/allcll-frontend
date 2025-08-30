@@ -4,15 +4,18 @@ import AlarmOptionModal from '@/components/toast/AlarmOptionModal.tsx';
 import RealtimeCard from '@/components/live/subjectTable/RealtimeCard.tsx';
 import NetworkError from '@/components/live/errors/NetworkError.tsx';
 import ZeroPinError from '@/components/live/errors/ZeroPinError.tsx';
-import { usePinned } from '@/store/usePinned.ts';
+import NotificationInstructionsModal from '@/components/live/NotificationInstructionsModal.tsx';
 import useFindWishes from '@/hooks/useFindWishes.ts';
 import { SSEType, useSseData } from '@/hooks/useSSEManager.ts';
-import useNotification from '@/hooks/useNotification.ts';
-import AlarmBlueIcon from '@/assets/alarm-blue.svg?react';
+import useNotification, { AlarmNotification } from '@/hooks/useNotification.ts';
+import AlarmSvg from '@/assets/alarm.svg?react';
 import AlarmDisabledIcon from '@/assets/alarm-disabled.svg?react';
 import SettingSvg from '@/assets/settings.svg?react';
 import ReloadSvg from '@/assets/reload-blue.svg?react';
 import AlarmAddButton from './AlarmAddButton.tsx';
+import useNotificationInstruction from '@/store/useNotificationInstruction.ts';
+import { SSE_STATE, useSSEState } from '@/store/useSseState.ts';
+import { usePinned } from '@/hooks/server/usePinned.ts';
 
 const PinnedCourses = () => {
   const [isAlarmSettingOpen, setIsAlarmSettingOpen] = useState(false);
@@ -22,6 +25,7 @@ const PinnedCourses = () => {
   return (
     <>
       <AlarmOptionModal isOpen={isAlarmSettingOpen} close={() => setIsAlarmSettingOpen(false)} />
+      <NotificationInstructionsModal />
       <div>
         <div className="flex justify-between align-top">
           <div className="flex items-center justify-center gap-2 mb-4">
@@ -53,12 +57,12 @@ const PinnedCourses = () => {
               <SettingSvg className="w-5 h-5" />
             </button>
             <button
-              className="p-2 rounded-full hover:bg-blue-100"
+              className="group relative p-2 rounded-full hover:bg-blue-100"
               aria-label={isAlarm ? '알림 끄기' : '알림 켜기'}
               title={isAlarm ? '알림 끄기' : '알림 켜기'}
               onClick={changeAlarm}
             >
-              {isAlarm ? <AlarmBlueIcon className="w-5 h-5" /> : <AlarmDisabledIcon className="w-5 h-5" />}
+              <AlarmIcon isAlarm={isAlarm} />
             </button>
           </div>
         </div>
@@ -68,6 +72,34 @@ const PinnedCourses = () => {
     </>
   );
 };
+
+function AlarmIcon({ isAlarm }: Readonly<{ isAlarm: boolean }>) {
+  const sseState = useSSEState(state => state.sseState);
+  const isPermitted = useNotificationInstruction(state => state.isPermitted);
+  const isRealtime = sseState === SSE_STATE.LIVE;
+  const statusTooltip = isRealtime
+    ? AlarmNotification.getDeniedMessage()
+    : [...AlarmNotification.getDeniedMessage(), '실시간 연결이 끊어졌어요'];
+
+  if (!isAlarm) return <AlarmDisabledIcon className="w-5 h-5" />;
+
+  return isPermitted && isRealtime ? (
+    <AlarmSvg className="w-5 h-5 text-blue-500" />
+  ) : (
+    <>
+      <AlarmSvg className="w-5 h-5 text-red-500 animate-pulse" />
+      {statusTooltip.length > 0 && (
+        <span className="absolute left-full -bottom-2 transform -translate-x-full translate-y-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gray-900 text-white text-sm p-2 rounded w-64 h-fit text-center pointer-events-none">
+          {statusTooltip.map((line, idx) => (
+            <p key={'tooltip-line-' + idx} className="pt-1 first:pt-0">
+              {line}
+            </p>
+          ))}
+        </span>
+      )}
+    </>
+  );
+}
 
 function CoursesArea() {
   const { data, isPending, isError, refetch } = usePinned();

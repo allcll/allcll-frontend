@@ -1,60 +1,32 @@
-import { useFilterScheduleStore } from '@/store/useFilterScheduleStore';
-import { Day } from '@/utils/types';
-import CheckboxFilter, { OptionType } from '@common/components/filtering/CheckboxFilter';
+import { Filters } from '@/store/useFilterStore';
+import Filtering from '@common/components/filtering/Filtering';
+import DayTimeFilter, { IDayTimeItem } from './DayTimeFilter';
 
-const DAYS: OptionType<Day | '전체'>[] = [
-  { id: 0, label: '전체' },
-  { id: 1, label: '월' },
-  { id: 2, label: '화' },
-  { id: 3, label: '수' },
-  { id: 4, label: '목' },
-  { id: 5, label: '금' },
-];
+interface IDayFilter {
+  times: IDayTimeItem[];
+  setFilter: (field: keyof Filters, value: IDayTimeItem[]) => void;
+}
 
-function DayFilter() {
-  const { selectedDays, setFilterSchedule } = useFilterScheduleStore();
-
-  const findLabelById = (id: number) => DAYS.find(day => day.id === id)?.label ?? '전체';
-
-  const selectedAll = () => {
-    const checked = selectedDays.length === DAYS.length;
-
-    setFilterSchedule('selectedDays', checked ? [] : DAYS.map(day => day.label));
-  };
-
-  const handleChangeCheckbox = (optionId: number) => {
-    const optionLabel = findLabelById(optionId);
-
-    if (optionId === 0) {
-      selectedAll();
-      return;
-    }
-
-    const isSelected = selectedDays.includes(optionLabel);
-
-    if (isSelected) {
-      setFilterSchedule(
-        'selectedDays',
-        selectedDays.filter(day => day !== optionLabel),
-      );
-      return;
-    }
-
-    if (!isSelected) {
-      setFilterSchedule('selectedDays', [...selectedDays, optionLabel]);
+function DayFilter({ times, setFilter }: IDayFilter) {
+  const setFilterScheduleWrapper = (field: keyof Filters, value: IDayTimeItem[]) => {
+    if (field === 'time') {
+      setFilter('time', value);
     }
   };
 
-  const selectedIds = DAYS.filter(option => selectedDays.includes(option.label)).map(option => option.id);
+  const getLabelPrefix = () => {
+    if (times.length === 1 && times[0].type === 'all' && times[0].day === '') return '요일';
+    if (times.length === 1) return ` ${times[0].day}요일`;
+    if (times.length > 1) return ` ${times[0].day}요일 외 ${times.length - 1}개`;
+    return '요일';
+  };
+
+  const labelPrefix = getLabelPrefix();
 
   return (
-    <CheckboxFilter
-      labelPrefix="요일"
-      selectedItems={selectedIds}
-      handleChangeCheckbox={handleChangeCheckbox}
-      options={DAYS}
-      selected={selectedDays.length !== 0}
-    />
+    <Filtering label={labelPrefix} selected={times.length > 0 && times[0].day !== ''} className="min-w-max">
+      <DayTimeFilter items={times} onChange={items => setFilterScheduleWrapper('time', items)} />
+    </Filtering>
   );
 }
 

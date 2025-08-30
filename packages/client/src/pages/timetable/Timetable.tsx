@@ -21,6 +21,7 @@ import AddWhiteSvg from '@/assets/add-white.svg?react';
 import SearchSvg from '@/assets/search.svg?react';
 import DownloadSvg from '@/assets/download.svg?react';
 import Card from '@common/components/Card';
+import { useScheduleSearchStore } from '@/store/useFilterStore';
 
 type modalType = 'edit' | 'create' | null;
 
@@ -30,9 +31,18 @@ function Timetable() {
   const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
   const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
 
+  const filters = useScheduleSearchStore(state => state.filters);
+  const setFilter = useScheduleSearchStore(state => state.setFilter);
+  const resetFilter = useScheduleSearchStore(state => state.resetFilters);
+
   const handleClickFiltering = (bottomSheetType: BottomSheetType) => {
     closeBottomSheet('search');
     openBottomSheet(bottomSheetType);
+  };
+
+  const handleCloseFiltering = () => {
+    closeBottomSheet('filter');
+    openBottomSheet('search');
   };
 
   return (
@@ -41,21 +51,28 @@ function Timetable() {
         <title>ALLCLL | 시간표</title>
       </Helmet>
 
-      <div className="grid md:grid-cols-3 gap-4">
-        <div className="md:col-span-2 w-full h-full">
+      <div className="grid md:grid-cols-5 gap-4">
+        <div className="md:col-span-3 w-full h-full">
           <Card className="px-2 relative overflow-hidden">
             <TimetableHeader setIsOpenModal={setIsOpenModal} />
             <TimetableComponent />
           </Card>
         </div>
 
-        <div className="md:col-span-1 w-full">
+        <div className="md:col-span-2 w-full">
           <div className="hidden md:block">
             <ContentPanel />
           </div>
           <div className="md:hidden">
             {bottomSheetType === 'search' && <SearchBottomSheet onCloseSearch={handleClickFiltering} />}
-            {bottomSheetType === 'filter' && <FilteringBottomSheet />}
+            {bottomSheetType === 'filter' && (
+              <FilteringBottomSheet
+                onCloseFiltering={handleCloseFiltering}
+                filters={filters}
+                setFilter={setFilter}
+                resetFilter={resetFilter}
+              />
+            )}
             {bottomSheetType === 'edit' && <FormBottomSheet />}
             {bottomSheetType === 'Info' && <ScheduleInfoBottomSheet />}
           </div>
