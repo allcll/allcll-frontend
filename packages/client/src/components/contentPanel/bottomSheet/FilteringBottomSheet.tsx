@@ -7,7 +7,7 @@ import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
 import { FilterConfiguration } from '@/utils/types';
 import SeatFilter from '../filter/SeatFilter';
 import WishFilter from '../filter/WishFilter';
-
+        
 interface FilteringBottomSheetProps {
   onCloseFiltering: () => void;
   filters: Filters;
@@ -23,6 +23,7 @@ function FilteringBottomSheet({
   resetFilter,
   multiFilterConfig,
 }: FilteringBottomSheetProps) {
+
   const handleClickSave = () => {
     onCloseFiltering();
   };
@@ -67,6 +68,7 @@ function FilteringBottomSheet({
           <CustomButton
             className="text-sm text-blue-500 hover:text-blue-600 hover:underline cursor-pointer"
             onClick={resetFilter}
+
           >
             필터 초기화
           </CustomButton>

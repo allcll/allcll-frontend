@@ -28,6 +28,7 @@ function WishFilter({ wishRange, setFilter }: IWishFilter) {
   const selectedValue = RANGE_VALUES.findIndex(v => v === wishRange);
   const isMobile = useMobile();
 
+
   const setFilterScheduleWrapper = (field: string, value: number | null) => {
     if (field === 'wishRange') {
       setFilter('wishRange', value !== null ? RANGE_VALUES[value] : null);

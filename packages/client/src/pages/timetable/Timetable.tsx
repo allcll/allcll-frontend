@@ -24,6 +24,7 @@ import Card from '@common/components/Card';
 import { useScheduleSearchStore } from '@/store/useFilterStore';
 import ScheduleFilterConfig from '@/components/contentPanel/filter/config/schedule';
 
+
 type modalType = 'edit' | 'create' | null;
 
 function Timetable() {
