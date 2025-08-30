@@ -55,7 +55,8 @@ const PreSeat = () => {
 
       <div className="container mx-auto">
         <h2 className="font-bold text-lg">전체학년 여석</h2>
-        <p className="text-xs font-bold text-gray-500 mb-4">전체 학년 수강신청 전, 전체 학년의 여석을 보여줍니다.</p>
+        <p className="text-xs font-bold text-gray-500">전체 학년 수강신청 전, 전체 학년의 여석을 보여줍니다.</p>
+        <p className="text-xs text-gray-500 mb-4">실시간 기능은 2025-09-02, 11:00에 시작될 예정입니다.</p>
         <div className="pb-2">
           <CardWrap>
             <SubjectSearches />
