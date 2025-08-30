@@ -20,7 +20,7 @@ function usePreSeatGate(opts?: { hasSeats?: boolean }) {
       return false;
     }
 
-    if (PRESEAT_MODE === 'force-open' || !isFinishPreSeatGate) {
+    if (PRESEAT_MODE === 'force-open') {
       return true;
     }
 
