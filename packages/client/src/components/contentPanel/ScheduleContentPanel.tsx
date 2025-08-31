@@ -17,7 +17,7 @@ import DayFilter from './filter/DayFilter';
 
 const initSchedule = new ScheduleAdapter().toUiData();
 
-function ContentPanel() {
+function ScheduleContentPanel() {
   const { openScheduleModal } = useScheduleModal();
   const { data, isPending } = useWishes();
   const subjects = useSearchRank(data) ?? [];
@@ -47,7 +47,6 @@ function ContentPanel() {
         >
           <FilterSvg className="w-4 h-4 text-gray-600 hover:text-blue-500 transition-colors" />
         </button>
-
         <DepartmentFilter department={filters.department} setFilter={setFilters} />
         <DayFilter times={filters.time} setFilter={setFilters} />
         {ScheduleFilter.map(filter => {
@@ -67,9 +66,7 @@ function ContentPanel() {
             />
           );
         })}
-
         <FilterDelete filters={filters} resetFilter={resetFilter} />
-
         {isFilterModalOpen && (
           <FilteringModal filterStore={useScheduleSearchStore} onClose={() => setIsFilterModalOpen(false)} />
         )}
@@ -92,4 +89,4 @@ function ContentPanel() {
   );
 }
 
-export default ContentPanel;
+export default ScheduleContentPanel;
