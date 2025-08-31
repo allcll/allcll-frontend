@@ -61,19 +61,23 @@ export async function checkOngoingSimulation() {
 
     if (!ongoing) return { simulationId: -1 };
 
+    // 진행중인 시뮬레이션 중, 성공 또는 실패한 과목을 불러옵니다.
     const registeredSelections = await db.simulation_run_selections
       .filter(s => submittedFilter(s, ongoing.simulation_run_id))
       .toArray();
 
+    // 진행중인 시뮬레이션의 과목
     const snapshotSubjects = await db.interested_subject.where('snapshot_id').equals(ongoing.snapshot_id).toArray();
     if (!snapshotSubjects) return errMsg(SIMULATION_ERROR.SNAPSHOT_NOT_EXIST);
 
+    // registeredSubjects === successed
+    const successed = registeredSelections.filter(s => s.status === APPLY_STATUS.SUCCESS);
     const registeredSubjects = snapshotSubjects
-      .filter(subject => registeredSelections.some(selection => selection.interested_id === subject.interested_id))
+      .filter(subject => successed.some(selection => selection.interested_id === subject.interested_id))
       .map(subject => ({ subjectId: subject.subject_id }));
 
     const nonRegisteredSubjects = snapshotSubjects
-      .filter(subject => !registeredSelections.some(selection => selection.interested_id === subject.interested_id))
+      .filter(subject => !successed.some(selection => selection.interested_id === subject.interested_id))
       .map(subject => ({ subjectId: subject.subject_id }));
 
     const subjectStatus = registeredSelections.map(selection => {
