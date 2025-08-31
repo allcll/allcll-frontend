@@ -89,7 +89,7 @@ export interface FilterItemProps<VALUE extends string | number> {
   value: VALUE;
 }
 
-export interface OptionType<VALUE> {
+export interface OptionType<VALUE extends string | number> {
   label: string;
   value: VALUE;
 }

@@ -1,9 +1,13 @@
 import SingleSelectFilterOption from '@/components/common/filter/SingleSelectFilter';
 import useMobile from '@/hooks/useMobile';
 import { Filters } from '@/store/useFilterStore.ts';
-import { OptionType } from '@/utils/types';
 import Chip from '@common/components/chip/Chip';
 import Filtering from '@common/components/filtering/Filtering';
+
+export interface OptionType<VALUE extends string | number> {
+  value: VALUE;
+  label: string;
+}
 
 interface FilterItemProps<VALUE extends string | number> {
   label: string;
@@ -38,14 +42,14 @@ function GenericSingleSelectFilter<T extends string | number>({
     return '';
   };
 
-  const labelPrefix = getLabelPrefix(selectedValue) || '';
+  const labelPrefix = getLabelPrefix(selectedValue as T | null) || '';
 
   return (
     <>
       {isMobile ? (
         <SingleSelectFilterOption<T>
           labelPrefix={label}
-          selectedValue={selectedValue}
+          selectedValue={selectedValue as T}
           field={filterKey}
           setFilter={(field, value) => setFilter(field, value as Filters[keyof Filters])}
           options={options}
@@ -56,7 +60,7 @@ function GenericSingleSelectFilter<T extends string | number>({
         <Filtering label={labelPrefix} selected={!!selectedValue}>
           <SingleSelectFilterOption<T>
             labelPrefix={label}
-            selectedValue={selectedValue}
+            selectedValue={selectedValue as T}
             field={filterKey}
             setFilter={(field, value) => setFilter(field, value as Filters[keyof Filters])}
             options={options}

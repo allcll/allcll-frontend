@@ -49,7 +49,6 @@ function ScheduleContentPanel() {
         </button>
         <DepartmentFilter department={filters.department} setFilter={setFilters} />
         <DayFilter times={filters.time} setFilter={setFilters} />
-
         {ScheduleFilter.map(filter => {
           if (isFilterEmpty(filter.filterKey, filters[filter.filterKey]) && !filter.default) return null;
           return (
