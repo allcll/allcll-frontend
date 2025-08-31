@@ -300,6 +300,13 @@ export async function triggerButtonEvent(
       return await saveStatus(APPLY_STATUS.CAPTCHA_FAILED);
     }
 
+    // 이미 failed 상태인지 확인합니다. 이미 failed 상태라면, doubled 처리하고, UI만 fail로 표시합니다.
+    const alreadyFailed = selections.some(s => s.interested_id === interestedId && s.status === APPLY_STATUS.FAILED);
+    if (alreadyFailed) {
+      await saveStatus(APPLY_STATUS.DOUBLED);
+      return { status: APPLY_STATUS.FAILED };
+    }
+
     // 과목 중복 여부를 확인합니다.
     const isDouble = selections.some(
       s => s.interested_id === interestedId && s.ended_at >= 0 && submittedFilter(s, latestSimulationId),
