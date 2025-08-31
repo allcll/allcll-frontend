@@ -20,7 +20,7 @@ interface SimulationState {
 
 interface IUseSimulationProcessStore {
   currentSimulation: SimulationState;
-  subjectsStatus: SubjectStatus[];
+  subjectsStatus: SubjectStatus[]; // 안씀
   setCurrentSimulation: (simulation: Partial<SimulationState>) => void;
   resetSimulation: () => void;
 }
