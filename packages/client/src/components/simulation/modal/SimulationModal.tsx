@@ -50,9 +50,10 @@ interface ISimulationModal {
 }
 
 function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>) {
-  const { closeModal, openModal } = useSimulationModalStore();
+  const openModal = useSimulationModalStore(state => state.openModal);
+  const closeModal = useSimulationModalStore(state => state.closeModal);
   const { currentSubjectId, setSubjectStatus, subjectStatusMap } = useSimulationSubjectStore();
-  const { setCurrentSimulation } = useSimulationProcessStore();
+  const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
   const { data: lectures } = useLectures();
 
   const currentSubjectStatus = subjectStatusMap[currentSubjectId]; // useSimulationSubjectStore.subjectStatusMap 여기만 사용함.

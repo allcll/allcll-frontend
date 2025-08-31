@@ -6,8 +6,9 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useLectures from './server/useLectures';
 
 export function useReloadSimulation() {
-  const { setCurrentSimulation, currentSimulation } = useSimulationProcessStore();
-  const { openModal } = useSimulationModalStore();
+  const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
+  const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
+  const openModal = useSimulationModalStore(state => state.openModal);
   const { data: lectures } = useLectures();
 
   const loadCurrentSimulation = (

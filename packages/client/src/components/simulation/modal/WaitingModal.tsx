@@ -39,8 +39,9 @@ function WaitingModal() {
   const [timer, setTimer] = useState(0);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const { closeModal } = useSimulationModalStore();
-  const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore();
+  const closeModal = useSimulationModalStore(state => state.closeModal);
+  const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
+  const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
 
   const unit = 0.2;
   const peoplePerUnit = 98;

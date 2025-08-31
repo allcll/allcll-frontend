@@ -49,7 +49,8 @@ function TutorialModal() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [popupChecked, setPopupChecked] = useState(false);
 
-  const { closeModal, openModal } = useSimulationModalStore();
+  const openModal = useSimulationModalStore(state => state.openModal);
+  const closeModal = useSimulationModalStore(state => state.closeModal);
   const isMobile = useMobile();
   const youTubeSize = isMobile ? { width: '250', height: '141' } : { width: '600', height: '338' };
   const showTutorial = checkExpiredTutorialPop();

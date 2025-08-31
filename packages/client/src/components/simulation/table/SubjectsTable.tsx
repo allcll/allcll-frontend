@@ -11,9 +11,9 @@ interface ISubjectsTable {
 }
 
 const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
-  const { currentSimulation } = useSimulationProcessStore();
-  const { openModal } = useSimulationModalStore();
-  const { setCurrentSubjectId } = useSimulationSubjectStore();
+  const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
+  const openModal = useSimulationModalStore(state => state.openModal);
+  const setCurrentSubjectId = useSimulationSubjectStore(state => state.setCurrentSubjectId);
   const { data: lectures } = useLectures();
 
   const handleClickSubject = (subjectId: number) => {
