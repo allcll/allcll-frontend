@@ -73,10 +73,10 @@ function MultiSelectFilterOption<VALUE extends string | number>({
       <div className="flex justify-end w-full mt-2">
         <button
           onClick={() => handleClickReset()}
-          className="text-blue-500 cursor-pointer sm:text-sm text-xs px-1 py-0.5"
+          className="text-gray-500 hover:text-blue-500 cursor-pointer sm:text-sm text-xs px-1 py-0.5"
         >
-          <ResetSvg className="inline w-4 h-4 mr-1 mb-0.5" />
-          필터 초기화
+          <ResetSvg className="inline w-4 h-4 mr-1 mb-0.5" stroke="currentColor" />
+          초기화
         </button>
       </div>
     </div>
