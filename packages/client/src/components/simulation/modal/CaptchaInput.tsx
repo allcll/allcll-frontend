@@ -20,7 +20,8 @@ function CaptchaInput() {
   const codeRef = useRef<string>('');
   const { data: lectures } = useLectures();
 
-  const { closeModal, openModal } = useSimulationModalStore();
+  const openModal = useSimulationModalStore(state => state.openModal);
+  const closeModal = useSimulationModalStore(state => state.closeModal);
   const { currentSubjectId, setSubjectStatus, setCaptchaFailed } = useSimulationSubjectStore();
 
   function handleRefreshCaptcha() {

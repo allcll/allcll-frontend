@@ -61,6 +61,10 @@ export interface Subject {
   isDeleted: boolean; // 삭제 여부
 }
 
+/** before: 튜토리얼 + 관심과목 선택
+ * start: 시작 -> 대기 -> 과목 불러오기 전
+ * progress: 과목 신청 프로세스
+ * finish: 결과 모달 */
 export type SimulationStatusType = 'before' | 'start' | 'progress' | 'finish';
 
 export interface DepartmentType {

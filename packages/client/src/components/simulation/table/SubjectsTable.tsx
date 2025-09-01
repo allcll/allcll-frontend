@@ -11,9 +11,9 @@ interface ISubjectsTable {
 }
 
 const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
-  const { currentSimulation } = useSimulationProcessStore();
-  const { openModal } = useSimulationModalStore();
-  const { setCurrentSubjectId } = useSimulationSubjectStore();
+  const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
+  const openModal = useSimulationModalStore(state => state.openModal);
+  const setCurrentSubjectId = useSimulationSubjectStore(state => state.setCurrentSubjectId);
   const { data: lectures } = useLectures();
 
   const handleClickSubject = (subjectId: number) => {
@@ -31,9 +31,11 @@ const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
     openModal('captcha');
   };
 
-  const mergeNonRegisteredAndFailed = currentSimulation.nonRegisteredSubjects.concat(currentSimulation.failedSubjects);
+  // const mergeNonRegisteredAndFailed = currentSimulation.nonRegisteredSubjects.concat(currentSimulation.failedSubjects);
 
-  const subjectsToRender = isRegisteredTable ? currentSimulation.successedSubjects : mergeNonRegisteredAndFailed;
+  const subjectsToRender = isRegisteredTable
+    ? currentSimulation.registeredSubjects
+    : currentSimulation.nonRegisteredSubjects;
 
   return subjectsToRender.length > 0 ? (
     subjectsToRender.map((subject, idx) => (

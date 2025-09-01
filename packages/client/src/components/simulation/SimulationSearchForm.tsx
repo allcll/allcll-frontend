@@ -15,7 +15,7 @@ import React from 'react';
 
 function SimulationSearchForm() {
   const { setCurrentSimulation, currentSimulation, resetSimulation } = useSimulationProcessStore();
-  const { openModal } = useSimulationModalStore();
+  const openModal = useSimulationModalStore(state => state.openModal);
   const ongoingSimulation = useLiveQuery(checkOngoingSimulation);
   const { reloadSimulationStatus } = useReloadSimulation();
   const { data: lectures } = useLectures();
