@@ -77,9 +77,11 @@ function SubjectSearches() {
         ) : (
           <>
             <DepartmentSelectFilter department={department} setFilter={setFilter} />
+
             {MultiPreSeatFilterConfig.map(filter => {
               const value = filters?.[filter.filterKey];
               if (isFilterEmpty(filter.filterKey, value) && !filter.default) return null;
+
               return (
                 <GenericMultiSelectFilter
                   key={filter.filterKey}

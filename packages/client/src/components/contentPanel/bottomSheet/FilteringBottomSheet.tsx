@@ -7,6 +7,7 @@ import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
 import { FilterConfiguration } from '@/utils/types';
 import SeatFilter from '../filter/SeatFilter';
 import WishFilter from '../filter/WishFilter';
+import DayFilter from '../filter/DayFilter';
 
 interface FilteringBottomSheetProps {
   onCloseFiltering: () => void;
@@ -23,7 +24,6 @@ function FilteringBottomSheet({
   resetFilter,
   multiFilterConfig,
 }: FilteringBottomSheetProps) {
-
   const handleClickSave = () => {
     onCloseFiltering();
   };
@@ -47,9 +47,14 @@ function FilteringBottomSheet({
             onChange={e => setFilter('department', e.target.value)}
           />
         </div>
- 
+
         <SeatFilter seatRange={filters.seatRange} setFilter={setFilter} />
         <WishFilter wishRange={filters.wishRange} setFilter={setFilter} />
+
+        <div className="w-full h-15 flex gap-2 flex-col justify-center mt-2">
+          <label className="text-xs text-gray-500">시간</label>
+          <DayFilter times={filters.time} setFilter={setFilter} />
+        </div>
 
         {multiFilterConfig.map(filter => (
           <GenericMultiSelectFilter
@@ -70,7 +75,6 @@ function FilteringBottomSheet({
           <CustomButton
             className="text-sm text-blue-500 hover:text-blue-600 hover:underline cursor-pointer"
             onClick={resetFilter}
-
           >
             필터 초기화
           </CustomButton>
