@@ -30,20 +30,6 @@ export function useReloadSimulation() {
     }
   };
 
-  // function getSubjectsWithStatusSuccess(
-  //   registeredSubjects: { subjectId: number }[],
-  //   key: 'successedSubjects' | 'failedSubejcts',
-  //   subjectStatus: { subjectId: number; status: number }[],
-  // ) {
-  //   if (key === 'successedSubjects') {
-  //     const statusSuccessedIds = subjectStatus.filter(status => status.status === 1).map(status => status.subjectId);
-  //     return registeredSubjects.filter(subject => statusSuccessedIds.includes(subject.subjectId));
-  //   } else {
-  //     const statusFailedIds = subjectStatus.filter(status => status.status === 2).map(status => status.subjectId);
-  //     return registeredSubjects.filter(subject => statusFailedIds.includes(subject.subjectId));
-  //   }
-  // }
-
   const reloadSimulationStatus = () => {
     getSimulateStatus()
       .then(result => {
@@ -56,20 +42,6 @@ export function useReloadSimulation() {
         }
 
         if (result?.registeredSubjects) {
-          // const filteredSuccessedSubjects = getSubjectsWithStatusSuccess(
-          //   result.registeredSubjects,
-          //   'successedSubjects',
-          //   result.subjectStatus,
-          // );
-          //
-          // const filteredFailedSubjects = getSubjectsWithStatusSuccess(
-          //   result.registeredSubjects,
-          //   'failedSubejcts',
-          //   result.subjectStatus,
-          // );
-
-          // loadCurrentSimulation(filteredSuccessedSubjects, 'successedSubjects', result.simulationId);
-          // loadCurrentSimulation(filteredFailedSubjects, 'failedSubjects', result.simulationId);
           loadCurrentSimulation(result.registeredSubjects, 'registeredSubjects', result.simulationId);
         }
       })
