@@ -1,12 +1,10 @@
 import { FilterConfiguration } from '@/utils/types';
-import { CREDITS, CURITYPE, GRADE, SEAT_RANGE, WISH_RANGE } from '../constants/Filters';
+import { CREDITS, CURITYPE, GRADE, REMARK, SEAT_RANGE, WISH_RANGE } from '../constants/Filters';
 import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
 import Chip from '@common/components/chip/Chip';
-import { FilterDomains, FilterOptions } from '@/utils/filtering/filterDomains';
+import { FilterOptions } from '@/utils/filtering/filterDomains';
 
 const ClassroomOptions = FilterOptions.classRoom.sort((a, b) => a.label.localeCompare(b.label));
-
-const RemarkOptions = FilterDomains.remark.map(rm => ({ label: rm, value: rm }));
 
 export const MultiWishFilterConfig: FilterConfiguration<string | number>[] = [
   {
@@ -39,7 +37,7 @@ export const MultiWishFilterConfig: FilterConfiguration<string | number>[] = [
   },
   {
     filterKey: 'note',
-    options: RemarkOptions,
+    options: REMARK,
     labelPrefix: '비고',
     default: false,
     ItemComponent: CheckboxAdapter,

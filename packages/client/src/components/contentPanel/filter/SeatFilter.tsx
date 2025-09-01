@@ -1,26 +1,10 @@
 import { Filters } from '@/store/useFilterStore';
-import { OptionType, RangeFilter } from '@/utils/types.ts';
+import { RangeFilter } from '@/utils/types.ts';
 import Chip from '@common/components/chip/Chip';
 import Filtering from '@common/components/filtering/Filtering';
 import SingleSelectFilterOption from '@/components/common/filter/SingleSelectFilter';
 import useMobile from '@/hooks/useMobile';
-
-
-const SEAT_RANGE: OptionType<number>[] = [
-  { value: 0, label: '전체' },
-  { value: 1, label: '여석 1개 이하' },
-  { value: 2, label: '여석 2개 이상' },
-  { value: 3, label: '여석 5개 이상' },
-  { value: 4, label: '여석 10개 이상' },
-];
-
-const RANGE_VALUES: Array<RangeFilter | null> = [
-  null,
-  { operator: 'under-equal', value: 1 },
-  { operator: 'over-equal', value: 2 },
-  { operator: 'over-equal', value: 5 },
-  { operator: 'over-equal', value: 10 },
-];
+import { SEAT_RANGE, SEAT_RANGE_VALUES } from './constants/Filters';
 
 interface ISeatFilter {
   seatRange: RangeFilter | null;
@@ -28,21 +12,15 @@ interface ISeatFilter {
 }
 
 function SeatFilter({ seatRange, setFilter }: ISeatFilter) {
-  const selectedValue = Math.max(
-    0,
-    RANGE_VALUES.findIndex(v => v === seatRange),
-  );
+  const selectedValue = Math.max(0, SEAT_RANGE_VALUES.find(v => v?.value === seatRange?.value)?.value ?? 0);
   const isMobile = useMobile();
 
-
-  const setFilterScheduleWrapper = (field: keyof Filters, value: number | null) => {
-    if (field === 'seatRange') {
-      setFilter('seatRange', value !== null ? RANGE_VALUES[value] : null);
-    }
+  const setFilterWrapper = (_: keyof Filters, value: number | null) => {
+    setFilter('seatRange', value !== null ? (SEAT_RANGE_VALUES.find(v => v?.value === value) ?? null) : null);
   };
 
   const getLabelPrefix = () => {
-    if (seatRange?.value === 1) return '여석 1개 이하';
+    if (seatRange?.operator === 'under-equal') return `여석 ${seatRange.value}개 이하`;
 
     if (seatRange) return `여석 ${seatRange.value}개 이상`;
     return '여석';
@@ -55,7 +33,7 @@ function SeatFilter({ seatRange, setFilter }: ISeatFilter) {
       labelPrefix="여석"
       selectedValue={selectedValue}
       field="seatRange"
-      setFilter={setFilterScheduleWrapper}
+      setFilter={setFilterWrapper}
       options={SEAT_RANGE}
       ItemComponent={Chip}
     />
@@ -65,7 +43,7 @@ function SeatFilter({ seatRange, setFilter }: ISeatFilter) {
         labelPrefix="여석"
         selectedValue={selectedValue}
         field="seatRange"
-        setFilter={setFilterScheduleWrapper}
+        setFilter={setFilterWrapper}
         options={SEAT_RANGE}
         ItemComponent={Chip}
       />

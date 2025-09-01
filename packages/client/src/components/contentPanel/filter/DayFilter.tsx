@@ -8,10 +8,8 @@ interface IDayFilter {
 }
 
 function DayFilter({ times, setFilter }: IDayFilter) {
-  const setFilterScheduleWrapper = (field: keyof Filters, value: IDayTimeItem[]) => {
-    if (field === 'time') {
-      setFilter('time', value);
-    }
+  const setFilterWrapper = (_: keyof Filters, value: IDayTimeItem[]) => {
+    setFilter('time', value);
   };
 
   const getLabelPrefix = () => {
@@ -25,7 +23,7 @@ function DayFilter({ times, setFilter }: IDayFilter) {
 
   return (
     <Filtering label={labelPrefix} selected={times.length > 0 && times[0].day !== ''} className="min-w-max">
-      <DayTimeFilter items={times} onChange={items => setFilterScheduleWrapper('time', items)} />
+      <DayTimeFilter items={times} onChange={items => setFilterWrapper('time', items)} />
     </Filtering>
   );
 }

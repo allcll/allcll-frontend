@@ -6,7 +6,7 @@ import SearchBottomSheet from '@/components/contentPanel/bottomSheet/SearchBotto
 import FilteringBottomSheet from '@/components/contentPanel/bottomSheet/FilteringBottomSheet';
 import FormBottomSheet from '@/components/contentPanel/bottomSheet/FormBottomSheet';
 import ScheduleFormModal from '@/components/contentPanel/ScheduleFormModal';
-import ContentPanel from '@/components/contentPanel/ContentPanel';
+import ContentPanel from '@/components/contentPanel/ScheduleContentPanel';
 import EditTimetable from '@/components/contentPanel/EditTimetable';
 import ScheduleInfoModal from '@/components/contentPanel/ScheduleInfoModal';
 import ScheduleInfoBottomSheet from '@/components/contentPanel/bottomSheet/ScheduleDetailBottomSheet';
@@ -23,7 +23,6 @@ import DownloadSvg from '@/assets/download.svg?react';
 import Card from '@common/components/Card';
 import { useScheduleSearchStore } from '@/store/useFilterStore';
 import ScheduleFilterConfig from '@/components/contentPanel/filter/config/schedule';
-
 
 type modalType = 'edit' | 'create' | null;
 

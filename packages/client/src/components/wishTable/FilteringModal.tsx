@@ -1,7 +1,7 @@
 import Modal from '@common/components/modal/Modal';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import DayTimeFilter, { IDayTimeItem } from '@/components/contentPanel/filter/DayTimeFilter.tsx';
-import { FilterDomains, FilterOptions, getCategories } from '@/utils/filtering/filterDomains.ts';
+import { FilterOptions, getCategories } from '@/utils/filtering/filterDomains.ts';
 import { FilterStore } from '@/store/useFilterStore.ts';
 import useSubject from '@/hooks/server/useSubject.ts';
 import { Curitype, RemarkType } from '@/utils/types.ts';
@@ -9,6 +9,7 @@ import MultiSelectFilterOption from '@common/components/filtering/MultiSelectFil
 import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
 import Chip from '@common/components/chip/Chip';
 import CustomButton from '@common/components/Button';
+import { REMARK } from '../contentPanel/filter/constants/Filters';
 
 interface IModalProps {
   filterStore: FilterStore;
@@ -16,8 +17,6 @@ interface IModalProps {
 }
 
 const ClassroomOptions = FilterOptions.classRoom.sort((a, b) => a.label.localeCompare(b.label));
-
-const RemarkOptions = FilterDomains.remark.map(rm => ({ label: rm, value: rm }));
 
 function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
   const { classroom, note, categories, time } = filterStore(state => state.filters);
@@ -125,7 +124,7 @@ function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
         <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">비고</h3>
         <MultiSelectFilterOption
           selectedValues={note}
-          options={RemarkOptions}
+          options={REMARK}
           field="selectedRemarks"
           setFilter={setRemarkFilterWrapper}
           ItemComponent={CheckboxAdapter}

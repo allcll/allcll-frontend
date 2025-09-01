@@ -82,19 +82,19 @@ export const DAYS: Day[] = ['월', '화', '수', '목', '금', '토', '일'];
 export type Curitype = '교필' | '교선' | '전필' | '전선' | '전기' | '공필' | '균필' | '기필' | '교직' | 'ROTC';
 export type Credit = 1 | 2 | 3;
 
-export interface FilterItemProps<VALUE extends string | number> {
+export interface FilterItemProps<VALUE> {
   label: string;
   selected: boolean;
   onClick: () => void;
   value: VALUE;
 }
 
-export interface OptionType<VALUE extends string | number> {
+export interface OptionType<VALUE> {
   label: string;
   value: VALUE;
 }
 
-export interface FilterConfiguration<VALUE extends string | number> {
+export interface FilterConfiguration<VALUE> {
   filterKey: keyof Filters;
   options: OptionType<VALUE>[];
   labelPrefix: string;

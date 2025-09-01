@@ -1,7 +1,6 @@
-import { Curitype, Day, Grade, RangeFilter } from '@/utils/types';
-import { OptionType } from '../common/GenericMultiSelectFilter';
+import { Credit, Curitype, Day, Grade, OptionType, RangeFilter, RemarkType } from '@/utils/types';
 
-export const CREDITS: OptionType<number>[] = [
+export const CREDITS: OptionType<Credit>[] = [
   { value: 1, label: '1학점' },
   { value: 2, label: '2학점' },
   { value: 3, label: '3학점' },
@@ -36,11 +35,10 @@ export const GRADE: OptionType<Grade>[] = [
 ];
 
 export const SEAT_RANGE: OptionType<number>[] = [
-  { value: 0, label: '전체' },
   { value: 1, label: '여석 1개 이하' },
   { value: 2, label: '여석 2개 이상' },
-  { value: 3, label: '여석 5개 이상' },
-  { value: 4, label: '여석 10개 이상' },
+  { value: 5, label: '여석 5개 이상' },
+  { value: 10, label: '여석 10개 이상' },
 ];
 
 export const SEAT_RANGE_VALUES: Array<RangeFilter | null> = [
@@ -52,10 +50,10 @@ export const SEAT_RANGE_VALUES: Array<RangeFilter | null> = [
 ];
 
 export const WISH_RANGE: OptionType<number>[] = [
-  { value: 0, label: '관심인원 30명 이상' },
-  { value: 1, label: '관심인원 50명 이상' },
-  { value: 2, label: '관심인원 100명 이상' },
-  { value: 3, label: '관심인원  200명 이상' },
+  { value: 30, label: '관심인원 30명 이상' },
+  { value: 50, label: '관심인원 50명 이상' },
+  { value: 100, label: '관심인원 100명 이상' },
+  { value: 200, label: '관심인원 200명 이상' },
 ];
 
 export const WISH_RANGE_VALUES: Array<RangeFilter | null> = [
@@ -63,4 +61,10 @@ export const WISH_RANGE_VALUES: Array<RangeFilter | null> = [
   { operator: 'over-equal', value: 50 },
   { operator: 'over-equal', value: 100 },
   { operator: 'over-equal', value: 200 },
+];
+
+export const REMARK: OptionType<RemarkType>[] = [
+  { value: '외국인대상', label: '외국인대상' },
+  { value: 'SHP대상', label: 'SHP대상' },
+  { value: '기타', label: '기타' },
 ];

@@ -47,8 +47,10 @@ function ScheduleContentPanel() {
         >
           <FilterSvg className="w-4 h-4 text-gray-600 hover:text-blue-500 transition-colors" />
         </button>
+
         <DepartmentFilter department={filters.department} setFilter={setFilters} />
         <DayFilter times={filters.time} setFilter={setFilters} />
+
         {ScheduleFilter.map(filter => {
           if (isFilterEmpty(filter.filterKey, filters[filter.filterKey]) && !filter.default) return null;
           return (
@@ -61,7 +63,7 @@ function ScheduleContentPanel() {
               selectedValues={
                 Array.isArray(filters[filter.filterKey]) ? (filters[filter.filterKey] as (string | number)[]) : null
               }
-              setFilter={setFilters}
+              setFilter={(key, value) => setFilters(key, value)}
               className="min-w-max"
             />
           );

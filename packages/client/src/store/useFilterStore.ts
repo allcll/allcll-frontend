@@ -1,12 +1,12 @@
 import { create, StoreApi, UseBoundStore } from 'zustand';
-import { Curitype, Grade, RangeFilter, RemarkType } from '@/utils/types.ts';
+import { Credit, Curitype, Grade, RangeFilter, RemarkType } from '@/utils/types.ts';
 import { IDayTimeItem } from '@/components/contentPanel/filter/DayTimeFilter.tsx';
 
 export interface Filters {
   keywords: string;
   department: string;
   grades: Grade[];
-  credits: number[];
+  credits: Credit[];
   categories: Curitype[];
   seatRange: RangeFilter | null;
   wishRange: RangeFilter | null;
