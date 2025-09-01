@@ -1,20 +1,9 @@
 import SingleSelectFilterOption from '@/components/common/filter/SingleSelectFilter';
 import useMobile from '@/hooks/useMobile';
 import { Filters } from '@/store/useFilterStore.ts';
+import { FilterItemProps, OptionType } from '@/utils/types';
 import Chip from '@common/components/chip/Chip';
 import Filtering from '@common/components/filtering/Filtering';
-
-export interface OptionType<VALUE extends string | number> {
-  value: VALUE;
-  label: string;
-}
-
-interface FilterItemProps<VALUE extends string | number> {
-  label: string;
-  selected: boolean;
-  onClick: () => void;
-  value: VALUE;
-}
 
 interface GenericSingleSelectFilterProps<VALUE extends string | number> {
   filterKey: keyof Filters;
@@ -42,33 +31,29 @@ function GenericSingleSelectFilter<T extends string | number>({
     return '';
   };
 
-  const labelPrefix = getLabelPrefix(selectedValue as T | null) || '';
+  const labelPrefix = getLabelPrefix(selectedValue ?? null) ?? '';
 
-  return (
-    <>
-      {isMobile ? (
-        <SingleSelectFilterOption<T>
-          labelPrefix={label}
-          selectedValue={selectedValue as T}
-          field={filterKey}
-          setFilter={(field, value) => setFilter(field, value as Filters[keyof Filters])}
-          options={options}
-          ItemComponent={Chip}
-          className="w-full flex flex-row gap-2"
-        />
-      ) : (
-        <Filtering label={labelPrefix} selected={!!selectedValue}>
-          <SingleSelectFilterOption<T>
-            labelPrefix={label}
-            selectedValue={selectedValue as T}
-            field={filterKey}
-            setFilter={(field, value) => setFilter(field, value as Filters[keyof Filters])}
-            options={options}
-            ItemComponent={ItemComponent}
-          />
-        </Filtering>
-      )}
-    </>
+  return isMobile ? (
+    <SingleSelectFilterOption<T>
+      labelPrefix={label}
+      selectedValue={selectedValue}
+      field={filterKey}
+      setFilter={(field, value) => setFilter(field, value as Filters[keyof Filters])}
+      options={options}
+      ItemComponent={Chip}
+      className="w-full flex flex-row gap-2"
+    />
+  ) : (
+    <Filtering label={labelPrefix} selected={!!selectedValue}>
+      <SingleSelectFilterOption<T>
+        labelPrefix={label}
+        selectedValue={selectedValue}
+        field={filterKey}
+        setFilter={(field, value) => setFilter(field, value as Filters[keyof Filters])}
+        options={options}
+        ItemComponent={ItemComponent}
+      />
+    </Filtering>
   );
 }
 

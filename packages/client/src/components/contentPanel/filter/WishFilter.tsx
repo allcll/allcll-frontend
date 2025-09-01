@@ -12,7 +12,10 @@ interface IWishFilter {
 }
 
 function WishFilter({ wishRange, setFilter }: IWishFilter) {
-  const selectedValue = WISH_RANGE_VALUES.find(v => v?.value === wishRange?.value) || null;
+  const selectedValue = WISH_RANGE_VALUES.find(v => v?.value === wishRange?.value) ?? null;
+
+  console.log('selectedValue', selectedValue);
+
   const isMobile = useMobile();
 
   const setFilterWrapper = (_: keyof Filters, optionValue: number | null) => {
@@ -32,17 +35,17 @@ function WishFilter({ wishRange, setFilter }: IWishFilter) {
   return isMobile ? (
     <SingleSelectFilterOption
       labelPrefix="관심과목"
-      selectedValue={selectedValue?.value || null}
+      selectedValue={selectedValue?.value ?? null}
       field="wishRange"
       setFilter={setFilterWrapper}
       options={WISH_RANGE}
       ItemComponent={Chip}
     />
   ) : (
-    <Filtering label={labelPrefix} selected={selectedValue?.value !== -1} className="min-w-max">
+    <Filtering label={labelPrefix} selected={selectedValue !== null} className="min-w-max">
       <SingleSelectFilterOption
         labelPrefix="관심과목"
-        selectedValue={selectedValue?.value || null}
+        selectedValue={selectedValue?.value ?? null}
         field="wishRange"
         setFilter={setFilterWrapper}
         options={WISH_RANGE}
