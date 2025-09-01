@@ -55,7 +55,7 @@ function GenericMultiSelectFilter<T extends string | number>({
         setFilter={(field, value) => setFilter(field, value as Filters[typeof field])}
         options={options}
         ItemComponent={ItemComponent}
-        className="min-w-max"
+        className="w-full flex flex-row gap-2"
       />
     </Filtering>
   );

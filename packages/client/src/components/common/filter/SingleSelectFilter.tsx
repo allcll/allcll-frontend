@@ -45,6 +45,7 @@ function SingleSelectFilterOption<VALUE extends string | number>({
   return (
     <div className="relative inline-block">
       <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">{labelPrefix}</h3>
+
       <div className="grid grid-cols-2 gap-2">
         {options.map(option => (
           <ItemComponent

@@ -23,7 +23,7 @@ function Live() {
         <title>ALLCLL | 실시간 수강 여석</title>
       </Helmet>
 
-      <div className="flex justify-between overflow-hidden">
+      <div className="flex justify-between overflow-hidden min-h-screen">
         <div className="max-w-screen-xl mx-auto p-4 mb-8 container">
           {isSystemChecking ? (
             <CardWrap>

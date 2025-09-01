@@ -13,7 +13,6 @@ import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
 import useBackSignal from '@/hooks/useBackSignal.ts';
 import { Wishes } from '@/utils/types.ts';
 import ListSvg from '@/assets/list.svg?react';
-import FilterSvg from '@/assets/filter.svg?react';
 import useMobile from '@/hooks/useMobile';
 import FilterDelete from '../contentPanel/filter/FilterDelete';
 import GenericMultiSelectFilter from '../contentPanel/filter/common/GenericMultiSelectFilter';
@@ -22,6 +21,7 @@ import WishFilter from '../contentPanel/filter/WishFilter';
 import SeatFilter from '../contentPanel/filter/SeatFilter';
 import FilteringBottomSheet from '../contentPanel/bottomSheet/FilteringBottomSheet';
 import DayFilter from '../contentPanel/filter/DayFilter';
+import FilteringButton from '../common/filter/button/FilteringButton';
 
 export interface WishSearchParams {
   searchInput: string;
@@ -133,6 +133,8 @@ function Searches() {
         )}
 
         <FilterDelete filters={filters} resetFilter={resetFilter} />
+        <FilteringButton handleOpenFilter={handleOpenFilter} />
+
         <button
           className="p-2 rounded-md flex gap-2 items-center border border-gray-400 bg-white hover:bg-gray-100"
           onClick={setToggleFavorite}
@@ -140,15 +142,6 @@ function Searches() {
           title={favoriteOnly ? '즐겨찾기 필터 제거' : '즐겨찾기 필터 추가'}
         >
           <StarIcon disabled={!favoriteOnly} />
-        </button>
-
-        <button
-          className="p-2 rounded-md flex gap-2 items-center border border-gray-400 bg-white hover:bg-gray-100"
-          aria-label="필터 수정"
-          title="필터 수정"
-          onClick={handleOpenFilter}
-        >
-          <FilterSvg className="w-4 h-4 text-gray-600 hover:text-blue-500 transition-colors" />
         </button>
 
         <button

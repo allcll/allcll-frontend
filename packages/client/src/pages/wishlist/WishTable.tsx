@@ -23,7 +23,7 @@ function WishTable() {
         <title>ALLCLL | 관심과목 분석</title>
       </Helmet>
 
-      <div className="mx-auto max-w-7xl px-4 md:px-16 mb-8">
+      <div className="mx-auto max-w-7xl px-4 md:px-16 mb-8 min-h-screen">
         {/* Header */}
         <div className="py-5 px-2">
           <h1 className="text-xl font-bold">관심과목 분석</h1>

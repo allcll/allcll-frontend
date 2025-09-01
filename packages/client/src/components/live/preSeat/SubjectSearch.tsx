@@ -12,8 +12,8 @@ import DayFilter from '@/components/contentPanel/filter/DayFilter';
 import WishFilter from '@/components/contentPanel/filter/WishFilter';
 import SeatFilter from '@/components/contentPanel/filter/SeatFilter';
 import FilterDelete from '@/components/contentPanel/filter/FilterDelete';
-import FilterSvg from '@/assets/filter.svg?react';
-import AlarmIcon from '@/components/svgs/AlarmIcon';
+import FilteringButton from '@/components/common/filter/button/FilteringButton';
+import AlarmButton from '@/components/common/filter/button/AlarmButton';
 
 function SubjectSearches() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
@@ -105,23 +105,8 @@ function SubjectSearches() {
         )}
 
         <FilterDelete filters={filters} resetFilter={resetFilter} />
-
-        <button
-          className="p-2 rounded-md flex gap-2 items-center border border-gray-400 bg-white hover:bg-gray-100"
-          aria-label="필터 수정"
-          title="필터 수정"
-          onClick={handleOpenFilter}
-        >
-          <FilterSvg className="w-4 h-4 text-gray-600 hover:text-blue-500 transition-colors" />
-        </button>
-
-        <button
-          className="px-4 py-2 rounded-md flex gap-2 items-center text-nowrap border border-gray-400 hover:bg-white cursor-pointer"
-          onClick={() => setFilter('alarmOnly', !alarmOnly)}
-        >
-          <AlarmIcon disabled={!alarmOnly} />
-          알림과목
-        </button>
+        <FilteringButton handleOpenFilter={handleOpenFilter} />
+        <AlarmButton alarmOnly={alarmOnly} setFilter={setFilter} />
       </div>
     </div>
   );

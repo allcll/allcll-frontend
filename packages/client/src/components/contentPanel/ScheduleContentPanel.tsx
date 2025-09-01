@@ -10,10 +10,10 @@ import useWishes from '@/hooks/server/useWishes.ts';
 import DepartmentFilter from './filter/DepartmentFilter';
 import SearchBox from '../common/SearchBox';
 import FilteringModal from '../wishTable/FilteringModal';
-import FilterSvg from '@/assets/filter.svg?react';
 import GenericMultiSelectFilter from './filter/common/GenericMultiSelectFilter';
 import ScheduleFilter from './filter/config/schedule';
 import DayFilter from './filter/DayFilter';
+import FilteringButton from '../common/filter/button/FilteringButton';
 
 const initSchedule = new ScheduleAdapter().toUiData();
 
@@ -39,14 +39,7 @@ function ScheduleContentPanel() {
         onChange={e => setFilters('keywords', e.target.value)}
       />
       <div className="flex items-center flex-wrap gap-2 mr-20">
-        <button
-          className="p-2 w-8 h-8 rounded-md flex gap-2 items-center border border-gray-400 bg-white hover:bg-gray-100 justify-center"
-          aria-label="필터 수정"
-          title="필터 수정"
-          onClick={() => setIsFilterModalOpen(true)}
-        >
-          <FilterSvg className="w-4 h-4 text-gray-600 hover:text-blue-500 transition-colors" />
-        </button>
+        <FilteringButton handleOpenFilter={() => setIsFilterModalOpen(true)} />
 
         <DepartmentFilter department={filters.department} setFilter={setFilters} />
         <DayFilter times={filters.time} setFilter={setFilters} />

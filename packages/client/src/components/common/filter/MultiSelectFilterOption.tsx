@@ -50,15 +50,15 @@ function MultiSelectFilterOption<VALUE extends string | number>({
   };
 
   return (
-    <div className="relative inline-block">
-      <h3 className="text-xs mb-1 md:text-lg text-gray-500 font-medium md:text-gray-600">{labelPrefix}</h3>
+    <div className="block w-full max-w-full">
+      <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">{labelPrefix}</h3>
+
       <div
         className={`
-          gap-y-2 
-          ${options.length > 6 ? 'md:grid grid-cols-2 gap-x-4' : 'md:flex flex-col'}
-          ${className}
-          grid grid-cols-2 gap-x-4
-        `}
+    gap-2 grid [grid-template-columns:repeat(auto-fit,minmax(80px,1fr))]
+    ${options.length > 6 ? 'md:grid md:grid-cols-2 md:max-h-50 md:overflow-y-auto' : 'md:flex md:flex-col md:max-h-50 md:overflow-y-auto'}
+    ${className ?? ''}
+  `}
       >
         {options.map(option => (
           <ItemComponent
@@ -70,10 +70,11 @@ function MultiSelectFilterOption<VALUE extends string | number>({
           />
         ))}
       </div>
+
       <div className="flex justify-end w-full mt-2">
         <button
-          onClick={() => handleClickReset()}
-          className="text-gray-500 hover:text-blue-500 cursor-pointer sm:text-sm text-xs px-1 py-0.5"
+          onClick={handleClickReset}
+          className="text-gray-500 hover:text-blue-500 cursor-pointer text-xs sm:text-sm px-1 py-0.5"
         >
           <ResetSvg className="inline w-4 h-4 mr-1 mb-0.5" stroke="currentColor" />
           초기화
