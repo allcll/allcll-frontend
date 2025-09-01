@@ -2,7 +2,7 @@ import Modal from '@/components/simulation/modal/Modal';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 
 function ProcessingModal() {
-  const { closeModal } = useSimulationModalStore();
+  const closeModal = useSimulationModalStore(state => state.closeModal);
   return (
     <Modal onClose={() => closeModal()}>
       <div className="p-6 w-80 bg-white rounded shadow">

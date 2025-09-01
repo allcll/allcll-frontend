@@ -6,8 +6,9 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useLectures from './server/useLectures';
 
 export function useReloadSimulation() {
-  const { setCurrentSimulation, currentSimulation } = useSimulationProcessStore();
-  const { openModal } = useSimulationModalStore();
+  const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
+  const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
+  const openModal = useSimulationModalStore(state => state.openModal);
   const { data: lectures } = useLectures();
 
   const loadCurrentSimulation = (
@@ -29,48 +30,18 @@ export function useReloadSimulation() {
     }
   };
 
-  function getSubjectsWithStatusSuccess(
-    registeredSubjects: { subjectId: number }[],
-    key: 'successedSubjects' | 'failedSubejcts',
-    subjectStatus: { subjectId: number; status: number }[],
-  ) {
-    if (key === 'successedSubjects') {
-      const statusSuccessedIds = subjectStatus.filter(status => status.status === 1).map(status => status.subjectId);
-      return registeredSubjects.filter(subject => statusSuccessedIds.includes(subject.subjectId));
-    } else {
-      const statusFailedIds = subjectStatus.filter(status => status.status === 2).map(status => status.subjectId);
-      return registeredSubjects.filter(subject => statusFailedIds.includes(subject.subjectId));
-    }
-  }
-
   const reloadSimulationStatus = () => {
     getSimulateStatus()
       .then(result => {
         if (!result || result.simulationId === -1) return;
 
-        setCurrentSimulation({
-          simulationId: result.simulationId,
-        });
+        setCurrentSimulation({ simulationId: result.simulationId });
 
         if (result?.nonRegisteredSubjects) {
           loadCurrentSimulation(result.nonRegisteredSubjects, 'nonRegisteredSubjects', result.simulationId);
         }
 
         if (result?.registeredSubjects) {
-          const filteredSuccessedSubjects = getSubjectsWithStatusSuccess(
-            result.registeredSubjects,
-            'successedSubjects',
-            result.subjectStatus,
-          );
-
-          const filteredFailedSubjects = getSubjectsWithStatusSuccess(
-            result.registeredSubjects,
-            'failedSubejcts',
-            result.subjectStatus,
-          );
-
-          loadCurrentSimulation(filteredSuccessedSubjects, 'successedSubjects', result.simulationId);
-          loadCurrentSimulation(filteredFailedSubjects, 'failedSubjects', result.simulationId);
           loadCurrentSimulation(result.registeredSubjects, 'registeredSubjects', result.simulationId);
         }
       })

@@ -8,7 +8,8 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { getAggregatedSimulationResults } from '@/utils/simulation/result';
 
 function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number }>) {
-  const { closeModal, openModal } = useSimulationModalStore();
+  const openModal = useSimulationModalStore(state => state.openModal);
+  const closeModal = useSimulationModalStore(state => state.closeModal);
   const [result, setResult] = useState<{ accuracy: number; score: number; total_elapsed: number } | null>(null);
   const [logParam, setLogParam] = useState<number>();
 
@@ -68,7 +69,7 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
     <ProcessingModal />
   ) : (
     <Modal onClose={() => closeModal()}>
-      <div className="w-[100%] sm:w-full max-w-md bg-white rounded-xl shadow-xl p-6 relative overflow-hidden">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-xl p-6 relative overflow-hidden">
         {isSuccessSimulation && (
           <div className="absolute inset-0 pointer-events-none">
             <div className="animate-float1 absolute top-6 left-6 w-3 h-3 bg-red-400 rounded-full" />

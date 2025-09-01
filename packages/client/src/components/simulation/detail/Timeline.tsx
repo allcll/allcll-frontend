@@ -10,6 +10,7 @@ interface TimelineData {
     color: string;
     start: number;
     duration: number;
+    isTop: boolean;
     events: Step[];
   }[];
 }
@@ -33,10 +34,10 @@ function Timeline({ result }: Readonly<{ result: ExtendedResultResponse }>) {
     <div className="relative">
       <div className="relative overflow-x-auto overflow-y-hidden">
         {/* timeline grid */}
-        <div className={`absolute top-0 flex h-full`} style={{ left: `${HEADER_WIDTH}px` }}>
+        <div className="absolute top-0 flex h-full" style={{ left: `${HEADER_WIDTH}px` }}>
           {timelineTicks.map(tick => (
             <div key={tick} className="border-r border-gray-200 relative" style={{ width: `${TICK_WIDTH}px` }}>
-              <span className="absolute bottom-0 text-xs text-gray-400 left-1/2 -translate-x-1/2">{tick}</span>
+              <span className="absolute text-xs text-gray-400 bg-white bottom-0 right-0 translate-x-1/2">{tick}</span>
             </div>
           ))}
         </div>
@@ -82,7 +83,13 @@ function TimelineBar({ timelines }: Readonly<{ timelines: TimelineData['timeline
         style={{ left: `${left}px`, width: `${width}px` }}
       >
         {timeline.events.map((event, j) => (
-          <TimelineDot key={'timeline-dot-' + j} event={event} startAt={timeline.start} color={timeline.color} />
+          <TimelineDot
+            key={'timeline-dot-' + j}
+            event={event}
+            startAt={timeline.start}
+            color={timeline.color}
+            isTop={timeline.isTop}
+          />
         ))}
       </div>
     );
@@ -90,20 +97,30 @@ function TimelineBar({ timelines }: Readonly<{ timelines: TimelineData['timeline
 }
 
 // Timeline Dot component
-function TimelineDot({ event, startAt, color }: Readonly<{ event: Step; startAt: number; color: string }>) {
+function TimelineDot({
+  event,
+  startAt,
+  color,
+  isTop,
+}: Readonly<{ event: Step; startAt: number; color: string; isTop: boolean }>) {
   const left = (event.start - startAt) * TICK_WIDTH + 6;
+  const eventTitle = getEventLabel(event.event);
+  const duration = event.start;
+  const tooltipPos = isTop ? 'top-4' : 'bottom-4';
 
   return (
-    <div className={`absolute top-1.5`} style={{ left: `${left}px` }}>
-      <div className={`w-3 h-3 bg-white border-2 rounded-full ${getColorBorderText(color)}`} />
+    <div className="absolute top-1.5" style={{ left: `${left}px` }}>
+      <div
+        className={`w-3 h-3 peer bg-white border-2 rounded-full hover:shadow cursor-pointer ${getColorBorderText(color)}`}
+      />
 
       {/* Tooltip wrapper */}
-      <div className="relative group cursor-pointer z-10">
-        <div className="absolute w-30 -top-10 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">
-          {getEventLabel(event.event)}
-          <br />
-          {(event.duration + startAt).toFixed(2)} sec
-        </div>
+      <div
+        className={`absolute z-10 ${tooltipPos} left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-black text-white text-nowrap text-xs text-center opacity-0 peer-hover:opacity-100 transition-opacity duration-200`}
+      >
+        {eventTitle}
+        <br />
+        {duration.toFixed(2)} sec
       </div>
     </div>
   );
@@ -129,15 +146,15 @@ function getColorClass(color: string) {
 function getColorBorderText(color: string) {
   switch (color) {
     case 'green':
-      return 'border-green-500 text-green-500';
+      return 'border-green-500 text-green-500 shadow-green-500';
     case 'red':
-      return 'border-red-500 text-red-500';
+      return 'border-red-500 text-red-500 shadow-red-500';
     case 'orange':
-      return 'border-orange-500 text-orange-500';
+      return 'border-orange-500 text-orange-500 shadow-orange-500';
     case 'yellow':
-      return 'border-yellow-500 text-yellow-500';
+      return 'border-yellow-500 text-yellow-500 shadow-yellow-500';
     default:
-      return 'border-gray-500 text-gray-500';
+      return 'border-gray-500 text-gray-500 shadow-gray-500';
   }
 }
 
@@ -205,6 +222,7 @@ function getSubjectData(result: ExtendedResultResponse): TimelineData[] {
         color: getStatusColorCode(sel.status),
         start: (sel.started_at - started_at) / 1000,
         duration: (sel.ended_at - sel.started_at) / 1000,
+        isTop: subject_results[0].subject_id === sel.subject_id,
         events: sel.events.reduce<Step[]>(
           (acc, evt, index) => [
             ...acc,

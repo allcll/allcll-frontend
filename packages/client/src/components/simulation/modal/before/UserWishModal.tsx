@@ -82,7 +82,6 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
         setCurrentSimulation({
           simulationId,
           simulationStatus: isRunning ? 'start' : 'before',
-          simulatonSubjects: simulationSubjects,
         });
       } else {
         console.error('시뮬레이션 시작 결과가 유효하지 않음', result);

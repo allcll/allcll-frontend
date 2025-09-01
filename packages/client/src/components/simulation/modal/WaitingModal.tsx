@@ -39,8 +39,9 @@ function WaitingModal() {
   const [timer, setTimer] = useState(0);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const { closeModal } = useSimulationModalStore();
-  const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore();
+  const closeModal = useSimulationModalStore(state => state.closeModal);
+  const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
+  const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
 
   const unit = 0.2;
   const peoplePerUnit = 98;
@@ -112,7 +113,7 @@ function WaitingModal() {
   };
 
   return (
-    <Modal onClose={() => closeModal()}>
+    <Modal onClose={() => {}}>
       <div className="sm:w-full max-w-md bg-white rounded-sm shadow-xl p-6 text-center space-y-6">
         <h2 className="text-lg md:text-xl font-semibold text-gray-800">
           서비스 <span className="text-blue-600 font-bold">접속대기 중</span>입니다.
