@@ -1,3 +1,13 @@
+/**
+ * 이 파일은 시뮬레이션 결과를 조회하고 분석하는 함수들을 포함합니다.
+ * 개별 시뮬레이션의 상세 결과(타임라인, 성공/실패 여부, 사용자 능력치 등)를 가져오거나,
+ * 전체 시뮬레이션 기록에 대한 통계 데이터를 집계하는 기능을 제공합니다.
+ *
+ * @function getSimulationList - 완료된 모든 시뮬레이션의 목록을 최신순으로 가져옵니다.
+ * @function getSimulationResult - 특정 시뮬레이션 ID에 해당하는 상세 결과 데이터를 반환합니다. 사용자 능력, 타임라인, 과목별 결과 등을 포함합니다.
+ * @function getAggregatedSimulationResults - 모든 완료된 시뮬레이션 데이터를 종합하여 통계 정보를 생성합니다. 전체 사용자 수, 과목별 성공률, 상태별 분포 등 다양한 집계 데이터를 제공합니다.
+ * @function average - 숫자 배열의 평균을 계산하는 헬퍼 함수입니다.
+ */
 import { db, SimulationRunSelections } from '@/utils/dbConfig.ts';
 import { getInterestedSnapshotById } from '@/utils/simulation/subjects.ts';
 import { APPLY_STATUS, BUTTON_EVENT, getSimulationById } from '@/utils/simulation/simulation.ts';

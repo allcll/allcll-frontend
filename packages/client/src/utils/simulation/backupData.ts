@@ -1,3 +1,15 @@
+/**
+ * 이 파일은 시뮬레이션 관련 데이터베이스의 백업 및 복원 기능을 담당합니다.
+ * Dexie.js를 사용하여 IndexedDB에 저장된 시뮬레이션 데이터(관심과목, 시뮬레이션 실행 기록 등)를
+ * JSON 파일 형태로 내보내거나(백업), JSON 파일을 읽어 데이터베이스를 복원하는 기능을 제공합니다.
+ * 또한, 진행 중인 시뮬레이션 데이터만 별도로 백업하거나 전체 데이터를 삭제하는 유틸리티 함수도 포함합니다.
+ *
+ * @function backupDatabase - 전체 데이터베이스를 'db-backup.json' 파일로 백업합니다.
+ * @function backupOngoingSimulation - 진행중인 시뮬레이션 관련 데이터만 'ongoing-simulation.json' 파일로 백업합니다.
+ * @function restoreDatabase - 제공된 파일을 사용하여 데이터베이스 상태를 복원합니다.
+ * @function deleteAllDatabase - 데이터베이스의 모든 관련 테이블을 삭제합니다.
+ * @function isValidDatabase - 현재 데이터베이스 스키마가 예상과 일치하는지 확인합니다.
+ */
 import { db } from '@/utils/dbConfig.ts';
 
 const EXPECTED_TABLES = [

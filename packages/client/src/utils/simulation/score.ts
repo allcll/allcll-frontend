@@ -1,3 +1,18 @@
+/**
+ * 이 파일은 시뮬레이션 성능을 기반으로 점수와 순위를 계산하는 함수들을 포함합니다.
+ * 사용자의 행동(속도, 정확도 등)을 통계적 모델(로그-정규분포)을 사용하여 평가하고, 0점에서 100점 사이의 점수로 변환합니다.
+ * 이를 통해 사용자는 자신의 수강신청 능력을 객관적인 수치로 파악할 수 있습니다.
+ *
+ * @constant Distribution - 각 평가 항목(검색 버튼 속도, 정확도, 캡차 속도, 전체 속도)에 대한 로그-정규분포의 평균(mu)과 표준편차(sigma)를 정의합니다.
+ * @function logNormalCDF - 로그-정규분포의 누적분포함수(CDF) 값을 계산합니다. 점수 계산의 핵심 통계 함수입니다.
+ * @function getSpeedScore - 소요 시간을 기반으로 속도 점수를 계산합니다. 시간이 짧을수록 높은 점수를 받습니다.
+ * @function getAccuracyScore - 정확도(0-100)를 기반으로 점수를 계산합니다.
+ * @function getAccuracy - 전체 소요 시간과 불필요한 행동에 소요된 시간을 바탕으로 정확도를 계산합니다.
+ * @function getSearchBtnSpeedRank - 검색 버튼 클릭 속도에 대한 순위(점수)를 계산합니다.
+ * @function getCaptchaSpeedRank - 캡차 인증 속도에 대한 순위(점수)를 계산합니다.
+ * @function getAccuracyRank - 정확도에 대한 순위(점수)를 계산합니다.
+ * @function getTotalSpeedRank - 과목당 평균 소요 시간에 대한 순위(점수)를 계산합니다.
+ */
 const Distribution = {
   searchBtnSpeed: { mu: 1.457, sigma: 0.7362 },
   accuracy: { mu: 100, sigma: 0.0017 },

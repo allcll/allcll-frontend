@@ -1,3 +1,23 @@
+/**
+ * 이 파일은 수강신청 시뮬레이션의 핵심 로직을 관리합니다.
+ * 시뮬레이션의 시작, 진행 상태 확인, 사용자 이벤트 처리, 종료 및 결과 계산까지
+ * 시뮬레이션의 전체 생명주기를 담당하는 함수들을 포함하고 있습니다.
+ * 사용자의 버튼 클릭과 같은 상호작용을 기록하고, 그에 따른 상태(성공, 실패 등)를 결정하며,
+ * 최종적으로 성능(정확도, 점수)을 계산하여 데이터베이스에 저장합니다.
+ *
+ * @enum BUTTON_EVENT - 시뮬레이션 내에서 발생할 수 있는 버튼 이벤트를 정의합니다. (검색, 신청, 캡차 등)
+ * @enum APPLY_STATUS - 각 과목 신청의 상태를 정의합니다. (진행중, 성공, 실패 등)
+ * @enum SIMULATION_ERROR - 시뮬레이션 과정에서 발생할 수 있는 오류 유형을 정의합니다.
+ *
+ * @function checkOngoingSimulation - 진행 중인 시뮬레이션이 있는지 확인하고 상태를 반환합니다.
+ * @function startSimulation - 새로운 시뮬레이션을 시작합니다.
+ * @function triggerButtonEvent - 사용자의 버튼 클릭 이벤트를 처리하고 상태를 업데이트합니다.
+ * @function forceStopSimulation - 시뮬레이션을 강제로 종료합니다.
+ * @function endCurrentSimulation - 시뮬레이션의 종료 처리를 담당하며, 최종 점수를 계산합니다.
+ * @function getSummaryResult - 완료된 시뮬레이션의 요약 결과를 가져옵니다.
+ * @function isSimulationFinished - 모든 과목에 대한 신청 시도가 완료되었는지 확인합니다.
+ * @function fixSimulation - 비정상적으로 종료된 시뮬레이션 데이터를 수정하거나 정리합니다.
+ */
 import { db, SimulationRun, SimulationRunSelections } from '@/utils/dbConfig.ts';
 import { getInterestedId, getRecentInterestedSnapshot } from '@/utils/simulation/subjects';
 import { getAccuracy, getAccuracyScore, getSpeedScore } from '@/utils/simulation/score.ts';
