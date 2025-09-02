@@ -8,6 +8,8 @@ import { AlarmNotification } from '@/hooks/useNotification.ts';
 import useAlarmSettings, { AlarmType, isSubAlarmActivated, SubAlarmType } from '@/store/useAlarmSettings.ts';
 import UseNotificationInstruction from '@/store/useNotificationInstruction.ts';
 import VibrationNotification from '@/utils/notification/vibrationNotification.ts';
+import BrowserNotification from '@/utils/notification/browserNotification.ts';
+import ToastNotification from '@/utils/notification/toastNotification.ts';
 
 interface IAlarmOptionModal {
   isOpen: boolean;
@@ -15,10 +17,14 @@ interface IAlarmOptionModal {
 }
 
 const AlarmTypeNames = [
-  { title: '알림 없음', value: AlarmType.NONE },
-  { title: '브라우저 알림', value: AlarmType.BROWSER },
-  { title: '토스트 알림', value: AlarmType.TOAST },
-  { title: '브라우저 + 토스트 알림', value: AlarmType.BOTH },
+  { title: '알림 없음', value: AlarmType.NONE, disabled: () => false },
+  { title: '브라우저 알림', value: AlarmType.BROWSER, disabled: () => !BrowserNotification.canNotify() },
+  { title: '토스트 알림', value: AlarmType.TOAST, disabled: () => !ToastNotification.canNotify() },
+  {
+    title: '브라우저 + 토스트 알림',
+    value: AlarmType.BOTH,
+    disabled: () => !BrowserNotification.canNotify() || !ToastNotification.canNotify(),
+  },
 ];
 
 function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
@@ -57,6 +63,7 @@ function AlarmOptionContent() {
   const alarmType = useAlarmSettings(state => state.alarmType);
   const saveSettings = useAlarmSettings(state => state.saveSettings);
   const hasPermission = UseNotificationInstruction(state => state.isPermitted);
+  const canBrowserNotify = BrowserNotification.canNotify();
 
   const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     saveSettings({ alarmType: Number(e.target.value) as AlarmType });
@@ -74,7 +81,7 @@ function AlarmOptionContent() {
         onChange={onChange}
       >
         {AlarmTypeNames.map(type => (
-          <option key={type.value} value={type.value}>
+          <option className="disabled:text-gray-500" key={type.value} value={type.value} disabled={type.disabled()}>
             {type.title}
           </option>
         ))}
@@ -85,6 +92,9 @@ function AlarmOptionContent() {
       )}
       {alarmType === AlarmType.TOAST && (
         <p className="pl-2 pb-2 text-sm text-red-600">토스트 알림은 탭이 열려 있을 때에만 작동해요.</p>
+      )}
+      {!canBrowserNotify && (
+        <p className="pl-2 pb-2 text-xs text-gray-600">이 브라우저는 브라우저 알림을 지원하지 않아요.</p>
       )}
     </div>
   );
