@@ -28,7 +28,7 @@ function usePreRealSeats() {
 }
 
 async function fetchPreRealSeats(): Promise<IPreRealSeatsResponse> {
-  return await fetchJsonOnPublic<IPreRealSeatsResponse>('/preSeats.json');
+  return await fetchJsonOnPublic<IPreRealSeatsResponse>('/pre-seats.json');
 }
 
 export default usePreRealSeats;
