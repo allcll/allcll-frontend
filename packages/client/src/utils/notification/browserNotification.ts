@@ -4,26 +4,21 @@ import useNotificationInstruction from '@/store/useNotificationInstruction.ts';
 import useBannerNotification, { ISetBanner } from '@/store/useBannerNotification.tsx';
 import { CustomNotification } from '@/hooks/useNotification.ts';
 
-const getNotification = () => {
-  return Notification ?? window.Notification;
-};
-
 const BrowserNotification: CustomNotification = {
   canNotify() {
-    return 'Notification' in window || !!getNotification();
+    return 'Notification' in window;
   },
   isGranted() {
-    return !BrowserNotification.canNotify() && getNotification().permission === 'granted';
+    return !BrowserNotification.canNotify() && Notification.permission === 'granted';
   },
   requestPermission(callback?: (permission: NotificationPermission) => void) {
-    const Notify = getNotification();
     if (!BrowserNotification.canNotify()) {
       alert('해당 브라우저는 브라우저 알림을 받을 수 없습니다. 다른 브라우저를 이용해주세요');
       return;
     }
 
     if (!BrowserNotification.isGranted()) {
-      Notify.requestPermission().then(permission => {
+      Notification.requestPermission().then(permission => {
         if (callback) callback(permission);
         useNotificationInstruction.getState().setPermitted(permission === 'granted');
       });
@@ -31,7 +26,7 @@ const BrowserNotification: CustomNotification = {
       return;
     }
 
-    if (callback) callback(Notify.permission);
+    if (callback) callback(Notification.permission);
   },
   getDeniedMessage() {
     if (!BrowserNotification.canNotify()) {
@@ -46,9 +41,8 @@ const BrowserNotification: CustomNotification = {
     const canNotify = BrowserNotification.canNotify();
     const activated = isAlarmActivated(AlarmType.BROWSER);
     const setBanner = useBannerNotification.getState().setBanner;
-    const Notify = getNotification();
 
-    if (canNotify && activated && Notify.permission === 'granted') {
+    if (canNotify && activated && Notification.permission === 'granted') {
       checkSystemNotification(setBanner);
 
       navigator.serviceWorker.ready.then(function (registration) {
