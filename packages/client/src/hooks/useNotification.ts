@@ -12,7 +12,8 @@ import BrowserNotification from '@/utils/notification/browserNotification.ts';
 import VibrationNotification from '@/utils/notification/vibrationNotification.ts';
 import ToastNotification from '@/utils/notification/toastNotification.ts';
 import SoundNotification from '@/utils/notification/SoundNotification.ts';
-import { PinnedSeats, Wishlist } from '@/utils/types.ts';
+import { getSubjects } from '@/hooks/server/useSubject.ts';
+import { PinnedSeats } from '@/utils/types.ts';
 
 export interface CustomNotification {
   canNotify(): boolean;
@@ -88,20 +89,20 @@ export function onChangePinned(prev: Array<PinnedSeats>, newPin: Array<PinnedSea
   for (const pin of newPin) {
     const hasSeat = prev.some(p => p.subjectId === pin.subjectId && p.seatCount === 0 && pin.seatCount > 0);
     if (hasSeat) {
-      const wishes = getWishes(queryClient, pin.subjectId);
+      const subj = getSubject(queryClient, pin.subjectId);
 
-      if (!wishes) {
+      if (!subj) {
         AlarmNotification.show(`unknown subject의 여석이 생겼습니다`);
         return;
       }
-      AlarmNotification.show(`${wishes.subjectCode}-${wishes.classCode} ${wishes.subjectName} 여석이 생겼습니다`);
+      AlarmNotification.show(`${subj.subjectCode}-${subj.classCode} ${subj.subjectName} 여석이 생겼습니다`);
     }
   }
 }
 
-function getWishes(queryClient: QueryClient, subjectId: number) {
-  const wishes = queryClient.getQueryData<Wishlist>(['wishlist'])?.baskets ?? [];
-  return wishes.find(wish => wish.subjectId === subjectId);
+function getSubject(queryClient: QueryClient, subjectId: number) {
+  const subjects = getSubjects(queryClient);
+  return subjects.find(wish => wish.subjectId === subjectId);
 }
 
 let globalNotificationTimeout: NodeJS.Timeout | null = null;

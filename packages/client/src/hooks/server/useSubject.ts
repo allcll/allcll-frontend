@@ -1,6 +1,6 @@
 import { fetchJsonOnAPI } from '@/utils/api';
 import { Subject } from '@/utils/types';
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient, useQuery } from '@tanstack/react-query';
 
 type SubjectResponse = {
   subjectResponses: Subject[];
@@ -35,6 +35,10 @@ function useSubject() {
     staleTime: Infinity,
     select: data => data.subjectResponses,
   });
+}
+
+export function getSubjects(queryClient: QueryClient) {
+  return queryClient.getQueryData<SubjectResponse>(['subjects'])?.subjectResponses ?? [];
 }
 
 export default useSubject;

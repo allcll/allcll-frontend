@@ -34,7 +34,9 @@ export default function useBottomSheet() {
   useEffect(() => {
     const canUserMoveBottomSheet = () => {
       const { touchMove, isContentAreaTouched } = metrics.current;
-      const sheetY = sheet.current!.getBoundingClientRect().y;
+      const sheetY = sheet.current?.getBoundingClientRect().y;
+
+      if (!sheetY) return false;
 
       if (!isContentAreaTouched) {
         return true;
@@ -106,7 +108,7 @@ export default function useBottomSheet() {
     const handleTouchEnd = () => {
       const { touchMove } = metrics.current;
 
-      const currentSheetY = sheet.current!.getBoundingClientRect().y;
+      const currentSheetY = sheet.current?.getBoundingClientRect().y ?? 0;
       if (currentSheetY !== MIN_Y) {
         if (touchMove.movingDirection === 'down') {
           sheet.current!.style.setProperty('transform', `translateY(${MAX_Y}px)`);
@@ -134,6 +136,12 @@ export default function useBottomSheet() {
     sheet.current!.addEventListener('touchstart', handleTouchStart);
     sheet.current!.addEventListener('touchmove', handleTouchMove);
     sheet.current!.addEventListener('touchend', handleTouchEnd);
+
+    return () => {
+      sheet.current!.removeEventListener('touchstart', handleTouchStart);
+      sheet.current!.removeEventListener('touchmove', handleTouchMove);
+      sheet.current!.removeEventListener('touchend', handleTouchEnd);
+    };
   }, []);
 
   const expandToMax = () => {
