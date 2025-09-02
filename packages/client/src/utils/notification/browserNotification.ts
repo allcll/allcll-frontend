@@ -9,7 +9,7 @@ const BrowserNotification: CustomNotification = {
     return 'Notification' in window;
   },
   isGranted() {
-    return Notification.permission === 'granted';
+    return !BrowserNotification.canNotify() && Notification.permission === 'granted';
   },
   requestPermission(callback?: (permission: NotificationPermission) => void) {
     if (!BrowserNotification.canNotify()) {
@@ -38,10 +38,11 @@ const BrowserNotification: CustomNotification = {
     return [];
   },
   show(message: string, tag?: string) {
+    const canNotify = BrowserNotification.canNotify();
     const activated = isAlarmActivated(AlarmType.BROWSER);
     const setBanner = useBannerNotification.getState().setBanner;
 
-    if (activated && Notification.permission === 'granted') {
+    if (canNotify && activated && Notification.permission === 'granted') {
       checkSystemNotification(setBanner);
 
       navigator.serviceWorker.ready.then(function (registration) {
