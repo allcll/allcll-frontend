@@ -74,6 +74,11 @@ export interface RangeFilter {
   value: number;
 }
 
+export interface RangeMinMaxFilter {
+  min?: number;
+  max?: number;
+}
+
 export type RemarkType = '외국인대상' | 'SHP대상' | '기타';
 export type Grade = 1 | 2 | 3 | 4;
 export type Day = '월' | '화' | '수' | '목' | '금' | '토' | '일';

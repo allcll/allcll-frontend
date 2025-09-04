@@ -5,10 +5,11 @@ import CustomButton from '@common/components/Button';
 import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
 import GenericMultiSelectFilter from '@/components/filtering/GenericMultiSelectFilter';
 import GenericSingleSelectFilter from '@/components/filtering/GenericSingleSelectFilter';
-import { FilterDomains } from '@/utils/filtering/filterDomains';
+import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains';
 import Chip from '@common/components/chip/Chip';
 import DayFilter from '@/components/filtering/DayFilter';
 import { FilterValueType } from '@/utils/types';
+import useSubject from '@/hooks/server/useSubject';
 
 interface FilteringBottomSheetProps {
   onCloseFiltering: () => void;
@@ -22,6 +23,10 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
     onCloseFiltering();
   };
 
+  const { data: subjects } = useSubject();
+  const categoryOptions = getCategories(subjects ?? [])
+    .sort((a, b) => a.localeCompare(b))
+    .map(cat => cat);
   const allSelectedFilters = getAllSelectedLabels(filters);
 
   const handleDeleteFilter = (filterKey: keyof Filters, value: FilterValueType<keyof Filters>) => {
@@ -119,7 +124,7 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
 
         <GenericMultiSelectFilter
           filterKey="categories"
-          options={filters.categories}
+          options={categoryOptions}
           selectedValues={(filters.categories as string[]) ?? []}
           setFilter={setFilter}
         />

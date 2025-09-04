@@ -5,11 +5,11 @@ import Modal from '@/components/simulation/modal/Modal.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import DraggableList from '@/components/live/subjectTable/DraggableList.tsx';
 import FilteringModal from '@/components/wishTable/FilteringModal.tsx';
-import { useWishSearchStore } from '@/store/useFilterStore.ts';
+import { Filters, getAllSelectedLabels, initialFilters, useWishSearchStore } from '@/store/useFilterStore.ts';
 import { HeadTitle, useWishesTableStore } from '@/store/useTableColumnStore.ts';
 import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
 import useBackSignal from '@/hooks/useBackSignal.ts';
-import { Wishes } from '@/utils/types.ts';
+import { FilterValueType, Wishes } from '@/utils/types.ts';
 import ListSvg from '@/assets/list.svg?react';
 import useMobile from '@/hooks/useMobile';
 import FilteringBottomSheet from '../contentPanel/bottomSheet/FilteringBottomSheet';
@@ -49,6 +49,7 @@ function Searches() {
   const categoryOptions = getCategories(subjects ?? [])
     .sort((a, b) => a.localeCompare(b))
     .map(cat => cat);
+  const allSelectedFilters = getAllSelectedLabels(filters);
 
   const setToggleFavorite = () => setFilter('favoriteOnly', !favoriteOnly);
 
@@ -60,8 +61,21 @@ function Searches() {
     }
   };
 
+  const handleDeleteFilter = (filterKey: keyof Filters, value: FilterValueType<keyof Filters>) => {
+    const currentValue = filters[filterKey];
+
+    if (Array.isArray(currentValue)) {
+      setFilter(
+        filterKey,
+        (currentValue as (typeof value)[]).filter(item => item !== value),
+      );
+    } else {
+      setFilter(filterKey, initialFilters[filterKey]);
+    }
+  };
+
   return (
-    <div className="flex flex-wrap gap-2 mt-4 text-sm lg:flex-wrap lg:flex-row lg:items-center lg:gap-y-0 lg:gap-x-2">
+    <div className="flex flex-wrap gap-2 mt-4 lg:flex-wrap lg:flex-row lg:items-center lg:gap-y-0 lg:gap-x-2">
       {isModalOpen && (
         <LiveTableTitleModal
           initialItems={tableTitles}
@@ -95,7 +109,6 @@ function Searches() {
       <div className="flex items-center flex-wrap mt-2 gap-2">
         <div className="hidden md:flex flex-wrap gap-2">
           <DepartmentSelectFilter department={department} setFilter={setFilter} />
-
           <GenericMultiSelectFilter
             filterKey="credits"
             options={FilterDomains.credits}
@@ -116,6 +129,7 @@ function Searches() {
               options={FilterDomains.classRoom}
               selectedValues={filters.classroom ?? []}
               setFilter={setFilter}
+              className="min-w-max"
             />
           )}
 
@@ -134,6 +148,7 @@ function Searches() {
               options={categoryOptions}
               selectedValues={(filters.categories as string[]) ?? []}
               setFilter={setFilter}
+              className="min-w-max"
             />
           )}
 
@@ -143,6 +158,7 @@ function Searches() {
             selectedValue={filters.wishRange ?? null}
             setFilter={setFilter}
             ItemComponent={Chip}
+            isMinMax={true}
           />
 
           <GenericSingleSelectFilter
@@ -151,6 +167,7 @@ function Searches() {
             selectedValue={filters.seatRange ?? null}
             setFilter={setFilter}
             ItemComponent={Chip}
+            isMinMax={true}
           />
 
           <DayFilter times={filters.time} setFilter={setFilter} />
@@ -175,6 +192,20 @@ function Searches() {
         >
           <ListSvg className="w-4 h-4 text-gray-600 hover:text-blue-500 transition-colors" />
         </button>
+
+        <div className="flex flex-wrap gap-2 w-fit md:hidden">
+          {allSelectedFilters.map(filter => {
+            return (
+              <Chip
+                key={`${filter.filterKey}-${filter.values}`}
+                chipType="cancel"
+                label={filter.label}
+                selected={true}
+                onClick={() => handleDeleteFilter(filter.filterKey, filter.values)}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );

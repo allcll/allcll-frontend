@@ -1,7 +1,8 @@
 import ResetSvg from '@/assets/reset-blue.svg?react';
 import { Filters } from '@/store/useFilterStore';
 import { getLabelFormatter, labelPrefix } from '@/utils/filtering/getFilteringFormatter';
-import { FilterItemProps } from '@/utils/types';
+import { FilterItemProps, RangeMinMaxFilter } from '@/utils/types';
+import MinMaxFilter from './MinMaxFilter';
 
 type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer U)[] ? U : Filters[K];
 
@@ -12,6 +13,7 @@ interface ISingleSelectFilter<K extends keyof Filters> {
   options: FilterValueType<K>[];
   className?: string;
   ItemComponent: React.ComponentType<FilterItemProps>;
+  isMinMax?: boolean;
 }
 
 function SingleSelectFilterOption<K extends keyof Filters>({
@@ -21,6 +23,7 @@ function SingleSelectFilterOption<K extends keyof Filters>({
   options,
   ItemComponent,
   className,
+  isMinMax = false,
 }: Readonly<ISingleSelectFilter<K>>) {
   const handleChangeCheckbox = (optionValue: FilterValueType<K>) => {
     const checked = selectedValue === optionValue;
@@ -37,12 +40,11 @@ function SingleSelectFilterOption<K extends keyof Filters>({
 
   return (
     <div className="relative inline-block">
-      <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">{labelPrefix[filterKey]}</h3>
-
+      <label className="text-gray-600 font-medium sm:text-gray-600">{labelPrefix[filterKey]}</label>
       <div
         className={`
         gap-2 grid [grid-template-columns:repeat(auto-fit,minmax(80px,1fr))]
-        grid grid-cols-2
+        grid grid-cols-2 pt-2
         min-w-max
         ${className ?? ''}
     `}
@@ -56,6 +58,16 @@ function SingleSelectFilterOption<K extends keyof Filters>({
           />
         ))}
       </div>
+      {isMinMax && (
+        <div className="mt-2">
+          <MinMaxFilter
+            selectedValue={selectedValue as RangeMinMaxFilter | null}
+            filterKey={filterKey}
+            setFilter={(filterKey, value) => setFilter(filterKey, value as FilterValueType<K> | null)}
+            options={options}
+          />
+        </div>
+      )}
       <div className="flex justify-end w-full mt-2">
         <button
           onClick={() => handleClickReset()}

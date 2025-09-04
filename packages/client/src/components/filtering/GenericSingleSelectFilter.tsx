@@ -1,11 +1,9 @@
 import useMobile from '@/hooks/useMobile';
 import { Filters } from '@/store/useFilterStore.ts';
 import { getSingleSelectedLabel } from '@/utils/filtering/getFilteringFormatter';
-import { FilterItemProps } from '@/utils/types';
+import { FilterItemProps, FilterValueType } from '@/utils/types';
 import Filtering from '@common/components/filtering/Filtering';
 import SingleSelectFilterOption from './SingleSelectFilter';
-
-type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer U)[] ? U : Filters[K];
 
 interface GenericSingleSelectFilterProps<K extends keyof Filters> {
   filterKey: K;
@@ -14,6 +12,7 @@ interface GenericSingleSelectFilterProps<K extends keyof Filters> {
   selectedValue: FilterValueType<K> | null;
   setFilter: (field: K, value: Filters[K]) => void;
   className?: string;
+  isMinMax?: boolean;
 }
 
 function GenericSingleSelectFilter<K extends keyof Filters>({
@@ -23,6 +22,7 @@ function GenericSingleSelectFilter<K extends keyof Filters>({
   selectedValue,
   setFilter,
   className,
+  isMinMax,
 }: GenericSingleSelectFilterProps<K>) {
   const isMobile = useMobile();
 
@@ -35,6 +35,7 @@ function GenericSingleSelectFilter<K extends keyof Filters>({
       setFilter={(filterKey, value) => setFilter(filterKey, value as Filters[K])}
       options={options}
       ItemComponent={ItemComponent}
+      isMinMax={isMinMax}
     />
   );
 

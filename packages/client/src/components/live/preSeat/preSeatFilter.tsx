@@ -4,7 +4,7 @@ import { useAlarmSearchStore } from '@/store/useFilterStore';
 import { useState } from 'react';
 import FilteringBottomSheet from '@/components/contentPanel/bottomSheet/FilteringBottomSheet';
 import GenericMultiSelectFilter from '@/components/filtering/GenericMultiSelectFilter';
-import { FilterDomains } from '@/utils/filtering/filterDomains';
+import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains';
 import GenericSingleSelectFilter from '@/components/filtering/GenericSingleSelectFilter';
 import Chip from '@common/components/chip/Chip';
 import FilteringButton from '@/components/filtering/button/FilteringButton';
@@ -13,6 +13,7 @@ import DepartmentSelectFilter from '@/components/filtering/DepartmentFilter';
 import DayFilter from '@/components/filtering/DayFilter';
 import FilterDelete from '@/components/filtering/FilterDelete';
 import FilteringModal from '@/components/wishTable/FilteringModal';
+import useSubject from '@/hooks/server/useSubject';
 
 function SubjectSearches() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
@@ -23,6 +24,11 @@ function SubjectSearches() {
   const filters = useAlarmSearchStore(state => state.filters);
   const resetFilter = useAlarmSearchStore(state => state.resetFilters);
   const isMobile = useMobile();
+
+  const { data: subjects } = useSubject();
+  const categoryOptions = getCategories(subjects ?? [])
+    .sort((a, b) => a.localeCompare(b))
+    .map(cat => cat);
 
   const handleOpenFilter = () => {
     if (isMobile) {
@@ -78,12 +84,15 @@ function SubjectSearches() {
           setFilter={setFilters}
         />
 
-        <GenericMultiSelectFilter
-          filterKey="classroom"
-          options={FilterDomains.classRoom}
-          selectedValues={filters.classroom ?? []}
-          setFilter={setFilters}
-        />
+        {filters.classroom.length > 0 && (
+          <GenericMultiSelectFilter
+            filterKey="classroom"
+            options={FilterDomains.classRoom}
+            selectedValues={filters.classroom ?? []}
+            setFilter={setFilters}
+            className="min-w-max"
+          />
+        )}
 
         <GenericMultiSelectFilter
           filterKey="note"
@@ -92,12 +101,15 @@ function SubjectSearches() {
           setFilter={setFilters}
         />
 
-        <GenericMultiSelectFilter
-          filterKey="categories"
-          options={filters.categories}
-          selectedValues={(filters.categories as string[]) ?? []}
-          setFilter={setFilters}
-        />
+        {filters.categories.length > 0 && (
+          <GenericMultiSelectFilter
+            filterKey="categories"
+            options={categoryOptions}
+            selectedValues={(filters.categories as string[]) ?? []}
+            setFilter={setFilters}
+            className="min-w-max"
+          />
+        )}
 
         <GenericSingleSelectFilter
           filterKey="wishRange"

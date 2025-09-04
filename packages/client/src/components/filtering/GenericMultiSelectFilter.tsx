@@ -5,9 +5,7 @@ import Filtering from '@common/components/filtering/Filtering';
 import MultiSelectFilter from './MultiSelectFilter';
 import Chip from '@common/components/chip/Chip';
 import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
-import { FilterItemProps } from '@/utils/types';
-
-type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer U)[] ? U : Filters[K];
+import { FilterItemProps, FilterValueType } from '@/utils/types';
 
 interface GenericMultiSelectFilterProps<K extends keyof Filters> {
   filterKey: K;

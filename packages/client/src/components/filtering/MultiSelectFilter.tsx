@@ -1,11 +1,7 @@
 import ResetSvg from '@/assets/reset-blue.svg?react';
-import useSubject from '@/hooks/server/useSubject';
 import { Filters } from '@/store/useFilterStore';
-import { getCategories } from '@/utils/filtering/filterDomains';
 import { getLabelFormatter, labelPrefix } from '@/utils/filtering/getFilteringFormatter';
-import { FilterItemProps } from '@/utils/types';
-
-type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer U)[] ? U : Filters[K];
+import { FilterItemProps, FilterValueType } from '@/utils/types';
 
 interface IMultiSelectFilter<K extends keyof Filters> {
   selectedValues: FilterValueType<K>[] | null;
@@ -40,12 +36,11 @@ function MultiSelectFilter<K extends keyof Filters>({
 
   return (
     <div className="relative inline-block ">
-      <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">{labelPrefix[filterKey]}</h3>
-
+      <label className="text-gray-600 font-medium sm:text-gray-600">{labelPrefix[filterKey]}</label>
       <div
         className={`
         gap-2 grid [grid-template-columns:repeat(auto-fit,minmax(80px,1fr))]
-        ${options.length > 6 ? 'grid grid-cols-2' : 'flex flex-col'}
+        ${options.length > 6 ? 'grid grid-cols-2' : 'flex flex-col'} pt-2
         ${className ?? ''}
     `}
       >

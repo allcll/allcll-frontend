@@ -1,7 +1,7 @@
 /** Filter Domain 은 2가지로 구분 가능
  * 1. 미리 정의 (하드 코딩)
  * 2. 동적 정의 (Data 기반 ex..unique) */
-import { Credit, Day, Grade, RangeFilter, RemarkType, Subject } from '@/utils/types.ts';
+import { Credit, Day, Grade, RangeMinMaxFilter, RemarkType, Subject } from '@/utils/types.ts';
 
 /** Filtering 기능도 2가지로 정의 가능
  * 1. 키워드 Search: string[] 에 속해있는 string 과 비교
@@ -14,8 +14,8 @@ export interface FilterDomainsType {
   days: Day[];
   remark: RemarkType[];
   classRoom: string[];
-  wishRange: RangeFilter[];
-  seatRange: RangeFilter[];
+  wishRange: RangeMinMaxFilter[];
+  seatRange: RangeMinMaxFilter[];
 }
 
 export const FilterDomains: FilterDomainsType = {
@@ -47,18 +47,8 @@ export const FilterDomains: FilterDomainsType = {
     '모짜르트홀',
     '학생회관',
   ],
-  wishRange: [
-    { operator: 'over-equal', value: 30 },
-    { operator: 'over-equal', value: 50 },
-    { operator: 'over-equal', value: 100 },
-    { operator: 'over-equal', value: 200 },
-  ],
-  seatRange: [
-    { operator: 'under-equal', value: 1 },
-    { operator: 'over-equal', value: 2 },
-    { operator: 'over-equal', value: 5 },
-    { operator: 'over-equal', value: 10 },
-  ],
+  wishRange: [{ min: 10 }, { min: 50 }, { min: 100 }, { min: 200 }],
+  seatRange: [{ max: 1 }, { max: 2 }, { max: 5 }, { max: 10 }],
 };
 // 집: '집현관';
 // 군: '군자관'; Lab: '군자관 5층';

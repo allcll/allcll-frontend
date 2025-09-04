@@ -1,5 +1,5 @@
 import { disassemble } from 'es-hangul';
-import { Grade, RangeFilter, RemarkType, Subject, Wishes } from '../types';
+import { Grade, RangeFilter, RangeMinMaxFilter, RemarkType, Subject, Wishes } from '../types';
 import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
 import { usePinned } from '@/hooks/server/usePinned.ts';
 import useFavorites from '@/store/useFavorites.ts';
@@ -54,13 +54,12 @@ function getFilteringFunctions(
   };
 }
 
-function filterRange(value: number, range: RangeFilter | null) {
+function filterMinmax(value: number, range: RangeMinMaxFilter | null) {
   if (!range) return true;
 
-  return (
-    (range.operator === 'over-equal' && value >= range.value) ||
-    (range.operator === 'under-equal' && value <= range.value)
-  );
+  const { min, max } = range;
+
+  return (min === undefined || value >= min) && (max === undefined || value <= max);
 }
 
 function filterMatches<T>(value: T, matchList: T[]) {
@@ -112,15 +111,16 @@ function filterCredits(subject: Wishes | Subject, selectedCredits: number[]) {
   return filterMatches(credit, selectedCredits);
 }
 
-function filterSeatRange<T extends Subject>(subject: T, seatRange: RangeFilter | null) {
+function filterSeatRange<T extends Subject>(subject: T, seatRange: RangeFilter | RangeMinMaxFilter | null) {
   const s = subject as T & IPreRealSeat;
   if (!('seat' in s)) return true;
-  return filterRange(s.seat ?? 0, seatRange);
+
+  return filterMinmax(s.seat ?? 0, seatRange as RangeMinMaxFilter);
 }
 
-function filterWishRange(subject: Wishes | Subject, wishRange: RangeFilter | null) {
+function filterWishRange(subject: Wishes | Subject, wishRange: RangeFilter | RangeMinMaxFilter | null) {
   if (!('totalCount' in subject)) return true;
-  return filterRange(subject.totalCount ?? 0, wishRange);
+  return filterMinmax(subject.totalCount ?? 0, wishRange as RangeMinMaxFilter);
 }
 
 function filterDepartment(subject: Wishes | Subject, selectedDepartment: string) {

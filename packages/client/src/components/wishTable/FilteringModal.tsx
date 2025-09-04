@@ -92,7 +92,7 @@ function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
 
       <div className="flex justify-end bg-white p-2 border-t border-gray-200">
         <CustomButton variants="primary" onClick={resetFilters}>
-          상세필터 초기화
+          필터 초기화
         </CustomButton>
       </div>
     </Modal>

@@ -1,6 +1,7 @@
 import { IDayTimeItem } from '@/components/filtering/DayTimeFilter';
 import { FilterOptions } from './filterDomains';
 import { Filters } from '@/store/useFilterStore';
+import { RangeMinMaxFilter } from '../types';
 
 export const labelPrefix: Record<keyof Filters, string> = {
   keywords: '키워드',
@@ -9,12 +10,12 @@ export const labelPrefix: Record<keyof Filters, string> = {
   credits: '학점',
   classroom: '강의실',
   seatRange: '여석',
-  wishRange: '관심 과목',
+  wishRange: '관심 인원',
   time: '요일',
-  categories: '카테고리',
+  categories: '수업 유형',
   note: '비고',
   language: '언어',
-  alarmOnly: '알람',
+  alarmOnly: '알림',
   favoriteOnly: '즐겨찾기',
 };
 
@@ -60,10 +61,13 @@ export function getLabelByFilters<K extends keyof Filters>(
   filterKey: keyof Filters,
   selectedValue: FilterValueType<K> | null,
 ) {
-  if (filterKey === 'time') {
-    const { day, type } = selectedValue as { day?: string; type?: string };
-    if (!day) return null;
-    return `${day} ${type ?? ''}`.trim();
+  const formattedLabel = getLabelFormatter()[filterKey]?.(selectedValue);
+  if (filterKey === 'seatRange') {
+    return `여석 ${formattedLabel}`;
+  }
+
+  if (filterKey === 'wishRange') {
+    return `관심 ${formattedLabel}`;
   }
 
   return getLabelFormatter()[filterKey]?.(selectedValue);
@@ -73,9 +77,21 @@ const getClassRoomLabel = (value: string) => {
   return FilterOptions.classRoom.find(room => room.value === value)?.label || value;
 };
 
-const getRangeLabel = (value: { operator: 'over-equal' | 'under-equal'; value: number }) => {
-  const operatorLabel = value.operator === 'over-equal' ? '이상' : '이하';
-  return `${value.value}개 ${operatorLabel}`;
+const getRangeLabel = (value: RangeMinMaxFilter) => {
+  const { min, max } = value;
+
+  if (min !== undefined && max !== undefined) {
+    return `${min}개 이상 ~ ${max}개 이하`;
+  }
+
+  if (min !== undefined) {
+    return `${min}개 이상`;
+  }
+  if (max !== undefined) {
+    return `${max}개 이하`;
+  }
+
+  return '';
 };
 
 const getTimesLabel = (value: IDayTimeItem) => {
