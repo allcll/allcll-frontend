@@ -8,7 +8,7 @@ interface IStatusCard {
 
 function StatusCard({ title, status }: IStatusCard) {
   return (
-    <Card className="w-full max-w-[280px] h-[80px] flex flex-col justify-between">
+    <Card className="w-full h-[80px] flex flex-col justify-between">
       <div className="flex justify-between items-start">
         <h3 className="text-md text-gray-700 font-semibold">{title}</h3>
       </div>

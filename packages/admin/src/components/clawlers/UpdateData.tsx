@@ -24,7 +24,7 @@ function UpdateData() {
           key={label}
           onClick={() => refetch()}
           variants="secondary"
-          className="w-full"
+          className="w-full text-pretty"
           disabled={isFetching}
         >
           {isFetching ? `${label} 불러오는 중...` : `${label} 업데이트`}

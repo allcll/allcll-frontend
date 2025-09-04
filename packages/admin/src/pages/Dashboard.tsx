@@ -13,7 +13,7 @@ function Dashboard() {
   const statusData = [
     { title: '인증상태', status: !!isActiveSession },
     { title: '여석 크롤링', status: !!isActiveSeat },
-    { title: 'SSE 연결', status: false },
+    { title: 'SSE 연결', status: !!isSentSseData },
     { title: 'SSE 여석 데이터', status: !!isSentSseData },
   ];
 
@@ -22,7 +22,7 @@ function Dashboard() {
       <section>
         <h2 className="text-lg text-gray-700 font-bold mb-4">시스템 모니터링</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {statusData.map(({ title, status }) => (
             <StatusCard key={title} title={title} status={status ? 'ON' : 'OFF'} />
           ))}
