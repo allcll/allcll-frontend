@@ -23,6 +23,7 @@ function MultiSelectFilter<K extends keyof Filters>({
   const labelFormatters = getLabelFormatter();
 
   const handleChangeCheckbox = (optionValue: FilterValueType<K>) => {
+    console.log('optionValue', optionValue);
     const checked = selectedValues?.includes(optionValue);
     const newValues = checked
       ? selectedValues?.filter(selected => selected !== optionValue)
@@ -30,6 +31,7 @@ function MultiSelectFilter<K extends keyof Filters>({
 
     setFilter(filterKey, newValues ?? null);
   };
+
   const handleClickReset = () => {
     setFilter(filterKey, null);
   };

@@ -1,7 +1,7 @@
 import { IDayTimeItem } from '@/components/filtering/DayTimeFilter';
 import { FilterOptions } from './filterDomains';
 import { Filters } from '@/store/useFilterStore';
-import { RangeMinMaxFilter } from '../types';
+import { Day, RangeMinMaxFilter } from '../types';
 
 export const labelPrefix: Record<keyof Filters, string> = {
   keywords: '키워드',
@@ -11,7 +11,8 @@ export const labelPrefix: Record<keyof Filters, string> = {
   classroom: '강의실',
   seatRange: '여석',
   wishRange: '관심 인원',
-  time: '요일',
+  time: '시간',
+  days: '요일',
   categories: '수업 유형',
   note: '비고',
   language: '언어',
@@ -98,6 +99,10 @@ const getTimesLabel = (value: IDayTimeItem) => {
   return `${value.day}${labelPrefix.time} ${value.start}~${value.end}`;
 };
 
+const getDaysLabel = (value: Day) => {
+  return value + '요일';
+};
+
 const getLableWithSuffix = (value: string | number, labelSuffix: string) => {
   return value + labelSuffix;
 };
@@ -112,6 +117,7 @@ export function getLabelFormatter(): Partial<Record<keyof Filters, (value: any) 
     seatRange: getRangeLabel,
     wishRange: getRangeLabel,
     time: getTimesLabel,
+    days: getDaysLabel,
     categories: value => value,
     note: value => value,
     language: value => value,

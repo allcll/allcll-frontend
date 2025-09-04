@@ -1,5 +1,5 @@
 import { disassemble } from 'es-hangul';
-import { Grade, RangeFilter, RangeMinMaxFilter, RemarkType, Subject, Wishes } from '../types';
+import { Day, Grade, RangeFilter, RangeMinMaxFilter, RemarkType, Subject, Wishes } from '../types';
 import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
 import { usePinned } from '@/hooks/server/usePinned.ts';
 import useFavorites from '@/store/useFavorites.ts';
@@ -46,6 +46,7 @@ function getFilteringFunctions(
     seatRange: filterSeatRange,
     wishRange: filterWishRange,
     time: filterSchedule,
+    days: filterDays,
     classroom: filterClassroom,
     note: filterRemark,
     language: filterLanguage,
@@ -71,24 +72,20 @@ function getNormalizedKeyword(keyword: string) {
   return disassemble(cleanSearchInput).toLowerCase();
 }
 
-// export function filterDays(subject: Wishes | Subject, selectedDays: (Day | '전체')[]) {
-//   if (!subject.lesnTime) {
-//     return true;
-//   }
-//
-//   const timeMatchResult = RegExp(/^([가-힣]+)/).exec(subject.lesnTime);
-//
-//   if (!timeMatchResult) {
-//     return false;
-//   }
-//
-//   if (selectedDays.includes('전체') || selectedDays.length === 0) {
-//     return true;
-//   }
-//
-//   const lessonDays = timeMatchResult[1].split('');
-//   return selectedDays.some(selectedDay => lessonDays.includes(selectedDay));
-// }
+export function filterDays(subject: Wishes | Subject, selectedDays: Day[]) {
+  if (!subject.lesnTime || !selectedDays || selectedDays.length === 0) {
+    return true;
+  }
+
+  const timeMatchResult = RegExp(/^([가-힣]+)/).exec(subject.lesnTime);
+
+  if (!timeMatchResult) {
+    return true;
+  }
+
+  const lessonDays = timeMatchResult[1].split('');
+  return selectedDays.some(selectedDay => lessonDays.includes(selectedDay));
+}
 
 function filterGrades(subject: Wishes | Subject, selectedGrades: (Grade | '전체')[]) {
   const subjectGrade = Number(subject.studentYear);

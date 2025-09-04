@@ -5,7 +5,6 @@ import { useScheduleSearchStore } from '@/store/useFilterStore';
 import { useState } from 'react';
 import FilteringButton from '../filtering/button/FilteringButton';
 import DepartmentSelectFilter from '../filtering/DepartmentFilter';
-import DayFilter from '../filtering/DayFilter';
 import FilterDelete from '../filtering/FilterDelete';
 import useSubject from '@/hooks/server/useSubject';
 
@@ -14,6 +13,8 @@ function ScheduleFilter() {
   const filters = useScheduleSearchStore(state => state.filters);
   const setFilters = useScheduleSearchStore(state => state.setFilter);
   const resetFilter = useScheduleSearchStore(state => state.resetFilters);
+
+  console.log('filters in ScheduleFilter', filters);
 
   const { data: subjects } = useSubject();
   const categoryOptions = getCategories(subjects ?? [])
@@ -24,7 +25,13 @@ function ScheduleFilter() {
     <div className="flex items-center flex-wrap gap-2 mr-20">
       <FilteringButton handleOpenFilter={() => setIsFilterModalOpen(true)} />
       <DepartmentSelectFilter department={filters.department} setFilter={setFilters} />
-      <DayFilter times={filters.time} setFilter={setFilters} />
+
+      <GenericMultiSelectFilter
+        filterKey="days"
+        options={FilterDomains.days}
+        selectedValues={filters.days ?? []}
+        setFilter={setFilters}
+      />
 
       <GenericMultiSelectFilter
         filterKey="credits"

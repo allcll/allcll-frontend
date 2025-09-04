@@ -19,7 +19,6 @@ import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains';
 import Chip from '@common/components/chip/Chip';
 import FilteringButton from '../filtering/button/FilteringButton';
 import DepartmentSelectFilter from '../filtering/DepartmentFilter';
-import DayFilter from '../filtering/DayFilter';
 import FilterDelete from '../filtering/FilterDelete';
 import useSubject from '@/hooks/server/useSubject';
 
@@ -109,6 +108,32 @@ function Searches() {
       <div className="flex items-center flex-wrap mt-2 gap-2">
         <div className="hidden md:flex flex-wrap gap-2">
           <DepartmentSelectFilter department={department} setFilter={setFilter} />
+
+          <GenericSingleSelectFilter
+            filterKey="wishRange"
+            options={FilterDomains.wishRange}
+            selectedValue={filters.wishRange ?? null}
+            setFilter={setFilter}
+            ItemComponent={Chip}
+            isMinMax={true}
+          />
+
+          <GenericSingleSelectFilter
+            filterKey="seatRange"
+            options={FilterDomains.seatRange}
+            selectedValue={filters.seatRange ?? null}
+            setFilter={setFilter}
+            ItemComponent={Chip}
+            isMinMax={true}
+          />
+
+          <GenericMultiSelectFilter
+            filterKey="days"
+            options={FilterDomains.days}
+            selectedValues={filters.days ?? []}
+            setFilter={setFilter}
+          />
+
           <GenericMultiSelectFilter
             filterKey="credits"
             options={FilterDomains.credits}
@@ -151,26 +176,6 @@ function Searches() {
               className="min-w-max"
             />
           )}
-
-          <GenericSingleSelectFilter
-            filterKey="wishRange"
-            options={FilterDomains.wishRange}
-            selectedValue={filters.wishRange ?? null}
-            setFilter={setFilter}
-            ItemComponent={Chip}
-            isMinMax={true}
-          />
-
-          <GenericSingleSelectFilter
-            filterKey="seatRange"
-            options={FilterDomains.seatRange}
-            selectedValue={filters.seatRange ?? null}
-            setFilter={setFilter}
-            ItemComponent={Chip}
-            isMinMax={true}
-          />
-
-          <DayFilter times={filters.time} setFilter={setFilter} />
         </div>
         <FilterDelete filters={filters} resetFilter={resetFilter} />
         <FilteringButton handleOpenFilter={handleOpenFilter} />

@@ -1,5 +1,5 @@
 import { create, StoreApi, UseBoundStore } from 'zustand';
-import { Credit, FilterValueType, Grade, RangeFilter, RangeMinMaxFilter, RemarkType } from '@/utils/types.ts';
+import { Credit, Day, FilterValueType, Grade, RangeFilter, RangeMinMaxFilter, RemarkType } from '@/utils/types.ts';
 import { IDayTimeItem } from '@/components/filtering/DayTimeFilter';
 import { getLabelByFilters } from '@/utils/filtering/getFilteringFormatter';
 
@@ -12,6 +12,7 @@ export interface Filters {
   seatRange: RangeFilter | RangeMinMaxFilter | null;
   wishRange: RangeFilter | RangeMinMaxFilter | null;
   time: IDayTimeItem[];
+  days: Day[];
   classroom: string[];
   note: RemarkType[];
   language: string[]; // 한국어/영어, 영어
@@ -34,6 +35,7 @@ export const initialFilters: Filters = {
   seatRange: null,
   wishRange: null,
   time: [],
+  days: [],
   classroom: [],
   note: [],
   language: [],

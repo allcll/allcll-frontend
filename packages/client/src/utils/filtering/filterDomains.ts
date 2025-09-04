@@ -21,7 +21,7 @@ export interface FilterDomainsType {
 export const FilterDomains: FilterDomainsType = {
   grades: [1, 2, 3, 4],
   credits: [1, 2, 3],
-  days: ['월', '화', '수', '목', '금', '토'],
+  days: ['월', '화', '수', '목', '금'],
   remark: ['외국인대상', 'SHP대상', '기타'], // 외국인 들어가는 , SHP 또는 Honor 들어가는
   classRoom: [
     '광개토관',

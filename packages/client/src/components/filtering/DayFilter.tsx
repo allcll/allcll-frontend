@@ -27,6 +27,7 @@ function DayFilter({ times, setFilter }: IDayFilter) {
     <DayTimeFilter items={times} onChange={items => setFilterWrapper('time', items)} />
   ) : (
     <Filtering label={labelPrefix} selected={times.length > 0 && times[0].day !== ''} className="min-w-max">
+      <label className="text-gray-600 font-medium sm:text-gray-600">강의 시간</label>
       <DayTimeFilter items={times} onChange={items => setFilterWrapper('time', items)} />
     </Filtering>
   );
