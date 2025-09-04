@@ -46,6 +46,19 @@ export function getSingleSelectedLabel<K extends keyof Filters>(
   return getLabelFormatter()[filterKey]?.(selectedValue) ?? labelPrefix[filterKey];
 }
 
+export function getLabelByFilters<K extends keyof Filters>(
+  filterKey: keyof Filters,
+  selectedValue: FilterValueType<K> | null,
+) {
+  if (filterKey === 'time') {
+    const { day, type } = selectedValue as { day?: string; type?: string };
+    if (!day) return null;
+    return `${day} ${type ?? ''}`.trim();
+  }
+
+  return getLabelFormatter()[filterKey]?.(selectedValue);
+}
+
 const getClassRoomLabel = (value: string) => {
   return FilterOptions.classRoom.find(room => room.value === value)?.label || value;
 };

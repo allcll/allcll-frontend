@@ -22,7 +22,7 @@ function Chip({ label = 'Chip', selected, chipType, containerRef, onClick, isChi
     <button
       type="button"
       ref={containerRef}
-      className={`items-center justify-center px-3 py-2 rounded-full md:rounded-lg cursor-pointer text-xs md:text-sm gap-4 flex flex-row ${getSelectedColor(selected)} 
+      className={`items-center justify-center px-3 rounded-full cursor-pointer md:text-sm gap-4 flex flex-row ${getSelectedColor(selected)} ${chipType === 'cancel' ? 'rounded-full text-xs py-1' : 'rounded-lg text-sm py-2'}
       `}
       aria-pressed={selected}
       onClick={onClick}

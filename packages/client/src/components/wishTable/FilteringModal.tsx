@@ -1,7 +1,7 @@
 import Modal from '@common/components/modal/Modal';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains.ts';
-import { FilterStore } from '@/store/useFilterStore.ts';
+import { Filters, FilterStore, getAllSelectedLabels, initialFilters } from '@/store/useFilterStore.ts';
 import useSubject from '@/hooks/server/useSubject.ts';
 import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
 import Chip from '@common/components/chip/Chip';
@@ -14,64 +14,49 @@ interface IModalProps {
   onClose: () => void;
 }
 
+type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer U)[] ? U : Filters[K];
+
 function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
   const { classroom, note, categories, time } = filterStore(state => state.filters);
+  const filters = filterStore(state => state.filters);
   const setFilter = filterStore(state => state.setFilter);
   const resetFilters = filterStore(state => state.resetFilters);
+  const allSelectedFilters = getAllSelectedLabels(filters);
 
   const { data: subjects } = useSubject();
   const categoryOptions = getCategories(subjects ?? [])
     .sort((a, b) => a.localeCompare(b))
     .map(cat => cat);
 
+  const handleDeleteFilter = (filterKey: keyof Filters, value: FilterValueType<keyof Filters>) => {
+    const currentValue = filters[filterKey];
+
+    if (Array.isArray(currentValue)) {
+      setFilter(
+        filterKey,
+        (currentValue as (typeof value)[]).filter(item => item !== value),
+      );
+    } else {
+      setFilter(filterKey, initialFilters[filterKey]);
+    }
+  };
   return (
     <Modal onClose={onClose}>
       <ModalHeader title="상세 필터링" onClose={onClose} />
 
       <div className="flex flex-col gap-2 p-4 w-130 max-h-[500px] overflow-y-auto">
         <div className="flex flex-wrap gap-2 w-fit">
-          {categories.map(category => (
-            <Chip
-              key={String(category)}
-              onClick={() =>
-                setFilter(
-                  'categories',
-                  categories.filter(cat => cat !== category),
-                )
-              }
-              chipType="cancel"
-              selected={true}
-              label={category}
-            />
-          ))}
-          {note.map(remark => (
-            <Chip
-              key={String(remark)}
-              onClick={() =>
-                setFilter(
-                  'note',
-                  note.filter(n => n !== remark),
-                )
-              }
-              chipType="cancel"
-              selected={true}
-              label={note}
-            />
-          ))}
-          {classroom.map(classRoom => (
-            <Chip
-              key={String(classRoom)}
-              onClick={() =>
-                setFilter(
-                  'classroom',
-                  classroom.filter(c => c !== classRoom),
-                )
-              }
-              chipType="cancel"
-              selected={true}
-              label={classRoom}
-            />
-          ))}
+          {allSelectedFilters.map(filter => {
+            return (
+              <Chip
+                key={`${filter.filterKey}-${filter.values}`}
+                chipType="cancel"
+                label={filter.label}
+                selected={true}
+                onClick={() => handleDeleteFilter(filter.filterKey, filter.values)}
+              />
+            );
+          })}
         </div>
 
         <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">수업유형</h3>

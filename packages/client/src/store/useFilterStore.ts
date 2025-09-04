@@ -1,6 +1,7 @@
 import { create, StoreApi, UseBoundStore } from 'zustand';
 import { Credit, Grade, RangeFilter, RemarkType } from '@/utils/types.ts';
 import { IDayTimeItem } from '@/components/filtering/DayTimeFilter';
+import { getLabelByFilters } from '@/utils/filtering/getFilteringFormatter';
 
 export interface Filters {
   keywords: string;
@@ -45,6 +46,43 @@ export function isFilterEmpty<T extends keyof Filters>(key: T, value: Filters[T]
     return value.length === 0 || (value.length === 1 && (value[0] as IDayTimeItem).day === '');
   if (Array.isArray(initialFilters[key]) && Array.isArray(value)) return value.length === 0;
   return !value;
+}
+
+type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer U)[] ? U : Filters[K];
+
+function isValidFilterValue(value: unknown): boolean {
+  if (Array.isArray(value)) return value.length > 0;
+  return value !== null && value !== undefined && value !== '' && value !== false;
+}
+
+export function getAllSelectedLabels(filters: Filters) {
+  const result = [];
+
+  for (const key in filters) {
+    const values = filters[key as keyof Filters];
+
+    if (Array.isArray(values) && values.length > 0) {
+      values.forEach(value => {
+        if (isValidFilterValue(value)) {
+          result.push({
+            filterKey: key as keyof Filters,
+            values: value,
+            label: getLabelByFilters(key as keyof Filters, value as FilterValueType<keyof Filters>),
+          });
+        }
+      });
+    }
+
+    if (!Array.isArray(values) && isValidFilterValue(values)) {
+      result.push({
+        filterKey: key as keyof Filters,
+        values: values,
+        label: getLabelByFilters(key as keyof Filters, values as FilterValueType<keyof Filters>),
+      });
+    }
+  }
+
+  return result;
 }
 
 const createFilterStore = () =>
