@@ -2,6 +2,7 @@ import { getDateLocale } from '@/utils/time';
 
 export type PreSeatMode = 'force-open' | 'auto' | 'force-close';
 export const PRESEAT_MODE: PreSeatMode = 'force-open';
+export const PRESEAT_CLOSE_DATE = '2025-09-05';
 
 /**
  * preSeat의 가용성을 판단하는 훅입니다.
@@ -13,7 +14,7 @@ export const PRESEAT_MODE: PreSeatMode = 'force-open';
  */
 function usePreSeatGate(opts?: { hasSeats?: boolean }) {
   const { hasSeats } = opts ?? {};
-  const isFinishPreSeatGate = new Date() > getDateLocale('2025-09-02T10:00:00');
+  const isFinishPreSeatGate = new Date() > getDateLocale(`${PRESEAT_CLOSE_DATE}T10:00:00`);
 
   const getPreSeatAvailable = () => {
     if (PRESEAT_MODE === 'force-close' || isFinishPreSeatGate) {
