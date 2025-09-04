@@ -14,8 +14,6 @@ function ScheduleFilter() {
   const setFilters = useScheduleSearchStore(state => state.setFilter);
   const resetFilter = useScheduleSearchStore(state => state.resetFilters);
 
-  console.log('filters in ScheduleFilter', filters);
-
   const { data: subjects } = useSubject();
   const categoryOptions = getCategories(subjects ?? [])
     .sort((a, b) => a.localeCompare(b))

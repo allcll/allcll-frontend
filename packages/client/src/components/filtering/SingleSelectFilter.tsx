@@ -40,7 +40,7 @@ function SingleSelectFilterOption<K extends keyof Filters>({
 
   return (
     <div className="relative inline-block">
-      <label className="text-gray-600 font-medium sm:text-gray-600">{labelPrefix[filterKey]}</label>
+      <label className="text-xs text-gray-500 sm:text-gray-600 sm:text-base">{labelPrefix[filterKey]}</label>
       <div
         className={`
         gap-2 grid [grid-template-columns:repeat(auto-fit,minmax(80px,1fr))]

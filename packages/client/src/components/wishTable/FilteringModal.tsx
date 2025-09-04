@@ -68,7 +68,6 @@ function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
           className="md:overflow-y-visible"
         />
 
-        <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">시간</h3>
         <DayTimeFilter items={time} onChange={items => setFilter('time', items)} />
 
         <MultiSelectFilter
