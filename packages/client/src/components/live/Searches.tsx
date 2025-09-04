@@ -14,14 +14,14 @@ import ListSvg from '@/assets/list.svg?react';
 import useMobile from '@/hooks/useMobile';
 import FilteringBottomSheet from '../contentPanel/bottomSheet/FilteringBottomSheet';
 import GenericMultiSelectFilter from '../filtering/GenericMultiSelectFilter';
-import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
 import GenericSingleSelectFilter from '../filtering/GenericSingleSelectFilter';
-import { FilterDomains } from '@/utils/filtering/filterDomains';
+import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains';
 import Chip from '@common/components/chip/Chip';
 import FilteringButton from '../filtering/button/FilteringButton';
 import DepartmentSelectFilter from '../filtering/DepartmentFilter';
 import DayFilter from '../filtering/DayFilter';
 import FilterDelete from '../filtering/FilterDelete';
+import useSubject from '@/hooks/server/useSubject';
 
 export interface WishSearchParams {
   searchInput: string;
@@ -44,6 +44,11 @@ function Searches() {
   const isMobile = useMobile();
 
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+
+  const { data: subjects } = useSubject();
+  const categoryOptions = getCategories(subjects ?? [])
+    .sort((a, b) => a.localeCompare(b))
+    .map(cat => cat);
 
   const setToggleFavorite = () => setFilter('favoriteOnly', !favoriteOnly);
 
@@ -88,68 +93,68 @@ function Searches() {
       />
 
       <div className="flex items-center flex-wrap mt-2 gap-2">
-        <DepartmentSelectFilter department={department} setFilter={setFilter} />
-        <GenericMultiSelectFilter
-          filterKey="credits"
-          options={FilterDomains.credits}
-          selectedValues={filters.credits ?? []}
-          setFilter={setFilter}
-          ItemComponent={CheckboxAdapter}
-          className="min-w-max"
-        />
+        <div className="hidden md:flex flex-wrap gap-2">
+          <DepartmentSelectFilter department={department} setFilter={setFilter} />
 
-        <GenericMultiSelectFilter
-          filterKey="grades"
-          options={FilterDomains.grades}
-          selectedValues={filters.grades ?? []}
-          setFilter={setFilter}
-          ItemComponent={CheckboxAdapter}
-          className="min-w-max"
-        />
+          <GenericMultiSelectFilter
+            filterKey="credits"
+            options={FilterDomains.credits}
+            selectedValues={filters.credits ?? []}
+            setFilter={setFilter}
+          />
 
-        <GenericMultiSelectFilter
-          filterKey="classroom"
-          options={FilterDomains.classRoom}
-          selectedValues={filters.classroom ?? []}
-          setFilter={setFilter}
-          ItemComponent={CheckboxAdapter}
-          className="min-w-max"
-        />
+          <GenericMultiSelectFilter
+            filterKey="grades"
+            options={FilterDomains.grades}
+            selectedValues={filters.grades ?? []}
+            setFilter={setFilter}
+          />
 
-        <GenericMultiSelectFilter
-          filterKey="note"
-          options={FilterDomains.remark}
-          selectedValues={filters.note ?? []}
-          setFilter={setFilter}
-          ItemComponent={CheckboxAdapter}
-          className="min-w-max"
-        />
+          {filters.classroom.length > 0 && (
+            <GenericMultiSelectFilter
+              filterKey="classroom"
+              options={FilterDomains.classRoom}
+              selectedValues={filters.classroom ?? []}
+              setFilter={setFilter}
+            />
+          )}
 
-        <GenericMultiSelectFilter
-          filterKey="categories"
-          options={filters.categories}
-          selectedValues={(filters.categories as string[]) ?? []}
-          setFilter={setFilter}
-          ItemComponent={CheckboxAdapter}
-        />
+          {filters.note.length > 0 && (
+            <GenericMultiSelectFilter
+              filterKey="note"
+              options={FilterDomains.remark}
+              selectedValues={filters.note ?? []}
+              setFilter={setFilter}
+            />
+          )}
 
-        <GenericSingleSelectFilter
-          filterKey="wishRange"
-          options={FilterDomains.wishRange}
-          selectedValue={filters.wishRange ?? null}
-          setFilter={setFilter}
-          ItemComponent={Chip}
-        />
+          {filters.categories.length > 0 && (
+            <GenericMultiSelectFilter
+              filterKey="categories"
+              options={categoryOptions}
+              selectedValues={(filters.categories as string[]) ?? []}
+              setFilter={setFilter}
+            />
+          )}
 
-        <GenericSingleSelectFilter
-          filterKey="seatRange"
-          options={FilterDomains.seatRange}
-          selectedValue={filters.seatRange ?? null}
-          setFilter={setFilter}
-          ItemComponent={Chip}
-        />
+          <GenericSingleSelectFilter
+            filterKey="wishRange"
+            options={FilterDomains.wishRange}
+            selectedValue={filters.wishRange ?? null}
+            setFilter={setFilter}
+            ItemComponent={Chip}
+          />
 
-        <DayFilter times={filters.time} setFilter={setFilter} />
+          <GenericSingleSelectFilter
+            filterKey="seatRange"
+            options={FilterDomains.seatRange}
+            selectedValue={filters.seatRange ?? null}
+            setFilter={setFilter}
+            ItemComponent={Chip}
+          />
+
+          <DayFilter times={filters.time} setFilter={setFilter} />
+        </div>
         <FilterDelete filters={filters} resetFilter={resetFilter} />
         <FilteringButton handleOpenFilter={handleOpenFilter} />
 

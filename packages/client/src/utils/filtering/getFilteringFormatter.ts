@@ -43,6 +43,16 @@ export function getSingleSelectedLabel<K extends keyof Filters>(
     return labelPrefix[filterKey];
   }
 
+  if (filterKey === 'seatRange') {
+    const label = getLabelFormatter()[filterKey]?.(selectedValue) ?? labelPrefix[filterKey];
+    return `여석 ${label}`;
+  }
+
+  if (filterKey === 'wishRange') {
+    const label = getLabelFormatter()[filterKey]?.(selectedValue) ?? labelPrefix[filterKey];
+    return `관심 인원 ${label}`;
+  }
+
   return getLabelFormatter()[filterKey]?.(selectedValue) ?? labelPrefix[filterKey];
 }
 
@@ -65,7 +75,7 @@ const getClassRoomLabel = (value: string) => {
 
 const getRangeLabel = (value: { operator: 'over-equal' | 'under-equal'; value: number }) => {
   const operatorLabel = value.operator === 'over-equal' ? '이상' : '이하';
-  return `${value.value} ${operatorLabel}`;
+  return `${value.value}개 ${operatorLabel}`;
 };
 
 const getTimesLabel = (value: IDayTimeItem) => {

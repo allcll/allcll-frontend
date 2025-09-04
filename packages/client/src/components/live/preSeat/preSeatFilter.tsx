@@ -1,11 +1,9 @@
 import SearchBox from '@/components/common/SearchBox';
-import FilteringModal from '@/components/wishTable/FilteringModal';
 import useMobile from '@/hooks/useMobile';
 import { useAlarmSearchStore } from '@/store/useFilterStore';
 import { useState } from 'react';
 import FilteringBottomSheet from '@/components/contentPanel/bottomSheet/FilteringBottomSheet';
 import GenericMultiSelectFilter from '@/components/filtering/GenericMultiSelectFilter';
-import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
 import { FilterDomains } from '@/utils/filtering/filterDomains';
 import GenericSingleSelectFilter from '@/components/filtering/GenericSingleSelectFilter';
 import Chip from '@common/components/chip/Chip';
@@ -14,6 +12,7 @@ import AlarmButton from '@/components/filtering/button/AlarmButton';
 import DepartmentSelectFilter from '@/components/filtering/DepartmentFilter';
 import DayFilter from '@/components/filtering/DayFilter';
 import FilterDelete from '@/components/filtering/FilterDelete';
+import FilteringModal from '@/components/wishTable/FilteringModal';
 
 function SubjectSearches() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
@@ -70,7 +69,6 @@ function SubjectSearches() {
           options={FilterDomains.credits}
           selectedValues={filters.credits ?? []}
           setFilter={setFilters}
-          ItemComponent={CheckboxAdapter}
         />
 
         <GenericMultiSelectFilter
@@ -78,7 +76,6 @@ function SubjectSearches() {
           options={FilterDomains.grades}
           selectedValues={filters.grades ?? []}
           setFilter={setFilters}
-          ItemComponent={CheckboxAdapter}
         />
 
         <GenericMultiSelectFilter
@@ -86,7 +83,6 @@ function SubjectSearches() {
           options={FilterDomains.classRoom}
           selectedValues={filters.classroom ?? []}
           setFilter={setFilters}
-          ItemComponent={CheckboxAdapter}
         />
 
         <GenericMultiSelectFilter
@@ -94,7 +90,6 @@ function SubjectSearches() {
           options={FilterDomains.remark}
           selectedValues={filters.note ?? []}
           setFilter={setFilters}
-          ItemComponent={CheckboxAdapter}
         />
 
         <GenericMultiSelectFilter
@@ -102,7 +97,6 @@ function SubjectSearches() {
           options={filters.categories}
           selectedValues={(filters.categories as string[]) ?? []}
           setFilter={setFilters}
-          ItemComponent={CheckboxAdapter}
         />
 
         <GenericSingleSelectFilter

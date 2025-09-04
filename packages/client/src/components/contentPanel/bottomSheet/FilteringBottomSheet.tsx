@@ -1,14 +1,14 @@
 import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
-import { Filters, isFilterEmpty } from '@/store/useFilterStore.ts';
+import { Filters, getAllSelectedLabels, initialFilters } from '@/store/useFilterStore.ts';
 import CustomButton from '@common/components/Button';
 import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
 import GenericMultiSelectFilter from '@/components/filtering/GenericMultiSelectFilter';
 import GenericSingleSelectFilter from '@/components/filtering/GenericSingleSelectFilter';
 import { FilterDomains } from '@/utils/filtering/filterDomains';
-import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
 import Chip from '@common/components/chip/Chip';
 import DayFilter from '@/components/filtering/DayFilter';
+import { FilterValueType } from '@/utils/types';
 
 interface FilteringBottomSheetProps {
   onCloseFiltering: () => void;
@@ -17,15 +17,21 @@ interface FilteringBottomSheetProps {
   resetFilter: () => void;
 }
 
-export function getActiveFilters(filters: Filters) {
-  return (Object.entries(filters) as [keyof Filters, Filters[keyof Filters]][])
-    .filter(([key, value]) => !isFilterEmpty(key, value))
-    .map(([key, value]) => ({ key, value }));
-}
-
 function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }: FilteringBottomSheetProps) {
   const handleClickSave = () => {
     onCloseFiltering();
+  };
+
+  const allSelectedFilters = getAllSelectedLabels(filters);
+
+  const handleDeleteFilter = (filterKey: keyof Filters, value: FilterValueType<keyof Filters>) => {
+    const currentValue = filters[filterKey];
+
+    if (Array.isArray(currentValue)) {
+      setFilter(filterKey, currentValue.filter(item => item !== value) as Filters[keyof Filters]);
+    } else {
+      setFilter(filterKey, initialFilters[filterKey]);
+    }
   };
 
   return (
@@ -39,6 +45,20 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
       />
 
       <div className="w-full flex px-4 flex-col h-[85vh] gap-5 overflow-y-auto overscroll-contain">
+        <div className="flex flex-wrap gap-2">
+          {allSelectedFilters.map(filter => {
+            return (
+              <Chip
+                key={`${filter.filterKey}-${filter.values}`}
+                chipType="cancel"
+                label={filter.label}
+                selected={true}
+                onClick={() => handleDeleteFilter(filter.filterKey, filter.values)}
+              />
+            );
+          })}
+        </div>
+
         <div className="w-full h-15 flex gap-2 flex-col justify-center mt-2">
           <label className="text-xs text-gray-500">학과</label>
           <DepartmentFilter
@@ -74,7 +94,6 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
           options={FilterDomains.credits}
           selectedValues={filters.credits ?? []}
           setFilter={setFilter}
-          ItemComponent={CheckboxAdapter}
         />
 
         <GenericMultiSelectFilter
@@ -82,7 +101,6 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
           options={FilterDomains.grades}
           selectedValues={filters.grades ?? []}
           setFilter={setFilter}
-          ItemComponent={CheckboxAdapter}
         />
 
         <GenericMultiSelectFilter
@@ -90,7 +108,6 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
           options={FilterDomains.classRoom}
           selectedValues={filters.classroom ?? []}
           setFilter={setFilter}
-          ItemComponent={CheckboxAdapter}
         />
 
         <GenericMultiSelectFilter
@@ -98,7 +115,6 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
           options={FilterDomains.remark}
           selectedValues={filters.note ?? []}
           setFilter={setFilter}
-          ItemComponent={CheckboxAdapter}
         />
 
         <GenericMultiSelectFilter
@@ -106,7 +122,6 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
           options={filters.categories}
           selectedValues={(filters.categories as string[]) ?? []}
           setFilter={setFilter}
-          ItemComponent={CheckboxAdapter}
         />
 
         <div className="sticky bottom-0 pb-14 pt-5 bg-white flex justify-end items-center gap-2 border-gray-200">

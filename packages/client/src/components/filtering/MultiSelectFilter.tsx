@@ -1,5 +1,7 @@
 import ResetSvg from '@/assets/reset-blue.svg?react';
+import useSubject from '@/hooks/server/useSubject';
 import { Filters } from '@/store/useFilterStore';
+import { getCategories } from '@/utils/filtering/filterDomains';
 import { getLabelFormatter, labelPrefix } from '@/utils/filtering/getFilteringFormatter';
 import { FilterItemProps } from '@/utils/types';
 
@@ -22,6 +24,8 @@ function MultiSelectFilter<K extends keyof Filters>({
   ItemComponent,
   className,
 }: Readonly<IMultiSelectFilter<K>>) {
+  const labelFormatters = getLabelFormatter();
+
   const handleChangeCheckbox = (optionValue: FilterValueType<K>) => {
     const checked = selectedValues?.includes(optionValue);
     const newValues = checked
@@ -34,16 +38,14 @@ function MultiSelectFilter<K extends keyof Filters>({
     setFilter(filterKey, null);
   };
 
-  const labelFormatters = getLabelFormatter();
-
   return (
-    <div className="relative inline-block">
+    <div className="relative inline-block ">
       <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">{labelPrefix[filterKey]}</h3>
 
       <div
         className={`
         gap-2 grid [grid-template-columns:repeat(auto-fit,minmax(80px,1fr))]
-        ${options.length > 6 ? 'md:grid md:grid-cols-2 md:max-h-50 md:overflow-y-auto' : 'md:flex md:flex-col md:max-h-50 md:overflow-y-auto'}
+        ${options.length > 6 ? 'grid grid-cols-2' : 'flex flex-col'}
         ${className ?? ''}
     `}
       >

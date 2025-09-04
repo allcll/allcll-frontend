@@ -97,3 +97,5 @@ export interface FilterConfiguration {
   default: boolean;
   ItemComponent: React.ComponentType<FilterItemProps>;
 }
+
+export type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer U)[] ? U : Filters[K];

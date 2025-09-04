@@ -59,7 +59,6 @@ function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
           })}
         </div>
 
-        <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">수업유형</h3>
         <MultiSelectFilter
           selectedValues={categories}
           options={categoryOptions}

@@ -42,7 +42,8 @@ function SingleSelectFilterOption<K extends keyof Filters>({
       <div
         className={`
         gap-2 grid [grid-template-columns:repeat(auto-fit,minmax(80px,1fr))]
-        ${options.length > 6 ? 'md:grid md:grid-cols-2 md:max-h-50 md:overflow-y-auto' : 'md:flex md:flex-col md:max-h-50 md:overflow-y-auto'}
+        grid grid-cols-2
+        min-w-max
         ${className ?? ''}
     `}
       >

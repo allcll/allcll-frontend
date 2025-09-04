@@ -13,6 +13,7 @@ interface GenericSingleSelectFilterProps<K extends keyof Filters> {
   ItemComponent: React.ComponentType<FilterItemProps>;
   selectedValue: FilterValueType<K> | null;
   setFilter: (field: K, value: Filters[K]) => void;
+  className?: string;
 }
 
 function GenericSingleSelectFilter<K extends keyof Filters>({
@@ -21,6 +22,7 @@ function GenericSingleSelectFilter<K extends keyof Filters>({
   ItemComponent,
   selectedValue,
   setFilter,
+  className,
 }: GenericSingleSelectFilterProps<K>) {
   const isMobile = useMobile();
 
@@ -39,7 +41,7 @@ function GenericSingleSelectFilter<K extends keyof Filters>({
   return isMobile ? (
     SingleSelectContent
   ) : (
-    <Filtering label={selectedSingleChipLabel} selected={!!selectedValue}>
+    <Filtering label={selectedSingleChipLabel} selected={!!selectedValue} className={className}>
       {SingleSelectContent}
     </Filtering>
   );
