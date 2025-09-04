@@ -22,7 +22,6 @@ import SearchSvg from '@/assets/search.svg?react';
 import DownloadSvg from '@/assets/download.svg?react';
 import Card from '@common/components/Card';
 import { useScheduleSearchStore } from '@/store/useFilterStore';
-import ScheduleFilterConfig from '@/components/contentPanel/filter/config/schedule';
 
 type modalType = 'edit' | 'create' | null;
 
@@ -72,7 +71,6 @@ function Timetable() {
                 filters={filters}
                 setFilter={setFilter}
                 resetFilter={resetFilter}
-                multiFilterConfig={ScheduleFilterConfig}
               />
             )}
             {bottomSheetType === 'edit' && <FormBottomSheet />}

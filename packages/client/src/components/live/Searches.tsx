@@ -1,27 +1,27 @@
-import { useState, ChangeEvent } from 'react';
+import { useState } from 'react';
 import StarIcon from '@/components/svgs/StarIcon.tsx';
 import SearchBox from '@/components/common/SearchBox.tsx';
-import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
-import DepartmentSelectFilter from '@/components/contentPanel/filter/DepartmentFilter.tsx';
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import DraggableList from '@/components/live/subjectTable/DraggableList.tsx';
 import FilteringModal from '@/components/wishTable/FilteringModal.tsx';
-import { isFilterEmpty, useWishSearchStore } from '@/store/useFilterStore.ts';
+import { useWishSearchStore } from '@/store/useFilterStore.ts';
 import { HeadTitle, useWishesTableStore } from '@/store/useTableColumnStore.ts';
 import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
 import useBackSignal from '@/hooks/useBackSignal.ts';
 import { Wishes } from '@/utils/types.ts';
 import ListSvg from '@/assets/list.svg?react';
 import useMobile from '@/hooks/useMobile';
-import FilterDelete from '../contentPanel/filter/FilterDelete';
-import GenericMultiSelectFilter from '../contentPanel/filter/common/GenericMultiSelectFilter';
-import { MultiWishFilterConfig } from '../contentPanel/filter/config/wishes';
-import WishFilter from '../contentPanel/filter/WishFilter';
-import SeatFilter from '../contentPanel/filter/SeatFilter';
 import FilteringBottomSheet from '../contentPanel/bottomSheet/FilteringBottomSheet';
-import DayFilter from '../contentPanel/filter/DayFilter';
-import FilteringButton from '../common/filter/button/FilteringButton';
+import GenericMultiSelectFilter from '../filtering/GenericMultiSelectFilter';
+import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
+import GenericSingleSelectFilter from '../filtering/GenericSingleSelectFilter';
+import { FilterDomains } from '@/utils/filtering/filterDomains';
+import Chip from '@common/components/chip/Chip';
+import FilteringButton from '../filtering/button/FilteringButton';
+import DepartmentSelectFilter from '../filtering/DepartmentFilter';
+import DayFilter from '../filtering/DayFilter';
+import FilterDelete from '../filtering/FilterDelete';
 
 export interface WishSearchParams {
   searchInput: string;
@@ -37,7 +37,7 @@ function Searches() {
   const setFilter = useWishSearchStore(state => state.setFilter);
   const resetFilter = useWishSearchStore(state => state.resetFilters);
 
-  const { keywords, department, favoriteOnly, wishRange, seatRange } = filters;
+  const { keywords, department, favoriteOnly } = filters;
 
   const tableTitles = useWishesTableStore(state => state.tableTitles);
   const setTableTitles = useWishesTableStore(state => state.setTableTitles);
@@ -46,14 +46,6 @@ function Searches() {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
   const setToggleFavorite = () => setFilter('favoriteOnly', !favoriteOnly);
-
-  const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setFilter('keywords', event.target.value);
-  };
-
-  const handleDepartmentChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setFilter('department', event.target.value);
-  };
 
   const handleOpenFilter = () => {
     if (isMobile) {
@@ -77,61 +69,87 @@ function Searches() {
         <FilteringModal filterStore={useWishSearchStore} onClose={() => setIsFilterModalOpen(false)} />
       )}
 
+      {isBottomSheetOpen && (
+        <FilteringBottomSheet
+          onCloseFiltering={() => setIsBottomSheetOpen(false)}
+          filters={filters}
+          setFilter={setFilter}
+          resetFilter={resetFilter}
+        />
+      )}
+
       <SearchBox
         type="text"
         className="pl-10 pr-6 py-2 rounded-md w-full bg-white border border-gray-400 text-[16px] placeholder:text-sm"
         placeholder="과목명, 교수명 또는 학수번호 및 분반 검색"
         value={keywords}
         onDelete={() => setFilter('keywords', '')}
-        onChange={handleSearchInputChange}
+        onChange={event => setFilter('keywords', event.target.value)}
       />
 
       <div className="flex items-center flex-wrap mt-2 gap-2">
-        {isMobile ? (
-          <>
-            <DepartmentFilter
-              value={department}
-              style={{ maxWidth: 'calc(100vw - 64px)' }}
-              onChange={handleDepartmentChange}
-            />
-            {isBottomSheetOpen && (
-              <FilteringBottomSheet
-                onCloseFiltering={() => setIsBottomSheetOpen(false)}
-                filters={filters}
-                setFilter={setFilter}
-                resetFilter={resetFilter}
-                multiFilterConfig={MultiWishFilterConfig}
-              />
-            )}
-          </>
-        ) : (
-          <>
-            <DepartmentSelectFilter department={department} setFilter={setFilter} />
-            {MultiWishFilterConfig.map(filter => {
-              const value = filters?.[filter.filterKey];
-              if (isFilterEmpty(filter.filterKey, value) && !filter.default) return null;
-              return (
-                <GenericMultiSelectFilter
-                  key={filter.filterKey}
-                  filterKey={filter.filterKey}
-                  options={filter.options}
-                  labelPrefix={filter.labelPrefix}
-                  ItemComponent={filter.ItemComponent}
-                  selectedValues={
-                    Array.isArray(filters[filter.filterKey]) ? (filters[filter.filterKey] as (string | number)[]) : null
-                  }
-                  setFilter={setFilter}
-                  className="min-w-max"
-                />
-              );
-            })}
+        <DepartmentSelectFilter department={department} setFilter={setFilter} />
+        <GenericMultiSelectFilter
+          filterKey="credits"
+          options={FilterDomains.credits}
+          selectedValues={filters.credits ?? []}
+          setFilter={setFilter}
+          ItemComponent={CheckboxAdapter}
+          className="min-w-max"
+        />
 
-            <DayFilter times={filters.time} setFilter={setFilter} />
-            <WishFilter wishRange={wishRange} setFilter={setFilter} />
-            <SeatFilter seatRange={seatRange} setFilter={setFilter} />
-          </>
-        )}
+        <GenericMultiSelectFilter
+          filterKey="grades"
+          options={FilterDomains.grades}
+          selectedValues={filters.grades ?? []}
+          setFilter={setFilter}
+          ItemComponent={CheckboxAdapter}
+          className="min-w-max"
+        />
 
+        <GenericMultiSelectFilter
+          filterKey="classroom"
+          options={FilterDomains.classRoom}
+          selectedValues={filters.classroom ?? []}
+          setFilter={setFilter}
+          ItemComponent={CheckboxAdapter}
+          className="min-w-max"
+        />
+
+        <GenericMultiSelectFilter
+          filterKey="note"
+          options={FilterDomains.remark}
+          selectedValues={filters.note ?? []}
+          setFilter={setFilter}
+          ItemComponent={CheckboxAdapter}
+          className="min-w-max"
+        />
+
+        <GenericMultiSelectFilter
+          filterKey="categories"
+          options={filters.categories}
+          selectedValues={(filters.categories as string[]) ?? []}
+          setFilter={setFilter}
+          ItemComponent={CheckboxAdapter}
+        />
+
+        <GenericSingleSelectFilter
+          filterKey="wishRange"
+          options={FilterDomains.wishRange}
+          selectedValue={filters.wishRange ?? null}
+          setFilter={setFilter}
+          ItemComponent={Chip}
+        />
+
+        <GenericSingleSelectFilter
+          filterKey="seatRange"
+          options={FilterDomains.seatRange}
+          selectedValue={filters.seatRange ?? null}
+          setFilter={setFilter}
+          ItemComponent={Chip}
+        />
+
+        <DayFilter times={filters.time} setFilter={setFilter} />
         <FilterDelete filters={filters} resetFilter={resetFilter} />
         <FilteringButton handleOpenFilter={handleOpenFilter} />
 

@@ -1,13 +1,13 @@
 import { create, StoreApi, UseBoundStore } from 'zustand';
-import { Credit, Curitype, Grade, RangeFilter, RemarkType } from '@/utils/types.ts';
-import { IDayTimeItem } from '@/components/contentPanel/filter/DayTimeFilter.tsx';
+import { Credit, Grade, RangeFilter, RemarkType } from '@/utils/types.ts';
+import { IDayTimeItem } from '@/components/filtering/DayTimeFilter';
 
 export interface Filters {
   keywords: string;
   department: string;
   grades: Grade[];
   credits: Credit[];
-  categories: Curitype[];
+  categories: string[];
   seatRange: RangeFilter | null;
   wishRange: RangeFilter | null;
   time: IDayTimeItem[];
@@ -20,7 +20,7 @@ export interface Filters {
 
 interface IFilterStore {
   filters: Filters;
-  setFilter: <K extends keyof Filters>(key: K, value: Filters[K]) => void;
+  setFilter: <K extends keyof Filters, VALUE>(key: K, value: VALUE) => void;
   resetFilters: () => void;
 }
 

@@ -1,22 +1,18 @@
 import Modal from '@common/components/modal/Modal';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
-import DayTimeFilter, { IDayTimeItem } from '@/components/contentPanel/filter/DayTimeFilter.tsx';
-import { FilterOptions, getCategories } from '@/utils/filtering/filterDomains.ts';
+import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains.ts';
 import { FilterStore } from '@/store/useFilterStore.ts';
 import useSubject from '@/hooks/server/useSubject.ts';
-import { Curitype, RemarkType } from '@/utils/types.ts';
-import MultiSelectFilterOption from '@common/components/filtering/MultiSelectFilterOption';
 import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
 import Chip from '@common/components/chip/Chip';
 import CustomButton from '@common/components/Button';
-import { REMARK } from '../contentPanel/filter/constants/Filters';
+import MultiSelectFilter from '../filtering/MultiSelectFilter';
+import DayTimeFilter from '../filtering/DayTimeFilter';
 
 interface IModalProps {
   filterStore: FilterStore;
   onClose: () => void;
 }
-
-const ClassroomOptions = FilterOptions.classRoom.sort((a, b) => a.label.localeCompare(b.label));
 
 function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
   const { classroom, note, categories, time } = filterStore(state => state.filters);
@@ -26,53 +22,7 @@ function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
   const { data: subjects } = useSubject();
   const categoryOptions = getCategories(subjects ?? [])
     .sort((a, b) => a.localeCompare(b))
-    .map(cat => ({ label: cat, value: cat }));
-
-  /**TODO: 로직 통합 및 개선 */
-  const setRemarkFilterWrapper = (field: string, value: string[]) => {
-    if (field === 'selectedRemarks') {
-      setFilter('note', value as RemarkType[]);
-    }
-  };
-
-  const setClassroomFilterWrapper = (field: string, value: string[]) => {
-    if (field === 'selectedClassrooms') {
-      setFilter('classroom', value);
-    }
-  };
-
-  const setCategoryFilterWrapper = (field: string, value: string[]) => {
-    if (field === 'selectedCategories') {
-      setFilter('categories', value as Curitype[]);
-    }
-  };
-
-  const setTimeFilterWrapper = (field: string, value: IDayTimeItem[]) => {
-    if (field === 'time') {
-      setFilter('time', value as IDayTimeItem[]);
-    }
-  };
-
-  const handleChipClick = (field: string, value: string) => {
-    if (field === 'selectedCategories') {
-      setFilter(
-        'categories',
-        categories.filter(cat => cat !== value),
-      );
-    }
-    if (field === 'selectedRemarks') {
-      setFilter(
-        'note',
-        note.filter(n => n !== value),
-      );
-    }
-    if (field === 'selectedClassrooms') {
-      setFilter(
-        'classroom',
-        classroom.filter(c => c !== value),
-      );
-    }
-  };
+    .map(cat => cat);
 
   return (
     <Modal onClose={onClose}>
@@ -83,60 +33,76 @@ function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
           {categories.map(category => (
             <Chip
               key={String(category)}
-              onClick={() => handleChipClick('selectedCategories', category)}
+              onClick={() =>
+                setFilter(
+                  'categories',
+                  categories.filter(cat => cat !== category),
+                )
+              }
               chipType="cancel"
               selected={true}
               label={category}
             />
           ))}
-          {note.map(note => (
+          {note.map(remark => (
             <Chip
-              key={String(note)}
-              onClick={() => handleChipClick('selectedRemarks', note)}
+              key={String(remark)}
+              onClick={() =>
+                setFilter(
+                  'note',
+                  note.filter(n => n !== remark),
+                )
+              }
               chipType="cancel"
               selected={true}
               label={note}
             />
           ))}
-          {classroom.map(classroom => (
+          {classroom.map(classRoom => (
             <Chip
-              key={String(classroom)}
-              onClick={() => handleChipClick('selectedClassrooms', classroom)}
+              key={String(classRoom)}
+              onClick={() =>
+                setFilter(
+                  'classroom',
+                  classroom.filter(c => c !== classRoom),
+                )
+              }
               chipType="cancel"
               selected={true}
-              label={ClassroomOptions.find(cr => cr.value === classroom)?.label}
+              label={classRoom}
             />
           ))}
         </div>
 
         <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">수업유형</h3>
-        <MultiSelectFilterOption
+        <MultiSelectFilter
           selectedValues={categories}
           options={categoryOptions}
-          field="selectedCategories"
-          setFilter={setCategoryFilterWrapper}
+          filterKey="categories"
+          setFilter={setFilter}
           ItemComponent={CheckboxAdapter}
+          className="md:overflow-y-visible"
         />
 
         <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">시간</h3>
-        <DayTimeFilter items={time} onChange={items => setTimeFilterWrapper('time', items)} />
+        <DayTimeFilter items={time} onChange={items => setFilter('time', items)} />
 
-        <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">비고</h3>
-        <MultiSelectFilterOption
+        <MultiSelectFilter
           selectedValues={note}
-          options={REMARK}
-          field="selectedRemarks"
-          setFilter={setRemarkFilterWrapper}
+          options={FilterDomains.remark}
+          filterKey="note"
+          setFilter={setFilter}
           ItemComponent={CheckboxAdapter}
+          className="md:overflow-y-visible"
         />
 
-        <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">강의실</h3>
-        <MultiSelectFilterOption
+        <MultiSelectFilter
           selectedValues={classroom}
-          options={ClassroomOptions}
-          field="selectedClassrooms"
-          setFilter={setClassroomFilterWrapper}
+          options={FilterDomains.classRoom}
+          filterKey="classroom"
+          setFilter={setFilter}
           ItemComponent={CheckboxAdapter}
+          className="md:overflow-y-visible"
         />
       </div>
 

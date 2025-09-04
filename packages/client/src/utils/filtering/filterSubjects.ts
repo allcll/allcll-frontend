@@ -1,12 +1,12 @@
 import { disassemble } from 'es-hangul';
 import { Grade, RangeFilter, RemarkType, Subject, Wishes } from '../types';
-import { IDayTimeItem } from '@/components/contentPanel/filter/DayTimeFilter.tsx';
 import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
 import { usePinned } from '@/hooks/server/usePinned.ts';
 import useFavorites from '@/store/useFavorites.ts';
 import { Filters, isFilterEmpty } from '@/store/useFilterStore.ts';
 import { TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 import { Time } from '@/utils/time.ts';
+import { IDayTimeItem } from '@/components/filtering/DayTimeFilter';
 
 /** 활성화 된 필터만 실행하는 함수를 반환 (최적화) */
 export function useFilterFunctions(filters: Filters) {

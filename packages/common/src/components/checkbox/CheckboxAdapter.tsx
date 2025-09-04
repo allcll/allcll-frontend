@@ -1,13 +1,12 @@
 import Checkbox from './Checkbox';
 
-type FilterItemProps<VALUE extends string | number> = {
+type FilterItemProps = {
   label: string;
   selected: boolean;
   onClick: () => void;
-  value: VALUE;
 };
 
-function CheckboxAdapter<VALUE extends string | number>({ label, selected, onClick }: FilterItemProps<VALUE>) {
+function CheckboxAdapter({ label, selected, onClick }: FilterItemProps) {
   return <Checkbox label={label} checked={selected} onChange={onClick} />;
 }
 

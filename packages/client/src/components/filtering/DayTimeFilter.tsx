@@ -23,8 +23,6 @@ function DayTimeFilter({ items, onChange }: Readonly<IDayTimeFilter>) {
 
     const reconciledItems = reconcileData(items);
     if (reconciledItems) onChange(reconciledItems);
-
-    console.log('DayTimeFilter items changed:', items);
   }, [items]);
 
   const handleChange = (index: number) => (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {

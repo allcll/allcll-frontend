@@ -1,29 +1,29 @@
 import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
-import { Filters } from '@/store/useFilterStore.ts';
-import GenericMultiSelectFilter from '../filter/common/GenericMultiSelectFilter';
+import { Filters, isFilterEmpty } from '@/store/useFilterStore.ts';
 import CustomButton from '@common/components/Button';
 import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
-import { FilterConfiguration } from '@/utils/types';
-import SeatFilter from '../filter/SeatFilter';
-import WishFilter from '../filter/WishFilter';
-import DayFilter from '../filter/DayFilter';
+import GenericMultiSelectFilter from '@/components/filtering/GenericMultiSelectFilter';
+import GenericSingleSelectFilter from '@/components/filtering/GenericSingleSelectFilter';
+import { FilterDomains } from '@/utils/filtering/filterDomains';
+import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter';
+import Chip from '@common/components/chip/Chip';
+import DayFilter from '@/components/filtering/DayFilter';
 
 interface FilteringBottomSheetProps {
   onCloseFiltering: () => void;
   filters: Filters;
   setFilter: (field: keyof Filters, value: Filters[keyof Filters]) => void;
   resetFilter: () => void;
-  multiFilterConfig: FilterConfiguration<string | number>[];
 }
 
-function FilteringBottomSheet({
-  onCloseFiltering,
-  filters,
-  setFilter,
-  resetFilter,
-  multiFilterConfig,
-}: FilteringBottomSheetProps) {
+export function getActiveFilters(filters: Filters) {
+  return (Object.entries(filters) as [keyof Filters, Filters[keyof Filters]][])
+    .filter(([key, value]) => !isFilterEmpty(key, value))
+    .map(([key, value]) => ({ key, value }));
+}
+
+function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }: FilteringBottomSheetProps) {
   const handleClickSave = () => {
     onCloseFiltering();
   };
@@ -48,28 +48,66 @@ function FilteringBottomSheet({
           />
         </div>
 
-        <SeatFilter seatRange={filters.seatRange} setFilter={setFilter} />
-        <WishFilter wishRange={filters.wishRange} setFilter={setFilter} />
+        <GenericSingleSelectFilter
+          filterKey="wishRange"
+          options={FilterDomains.wishRange}
+          selectedValue={filters.wishRange ?? null}
+          setFilter={setFilter}
+          ItemComponent={Chip}
+        />
+
+        <GenericSingleSelectFilter
+          filterKey="seatRange"
+          options={FilterDomains.seatRange}
+          selectedValue={filters.seatRange ?? null}
+          setFilter={setFilter}
+          ItemComponent={Chip}
+        />
 
         <div className="w-full h-15 flex gap-2 flex-col justify-center mt-2">
           <label className="text-xs text-gray-500">시간</label>
           <DayFilter times={filters.time} setFilter={setFilter} />
         </div>
 
-        {multiFilterConfig.map(filter => (
-          <GenericMultiSelectFilter
-            key={filter.filterKey}
-            filterKey={filter.filterKey}
-            options={filter.options}
-            labelPrefix={filter.labelPrefix ?? ''}
-            ItemComponent={filter.ItemComponent}
-            selectedValues={
-              Array.isArray(filters[filter.filterKey]) ? (filters[filter.filterKey] as (string | number)[]) : null
-            }
-            setFilter={setFilter}
-            className="min-w-max"
-          />
-        ))}
+        <GenericMultiSelectFilter
+          filterKey="credits"
+          options={FilterDomains.credits}
+          selectedValues={filters.credits ?? []}
+          setFilter={setFilter}
+          ItemComponent={CheckboxAdapter}
+        />
+
+        <GenericMultiSelectFilter
+          filterKey="grades"
+          options={FilterDomains.grades}
+          selectedValues={filters.grades ?? []}
+          setFilter={setFilter}
+          ItemComponent={CheckboxAdapter}
+        />
+
+        <GenericMultiSelectFilter
+          filterKey="classroom"
+          options={FilterDomains.classRoom}
+          selectedValues={filters.classroom ?? []}
+          setFilter={setFilter}
+          ItemComponent={CheckboxAdapter}
+        />
+
+        <GenericMultiSelectFilter
+          filterKey="note"
+          options={FilterDomains.remark}
+          selectedValues={filters.note ?? []}
+          setFilter={setFilter}
+          ItemComponent={CheckboxAdapter}
+        />
+
+        <GenericMultiSelectFilter
+          filterKey="categories"
+          options={filters.categories}
+          selectedValues={(filters.categories as string[]) ?? []}
+          setFilter={setFilter}
+          ItemComponent={CheckboxAdapter}
+        />
 
         <div className="sticky bottom-0 pb-14 pt-5 bg-white flex justify-end items-center gap-2 border-gray-200">
           <CustomButton

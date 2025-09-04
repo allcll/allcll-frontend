@@ -1,17 +1,27 @@
 /** Filter Domain 은 2가지로 구분 가능
  * 1. 미리 정의 (하드 코딩)
  * 2. 동적 정의 (Data 기반 ex..unique) */
-
-import { Subject } from '@/utils/types.ts';
+import { Credit, Day, Grade, RangeFilter, RemarkType, Subject } from '@/utils/types.ts';
 
 /** Filtering 기능도 2가지로 정의 가능
  * 1. 키워드 Search: string[] 에 속해있는 string 과 비교
  * 2. matching Search: string 과 정확히 일치하는 속성
  * 3. key, value 에 대한 판단?? */
 
-export const FilterDomains = {
-  grades: ['전체', '1학년', '2학년', '3학년', '4학년'],
-  days: ['전체', '월', '화', '수', '목', '금', '토'],
+export interface FilterDomainsType {
+  grades: Grade[];
+  credits: Credit[];
+  days: Day[];
+  remark: RemarkType[];
+  classRoom: string[];
+  wishRange: RangeFilter[];
+  seatRange: RangeFilter[];
+}
+
+export const FilterDomains: FilterDomainsType = {
+  grades: [1, 2, 3, 4],
+  credits: [1, 2, 3],
+  days: ['월', '화', '수', '목', '금', '토'],
   remark: ['외국인대상', 'SHP대상', '기타'], // 외국인 들어가는 , SHP 또는 Honor 들어가는
   classRoom: [
     '광개토관',
@@ -36,6 +46,18 @@ export const FilterDomains = {
     '무방관',
     '모짜르트홀',
     '학생회관',
+  ],
+  wishRange: [
+    { operator: 'over-equal', value: 30 },
+    { operator: 'over-equal', value: 50 },
+    { operator: 'over-equal', value: 100 },
+    { operator: 'over-equal', value: 200 },
+  ],
+  seatRange: [
+    { operator: 'under-equal', value: 1 },
+    { operator: 'over-equal', value: 2 },
+    { operator: 'over-equal', value: 5 },
+    { operator: 'over-equal', value: 10 },
   ],
 };
 // 집: '집현관';
