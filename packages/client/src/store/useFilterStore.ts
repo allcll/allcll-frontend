@@ -55,14 +55,14 @@ function isValidFilterValue(value: unknown): boolean {
   return value !== null && value !== undefined && value !== '' && value !== false;
 }
 
-export function getAllSelectedLabels(filters: Filters, dapartments?: DepartmentType[]) {
+export function getAllSelectedLabels(filters: Filters, departments?: DepartmentType[]) {
   const result = [];
 
   for (const key in filters) {
     const values = filters[key as keyof Filters];
 
     if (key === 'time') {
-      const { day, type } = values as { day?: string; type?: string };
+      const { day, type } = values as IDayTimeItem;
 
       if (!day || !type) continue;
     }
@@ -74,7 +74,7 @@ export function getAllSelectedLabels(filters: Filters, dapartments?: DepartmentT
           result.push({
             filterKey: key as keyof Filters,
             values: value,
-            label: getLabelByFilters(key as keyof Filters, value as Filters[keyof Filters], dapartments),
+            label: getLabelByFilters(key as keyof Filters, value as Filters[keyof Filters], departments),
           });
         }
       });
@@ -84,7 +84,7 @@ export function getAllSelectedLabels(filters: Filters, dapartments?: DepartmentT
       result.push({
         filterKey: key as keyof Filters,
         values: values,
-        label: values !== null ? getLabelByFilters(key as keyof Filters, values, dapartments) : '',
+        label: values !== null ? getLabelByFilters(key as keyof Filters, values, departments) : '',
       });
     }
   }

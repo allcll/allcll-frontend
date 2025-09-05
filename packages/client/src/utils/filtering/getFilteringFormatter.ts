@@ -80,14 +80,14 @@ export function getSingleSelectedLabel<K extends keyof Filters>(
 export function getLabelByFilters<K extends keyof Filters>(
   filterKey: K,
   selectedValue: FilterValueType<K> | null,
-  dapartments?: DepartmentType[],
+  departments?: DepartmentType[],
 ): string {
   if (selectedValue === null || selectedValue === undefined) {
     return '';
   }
 
   const castedValue = selectedValue;
-  const formattedLabel = getLabelFormatter(dapartments)[filterKey]?.(castedValue);
+  const formattedLabel = getLabelFormatter(departments)[filterKey]?.(castedValue);
   if (!formattedLabel) {
     return '';
   }
@@ -115,8 +115,8 @@ export function getLabelFormatter(departments?: DepartmentType[]): Partial<{
   return {
     keywords: value => (typeof value === 'string' ? value : ''),
     department: value => getDepartmentLabel(value as string),
-    grades: value => getLableWithSuffix(value, labelPrefix.grades),
-    credits: value => getLableWithSuffix(value, labelPrefix.credits),
+    grades: value => getLabelWithSuffix(value, labelPrefix.grades),
+    credits: value => getLabelWithSuffix(value, labelPrefix.credits),
     classroom: getClassRoomLabel,
     seatRange: getRangeLabel,
     wishRange: getRangeLabel,
@@ -169,6 +169,6 @@ const getDaysLabel = (value: Day) => {
   return value + '요일';
 };
 
-const getLableWithSuffix = (value: string | number, labelSuffix: string) => {
+const getLabelWithSuffix = (value: string | number, labelSuffix: string) => {
   return value + labelSuffix;
 };
