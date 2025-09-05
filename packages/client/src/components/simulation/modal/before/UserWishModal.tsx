@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
+import Chip from '@common/components/chip/Chip';
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
-import { applyCreditLimit, pickNonRandomSubjects, pickRandomsubjects } from '@/utils/subjectPicker';
+import { useScheduleState } from '@/store/useScheduleState';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
+import { Department } from '@/hooks/server/useDepartments.ts';
+import useLectures, { Lecture } from '@/hooks/server/useLectures';
+import { TimetableType, useTimetableSchedules } from '@/hooks/server/useTimetableSchedules';
+import { applyCreditLimit, pickNonRandomSubjects, pickRandomsubjects } from '@/utils/subjectPicker';
 import { getRecentInterestedSnapshot, saveInterestedSnapshot } from '@/utils/simulation/subjects';
 import { startSimulation } from '@/utils/simulation/simulation';
-import useLectures, { Lecture } from '@/hooks/server/useLectures';
-import GameTips from './GameTips';
 import SelectDepartment from './SelectDepartment';
-import { Department } from '@/hooks/server/useDepartments.ts';
-import { TimetableType, useTimetableSchedules } from '@/hooks/server/useTimetableSchedules';
-import TimetableChip from '../TimetableChip';
-import { useScheduleState } from '@/store/useScheduleState';
-import Chip from '@common/components/chip/Chip';
 import SubjectTable from './SubjectTable';
 import ActionButtons from './ActionButton';
+import TimetableChip from '../TimetableChip';
+import GameTips from './GameTips';
 
 interface UserWishModalIProps {
   timetables: TimetableType[];
@@ -30,9 +30,9 @@ const InitDepartment: Department = { departmentCode: '', departmentName: '' };
 function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIProps>) {
   const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
   const closeModal = useSimulationModalStore(state => state.closeModal);
-  const { data: lectures, isLoading: isLoadingLectures } = useLectures();
-  const currentTimetable = useScheduleState(state => state.currentTimetable);
   const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
+  const currentTimetable = useScheduleState(state => state.currentTimetable);
+  const { data: lectures, isLoading: isLoadingLectures } = useLectures();
 
   const [simulationSubjects, setSimulationSubjects] = useState<Lecture[]>([]);
   const [department, setDepartment] = useState<Department>({ ...InitDepartment });

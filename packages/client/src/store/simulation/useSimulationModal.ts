@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type ModalType = 'tutorial' | 'wish' | 'waiting' | 'captcha' | 'simulation' | 'result' | null;
+export type ModalType = 'tutorial' | 'wish' | 'waiting' | 'captcha' | 'simulation' | 'result' | null;
 
 interface IModalStateStore {
   type: ModalType;

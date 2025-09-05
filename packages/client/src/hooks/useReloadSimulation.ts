@@ -13,7 +13,7 @@ export function useReloadSimulation() {
 
   const loadCurrentSimulation = (
     subjects: { subjectId: number }[],
-    key: 'successedSubjects' | 'failedSubjects' | 'registeredSubjects' | 'nonRegisteredSubjects',
+    key: 'registeredSubjects' | 'nonRegisteredSubjects',
     simulationId: number,
   ) => {
     const filteredSubjects = subjects
@@ -30,27 +30,26 @@ export function useReloadSimulation() {
     }
   };
 
-  const reloadSimulationStatus = () => {
-    getSimulateStatus()
-      .then(result => {
-        if (!result || result.simulationId === -1) return;
+  const reloadSimulationStatus = async () => {
+    try {
+      const result = await getSimulateStatus();
+      if (!result || result.simulationId === -1) return;
 
-        setCurrentSimulation({ simulationId: result.simulationId });
+      const { simulationId, nonRegisteredSubjects, registeredSubjects } = result;
 
-        if (result?.nonRegisteredSubjects) {
-          loadCurrentSimulation(result.nonRegisteredSubjects, 'nonRegisteredSubjects', result.simulationId);
-        }
+      setCurrentSimulation({ simulationId });
 
-        if (result?.registeredSubjects) {
-          loadCurrentSimulation(result.registeredSubjects, 'registeredSubjects', result.simulationId);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      if (nonRegisteredSubjects) {
+        loadCurrentSimulation(nonRegisteredSubjects, 'nonRegisteredSubjects', simulationId);
+      }
+
+      if (registeredSubjects) {
+        loadCurrentSimulation(registeredSubjects, 'registeredSubjects', simulationId);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  return {
-    reloadSimulationStatus,
-  };
+  return { reloadSimulationStatus };
 }

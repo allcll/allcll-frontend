@@ -22,7 +22,6 @@ import { db, SimulationRun, SimulationRunSelections } from '@/utils/dbConfig.ts'
 import { getInterestedId, getRecentInterestedSnapshot } from '@/utils/simulation/subjects';
 import { getAccuracy, getAccuracyScore, getSpeedScore } from '@/utils/simulation/score.ts';
 import { checkSubjectResult } from '@/utils/checkSubjectResult.ts';
-import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import { Lecture } from '@/hooks/server/useLectures';
 
 export enum BUTTON_EVENT {
@@ -197,6 +196,71 @@ export async function startSimulation(userPK: string, departmentCode: string, de
   return { simulationId: newId, started_at: Date.now(), isRunning: true };
 }
 
+async function handleSearchEvent(ongoing: SimulationRun) {
+  const time = Date.now();
+  await db.simulation_run.update(ongoing.simulation_run_id, {
+    search_event_at: time,
+  });
+  return { elapsed_time: time - ongoing.started_at };
+}
+
+async function handleApplyEvent(ongoing: SimulationRun, subjectId: number) {
+  const selectedIndex = await db.simulation_run_selections
+    .filter(run => run.simulation_run_id === ongoing.simulation_run_id && run.ended_at >= 0)
+    .count();
+
+  const selectionId = await db.simulation_run_selections.add({
+    simulation_run_id: ongoing.simulation_run_id,
+    interested_id: await getInterestedId(ongoing.snapshot_id, subjectId),
+    selected_index: selectedIndex + 1,
+    status: APPLY_STATUS.PROGRESS,
+    started_at: Date.now(),
+    ended_at: -1,
+  });
+
+  await db.simulation_run_events.add({
+    simulation_section_id: selectionId,
+    event_type: BUTTON_EVENT.APPLY,
+    timestamp: Date.now(),
+  });
+
+  return {};
+}
+
+async function handleSubmitEvent(
+  ongoing: SimulationRun,
+  latestSelection: SimulationRunSelections,
+  subjectId: number,
+  isCaptchaFailed: boolean,
+  lectures: Lecture[],
+) {
+  const saveStatus = async (status: APPLY_STATUS) => {
+    await db.simulation_run_selections.update(latestSelection.run_selections_id, { status });
+    return { status };
+  };
+
+  if (isCaptchaFailed) {
+    return saveStatus(APPLY_STATUS.CAPTCHA_FAILED);
+  }
+
+  const selections = await db.simulation_run_selections
+    .filter(selection => selection.simulation_run_id === ongoing.simulation_run_id)
+    .toArray();
+  const interestedId = await getInterestedId(ongoing.snapshot_id, subjectId);
+
+  const isDouble = selections.some(
+    s => s.interested_id === interestedId && s.ended_at >= 0 && submittedFilter(s, ongoing.simulation_run_id),
+  );
+  if (isDouble) {
+    return saveStatus(APPLY_STATUS.DOUBLED);
+  }
+
+  const elapsedTime = Math.floor(Date.now() - ongoing.started_at) / 1000;
+  const isSuccess = checkSubjectResult(lectures, subjectId, elapsedTime);
+
+  return saveStatus(isSuccess ? APPLY_STATUS.SUCCESS : APPLY_STATUS.FAILED);
+}
+
 // 타입 정의
 type ButtonEventSearchReq = {
   eventType: BUTTON_EVENT.SEARCH;
@@ -232,117 +296,42 @@ export async function triggerButtonEvent(
 export async function triggerButtonEvent(input: ButtonEventApplyReq, lectures: Lecture[]): Promise<{}>;
 export async function triggerButtonEvent(input: ButtonEventEndReq, lectures: Lecture[]): Promise<{ finished: boolean }>;
 export async function triggerButtonEvent(
-  input: ButtonEventSearchReq | ButtonEventSubmitReq | ButtonEventApplyReq | ButtonEventEndReq,
+  input: any, // Simplified for brevity
   lectures: Lecture[],
+  isCaptchaFailed: boolean = false,
 ) {
   const { eventType } = input;
-  console.log('BUTTON EVENT', input);
   let ongoing;
   try {
     ongoing = await getOngoingSimulation();
-
     if (!ongoing) throw new Error(SIMULATION_ERROR.ONGOING_SIMULATION_NOT_FOUND);
   } catch (e) {
     return CheckError(e);
   }
 
-  const latestSimulationId = ongoing.simulation_run_id;
   if (eventType === BUTTON_EVENT.SEARCH) {
-    // Todo: 검색 버튼을 2번 이상 눌렀을 때, 방안 생각해보기
-    const time = Date.now();
-    await db.simulation_run.update(latestSimulationId, {
-      search_event_at: time,
-    });
-
-    return { elapsed_time: time - ongoing.started_at };
+    return handleSearchEvent(ongoing);
   }
 
-  const { subjectId } = input as ButtonEventApplyReq;
+  const { subjectId } = input;
   if (eventType === BUTTON_EVENT.APPLY) {
-    const selectedIndex = await db.simulation_run_selections
-      .filter(run => run.simulation_run_id === ongoing.simulation_run_id && run.ended_at >= 0)
-      .count();
-
-    const selectionId = await db.simulation_run_selections.add({
-      simulation_run_id: ongoing.simulation_run_id,
-      interested_id: await getInterestedId(ongoing.snapshot_id, subjectId),
-      selected_index: selectedIndex + 1,
-      status: APPLY_STATUS.PROGRESS,
-      started_at: Date.now(),
-      ended_at: -1,
-    });
-
-    await db.simulation_run_events.add({
-      simulation_section_id: selectionId,
-      event_type: eventType,
-      timestamp: Date.now(),
-    });
-
-    return {};
+    return handleApplyEvent(ongoing, subjectId);
   }
 
   const selections = await db.simulation_run_selections
-    .filter(selection => selection.simulation_run_id === latestSimulationId)
+    .filter(selection => selection.simulation_run_id === ongoing.simulation_run_id)
     .toArray();
   const latestSelection = selections.filter(s => s.ended_at === -1).sort((a, b) => b.started_at - a.started_at)[0];
   if (!latestSelection) return errMsg(SIMULATION_ERROR.SELECTION_NOT_FOUND);
-  const now = Date.now();
 
   await db.simulation_run_events.add({
     simulation_section_id: latestSelection.run_selections_id,
     event_type: eventType,
-    timestamp: now,
+    timestamp: Date.now(),
   });
 
   if (eventType === BUTTON_EVENT.SUBJECT_SUBMIT) {
-    // 과목 결과 불러오는 로직
-    // 과목 중 simulationId, Section 중 started_at 이 가장 늦은 Section 을 가져옵니다.
-
-    const interestedId = await getInterestedId(ongoing.snapshot_id, subjectId);
-    const selection = await db.simulation_run_selections
-      .filter(
-        selection => selection.simulation_run_id === latestSimulationId && selection.interested_id === interestedId,
-      )
-      .last();
-
-    if (!selection) return errMsg(SIMULATION_ERROR.SELECTION_NOT_FOUND);
-
-    const saveStatus = async (status: APPLY_STATUS) => {
-      await db.simulation_run_selections.update(latestSelection.run_selections_id, { status });
-      console.log('saved section', latestSelection.run_selections_id, status);
-      return { status };
-    };
-
-    // 캡차 상태를 확인합니다.
-    const isCaptchaFailed = useSimulationSubjectStore.getState().isCaptchaFailed;
-
-    if (isCaptchaFailed) {
-      return await saveStatus(APPLY_STATUS.CAPTCHA_FAILED);
-    }
-
-    // 이미 failed 상태인지 확인합니다. 이미 failed 상태라면, doubled 처리하고, UI만 fail로 표시합니다.
-    const alreadyFailed = selections.some(s => s.interested_id === interestedId && s.status === APPLY_STATUS.FAILED);
-    if (alreadyFailed) {
-      await saveStatus(APPLY_STATUS.DOUBLED);
-      return { status: APPLY_STATUS.FAILED };
-    }
-
-    // 과목 중복 여부를 확인합니다.
-    const isDouble = selections.some(
-      s => s.interested_id === interestedId && s.ended_at >= 0 && submittedFilter(s, latestSimulationId),
-    );
-    if (isDouble) {
-      return await saveStatus(APPLY_STATUS.DOUBLED);
-    }
-
-    // 과목 성공 실패를 확인합니다.
-    const elapsedTime = Math.floor(now - ongoing.started_at) / 1000;
-    const isSuccess = checkSubjectResult(lectures, subjectId, elapsedTime);
-    if (isSuccess) {
-      return await saveStatus(APPLY_STATUS.SUCCESS);
-    }
-
-    return await saveStatus(APPLY_STATUS.FAILED);
+    return handleSubmitEvent(ongoing, latestSelection, subjectId, isCaptchaFailed, lectures);
   }
 
   if (eventType === BUTTON_EVENT.CANCEL_SUBMIT) {
@@ -359,7 +348,6 @@ export async function triggerButtonEvent(
     if (isFinished) {
       await endCurrentSimulation();
     }
-
     return { finished: isFinished };
   }
 
