@@ -4,7 +4,6 @@ import SearchBox from '@/components/common/SearchBox.tsx';
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import DraggableList from '@/components/live/subjectTable/DraggableList.tsx';
-import FilteringModal from '@/components/wishTable/FilteringModal.tsx';
 import { Filters, getAllSelectedLabels, initialFilters, useWishSearchStore } from '@/store/useFilterStore.ts';
 import { HeadTitle, useWishesTableStore } from '@/store/useTableColumnStore.ts';
 import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
@@ -21,6 +20,7 @@ import FilteringButton from '../filtering/button/FilteringButton';
 import DepartmentSelectFilter from '../filtering/DepartmentFilter';
 import FilterDelete from '../filtering/FilterDelete';
 import useSubject from '@/hooks/server/useSubject';
+import FilteringModal from '../filtering/FilteringModal';
 
 export interface WishSearchParams {
   searchInput: string;

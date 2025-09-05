@@ -26,7 +26,7 @@ function GenericMultiSelectFilter<K extends keyof Filters>({
 }: GenericMultiSelectFilterProps<K>) {
   const isMobile = useMobile();
 
-  const selectedMultiChipLabel = getMultiSelectedLabel(filterKey, selectedValues);
+  const selectedMultiChipLabel = getMultiSelectedLabel(filterKey, selectedValues as unknown as Filters[K]);
 
   const Generalcomponent = isMobile ? Chip : CheckboxAdapter;
 

@@ -8,6 +8,7 @@ import Chip from '@common/components/chip/Chip';
 import CustomButton from '@common/components/Button';
 import MultiSelectFilter from '../filtering/MultiSelectFilter';
 import DayTimeFilter from '../filtering/DayTimeFilter';
+import useDepartments from '@/hooks/server/useDepartments';
 
 interface IModalProps {
   filterStore: FilterStore;
@@ -18,10 +19,11 @@ type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer U)[] ?
 
 function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
   const { classroom, note, categories, time } = filterStore(state => state.filters);
+  const departments = useDepartments();
   const filters = filterStore(state => state.filters);
   const setFilter = filterStore(state => state.setFilter);
   const resetFilters = filterStore(state => state.resetFilters);
-  const allSelectedFilters = getAllSelectedLabels(filters);
+  const allSelectedFilters = getAllSelectedLabels(filters, departments.data);
 
   const { data: subjects } = useSubject();
   const categoryOptions = getCategories(subjects ?? [])

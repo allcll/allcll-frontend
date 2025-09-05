@@ -10,6 +10,7 @@ import Chip from '@common/components/chip/Chip';
 import DayFilter from '@/components/filtering/DayFilter';
 import { FilterValueType } from '@/utils/types';
 import useSubject from '@/hooks/server/useSubject';
+import useDepartments from '@/hooks/server/useDepartments';
 
 interface FilteringBottomSheetProps {
   onCloseFiltering: () => void;
@@ -24,10 +25,11 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
   };
 
   const { data: subjects } = useSubject();
+  const departments = useDepartments();
   const categoryOptions = getCategories(subjects ?? [])
     .sort((a, b) => a.localeCompare(b))
     .map(cat => cat);
-  const allSelectedFilters = getAllSelectedLabels(filters);
+  const allSelectedFilters = getAllSelectedLabels(filters, departments.data);
 
   const handleDeleteFilter = (filterKey: keyof Filters, value: FilterValueType<keyof Filters>) => {
     const currentValue = filters[filterKey];

@@ -1,7 +1,7 @@
 import { IDayTimeItem } from '@/components/filtering/DayTimeFilter';
 import { FilterOptions } from './filterDomains';
 import { Filters } from '@/store/useFilterStore';
-import { Day, RangeMinMaxFilter } from '../types';
+import { Credit, Day, DepartmentType, Grade, RangeMinMaxFilter, RemarkType } from '../types';
 
 export const labelPrefix: Record<keyof Filters, string> = {
   keywords: '키워드',
@@ -20,49 +20,78 @@ export const labelPrefix: Record<keyof Filters, string> = {
   favoriteOnly: '즐겨찾기',
 };
 
-type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer U)[] ? U : Filters[K];
+export type FiltersValueMap = {
+  keywords: string;
+  department: string;
+  grades: Grade;
+  credits: Credit;
+  categories: string;
+  seatRange: RangeMinMaxFilter | null;
+  wishRange: RangeMinMaxFilter | null;
+  time: IDayTimeItem;
+  days: Day;
+  classroom: string;
+  note: RemarkType;
+  language: string;
+  alarmOnly: boolean;
+  favoriteOnly: boolean;
+};
 
-export function getMultiSelectedLabel<K extends keyof Filters>(
-  filterKey: K,
-  selectedValues: FilterValueType<K>[],
-): string {
-  if (!selectedValues || selectedValues.length === 0) {
+// Filters의 배열/단일 값 타입을 추출하는 유틸리티 타입
+export type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer T)[] ? T : Filters[K];
+
+// 선택된 여러 필터의 라벨을 가져오는 함수
+export function getMultiSelectedLabel<K extends keyof Filters>(filterKey: K, selectedValues: Filters[K]): string {
+  if (!Array.isArray(selectedValues) || selectedValues.length === 0) {
     return labelPrefix[filterKey];
   }
 
+  const firstValue = selectedValues[0] as FilterValueType<K>;
   if (selectedValues.length === 1) {
-    return getLabelFormatter()[filterKey]?.(selectedValues[0]) ?? labelPrefix[filterKey];
+    return getLabelFormatter()[filterKey]?.(firstValue) ?? labelPrefix[filterKey];
   }
 
-  return `${getLabelFormatter()[filterKey]?.(selectedValues[0]) ?? labelPrefix[filterKey]} 외 ${selectedValues.length - 1}개`;
+  return `${getLabelFormatter()[filterKey]?.(firstValue) ?? labelPrefix[filterKey]} 외 ${selectedValues.length - 1}개`;
 }
 
 export function getSingleSelectedLabel<K extends keyof Filters>(
-  filterKey: keyof Filters,
+  filterKey: K,
   selectedValue: FilterValueType<K> | null,
 ): string {
-  if (!selectedValue) {
+  if (selectedValue === null || selectedValue === undefined) {
     return labelPrefix[filterKey];
   }
 
+  const castedValue = selectedValue;
   if (filterKey === 'seatRange') {
-    const label = getLabelFormatter()[filterKey]?.(selectedValue) ?? labelPrefix[filterKey];
+    const label = getLabelFormatter()[filterKey]?.(castedValue) ?? labelPrefix[filterKey];
     return `여석 ${label}`;
   }
 
   if (filterKey === 'wishRange') {
-    const label = getLabelFormatter()[filterKey]?.(selectedValue) ?? labelPrefix[filterKey];
+    const label = getLabelFormatter()[filterKey]?.(castedValue) ?? labelPrefix[filterKey];
     return `관심 인원 ${label}`;
   }
 
-  return getLabelFormatter()[filterKey]?.(selectedValue) ?? labelPrefix[filterKey];
+  return getLabelFormatter()[filterKey]?.(castedValue) ?? labelPrefix[filterKey];
 }
 
+// 칩에 표시될 라벨을 가져오는 함수
 export function getLabelByFilters<K extends keyof Filters>(
-  filterKey: keyof Filters,
+  filterKey: K,
   selectedValue: FilterValueType<K> | null,
-) {
-  const formattedLabel = getLabelFormatter()[filterKey]?.(selectedValue);
+  dapartments?: DepartmentType[],
+): string {
+  if (selectedValue === null || selectedValue === undefined) {
+    return '';
+  }
+
+  const castedValue = selectedValue;
+  const formattedLabel = getLabelFormatter(dapartments)[filterKey]?.(castedValue);
+  if (!formattedLabel) {
+    return '';
+  }
+
   if (filterKey === 'seatRange') {
     return `여석 ${formattedLabel}`;
   }
@@ -71,14 +100,51 @@ export function getLabelByFilters<K extends keyof Filters>(
     return `관심 ${formattedLabel}`;
   }
 
-  return getLabelFormatter()[filterKey]?.(selectedValue);
+  return formattedLabel;
+}
+
+export function getLabelFormatter(departments?: DepartmentType[]): Partial<{
+  [K in keyof Filters]: (value: FilterValueType<K>) => string;
+}> {
+  const getDepartmentLabel = (value: string) => {
+    if (!departments) return '';
+    const department = departments.find(d => d.departmentCode === value);
+    return department?.departmentName || value;
+  };
+
+  return {
+    keywords: value => (typeof value === 'string' ? value : ''),
+    department: value => getDepartmentLabel(value as string),
+    grades: value => getLableWithSuffix(value, labelPrefix.grades),
+    credits: value => getLableWithSuffix(value, labelPrefix.credits),
+    classroom: getClassRoomLabel,
+    seatRange: getRangeLabel,
+    wishRange: getRangeLabel,
+    time: getTimesLabel,
+    days: getDaysLabel,
+    categories: value => value as string,
+    note: value => value as string,
+    language: value => value as string,
+    alarmOnly: () => labelPrefix.alarmOnly,
+    favoriteOnly: () => labelPrefix.favoriteOnly,
+  };
 }
 
 const getClassRoomLabel = (value: string) => {
+  if (!value || typeof value !== 'string') return '';
   return FilterOptions.classRoom.find(room => room.value === value)?.label || value;
 };
 
-const getRangeLabel = (value: RangeMinMaxFilter) => {
+/**
+ * Range을 보여주는 라벨입니다.
+ * @param value
+ * @returns
+ */
+const getRangeLabel = (value: RangeMinMaxFilter | null) => {
+  if (!value) {
+    return '';
+  }
+
   const { min, max } = value;
 
   if (min !== undefined && max !== undefined) {
@@ -106,22 +172,3 @@ const getDaysLabel = (value: Day) => {
 const getLableWithSuffix = (value: string | number, labelSuffix: string) => {
   return value + labelSuffix;
 };
-
-export function getLabelFormatter(): Partial<Record<keyof Filters, (value: any) => string>> {
-  return {
-    keywords: value => value,
-    department: value => value,
-    grades: value => getLableWithSuffix(value, labelPrefix.grades),
-    credits: value => getLableWithSuffix(value, labelPrefix.credits),
-    classroom: getClassRoomLabel,
-    seatRange: getRangeLabel,
-    wishRange: getRangeLabel,
-    time: getTimesLabel,
-    days: getDaysLabel,
-    categories: value => value,
-    note: value => value,
-    language: value => value,
-    alarmOnly: value => value,
-    favoriteOnly: value => value,
-  };
-}

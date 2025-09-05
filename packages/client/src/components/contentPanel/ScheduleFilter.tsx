@@ -1,4 +1,3 @@
-import FilteringModal from '../wishTable/FilteringModal';
 import GenericMultiSelectFilter from '../filtering/GenericMultiSelectFilter';
 import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains';
 import { useScheduleSearchStore } from '@/store/useFilterStore';
@@ -7,6 +6,7 @@ import FilteringButton from '../filtering/button/FilteringButton';
 import DepartmentSelectFilter from '../filtering/DepartmentFilter';
 import FilterDelete from '../filtering/FilterDelete';
 import useSubject from '@/hooks/server/useSubject';
+import FilteringModal from '../filtering/FilteringModal';
 
 function ScheduleFilter() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);

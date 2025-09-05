@@ -48,7 +48,7 @@ export const FilterDomains: FilterDomainsType = {
     '학생회관',
   ],
   wishRange: [{ min: 10 }, { min: 50 }, { min: 100 }, { min: 200 }],
-  seatRange: [{ max: 1 }, { max: 2 }, { max: 5 }, { max: 10 }],
+  seatRange: [{ min: 1 }, { max: 2 }, { max: 5 }, { max: 10 }],
 };
 // 집: '집현관';
 // 군: '군자관'; Lab: '군자관 5층';

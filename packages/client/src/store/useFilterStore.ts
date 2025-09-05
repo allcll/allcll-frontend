@@ -1,5 +1,5 @@
 import { create, StoreApi, UseBoundStore } from 'zustand';
-import { Credit, Day, FilterValueType, Grade, RangeFilter, RangeMinMaxFilter, RemarkType } from '@/utils/types.ts';
+import { Credit, Day, DepartmentType, Grade, RangeMinMaxFilter, RemarkType } from '@/utils/types.ts';
 import { IDayTimeItem } from '@/components/filtering/DayTimeFilter';
 import { getLabelByFilters } from '@/utils/filtering/getFilteringFormatter';
 
@@ -9,8 +9,8 @@ export interface Filters {
   grades: Grade[];
   credits: Credit[];
   categories: string[];
-  seatRange: RangeFilter | RangeMinMaxFilter | null;
-  wishRange: RangeFilter | RangeMinMaxFilter | null;
+  seatRange: RangeMinMaxFilter | null;
+  wishRange: RangeMinMaxFilter | null;
   time: IDayTimeItem[];
   days: Day[];
   classroom: string[];
@@ -55,7 +55,7 @@ function isValidFilterValue(value: unknown): boolean {
   return value !== null && value !== undefined && value !== '' && value !== false;
 }
 
-export function getAllSelectedLabels(filters: Filters) {
+export function getAllSelectedLabels(filters: Filters, dapartments?: DepartmentType[]) {
   const result = [];
 
   for (const key in filters) {
@@ -74,7 +74,7 @@ export function getAllSelectedLabels(filters: Filters) {
           result.push({
             filterKey: key as keyof Filters,
             values: value,
-            label: getLabelByFilters(key as keyof Filters, value as FilterValueType<keyof Filters>),
+            label: getLabelByFilters(key as keyof Filters, value as Filters[keyof Filters], dapartments),
           });
         }
       });
@@ -84,7 +84,7 @@ export function getAllSelectedLabels(filters: Filters) {
       result.push({
         filterKey: key as keyof Filters,
         values: values,
-        label: getLabelByFilters(key as keyof Filters, values as FilterValueType<keyof Filters>),
+        label: values !== null ? getLabelByFilters(key as keyof Filters, values, dapartments) : '',
       });
     }
   }

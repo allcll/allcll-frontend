@@ -12,8 +12,8 @@ import AlarmButton from '@/components/filtering/button/AlarmButton';
 import DepartmentSelectFilter from '@/components/filtering/DepartmentFilter';
 import DayFilter from '@/components/filtering/DayFilter';
 import FilterDelete from '@/components/filtering/FilterDelete';
-import FilteringModal from '@/components/wishTable/FilteringModal';
 import useSubject from '@/hooks/server/useSubject';
+import FilteringModal from '@/components/filtering/FilteringModal';
 
 function SubjectSearches() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
