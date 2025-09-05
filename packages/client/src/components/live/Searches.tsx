@@ -1,27 +1,26 @@
-import { useState, ChangeEvent } from 'react';
+import { useState } from 'react';
 import StarIcon from '@/components/svgs/StarIcon.tsx';
 import SearchBox from '@/components/common/SearchBox.tsx';
-import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
-import DepartmentSelectFilter from '@/components/contentPanel/filter/DepartmentFilter.tsx';
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import DraggableList from '@/components/live/subjectTable/DraggableList.tsx';
-import FilteringModal from '@/components/wishTable/FilteringModal.tsx';
-import { isFilterEmpty, useWishSearchStore } from '@/store/useFilterStore.ts';
+import { Filters, getAllSelectedLabels, initialFilters, useWishSearchStore } from '@/store/useFilterStore.ts';
 import { HeadTitle, useWishesTableStore } from '@/store/useTableColumnStore.ts';
 import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
 import useBackSignal from '@/hooks/useBackSignal.ts';
-import { Wishes } from '@/utils/types.ts';
+import { FilterValueType, Wishes } from '@/utils/types.ts';
 import ListSvg from '@/assets/list.svg?react';
-import FilterSvg from '@/assets/filter.svg?react';
 import useMobile from '@/hooks/useMobile';
-import FilterDelete from '../contentPanel/filter/FilterDelete';
-import GenericMultiSelectFilter from '../contentPanel/filter/common/GenericMultiSelectFilter';
-import { MultiWishFilterConfig } from '../contentPanel/filter/config/wishes';
-import WishFilter from '../contentPanel/filter/WishFilter';
-import SeatFilter from '../contentPanel/filter/SeatFilter';
 import FilteringBottomSheet from '../contentPanel/bottomSheet/FilteringBottomSheet';
-import DayFilter from '../contentPanel/filter/DayFilter';
+import GenericMultiSelectFilter from '../filtering/GenericMultiSelectFilter';
+import GenericSingleSelectFilter from '../filtering/GenericSingleSelectFilter';
+import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains';
+import Chip from '@common/components/chip/Chip';
+import FilteringButton from '../filtering/button/FilteringButton';
+import DepartmentSelectFilter from '../filtering/DepartmentFilter';
+import FilterDelete from '../filtering/FilterDelete';
+import useSubject from '@/hooks/server/useSubject';
+import FilteringModal from '../filtering/FilteringModal';
 
 export interface WishSearchParams {
   searchInput: string;
@@ -37,7 +36,7 @@ function Searches() {
   const setFilter = useWishSearchStore(state => state.setFilter);
   const resetFilter = useWishSearchStore(state => state.resetFilters);
 
-  const { keywords, department, favoriteOnly, wishRange, seatRange } = filters;
+  const { keywords, department, favoriteOnly } = filters;
 
   const tableTitles = useWishesTableStore(state => state.tableTitles);
   const setTableTitles = useWishesTableStore(state => state.setTableTitles);
@@ -45,15 +44,13 @@ function Searches() {
 
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
+  const { data: subjects } = useSubject();
+  const categoryOptions = getCategories(subjects ?? [])
+    .sort((a, b) => a.localeCompare(b))
+    .map(cat => cat);
+  const allSelectedFilters = getAllSelectedLabels(filters);
+
   const setToggleFavorite = () => setFilter('favoriteOnly', !favoriteOnly);
-
-  const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setFilter('keywords', event.target.value);
-  };
-
-  const handleDepartmentChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setFilter('department', event.target.value);
-  };
 
   const handleOpenFilter = () => {
     if (isMobile) {
@@ -63,8 +60,21 @@ function Searches() {
     }
   };
 
+  const handleDeleteFilter = (filterKey: keyof Filters, value: FilterValueType<keyof Filters>) => {
+    const currentValue = filters[filterKey];
+
+    if (Array.isArray(currentValue)) {
+      setFilter(
+        filterKey,
+        (currentValue as (typeof value)[]).filter(item => item !== value),
+      );
+    } else {
+      setFilter(filterKey, initialFilters[filterKey]);
+    }
+  };
+
   return (
-    <div className="flex flex-wrap gap-2 mt-4 text-sm lg:flex-wrap lg:flex-row lg:items-center lg:gap-y-0 lg:gap-x-2">
+    <div className="flex flex-wrap gap-2 mt-4 lg:flex-wrap lg:flex-row lg:items-center lg:gap-y-0 lg:gap-x-2">
       {isModalOpen && (
         <LiveTableTitleModal
           initialItems={tableTitles}
@@ -77,62 +87,99 @@ function Searches() {
         <FilteringModal filterStore={useWishSearchStore} onClose={() => setIsFilterModalOpen(false)} />
       )}
 
+      {isBottomSheetOpen && (
+        <FilteringBottomSheet
+          onCloseFiltering={() => setIsBottomSheetOpen(false)}
+          filters={filters}
+          setFilter={setFilter}
+          resetFilter={resetFilter}
+        />
+      )}
+
       <SearchBox
         type="text"
         className="pl-10 pr-6 py-2 rounded-md w-full bg-white border border-gray-400 text-[16px] placeholder:text-sm"
         placeholder="과목명, 교수명 또는 학수번호 및 분반 검색"
         value={keywords}
         onDelete={() => setFilter('keywords', '')}
-        onChange={handleSearchInputChange}
+        onChange={event => setFilter('keywords', event.target.value)}
       />
 
       <div className="flex items-center flex-wrap mt-2 gap-2">
-        {isMobile ? (
-          <>
-            <DepartmentFilter
-              value={department}
-              style={{ maxWidth: 'calc(100vw - 64px)' }}
-              onChange={handleDepartmentChange}
+        <div className="hidden md:flex flex-wrap gap-2">
+          <DepartmentSelectFilter department={department} setFilter={setFilter} />
+
+          <GenericSingleSelectFilter
+            filterKey="wishRange"
+            options={FilterDomains.wishRange}
+            selectedValue={filters.wishRange ?? null}
+            setFilter={setFilter}
+            ItemComponent={Chip}
+            isMinMax={true}
+          />
+
+          <GenericSingleSelectFilter
+            filterKey="seatRange"
+            options={FilterDomains.seatRange}
+            selectedValue={filters.seatRange ?? null}
+            setFilter={setFilter}
+            ItemComponent={Chip}
+            isMinMax={true}
+          />
+
+          <GenericMultiSelectFilter
+            filterKey="days"
+            options={FilterDomains.days}
+            selectedValues={filters.days ?? []}
+            setFilter={setFilter}
+          />
+
+          <GenericMultiSelectFilter
+            filterKey="credits"
+            options={FilterDomains.credits}
+            selectedValues={filters.credits ?? []}
+            setFilter={setFilter}
+          />
+
+          <GenericMultiSelectFilter
+            filterKey="grades"
+            options={FilterDomains.grades}
+            selectedValues={filters.grades ?? []}
+            setFilter={setFilter}
+          />
+
+          {filters.classroom.length > 0 && (
+            <GenericMultiSelectFilter
+              filterKey="classroom"
+              options={FilterDomains.classRoom}
+              selectedValues={filters.classroom ?? []}
+              setFilter={setFilter}
+              className="min-w-max"
             />
-            {isBottomSheetOpen && (
-              <FilteringBottomSheet
-                onCloseFiltering={() => setIsBottomSheetOpen(false)}
-                filters={filters}
-                setFilter={setFilter}
-                resetFilter={resetFilter}
-                multiFilterConfig={MultiWishFilterConfig}
-              />
-            )}
-          </>
-        ) : (
-          <>
-            <DepartmentSelectFilter department={department} setFilter={setFilter} />
-            {MultiWishFilterConfig.map(filter => {
-              const value = filters?.[filter.filterKey];
-              if (isFilterEmpty(filter.filterKey, value) && !filter.default) return null;
-              return (
-                <GenericMultiSelectFilter
-                  key={filter.filterKey}
-                  filterKey={filter.filterKey}
-                  options={filter.options}
-                  labelPrefix={filter.labelPrefix}
-                  ItemComponent={filter.ItemComponent}
-                  selectedValues={
-                    Array.isArray(filters[filter.filterKey]) ? (filters[filter.filterKey] as (string | number)[]) : null
-                  }
-                  setFilter={setFilter}
-                  className="min-w-max"
-                />
-              );
-            })}
+          )}
 
-            <DayFilter times={filters.time} setFilter={setFilter} />
-            <WishFilter wishRange={wishRange} setFilter={setFilter} />
-            <SeatFilter seatRange={seatRange} setFilter={setFilter} />
-          </>
-        )}
+          {filters.note.length > 0 && (
+            <GenericMultiSelectFilter
+              filterKey="note"
+              options={FilterDomains.remark}
+              selectedValues={filters.note ?? []}
+              setFilter={setFilter}
+            />
+          )}
 
+          {filters.categories.length > 0 && (
+            <GenericMultiSelectFilter
+              filterKey="categories"
+              options={categoryOptions}
+              selectedValues={(filters.categories as string[]) ?? []}
+              setFilter={setFilter}
+              className="min-w-max"
+            />
+          )}
+        </div>
         <FilterDelete filters={filters} resetFilter={resetFilter} />
+        <FilteringButton handleOpenFilter={handleOpenFilter} />
+
         <button
           className="p-2 rounded-md flex gap-2 items-center border border-gray-400 bg-white hover:bg-gray-100"
           onClick={setToggleFavorite}
@@ -144,21 +191,26 @@ function Searches() {
 
         <button
           className="p-2 rounded-md flex gap-2 items-center border border-gray-400 bg-white hover:bg-gray-100"
-          aria-label="필터 수정"
-          title="필터 수정"
-          onClick={handleOpenFilter}
-        >
-          <FilterSvg className="w-4 h-4 text-gray-600 hover:text-blue-500 transition-colors" />
-        </button>
-
-        <button
-          className="p-2 rounded-md flex gap-2 items-center border border-gray-400 bg-white hover:bg-gray-100"
           aria-label="테이블 수정"
           title="테이블 수정"
           onClick={() => setIsModalOpen(true)}
         >
           <ListSvg className="w-4 h-4 text-gray-600 hover:text-blue-500 transition-colors" />
         </button>
+
+        <div className="flex flex-wrap gap-2 w-fit md:hidden">
+          {allSelectedFilters.map(filter => {
+            return (
+              <Chip
+                key={`${filter.filterKey}-${filter.values}`}
+                chipType="cancel"
+                label={filter.label}
+                selected={true}
+                onClick={() => handleDeleteFilter(filter.filterKey, filter.values)}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );

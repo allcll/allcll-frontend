@@ -2,10 +2,10 @@ import { disassemble } from 'es-hangul';
 import { useEffect, useMemo, useState } from 'react';
 import useDepartments from '@/hooks/server/useDepartments';
 import { Filters } from '@/store/useFilterStore.ts';
-import SearchBox from '../../common/SearchBox';
 import { DepartmentType } from '@/utils/types';
 import Filtering from '@common/components/filtering/Filtering';
 import CustomButton from '@common/components/Button';
+import SearchBox from '../common/SearchBox';
 
 interface IDepartmentSelectFilter {
   department: string;
@@ -91,7 +91,7 @@ function DepartmentSelectFilter({ department, setFilter }: IDepartmentSelectFilt
         <div className="overflow-y-auto flex-1 px-2 py-2 border-t border-gray-200">
           {(category === '전공' || category === '교양') && (
             <SelectSubject departments={filterDepartment} setFilter={setFilter} />
-          )}{' '}
+          )}
         </div>
       </div>
 

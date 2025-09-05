@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import StarIcon from '@/components/svgs/StarIcon.tsx';
 import { Subject } from '@/utils/types.ts';
 import useFavorites from '@/store/useFavorites';
 
-interface IFavoriteButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
+interface IFavoriteButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   subject: Subject;
 }
 
 function FavoriteButton({ subject, className, onClick, ...props }: IFavoriteButtonProps) {
-  const getIsFavorite = useFavorites(state => state.isFavorite);
+  const isFavorite = useFavorites(state => state.isFavorite(subject.subjectId));
   const toggleFavorite = useFavorites(state => state.toggleFavorite);
-  const [isFavorite, setIsFavorite] = useState(getIsFavorite(subject.subjectId));
+
   const title = isFavorite ? '즐겨찾기에서 제거' : '즐겨찾기에 추가';
 
   const handleFavorite = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setIsFavorite(prevState => !prevState);
     toggleFavorite(subject.subjectId);
 
     if (onClick) onClick(e);

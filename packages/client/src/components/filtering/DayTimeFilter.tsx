@@ -23,8 +23,6 @@ function DayTimeFilter({ items, onChange }: Readonly<IDayTimeFilter>) {
 
     const reconciledItems = reconcileData(items);
     if (reconciledItems) onChange(reconciledItems);
-
-    console.log('DayTimeFilter items changed:', items);
   }, [items]);
 
   const handleChange = (index: number) => (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
@@ -44,6 +42,8 @@ function DayTimeFilter({ items, onChange }: Readonly<IDayTimeFilter>) {
 
   return (
     <>
+      <label className="text-xs text-gray-500 sm:text-gray-600 sm:text-base">시간</label>
+
       {items.map((item, index) => (
         <DayTime
           key={`${item.day}-${item.type}-${item.start}-${item.end}`}
