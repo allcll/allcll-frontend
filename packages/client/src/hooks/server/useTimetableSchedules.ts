@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useSubject from '@/hooks/server/useSubject.ts';
 import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
-import { fetchDeleteJsonOnAPI, fetchJsonOnAPI, fetchOnAPI } from '@/utils/api.ts';
+import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api.ts';
 import { Day, Subject } from '@/utils/types.ts';
 import { timeSleep } from '@/utils/time.ts';
 
@@ -454,8 +454,9 @@ export function useDeleteSchedule(timetableId?: number) {
 
   return useMutation({
     mutationFn: async ({ schedule }: ScheduleMutationProps) =>
-      await fetchDeleteJsonOnAPI(`/api/timetables/${timetableId}/schedules/${schedule.scheduleId}`, {
-        scheduleType: schedule.scheduleType,
+      await fetchOnAPI(`/api/timetables/${timetableId}/schedules/${schedule.scheduleId}`, {
+        method: 'DELETE',
+        body: JSON.stringify({ scheduleType: schedule.scheduleType }),
       }),
 
     onMutate: async mutateData => {

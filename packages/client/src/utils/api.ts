@@ -7,6 +7,7 @@ export async function fetchOnAPI(url: string, options?: RequestInit): Promise<Re
   });
 }
 
+// Todo: url: string, method?: string, body?: object, options?: RequestInit 형태로 변경 고려
 export async function fetchJsonOnAPI<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(BaseUrl + url, {
     credentials: 'include',
@@ -19,33 +20,6 @@ export async function fetchJsonOnAPI<T>(url: string, options?: RequestInit): Pro
 
   if (!response.ok) {
     throw new Error(await response.text());
-  }
-
-  return await response.json();
-}
-
-export async function fetchDeleteJsonOnAPI<T>(
-  url: string,
-  body?: any,
-  options?: Omit<RequestInit, 'method' | 'body'>,
-): Promise<T | null> {
-  const response = await fetch(BaseUrl + url, {
-    method: 'DELETE',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(options?.headers ?? {}),
-    },
-    body: body ? JSON.stringify(body) : undefined,
-    ...options,
-  });
-
-  if (!response.ok) {
-    throw new Error(await response.text());
-  }
-
-  if (response.status === 204) {
-    return null;
   }
 
   return await response.json();

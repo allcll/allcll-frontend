@@ -34,35 +34,6 @@ export async function fetchJsonOnAPI<T>(url: string, options?: RequestInit): Pro
   return await response.json();
 }
 
-export async function fetchDeleteJsonOnAPI<T>(
-  url: string,
-  body?: any,
-  options?: Omit<RequestInit, 'method' | 'body'>,
-): Promise<T | null> {
-  const AdminToken = localStorage.getItem('session');
-  const response = await fetch(BaseUrl + url, {
-    method: 'DELETE',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      ...(options?.headers ?? {}),
-      'X-ADMIN-TOKEN': AdminToken ?? '',
-    },
-    body: body ? JSON.stringify(body) : undefined,
-    ...options,
-  });
-
-  if (!response.ok) {
-    throw new Error(await response.text());
-  }
-
-  if (response.status === 204) {
-    return null;
-  }
-
-  return await response.json();
-}
-
 export async function fetchJsonOnPublic<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(url, {
     credentials: 'include',
