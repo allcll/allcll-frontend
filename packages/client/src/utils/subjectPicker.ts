@@ -119,7 +119,7 @@ export const applyCreditLimit = (subjects: Lecture[]) => {
   const limitedSubjects: Lecture[] = [];
 
   for (const subject of subjects) {
-    const subjectCredit = Number(subject.tm_num.split('/')[0]) || 0;
+    const subjectCredit = getCredit(subject.tm_num);
     if (totalCredit + subjectCredit > 24) {
       break;
     }
@@ -128,4 +128,11 @@ export const applyCreditLimit = (subjects: Lecture[]) => {
   }
 
   return limitedSubjects;
+};
+
+export const getCredit = (tmNum: string) => {
+  if (!tmNum) return 0;
+
+  const firstNumber = parseInt(tmNum.split('/')[0], 10);
+  return isNaN(firstNumber) ? 0 : firstNumber;
 };

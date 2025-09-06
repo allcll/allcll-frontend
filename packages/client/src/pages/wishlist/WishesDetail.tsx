@@ -6,14 +6,15 @@ import Table from '@/components/wishTable/Table';
 import CardWrap from '@/components/CardWrap';
 import BlurComponents from '@/components/BlurComponents';
 import DepartmentDoughnut from '@/components/wishTable/DepartmentDoughnut.tsx';
+import FavoriteButton from '@/components/wishTable/FavoriteButton.tsx';
+import AlarmButton from '@/components/live/AlarmButton.tsx';
 import { InitWishes } from '@/hooks/server/useWishes.ts';
 import useDetailWishes from '@/hooks/server/useDetailWishes';
 import useRecommendWishes from '@/hooks/server/useRecommendWishes';
 import useDetailRegisters from '@/hooks/server/useDetailRegisters.ts';
-import { getSeatColor, getWishesColor } from '@/utils/colors.ts';
-import FavoriteButton from '@/components/wishTable/FavoriteButton.tsx';
-import AlarmButton from '@/components/live/AlarmButton.tsx';
 import usePreSeatGate from '@/hooks/usePreSeatGate';
+import { getSeatColor, getWishesColor } from '@/utils/colors.ts';
+import { getCredit } from '@/utils/subjectPicker.ts';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -93,7 +94,7 @@ function WishesDetail() {
             <div className="flex items-center gap-2 flex-wrap text-gray-600">
               <span>{data.studentYear}학년</span>
               <span>{data.curiTypeCdNm}</span>
-              <span>{Number(data.tmNum.split('/')[0].trim())}학점</span>
+              <span>{getCredit(data.tmNum)}학점</span>
               <span>
                 {' '}
                 | {data.lesnRoom} | {data.lesnTime}

@@ -15,6 +15,7 @@ import { useReloadSimulation } from '@/hooks/useReloadSimulation';
 import { useSimulationStatus } from '@/hooks/useSimulationStatus.ts';
 import { useTimetables } from '@/hooks/server/useTimetableSchedules';
 import { useTutorial } from '@/hooks/useTutorial';
+import { getCredit } from '@/utils/subjectPicker.ts';
 
 function Simulation() {
   const { type, closeModal } = useSimulationModalStore();
@@ -26,12 +27,10 @@ function Simulation() {
 
   useSimulationStatus();
 
-  const totalCredits = useMemo(() => {
-    return registeredSubjects.reduce((acc, subject) => {
-      const firstNumber = subject.tm_num.split('/')[0];
-      return acc + parseInt(firstNumber, 10);
-    }, 0);
-  }, [registeredSubjects]);
+  const totalCredits = useMemo(
+    () => registeredSubjects.reduce((acc, l) => acc + getCredit(l.tm_num), 0),
+    [registeredSubjects],
+  );
 
   const renderModal = () => {
     switch (type) {
@@ -44,7 +43,7 @@ function Simulation() {
       case 'wish':
         return <UserWishModal timetables={timetables} setIsModalOpen={() => closeModal()} />;
       case 'simulation':
-        return <SimulationModal reloadSimulationStatus={reloadSimulationStatus} />;
+        return <SimulationModal />;
       case 'result':
         return <SimulationResultModal simulationId={simulationId} />;
       default:

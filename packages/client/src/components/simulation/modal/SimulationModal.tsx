@@ -1,224 +1,25 @@
+import { useEffect, useRef } from 'react';
+import CheckBlueSvg from '@/assets/check-blue.svg?react';
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
-import CheckBlueSvg from '@/assets/check-blue.svg?react';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
-import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
-import { APPLY_STATUS, BUTTON_EVENT, forceStopSimulation, triggerButtonEvent } from '@/utils/simulation/simulation';
-import useLectures from '@/hooks/server/useLectures';
-import { useRef } from 'react';
+import { useSimulationAction } from '@/hooks/useSimulationAction';
+import { APPLY_STATUS } from '@/utils/simulation/simulation';
 
-const SIMULATION_MODAL_CONTENTS = [
-  {
-    status: APPLY_STATUS.PROGRESS,
-    topMessage: '선택한 과목을 수강신청 하시겠습니까?',
-    description: '교과목명(CourseTitle):',
-  },
-  {
-    status: APPLY_STATUS.SUCCESS,
-    topMessage: '과목이 신청 되었습니다. 수강신청내역을 재조회 하시겠습니까?',
-    description:
-      '※ 취소를 선택하실 경우 [수강신청내역]이 갱신되지 않습니다. 취소를 선택하실 경우 수강신청 최종 완료 후 반드시 [수강신청내역] 재 조회를 눌러 신청 내역을 확인하세요. [수강신청내역]에 조회된 과목만이 정상적으로 수강신청된 과목입니다.',
-  },
-  {
-    status: APPLY_STATUS.FAILED,
-    topMessage: '수강 여석이 없습니다!',
-  },
-  {
-    status: APPLY_STATUS.DOUBLED,
-    topMessage: '이미 수강신청 된 과목입니다!',
-  },
-  {
-    status: APPLY_STATUS.CAPTCHA_FAILED,
-    topMessage: '입력하신 코드가 일치하지 않습니다',
-  },
-  {
-    status: APPLY_STATUS.NOT_ELIGIBLE,
-    topMessage: '수강신청 대상 학과가 아닙니다',
-  },
-];
-
-const closeDisabledStatuses = [
-  APPLY_STATUS.PROGRESS,
-  APPLY_STATUS.SUCCESS,
-  APPLY_STATUS.FAILED,
-  APPLY_STATUS.CAPTCHA_FAILED,
-];
-
-interface ISimulationModal {
-  reloadSimulationStatus: () => void;
-}
-
-function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>) {
-  const openModal = useSimulationModalStore(state => state.openModal);
-  const closeModal = useSimulationModalStore(state => state.closeModal);
-  const { currentSubjectId, setSubjectStatus, subjectStatusMap } = useSimulationSubjectStore();
-  const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
-  const { data: lectures } = useLectures();
-
-  const currentSubjectStatus = subjectStatusMap[currentSubjectId]; // useSimulationSubjectStore.subjectStatusMap 여기만 사용함.
-  const modalData = SIMULATION_MODAL_CONTENTS.find(data => data.status === currentSubjectStatus);
-
-  const modalStatus = modalData?.status ?? APPLY_STATUS.PROGRESS;
-  const skipRefreshApplyStatus = [APPLY_STATUS.FAILED, APPLY_STATUS.DOUBLED, APPLY_STATUS.CAPTCHA_FAILED].includes(
-    modalStatus,
-  );
-  const isCloseDisabled = closeDisabledStatuses.includes(modalStatus);
-
+function SimulationModal() {
   const confirmBtnRef = useRef<HTMLButtonElement | null>(null);
 
+  const { modalData, handleConfirm, handleCancel, handleClose } = useSimulationAction();
+
+  useEffect(() => {
+    confirmBtnRef.current?.focus();
+  }, [modalData]);
+
   if (!modalData) return null;
-
-  confirmBtnRef.current?.focus();
-
-  /** 에러 체크 해주고, 에러 있으면 throw */
-  const checkErrorValue = (res: Record<string, any>, forceFinish: boolean = false) => {
-    if ('errMsg' in res) {
-      alert(res.errMsg);
-
-      if (forceFinish) {
-        forceStopSimulation().then(() => {
-          openModal('result');
-        });
-      }
-
-      throw new Error(res.errMsg);
-    }
-  };
-
-  const catchAction = (e: any) => {
-    console.error('예외 발생:', e);
-    alert('예외 발생:' + e.toString());
-  };
-
-  const handleProgress = async (subjectId: number) => {
-    const result = await triggerButtonEvent({ eventType: BUTTON_EVENT.SUBJECT_SUBMIT, subjectId }, lectures);
-    checkErrorValue(result);
-    setSubjectStatus(subjectId, result.status);
-    openModal('simulation');
-  };
-
-  const handleSuccess = async (subjectId: number) => {
-    const result = await triggerButtonEvent({ eventType: BUTTON_EVENT.REFRESH, subjectId }, lectures);
-    checkErrorValue(result);
-
-    //refresh
-    reloadSimulationStatus();
-
-    if (result.finished) {
-      setCurrentSimulation({
-        simulationStatus: 'finish',
-      });
-      console.log('시뮬레이션 완료');
-      openModal('result');
-    }
-  };
-
-  const handleSkipRefresh = async (subjectId: number) => {
-    try {
-      const result = await triggerButtonEvent({ eventType: BUTTON_EVENT.SKIP_REFRESH, subjectId }, lectures);
-      if ('errMsg' in result) {
-        alert(result.errMsg);
-        await forceStopSimulation();
-
-        setCurrentSimulation({
-          simulationStatus: 'finish',
-        });
-        openModal('result');
-      } else if (result.finished) {
-        setCurrentSimulation({
-          simulationStatus: 'finish',
-        });
-        openModal('result');
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      closeModal('simulation');
-    }
-  };
-
-  /**
-   * 확인 버튼 클릭했을 때, 모달의 타입이
-   * SUCCESS일때 과목 신청 완료, 시뮬레이션 종료 확인
-   */
-  const handleClickCheck = async () => {
-    try {
-      if (modalData.status === APPLY_STATUS.PROGRESS) {
-        await handleProgress(currentSubjectId);
-      }
-      //재조회 확인버튼 클릭
-      else if (modalData?.status === APPLY_STATUS.SUCCESS) {
-        await handleSuccess(currentSubjectId);
-      } else if (skipRefreshApplyStatus) {
-        await handleSkipRefresh(currentSubjectId);
-      }
-    } catch (error) {
-      catchAction(error);
-    }
-  };
-
-  /**
-   * 취소 버튼 클릭했을 때, 모달의 타입이
-   * SUCCESS일때 과목 신청 완료, 시뮬레이션 종료 확인
-   */
-  const handleClickCancel = async () => {
-    try {
-      // APPLY_STATUS.SUCCESS인 경우
-      if (modalData?.status === APPLY_STATUS.SUCCESS) {
-        const result = await triggerButtonEvent(
-          {
-            eventType: BUTTON_EVENT.SKIP_REFRESH,
-            subjectId: currentSubjectId,
-          },
-          lectures,
-        );
-
-        if ('errMsg' in result) {
-          alert(result.errMsg);
-          await forceStopSimulation();
-
-          setCurrentSimulation({
-            simulationStatus: 'finish',
-          });
-
-          openModal('result');
-        } else if (result.finished) {
-          setCurrentSimulation({
-            simulationStatus: 'finish',
-          });
-
-          openModal('result');
-        } else {
-          closeModal('simulation');
-        }
-      }
-      // APPLY_STATUS.PROGRESS인 경우
-      else if (modalData?.status === APPLY_STATUS.PROGRESS) {
-        const result = await triggerButtonEvent(
-          {
-            eventType: BUTTON_EVENT.CANCEL_SUBMIT,
-            subjectId: currentSubjectId,
-          },
-          lectures,
-        );
-        checkErrorValue(result, true);
-      }
-    } catch (error) {
-      catchAction(error);
-    }
-  };
-
-  const handleClickCloseButton = () => {
-    if (!isCloseDisabled) {
-      closeModal('simulation');
-    }
-  };
 
   return (
     <Modal onClose={() => {}}>
       <div className="flex sm:w-[450px] border-1 border-gray-800 flex-col justify-between overflow-hidden">
-        <ModalHeader title="" onClose={handleClickCloseButton} />
+        <ModalHeader title="" onClose={handleClose} />
 
         <div className="px-6 pb-6 text-center ">
           <div className="flex justify-center mb-4 py-5">
@@ -235,17 +36,17 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
         </div>
 
         <div className="flex justify-end  px-6 py-4 gap-3 bg-gray-100 text-xs">
-          {modalData.status === APPLY_STATUS.PROGRESS ||
-            (modalData.status === APPLY_STATUS.SUCCESS && (
-              <button
-                onClick={handleClickCancel}
-                className="px-4 py-2 bg-white hover:bg-blue-50 rounded-xs border cursor-pointer"
-              >
-                취소
-              </button>
-            ))}
+          {(modalData.status === APPLY_STATUS.PROGRESS || modalData.status === APPLY_STATUS.SUCCESS) && (
+            <button
+              onClick={handleCancel}
+              className="px-4 py-2 bg-white hover:bg-blue-50 rounded-xs border cursor-pointer"
+            >
+              취소
+            </button>
+          )}
           <button
-            onClick={handleClickCheck}
+            ref={confirmBtnRef}
+            onClick={handleConfirm}
             className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xs cursor-pointer"
           >
             확인

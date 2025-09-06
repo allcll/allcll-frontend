@@ -6,6 +6,7 @@ import { usePinned } from '@/hooks/server/usePinned.ts';
 import useFavorites from '@/store/useFavorites.ts';
 import { Filters, isFilterEmpty } from '@/store/useFilterStore.ts';
 import { TimeslotAdapter } from '@/utils/timetable/adapter.ts';
+import { getCredit } from '@/utils/subjectPicker.ts';
 import { Time } from '@/utils/time.ts';
 
 /** 활성화 된 필터만 실행하는 함수를 반환 (최적화) */
@@ -106,8 +107,8 @@ function filterGrades(subject: Wishes | Subject, selectedGrades: (Grade | '전�
 }
 
 function filterCredits(subject: Wishes | Subject, selectedCredits: number[]) {
-  const credit = Number(subject.tmNum.split('/')[0]);
-  if (!credit || isNaN(credit)) return true;
+  const credit = getCredit(subject.tmNum);
+  if (!credit) return true;
 
   return filterMatches(credit, selectedCredits);
 }

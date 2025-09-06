@@ -1,6 +1,7 @@
 import { Lecture } from '@/hooks/server/useLectures.ts';
 import ResetSvg from '@/assets/reset.svg?react';
 import SkeletonRows from '@/components/live/skeletons/SkeletonRows';
+import { getCredit } from '@/utils/subjectPicker.ts';
 
 interface ISubjectTable {
   isLoadingLectures: boolean;
@@ -9,14 +10,7 @@ interface ISubjectTable {
 }
 
 function SubjectTable({ subjects, handleRemakeSubjects, isLoadingLectures }: Readonly<ISubjectTable>) {
-  const totalCredit = subjects?.reduce((acc, subject) => {
-    if (!subject.tm_num) return acc;
-
-    const credit = subject?.tm_num.split('/')[0] ?? '0';
-    const subjectCredit = Number(credit) || 0;
-
-    return acc + subjectCredit;
-  }, 0);
+  const totalCredit = subjects?.reduce((acc, subject) => acc + getCredit(subject?.tm_num ?? '0'), 0);
 
   return (
     <>

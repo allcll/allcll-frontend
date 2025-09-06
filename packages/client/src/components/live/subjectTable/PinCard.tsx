@@ -1,5 +1,6 @@
 import AlarmButton from '@/components/live/AlarmButton.tsx';
 import { getTimeDiffString } from '@/utils/stringFormats.ts';
+import { getCredit } from '@/utils/subjectPicker.ts';
 import { Subject, Wishes } from '@/utils/types.ts';
 import { getSeatColor } from '@/utils/colors.ts';
 
@@ -15,10 +16,7 @@ interface IPinCard {
 function PinCard({ subject, seats, queryTime, disableSeat = false, className, isLive = false }: Readonly<IPinCard>) {
   const isDeleted = subject.isDeleted;
   const isEng = subject.curiLangNm === '영어';
-
-  const credit = typeof subject.tmNum === 'string'
-    ? Number(subject.tmNum.split('/')[0]) || 0
-    : 0;
+  const credit = getCredit(subject.tmNum);
 
   return (
     <div className={'bg-gray-50 shadow-sm rounded-lg p-4 ' + className}>
