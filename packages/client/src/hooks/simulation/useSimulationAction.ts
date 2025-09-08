@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
-import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
-import { APPLY_STATUS, BUTTON_EVENT, forceStopSimulation, triggerButtonEvent } from '@/utils/simulation/simulation';
-import { useReloadSimulation } from '@/hooks/useReloadSimulation';
-import useLectures from '@/hooks/server/useLectures';
+import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
+import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject.ts';
+import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
+import { APPLY_STATUS, BUTTON_EVENT, forceStopSimulation, triggerButtonEvent } from '@/utils/simulation/simulation.ts';
+import { useReloadSimulation } from '@/hooks/simulation/useReloadSimulation.ts';
+import useLectures from '@/hooks/server/useLectures.ts';
 
 interface ModalContent {
   status: APPLY_STATUS;

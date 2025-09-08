@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { getSimulationResult, ResultResponse } from '@/utils/simulation/result.ts';
-import { findSubjectsById } from '@/utils/subjectPicker.ts';
+import { findLecturesById } from '@/utils/subjectPicker.ts';
 import Timeline from '@/components/simulation/detail/Timeline.tsx';
 import RadarChart from '@/components/simulation/detail/RadarChart.tsx';
 import SubjectDetailResult from '@/components/simulation/detail/SubjectDetailResult.tsx';
@@ -81,11 +81,11 @@ function joinSubjectInfo(subjects?: Lecture[], result?: ResultResponse | null): 
     ...result,
     timeline: result.timeline.map(item => ({
       ...item,
-      subjectInfo: findSubjectsById(subjects, item.subject_id),
+      subjectInfo: findLecturesById(subjects, item.subject_id),
     })),
     subject_results: result.subject_results.map(item => ({
       ...item,
-      subjectInfo: findSubjectsById(subjects, item.subject_id),
+      subjectInfo: findLecturesById(subjects, item.subject_id),
     })),
   };
 }

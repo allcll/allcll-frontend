@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
-import { checkOngoingSimulation, forceStopSimulation, SIMULATION_TIME_LIMIT } from '@/utils/simulation/simulation';
-import { useReloadSimulation } from './useReloadSimulation';
+import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
+import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
+import { checkOngoingSimulation, forceStopSimulation, SIMULATION_TIME_LIMIT } from '@/utils/simulation/simulation.ts';
+import { useReloadSimulation } from './useReloadSimulation.ts';
 
 export function useSimulationStatus() {
   const { openModal } = useSimulationModalStore();

@@ -11,10 +11,10 @@ import TutorialModal from '@/components/simulation/modal/before/TutorialModal';
 import SubjectsSection from '@/components/simulation/SubjectsSection';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
-import { useReloadSimulation } from '@/hooks/useReloadSimulation';
-import { useSimulationStatus } from '@/hooks/useSimulationStatus.ts';
+import { useReloadSimulation } from '@/hooks/simulation/useReloadSimulation.ts';
+import { useSimulationStatus } from '@/hooks/simulation/useSimulationStatus.ts';
 import { useTimetables } from '@/hooks/server/useTimetableSchedules';
-import { useTutorial } from '@/hooks/useTutorial';
+import { useTutorial } from '@/hooks/simulation/useTutorial.ts';
 import { getCredit } from '@/utils/subjectPicker.ts';
 
 function Simulation() {
@@ -32,7 +32,7 @@ function Simulation() {
     [registeredSubjects],
   );
 
-  const renderModal = () => {
+  const RenderModal = () => {
     switch (type) {
       case 'tutorial':
         return <TutorialModal />;
@@ -57,7 +57,7 @@ function Simulation() {
         <title>ALLCLL | 올클연습 - 세종대 수강신청 연습</title>
       </Helmet>
 
-      {renderModal()}
+      <RenderModal />
       <div className="flex justify-between gap-5">
         <div className="flex gap-5">
           <h1 className="font-bold text-lg">수강신청 연습</h1>

@@ -8,7 +8,7 @@ import {
   forceStopSimulation,
   triggerButtonEvent,
 } from '@/utils/simulation/simulation';
-import { useReloadSimulation } from '@/hooks/useReloadSimulation';
+import { useReloadSimulation } from '@/hooks/simulation/useReloadSimulation.ts';
 import useLectures from '@/hooks/server/useLectures';
 import LogoSvg from '@public/ci.svg?react';
 import React from 'react';

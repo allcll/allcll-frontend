@@ -14,7 +14,7 @@ function SubjectTable({ subjects, handleRemakeSubjects, isLoadingLectures }: Rea
 
   return (
     <>
-      <div className="flex flex-row justify-between items-center mb-4 w-full overflow-auto h-10">
+      <div className="flex flex-row justify-between items-end w-full overflow-auto">
         <h2 className="text-left font-semibold">과목 리스트</h2>
 
         {handleRemakeSubjects && (
@@ -31,7 +31,7 @@ function SubjectTable({ subjects, handleRemakeSubjects, isLoadingLectures }: Rea
         </p>
       </div>
 
-      <div className="max-h-[250px] max-w-[350px] overflow-x-auto overflow-y-auto sm:max-w-full">
+      <div className="overflow-x-auto sm:max-w-full">
         <table className="min-w-full sm:text-sm text-xs text-left whitespace-nowrap border-t border-b border-gray-200">
           <thead className="bg-gray-100 text-gray-700">
             <tr>

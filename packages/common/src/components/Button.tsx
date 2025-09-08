@@ -13,7 +13,7 @@ function CustomButton({ children, variants, className = '', ...props }: Readonly
     <button
       type={props.type}
       onClick={props.onClick}
-      className={`px-4 py-2 cursor-pointer rounded-lg ${getButtonColor(variants)} ${className}`}
+      className={`px-4 py-2 cursor-pointer rounded-lg disabled:bg-gray-300 disabled:cursor-not-allowed ${getButtonColor(variants)} ${className}`}
       disabled={props.disabled}
     >
       {children}

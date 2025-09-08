@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import CheckBlueSvg from '@/assets/check-blue.svg?react';
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
-import { useSimulationAction } from '@/hooks/useSimulationAction';
+import { useSimulationAction } from '@/hooks/simulation/useSimulationAction.ts';
 import { APPLY_STATUS } from '@/utils/simulation/simulation';
 
 function SimulationModal() {

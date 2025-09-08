@@ -1,17 +1,21 @@
 import React, { useEffect } from 'react';
-import useDepartments, { Department } from '@/hooks/server/useDepartments';
 import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
+import { ISelectorProps } from '@/components/simulation/modal/before/UserWishModal.tsx';
+import useLectures from '@/hooks/server/useLectures.ts';
+import useDepartments, { Department } from '@/hooks/server/useDepartments';
 import { getDepartmentRanks } from '@/hooks/useSearchRank.ts';
+import { pickNonRandomSubjects } from '@/utils/subjectPicker.ts';
 
-interface ISelectDepartment {
+interface ISelectDepartment extends ISelectorProps {
   department: Department;
   setDepartment: React.Dispatch<React.SetStateAction<Department>>;
 }
 
 let isInit = false;
 
-function SelectDepartment({ department, setDepartment }: ISelectDepartment) {
+function RandomSelector({ department, setDepartment, setSubjects }: ISelectDepartment) {
   const { data: departments } = useDepartments();
+  const { data: lectures } = useLectures();
 
   function onSelectDepartment(e: React.ChangeEvent<HTMLSelectElement>) {
     const departmentCode = e.target.value;
@@ -32,6 +36,10 @@ function SelectDepartment({ department, setDepartment }: ISelectDepartment) {
     const departmentName = departments.find(d => d.departmentCode === departmentCode)?.departmentName ?? '';
 
     setDepartment({ departmentName, departmentCode });
+
+    // Todo: 랜덤과목 모드일 때, 랜덤으로 선택하지 않는 이유 확인 필요
+    setSubjects(pickNonRandomSubjects(lectures, departmentName));
+    // setSubjects(pickRandomSubjects(lectures, department.departmentName));
   }, [departments]);
 
   return (
@@ -47,4 +55,4 @@ function SelectDepartment({ department, setDepartment }: ISelectDepartment) {
   );
 }
 
-export default SelectDepartment;
+export default RandomSelector;
