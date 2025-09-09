@@ -18,11 +18,12 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 /** subjectCode 가 중복되지 않도록 랜덤으로 과목을 선택합니다. */
-function getRandomItems(lectures: Lecture[], count: number) {
+function getRandomItems(lectures: Lecture[], count: number, selectedIds: string[] = []): Lecture[] {
   const shuffled = shuffleArray(lectures);
-  const uniqueSubjectCodes: Set<string> = new Set();
+  const uniqueSubjectCodes: Set<string> = new Set(selectedIds);
   const randomSubjects: Lecture[] = [];
 
+  // subjectCode 가 중복되지 않도록 과목을 선택
   for (const item of shuffled) {
     if (uniqueSubjectCodes.size >= count) break;
     if (uniqueSubjectCodes.has(item.subjectCode)) continue;
@@ -52,10 +53,10 @@ function checkSameDepartment(departmentName: string, collegeName: string) {
   return clean(departmentName) === clean(collegeName);
 }
 
-// Fixme: 남은 학과 과목 개수 인가요?
-function checkMajorCount(count: number) {
-  return TOTAL_SUBJECTS - count + 1;
-}
+/** 조건 없이 Random 하게 뽑은 과목들 반환 */
+const pickRandomSubjectsByAll = (lectures: Lecture[]) => {
+  return getRandomItems(lectures, TOTAL_SUBJECTS);
+};
 
 /** valid 한 과목 중에서, 학과 + 휴머니티칼리지 과목을 랜덤으로 선택합니다. */
 export const pickRandomSubjects = (subjects: Lecture[], departmentName: string) => {
@@ -65,14 +66,14 @@ export const pickRandomSubjects = (subjects: Lecture[], departmentName: string) 
 
   const collegeName = pickCollege(departmentName);
 
-  // Todo: 왜 nullish 만 빼는건지, falsy 값을 빼도 되는건지 확인 필요
-  // Todo: 랜덤에서 subjectCode 중복 제거 안하는 이유 확인 필요
-  const validSubjects = subjects.filter(subject => subject.professorName !== null && subject.lesn_time !== null);
-  const departmentSubjects = validSubjects.filter(subject => checkSameDepartment(subject.departmentName, collegeName));
-  const humanitySubjects = validSubjects.filter(subject => subject.departmentName === '대양휴머니티칼리지');
+  const departmentSubjects = subjects.filter(subject => checkSameDepartment(subject.departmentName, collegeName));
+  const humanitySubjects = subjects.filter(subject => subject.departmentName === '대양휴머니티칼리지');
 
   const departmentRandomSubjects = getRandomItems(departmentSubjects, 3);
-  const humanityRandomSubjects = getRandomItems(humanitySubjects, checkMajorCount(departmentRandomSubjects.length + 1));
+
+  const selectedIds = departmentRandomSubjects.map(sub => sub.subjectCode);
+  const remainingCount = TOTAL_SUBJECTS - departmentRandomSubjects.length;
+  const humanityRandomSubjects = getRandomItems(humanitySubjects, remainingCount, selectedIds);
 
   return shuffleArray([...departmentRandomSubjects, ...humanityRandomSubjects]);
 };
@@ -84,42 +85,6 @@ export const pickRandomSubjects = (subjects: Lecture[], departmentName: string) 
  */
 export const findLecturesById = (lectures: Lecture[], subjectId: number) => {
   return lectures.find(subject => subjectId === subject.subjectId);
-};
-
-/** 조건 없이 Random 하게 뽑은 과목들 반환 (valid, subjectCode 중복 제거 안함)*/
-const pickRandomSubjectsByAll = (lectures: Lecture[]) => {
-  return getRandomItems(lectures, 5);
-};
-
-/** 앞에서 부터 학수번호 겹치지 않는 것 선택 */
-export const pickNonRandomSubjects = (lectures: Lecture[], departmentName: string) => {
-  const collegeName = pickCollege(departmentName);
-
-  if (collegeName === '') {
-    return pickRandomSubjectsByAll(lectures);
-  }
-
-  const departmentSubjects = lectures.filter(subject => checkSameDepartment(subject.departmentName, collegeName));
-
-  const humanitySubjects = lectures.filter(subject => subject.departmentName === '대양휴머니티칼리지');
-
-  // subjectCode 가 중복되지 않도록 필터링
-  const removeDuplicateSubjects = (subjects: Lecture[]) => {
-    const seen = new Set();
-    return subjects.filter(subject => {
-      if (seen.has(subject.subjectCode)) return false;
-      seen.add(subject.subjectCode);
-      return true;
-    });
-  };
-
-  const uniqueDepartmentSubjects = removeDuplicateSubjects(departmentSubjects).slice(0, 3);
-  const needed = 5 - uniqueDepartmentSubjects.length;
-
-  // Todo: collegeName 이 '대양휴머니티칼리지' 일 때 작동 확인 필요
-  const uniqueHumanitySubjects = removeDuplicateSubjects(humanitySubjects).slice(0, needed);
-
-  return [...uniqueDepartmentSubjects, ...uniqueHumanitySubjects];
 };
 
 /** 총 학점 제한을 적용합니다. */

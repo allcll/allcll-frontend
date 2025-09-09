@@ -4,7 +4,7 @@ import { ISelectorProps } from '@/components/simulation/modal/before/UserWishMod
 import useLectures from '@/hooks/server/useLectures.ts';
 import useDepartments, { Department } from '@/hooks/server/useDepartments';
 import { getDepartmentRanks } from '@/hooks/useSearchRank.ts';
-import { pickNonRandomSubjects } from '@/utils/subjectPicker.ts';
+import { pickRandomSubjects } from '@/utils/subjectPicker.ts';
 
 interface ISelectDepartment extends ISelectorProps {
   department: Department;
@@ -37,9 +37,7 @@ function RandomSelector({ department, setDepartment, setSubjects }: ISelectDepar
 
     setDepartment({ departmentName, departmentCode });
 
-    // Todo: 랜덤과목 모드일 때, 랜덤으로 선택하지 않는 이유 확인 필요
-    setSubjects(pickNonRandomSubjects(lectures, departmentName));
-    // setSubjects(pickRandomSubjects(lectures, department.departmentName));
+    setSubjects(pickRandomSubjects(lectures, department.departmentName));
   }, [departments]);
 
   return (
