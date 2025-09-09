@@ -18,7 +18,7 @@ import { useTutorial } from '@/hooks/simulation/useTutorial.ts';
 import { getCredit } from '@/utils/subjectPicker.ts';
 
 function Simulation() {
-  const { type, closeModal } = useSimulationModalStore();
+  const type = useSimulationModalStore(state => state.type);
   const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
   const { simulationId, registeredSubjects } = currentSimulation;
   const { reloadSimulationStatus } = useReloadSimulation();
@@ -41,7 +41,7 @@ function Simulation() {
       case 'captcha':
         return <CaptchaInput />;
       case 'wish':
-        return <UserWishModal timetables={timetables} setIsModalOpen={() => closeModal()} />;
+        return <UserWishModal timetables={timetables} />;
       case 'simulation':
         return <SimulationModal />;
       case 'result':

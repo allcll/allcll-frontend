@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import Chip from '@common/components/chip/Chip';
+import Button from '@common/components/Button.tsx';
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
+import PreviousSelector from '@/components/simulation/modal/before/PreviousSelector.tsx';
+import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
+import useSimulation from '@/hooks/simulation/useSimulation.ts';
 import { Department } from '@/hooks/server/useDepartments.ts';
 import useLectures, { Lecture } from '@/hooks/server/useLectures';
 import { TimetableType } from '@/hooks/server/useTimetableSchedules';
@@ -13,13 +17,9 @@ import SubjectTable from './SubjectTable';
 import ModalActions from './ActionButton';
 import TimetableSelector from '../TimetableSelector.tsx';
 import GameTips from './GameTips';
-import Button from '@common/components/Button.tsx';
-import useSimulation from '@/hooks/simulation/useSimulation.ts';
-import PreviousSelector from '@/components/simulation/modal/before/PreviousSelector.tsx';
 
 interface UserWishModalIProps {
   timetables: TimetableType[];
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface ISelectorProps {
@@ -30,7 +30,8 @@ type ModeType = 'previous' | 'timetable' | 'random';
 
 const InitDepartment: Department = { departmentCode: '', departmentName: '' };
 
-function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIProps>) {
+function UserWishModal({ timetables }: Readonly<UserWishModalIProps>) {
+  const closeModal = useSimulationModalStore(state => state.closeModal);
   const { data: lectures, isLoading: isLoadingLectures } = useLectures();
 
   const [simulationSubjects, setSimulationSubjects] = useState<Lecture[]>([]);
@@ -72,8 +73,8 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
   };
 
   return (
-    <Modal onClose={() => setIsModalOpen(false)}>
-      <ModalHeader title="수강 신청 연습을 시작하시겠습니까?" onClose={() => setIsModalOpen(false)} />
+    <Modal onClose={() => closeModal()}>
+      <ModalHeader title="수강 신청 연습을 시작하시겠습니까?" onClose={() => closeModal()} />
       <div className="flex flex-col w-full max-w-[900px] sm:min-w-[600px] gap-2 p-2 sm:p-6">
         <h2 className="text-left font-semibold text-sm sm:text-md">어떤 과목으로 진행하시겠습니까?</h2>
         <div className="flex gap-2 py-2">
