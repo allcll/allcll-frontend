@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Modal from '@/components/simulation/modal/Modal';
 import ModalHeader from '@/components/simulation/modal/ModalHeader';
-import { drawCaptcha } from '@/utils/captcha';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
-import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation';
 import useLectures from '@/hooks/server/useLectures';
+import { drawCaptcha } from '@/utils/captcha';
+import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation';
 
 function generateNumericText() {
   return Math.floor(1000 + Math.random() * 9000).toString();
@@ -15,13 +15,12 @@ const CAPTCHA_LENGTH = 4;
 
 function CaptchaInput() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [captchaInput, setCaptchaInput] = useState<string | number>();
+  const [captchaInput, setCaptchaInput] = useState<string>('');
   const [infoMessage, setInfoMessage] = useState<string>('');
   const codeRef = useRef<string>('');
   const { data: lectures } = useLectures();
 
-  const openModal = useSimulationModalStore(state => state.openModal);
-  const closeModal = useSimulationModalStore(state => state.closeModal);
+  const { openModal, closeModal } = useSimulationModalStore.getState();
   const { currentSubjectId, setSubjectStatus, setCaptchaFailed } = useSimulationSubjectStore();
 
   function handleRefreshCaptcha() {
@@ -44,12 +43,13 @@ function CaptchaInput() {
       return;
     }
 
-    if (inputValue.length <= CAPTCHA_LENGTH) {
-      setCaptchaInput(inputValue);
-      setInfoMessage('');
-    } else {
+    if (inputValue.length > CAPTCHA_LENGTH) {
       setInfoMessage('4자리까지 입력 가능합니다');
+      return;
     }
+
+    setCaptchaInput(inputValue);
+    setInfoMessage('');
   }
 
   useEffect(() => {

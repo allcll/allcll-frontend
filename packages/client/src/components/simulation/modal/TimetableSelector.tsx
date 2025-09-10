@@ -39,7 +39,11 @@ function TimetableSelector({ timetables, setSubjects }: ITimetableChip) {
 
   // 시간표 모드일 때, 선택한 시간표의 과목을 불러옵니다.
   useEffect(() => {
-    if (isSchedulesLoading || !schedules || schedules.length === 0) return;
+    if (isSchedulesLoading || !schedules) return;
+    if (schedules.length === 0) {
+      setSubjects([]);
+      return;
+    }
 
     const validSchedules = schedules.filter(schedule => schedule.scheduleType !== 'custom');
     const scheduleSubjects = validSchedules

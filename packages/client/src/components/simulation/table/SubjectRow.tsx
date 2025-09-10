@@ -14,7 +14,7 @@ const SubjectRow = ({ index, subject, isRegisteredTable, onClickSubject }: Subje
       <td className="border py-1 border-gray-200">
         <button
           className="bg-blue-500 cursor-pointer text-white text-xs px-3 py-0.5 rounded-xs"
-          disabled={!!isRegisteredTable}
+          disabled={isRegisteredTable}
           onClick={() => onClickSubject(subject.subjectId)}
         >
           {isRegisteredTable ? '삭제' : '신청'}

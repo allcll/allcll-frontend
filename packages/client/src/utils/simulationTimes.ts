@@ -1,3 +1,33 @@
+/** 대기 모달 기다리는 사람 수 시뮬레이션 하는 함수 */
+export function calculateBehindPeople(
+  elapsedTime: number,
+  clickTime: number,
+  unit: number,
+  initialBehindPeople: number,
+  basePeoplePerUnit: number,
+  baseProcessedPerUnit: number,
+) {
+  const totalUnits = Math.floor((elapsedTime + clickTime) / unit);
+  let cumulativeIn = initialBehindPeople;
+  let cumulativeProcessed = 0;
+
+  for (let i = 0; i <= totalUnits; i++) {
+    const currentTime = i * unit;
+    let peoplePerUnit = basePeoplePerUnit;
+    let processedPerUnit = baseProcessedPerUnit;
+
+    if (currentTime > 4) {
+      peoplePerUnit = 48;
+      processedPerUnit = 33;
+    }
+
+    cumulativeIn += peoplePerUnit;
+    cumulativeProcessed += processedPerUnit;
+  }
+
+  return Math.max(Math.round(cumulativeIn - cumulativeProcessed), 0);
+}
+
 /**
  * 주어진 시간, 사용자 수, 서버 처리량을 바탕으로 큐 대기 시간을 계산합니다.
  * @param {number} time 현재 시점 (초 단위)
@@ -59,22 +89,22 @@ export function calculateQueueDelay(
   return queueSize / throughput;
 }
 
-// 사용 예시
-const currentTime = 5.0; // 현재 시점 (초)
-const numUsers = 1000;
-const serverThroughput = 300;
-
-const delayInSeconds = calculateQueueDelay(currentTime, numUsers, serverThroughput);
-
-console.log(`현재 시점 (${currentTime}초)의 예상 딜레이: ${delayInSeconds.toFixed(4)}초`);
-
-// 다른 시점에서의 딜레이 확인
-console.log(`1초 시점의 예상 딜레이: ${calculateQueueDelay(1, numUsers, serverThroughput).toFixed(4)}초`);
-console.log(`2초 시점의 예상 딜레이: ${calculateQueueDelay(2, numUsers, serverThroughput).toFixed(4)}초`);
-console.log(`3초 시점의 예상 딜레이: ${calculateQueueDelay(3, numUsers, serverThroughput).toFixed(4)}초`);
-console.log(`6초 시점의 예상 딜레이: ${calculateQueueDelay(6, numUsers, serverThroughput).toFixed(4)}초`);
-console.log(`8초 시점의 예상 딜레이: ${calculateQueueDelay(8, numUsers, serverThroughput).toFixed(4)}초`);
-console.log(`10초 시점의 예상 딜레이: ${calculateQueueDelay(10, numUsers, serverThroughput).toFixed(4)}초`);
-console.log(`15초 시점의 예상 딜레이: ${calculateQueueDelay(15, numUsers, serverThroughput).toFixed(4)}초`);
-console.log(`20초 시점의 예상 딜레이: ${calculateQueueDelay(20, numUsers, serverThroughput).toFixed(4)}초`);
-console.log(`30초 시점의 예상 딜레이: ${calculateQueueDelay(30, numUsers, serverThroughput).toFixed(4)}초`);
+// // 사용 예시
+// const currentTime = 5.0; // 현재 시점 (초)
+// const numUsers = 1000;
+// const serverThroughput = 300;
+//
+// const delayInSeconds = calculateQueueDelay(currentTime, numUsers, serverThroughput);
+//
+// console.log(`현재 시점 (${currentTime}초)의 예상 딜레이: ${delayInSeconds.toFixed(4)}초`);
+//
+// // 다른 시점에서의 딜레이 확인
+// console.log(`1초 시점의 예상 딜레이: ${calculateQueueDelay(1, numUsers, serverThroughput).toFixed(4)}초`);
+// console.log(`2초 시점의 예상 딜레이: ${calculateQueueDelay(2, numUsers, serverThroughput).toFixed(4)}초`);
+// console.log(`3초 시점의 예상 딜레이: ${calculateQueueDelay(3, numUsers, serverThroughput).toFixed(4)}초`);
+// console.log(`6초 시점의 예상 딜레이: ${calculateQueueDelay(6, numUsers, serverThroughput).toFixed(4)}초`);
+// console.log(`8초 시점의 예상 딜레이: ${calculateQueueDelay(8, numUsers, serverThroughput).toFixed(4)}초`);
+// console.log(`10초 시점의 예상 딜레이: ${calculateQueueDelay(10, numUsers, serverThroughput).toFixed(4)}초`);
+// console.log(`15초 시점의 예상 딜레이: ${calculateQueueDelay(15, numUsers, serverThroughput).toFixed(4)}초`);
+// console.log(`20초 시점의 예상 딜레이: ${calculateQueueDelay(20, numUsers, serverThroughput).toFixed(4)}초`);
+// console.log(`30초 시점의 예상 딜레이: ${calculateQueueDelay(30, numUsers, serverThroughput).toFixed(4)}초`);

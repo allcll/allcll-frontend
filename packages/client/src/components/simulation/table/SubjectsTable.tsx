@@ -1,23 +1,22 @@
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import { BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation';
 import SubjectRow from './SubjectRow';
 import NothingTable from './NothingTable';
-import useLectures from '@/hooks/server/useLectures';
+import useLectures, { Lecture } from '@/hooks/server/useLectures';
 
 interface ISubjectsTable {
   isRegisteredTable: boolean;
+  lectures: Lecture[];
 }
 
-const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
-  const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
+const SubjectsTable = ({ lectures, isRegisteredTable }: ISubjectsTable) => {
   const openModal = useSimulationModalStore(state => state.openModal);
   const setCurrentSubjectId = useSimulationSubjectStore(state => state.setCurrentSubjectId);
-  const { data: lectures } = useLectures();
+  const { data } = useLectures();
 
   const handleClickSubject = (subjectId: number) => {
-    triggerButtonEvent({ eventType: BUTTON_EVENT.APPLY, subjectId }, lectures)
+    triggerButtonEvent({ eventType: BUTTON_EVENT.APPLY, subjectId }, data)
       .then(result => {
         if ('errMsg' in result) {
           alert(result.errMsg);
@@ -31,14 +30,8 @@ const SubjectsTable = ({ isRegisteredTable }: ISubjectsTable) => {
     openModal('captcha');
   };
 
-  // const mergeNonRegisteredAndFailed = currentSimulation.nonRegisteredSubjects.concat(currentSimulation.failedSubjects);
-
-  const subjectsToRender = isRegisteredTable
-    ? currentSimulation.registeredSubjects
-    : currentSimulation.nonRegisteredSubjects;
-
-  return subjectsToRender.length > 0 ? (
-    subjectsToRender.map((subject, idx) => (
+  return lectures.length > 0 ? (
+    lectures.map((subject, idx) => (
       <tbody key={subject.subjectId} className="min-h-[300px] border-gray-100">
         <SubjectRow
           index={idx}

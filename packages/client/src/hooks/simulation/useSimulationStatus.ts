@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
-import { checkOngoingSimulation, forceStopSimulation, SIMULATION_TIME_LIMIT } from '@/utils/simulation/simulation.ts';
-import { useReloadSimulation } from './useReloadSimulation.ts';
+import SimulationActions, {
+  checkOngoingSimulation,
+  forceStopSimulation,
+  SIMULATION_TIME_LIMIT,
+} from '@/utils/simulation/simulation.ts';
 
 export function useSimulationStatus() {
-  const { openModal } = useSimulationModalStore();
+  const openModal = useSimulationModalStore(state => state.openModal);
   const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore();
-  const { reloadSimulationStatus } = useReloadSimulation();
 
   const forceSimulation = async () => {
     try {
@@ -34,7 +36,7 @@ export function useSimulationStatus() {
       if (seconds > SIMULATION_TIME_LIMIT) {
         await forceSimulation();
       } else {
-        await reloadSimulationStatus();
+        SimulationActions.update();
       }
     } else if (currentSimulation.simulationStatus === 'before') {
       openModal('tutorial');

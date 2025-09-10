@@ -36,9 +36,11 @@ function RandomSelector({ department, setDepartment, setSubjects }: ISelectDepar
     const departmentName = departments.find(d => d.departmentCode === departmentCode)?.departmentName ?? '';
 
     setDepartment({ departmentName, departmentCode });
-
-    setSubjects(pickRandomSubjects(lectures, department.departmentName));
   }, [departments]);
+
+  useEffect(() => {
+    setSubjects(pickRandomSubjects(lectures, department.departmentName));
+  }, [department]);
 
   return (
     <div className="flex flex-col gap-2">

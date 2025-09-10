@@ -1,12 +1,11 @@
 import React from 'react';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
-import NothingTable from './table/NothingTable';
+import { Lecture } from '@/hooks/server/useLectures.ts';
 import SubjectsTable from './table/SubjectsTable';
 
 interface SubjectsSectionProps {
   title: string;
   isRegisteredTable: boolean;
+  lectures: Lecture[];
   children?: React.ReactNode;
 }
 
@@ -46,10 +45,7 @@ function SimulationSubjectsHeader({ isRegisteredTable }: { isRegisteredTable: bo
   );
 }
 
-export default function SubjectsSection({ title, isRegisteredTable, children }: SubjectsSectionProps) {
-  const simulationStatus = useSimulationProcessStore(state => state.currentSimulation.simulationStatus);
-  const currentModal = useSimulationModalStore(state => state.type);
-
+export default function SubjectsSection({ title, lectures, isRegisteredTable, children }: SubjectsSectionProps) {
   return (
     <section className="mt-4 ">
       <div className="w-full flex flex-col sm:flex-row sm:items-center justify-start gap-2 mb-2">
@@ -61,12 +57,9 @@ export default function SubjectsSection({ title, isRegisteredTable, children }: 
       <div className="overflow-x-auto min-h-[300px] border-gray-300">
         <table className="w-full border border-gray-300 border-t-3 text-xs border-t-black text-center">
           <SimulationSubjectsHeader isRegisteredTable={isRegisteredTable} />
+          <SubjectsTable lectures={lectures} isRegisteredTable={isRegisteredTable} />
 
-          {simulationStatus === 'progress' && currentModal !== 'waiting' ? (
-            <SubjectsTable isRegisteredTable={isRegisteredTable} />
-          ) : (
-            <NothingTable />
-          )}
+          {/* Todo: SimulationSubject 상태와 일반 상태 분리*/}
         </table>
       </div>
     </section>

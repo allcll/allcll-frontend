@@ -9,6 +9,7 @@ function SimulationModal() {
   const confirmBtnRef = useRef<HTMLButtonElement | null>(null);
 
   const { modalData, handleConfirm, handleCancel, handleClose } = useSimulationAction();
+  const cancelable = modalData?.status === APPLY_STATUS.PROGRESS || modalData?.status === APPLY_STATUS.SUCCESS;
 
   useEffect(() => {
     confirmBtnRef.current?.focus();
@@ -36,7 +37,7 @@ function SimulationModal() {
         </div>
 
         <div className="flex justify-end  px-6 py-4 gap-3 bg-gray-100 text-xs">
-          {(modalData.status === APPLY_STATUS.PROGRESS || modalData.status === APPLY_STATUS.SUCCESS) && (
+          {cancelable && (
             <button
               onClick={handleCancel}
               className="px-4 py-2 bg-white hover:bg-blue-50 rounded-xs border cursor-pointer"

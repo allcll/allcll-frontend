@@ -1,23 +1,20 @@
+import React from 'react';
+import { useLiveQuery } from 'dexie-react-hooks';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
-import { useLiveQuery } from 'dexie-react-hooks';
-import SearchSvg from '@/assets/search-white.svg?react';
-import {
+import SimulationActions, {
   BUTTON_EVENT,
   checkOngoingSimulation,
-  forceStopSimulation,
   triggerButtonEvent,
 } from '@/utils/simulation/simulation';
-import { useReloadSimulation } from '@/hooks/simulation/useReloadSimulation.ts';
 import useLectures from '@/hooks/server/useLectures';
+import SearchSvg from '@/assets/search-white.svg?react';
 import LogoSvg from '@public/ci.svg?react';
-import React from 'react';
 
 function SimulationSearchForm() {
   const { setCurrentSimulation, currentSimulation, resetSimulation } = useSimulationProcessStore();
   const openModal = useSimulationModalStore(state => state.openModal);
   const ongoingSimulation = useLiveQuery(checkOngoingSimulation);
-  const { reloadSimulationStatus } = useReloadSimulation();
   const { data: lectures } = useLectures();
 
   const hasRunningSimulationId =
@@ -28,30 +25,26 @@ function SimulationSearchForm() {
     ongoingSimulation && 'userStatus' in ongoingSimulation ? ongoingSimulation.userStatus?.departmentName : -1;
 
   const handleClickRestart = () => {
-    setCurrentSimulation({
-      simulationStatus: 'before',
-    });
+    setCurrentSimulation({ simulationStatus: 'before' });
 
     openModal('tutorial');
     resetSimulation();
   };
 
-  const checkHasSimulation = () => {
-    checkOngoingSimulation().then(simulation => {
-      if (simulation && 'simulationId' in simulation && simulation.simulationId !== -1) {
-        reloadSimulationStatus();
-      }
-    });
-  };
+  const handleStartSimulation = () => {
+    // 시뮬레이션이 있는지 판단
+    checkOngoingSimulation()
+      .then(simulation => {
+        if (simulation && 'simulationId' in simulation && simulation.simulationId !== -1) {
+          SimulationActions.update();
+        }
 
-  const handleStartSimulation = async () => {
-    //버튼이벤트 : 검색 후 시뮬레이션 시작
-    checkHasSimulation();
-
-    triggerButtonEvent({ eventType: BUTTON_EVENT.SEARCH }, lectures)
+        //버튼이벤트 : 시뮬레이션 시작
+        return triggerButtonEvent({ eventType: BUTTON_EVENT.SEARCH }, lectures);
+      })
       .then(result => {
         if ('errMsg' in result) {
-          alert('시뮬레이션이 존재하지 않습니다. 학과 검색을 먼저 진행해주세요!');
+          alert('시뮬레이션이 존재하지 않습니다!');
         } else {
           const elapsedSeconds = result.elapsed_time / 1000;
 
@@ -69,15 +62,7 @@ function SimulationSearchForm() {
   };
 
   const handleForceSimulation = async () => {
-    try {
-      await forceStopSimulation();
-
-      setCurrentSimulation({ simulationStatus: 'finish' });
-      openModal('result');
-    } catch (error) {
-      console.error(error);
-      alert('데이터베이스 삭제에 실패했습니다.');
-    }
+    SimulationActions.stop();
   };
 
   return (

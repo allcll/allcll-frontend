@@ -11,19 +11,18 @@ import TutorialModal from '@/components/simulation/modal/before/TutorialModal';
 import SubjectsSection from '@/components/simulation/SubjectsSection';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
-import { useReloadSimulation } from '@/hooks/simulation/useReloadSimulation.ts';
 import { useSimulationStatus } from '@/hooks/simulation/useSimulationStatus.ts';
 import { useTimetables } from '@/hooks/server/useTimetableSchedules';
 import { useTutorial } from '@/hooks/simulation/useTutorial.ts';
+import SimulationActions from '@/utils/simulation/simulation.ts';
 import { getCredit } from '@/utils/subjectPicker.ts';
 
 function Simulation() {
   const type = useSimulationModalStore(state => state.type);
   const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
-  const { simulationId, registeredSubjects } = currentSimulation;
-  const { reloadSimulationStatus } = useReloadSimulation();
-  const { data: timetables = [] } = useTimetables();
+  const { simulationId, nonRegisteredSubjects, registeredSubjects } = currentSimulation;
   const { isTutorialRequired, showTutorialAgain } = useTutorial();
+  const { data: timetables = [] } = useTimetables();
 
   useSimulationStatus();
 
@@ -72,13 +71,13 @@ function Simulation() {
       </div>
       <SimulationSearchForm />
 
-      <SubjectsSection title="수강 대상 교과목" isRegisteredTable={false} />
+      <SubjectsSection title="수강 대상 교과목" isRegisteredTable={false} lectures={nonRegisteredSubjects} />
 
-      <SubjectsSection title="수강 신청 내역" isRegisteredTable={true}>
+      <SubjectsSection title="수강 신청 내역" isRegisteredTable={true} lectures={registeredSubjects}>
         <div className="flex flex-row gap-2">
           <button
             className="text-xs w-14 bg-blue-500 text-white px-2 py-0.5 rounded-xs cursor-pointer"
-            onClick={reloadSimulationStatus}
+            onClick={() => SimulationActions.update()}
           >
             재조회
           </button>

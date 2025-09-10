@@ -6,12 +6,12 @@ import Modal from '@/components/simulation/modal/Modal.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
 import PreviousSelector from '@/components/simulation/modal/before/PreviousSelector.tsx';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
-import useSimulation from '@/hooks/simulation/useSimulation.ts';
 import { Department } from '@/hooks/server/useDepartments.ts';
 import useLectures, { Lecture } from '@/hooks/server/useLectures';
 import { TimetableType } from '@/hooks/server/useTimetableSchedules';
 import { pickRandomSubjects } from '@/utils/subjectPicker';
 import { getRecentInterestedSnapshot } from '@/utils/simulation/subjects';
+import SimulationActions from '@/utils/simulation/simulation.ts';
 import RandomSelector from './RandomSelector.tsx';
 import SubjectTable from './SubjectTable';
 import ModalActions from './ActionButton';
@@ -41,20 +41,9 @@ function UserWishModal({ timetables }: Readonly<UserWishModalIProps>) {
   const [toggleTip, setToggleTip] = useState(false);
 
   const prevSnapshot = useLiveQuery(getRecentInterestedSnapshot);
-  const { startSimulation } = useSimulation();
 
   const handleRemakeSubjects = () => {
     setSimulationSubjects(pickRandomSubjects(lectures, department.departmentName));
-  };
-
-  /**
-   * 과목 모드를 선택합니다. (시간표 / 랜덤)
-   * @param mode
-   * @returns
-   */
-  const handleClickSubjectMode = (mode: ModeType) => {
-    setSimulationSubjects([]);
-    setSubjectMode(mode);
   };
 
   // 처음 입장 시 어떤 항목으로 갈지 결정
@@ -69,7 +58,7 @@ function UserWishModal({ timetables }: Readonly<UserWishModalIProps>) {
   }, [prevSnapshot, timetables]);
 
   const handleStart = async () => {
-    await startSimulation(subjectMode, simulationSubjects, department);
+    await SimulationActions.start(subjectMode, simulationSubjects, department);
   };
 
   return (
@@ -79,22 +68,14 @@ function UserWishModal({ timetables }: Readonly<UserWishModalIProps>) {
         <h2 className="text-left font-semibold text-sm sm:text-md">어떤 과목으로 진행하시겠습니까?</h2>
         <div className="flex gap-2 py-2">
           {prevSnapshot && (
-            <Chip
-              label="기존 과목"
-              selected={subjectMode === 'previous'}
-              onClick={() => handleClickSubjectMode('previous')}
-            />
+            <Chip label="기존 과목" selected={subjectMode === 'previous'} onClick={() => setSubjectMode('previous')} />
           )}
           <Chip
             label="시간표 과목"
             selected={subjectMode === 'timetable'}
-            onClick={() => handleClickSubjectMode('timetable')}
+            onClick={() => setSubjectMode('timetable')}
           />
-          <Chip
-            label="랜덤 과목"
-            selected={subjectMode === 'random'}
-            onClick={() => handleClickSubjectMode('random')}
-          />
+          <Chip label="랜덤 과목" selected={subjectMode === 'random'} onClick={() => setSubjectMode('random')} />
         </div>
 
         {subjectMode === 'previous' ? (

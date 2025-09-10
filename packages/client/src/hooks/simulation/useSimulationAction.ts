@@ -2,8 +2,12 @@ import { useMemo } from 'react';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject.ts';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
-import { APPLY_STATUS, BUTTON_EVENT, forceStopSimulation, triggerButtonEvent } from '@/utils/simulation/simulation.ts';
-import { useReloadSimulation } from '@/hooks/simulation/useReloadSimulation.ts';
+import SimulationActions, {
+  APPLY_STATUS,
+  BUTTON_EVENT,
+  forceStopSimulation,
+  triggerButtonEvent,
+} from '@/utils/simulation/simulation.ts';
 import useLectures from '@/hooks/server/useLectures.ts';
 
 interface ModalContent {
@@ -49,13 +53,13 @@ const closeDisabledStatuses = [
   APPLY_STATUS.CAPTCHA_FAILED,
 ];
 
+// SIMULATION_MODAL_CONTENTS 에서 status로 모달 내용 관리
 export const useSimulationAction = () => {
   const { openModal, closeModal } = useSimulationModalStore();
   const { currentSubjectId, setSubjectStatus, subjectStatusMap } = useSimulationSubjectStore();
   const { setCurrentSimulation } = useSimulationProcessStore();
 
   const { data: lectures } = useLectures();
-  const { reloadSimulationStatus } = useReloadSimulation();
 
   const currentSubjectStatus = subjectStatusMap[currentSubjectId];
   const modalData = useMemo(() => {
@@ -104,7 +108,7 @@ export const useSimulationAction = () => {
     const result = await triggerButtonEvent({ eventType: BUTTON_EVENT.REFRESH, subjectId: currentSubjectId }, lectures);
     checkErrorValue(result);
 
-    reloadSimulationStatus();
+    SimulationActions.update();
 
     if (result.finished) {
       setCurrentSimulation({ simulationStatus: 'finish' });
@@ -134,6 +138,7 @@ export const useSimulationAction = () => {
     }
   };
 
+  // 모달 확인 버튼 누를 시
   const handleConfirm = async () => {
     try {
       if (modalStatus === APPLY_STATUS.PROGRESS) {
@@ -148,6 +153,7 @@ export const useSimulationAction = () => {
     }
   };
 
+  // 모달 취소 버튼 누를 시
   const handleCancel = async () => {
     try {
       if (modalStatus === APPLY_STATUS.SUCCESS) {
@@ -165,6 +171,7 @@ export const useSimulationAction = () => {
     }
   };
 
+  // 모달 X 버튼 누를 시
   const handleClose = () => {
     if (!isCloseDisabled) {
       closeModal('simulation');

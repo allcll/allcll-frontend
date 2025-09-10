@@ -1,7 +1,7 @@
 import { SimulationStatusType, SimulationSubject } from '@/utils/types';
 import { create } from 'zustand';
 
-interface SimulationState {
+export interface SimulationState {
   simulationId: number;
   registeredSubjects: SimulationSubject[];
   nonRegisteredSubjects: SimulationSubject[];
@@ -15,7 +15,7 @@ interface IUseSimulationProcessStore {
   resetSimulation: () => void;
 }
 
-const defaultSimulation: SimulationState = {
+export const DefaultSimulation: SimulationState = {
   simulationId: -1,
   registeredSubjects: [],
   nonRegisteredSubjects: [],
@@ -24,12 +24,12 @@ const defaultSimulation: SimulationState = {
 };
 
 const useSimulationProcessStore = create<IUseSimulationProcessStore>(set => ({
-  currentSimulation: defaultSimulation,
+  currentSimulation: DefaultSimulation,
   setCurrentSimulation: simulation =>
     set(state => ({
       currentSimulation: { ...state.currentSimulation, ...simulation },
     })),
-  resetSimulation: () => set({ currentSimulation: defaultSimulation /*, subjectsStatus: []*/ }),
+  resetSimulation: () => set({ currentSimulation: DefaultSimulation }),
 }));
 
 export default useSimulationProcessStore;

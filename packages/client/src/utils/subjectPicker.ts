@@ -25,7 +25,7 @@ function getRandomItems(lectures: Lecture[], count: number, selectedIds: string[
 
   // subjectCode 가 중복되지 않도록 과목을 선택
   for (const item of shuffled) {
-    if (uniqueSubjectCodes.size >= count) break;
+    if (randomSubjects.length >= count) break;
     if (uniqueSubjectCodes.has(item.subjectCode)) continue;
 
     uniqueSubjectCodes.add(item.subjectCode);
@@ -74,6 +74,7 @@ export const pickRandomSubjects = (subjects: Lecture[], departmentName: string) 
   const selectedIds = departmentRandomSubjects.map(sub => sub.subjectCode);
   const remainingCount = TOTAL_SUBJECTS - departmentRandomSubjects.length;
   const humanityRandomSubjects = getRandomItems(humanitySubjects, remainingCount, selectedIds);
+  console.log(remainingCount, humanitySubjects);
 
   return shuffleArray([...departmentRandomSubjects, ...humanityRandomSubjects]);
 };

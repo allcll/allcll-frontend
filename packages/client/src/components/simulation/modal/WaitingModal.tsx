@@ -1,42 +1,18 @@
-import Modal from '@/components/simulation/modal/Modal.tsx';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { useState, useEffect, useRef } from 'react';
-
-function calculateBehindPeople(
-  elapsedTime: number,
-  clickTime: number,
-  unit: number,
-  initialBehindPeople: number,
-  basePeoplePerUnit: number,
-  baseProcessedPerUnit: number,
-) {
-  const totalUnits = Math.floor((elapsedTime + clickTime) / unit);
-  let cumulativeIn = initialBehindPeople;
-  let cumulativeProcessed = 0;
-
-  for (let i = 0; i <= totalUnits; i++) {
-    const currentTime = i * unit;
-    let peoplePerUnit = basePeoplePerUnit;
-    let processedPerUnit = baseProcessedPerUnit;
-
-    if (currentTime > 4) {
-      peoplePerUnit = 48;
-      processedPerUnit = 33;
-    }
-
-    cumulativeIn += peoplePerUnit;
-    cumulativeProcessed += processedPerUnit;
-  }
-
-  return Math.max(Math.round(cumulativeIn - cumulativeProcessed), 0);
-}
+import Modal from '@/components/simulation/modal/Modal.tsx';
+import useLectures from '@/hooks/server/useLectures.ts';
+import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
+import useSimulationProcessStore, { SimulationState } from '@/store/simulation/useSimulationProcess';
+import { findLecturesById } from '@/utils/subjectPicker.ts';
+import { calculateBehindPeople } from '@/utils/simulationTimes.ts';
+import { getSimulateStatus } from '@/utils/simulation/subjects.ts';
 
 function WaitingModal() {
   const [waitTime, setWaitTime] = useState(0);
   const [aheadPeople, setAheadPeople] = useState(0);
   const [behindPeople, setBehindPeople] = useState(1);
   const [timer, setTimer] = useState(0);
+  const { data: lectures } = useLectures();
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const closeModal = useSimulationModalStore(state => state.closeModal);
@@ -106,6 +82,33 @@ function WaitingModal() {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [waitTime]);
+
+  // 데이터 패칭 시뮬레이션
+  useEffect(() => {
+    let simulationData: Partial<SimulationState>;
+    const { setCurrentSimulation } = useSimulationProcessStore.getState();
+
+    const getLectures = (subjects: { subjectId: number }[]) => {
+      return subjects.map(subject => findLecturesById(lectures, subject.subjectId)).filter(s => !!s);
+    };
+
+    getSimulateStatus()
+      .then(result => {
+        if (!result || result.simulationId === -1) throw new Error('No Ongoing Simulation');
+        const { simulationId, nonRegisteredSubjects, registeredSubjects } = result;
+
+        simulationData = {
+          simulationId,
+          nonRegisteredSubjects: getLectures(nonRegisteredSubjects ?? []),
+          registeredSubjects: getLectures(registeredSubjects ?? []),
+        };
+      })
+      .catch(error => console.error(error));
+
+    return () => {
+      if (simulationData) setCurrentSimulation(simulationData);
+    };
+  }, []);
 
   const handleClickStopButton = () => {
     setCurrentSimulation({ simulationStatus: 'before' });
