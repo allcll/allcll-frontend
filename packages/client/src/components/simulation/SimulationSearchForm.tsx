@@ -15,11 +15,20 @@ function SimulationSearchForm() {
   const { setCurrentSimulation, currentSimulation, resetSimulation } = useSimulationProcessStore();
   const openModal = useSimulationModalStore(state => state.openModal);
   const ongoingSimulation = useLiveQuery(checkOngoingSimulation);
+  const { simulationId, startedAt, clickedTime } = currentSimulation;
   const { data: lectures } = useLectures();
 
-  const hasRunningSimulationId =
-    ongoingSimulation && 'simulationId' in ongoingSimulation ? ongoingSimulation.simulationId : -1;
-  const isRunning = hasRunningSimulationId !== -1;
+  // const hasRunningSimulationId =
+  //   ongoingSimulation && 'simulationId' in ongoingSimulation ? ongoingSimulation.simulationId : -1;
+
+  /** 시뮬레이션 상태, 판단 기준
+   * before: 시뮬레이션 시작 전
+   * start: 시뮬레이션 시작 ~ 검색 버튼 클릭 전
+   * progress: 시뮬레이션 진행 중
+   * finished: 시뮬레이션 종료 (결과 모달)
+   * */
+  const isRunning = simulationId !== -1 && startedAt > 0;
+  const isStart = isRunning && clickedTime <= 0;
 
   const departmentName =
     ongoingSimulation && 'userStatus' in ongoingSimulation ? ongoingSimulation.userStatus?.departmentName : -1;
@@ -32,7 +41,7 @@ function SimulationSearchForm() {
   };
 
   const handleStartSimulation = () => {
-    // 시뮬레이션이 있는지 판단
+    // 시뮬레이션이 있는지 판단 // Todo: 시뮬레이션 있는 지 판단해야하는 이유??
     checkOngoingSimulation()
       .then(simulation => {
         if (simulation && 'simulationId' in simulation && simulation.simulationId !== -1) {
@@ -62,7 +71,7 @@ function SimulationSearchForm() {
   };
 
   const handleForceSimulation = async () => {
-    SimulationActions.stop();
+    SimulationActions.finish(true);
   };
 
   return (
@@ -153,9 +162,7 @@ function SimulationSearchForm() {
               }`}
               disabled={!isRunning}
             >
-              {currentSimulation.simulationStatus === 'start' && (
-                <LogoSvg className="absolute -top-20 right-8 w-15 h-15 animate-bounce rotate-170" />
-              )}
+              {isStart && <LogoSvg className="absolute -top-20 right-8 w-15 h-15 animate-bounce rotate-170" />}
               <SearchSvg className="w-5 h-4" />
               검색
             </button>

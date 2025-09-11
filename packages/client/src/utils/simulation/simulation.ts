@@ -26,6 +26,7 @@ import { Lecture } from '@/hooks/server/useLectures';
 import useSimulationProcessStore, { DefaultSimulation } from '@/store/simulation/useSimulationProcess.ts';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
 import { Department } from '@/hooks/server/useDepartments.ts';
+import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject.ts';
 
 export enum BUTTON_EVENT {
   SEARCH,
@@ -302,7 +303,6 @@ export async function triggerButtonEvent(input: ButtonEventEndReq, lectures: Lec
 export async function triggerButtonEvent(
   input: any, // Simplified for brevity
   lectures: Lecture[],
-  isCaptchaFailed: boolean = false,
 ) {
   const { eventType } = input;
   let ongoing;
@@ -335,6 +335,7 @@ export async function triggerButtonEvent(
   });
 
   if (eventType === BUTTON_EVENT.SUBJECT_SUBMIT) {
+    const { isCaptchaFailed } = useSimulationSubjectStore.getState();
     return handleSubmitEvent(ongoing, latestSelection, subjectId, isCaptchaFailed, lectures);
   }
 
@@ -507,10 +508,11 @@ const SimulationActions = {
         result.isRunning !== undefined;
 
       if (isStarted) {
-        const { simulationId, isRunning } = result;
+        const { simulationId, started_at, isRunning } = result;
 
         setCurrentSimulation({
           simulationId,
+          startedAt: started_at,
           simulationStatus: isRunning ? 'start' : 'before',
         });
       } else {
@@ -522,28 +524,27 @@ const SimulationActions = {
   },
   /** 재조회 로직을 실행합니다 */
   update() {
-    const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore.getState();
+    const { setCurrentSimulation } = useSimulationProcessStore.getState();
     const { openModal } = useSimulationModalStore.getState();
 
     setCurrentSimulation({ registeredSubjects: [], nonRegisteredSubjects: [] });
-
-    if (currentSimulation.simulationStatus === 'progress') {
-      openModal('waiting');
-    }
+    openModal('waiting');
   },
   /** 시뮬레이션을 종료합니다 */
-  stop() {
+  finish(force = false) {
     // force stop & stop Simulation
     const { setCurrentSimulation } = useSimulationProcessStore.getState();
     const { openModal } = useSimulationModalStore.getState();
 
-    forceStopSimulation()
+    const action = force ? forceStopSimulation : endCurrentSimulation;
+    action()
       .catch(e => {
         console.error(e);
         alert(e);
       })
       .finally(() => {
-        setCurrentSimulation({ ...DefaultSimulation, simulationStatus: 'finish' });
+        const { simulationId, ...rest } = DefaultSimulation;
+        setCurrentSimulation({ ...rest, simulationStatus: 'finish' });
         openModal('result');
       });
   },

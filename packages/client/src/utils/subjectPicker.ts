@@ -74,7 +74,6 @@ export const pickRandomSubjects = (subjects: Lecture[], departmentName: string) 
   const selectedIds = departmentRandomSubjects.map(sub => sub.subjectCode);
   const remainingCount = TOTAL_SUBJECTS - departmentRandomSubjects.length;
   const humanityRandomSubjects = getRandomItems(humanitySubjects, remainingCount, selectedIds);
-  console.log(remainingCount, humanitySubjects);
 
   return shuffleArray([...departmentRandomSubjects, ...humanityRandomSubjects]);
 };

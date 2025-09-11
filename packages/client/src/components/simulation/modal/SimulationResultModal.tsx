@@ -1,15 +1,17 @@
-import Modal from '@/components/simulation/modal/Modal.tsx';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
-import { getSummaryResult, SIMULATION_ERROR } from '@/utils/simulation/simulation';
 import { useEffect, useState } from 'react';
-import ProcessingModal from './Processing';
 import { NavLink } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
+import Modal from '@/components/simulation/modal/Modal.tsx';
+import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
+import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
+import { getSummaryResult, SIMULATION_ERROR } from '@/utils/simulation/simulation';
 import { getAggregatedSimulationResults } from '@/utils/simulation/result';
+import ProcessingModal from './Processing';
 
 function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number }>) {
   const openModal = useSimulationModalStore(state => state.openModal);
   const closeModal = useSimulationModalStore(state => state.closeModal);
+  const resetSimulation = useSimulationProcessStore(state => state.resetSimulation);
   const [result, setResult] = useState<{ accuracy: number; score: number; total_elapsed: number } | null>(null);
   const [logParam, setLogParam] = useState<number>();
 
@@ -56,6 +58,13 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
     fetchResult().then();
   }, []);
 
+  function close(next = false) {
+    resetSimulation();
+
+    if (next) openModal('wish');
+    else closeModal();
+  }
+
   if (!result) {
     return <ProcessingModal />;
   }
@@ -68,7 +77,7 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
   return !modifiedResult || !simulationAllResult ? (
     <ProcessingModal />
   ) : (
-    <Modal onClose={() => closeModal()}>
+    <Modal onClose={() => close()}>
       <div className="w-full max-w-md bg-white rounded-xl shadow-xl p-6 relative overflow-hidden">
         {isSuccessSimulation && (
           <div className="absolute inset-0 pointer-events-none">
@@ -149,10 +158,7 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
           <div className="flex justify-center gap-3 mt-6">
             <button
               className="px-4 py-2 border border-gray-400 text-gray-800 rounded-md hover:bg-gray-100 text-sm"
-              onClick={() => {
-                closeModal();
-                openModal('wish');
-              }}
+              onClick={() => close(true)}
             >
               다시 하기
             </button>
@@ -161,9 +167,7 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
               to={`/simulation/logs/${logParam}`}
               end={false}
               className="px-4 py-2  bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm"
-              onClick={() => {
-                closeModal();
-              }}
+              onClick={() => close()}
             >
               내 능력 자세히 보기
             </NavLink>

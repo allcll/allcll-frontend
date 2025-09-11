@@ -2,10 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import useLectures from '@/hooks/server/useLectures.ts';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
-import useSimulationProcessStore, { SimulationState } from '@/store/simulation/useSimulationProcess';
-import { findLecturesById } from '@/utils/subjectPicker.ts';
+import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { calculateBehindPeople } from '@/utils/simulationTimes.ts';
-import { getSimulateStatus } from '@/utils/simulation/subjects.ts';
 
 function WaitingModal() {
   const [waitTime, setWaitTime] = useState(0);
@@ -17,6 +15,7 @@ function WaitingModal() {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const closeModal = useSimulationModalStore(state => state.closeModal);
   const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
+  const preloadSubjects = useSimulationProcessStore(state => state.preloadSubjects);
   const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
 
   const unit = 0.2;
@@ -85,28 +84,10 @@ function WaitingModal() {
 
   // 데이터 패칭 시뮬레이션
   useEffect(() => {
-    let simulationData: Partial<SimulationState>;
-    const { setCurrentSimulation } = useSimulationProcessStore.getState();
-
-    const getLectures = (subjects: { subjectId: number }[]) => {
-      return subjects.map(subject => findLecturesById(lectures, subject.subjectId)).filter(s => !!s);
-    };
-
-    getSimulateStatus()
-      .then(result => {
-        if (!result || result.simulationId === -1) throw new Error('No Ongoing Simulation');
-        const { simulationId, nonRegisteredSubjects, registeredSubjects } = result;
-
-        simulationData = {
-          simulationId,
-          nonRegisteredSubjects: getLectures(nonRegisteredSubjects ?? []),
-          registeredSubjects: getLectures(registeredSubjects ?? []),
-        };
-      })
-      .catch(error => console.error(error));
+    const flushSubjects = preloadSubjects(lectures || []);
 
     return () => {
-      if (simulationData) setCurrentSimulation(simulationData);
+      flushSubjects();
     };
   }, []);
 

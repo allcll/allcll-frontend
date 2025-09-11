@@ -18,11 +18,9 @@ import SimulationActions from '@/utils/simulation/simulation.ts';
 import { getCredit } from '@/utils/subjectPicker.ts';
 
 function Simulation() {
-  const type = useSimulationModalStore(state => state.type);
   const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
   const { simulationId, nonRegisteredSubjects, registeredSubjects } = currentSimulation;
   const { isTutorialRequired, showTutorialAgain } = useTutorial();
-  const { data: timetables = [] } = useTimetables();
 
   useSimulationStatus();
 
@@ -31,32 +29,14 @@ function Simulation() {
     [registeredSubjects],
   );
 
-  const RenderModal = () => {
-    switch (type) {
-      case 'tutorial':
-        return <TutorialModal />;
-      case 'waiting':
-        return <WaitingModal />;
-      case 'captcha':
-        return <CaptchaInput />;
-      case 'wish':
-        return <UserWishModal timetables={timetables} />;
-      case 'simulation':
-        return <SimulationModal />;
-      case 'result':
-        return <SimulationResultModal simulationId={simulationId} />;
-      default:
-        return null;
-    }
-  };
-
   return (
     <>
       <Helmet>
         <title>ALLCLL | 올클연습 - 세종대 수강신청 연습</title>
       </Helmet>
 
-      <RenderModal />
+      <RenderModals simulationId={simulationId} />
+
       <div className="flex justify-between gap-5">
         <div className="flex gap-5">
           <h1 className="font-bold text-lg">수강신청 연습</h1>
@@ -91,6 +71,28 @@ function Simulation() {
       </SubjectsSection>
     </>
   );
+}
+
+function RenderModals({ simulationId }: Readonly<{ simulationId: number }>) {
+  const type = useSimulationModalStore(state => state.type);
+  const { data: timetables = [] } = useTimetables();
+
+  switch (type) {
+    case 'tutorial':
+      return <TutorialModal />;
+    case 'wish':
+      return <UserWishModal timetables={timetables} />;
+    case 'waiting':
+      return <WaitingModal />;
+    case 'captcha':
+      return <CaptchaInput />;
+    case 'simulation':
+      return <SimulationModal />;
+    case 'result':
+      return <SimulationResultModal simulationId={simulationId} />;
+    default:
+      return null;
+  }
 }
 
 export default Simulation;

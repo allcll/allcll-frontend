@@ -66,7 +66,6 @@ function CaptchaInput() {
           setCaptchaFailed(false);
         } else {
           setSubjectStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
-
           setCaptchaFailed(true);
         }
       })
@@ -79,8 +78,8 @@ function CaptchaInput() {
   function closeCaptcha() {
     triggerButtonEvent({ eventType: BUTTON_EVENT.CANCEL_SUBMIT, subjectId: currentSubjectId }, lectures).then(() => {
       closeModal('captcha');
-      setCaptchaFailed(false);
       setSubjectStatus(currentSubjectId, APPLY_STATUS.PROGRESS);
+      setCaptchaFailed(false);
     });
   }
 

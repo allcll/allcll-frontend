@@ -1,46 +1,36 @@
 import { useEffect } from 'react';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
+import SimulationActions, { checkOngoingSimulation, SIMULATION_TIME_LIMIT } from '@/utils/simulation/simulation.ts';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
-import SimulationActions, {
-  checkOngoingSimulation,
-  forceStopSimulation,
-  SIMULATION_TIME_LIMIT,
-} from '@/utils/simulation/simulation.ts';
 
 export function useSimulationStatus() {
   const openModal = useSimulationModalStore(state => state.openModal);
-  const { currentSimulation, setCurrentSimulation } = useSimulationProcessStore();
-
-  const forceSimulation = async () => {
-    try {
-      await forceStopSimulation();
-      setCurrentSimulation({ simulationStatus: 'finish' });
-      alert('5분 경과로 시뮬레이션이 강제 종료되었습니다.');
-      openModal('result');
-    } catch (error) {
-      console.error(error);
-      alert('시뮬레이션 강제 종료에 실패했습니다.');
-    }
-  };
+  const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
 
   const checkHasSimulation = async () => {
     const simulation = await checkOngoingSimulation();
-    if (simulation && 'simulationId' in simulation && simulation.simulationId !== -1) {
-      const start = simulation.startedAt;
-      if (!start) {
-        return;
-      }
-      const now = Date.now();
-      const seconds = Math.floor((now - start) / 1000);
 
-      if (seconds > SIMULATION_TIME_LIMIT) {
-        await forceSimulation();
-      } else {
-        SimulationActions.update();
-      }
-    } else if (currentSimulation.simulationStatus === 'before') {
+    const isStarted = simulation && 'simulationId' in simulation && simulation.simulationId !== -1;
+    if (!isStarted) {
       openModal('tutorial');
+      return;
     }
+
+    const start = simulation.startedAt ?? 0;
+    const now = Date.now();
+    const seconds = Math.floor((now - start) / 1000);
+
+    if (seconds > SIMULATION_TIME_LIMIT) {
+      SimulationActions.finish(true);
+      alert('5분 경과로 시뮬레이션이 강제 종료되었습니다.');
+      return;
+    }
+
+    setCurrentSimulation({
+      simulationStatus: 'start',
+      simulationId: simulation.simulationId,
+      startedAt: start,
+    });
   };
 
   useEffect(() => {
@@ -49,5 +39,5 @@ export function useSimulationStatus() {
      * 현재 시뮬레이션으로 저장
      */
     checkHasSimulation().then();
-  }, [currentSimulation.simulationStatus]);
+  }, []);
 }

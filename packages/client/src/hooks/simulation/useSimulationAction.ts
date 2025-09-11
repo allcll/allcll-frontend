@@ -1,13 +1,7 @@
 import { useMemo } from 'react';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject.ts';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
-import SimulationActions, {
-  APPLY_STATUS,
-  BUTTON_EVENT,
-  forceStopSimulation,
-  triggerButtonEvent,
-} from '@/utils/simulation/simulation.ts';
+import SimulationActions, { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation.ts';
 import useLectures from '@/hooks/server/useLectures.ts';
 
 interface ModalContent {
@@ -57,11 +51,10 @@ const closeDisabledStatuses = [
 export const useSimulationAction = () => {
   const { openModal, closeModal } = useSimulationModalStore();
   const { currentSubjectId, setSubjectStatus, subjectStatusMap } = useSimulationSubjectStore();
-  const { setCurrentSimulation } = useSimulationProcessStore();
 
   const { data: lectures } = useLectures();
 
-  const currentSubjectStatus = subjectStatusMap[currentSubjectId];
+  const currentSubjectStatus = subjectStatusMap[currentSubjectId]; // Todo: status map 목적은???
   const modalData = useMemo(() => {
     const content = SIMULATION_MODAL_CONTENTS.find(data => data.status === currentSubjectStatus);
 
@@ -83,7 +76,7 @@ export const useSimulationAction = () => {
     if ('errMsg' in res) {
       alert(res.errMsg);
       if (forceFinish) {
-        forceStopSimulation().then(() => openModal('result'));
+        SimulationActions.finish(true);
       }
       throw new Error(res.errMsg);
     }
@@ -108,12 +101,12 @@ export const useSimulationAction = () => {
     const result = await triggerButtonEvent({ eventType: BUTTON_EVENT.REFRESH, subjectId: currentSubjectId }, lectures);
     checkErrorValue(result);
 
-    SimulationActions.update();
-
     if (result.finished) {
-      setCurrentSimulation({ simulationStatus: 'finish' });
-      openModal('result');
+      SimulationActions.finish();
+      return;
     }
+
+    SimulationActions.update();
   };
 
   const handleSkipRefreshAndCheckFinish = async () => {
@@ -124,12 +117,9 @@ export const useSimulationAction = () => {
       );
       if ('errMsg' in result) {
         alert(result.errMsg);
-        await forceStopSimulation();
-        setCurrentSimulation({ simulationStatus: 'finish' });
-        openModal('result');
+        SimulationActions.finish(true);
       } else if (result.finished) {
-        setCurrentSimulation({ simulationStatus: 'finish' });
-        openModal('result');
+        SimulationActions.finish();
       } else {
         closeModal('simulation');
       }
