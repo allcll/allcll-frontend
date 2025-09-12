@@ -2,7 +2,7 @@ import { SimulationStatusType, SimulationSubject } from '@/utils/types';
 import { create } from 'zustand';
 import { Lecture } from '@/hooks/server/useLectures.ts';
 import { findLecturesById } from '@/utils/subjectPicker.ts';
-import { getSimulateStatus } from '@/utils/simulation/subjects.ts';
+import SnapshotService from '@/utils/simulation/SnapshotService.ts';
 
 export interface SimulationState {
   simulationId: number;
@@ -43,7 +43,7 @@ const useSimulationProcessStore = create<IUseSimulationProcessStore>(set => ({
       return subjects.map(subject => findLecturesById(lectures, subject.subjectId)).filter(s => !!s);
     };
 
-    getSimulateStatus()
+    SnapshotService.getSimulateStatus()
       .then(result => {
         if (!result || result.simulationId === -1) {
           throw new Error('No Ongoing Simulation');

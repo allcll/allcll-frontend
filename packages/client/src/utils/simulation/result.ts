@@ -9,7 +9,7 @@
  * @function average - 숫자 배열의 평균을 계산하는 헬퍼 함수입니다.
  */
 import { db, SimulationRunSelections } from '@/utils/dbConfig.ts';
-import { getInterestedSnapshotById } from '@/utils/simulation/subjects.ts';
+import SnapshotService from '@/utils/simulation/SnapshotService.ts';
 import { APPLY_STATUS, BUTTON_EVENT, getSimulationById } from '@/utils/simulation/simulation.ts';
 
 const SEC = 1 / 1000;
@@ -18,9 +18,7 @@ export async function getSimulationList() {
   const snapshots = await db.simulation_run.filter(run => run.ended_at !== -1).toArray();
   const sortedSnapshots = snapshots.sort((a, b) => b.simulation_run_id - a.simulation_run_id);
 
-  return {
-    snapshots: sortedSnapshots,
-  };
+  return { snapshots: sortedSnapshots };
 }
 
 export interface ResultResponse {
@@ -73,7 +71,7 @@ export interface ResultResponse {
  * */
 export async function getSimulationResult(simulationId: number): Promise<ResultResponse | null> {
   const simulation = await getSimulationById(simulationId);
-  const snapshots = await getInterestedSnapshotById(simulation.snapshot_id);
+  const snapshots = await SnapshotService.getById(simulation.snapshot_id);
 
   if (!simulation || !snapshots) return null;
 
@@ -309,7 +307,7 @@ export async function getAggregatedSimulationResults(): Promise<AggregatedResult
     const simulation = completedSimulations.find(s => s.simulation_run_id === simulationId);
     if (!simulation) continue;
 
-    const snapshot = await getInterestedSnapshotById(simulation.snapshot_id);
+    const snapshot = await SnapshotService.getById(simulation.snapshot_id);
     if (!snapshot) continue;
 
     const subject = snapshot.subjects.find(s => s.interested_id === selection.interested_id);

@@ -16,18 +16,17 @@ import { checkOngoingSimulation } from '@/utils/simulation/simulation.ts';
 /**
  * 최근의 관심과목 스냅샷과 과목을 불러옵니다.
  * */
-export async function getRecentInterestedSnapshot() {
+async function getRecentInterestedSnapshot() {
   const recent = await db.interested_snapshot.orderBy('created_at').last();
   if (!recent) return null;
 
-  const snapshotId = recent.snapshot_id;
-  return getInterestedSnapshotById(snapshotId);
+  return getInterestedSnapshotById(recent.snapshot_id);
 }
 
 /**
  * 관심과목 스냅샷을 불러옵니다.
  * */
-export async function getInterestedSnapshotById(snapshotId: number) {
+async function getInterestedSnapshotById(snapshotId: number) {
   const snapshot = await db.interested_snapshot.get(snapshotId);
   if (!snapshot) return null;
 
@@ -43,8 +42,8 @@ export async function getInterestedSnapshotById(snapshotId: number) {
  * 관심과목 스냅샷을 저장합니다
  * 스냅샷이 시뮬레이션에 사용되지 않았다면, 기존 스냅샷에 덮어씁니다.
  * */
-export async function saveInterestedSnapshot(subjectIds: number[]) {
-  const recent = await getRecentInterestedSnapshot();
+async function saveInterestedSnapshot(subjectIds: number[]) {
+  const recent = await SnapshotService.getRecent();
   const canRewrite = recent && !recent.simulated;
 
   const snapshotId = canRewrite
@@ -56,7 +55,7 @@ export async function saveInterestedSnapshot(subjectIds: number[]) {
       });
 
   // 기존 데이터 삭제
-  if (recent && !recent.simulated) {
+  if (canRewrite) {
     await db.interested_snapshot.update(recent.snapshot_id, { created_at: Date.now() });
     await db.interested_subject.where('snapshot_id').equals(recent.snapshot_id).delete();
   }
@@ -69,7 +68,12 @@ export async function saveInterestedSnapshot(subjectIds: number[]) {
   );
 }
 
-export async function getInterestedId(snapshotId: number, subjectId: number) {
+/**
+ * 특정 스냅샷 내에서 주어진 과목 ID에 해당하는 관심 과목의 고유 ID를 찾습니다.
+ * @param snapshotId
+ * @param subjectId
+ */
+async function getInterestedId(snapshotId: number, subjectId: number) {
   const interested = await db.interested_subject
     .where('snapshot_id')
     .equals(snapshotId)
@@ -83,7 +87,7 @@ export async function getInterestedId(snapshotId: number, subjectId: number) {
  * 진행중인 시뮬레이션을 확인하고, 신청과목, 비신청과목, 과목 상태를 반환합니다.
  * 진행중인 시뮬레이션이 없다면, {simulationId: -1} 을 반환합니다.
  */
-export async function getSimulateStatus() {
+async function getSimulateStatus() {
   const result = await checkOngoingSimulation();
 
   if ('errMsg' in result) throw new Error(result.errMsg);
@@ -91,12 +95,12 @@ export async function getSimulateStatus() {
   return result;
 }
 
-const Snapshot = {
+const SnapshotService = {
   getRecent: getRecentInterestedSnapshot,
   getById: getInterestedSnapshotById,
-  add: saveInterestedSnapshot,
+  save: saveInterestedSnapshot,
   getInterestedId: getInterestedId, // 추후 제거 요망
   getSimulateStatus, // 추후 제거 요망
 };
 
-export default Snapshot;
+export default SnapshotService;

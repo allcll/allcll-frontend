@@ -19,7 +19,7 @@
  * @function fixSimulation - 비정상적으로 종료된 시뮬레이션 데이터를 수정하거나 정리합니다.
  */
 import { db, SimulationRun, SimulationRunSelections } from '@/utils/dbConfig.ts';
-import { getInterestedId, getRecentInterestedSnapshot } from '@/utils/simulation/subjects';
+import SnapshotService from '@/utils/simulation/SnapshotService.ts';
 import { getAccuracy, getAccuracyScore, getSpeedScore } from '@/utils/simulation/score.ts';
 import { checkSubjectResult } from '@/utils/checkSubjectResult.ts';
 import { Lecture } from '@/hooks/server/useLectures';
@@ -171,7 +171,7 @@ export async function startSimulation(userPK: string, departmentCode: string, de
     return { simulationId: ongoing.simulationId, isRunning: true };
   }
 
-  const recent = await getRecentInterestedSnapshot();
+  const recent = await SnapshotService.getRecent();
 
   if (!recent) return errMsg(SIMULATION_ERROR.SNAPSHOT_NOT_EXIST);
 
@@ -213,7 +213,7 @@ async function handleApplyEvent(ongoing: SimulationRun, subjectId: number) {
 
   const selectionId = await db.simulation_run_selections.add({
     simulation_run_id: ongoing.simulation_run_id,
-    interested_id: await getInterestedId(ongoing.snapshot_id, subjectId),
+    interested_id: await SnapshotService.getInterestedId(ongoing.snapshot_id, subjectId),
     selected_index: selectedIndex + 1,
     status: APPLY_STATUS.PROGRESS,
     started_at: Date.now(),
@@ -248,7 +248,7 @@ async function handleSubmitEvent(
   const selections = await db.simulation_run_selections
     .filter(selection => selection.simulation_run_id === ongoing.simulation_run_id)
     .toArray();
-  const interestedId = await getInterestedId(ongoing.snapshot_id, subjectId);
+  const interestedId = await SnapshotService.getInterestedId(ongoing.snapshot_id, subjectId);
 
   const isDouble = selections.some(
     s => s.interested_id === interestedId && s.ended_at >= 0 && submittedFilter(s, ongoing.simulation_run_id),

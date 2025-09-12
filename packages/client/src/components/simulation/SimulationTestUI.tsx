@@ -9,7 +9,7 @@ import {
   BUTTON_EVENT,
   APPLY_STATUS,
 } from '@/utils/simulation/simulation.ts';
-import { getRecentInterestedSnapshot, saveInterestedSnapshot } from '@/utils/simulation/subjects.ts';
+import SnapshotService from '@/utils/simulation/SnapshotService.ts';
 import { InterestedSubject } from '@/utils/dbConfig.ts';
 import { backupDatabase, restoreDatabase } from '@/utils/simulation/backupData.ts';
 import useLectures from '@/hooks/server/useLectures';
@@ -22,7 +22,7 @@ export function SimulationTestUI() {
   const lectures = useLectures();
 
   async function handleLoadSnapshot() {
-    const res = await getRecentInterestedSnapshot();
+    const res = await SnapshotService.getRecent();
     setLog(JSON.stringify(res));
 
     snapshots.current = res?.subjects ?? null;
@@ -35,7 +35,7 @@ export function SimulationTestUI() {
       const shuffled = subjects.sort(() => 0.5 - Math.random());
       subjectIds = shuffled.slice(0, 7).map(s => s.subjectId);
     }
-    const res = await saveInterestedSnapshot(subjectIds);
+    const res = await SnapshotService.save(subjectIds);
     setLog(JSON.stringify(res));
   }
 

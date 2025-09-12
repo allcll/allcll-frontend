@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import useSimulationProcessStore, { DefaultSimulation } from '@/store/simulation/useSimulationProcess';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
-import { saveInterestedSnapshot } from '@/utils/simulation/subjects';
+import SnapshotService from '@/utils/simulation/SnapshotService.ts';
 import {
   startSimulation,
   forceStopSimulation,
@@ -61,7 +61,7 @@ export const useSimulationActions = () => {
         closeModal();
 
         if (mode !== 'previous') {
-          await saveInterestedSnapshot(subjects.map(subject => subject.subjectId));
+          await SnapshotService.save(subjects.map(subject => subject.subjectId));
         }
         const result = await startSimulation('', department.departmentCode, department.departmentName);
 
@@ -120,17 +120,20 @@ export const useSimulationActions = () => {
 
   /** 버튼 이벤트를 발생시킵니다 */
   const click = useCallback(async (eventType: BUTTON_EVENT, subjectId?: number) => {
-    // triggerButtonEvent 호출 로직 구현
+    // todo: triggerButtonEvent 호출 로직 구현
     // 예시: await triggerButtonEvent({ eventType, subjectId }, lectures);
   }, []);
 
   /** 과목을 신청하고 결과를 반환합니다 */
   const submitSubject = useCallback(async (subjectId: number) => {
-    // triggerButtonEvent 호출 로직 구현
+    // todo: triggerButtonEvent 호출 로직 구현
     // 예시: const result = await triggerButtonEvent({ eventType: BUTTON_EVENT.SUBJECT_SUBMIT, subjectId }, lectures);
   }, []);
 
-  const checkFinish = useCallback(() => {}, []);
+  /** simulation이 종료되었는지 확인하고, 종료 시, 종료 로직을 실행합니다. */
+  const checkFinish = useCallback(() => {
+    // todo: checkSimulationFinish 호출 로직 구현
+  }, []);
 
   return {
     init,

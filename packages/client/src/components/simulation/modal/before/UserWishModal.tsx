@@ -10,7 +10,7 @@ import { Department } from '@/hooks/server/useDepartments.ts';
 import useLectures, { Lecture } from '@/hooks/server/useLectures';
 import { TimetableType } from '@/hooks/server/useTimetableSchedules';
 import { pickRandomSubjects } from '@/utils/subjectPicker';
-import { getRecentInterestedSnapshot } from '@/utils/simulation/subjects';
+import SnapshotService from '@/utils/simulation/SnapshotService.ts';
 import RandomSelector from './RandomSelector.tsx';
 import SubjectTable from './SubjectTable';
 import ModalActions from './ActionButton';
@@ -41,7 +41,7 @@ function UserWishModal({ timetables }: Readonly<UserWishModalIProps>) {
   const [subjectMode, setSubjectMode] = useState<ModeType>('timetable');
   const [toggleTip, setToggleTip] = useState(false);
 
-  const prevSnapshot = useLiveQuery(getRecentInterestedSnapshot);
+  const prevSnapshot = useLiveQuery(SnapshotService.getRecent);
 
   const handleRemakeSubjects = () => {
     setSimulationSubjects(pickRandomSubjects(lectures, department.departmentName));
