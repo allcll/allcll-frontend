@@ -11,12 +11,12 @@ import useLectures, { Lecture } from '@/hooks/server/useLectures';
 import { TimetableType } from '@/hooks/server/useTimetableSchedules';
 import { pickRandomSubjects } from '@/utils/subjectPicker';
 import { getRecentInterestedSnapshot } from '@/utils/simulation/subjects';
-import SimulationActions from '@/utils/simulation/simulation.ts';
 import RandomSelector from './RandomSelector.tsx';
 import SubjectTable from './SubjectTable';
 import ModalActions from './ActionButton';
 import TimetableSelector from '../TimetableSelector.tsx';
 import GameTips from './GameTips';
+import { useSimulationActions } from '@/hooks/simulation/useSimulationActions.ts';
 
 interface UserWishModalIProps {
   timetables: TimetableType[];
@@ -32,6 +32,7 @@ const InitDepartment: Department = { departmentCode: '', departmentName: '' };
 
 function UserWishModal({ timetables }: Readonly<UserWishModalIProps>) {
   const closeModal = useSimulationModalStore(state => state.closeModal);
+  const SimulationActions = useSimulationActions();
   const { data: lectures, isLoading: isLoadingLectures } = useLectures();
 
   const [simulationSubjects, setSimulationSubjects] = useState<Lecture[]>([]);

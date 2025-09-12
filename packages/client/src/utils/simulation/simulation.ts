@@ -19,13 +19,10 @@
  * @function fixSimulation - 비정상적으로 종료된 시뮬레이션 데이터를 수정하거나 정리합니다.
  */
 import { db, SimulationRun, SimulationRunSelections } from '@/utils/dbConfig.ts';
-import { getInterestedId, getRecentInterestedSnapshot, saveInterestedSnapshot } from '@/utils/simulation/subjects';
+import { getInterestedId, getRecentInterestedSnapshot } from '@/utils/simulation/subjects';
 import { getAccuracy, getAccuracyScore, getSpeedScore } from '@/utils/simulation/score.ts';
 import { checkSubjectResult } from '@/utils/checkSubjectResult.ts';
 import { Lecture } from '@/hooks/server/useLectures';
-import useSimulationProcessStore, { DefaultSimulation } from '@/store/simulation/useSimulationProcess.ts';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
-import { Department } from '@/hooks/server/useDepartments.ts';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject.ts';
 
 export enum BUTTON_EVENT {
@@ -370,7 +367,7 @@ export async function forceStopSimulation() {
 }
 
 // 시뮬레이션 종료 처리
-async function endCurrentSimulation() {
+export async function endCurrentSimulation() {
   const lastRun = await db.simulation_run.filter(run => run.ended_at <= -1).last();
 
   if (!lastRun) return;
@@ -477,81 +474,3 @@ const submittedFilter = (sections: SimulationRunSelections, simulationId: number
 
 const notSubmittedFilter = (sections: SimulationRunSelections, simulationId: number) =>
   isOngoingSection(sections, simulationId) && ![APPLY_STATUS.SUCCESS, APPLY_STATUS.FAILED].includes(sections.status);
-
-/** IndexedDB + Zustand state 를 관리하는 Action */
-const SimulationActions = {
-  /** 시뮬레이션을 초기 세팅합니다 */
-  init() {},
-  /** 새로운 시뮬레이션을 시작합니다 */
-  async start(mode: string, subjects: Lecture[], department: Department) {
-    const { setCurrentSimulation } = useSimulationProcessStore.getState();
-    const { closeModal } = useSimulationModalStore.getState();
-
-    if (subjects.length === 0) {
-      alert('과목 리스트가 비어있습니다. 게임을 시작할 수 없습니다.');
-      return;
-    }
-
-    try {
-      closeModal();
-
-      // Todo: 기존 과목 판별 더 정확하게 할 수 있도록 개선 (시간표 선택 -> 같은 시간표 선택 시 등)
-      if (mode !== 'previous') {
-        await saveInterestedSnapshot(subjects.map(subject => subject.subjectId));
-      }
-      const result = await startSimulation('', department.departmentCode, department.departmentName);
-
-      const isStarted =
-        'simulationId' in result &&
-        'isRunning' in result &&
-        result.simulationId !== -1 &&
-        result.isRunning !== undefined;
-
-      if (isStarted) {
-        const { simulationId, started_at, isRunning } = result;
-
-        setCurrentSimulation({
-          simulationId,
-          startedAt: started_at,
-          simulationStatus: isRunning ? 'start' : 'before',
-        });
-      } else {
-        console.error('시뮬레이션 시작 결과가 유효하지 않음', result);
-      }
-    } catch (e) {
-      console.error('시뮬레이션 시작 중 오류 발생:', e);
-    }
-  },
-  /** 재조회 로직을 실행합니다 */
-  update() {
-    const { setCurrentSimulation } = useSimulationProcessStore.getState();
-    const { openModal } = useSimulationModalStore.getState();
-
-    setCurrentSimulation({ registeredSubjects: [], nonRegisteredSubjects: [] });
-    openModal('waiting');
-  },
-  /** 시뮬레이션을 종료합니다 */
-  finish(force = false) {
-    // force stop & stop Simulation
-    const { setCurrentSimulation } = useSimulationProcessStore.getState();
-    const { openModal } = useSimulationModalStore.getState();
-
-    const action = force ? forceStopSimulation : endCurrentSimulation;
-    action()
-      .catch(e => {
-        console.error(e);
-        alert(e);
-      })
-      .finally(() => {
-        const { simulationId, ...rest } = DefaultSimulation;
-        setCurrentSimulation({ ...rest, simulationStatus: 'finish' });
-        openModal('result');
-      });
-  },
-  /** 버튼 이벤트를 발생시킵니다 */
-  click() {},
-  /** 과목을 신청하고 결과를 반환합니다 */
-  submitSubject() {},
-};
-
-export default SimulationActions;

@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject.ts';
-import SimulationActions, { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation.ts';
+import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation.ts';
+import { useSimulationActions } from '@/hooks/simulation/useSimulationActions.ts';
 import useLectures from '@/hooks/server/useLectures.ts';
 
 interface ModalContent {
@@ -48,9 +49,10 @@ const closeDisabledStatuses = [
 ];
 
 // SIMULATION_MODAL_CONTENTS 에서 status로 모달 내용 관리
-export const useSimulationAction = () => {
+export const useSimulationModalActions = () => {
   const { openModal, closeModal } = useSimulationModalStore();
   const { currentSubjectId, setSubjectStatus, subjectStatusMap } = useSimulationSubjectStore();
+  const SimulationActions = useSimulationActions();
 
   const { data: lectures } = useLectures();
 

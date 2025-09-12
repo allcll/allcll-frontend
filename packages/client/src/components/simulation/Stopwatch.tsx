@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useSimulationActions } from '@/hooks/simulation/useSimulationActions.ts';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
-import SimulationActions, { SIMULATION_TIME_LIMIT } from '@/utils/simulation/simulation';
+import { SIMULATION_TIME_LIMIT } from '@/utils/simulation/simulation';
 
 function Stopwatch() {
   const [currentTime, setCurrentTime] = useState('00:00');
   const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
+  const SimulationActions = useSimulationActions();
   const { startedAt } = currentSimulation;
 
   const setTime = (totalSeconds: number) => {

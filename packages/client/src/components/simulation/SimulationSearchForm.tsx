@@ -2,11 +2,8 @@ import React from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
-import SimulationActions, {
-  BUTTON_EVENT,
-  checkOngoingSimulation,
-  triggerButtonEvent,
-} from '@/utils/simulation/simulation';
+import { BUTTON_EVENT, checkOngoingSimulation, triggerButtonEvent } from '@/utils/simulation/simulation';
+import { useSimulationActions } from '@/hooks/simulation/useSimulationActions.ts';
 import useLectures from '@/hooks/server/useLectures';
 import SearchSvg from '@/assets/search-white.svg?react';
 import LogoSvg from '@public/ci.svg?react';
@@ -17,6 +14,7 @@ function SimulationSearchForm() {
   const ongoingSimulation = useLiveQuery(checkOngoingSimulation);
   const { simulationId, startedAt, clickedTime } = currentSimulation;
   const { data: lectures } = useLectures();
+  const { update, finish } = useSimulationActions();
 
   // const hasRunningSimulationId =
   //   ongoingSimulation && 'simulationId' in ongoingSimulation ? ongoingSimulation.simulationId : -1;
@@ -45,7 +43,7 @@ function SimulationSearchForm() {
     checkOngoingSimulation()
       .then(simulation => {
         if (simulation && 'simulationId' in simulation && simulation.simulationId !== -1) {
-          SimulationActions.update();
+          update();
         }
 
         //버튼이벤트 : 시뮬레이션 시작
@@ -71,7 +69,7 @@ function SimulationSearchForm() {
   };
 
   const handleForceSimulation = async () => {
-    SimulationActions.finish(true);
+    finish(true);
   };
 
   return (

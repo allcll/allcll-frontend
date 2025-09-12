@@ -2,13 +2,13 @@ import { useEffect, useRef } from 'react';
 import CheckBlueSvg from '@/assets/check-blue.svg?react';
 import Modal from '@/components/simulation/modal/Modal.tsx';
 import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
-import { useSimulationAction } from '@/hooks/simulation/useSimulationAction.ts';
+import { useSimulationModalActions } from '@/hooks/simulation/useSimulationModalActions.ts';
 import { APPLY_STATUS } from '@/utils/simulation/simulation';
 
 function SimulationModal() {
   const confirmBtnRef = useRef<HTMLButtonElement | null>(null);
 
-  const { modalData, handleConfirm, handleCancel, handleClose } = useSimulationAction();
+  const { modalData, handleConfirm, handleCancel, handleClose } = useSimulationModalActions();
   const cancelable = modalData?.status === APPLY_STATUS.PROGRESS || modalData?.status === APPLY_STATUS.SUCCESS;
 
   useEffect(() => {
