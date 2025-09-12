@@ -12,7 +12,7 @@ import SubjectsSection from '@/components/simulation/SubjectsSection';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { useTimetables } from '@/hooks/server/useTimetableSchedules';
-import { useTutorial } from '@/hooks/simulation/useTutorial.ts';
+import { useTutorial } from '@/store/simulation/useTutorial.ts';
 import { getCredit } from '@/utils/subjectPicker.ts';
 import { useSimulationActions } from '@/hooks/simulation/useSimulationActions.ts';
 

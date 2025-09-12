@@ -6,7 +6,7 @@ import ArrowdownSvg from '@/assets/arrow-down-gray.svg?react';
 import YouTube from 'react-youtube';
 import useMobile from '@/hooks/useMobile';
 import Checkbox from '@common/components/checkbox/Checkbox';
-import { useTutorial } from '@/hooks/simulation/useTutorial.ts';
+import { useTutorial } from '@/store/simulation/useTutorial.ts';
 
 const tutorialVideos = [
   {
