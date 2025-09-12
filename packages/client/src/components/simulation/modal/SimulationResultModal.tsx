@@ -5,7 +5,7 @@ import Modal from '@/components/simulation/modal/Modal.tsx';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
 import { getSummaryResult, SIMULATION_ERROR } from '@/utils/simulation/simulation';
-import { getAggregatedSimulationResults } from '@/utils/simulation/result';
+import ResultService from '@/utils/simulation/ResultService';
 import ProcessingModal from './Processing';
 
 function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number }>) {
@@ -17,7 +17,7 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
 
   const simulationAllResult = useLiveQuery(async () => {
     try {
-      return await getAggregatedSimulationResults();
+      return await ResultService.getAggregatedStats();
     } catch (error: unknown) {
       return { error: (error as Error).message };
     }

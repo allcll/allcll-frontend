@@ -3,13 +3,13 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import RadarChart from '@/components/simulation/detail/RadarChart.tsx';
 import StatisticsChart from '@/components/simulation/detail/StatisticsChart.tsx';
 import SubjectAllResult from '@/components/simulation/detail/SubjectAllResult.tsx';
-import { getAggregatedSimulationResults } from '@/utils/simulation/result.ts';
+import ResultService from '@/utils/simulation/ResultService';
 import ImportantSvg from '@/assets/important.svg?react';
 
 function AllResult() {
   const simulationAllResult = useLiveQuery(async () => {
     try {
-      return await getAggregatedSimulationResults();
+      return await ResultService.getAggregatedStats();
     } catch (error: unknown) {
       return { error: (error as Error).message }; // Return null or handle the error as needed
     }

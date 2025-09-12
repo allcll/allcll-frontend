@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { getSimulationResult, ResultResponse } from '@/utils/simulation/result.ts';
+import ResultService, { type ResultResponse } from '@/utils/simulation/ResultService';
 import { findLecturesById } from '@/utils/subjectPicker.ts';
 import Timeline from '@/components/simulation/detail/Timeline.tsx';
 import RadarChart from '@/components/simulation/detail/RadarChart.tsx';
@@ -13,7 +13,7 @@ function DashboardDetail() {
   const { runId } = useParams();
   const { data: lectures } = useLectures();
 
-  const result = useLiveQuery(() => getSimulationResult(Number(runId)));
+  const result = useLiveQuery(() => ResultService.getDetailedResult(Number(runId)));
 
   const resultInfo = useMemo(() => joinSubjectInfo(lectures, result), [lectures, result]);
 

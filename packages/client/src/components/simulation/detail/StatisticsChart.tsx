@@ -14,7 +14,7 @@ import {
 } from 'chart.js/auto';
 import { Chart } from 'react-chartjs-2';
 import { useState } from 'react';
-import { AggregatedResultResponse } from '@/utils/simulation/result.ts';
+import { type AggregatedResultResponse } from '@/utils/simulation/ResultService';
 import { isNumber } from 'chart.js/helpers';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend);

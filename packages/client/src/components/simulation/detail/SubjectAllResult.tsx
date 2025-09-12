@@ -1,4 +1,4 @@
-import { AggregatedResultResponse, ISubjectsAnalysis } from '@/utils/simulation/result.ts';
+import { type AggregatedResultResponse, type ISubjectsAnalysis } from '@/utils/simulation/ResultService';
 import useWishes from '@/hooks/server/useWishes.ts';
 import { Wishes } from '@/utils/types.ts';
 import { useMemo } from 'react';

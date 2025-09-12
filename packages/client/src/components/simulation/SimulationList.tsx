@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { getSimulationList } from '@/utils/simulation/result.ts';
+import ResultService from '@/utils/simulation/ResultService';
 import { SimulationRun } from '@/utils/dbConfig.ts';
 import CursorBlue from '@/assets/cursor-blue.svg?react';
 
@@ -16,7 +16,7 @@ function SimulationList() {
 }
 
 function SimulationBoard() {
-  const logs = useLiveQuery<{ snapshots: SimulationRun[] }>(getSimulationList);
+  const logs = useLiveQuery<{ snapshots: SimulationRun[] }>(ResultService.getHistory);
   const searchedLogs = logs ? logs.snapshots : [];
   const isPending = logs === undefined;
   const isError = logs === null;
