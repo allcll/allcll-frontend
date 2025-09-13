@@ -5,7 +5,6 @@ import SnapshotService from '@/utils/simulation/SnapshotService.ts';
 import {
   startSimulation,
   forceStopSimulation,
-  endCurrentSimulation,
   BUTTON_EVENT,
   checkOngoingSimulation,
   SIMULATION_TIME_LIMIT,
@@ -18,30 +17,34 @@ export const useSimulationActions = () => {
   const { openModal, closeModal } = useSimulationModalStore();
 
   /** 시뮬레이션을 초기 세팅합니다 */
-  const init = useCallback(async () => {
-    const simulation = await checkOngoingSimulation();
+  const init = useCallback(() => {
+    checkOngoingSimulation()
+      .then(simulation => {
+        const isStarted = simulation && 'simulationId' in simulation && simulation.simulationId !== -1;
+        if (!isStarted) {
+          throw new Error('No ongoing simulation');
+        }
 
-    const isStarted = simulation && 'simulationId' in simulation && simulation.simulationId !== -1;
-    if (!isStarted) {
-      openModal('tutorial');
-      return;
-    }
+        const start = simulation.startedAt ?? 0;
+        const now = Date.now();
+        const seconds = Math.floor((now - start) / 1000);
 
-    const start = simulation.startedAt ?? 0;
-    const now = Date.now();
-    const seconds = Math.floor((now - start) / 1000);
+        if (seconds > SIMULATION_TIME_LIMIT) {
+          finish(true);
+          alert('5분 경과로 시뮬레이션이 강제 종료되었습니다.');
+          return;
+        }
 
-    if (seconds > SIMULATION_TIME_LIMIT) {
-      finish(true);
-      alert('5분 경과로 시뮬레이션이 강제 종료되었습니다.');
-      return;
-    }
-
-    setCurrentSimulation({
-      simulationStatus: 'start',
-      simulationId: simulation.simulationId,
-      startedAt: start,
-    });
+        setCurrentSimulation({
+          simulationStatus: 'start',
+          simulationId: simulation.simulationId,
+          startedAt: start,
+        });
+      })
+      .catch(() => {
+        // 시뮬레이션이 없을 때
+        openModal('tutorial');
+      });
   }, []);
 
   /**
@@ -103,10 +106,10 @@ export const useSimulationActions = () => {
    */
   const finish = useCallback(
     (force = false) => {
-      const action = force ? forceStopSimulation : endCurrentSimulation;
+      const action = forceStopSimulation;
       action()
         .catch(e => {
-          console.error(e);
+          console.error(e, force);
           alert(e);
         })
         .finally(() => {

@@ -94,7 +94,10 @@ export const useSimulationModalActions = () => {
       { eventType: BUTTON_EVENT.SUBJECT_SUBMIT, subjectId: currentSubjectId },
       lectures,
     );
-    checkErrorValue(result);
+    if ('errMsg' in result) {
+      checkErrorValue(result);
+      return;
+    }
     setSubjectStatus(currentSubjectId, result.status);
     openModal('simulation');
   };

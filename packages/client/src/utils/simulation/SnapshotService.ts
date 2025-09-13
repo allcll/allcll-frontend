@@ -8,10 +8,12 @@
  * @function getInterestedSnapshotById - 특정 ID를 가진 관심 과목 스냅샷을 불러옵니다.
  * @function saveInterestedSnapshot - 사용자가 선택한 과목 목록을 새로운 스냅샷으로 저장합니다. 아직 시뮬레이션에 사용되지 않은 스냅샷은 덮어쓰는 최적화 로직을 포함합니다.
  * @function getInterestedId - 특정 스냅샷 내에서 주어진 과목 ID에 해당하는 관심 과목의 고유 ID를 찾습니다.
- * @function getSimulateStatus - 현재 진행 중인 시뮬레이션의 상태(신청 과목, 미신청 과목 등)를 확인합니다.
  */
-import { db } from '@/utils/dbConfig.ts';
-import { checkOngoingSimulation } from '@/utils/simulation/simulation.ts';
+import { db, InterestedSnapshot, InterestedSubject } from '@/utils/dbConfig.ts';
+
+export interface SnapshotWithSubjects extends InterestedSnapshot {
+  subjects: InterestedSubject[];
+}
 
 /**
  * 최근의 관심과목 스냅샷과 과목을 불러옵니다.
@@ -26,7 +28,7 @@ async function getRecentInterestedSnapshot() {
 /**
  * 관심과목 스냅샷을 불러옵니다.
  * */
-async function getInterestedSnapshotById(snapshotId: number) {
+async function getInterestedSnapshotById(snapshotId: number): Promise<SnapshotWithSubjects | null> {
   const snapshot = await db.interested_snapshot.get(snapshotId);
   if (!snapshot) return null;
 
@@ -83,16 +85,10 @@ async function getInterestedId(snapshotId: number, subjectId: number) {
   return interested ? interested.interested_id : -1;
 }
 
-/**
- * 진행중인 시뮬레이션을 확인하고, 신청과목, 비신청과목, 과목 상태를 반환합니다.
- * 진행중인 시뮬레이션이 없다면, {simulationId: -1} 을 반환합니다.
- */
-async function getSimulateStatus() {
-  const result = await checkOngoingSimulation();
-
-  if ('errMsg' in result) throw new Error(result.errMsg);
-
-  return result;
+/** 스냅샷을 시뮬레이션에 사용된 것으로 표시합니다.
+ * @param snapshotId */
+async function markAsSimulated(snapshotId: number) {
+  await db.interested_snapshot.update(snapshotId, { simulated: true });
 }
 
 const SnapshotService = {
@@ -100,7 +96,7 @@ const SnapshotService = {
   getById: getInterestedSnapshotById,
   save: saveInterestedSnapshot,
   getInterestedId: getInterestedId, // 추후 제거 요망
-  getSimulateStatus, // 추후 제거 요망
+  markAsSimulated: markAsSimulated,
 };
 
 export default SnapshotService;

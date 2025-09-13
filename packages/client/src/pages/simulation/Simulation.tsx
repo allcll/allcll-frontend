@@ -25,7 +25,7 @@ function Simulation() {
   /**새로고침 시 진행 중인 시뮬레이션이 있다면
    * 현재 시뮬레이션으로 저장 */
   useEffect(() => {
-    init().then();
+    init();
   }, []);
 
   const totalCredits = useMemo(

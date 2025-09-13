@@ -83,6 +83,10 @@ export function SimulationTestUI() {
       },
       lectures.data,
     );
+    if ('errMsg' in res) {
+      setLog(res.errMsg);
+      return;
+    }
     setLog(getApplyStatusName(res.status));
   }
 
