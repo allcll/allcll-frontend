@@ -1,17 +1,18 @@
+import React from 'react';
+import { useLiveQuery } from 'dexie-react-hooks';
+import SejongUI from '../sejongUI';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
-import { useLiveQuery } from 'dexie-react-hooks';
-import SearchSvg from '@/assets/search-white.svg?react';
+import { useReloadSimulation } from '@/hooks/useReloadSimulation';
+import useLectures from '@/hooks/server/useLectures';
 import {
   BUTTON_EVENT,
   checkOngoingSimulation,
   forceStopSimulation,
   triggerButtonEvent,
 } from '@/utils/simulation/simulation';
-import { useReloadSimulation } from '@/hooks/useReloadSimulation';
-import useLectures from '@/hooks/server/useLectures';
+import SearchSvg from '@/assets/search-white.svg?react';
 import LogoSvg from '@public/ci.svg?react';
-import React from 'react';
 
 function SimulationSearchForm() {
   const { setCurrentSimulation, currentSimulation, resetSimulation } = useSimulationProcessStore();
@@ -82,7 +83,7 @@ function SimulationSearchForm() {
 
   return (
     <section className="border p-2 text-xs">
-      <div className="flex flex-col gap-1 sm:gap-4">
+      <div className="flex flex-col gap-1 sm:gap-2">
         <div className="flex flex-col sm:flex-row gap-1 sm:gap-8">
           <div className="flex justify-end items-center sm:justify-start gap-2">
             <MutedSelect id="organization-type" label="조직 분류" className="w-48" disabled>
@@ -123,13 +124,9 @@ function SimulationSearchForm() {
                 주전공
               </label>
               <div className="flex flex-col sm:flex-row gap-1">
-                <select
-                  id="search-major"
-                  className="border-gray-300  text-gray-400 border px-2 py-1 w-48 sm:w-30 disabled:bg-gray-100 cursor-not-allowed"
-                  disabled
-                >
+                <SejongUI.Select id="search-major" className="w-48 sm:w-30" disabled>
                   <option>학부</option>
-                </select>
+                </SejongUI.Select>
                 <MutedSelect
                   id="search-department"
                   label="학과 이름"
@@ -145,19 +142,13 @@ function SimulationSearchForm() {
           <div className="flex flex-row justify-between gap-2">
             <div className="flex flex-row ">
               {isRunning ? (
-                <button
-                  onClick={handleForceSimulation}
-                  className="px-3 py-2 bg-white border border-gray-700 cursor-pointer rounded flex flex-row gap-1"
-                >
+                <SejongUI.Button variant="cancel" onClick={handleForceSimulation}>
                   연습 중지
-                </button>
+                </SejongUI.Button>
               ) : (
-                <button
-                  className={`px-3 py-2 bg-blue-500 cursor-pointer rounded flex flex-row gap-1 text-white`}
-                  onClick={handleClickRestart}
-                >
+                <SejongUI.Button variant="primary" onClick={handleClickRestart}>
                   재시작
-                </button>
+                </SejongUI.Button>
               )}
             </div>
 
@@ -194,15 +185,9 @@ function MutedSelect({ label, hideLabel = false, children, id, className, ...pro
       <label htmlFor={selectId} className={hideLabel ? 'hidden' : 'font-bold'}>
         {label}
       </label>
-      <select
-        id={selectId}
-        className={
-          'px-2 py-1 text-gray-400 border border-gray-300 disabled:bg-gray-100 cursor-not-allowed ' + className
-        }
-        {...props}
-      >
+      <SejongUI.Select id={selectId} {...props} className={className}>
         {children}
-      </select>
+      </SejongUI.Select>
     </>
   );
 }

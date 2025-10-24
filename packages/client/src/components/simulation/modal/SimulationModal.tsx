@@ -1,12 +1,11 @@
-import Modal from '@/components/simulation/modal/Modal.tsx';
-import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
+import { useRef } from 'react';
+import SejongUI from '@/components/sejongUI';
 import CheckBlueSvg from '@/assets/check-blue.svg?react';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { APPLY_STATUS, BUTTON_EVENT, forceStopSimulation, triggerButtonEvent } from '@/utils/simulation/simulation';
 import useLectures from '@/hooks/server/useLectures';
-import { useRef } from 'react';
 
 const SIMULATION_MODAL_CONTENTS = [
   {
@@ -216,9 +215,9 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
   };
 
   return (
-    <Modal onClose={() => {}}>
+    <SejongUI.Modal onClose={() => {}}>
       <div className="flex sm:w-[450px] border-1 border-gray-800 flex-col justify-between overflow-hidden">
-        <ModalHeader title="" onClose={handleClickCloseButton} />
+        <SejongUI.Modal.Header title="" onClose={handleClickCloseButton} />
 
         <div className="px-6 pb-6 text-center ">
           <div className="flex justify-center mb-4 py-5">
@@ -234,25 +233,19 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
           )}
         </div>
 
-        <div className="flex justify-end  px-6 py-4 gap-3 bg-gray-100 text-xs">
+        <SejongUI.Modal.ButtonContainer className="px-6 py-4 bg-gray-100">
           {modalData.status === APPLY_STATUS.PROGRESS ||
             (modalData.status === APPLY_STATUS.SUCCESS && (
-              <button
-                onClick={handleClickCancel}
-                className="px-4 py-2 bg-white hover:bg-blue-50 rounded-xs border cursor-pointer"
-              >
+              <SejongUI.Modal.Button variant="cancel" onClick={handleClickCancel}>
                 취소
-              </button>
+              </SejongUI.Modal.Button>
             ))}
-          <button
-            onClick={handleClickCheck}
-            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xs cursor-pointer"
-          >
+          <SejongUI.Modal.Button variant="primary" onClick={handleClickCheck}>
             확인
-          </button>
-        </div>
+          </SejongUI.Modal.Button>
+        </SejongUI.Modal.ButtonContainer>
       </div>
-    </Modal>
+    </SejongUI.Modal>
   );
 }
 

@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import Modal from '@/components/simulation/modal/Modal.tsx';
-import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
+import SejongUI from '@/components/sejongUI';
+import Chip from '@common/components/chip/Chip';
+import GameTips from './GameTips';
+import SelectDepartment from './SelectDepartment';
+import TimetableChip from '../TimetableChip';
+import Modal from '@common/components/modal/Modal.tsx';
 import { applyCreditLimit, pickNonRandomSubjects, pickRandomsubjects } from '@/utils/subjectPicker';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { getRecentInterestedSnapshot, saveInterestedSnapshot } from '@/utils/simulation/subjects';
 import { startSimulation } from '@/utils/simulation/simulation';
 import useLectures, { Lecture } from '@/hooks/server/useLectures';
-import GameTips from './GameTips';
-import SelectDepartment from './SelectDepartment';
 import { Department } from '@/hooks/server/useDepartments.ts';
 import { TimetableType, useTimetableSchedules } from '@/hooks/server/useTimetableSchedules';
-import TimetableChip from '../TimetableChip';
 import { useScheduleState } from '@/store/useScheduleState';
-import Chip from '@common/components/chip/Chip';
 import SubjectTable from './SubjectTable';
 import ActionButtons from './ActionButton';
 
@@ -169,7 +169,7 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
   return (
     <Modal onClose={() => setIsModalOpen(false)}>
       <div className="flex flex-col w-full overflow-y-auto max-h-[90vh] max-w-[900px] sm:min-w-[600px]">
-        <ModalHeader title="수강 신청 연습을 시작하시겠습니까?" onClose={() => setIsModalOpen(false)} />
+        <SejongUI.Modal.Header title="수강 신청 연습을 시작하시겠습니까?" onClose={() => setIsModalOpen(false)} />
 
         <div className="flex flex-col gap-2 p-2 sm:p-6">
           <h2 className="text-left font-semibold text-sm sm:text-md">어떤 과목으로 진행하시겠습니까?</h2>
