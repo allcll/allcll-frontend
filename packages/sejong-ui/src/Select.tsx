@@ -1,5 +1,5 @@
 import { SelectHTMLAttributes } from 'react';
-import EssentialTag from '@/components/sejongUI/EssentialTag.tsx';
+import EssentialTag from './EssentialTag.tsx';
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   essential?: boolean;

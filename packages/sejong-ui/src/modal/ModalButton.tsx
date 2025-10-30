@@ -1,11 +1,12 @@
 import { HTMLAttributes } from 'react';
 
-interface Button extends HTMLAttributes<HTMLButtonElement> {
+interface ModelButtonProps extends HTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'cancel' | 'danger';
+  disabled?: boolean;
 }
 
-function Button({ variant = 'primary', className = '', children, ...rest }: Button) {
-  const buttonClass = 'px-3 py-2 flex flex-row gap-1 cursor-pointer rounded';
+function ModelButton({ variant = 'primary', className = '', children, ...rest }: ModelButtonProps) {
+  const buttonClass = 'px-4 h-6 text-xs flex items-center gap-1 rounded-xs cursor-pointer';
   const variantClass = getVariantClass(variant);
   const finalClassName = `${buttonClass} ${variantClass} ${className}`.trim();
 
@@ -23,7 +24,7 @@ function getVariantClass(variant: string) {
     case 'secondary':
       return 'bg-gray-500 text-white hover:bg-gray-600';
     case 'cancel':
-      return 'bg-white border border-gray-700 hover:bg-gray-100';
+      return 'bg-white border border-gray-700 hover:bg-blue-50 hover:border-blue-500';
     case 'danger':
       return 'bg-red-500 text-white hover:bg-red-600';
     default:
@@ -31,4 +32,4 @@ function getVariantClass(variant: string) {
   }
 }
 
-export default Button;
+export default ModelButton;

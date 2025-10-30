@@ -1,5 +1,5 @@
 import { InputHTMLAttributes } from 'react';
-import EssentialTag from '@/components/sejongUI/EssentialTag.tsx';
+import EssentialTag from './EssentialTag.tsx';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   essential?: boolean;
