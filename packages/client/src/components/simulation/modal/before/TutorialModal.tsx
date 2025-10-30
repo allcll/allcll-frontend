@@ -4,7 +4,7 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import ArrowdownSvg from '@/assets/arrow-down-gray.svg?react';
 import useMobile from '@/hooks/useMobile';
 import Checkbox from '@common/components/checkbox/Checkbox';
-import SejongUI from '@/components/sejongUI';
+import SejongUI from '@allcll/sejong-ui';
 import Modal from '@common/components/modal/Modal.tsx';
 import ModalHeader from '@/components/sejongUI/modal/ModalHeader.tsx';
 

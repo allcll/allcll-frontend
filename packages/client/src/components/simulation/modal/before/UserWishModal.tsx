@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import SejongUI from '@/components/sejongUI';
+import SejongUI from '@allcll/sejong-ui';
 import Chip from '@common/components/chip/Chip';
 import GameTips from './GameTips';
 import SelectDepartment from './SelectDepartment';

@@ -1,8 +1,8 @@
 import React from 'react';
 import Button from '@common/components/Button.tsx';
 import Toggle from '@common/components/Toggle.tsx';
-import Modal from '@/components/sejongUI/modal/Modal.tsx';
-import ModalHeader from '@/components/sejongUI/modal/ModalHeader.tsx';
+import Modal from '@common/components/modal/Modal.tsx';
+import ModalHeader from '../sejongUI/modal/ModalHeader.tsx';
 import useBackSignal from '@/hooks/useBackSignal.ts';
 import { AlarmNotification } from '@/hooks/useNotification.ts';
 import useAlarmSettings, { AlarmType, isSubAlarmActivated, SubAlarmType } from '@/store/useAlarmSettings.ts';

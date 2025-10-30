@@ -1,4 +1,4 @@
-import XSvg from '../../../client/src/assets/x.svg?react';
+import XSvg from '@/assets/x.svg?react';
 
 interface IModalHeader {
   title: string;

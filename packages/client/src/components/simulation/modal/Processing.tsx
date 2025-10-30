@@ -1,4 +1,4 @@
-import SejongUI from '@/components/sejongUI';
+import SejongUI from '@allcll/sejong-ui';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 
 function ProcessingModal() {

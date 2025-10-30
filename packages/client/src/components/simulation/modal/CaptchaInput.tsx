@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import SejongUI from '@/components/sejongUI';
+import SejongUI from '@allcll/sejong-ui';
 import { drawCaptcha } from '@/utils/captcha';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';

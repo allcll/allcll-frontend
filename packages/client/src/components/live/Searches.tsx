@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import StarIcon from '@/components/svgs/StarIcon.tsx';
 import SearchBox from '@/components/common/SearchBox.tsx';
-import Modal from '@/components/sejongUI/modal/Modal.tsx';
-import ModalHeader from '@/components/sejongUI/modal/ModalHeader.tsx';
+import Modal from '@common/components/modal/Modal.tsx';
+import ModalHeader from '../sejongUI/modal/ModalHeader.tsx';
 import DraggableList from '@/components/live/subjectTable/DraggableList.tsx';
 import { Filters, getAllSelectedLabels, initialFilters, useWishSearchStore } from '@/store/useFilterStore.ts';
 import { HeadTitle, useWishesTableStore } from '@/store/useTableColumnStore.ts';

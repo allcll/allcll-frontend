@@ -1,5 +1,5 @@
 import Modal from '@common/components/modal/Modal';
-import ModalHeader from '@/components/sejongUI/modal/ModalHeader.tsx';
+import ModalHeader from '../sejongUI/modal/ModalHeader.tsx';
 import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains.ts';
 import { Filters, FilterStore, getAllSelectedLabels, initialFilters } from '@/store/useFilterStore.ts';
 import useSubject from '@/hooks/server/useSubject.ts';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import SejongUI from '../sejongUI';
+import SejongUI from '@allcll/sejong-ui';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { useReloadSimulation } from '@/hooks/useReloadSimulation';
