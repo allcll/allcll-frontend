@@ -4,6 +4,7 @@ import RadarChart from '@/components/simulation/detail/RadarChart.tsx';
 import React, { ButtonHTMLAttributes, useEffect, useRef, useState } from 'react';
 import { drawCaptcha } from '@/utils/captcha.ts';
 import Card from '@common/components/Card';
+import SejongUI from '@allcll/sejong-ui';
 
 const InitRadarData = {
   user_ability: {
@@ -136,12 +137,12 @@ function CaptchaInput({
           <div className="text-sm font-semibold  flex flex-row items-center">
             <span className="inline-block w-1.5 h-5 bg-blue-500 mr-2 "></span>생성된 코드 입력
           </div>
-          <input
-            type="text"
+          <SejongUI.Input
             value={captchaInput}
+            className="mt-2 w-full"
             onChange={e => handleChangeInput(e)}
-            className="mt-2 w-full border-1 border-gray-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring focus:border-gray-800"
             placeholder="코드를 입력하세요"
+            essential
           />
           <span className={'pl-1 text-xs ' + (infoMessage.color === 'green' ? 'text-green-500' : 'text-red-500')}>
             {infoMessage.message}

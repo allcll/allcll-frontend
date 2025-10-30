@@ -1,10 +1,10 @@
-import Modal from '@/components/simulation/modal/Modal.tsx';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
-import { getSummaryResult, SIMULATION_ERROR } from '@/utils/simulation/simulation';
 import { useEffect, useState } from 'react';
-import ProcessingModal from './Processing';
 import { NavLink } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
+import ProcessingModal from './Processing';
+import Modal from '@common/components/modal/Modal.tsx';
+import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
+import { getSummaryResult, SIMULATION_ERROR } from '@/utils/simulation/simulation';
 import { getAggregatedSimulationResults } from '@/utils/simulation/result';
 
 function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number }>) {
