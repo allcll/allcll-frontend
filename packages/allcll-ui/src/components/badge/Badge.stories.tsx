@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import InfoChip from './infoChip';
+import Badge from './Badge';
 
-type InfoChipProps = React.ComponentProps<typeof InfoChip>;
+type BadgeProps = React.ComponentProps<typeof Badge>;
 
 const meta = {
-  title: 'AllcllUI/InfoChip',
-  component: InfoChip,
+  title: 'AllcllUI/Badge',
+  component: Badge,
   parameters: {
     layout: 'centered',
   },
@@ -21,7 +21,8 @@ const meta = {
     variant: 'success',
     children: '여석 100',
   },
-} satisfies Meta<typeof InfoChip>;
+  tags: ['autodocs'],
+} satisfies Meta<typeof Badge>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -31,15 +32,15 @@ export const Variants: Story = {
     <ul className="flex flex-wrap gap-5">
       <li className="flex flex-col items-center">
         <h6 className="text-gray-800">Success</h6>
-        <InfoChip variant="success" {...args} />
+        <Badge variant="success" {...args} />
       </li>
       <li className="flex flex-col items-center">
         <h6 className="text-gray-800">Warning</h6>
-        <InfoChip variant="warning" {...args} />
+        <Badge variant="warning" {...args} />
       </li>
       <li className="flex flex-col items-center">
         <h6 className="text-gray-800">Danger</h6>
-        <InfoChip variant="danger" {...args} />
+        <Badge variant="danger" {...args} />
       </li>
     </ul>
   ),
@@ -56,11 +57,11 @@ export const Playground: Story = {
   },
 };
 
-const createInfoChipStory = (variant: InfoChipProps['variant']): Story => ({
+const createBadgeStory = (variant: BadgeProps['variant']): Story => ({
   args: { variant, children: '여석 100' },
   argTypes: { variant: { control: false } },
 });
 
-export const Success: Story = createInfoChipStory('success');
-export const Warning: Story = createInfoChipStory('warning');
-export const Danger: Story = createInfoChipStory('danger');
+export const Success: Story = createBadgeStory('success');
+export const Warning: Story = createBadgeStory('warning');
+export const Danger: Story = createBadgeStory('danger');

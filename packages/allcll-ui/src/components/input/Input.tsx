@@ -1,5 +1,5 @@
 import { useRef, type InputHTMLAttributes } from 'react';
-import IconButton from '../iconButton/IconButton';
+import IconButton from '../icon-button/IconButton';
 import SearchSvg from '@/assets/search.svg?react';
 import DeleteSVG from '@/assets/x-gray.svg?react';
 

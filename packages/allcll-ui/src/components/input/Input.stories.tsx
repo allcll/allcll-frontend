@@ -16,6 +16,7 @@ const meta = {
     className: '',
     placeholder: '입력하세요',
   },
+  tags: ['autodocs'],
 } satisfies Meta<typeof Input>;
 
 export default meta;

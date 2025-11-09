@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import Checkbox from './Checkbox';
+import { useState } from 'react';
 
 const meta = {
   title: 'AllcllUI/Checkbox',
@@ -14,13 +15,27 @@ const meta = {
   args: {
     label: 'Checkbox',
   },
+  tags: ['autodocs'],
 } satisfies Meta<typeof Checkbox>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Playground: Story = {};
+export const Playground: Story = {
+  render: args => {
+    const [checked, setChecked] = useState(false);
+
+    return (
+      <Checkbox
+        {...args}
+        checked={checked}
+        onChange={() => setChecked(!checked)}
+        label={checked ? 'checked' : 'unchecked'}
+      />
+    );
+  },
+};
 
 export const Checkboxes: Story = {
   render: () => (

@@ -9,7 +9,7 @@ interface IButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 function Button({ variant, size, children, disabled, ...rest }: IButton) {
-  const buttonClass = 'flex flex-row gap-1 cursor-pointer rounded-lg';
+  const buttonClass = 'flex flex-row gap-1 cursor-pointer rounded-md';
   const variantClass = getVariantClass(variant);
   const sizeClass = getSizeClass(size);
   const finalClassName = `${buttonClass} ${variantClass} ${sizeClass}`.trim();
@@ -34,7 +34,7 @@ function getVariantClass(variant: string) {
     case 'outlined':
       return 'bg-transparent border border-gray-700 hover:bg-gray-100';
     case 'danger':
-      return 'bg-rose-400 text-white hover:bg-rose-500';
+      return 'bg-secondary-500 text-white hover:bg-secondary-600';
     case 'ghost':
       return 'bg-gray-100  border border-gray-200 text-gray-700 hover:bg-gray-200';
     default:
@@ -45,11 +45,11 @@ function getVariantClass(variant: string) {
 function getSizeClass(size: string) {
   switch (size) {
     case 'small':
-      return 'text-sm px-4 py-2';
+      return 'text-sm px-3 py-1';
     case 'medium':
-      return 'text-base px-5 py-2';
+      return 'text-base px-4 py-1.5';
     case 'large':
-      return 'text-lg px-6 py-3';
+      return 'text-lg px-5 py-2';
     default:
       return '';
   }

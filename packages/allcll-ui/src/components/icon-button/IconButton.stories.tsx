@@ -47,6 +47,7 @@ export const Variants: Story = {
   argTypes: {
     variant: { control: false },
   },
+  tags: ['autodocs'],
 };
 
 export const Playground: Story = {};

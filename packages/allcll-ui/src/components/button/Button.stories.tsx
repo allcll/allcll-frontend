@@ -32,6 +32,7 @@ const meta = {
     disabled: false,
     children: '올클 버튼',
   },
+  tags: ['autodocs'],
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -41,37 +42,37 @@ export const Variants: Story = {
   render: ({ size, children }) => (
     <ul className="flex flex-wrap gap-5">
       <li className="flex flex-col items-center">
-        <h6 className="text-gray-500">Primary</h6>
+        <h6>Primary</h6>
         <Button variant="primary" size={size}>
           {children}
         </Button>
       </li>
       <li className="flex flex-col items-center">
-        <h6 className="text-gray-500">Secondary</h6>
+        <h6>Secondary</h6>
         <Button variant="secondary" size={size}>
           {children}
         </Button>
       </li>
       <li className="flex flex-col items-center">
-        <h6 className="text-gray-500">Danger</h6>
+        <h6>Danger</h6>
         <Button variant="danger" size={size}>
           {children}
         </Button>
       </li>
       <li className="flex flex-col items-center">
-        <h6 className="text-gray-500">Text</h6>
+        <h6>Text</h6>
         <Button variant="text" size={size}>
           {children}
         </Button>
       </li>
       <li className="flex flex-col items-center">
-        <h6 className="text-gray-500">Outlined</h6>
+        <h6>Outlined</h6>
         <Button variant="outlined" size={size}>
           {children}
         </Button>
       </li>
       <li className="flex flex-col items-center">
-        <h6 className="text-gray-500">Ghost</h6>
+        <h6>Ghost</h6>
         <Button variant="ghost" size={size}>
           {children}
         </Button>

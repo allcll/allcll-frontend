@@ -4,6 +4,11 @@ interface ICheckbox extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
 }
 
+/**
+ * TODO: css확인
+ * @param param0
+ * @returns
+ */
 function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
   return (
     <label htmlFor={'checkbox-' + label} className="flex flex-row items-center gap-3 text-md ">
@@ -20,8 +25,9 @@ function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
         />
         {rest.checked && <CheckSvg className="absolute inset-0 m-auto w-4 h-4 pointer-events-none text-white" />}
       </div>
+
       {label && (
-        <span className={`${rest.checked ? 'text-blue-500' : 'text-gray-600'} cursor-pointer hover:text-gray-400`}>
+        <span className={`${rest.checked ? 'text-blue-500' : 'text-gray-600'} cursor-pointer select-none`}>
           {label}
         </span>
       )}
