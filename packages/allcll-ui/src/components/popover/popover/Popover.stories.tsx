@@ -18,9 +18,7 @@ type Story = StoryObj<typeof Popover>;
 export const Default: Story = {
   render: () => (
     <Popover>
-      <Popover.Trigger>
-        <Chip label="popover 열기" variant="select" selected={false} />
-      </Popover.Trigger>
+      <Popover.Trigger label="popover 열기"></Popover.Trigger>
 
       <Popover.Content>
         <div className="text-sm text-gray-700">

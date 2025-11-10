@@ -1,12 +1,11 @@
+import Chip from '@/components/chip/Chip';
 import { usePopoverContext } from '../popover/Popover';
 
-function PopoverTrigger({ children }: { children: React.ReactNode }) {
+function PopoverTrigger({ label }: { label: string }) {
   const { open, close, isOpen, triggerRef } = usePopoverContext();
 
   return (
-    <button type="button" onClick={isOpen ? close : open} ref={triggerRef}>
-      {children}
-    </button>
+    <Chip label={label} variant="select" selected={isOpen} onClick={isOpen ? close : open} containerRef={triggerRef} />
   );
 }
 
