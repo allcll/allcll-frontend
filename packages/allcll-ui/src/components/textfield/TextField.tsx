@@ -1,0 +1,46 @@
+import type { InputHTMLAttributes } from 'react';
+import Label from '../label/Label';
+
+interface TextFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
+  label?: string;
+  isError?: boolean;
+  errorMessage?: string;
+  size: 'small' | 'medium' | 'large';
+}
+
+function TextField({ label, isError, errorMessage, required, id, size = 'medium', ...rest }: TextFieldProps) {
+  return (
+    <div className="w-full flex flex-col">
+      {label && (
+        <Label required={required} id={id}>
+          {label}
+        </Label>
+      )}
+
+      <input
+        id={id}
+        aria-invalid={isError}
+        required={required}
+        {...rest}
+        className={`focus:outline-none border-b border-gray-200 focus:border-primary-500 focus:border-b-1 ${getSizeClass(size)}`}
+      />
+
+      {isError && <span className="text-secondary-500 text-xs">{errorMessage}</span>}
+    </div>
+  );
+}
+
+export default TextField;
+
+function getSizeClass(size: string) {
+  switch (size) {
+    case 'small':
+      return 'text-sm py-1';
+    case 'medium':
+      return 'text-base py-1';
+    case 'large':
+      return 'text-lg py-1';
+    default:
+      return '';
+  }
+}
