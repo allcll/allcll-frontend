@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Popover } from './Popover';
-import Chip from '@/components/chip/Chip';
 
 const meta: Meta<typeof Popover> = {
   title: 'AllcllUI/Popover',
