@@ -16,7 +16,7 @@ function EssentialTag({ className, essential, disabled, children }: EssentialTag
     (essential
       ? 'relative inline-block w-auto' +
         "before:content-[''] before:absolute " +
-        'before:top-0 before:left-0 before:w-0 before:h-0 ' +
+        'before:top-0 before:left-0 before:w-0 before:h-0 before:z-5 ' +
         essentialColorClass
       : '') + className;
 

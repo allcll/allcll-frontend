@@ -1,4 +1,4 @@
-import { HTMLAttributes } from 'react';
+import type { HTMLAttributes } from 'react';
 
 interface ModelButtonProps extends HTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'cancel' | 'danger';

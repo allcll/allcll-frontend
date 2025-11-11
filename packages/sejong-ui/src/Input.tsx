@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from 'react';
+import type { InputHTMLAttributes } from 'react';
 import EssentialTag from './EssentialTag.tsx';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
