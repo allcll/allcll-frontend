@@ -27,15 +27,15 @@ export const Playground: Story = {
   args: {
     isOpen: true,
     onClose: () => {},
-    title: '모달 타이틀입니다.',
+    title: '올클 모달',
     children: (
       <Dialog.Contents>
         <Dialog.Content>
-          <Dialog.Title>타이틀</Dialog.Title>
+          <h2>타이틀</h2>
           <Chip variant="none" label="칩" selected />
           <TextField size="medium" placeholder="텍스트 필드" />
 
-          <Dialog.Title>타이틀</Dialog.Title>
+          <h2>타이틀</h2>
           <Chip variant="none" label="칩" selected />
           <TextField size="medium" placeholder="텍스트 필드" />
         </Dialog.Content>

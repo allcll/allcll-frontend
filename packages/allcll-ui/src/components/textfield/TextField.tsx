@@ -19,10 +19,11 @@ function TextField({ label, isError, errorMessage, required, id, size = 'medium'
 
       <input
         id={id}
+        type="text"
         aria-invalid={isError}
         required={required}
         {...rest}
-        className={`focus:outline-none border-b border-gray-200 focus:border-primary-500 focus:border-b-1 ${getSizeClass(size)}`}
+        className={`rounded-md w-full bg-white border border-gray-300 py-2 px-3 focus:outline-none focus:ring-0 focus:border-primary-500 ${getSizeClass(size)}`}
       />
 
       {isError && <span className="text-secondary-500 text-xs">{errorMessage}</span>}
