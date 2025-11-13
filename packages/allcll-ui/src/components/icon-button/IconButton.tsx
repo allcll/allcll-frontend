@@ -2,7 +2,7 @@ type ButtonVariant = 'contain' | 'plain';
 
 interface IIconButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon: React.ReactNode;
-  label?: string;
+  label: string;
   variant?: ButtonVariant;
 }
 

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import Button from './Button';
+import HomeSvg from '@/assets/house.svg?react';
 
 type ButtonProps = React.ComponentProps<typeof Button>;
 
@@ -30,7 +31,7 @@ const meta = {
     variant: 'primary',
     size: 'medium',
     disabled: false,
-    children: '올클 버튼',
+    children: 'Button',
   },
   tags: ['autodocs'],
 } satisfies Meta<typeof Button>;
@@ -39,42 +40,36 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Variants: Story = {
-  render: ({ size, children }) => (
+  render: ({ size }) => (
     <ul className="flex flex-wrap gap-5">
       <li className="flex flex-col items-center">
-        <h6>Primary</h6>
         <Button variant="primary" size={size}>
-          {children}
+          Primary
         </Button>
       </li>
       <li className="flex flex-col items-center">
-        <h6>Secondary</h6>
         <Button variant="secondary" size={size}>
-          {children}
+          Secondary
         </Button>
       </li>
       <li className="flex flex-col items-center">
-        <h6>Danger</h6>
         <Button variant="danger" size={size}>
-          {children}
+          Danger
         </Button>
       </li>
       <li className="flex flex-col items-center">
-        <h6>Text</h6>
         <Button variant="text" size={size}>
-          {children}
+          Text
         </Button>
       </li>
       <li className="flex flex-col items-center">
-        <h6>Outlined</h6>
         <Button variant="outlined" size={size}>
-          {children}
+          Outlined
         </Button>
       </li>
       <li className="flex flex-col items-center">
-        <h6>Ghost</h6>
         <Button variant="ghost" size={size}>
-          {children}
+          Ghost
         </Button>
       </li>
     </ul>
@@ -85,24 +80,43 @@ export const Variants: Story = {
 };
 
 export const Sizes: Story = {
-  render: ({ variant, children }) => (
+  render: ({ variant }) => (
     <div className="flex flex-wrap gap-4">
       <div>
-        <h2>Small</h2>
         <Button variant={variant} size="small">
-          {children}
+          Small
         </Button>
       </div>
       <div>
-        <h2>Medium</h2>
         <Button variant={variant} size="medium">
-          {children}
+          Medium
         </Button>
       </div>
       <div>
-        <h2>Large</h2>
         <Button variant={variant} size="large">
-          {children}
+          Large
+        </Button>
+      </div>
+    </div>
+  ),
+  argTypes: {
+    size: { control: false },
+  },
+};
+
+export const WithIcon: Story = {
+  render: ({ variant }) => (
+    <div className="flex flex-wrap gap-4">
+      <div>
+        <Button variant={variant} size="small">
+          <HomeSvg className="w-5 h-5" />
+          LeftIcon
+        </Button>
+      </div>
+      <div>
+        <Button variant={variant} size="medium">
+          RightIcon
+          <HomeSvg className="w-5 h-5" />
         </Button>
       </div>
     </div>

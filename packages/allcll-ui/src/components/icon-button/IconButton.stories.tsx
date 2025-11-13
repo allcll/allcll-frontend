@@ -42,6 +42,7 @@ export const Variants: Story = {
   ),
   args: {
     variant: 'plain',
+    label: 'Filter',
     icon: <FilterSvg />,
   },
   argTypes: {
@@ -50,10 +51,16 @@ export const Variants: Story = {
   tags: ['autodocs'],
 };
 
-export const Playground: Story = {};
+export const Playground: Story = {
+  args: {
+    label: 'Filter',
+    icon: <FilterSvg />,
+    variant: 'plain',
+  },
+};
 
 const createButtonStory = (variant: IconButtonProps['variant']): Story => ({
-  args: { variant },
+  args: { variant, label: 'Filter' },
   argTypes: { variant: { control: false } },
 });
 

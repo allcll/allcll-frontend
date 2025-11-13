@@ -1,5 +1,5 @@
-function DialogTitle({ children }: { children: React.ReactNode }) {
-  return <h3>{children}</h3>;
+function DialogTitle({ children }: React.PropsWithChildren<{ id?: string }>) {
+  return <h3 id="dialog-title">{children}</h3>;
 }
 
 export default DialogTitle;

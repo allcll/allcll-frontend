@@ -9,8 +9,7 @@ function DialogContents({ children, width, height }: IDialogContents) {
 
   return (
     <div
-      className={`z-60 bg-white rounded shadow-lg rounded-lg ${dialogSize}`}
-      role="dialog"
+      className={`z-60 bg-white rounded shadow-lg min-w-100 rounded-lg ${dialogSize}`}
       onClick={e => e.stopPropagation()}
     >
       {children}

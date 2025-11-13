@@ -12,7 +12,10 @@ const meta = {
     layout: 'centered',
   },
   argTypes: {},
-  args: {},
+  args: {
+    isOpen: true,
+    onClose: () => {},
+  },
   tags: ['autodocs'],
 } satisfies Meta<typeof Dialog>;
 
@@ -24,18 +27,15 @@ export const Playground: Story = {
   args: {
     isOpen: true,
     onClose: () => {},
+    title: '모달 타이틀입니다.',
     children: (
       <Dialog.Contents>
-        <Dialog.Header onClose={() => {}}>
-          <Dialog.Title>Dialog Title</Dialog.Title>
-        </Dialog.Header>
-
         <Dialog.Content>
-          <Dialog.Title>타이틀입니다.</Dialog.Title>
+          <Dialog.Title>타이틀</Dialog.Title>
           <Chip variant="none" label="칩" selected />
           <TextField size="medium" placeholder="텍스트 필드" />
 
-          <Dialog.Title>타이틀입니다.</Dialog.Title>
+          <Dialog.Title>타이틀</Dialog.Title>
           <Chip variant="none" label="칩" selected />
           <TextField size="medium" placeholder="텍스트 필드" />
         </Dialog.Content>

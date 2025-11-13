@@ -31,15 +31,12 @@ export const Variants: Story = {
   render: ({ variant, ...args }) => (
     <ul className="flex flex-wrap gap-5">
       <li className="flex flex-col items-center">
-        <h6 className="text-gray-800">Success</h6>
         <Badge variant="success" {...args} />
       </li>
       <li className="flex flex-col items-center">
-        <h6 className="text-gray-800">Warning</h6>
         <Badge variant="warning" {...args} />
       </li>
       <li className="flex flex-col items-center">
-        <h6 className="text-gray-800">Danger</h6>
         <Badge variant="danger" {...args} />
       </li>
     </ul>

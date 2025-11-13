@@ -5,29 +5,64 @@ import DialogOverlay from './DialogOverlay';
 import DialogContents from './DialogContents';
 import DialogContent from './DialogContent';
 import DialogFooter from './DialogFooter';
+import { useCallback, useEffect, useId } from 'react';
 
-interface IDialogRoot {
+interface IDialogMain {
   children: React.ReactNode;
   isOpen?: boolean;
+  title?: string;
   onClose: () => void;
 }
 
-function DialogRoot({ children, isOpen, onClose }: IDialogRoot) {
+function DialogMain({ children, isOpen, title, onClose }: IDialogMain) {
   if (!isOpen) {
     return null;
   }
 
+  const titleId = useId();
+
+  const handleEscKeyPress = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    },
+    [onClose],
+  );
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleEscKeyPress);
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+      window.removeEventListener('keydown', handleEscKeyPress);
+    };
+  }, [isOpen, handleEscKeyPress]);
+
   return createPortal(
-    <div>
-      <div>{getDialogOverlay(children, onClose)}</div>
-    </div>,
+    isOpen && (
+      <dialog role="dialog" aria-modal="true" aria-labelledby={titleId} open>
+        <DialogOverlay onClose={onClose}>
+          <DialogContents>
+            <DialogHeader onClose={onClose}>
+              <Dialog.Title id={titleId}>{title}</Dialog.Title>
+            </DialogHeader>
+
+            {children}
+          </DialogContents>
+        </DialogOverlay>
+      </dialog>
+    ),
     document.body,
   );
 }
 
-export default DialogRoot;
+export default DialogMain;
 
-export const Dialog = Object.assign(DialogRoot, {
+export const Dialog = Object.assign(DialogMain, {
   Title: DialogTitle,
   Header: DialogHeader,
   Overlay: DialogOverlay,
@@ -35,7 +70,3 @@ export const Dialog = Object.assign(DialogRoot, {
   Contents: DialogContents,
   Footer: DialogFooter,
 });
-
-function getDialogOverlay(children: React.ReactNode, onClose: () => void) {
-  return <DialogOverlay onClose={onClose}>{children}</DialogOverlay>;
-}
