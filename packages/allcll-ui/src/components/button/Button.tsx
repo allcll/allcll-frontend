@@ -1,8 +1,10 @@
+import type { ComponentPropsWithoutRef } from 'react';
+
 type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'text' | 'contain' | 'outlined' | 'ghost';
 
 type ButtonSize = 'small' | 'medium' | 'large';
 
-interface IButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface IButton extends ComponentPropsWithoutRef<'button'> {
   variant: ButtonVariant;
   size: ButtonSize;
   disabled?: boolean;

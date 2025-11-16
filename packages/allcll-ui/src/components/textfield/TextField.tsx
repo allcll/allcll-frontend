@@ -1,7 +1,7 @@
-import type { InputHTMLAttributes } from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
 import Label from '../label/Label';
 
-interface TextFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
+interface TextFieldProps extends Omit<ComponentPropsWithoutRef<'input'>, 'size'> {
   label?: string;
   isError?: boolean;
   errorMessage?: string;

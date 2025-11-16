@@ -1,13 +1,11 @@
 import CheckSvg from '@/assets/checkbox-blue.svg?react';
 import { useId } from 'react';
+import type { ComponentPropsWithRef } from 'react';
 
-interface ICheckbox extends React.InputHTMLAttributes<HTMLInputElement> {
+interface ICheckbox extends ComponentPropsWithRef<'input'> {
   label?: string;
 }
 
-/**
- * Accessible Checkbox v2
- */
 function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
   const reactId = useId();
   const inputId = label ? `checkbox-${label}` : `checkbox-${reactId}`;

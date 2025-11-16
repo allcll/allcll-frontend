@@ -1,6 +1,7 @@
+import type { ComponentPropsWithoutRef } from 'react';
 type ButtonVariant = 'contain' | 'plain';
 
-interface IIconButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface IIconButton extends ComponentPropsWithoutRef<'button'> {
   icon: React.ReactNode;
   label: string;
   variant?: ButtonVariant;

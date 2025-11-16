@@ -1,16 +1,18 @@
-import type { ButtonHTMLAttributes, RefObject } from 'react';
+import type { ComponentPropsWithoutRef, RefObject } from 'react';
 import ArrowIcon from '../svgs/ArrowIcon';
 import CancelIcon from '../svgs/CancelIcon';
 
 type ChipVariantType = 'select' | 'cancel' | 'none';
 
-interface IChip extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface IChip extends ComponentPropsWithoutRef<'button'> {
   containerRef?: RefObject<HTMLButtonElement | null>;
   /**Chip의 텍스트 */
   label: string;
+  /**Chip이 선택되었는지 여부 */
   selected: boolean;
   /**Chip의 종류 */
   variant?: ChipVariantType;
+  /**Chip이 열려있는지 여부 */
   isChipOpen?: boolean;
 }
 

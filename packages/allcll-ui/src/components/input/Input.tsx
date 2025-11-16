@@ -1,6 +1,6 @@
-import { useRef, type InputHTMLAttributes } from 'react';
+import { useRef, type ComponentPropsWithoutRef } from 'react';
 
-interface IInput extends InputHTMLAttributes<HTMLInputElement> {
+interface IInput extends ComponentPropsWithoutRef<'input'> {
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
 }

@@ -1,14 +1,16 @@
 import ImportantSvg from '@/assets/important.svg?react';
 import CloseSvg from '@/assets/x-gray.svg?react';
 
+type BannerVariant = 'warning' | 'info';
+
 interface IBanner {
-  variant?: 'warning' | 'info';
+  variant?: BannerVariant;
   children: React.ReactNode;
   deleteBanner: () => void;
 }
 
 function Banner({ variant, children, deleteBanner }: IBanner) {
-  const bannerColorClass = getBannerColor(variant);
+  const bannerColorClass = getBannerColor(variant ?? 'info');
 
   return (
     <div className={`flex items-center justify-between px-4 py-2 gap-2 ${bannerColorClass}`}>
@@ -23,7 +25,7 @@ function Banner({ variant, children, deleteBanner }: IBanner) {
 
 export default Banner;
 
-function getBannerColor(variant: IBanner['variant']) {
+function getBannerColor(variant: BannerVariant) {
   switch (variant) {
     case 'warning':
       return 'bg-secondary-100';
