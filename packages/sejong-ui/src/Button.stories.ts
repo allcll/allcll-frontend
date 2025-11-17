@@ -13,6 +13,10 @@ const meta = {
       control: 'select',
       options: ['primary', 'secondary', 'cancel', 'danger'],
     },
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+    },
     children: {
       control: 'text',
     },
@@ -25,10 +29,27 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
+export const Small: Story = {
   args: {
     variant: 'primary',
-    children: 'Primary Button',
+    size: 'sm',
+    children: 'Small Button',
+  },
+};
+
+export const Medium: Story = {
+  args: {
+    variant: 'primary',
+    size: 'md',
+    children: 'Medium Button',
+  },
+};
+
+export const Large: Story = {
+  args: {
+    variant: 'primary',
+    size: 'lg',
+    children: 'Large Button',
   },
 };
 
@@ -58,13 +79,5 @@ export const Disabled: Story = {
     variant: 'primary',
     children: 'Disabled Button',
     disabled: true,
-  },
-};
-
-export const WithCustomClassName: Story = {
-  args: {
-    variant: 'primary',
-    children: 'Custom Class',
-    className: 'w-48 h-16 text-lg',
   },
 };
