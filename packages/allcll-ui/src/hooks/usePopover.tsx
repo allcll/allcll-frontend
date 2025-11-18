@@ -36,6 +36,20 @@ export function usePopover() {
   };
 
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close();
+    };
+
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
     if (isOpen) window.addEventListener('resize', calculatePosition);
     return () => window.removeEventListener('resize', calculatePosition);
   }, [isOpen]);

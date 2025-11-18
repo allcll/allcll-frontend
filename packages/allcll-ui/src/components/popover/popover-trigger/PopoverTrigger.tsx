@@ -5,7 +5,14 @@ function PopoverTrigger({ label }: { label: string }) {
   const { open, close, isOpen, triggerRef } = usePopoverContext();
 
   return (
-    <Chip label={label} variant="select" selected={isOpen} onClick={isOpen ? close : open} containerRef={triggerRef} />
+    <Chip
+      label={label}
+      isChipOpen={isOpen}
+      variant="select"
+      selected={isOpen}
+      onClick={isOpen ? close : open}
+      containerRef={triggerRef}
+    />
   );
 }
 

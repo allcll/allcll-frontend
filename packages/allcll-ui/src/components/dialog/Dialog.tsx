@@ -5,7 +5,7 @@ import DialogOverlay from './DialogOverlay';
 import DialogContents from './DialogContents';
 import DialogContent from './DialogContent';
 import DialogFooter from './DialogFooter';
-import { useCallback, useEffect, useId } from 'react';
+import { useEffect, useId } from 'react';
 
 interface IDialogMain {
   children: React.ReactNode;
@@ -21,30 +21,33 @@ function DialogMain({ children, isOpen, title, onClose }: IDialogMain) {
 
   const titleId = useId();
 
-  const handleEscKeyPress = useCallback(
-    (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    },
-    [onClose],
-  );
-
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+      console.log('escape');
+    };
+
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      window.addEventListener('keydown', handleEscKeyPress);
+      window.addEventListener('keydown', handleKeyDown);
     }
 
     return () => {
-      document.body.style.overflow = 'auto';
-      window.removeEventListener('keydown', handleEscKeyPress);
+      window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, handleEscKeyPress]);
+  }, [isOpen, onClose]);
 
   return createPortal(
     isOpen && (
-      <dialog role="dialog" aria-modal="true" aria-labelledby={titleId} open>
+      <dialog
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        open
+        onCancel={e => {
+          e.preventDefault();
+          onClose();
+        }}
+      >
         <DialogOverlay onClose={onClose}>
           <DialogContents>
             <DialogHeader onClose={onClose}>

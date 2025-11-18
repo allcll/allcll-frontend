@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from 'react';
-import { usePopover } from '../usePopover';
+import { usePopover } from '../../../hooks/usePopover';
 import PopoverTrigger from '../popover-trigger/PopoverTrigger';
 import PopoverContent from '../popover-content/PopoverContent';
 
