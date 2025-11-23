@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import Button from './Button';
-import HomeSvg from '@/assets/house.svg?react';
+import HomeSvg from '@/assets/home.svg?react';
 
 type ButtonProps = React.ComponentProps<typeof Button>;
 

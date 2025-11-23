@@ -1,5 +1,5 @@
-import ArrowDownGraySvg from '@/assets/arrow-down-gray.svg?react';
-import ArrowDownBlueSvg from '@/assets/arrow-down-blue.svg?react';
+import ArrowDownGraySvg from '@/assets/arrow-down.svg?react';
+import ArrowDownBlueSvg from '@/assets/arrow-down.svg?react';
 
 interface IArrowIcon {
   className?: string;
@@ -7,7 +7,9 @@ interface IArrowIcon {
 }
 
 const ArrowIcon = ({ className, selected = false }: IArrowIcon) => {
-  return selected ? <ArrowDownBlueSvg className={className} /> : <ArrowDownGraySvg className={className} />;
+  const finalClassName = selected ? className + ' text-blue-500' : className + ' text-gray-400';
+
+  return selected ? <ArrowDownBlueSvg className={finalClassName} /> : <ArrowDownGraySvg className={finalClassName} />;
 };
 
 export default ArrowIcon;

@@ -1,4 +1,4 @@
-import CheckSvg from '@/assets/checkbox-blue.svg?react';
+import CheckSvg from '@/assets/check.svg?react';
 import { useId } from 'react';
 import type { ComponentPropsWithRef } from 'react';
 
@@ -24,7 +24,7 @@ function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
           `}
           {...rest}
         />
-        {rest.checked && <CheckSvg className="absolute inset-0 m-auto w-4 h-4 pointer-events-none text-white" />}
+        {rest.checked && <CheckSvg className="text-blue-500 w-4 h-4 absolute inset-0 m-auto pointer-events-none" />}
       </div>
 
       {label && <span className={`${rest.checked ? 'text-blue-500' : 'text-gray-600'}`}>{label}</span>}

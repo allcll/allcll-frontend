@@ -14,7 +14,7 @@ function IconButton({ icon, variant = 'plain', label, ...rest }: IIconButton) {
   const finalClassName = `${buttonClass} ${variantClass} `.trim();
 
   return (
-    <button aria-label={label} className={finalClassName} {...rest}>
+    <button type="button" aria-label={label} className={finalClassName} {...rest}>
       {icon && <span>{icon}</span>}
     </button>
   );
@@ -25,7 +25,7 @@ export default IconButton;
 function getVariantClass(variant: string) {
   switch (variant) {
     case 'contain':
-      return 'px-3 py-3 border border-gray-300 hover:bg-gray-600';
+      return 'px-3 py-3 border border-gray-300 hover:bg-gray-100';
     case 'plain':
       return 'bg-transparent text-gray-700';
     default:

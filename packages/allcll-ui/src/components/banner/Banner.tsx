@@ -1,5 +1,7 @@
-import ImportantSvg from '@/assets/important.svg?react';
-import CloseSvg from '@/assets/x-gray.svg?react';
+import AlertSvg from '@/assets/alert.svg?react';
+import CloseSvg from '@/assets/x.svg?react';
+import IconButton from '../icon-button/IconButton';
+import Row from '../row/Row';
 
 type BannerVariant = 'warning' | 'info';
 
@@ -13,13 +15,25 @@ function Banner({ variant, children, deleteBanner }: IBanner) {
   const bannerColorClass = getBannerColor(variant ?? 'info');
 
   return (
-    <div className={`flex items-center justify-between px-4 py-2 gap-2 ${bannerColorClass}`}>
-      <ImportantSvg className="w-4 h-4" />
-      <div className="flex-auto text-xs">{children}</div>
-      <button className="p-1 rounded-full hover:bg-blue-200" onClick={deleteBanner} aria-label="알림 닫기">
-        <CloseSvg className="" />
-      </button>
-    </div>
+    <Row className={`${bannerColorClass} items-center`} withPadding>
+      <Row.Left>
+        <AlertSvg className="text-gray-500 w-4 h-4" />
+      </Row.Left>
+
+      <Row.Center>
+        <span className="text-xs">{children}</span>
+      </Row.Center>
+
+      <Row.Right>
+        <IconButton
+          label="알림 닫기"
+          variant="plain"
+          icon={<CloseSvg className="text-gray-500 w-5 h-5" />}
+          onClick={deleteBanner}
+          className="rounded-full"
+        />
+      </Row.Right>
+    </Row>
   );
 }
 

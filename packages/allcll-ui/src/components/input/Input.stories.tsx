@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import Input from './Input';
 import IconButton from '../icon-button/IconButton';
 import SearchSvg from '@/assets/search.svg?react';
-import DeleteSvg from '@/assets/x-gray.svg?react';
+import DeleteSvg from '@/assets/x.svg?react';
 
 const meta = {
   title: 'AllcllUI/Input',
@@ -40,14 +40,19 @@ export const WithDelete: Story = {
     className: '',
     placeholder: '입력하세요',
     leftIcon: (
-      <IconButton label="검색" variant="plain" icon={<SearchSvg />} className="absolute left-3 top-3 text-gray-500" />
+      <IconButton
+        label="검색"
+        variant="plain"
+        icon={<SearchSvg className="w-5 h-5 text-gray-400" />}
+        className="absolute left-3 top-3"
+      />
     ),
     rightIcon: (
       <IconButton
         label="삭제"
         variant="plain"
-        icon={<DeleteSvg />}
-        className="absolute right-3 top-4 text-gray-500"
+        icon={<DeleteSvg className="w-5 h-5 text-gray-400" />}
+        className="absolute right-3 top-3"
         onClick={() => alert('삭제 버튼 클릭됨')}
       />
     ),

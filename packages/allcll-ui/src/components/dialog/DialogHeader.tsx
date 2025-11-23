@@ -1,4 +1,4 @@
-import XDarkGraySvg from '@/assets/x-darkgray.svg?react';
+import XDarkGraySvg from '@/assets/x.svg?react';
 
 interface IDialogHeader {
   children: React.ReactNode;
@@ -16,7 +16,7 @@ function DialogHeader({ children, onClose }: IDialogHeader) {
         className="w-6 h-6 cursor-pointer flex items-center justify-center bg-gray-100 rounded-full"
         onClick={onClose}
       >
-        <XDarkGraySvg />
+        <XDarkGraySvg className="text-gray-600 w-4 h-4" />
       </button>
     </div>
   );

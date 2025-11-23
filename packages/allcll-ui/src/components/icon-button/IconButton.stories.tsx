@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import IconButton from './IconButton';
-import FilterSvg from '@/assets/filter.svg?react';
+import FilterSvg from '@/assets/filtering.svg?react';
 
 type IconButtonProps = React.ComponentProps<typeof IconButton>;
 
@@ -20,7 +20,7 @@ const meta = {
   },
   args: {
     variant: 'plain',
-    icon: <FilterSvg />,
+    icon: <FilterSvg className="w-4 h-4 text-gray-400" />,
   },
 } satisfies Meta<typeof IconButton>;
 
@@ -43,7 +43,7 @@ export const Variants: Story = {
   args: {
     variant: 'plain',
     label: 'Filter',
-    icon: <FilterSvg />,
+    icon: <FilterSvg className="w-4 h-4 text-gray-400" />,
   },
   argTypes: {
     variant: { control: false },
@@ -54,7 +54,7 @@ export const Variants: Story = {
 export const Playground: Story = {
   args: {
     label: 'Filter',
-    icon: <FilterSvg />,
+    icon: <FilterSvg className="w-4 h-4 text-gray-400" />,
     variant: 'plain',
   },
 };

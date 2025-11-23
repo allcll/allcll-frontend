@@ -39,11 +39,13 @@ function Chip({
         <ArrowIcon
           aria-hidden="true"
           selected={selected}
-          className={`w-3 h-3 pointer-events-none transition-transform text-blue-500 duration-200 ${isChipOpen ? 'rotate-180' : 'rotate-0'}`}
+          className={`w-5 h-5 pointer-events-none transition-transform text-blue-500 duration-200 ${isChipOpen ? 'rotate-180' : 'rotate-0'}`}
         />
       )}
 
-      {variant === 'cancel' && <CancelIcon aria-hidden="true" selected={selected} className="pointer-events-none" />}
+      {variant === 'cancel' && (
+        <CancelIcon aria-hidden="true" selected={selected} className="pointer-events-none w-5 h-5" />
+      )}
     </button>
   );
 }
