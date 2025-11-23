@@ -3,11 +3,11 @@ import CloseSvg from '@/assets/x-gray.svg?react';
 
 type BannerVariant = 'warning' | 'info';
 
-interface IBanner {
+type IBanner = Readonly<{
   variant?: BannerVariant;
   children: React.ReactNode;
   deleteBanner: () => void;
-}
+}>;
 
 function Banner({ variant, children, deleteBanner }: IBanner) {
   const bannerColorClass = getBannerColor(variant ?? 'info');
