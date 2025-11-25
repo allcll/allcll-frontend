@@ -7,11 +7,11 @@ interface IIconButton extends ComponentPropsWithoutRef<'button'> {
   variant?: ButtonVariant;
 }
 
-function IconButton({ icon, variant = 'plain', label, ...rest }: IIconButton) {
+function IconButton({ icon, variant = 'plain', label, className = '', ...rest }: IIconButton) {
   const variantClass = getVariantClass(variant);
   const buttonClass = 'flex flex-row items-center justify-center gap-1 cursor-pointer rounded-md';
 
-  const finalClassName = `${buttonClass} ${variantClass} `.trim();
+  const finalClassName = `${buttonClass} ${variantClass} ${className}`;
 
   return (
     <button type="button" aria-label={label} className={finalClassName} {...rest}>
