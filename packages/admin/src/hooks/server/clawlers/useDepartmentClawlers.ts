@@ -10,7 +10,7 @@ export interface CralwersParams {
 
 const clawlersDepartments = async ({ userId, year, semesterCode }: CralwersParams) => {
   const response = await fetchOnAPI(
-    `/api/admin/departments/check?userId=${userId}&year=${year}&semesterCode=${semesterCode}`,
+    `/api/admin/departments?userId=${userId}&year=${year}&semesterCode=${semesterCode}`,
     {
       method: 'POST',
     },
@@ -37,9 +37,7 @@ const clawlersDepartments = async ({ userId, year, semesterCode }: CralwersParam
 };
 
 const getDepartments = async ({ userId, year, semesterCode }: CralwersParams) => {
-  return await fetchJsonOnAPI(
-    `/api/admin/departments/check?userId=${userId}&year=${year}&semesterCode=${semesterCode}`,
-  );
+  return await fetchJsonOnAPI(`/api/admin/departments?userId=${userId}&year=${year}&semesterCode=${semesterCode}`);
 };
 
 /**
