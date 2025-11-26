@@ -1,17 +1,24 @@
-import type { ComponentPropsWithoutRef, ElementType } from 'react';
+import type { ComponentPropsWithoutRef, ElementType, ReactElement } from 'react';
+import RowLeft from './RowLeft';
+import RowCenter from './RowCenter';
+import RowRight from './RowRight';
 
-export interface IRow extends ComponentPropsWithoutRef<'div'> {
+interface RowMainProps extends ComponentPropsWithoutRef<'div'> {
   tag?: ElementType;
   withPadding?: boolean;
-  className?: string;
+  left: ReactElement<typeof RowLeft> | null;
+  center: ReactElement<typeof RowCenter> | null;
+  right: ReactElement<typeof RowRight> | null;
 }
 
-export function RowMain({ children, withPadding, className, tag = 'div', ...rest }: IRow) {
+function RowMain({ tag = 'div', withPadding, left, center, right, className, ...rest }: RowMainProps) {
   const Tag = tag;
 
   return (
-    <Tag className={`flex items-center w-full ${withPadding ? 'px-4 py-3' : ''} ${className}`} {...rest}>
-      {children}
+    <Tag className={`flex items-center w-full ${withPadding ? 'px-4 py-3' : ''} ${className ?? ''}`} {...rest}>
+      {left}
+      {center}
+      {right}
     </Tag>
   );
 }
