@@ -1,10 +1,25 @@
+import Input from './src/Input';
 import Button from './src/Button';
+import Select from './src/Select';
+import Modal from './src/modal';
+import DataTable from './src/dataTable';
 import SectionHeader from './src/SectionHeader';
 import Tab from './src/Tab';
-import type { ITab } from './src/Tab';
 import AsideMenu from './src/asideMenu';
-import type { IMenu } from './src/asideMenu';
-import DataTable from './src/DataTable/DataTable';
+import './src/index.css';
 
-export { Button, SectionHeader, Tab, AsideMenu, DataTable };
-export type { IMenu, ITab };
+const SejongUI = {
+  Input,
+  Button,
+  Select,
+  Modal,
+  SectionHeader,
+  Tab,
+  AsideMenu,
+  DataTable,
+};
+
+export default SejongUI;
+
+export type { IMenu } from './src/asideMenu';
+export type { ITab } from './src/Tab';
