@@ -1,30 +1,26 @@
 import AlertSvg from '@/assets/alert.svg?react';
 import CloseSvg from '@/assets/x.svg?react';
 import IconButton from '../icon-button/IconButton';
-import Row from '../row/Row';
+import RowSlots from '../row/RowSlots';
 
 type BannerVariant = 'warning' | 'info';
 
-type IBanner = Readonly<{
+interface IBanner {
   variant?: BannerVariant;
   children: React.ReactNode;
   deleteBanner: () => void;
-}>;
+}
 
-function Banner({ variant, children, deleteBanner }: IBanner) {
-  const bannerColorClass = getBannerColor(variant ?? 'info');
+function Banner({ variant = 'info', children, deleteBanner }: IBanner) {
+  const bannerColorClass = getBannerColor(variant);
 
   return (
-    <Row className={`${bannerColorClass} items-center`} withPadding>
-      <Row.Left>
-        <AlertSvg className="text-gray-500 w-4 h-4" />
-      </Row.Left>
-
-      <Row.Center>
-        <span className="text-xs">{children}</span>
-      </Row.Center>
-
-      <Row.Right>
+    <RowSlots
+      withPadding
+      className={`${bannerColorClass} items-center`}
+      left={<AlertSvg className="text-gray-500 w-4 h-4" />}
+      center={<span className="text-xs">{children}</span>}
+      right={
         <IconButton
           label="알림 닫기"
           variant="plain"
@@ -32,8 +28,8 @@ function Banner({ variant, children, deleteBanner }: IBanner) {
           onClick={deleteBanner}
           className="rounded-full"
         />
-      </Row.Right>
-    </Row>
+      }
+    />
   );
 }
 
