@@ -24,7 +24,7 @@ export function useTabsContext() {
 }
 
 interface TabsProviderProps {
-  tabList: ITab[];
+  tabList: Omit<ITab, 'realUrl'>[];
   initialTabs?: ITab[];
   children: ReactNode;
 }

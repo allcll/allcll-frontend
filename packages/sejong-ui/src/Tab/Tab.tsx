@@ -2,7 +2,7 @@ import { type ITab, TabsProvider } from './TabContext.tsx';
 import Tabs from './Tabs.tsx';
 
 interface ITabProps {
-  tabList: ITab[];
+  tabList: Omit<ITab, 'realUrl'>[];
   initialTabs?: ITab[];
 }
 
