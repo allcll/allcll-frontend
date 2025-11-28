@@ -9,7 +9,7 @@ interface EssentialTagProps {
 
 function EssentialTag({ className, essential, disabled, children }: EssentialTagProps) {
   const essentialColorClass = disabled
-    ? 'before:border-t-[8px] before:border-t-gray-500 before:border-r-[8px] before:border-r-transparent '
+    ? 'before:border-t-[8px] before:border-t-gray-400 before:border-r-[8px] before:border-r-transparent '
     : 'before:border-t-[8px] before:border-t-red-500 before:border-r-[8px] before:border-r-transparent ';
 
   const divClassName =
