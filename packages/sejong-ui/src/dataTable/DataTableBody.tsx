@@ -15,7 +15,7 @@ function DataTableBody<T>({ columns, data, keyInfo }: Readonly<DataTableBodyProp
   return (
     <tbody>
       {data.map((item, rowIndex) => {
-        const rowId = typeof keyInfo === 'function' ? keyInfo(item) : (item as any)[keyInfo as keyof T];
+        const rowId = typeof keyInfo === 'function' ? keyInfo(item) : item[keyInfo];
 
         return (
           <tr key={`row-${rowId}`}>
