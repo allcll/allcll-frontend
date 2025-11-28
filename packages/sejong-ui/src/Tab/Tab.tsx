@@ -1,5 +1,5 @@
-import { type ITab, TabsProvider } from '@/Tab/TabContext.tsx';
-import Tabs from '@/Tab/Tabs.tsx';
+import { type ITab, TabsProvider } from './TabContext.tsx';
+import Tabs from './Tabs.tsx';
 
 interface ITabProps {
   tabList: ITab[];

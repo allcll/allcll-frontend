@@ -1,7 +1,7 @@
 import { type ComponentPropsWithRef } from 'react';
 
 interface ButtonProps extends ComponentPropsWithRef<'button'> {
-  variant?: 'primary' | 'secondary' | 'cancel' | 'danger';
+  variant?: 'primary' | 'secondary' | 'dark' | 'cancel' | 'danger';
   size?: 'sm' | 'md' | 'lg';
   disabled?: boolean;
 }
@@ -25,6 +25,8 @@ function getVariantClass(variant: string) {
       return 'bg-blue-500 text-white hover:bg-blue-600';
     case 'secondary':
       return 'bg-gray-500 text-white hover:bg-gray-600';
+    case 'dark':
+      return 'bg-gray-700 text-white hover:bg-gray-900';
     case 'cancel':
       return 'bg-white border border-gray-700 hover:bg-gray-100';
     case 'danger':
@@ -37,7 +39,7 @@ function getVariantClass(variant: string) {
 function getSizeClass(size: string) {
   switch (size) {
     case 'sm':
-      return 'px-2 py-1 text-xs';
+      return 'px-2 py-0.5 text-xs rounded-xs';
     case 'md':
       return 'px-3 py-2 text-sm';
     case 'lg':

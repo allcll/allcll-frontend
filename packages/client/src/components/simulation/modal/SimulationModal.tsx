@@ -215,7 +215,7 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
   };
 
   return (
-    <SejongUI.Modal onBackdropClick={() => {}}>
+    <SejongUI.Modal>
       <div className="flex sm:w-[450px] border-1 border-gray-800 flex-col justify-between overflow-hidden">
         <SejongUI.Modal.Header title="" onClose={handleClickCloseButton} />
 

@@ -23,3 +23,4 @@ export default SejongUI;
 
 export type { IMenu } from './src/asideMenu';
 export type { ITab } from './src/Tab';
+export type { ColumnDefinition } from './src/dataTable/types';

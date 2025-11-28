@@ -17,5 +17,5 @@ export interface ColumnDefinition<T> {
    * 버튼, 이미지, 포맷팅된 텍스트 등 커스텀 UI를 구현할 때 사용합니다.
    * @param row 현재 행의 데이터 객체
    */
-  cell?: (row: T) => React.ReactNode;
+  cell?: (row: T, index: number) => React.ReactNode;
 }

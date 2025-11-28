@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 import DataTableHeader from './DataTableHeader';
 import DataTableBody from './DataTableBody';
+import Empty from './Empty.tsx';
 import type { ColumnDefinition } from './types';
-import Empty from '@/dataTable/Empty.tsx';
 
 interface DataTableProps<T> {
   /**
@@ -31,16 +31,18 @@ interface DataTableProps<T> {
 function DataTable<T extends object>({
   columns,
   data,
-  className = 'w-full border border-gray-300 border-t-2 text-xs border-t-black text-center',
+  className = 'w-full border border-gray-300 border-t-3 border-t-black text-center text-xs text-nowrap',
   emptyComponent = <Empty />,
 }: DataTableProps<T>) {
   const hasData = data && data.length > 0;
 
   return (
-    <table className={className}>
-      <DataTableHeader columns={columns} />
-      {hasData ? <DataTableBody columns={columns} data={data} /> : emptyComponent}
-    </table>
+    <div className="overflow-x-auto min-h-[300px] border-gray-300">
+      <table className={className}>
+        <DataTableHeader columns={columns} />
+        {hasData ? <DataTableBody columns={columns} data={data} /> : emptyComponent}
+      </table>
+    </div>
   );
 }
 

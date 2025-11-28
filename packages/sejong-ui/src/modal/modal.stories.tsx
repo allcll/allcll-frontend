@@ -65,7 +65,7 @@ export const LongContent: Story = {
   args: {
     children: (
       <>
-        <ModalHeader title="Long Content" onClose={() => {}} />
+        <ModalHeader title="Long Content" />
         <div style={{ padding: '1rem' }}>
           {[...Array(50)].map((_, i) => (
             <p key={i}>This is a long content line {i + 1}.</p>
