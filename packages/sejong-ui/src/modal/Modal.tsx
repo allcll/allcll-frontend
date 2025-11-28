@@ -2,11 +2,11 @@ import React, { useEffect, useRef } from 'react';
 
 interface IModalProps {
   children: React.ReactNode;
-  onClose: () => void;
+  onBackdropClick?: () => void;
   preventAutoFocus?: boolean;
 }
 
-function Modal({ children, onClose, preventAutoFocus }: Readonly<IModalProps>) {
+function Modal({ children, onBackdropClick, preventAutoFocus }: Readonly<IModalProps>) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -21,7 +21,9 @@ function Modal({ children, onClose, preventAutoFocus }: Readonly<IModalProps>) {
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    onClose();
+    if (onBackdropClick) {
+      onBackdropClick();
+    }
   };
 
   // Todo: aria-labelledby, aria-describedby 추가

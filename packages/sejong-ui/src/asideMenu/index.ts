@@ -1,5 +1,2 @@
-import AsideMenu from './AsideMenu';
-import type { IMenu } from './types';
-
-export default AsideMenu;
-export type { IMenu };
+export { default } from './AsideMenu';
+export type { IMenu } from './types';

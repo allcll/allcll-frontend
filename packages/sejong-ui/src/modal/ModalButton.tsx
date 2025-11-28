@@ -1,6 +1,6 @@
-import type { HTMLAttributes } from 'react';
+import type { ComponentPropsWithRef } from 'react';
 
-interface ModelButtonProps extends HTMLAttributes<HTMLButtonElement> {
+interface ModelButtonProps extends ComponentPropsWithRef<'button'> {
   variant?: 'primary' | 'secondary' | 'cancel' | 'danger';
   disabled?: boolean;
 }

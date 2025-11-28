@@ -27,7 +27,7 @@ export const Default: Story = {
   args: {
     children: (
       <>
-        <ModalHeader title='Default Modal' onClose={() => {}}/>
+        <ModalHeader title="Default Modal" />
         <div style={{ padding: '1rem' }}>
           <p>This is a default modal.</p>
         </div>
@@ -36,7 +36,7 @@ export const Default: Story = {
         </ModalButtonContainer>
       </>
     ),
-    onClose: () => alert('Backdrop clicked!'),
+    onBackdropClick: () => alert('Backdrop clicked!'),
   },
 };
 
@@ -44,18 +44,20 @@ export const WithForm: Story = {
   args: {
     children: (
       <>
-        <ModalHeader title='Form in Modal' onClose={() => {}}/>
+        <ModalHeader title="Form in Modal" />
         <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <Input placeholder="Username" />
           <Input type="password" placeholder="Password" />
         </div>
         <ModalButtonContainer>
-          <Button variant="primary" onClick={() => alert('Logged in!')}>Login</Button>
+          <Button variant="primary" onClick={() => alert('Logged in!')}>
+            Login
+          </Button>
           <ModalButton onClick={() => alert('Cancelled!')}>Cancel</ModalButton>
         </ModalButtonContainer>
       </>
     ),
-    onClose: () => alert('Backdrop clicked!'),
+    onBackdropClick: () => alert('Backdrop clicked!'),
   },
 };
 
@@ -74,7 +76,7 @@ export const LongContent: Story = {
         </ModalButtonContainer>
       </>
     ),
-    onClose: () => alert('Backdrop clicked!'),
+    onBackdropClick: () => alert('Backdrop clicked!'),
   },
 };
 

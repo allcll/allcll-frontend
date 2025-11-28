@@ -1,6 +1,6 @@
-import Input from './src/Input.tsx';
-import Button from './src/Button.tsx';
-import Select from './src/Select.tsx';
+import Input from './src/Input';
+import Button from './src/Button';
+import Select from './src/Select';
 import Modal from './src/modal';
 import './src/index.css';
 

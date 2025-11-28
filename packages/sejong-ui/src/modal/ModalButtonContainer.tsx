@@ -1,6 +1,6 @@
-import { HTMLAttributes } from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
 
-interface ModerButtonContainerProps extends HTMLAttributes<HTMLDivElement> {}
+interface ModerButtonContainerProps extends ComponentPropsWithoutRef<'div'> {}
 
 function ModalButtonContainer({ children, className = '', ...rest }: ModerButtonContainerProps) {
   const fixedClassName = 'flex justify-end gap-4 w-full ' + className;
