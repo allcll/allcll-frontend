@@ -85,7 +85,7 @@ const RegisteredTable = () => {
       ? currentSimulation.registeredSubjects
       : [];
 
-  return <SejongUI.DataTable columns={displayColumns} data={subjects} />;
+  return <SejongUI.DataTable columns={displayColumns} data={subjects} keyInfo="subjectId" />;
 };
 
 export default RegisteredTable;

@@ -15,11 +15,7 @@ const columns: ColumnDefinition<SimulationSubject>[] = [
   {
     header: '신청',
     accessorKey: 'subjectId',
-    cell: subject => (
-      <SejongUI.Button size="sm" onClick={() => console.log(subject.subjectId)}>
-        신청
-      </SejongUI.Button>
-    ),
+    cell: subject => <SubmitButton subjectId={subject.subjectId} />,
   },
   {
     header: '학수번호',
@@ -82,6 +78,19 @@ const columns: ColumnDefinition<SimulationSubject>[] = [
 const NoneRegisteredTable = () => {
   const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
   const currentModal = useSimulationModalStore(state => state.type);
+
+  const displayColumns = getDynamicColumns(columns);
+
+  const subjects =
+    currentSimulation.simulationStatus === 'progress' && currentModal !== 'waiting'
+      ? currentSimulation.nonRegisteredSubjects
+      : [];
+
+  return <SejongUI.DataTable columns={displayColumns} data={subjects} keyInfo="subjectId" />;
+};
+
+/** 신청을 따로 정의 */
+const SubmitButton = ({ subjectId }: { subjectId: number }) => {
   const openModal = useSimulationModalStore(state => state.openModal);
   const setCurrentSubjectId = useSimulationSubjectStore(state => state.setCurrentSubjectId);
   const { data: lectures } = useLectures();
@@ -101,29 +110,14 @@ const NoneRegisteredTable = () => {
     openModal('captcha');
   };
 
-  const displayColumns = getDynamicColumns(columns).map<ColumnDefinition<SimulationSubject>>(col => {
-    if (col.header !== '신청') {
-      return col;
-    }
-
-    return {
-      ...col,
-      cell: subject => (
-        <SejongUI.Button size="sm" onClick={() => handleClickSubject(subject.subjectId)}>
-          신청
-        </SejongUI.Button>
-      ),
-    };
-  });
-
-  const subjects =
-    currentSimulation.simulationStatus === 'progress' && currentModal !== 'waiting'
-      ? currentSimulation.nonRegisteredSubjects
-      : [];
-
-  return <SejongUI.DataTable columns={displayColumns} data={subjects} />;
+  return (
+    <SejongUI.Button size="sm" onClick={() => handleClickSubject(subjectId)}>
+      신청
+    </SejongUI.Button>
+  );
 };
 
+/** 데이터의 이상치를 정제하여 표현합니다. */
 export function getDynamicColumns(columns: ColumnDefinition<SimulationSubject>[]) {
   return columns.map<ColumnDefinition<SimulationSubject>>(col => {
     switch (col.header) {

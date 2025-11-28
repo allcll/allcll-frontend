@@ -22,6 +22,11 @@ interface DataTableProps<T> {
    * If not provided, the table body will be empty.
    */
   emptyComponent?: ReactNode;
+  /**
+   * A function or string key to uniquely identify each row in the table.
+   * This is used to set the `key` prop on each `<tr>` element for efficient rendering.
+   */
+  keyInfo: ((_: T) => string) | keyof T;
 }
 
 /**
@@ -32,6 +37,7 @@ function DataTable<T extends object>({
   columns,
   data,
   className = 'w-full border border-gray-300 border-t-3 border-t-black text-center text-xs text-nowrap',
+  keyInfo,
   emptyComponent = <Empty />,
 }: DataTableProps<T>) {
   const hasData = data && data.length > 0;
@@ -40,7 +46,7 @@ function DataTable<T extends object>({
     <div className="overflow-x-auto min-h-[300px] border-gray-300">
       <table className={className}>
         <DataTableHeader columns={columns} />
-        {hasData ? <DataTableBody columns={columns} data={data} /> : emptyComponent}
+        {hasData ? <DataTableBody columns={columns} data={data} keyInfo={keyInfo} /> : emptyComponent}
       </table>
     </div>
   );
