@@ -18,11 +18,10 @@ import RegisteredTable from '@/components/simulation/table/RegisteredTable.tsx';
 import SejongUI from '@allcll/sejong-ui';
 
 function Simulation() {
-  const { type, openModal, closeModal } = useSimulationModalStore();
+  const openModal = useSimulationModalStore(state => state.openModal);
   const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
   const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
   const { reloadSimulationStatus } = useReloadSimulation();
-  const { data: timetables = [] } = useTimetables();
   const isExpiredTutorial = checkExpiredTutorialPop();
 
   const forceSimulation = async () => {
@@ -72,25 +71,6 @@ function Simulation() {
     return acc + parseInt(firstNumber, 10);
   }, 0);
 
-  const renderModal = () => {
-    switch (type) {
-      case 'tutorial':
-        return <TutorialModal />;
-      case 'waiting':
-        return <WaitingModal />;
-      case 'captcha':
-        return <CaptchaInput />;
-      case 'wish':
-        return <UserWishModal timetables={timetables} setIsModalOpen={() => closeModal()} />;
-      case 'simulation':
-        return <SimulationModal reloadSimulationStatus={reloadSimulationStatus} />;
-      case 'result':
-        return <SimulationResultModal simulationId={currentSimulation.simulationId} />;
-      default:
-        return null;
-    }
-  };
-
   const handleClickShowTutorial = () => {
     localStorage.removeItem('visitedTutorial');
   };
@@ -101,7 +81,7 @@ function Simulation() {
         <title>ALLCLL | 올클연습 - 세종대 수강신청 연습</title>
       </Helmet>
 
-      {renderModal()}
+      <RenderModal />
       <div className="flex justify-between gap-5">
         <div className="flex gap-5">
           <h1 className="font-bold text-lg">수강신청 연습</h1>
@@ -143,6 +123,30 @@ function Simulation() {
       </section>
     </>
   );
+}
+
+function RenderModal() {
+  const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
+  const { type, closeModal } = useSimulationModalStore();
+  const { reloadSimulationStatus } = useReloadSimulation();
+  const { data: timetables = [] } = useTimetables();
+
+  switch (type) {
+    case 'tutorial':
+      return <TutorialModal />;
+    case 'waiting':
+      return <WaitingModal />;
+    case 'captcha':
+      return <CaptchaInput />;
+    case 'wish':
+      return <UserWishModal timetables={timetables} setIsModalOpen={() => closeModal()} />;
+    case 'simulation':
+      return <SimulationModal reloadSimulationStatus={reloadSimulationStatus} />;
+    case 'result':
+      return <SimulationResultModal simulationId={currentSimulation.simulationId} />;
+    default:
+      return null;
+  }
 }
 
 export default Simulation;
