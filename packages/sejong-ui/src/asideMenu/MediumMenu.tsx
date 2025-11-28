@@ -26,8 +26,8 @@ function MediumMenu({ menu }: MediumMenuProps) {
 
       {isOpen && menu.children && (
         <ul className="ml-1 pl-4 bg-neutral-100 font-semibold">
-          {menu.children.map((item, index) => (
-            <SmallMenu key={index} menu={item} />
+          {menu.children.map(item => (
+            <SmallMenu key={item.name} menu={item} />
           ))}
         </ul>
       )}

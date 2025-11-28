@@ -139,7 +139,7 @@ export function getDynamicColumns(columns: ColumnDefinition<SimulationSubject>[]
             subject.tm_num
               ? subject.tm_num
                   .split('/')
-                  .map((num: string, i: number) => (i === 0 ? parseFloat(num).toFixed(1) : num))
+                  .map((num: string, i: number) => (i === 0 ? Number.parseFloat(num).toFixed(1) : num))
                   .join('/')
               : '-',
         };

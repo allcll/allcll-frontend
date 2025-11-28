@@ -1,4 +1,5 @@
 import type { ColumnDefinition } from './types';
+import { useId } from 'react';
 
 interface DataTableBodyProps<T> {
   columns: ColumnDefinition<T>[];
@@ -13,16 +14,19 @@ function DataTableBody<T>({ columns, data }: Readonly<DataTableBodyProps<T>>) {
 
   return (
     <tbody>
-      {data.map((item, rowIndex) => (
-        <tr key={`row-${rowIndex}`}>
-          {columns.map((column, colIndex) => (
-            <td key={`cell-${rowIndex}-${colIndex}`} className="border border-gray-300 px-2 py-1">
-              {/* cell 렌더링 함수가 있으면 그것을 사용, 없으면 accessor로 값을 찾아서 표시 */}
-              {column.cell ? column.cell(item, rowIndex) : getDeepValue(item, column.accessorKey as string)}
-            </td>
-          ))}
-        </tr>
-      ))}
+      {data.map((item, rowIndex) => {
+        const rowId = useId();
+
+        return (
+          <tr key={`row-${rowId}`}>
+            {columns.map(column => (
+              <td key={`cell-${rowId}-${useId()}`} className="border border-gray-300 px-2 py-1">
+                {column.cell ? column.cell(item, rowIndex) : getDeepValue(item, column.accessorKey as string)}
+              </td>
+            ))}
+          </tr>
+        );
+      })}
     </tbody>
   );
 }

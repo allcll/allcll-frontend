@@ -35,8 +35,8 @@ function AsideMenu({ menus }: AsideMenuProps) {
           </div>
 
           <ul className="flex flex-col text-sm">
-            {menus.map((item, index) => (
-              <BigMenu menu={item} key={index} />
+            {menus.map(item => (
+              <BigMenu menu={item} key={item.name} />
             ))}
           </ul>
         </div>

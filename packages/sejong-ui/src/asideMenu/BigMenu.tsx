@@ -26,8 +26,8 @@ function BigMenu({ menu }: BigMenuProps) {
 
       {isOpen && menu.children && (
         <ul className="">
-          {menu.children.map((item, index) => (
-            <MediumMenu key={index} menu={item} />
+          {menu.children.map(item => (
+            <MediumMenu key={item.name} menu={item} />
           ))}
         </ul>
       )}
