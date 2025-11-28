@@ -1,20 +1,21 @@
+import { useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 import CaptchaInput from '@/components/simulation/modal/CaptchaInput';
 import SimulationModal from '@/components/simulation/modal/SimulationModal';
 import SimulationResultModal from '@/components/simulation/modal/SimulationResultModal';
 import UserWishModal from '@/components/simulation/modal/before/UserWishModal';
 import WaitingModal from '@/components/simulation/modal/WaitingModal';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
-import { checkOngoingSimulation, forceStopSimulation, SIMULATION_TIME_LIMIT } from '@/utils/simulation/simulation';
-import { useEffect } from 'react';
-import { Helmet } from 'react-helmet';
-import SimulationSearchForm from '@/components/simulation/SimulationSearchForm';
-import { useReloadSimulation } from '@/hooks/useReloadSimulation';
-import Stopwatch from '@/components/simulation/Stopwatch';
-import { useTimetables } from '@/hooks/server/useTimetableSchedules';
-import TutorialModal, { checkExpiredTutorialPop } from '@/components/simulation/modal/before/TutorialModal';
+import TutorialModal from '@/components/simulation/modal/before/TutorialModal';
 import NoneRegisteredTable from '@/components/simulation/table/NoneRegisteredTable.tsx';
 import RegisteredTable from '@/components/simulation/table/RegisteredTable.tsx';
+import SimulationSearchForm from '@/components/simulation/SimulationSearchForm';
+import Stopwatch from '@/components/simulation/Stopwatch';
+import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
+import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
+import { useReloadSimulation } from '@/hooks/useReloadSimulation';
+import { useTimetables } from '@/hooks/server/useTimetableSchedules';
+import { checkOngoingSimulation, forceStopSimulation, SIMULATION_TIME_LIMIT } from '@/utils/simulation/simulation';
+import { VisitTutorial } from '@/utils/simulation/VisitTutorial.ts';
 import SejongUI from '@allcll/sejong-ui';
 
 function Simulation() {
@@ -22,7 +23,7 @@ function Simulation() {
   const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
   const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
   const { reloadSimulationStatus } = useReloadSimulation();
-  const isExpiredTutorial = checkExpiredTutorialPop();
+  const isExpiredTutorial = VisitTutorial.get();
 
   const forceSimulation = async () => {
     try {
@@ -71,10 +72,6 @@ function Simulation() {
     return acc + parseInt(firstNumber, 10);
   }, 0);
 
-  const handleClickShowTutorial = () => {
-    localStorage.removeItem('visitedTutorial');
-  };
-
   return (
     <>
       <Helmet>
@@ -89,7 +86,7 @@ function Simulation() {
         </div>
 
         {!isExpiredTutorial && (
-          <button className="text-gray-600 hover:text-blue-500 cursor-pointer" onClick={handleClickShowTutorial}>
+          <button className="text-gray-600 hover:text-blue-500 cursor-pointer" onClick={VisitTutorial.reset}>
             튜토리얼 활성화
           </button>
         )}
