@@ -85,7 +85,7 @@ function CaptchaInput() {
 
   return (
     <SejongUI.Modal preventAutoFocus>
-      <div className="sm:w-[500px] bg-white rounded shadow">
+      <div className="sm:w-[500px]">
         <SejongUI.Modal.Header title="매크로방지 코드입력 (Arti-marco code input)" onClose={closeCaptcha} />
 
         <div className="grid grid-cols-2 gap-4 mt-4 p-4">
@@ -124,7 +124,7 @@ function CaptchaInput() {
           ※ 코드가 표시되지 않는 경우 잠시 기다리거나 매크로 방지 코드 입력 창을 닫고 새로 열어 주세요.
         </p>
 
-        <SejongUI.Modal.ButtonContainer className="border-t px-6 py-4 bg-gray-100">
+        <SejongUI.Modal.ButtonContainer className="px-6 py-2 bg-gray-100">
           <SejongUI.Modal.Button variant="cancel" onClick={handleConfirmCaptcha}>
             코드입력
           </SejongUI.Modal.Button>

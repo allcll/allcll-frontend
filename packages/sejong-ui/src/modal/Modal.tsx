@@ -4,10 +4,12 @@ interface IModalProps {
   children: React.ReactNode;
   onBackdropClick?: () => void;
   preventAutoFocus?: boolean;
+  noBorder?: boolean;
 }
 
-function Modal({ children, onBackdropClick, preventAutoFocus }: Readonly<IModalProps>) {
+function Modal({ children, onBackdropClick, preventAutoFocus, noBorder }: Readonly<IModalProps>) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const modalClassName = '' + (noBorder ? '' : 'border-3 border-black ');
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -37,13 +39,15 @@ function Modal({ children, onBackdropClick, preventAutoFocus }: Readonly<IModalP
     >
       <div className="fixed inset-0 justify-center opacity-30 bg-gray-300 border-b-2 border-gray-400" />
       <div className="fixed inset-x-0 top-16 bottom-0 flex items-center justify-center" tabIndex={-1}>
-        <div
-          className="w-[95%] sm:w-fit z-50 bg-white max-h-[90%] border border-gray-200 overflow-y-auto"
-          role="dialog"
-          tabIndex={-1}
-          onClick={e => e.stopPropagation()}
-        >
-          {children}
+        <div className={modalClassName}>
+          <div
+            className="w-[95%] sm:w-fit bg-white max-h-[90%] overflow-y-auto"
+            role="dialog"
+            tabIndex={-1}
+            onClick={e => e.stopPropagation()}
+          >
+            {children}
+          </div>
         </div>
       </div>
     </div>
