@@ -95,31 +95,31 @@ const getServiceDate = (period: ServicePeriodApiResponse): ServicePeriod => {
 
 const isDevServer = import.meta.env.VITE_DEV_SERVER === 'true';
 const SERVICE_SEMESTER_DUMMY: ServiceSemesterApiResponse = {
-  code: 'FALL_25',
-  semester: '2025-2',
+  code: 'WINTER-2025',
+  semester: '2025-WINTER',
   services: [
     {
       id: 'timetable',
       startDate: '2025-07-18',
-      endDate: '2025-12-31',
+      endDate: '2099-12-31',
       message: null,
     },
     {
       id: 'baskets',
       startDate: '2025-07-18',
-      endDate: '2025-12-31',
+      endDate: '2099-12-31',
       message: null,
     },
     {
       id: 'simulation',
       startDate: '2025-07-18',
-      endDate: '2025-12-31',
+      endDate: '2099-12-31',
       message: null,
     },
     {
       id: 'live',
-      startDate: isDevServer ? '2025-08-01' : '2025-08-11',
-      endDate: '2025-09-30',
+      startDate: isDevServer ? '2025-11-29' : '2025-12-01', //dev서버에서 먼저 확인 하기 위해
+      endDate: '2025-12-03',
       message: null,
     },
     {
