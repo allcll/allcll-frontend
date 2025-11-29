@@ -40,6 +40,7 @@ function WishesDetail() {
 
   const hasPreSeats = wishes && 'seat' in wishes;
   const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
+  const isWishesAvailable = wishes && 'totalCount' in wishes;
 
   const seats = hasPreSeats ? wishes.seat : -1;
 
@@ -115,13 +116,20 @@ function WishesDetail() {
             {/* Analytics Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
               {/* Doughnut Chart */}
-              <DepartmentDoughnut data={registers?.eachDepartmentRegisters ?? []} majorName={data.departmentName} />
+              <DepartmentDoughnut
+                data={registers?.eachDepartmentRegisters ?? []}
+                majorName={data.departmentName ?? data.manageDeptNm}
+              />
 
               {/* Competition Analysis */}
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-lg font-semibold">관심과목 경쟁률 예상</h2>
-                  <p className={`${getWishesColor(data.totalCount)} font-bold text-xl`}>총 {data.totalCount}명</p>
+                  {isWishesAvailable && (
+                    <p className={`${getWishesColor(data.totalCount ?? -1)} font-bold text-xl`}>
+                      총 {data.totalCount}명
+                    </p>
+                  )}
                 </div>
 
                 <BlurComponents>

@@ -8,7 +8,7 @@ interface WishesApiResponse {
   baskets: { subjectId: number; totalCount: number }[];
 }
 
-export const InitWishes: Wishes = {
+export const InitWishes = {
   ...InitSubject,
   departmentCode: '',
   departmentName: '',
@@ -37,7 +37,8 @@ function useWishes() {
 }
 
 const joinSubjects = (wishes?: WishesApiResponse, subject?: Subject[]): Wishes[] => {
-  if (!wishes || !subject) return [];
+  if (!subject) return [];
+  if (!wishes || wishes.baskets?.length) return subject;
 
   type preWishes = Subject & WishesApiResponse['baskets'][number];
   const data = joinData(subject, wishes.baskets, InitSubject, InitWishes) as preWishes[];

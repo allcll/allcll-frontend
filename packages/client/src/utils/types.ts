@@ -17,15 +17,13 @@ export interface NonMajorSeats {
   queryTime: string;
 }
 
-export interface Wishlist {
-  baskets: Wishes[];
-}
-
-export interface Wishes extends Subject {
+export interface WishesOptions {
   departmentCode: string;
   departmentName: string;
   totalCount: number;
 }
+
+export type Wishes = With<Subject, WishesOptions>;
 
 export interface WishRegister {
   studentBelong: string | null;

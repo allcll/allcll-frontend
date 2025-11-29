@@ -62,7 +62,7 @@ function useSearchRank<T extends Wishes>(wishes: T[] | undefined) {
     };
 
     const ranked = rankedWishes.map(wish => {
-      const dprtRankValue = getDprtRank(wish.departmentCode);
+      const dprtRankValue = getDprtRank(wish.departmentCode ?? wish.deptCd);
       const searchScore = (5 - dprtRankValue) * 250 + wish.rank * 100 - Number(wish.classCode);
       return { ...wish, searchScore };
     });
@@ -83,10 +83,10 @@ function setRankByAverageTotalCount<T extends Wishes>(subjectData: T[]) {
     const group = groupedData.get(key);
 
     if (group) {
-      group.sum += subject.totalCount;
+      group.sum += subject.totalCount ?? 0;
       group.count += 1;
     } else {
-      groupedData.set(key, { sum: subject.totalCount, count: 1 });
+      groupedData.set(key, { sum: subject.totalCount ?? 0, count: 1 });
     }
   }
 
