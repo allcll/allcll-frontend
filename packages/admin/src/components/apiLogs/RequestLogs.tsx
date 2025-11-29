@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from 'react';
 import Card from '@allcll/common/components/Card';
 import CheckboxAdapter from '@allcll/common/components/checkbox/CheckboxAdapter';
 import Filtering from '@allcll/common/components/filtering/Filtering';
-import MultiSelectFilterOption, { OptionType } from '@allcll/common/components/filtering/MultiSelectFilterOption';
+import MultiSelectFilterOption, { OptionType } from './MultiSelectFilterOption';
 
 const StatusCodes: OptionType<number>[] = [
   { value: 200, label: '200' },

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import Modal from '@/components/simulation/modal/Modal.tsx';
-import ModalHeader from '@/components/simulation/modal/ModalHeader.tsx';
+import Modal from '@common/components/modal/Modal.tsx';
+import ModalHeader from '../sejongUI/modal/ModalHeader.tsx';
 import useNotificationInstruction from '@/store/useNotificationInstruction.ts';
 import SiteOptionIcon from '@/assets/chrome-options.svg?react';
 

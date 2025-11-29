@@ -107,7 +107,6 @@ const TableRow = ({ data, tableHeaders }: TableRowProps) => {
       <td className="px-4 py-2">
         <div className="flex items-center gap-2">
           <FavoriteButton subject={data} />
-          {/* <AlarmButton subject={data} /> */}
         </div>
       </td>
 

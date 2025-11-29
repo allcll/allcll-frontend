@@ -26,26 +26,26 @@ const serviceList = [
 const initPeriodService: PreiodService[] = [
   {
     id: 'timetable',
-    startDate: '2025-09-01',
-    endDate: '2025-12-31',
+    startDate: '2025-07-18',
+    endDate: '2099-12-31',
     message: '',
   },
   {
     id: 'baskets',
-    startDate: '2025-09-01',
-    endDate: '2025-12-31',
+    startDate: '2025-07-18',
+    endDate: '2099-12-31',
     message: '',
   },
   {
     id: 'simulation',
-    startDate: '2025-09-01',
-    endDate: '2025-12-31',
+    startDate: '2025-07-18',
+    endDate: '2099-12-31',
     message: '',
   },
   {
     id: 'live',
-    startDate: '2025-09-01',
-    endDate: '2025-12-31',
+    startDate: '2025-12-01',
+    endDate: '2025-12-03',
     message: '',
   },
 ];
