@@ -15,7 +15,7 @@ interface basket {
   totalCount: number;
 }
 
-export const subjects = (baskets?.baskets ? baskets.baskets : []) as basket[];
+export const subjects = (baskets?.baskets ?? []) as basket[];
 
 export function getRandomSubjects(count: number) {
   const shuffled = subjects.sort(() => 0.5 - Math.random());
