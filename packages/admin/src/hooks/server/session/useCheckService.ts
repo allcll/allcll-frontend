@@ -8,8 +8,7 @@ export interface CheckAliveApiResponse {
 }
 
 const checkSessionAlive = async (): Promise<CheckAliveApiResponse> => {
-  const userId = localStorage.getItem('userId') ?? '';
-  return fetchJsonOnAPI<CheckAliveApiResponse>(`/api/admin/session/check?userId=${userId}`);
+  return fetchJsonOnAPI<CheckAliveApiResponse>(`/api/admin/session/check`);
 };
 
 export function useCheckSessionAlive() {
