@@ -3,6 +3,11 @@ import Section from '@/components/Landing/Section.tsx';
 import RightArrowSvg from '@/assets/right-arrow.svg?react';
 import RightArrowBlueSvg from '@/assets/arrow-blue.svg?react';
 
+const SEMESTER = '동계';
+const YEAR = '2025';
+const START_DATE = '12월 1일(월)';
+const END_DATE = '12월 3일(수)';
+
 function MainBanner() {
   return (
     <Section className="flex flex-col md:flex-row items-center justify-between" bgColor="bg-banner-skysoft">
@@ -10,11 +15,11 @@ function MainBanner() {
         <div className="flex flex-row gap-2 items-center">
           <img src="/calendar.png" alt="calendar" className="w-10 h-10" />
           <span className="italic text-xs text-stone-500 ">
-            2025학년도 2학기 수강 신청 기간 <br /> 8월 11일(월) ~ 8월 18일(월)
+            {YEAR}학년도 {SEMESTER}학기 수강 신청 기간 <br /> {START_DATE} ~ {END_DATE}
           </span>
         </div>
         <h2 className="text-xl mt-10 sm:text-2xl md:text-4xl leading-snug font-bold mb-3 ">
-          2025학년도 2학기 수강신청,
+          {YEAR}학년도 {SEMESTER}학기 수강신청,
         </h2>
         <div className="flex flex-row justify-start items-center text-xl sm:text-2xl md:text-4xl leading-snug font-bold mb-3">
           <img src="/logo-name.svg" alt="logo-name" className="w-20 sm:w-32 md:w-40 lg:w-48 mr-2 animate-updown" />이
