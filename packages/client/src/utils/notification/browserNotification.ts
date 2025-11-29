@@ -10,7 +10,7 @@ const getNotification = () => {
 
 const BrowserNotification: CustomNotification = {
   canNotify() {
-    return 'Notification' in window;
+    return 'Notification' in window || !!getNotification();
   },
   isGranted() {
     return BrowserNotification.canNotify() && getNotification().permission === 'granted';
