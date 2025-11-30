@@ -19,8 +19,9 @@ import Chip from '@common/components/chip/Chip';
 import FilteringButton from '../filtering/button/FilteringButton';
 import DepartmentSelectFilter from '../filtering/DepartmentFilter';
 import FilterDelete from '../filtering/FilterDelete';
-import useSubject from '@/hooks/server/useSubject';
 import FilteringModal from '../filtering/FilteringModal';
+import usePreSeatGate from '@/hooks/usePreSeatGate.ts';
+import useWishesPreSeats from '@/hooks/useWishesPreSeats.ts';
 
 export interface WishSearchParams {
   searchInput: string;
@@ -44,11 +45,15 @@ function Searches() {
 
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
-  const { data: subjects } = useSubject();
+  const { data: subjects } = useWishesPreSeats([]);
   const categoryOptions = getCategories(subjects ?? [])
     .sort((a, b) => a.localeCompare(b))
     .map(cat => cat);
   const allSelectedFilters = getAllSelectedLabels(filters);
+
+  const hasPreSeats = subjects && 'seat' in subjects;
+  const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
+  const isWishesAvailable = subjects && 'totalCount' in subjects;
 
   const setToggleFavorite = () => setFilter('favoriteOnly', !favoriteOnly);
 
@@ -109,23 +114,27 @@ function Searches() {
         <div className="hidden md:flex flex-wrap gap-2">
           <DepartmentSelectFilter department={department} setFilter={setFilter} />
 
-          <GenericSingleSelectFilter
-            filterKey="wishRange"
-            options={FilterDomains.wishRange}
-            selectedValue={filters.wishRange ?? null}
-            setFilter={setFilter}
-            ItemComponent={Chip}
-            isMinMax={true}
-          />
+          {isWishesAvailable && (
+            <GenericSingleSelectFilter
+              filterKey="wishRange"
+              options={FilterDomains.wishRange}
+              selectedValue={filters.wishRange ?? null}
+              setFilter={setFilter}
+              ItemComponent={Chip}
+              isMinMax={true}
+            />
+          )}
 
-          <GenericSingleSelectFilter
-            filterKey="seatRange"
-            options={FilterDomains.seatRange}
-            selectedValue={filters.seatRange ?? null}
-            setFilter={setFilter}
-            ItemComponent={Chip}
-            isMinMax={true}
-          />
+          {isPreSeatAvailable && (
+            <GenericSingleSelectFilter
+              filterKey="seatRange"
+              options={FilterDomains.seatRange}
+              selectedValue={filters.seatRange ?? null}
+              setFilter={setFilter}
+              ItemComponent={Chip}
+              isMinMax={true}
+            />
+          )}
 
           <GenericMultiSelectFilter
             filterKey="days"
