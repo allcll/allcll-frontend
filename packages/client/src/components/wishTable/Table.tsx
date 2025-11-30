@@ -22,13 +22,26 @@ interface IBody extends ITable {
   headers: { title: string; key: string }[];
 }
 
-function Table({ data, isPending = false }: Readonly<ITable>) {
-  const hasPreSeats = data && data[0] && 'seat' in data[0];
+/** 사용하는 헤더를 반환해줍니다. 기간에 따라, wishes, pre-seats 변경 가능 */
+function useHeaderSelector(data: Wishes[] | (Wishes & IPreRealSeat)[] | null | undefined) {
+  const tableTitles = useWishesTableStore(state => state.tableTitles);
+  const hasPreSeats = !!(data && data[0] && 'seat' in data[0]);
+  const isWishesAvailable = data && data[0] && 'totalCount' in data[0];
   const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
 
-  const tableTitles = useWishesTableStore(state => state.tableTitles);
-  const cols = [{ title: '', visible: true, key: '' }, ...tableTitles.filter(col => col.visible)];
-  const headers = isPreSeatAvailable ? cols : cols.filter(header => header.key !== 'seat');
+  let visibleCols = [{ title: '', visible: true, key: '' }, ...tableTitles.filter(col => col.visible)];
+  if (!isWishesAvailable) {
+    visibleCols = visibleCols.filter(header => header.key !== 'totalCount');
+  }
+  if (!isPreSeatAvailable) {
+    visibleCols = visibleCols.filter(header => header.key !== 'seat');
+  }
+
+  return visibleCols;
+}
+
+function Table({ data, isPending = false }: Readonly<ITable>) {
+  const headers = useHeaderSelector(data);
 
   return (
     <table className="w-full bg-white rounded-lg relative text-sm">
@@ -124,7 +137,7 @@ const MemoTableRow = memo(({ data, tableHeaders }: TableRowProps) => {
 
   function handleClick() {
     selectTargetOnly(data.subjectId);
-    loggingDepartment(data.departmentCode);
+    loggingDepartment(data.departmentCode ?? data.deptCd);
   }
 
   return tableHeaders.slice(1, 20).map(({ key }) => (
@@ -141,7 +154,7 @@ function UiSelector({ data, headerType }: Readonly<{ data: Wishes | (Wishes & IP
     case '':
       return <>시간표</>;
     case 'totalCount':
-      return <ColoredText wishCount={data.totalCount} />;
+      return <ColoredText wishCount={data.totalCount ?? -1} />;
     case 'seat':
       return <ColoredPreSeat seat={(data as IPreRealSeat).seat} />;
     default:

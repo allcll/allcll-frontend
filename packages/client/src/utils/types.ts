@@ -1,6 +1,10 @@
 import { Filters } from '@/store/useFilterStore';
 import { FilterDomainsType } from './filtering/filterDomains';
 
+export type With<T, K> = T & {
+  [P in keyof K]?: K[P];
+};
+
 export interface PinnedSeats {
   subjectId: number;
   seatCount: number;
@@ -13,15 +17,13 @@ export interface NonMajorSeats {
   queryTime: string;
 }
 
-export interface Wishlist {
-  baskets: Wishes[];
-}
-
-export interface Wishes extends Subject {
+export interface WishesOptions {
   departmentCode: string;
   departmentName: string;
   totalCount: number;
 }
+
+export type Wishes = With<Subject, WishesOptions>;
 
 export interface WishRegister {
   studentBelong: string | null;
@@ -60,6 +62,10 @@ export interface Subject {
   curiTypeCdNm: string; // 수업 유형 코드명 ('공필'/'전필'/'전선' 등)
   curiLangNm: null | string; // 수업 언어 코드명 ('한국어'/'영어' 등)
   isDeleted: boolean; // 삭제 여부
+
+  // Todo: 필드 추가 - deptCd, manageDeptNm -> departmentCode, departmentName 점진적 변경
+  // departmentCode: string;
+  // departmentName: string;
 }
 
 /** before: 튜토리얼 + 관심과목 선택
