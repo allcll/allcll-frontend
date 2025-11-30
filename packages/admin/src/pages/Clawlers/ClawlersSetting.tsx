@@ -21,7 +21,6 @@ function CrawlerSettings() {
    * CASE 1 : 로컬에서 인증 정보 세팅 -> 그래야지 크롤러 제어 가능
    * CASE 2 : 로컬에서 인증 정보 미세팅 -> 인증 정보 세팅 되어 있는 리스트 노출
    * */
-
   const { data: sessionStatus } = useCheckAdminSession();
   const userId = getSessionConfig()?.userId;
   const mySessionStatus = sessionStatus?.find(status => status.userId === userId);
@@ -35,7 +34,7 @@ function CrawlerSettings() {
       <h1 className="text-lg text-gray-700 font-bold mb-4">크롤러 설정</h1>
       <SetupProgress current={isSessionSet ? SetupStep.CONTROL : SetupStep.TOKEN} />
       <div className="flex flex-col gap-4">
-        {!isSessionSet ? (
+        {!mySessionStatus ? (
           <>
             <TokenSetting />
             <SessionList />
