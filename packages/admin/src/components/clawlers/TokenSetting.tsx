@@ -80,7 +80,7 @@ function TokenSetting() {
 
         <div className="mt-4 flex justify-end">
           <button type="submit" className="px-4 py-2 text-sm rounded-lg bg-blue-500 text-white">
-            토큰 설정
+            토큰 설정 요청
           </button>
         </div>
       </form>
