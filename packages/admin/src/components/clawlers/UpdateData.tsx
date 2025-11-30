@@ -18,19 +18,25 @@ function UpdateData() {
   ];
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
-      {dataSources.map(({ label, refetch, isFetching }) => (
-        <CustomButton
-          key={label}
-          onClick={() => refetch()}
-          variants="secondary"
-          className="w-full"
-          disabled={isFetching}
-        >
-          {isFetching ? `${label} 불러오는 중...` : `${label} 업데이트`}
-        </CustomButton>
-      ))}
-    </div>
+    <>
+      <div>
+        <h3 className="col-span-2 sm:col-span-4 text-lg font-semibold">데이터 업데이트</h3>
+        <span className="text-sm text-gray-500">백엔드 서버로 보내는 요청(크롤링X)</span>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
+        {dataSources.map(({ label, refetch, isFetching }) => (
+          <CustomButton
+            key={label}
+            onClick={() => refetch()}
+            variants="secondary"
+            className="w-full"
+            disabled={isFetching}
+          >
+            {isFetching ? `${label} 불러오는 중...` : `${label} 업데이트`}
+          </CustomButton>
+        ))}
+      </div>
+    </>
   );
 }
 

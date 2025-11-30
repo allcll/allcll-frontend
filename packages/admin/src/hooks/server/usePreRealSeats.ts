@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchJsonOnAPI } from '@/utils/api.ts';
 
 const SEC = 1000;
 const MIN = 60 * SEC;
@@ -19,12 +18,16 @@ function usePreRealSeats() {
     queryFn: fetchPreRealSeats,
     staleTime: 10 * MIN,
     select: data => data?.subjects ?? null,
-    enabled: false, //  자동 요청을 비활성화
+    enabled: false,
   });
 }
 
 async function fetchPreRealSeats(): Promise<IPreRealSeatsResponse> {
-  return await fetchJsonOnAPI<IPreRealSeatsResponse>('api/preSeat');
+  const res = await fetch('/preSeat.json');
+  if (!res.ok) {
+    throw new Error('Failed to load local JSON file');
+  }
+  return res.json();
 }
 
 export default usePreRealSeats;

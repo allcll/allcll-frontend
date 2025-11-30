@@ -39,6 +39,7 @@ const cancelCrawlersSeat = async () => {
 };
 
 interface CheckedCrawlerSeatResponse {
+  userId: string;
   isActive: boolean;
 }
 const checkCrawlersSeat = async () => {
