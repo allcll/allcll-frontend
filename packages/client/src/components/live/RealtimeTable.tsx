@@ -89,7 +89,7 @@ function SubjectBody({ tableTitles }: Readonly<{ tableTitles: HeadTitle<SseSubje
   const HeadTitles = tableTitles.filter(t => t.visible);
 
   // Todo: 추후 변수처리 할 것
-  const isFinishLive = new Date() > getDateLocale('2025-09-05T17:00:00');
+  const isFinishLive = new Date() > getDateLocale('2025-012-03T17:00:00');
   const sseState = useSSEState(state => state.sseState);
 
   if (MAINTENANCE) {
