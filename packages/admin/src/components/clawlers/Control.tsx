@@ -1,7 +1,7 @@
 import Card from '@allcll/common/components/Card';
 import Toggle from '../common/Toggle';
 import { useCancelSessionKeepAlive, useStartSessionKeepAlive } from '@/hooks/server/session/useSessionKeepAlive';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   useCancelCrawlersSeat,
   useCheckCrawlerSeat,
@@ -22,6 +22,7 @@ function Control() {
   const { mutate: cancelSseScheduler } = useCancelSseScheduler();
 
   const { data: isActiveSession } = useCheckSessionAlive();
+  console.log('isActiveSession', isActiveSession);
   const { data: isActiveSeat } = useCheckCrawlerSeat();
   const { data: isSentSseData } = useCheckSseScheduler();
 
@@ -30,6 +31,14 @@ function Control() {
     seat: isActiveSeat ?? false,
     sseData: isSentSseData ?? false,
   });
+
+  useEffect(() => {
+    setChecked({
+      session: isActiveSession ?? false,
+      seat: isActiveSeat ?? false,
+      sseData: isSentSseData ?? false,
+    });
+  }, [isActiveSession, isActiveSeat, isSentSseData]);
 
   const toggleSessionKeepAlive = () => {
     if (checked.session) {
