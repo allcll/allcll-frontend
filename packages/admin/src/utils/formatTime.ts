@@ -1,4 +1,4 @@
-export const formatKoreanDate = (dateString: string) => {
+export const formatTime = (dateString: string) => {
   if (!dateString) return '';
 
   const date = new Date(dateString);
