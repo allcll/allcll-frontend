@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
 import { getSessionConfig } from '@/utils/sessionConfig.ts';
+import useToastNotification from '@allcll/common/store/useToastNotification';
 
 export const REFETCH_INTERVAL = 15 * 1000; // 15초
 
@@ -59,6 +60,9 @@ export function useAdminSession(): UseQueryResult<Session, Error> {
  */
 export function usePostAdminSession() {
   const queryClient = useQueryClient();
+
+  const toast = useToastNotification.getState().addToast;
+
   return useMutation({
     mutationFn: postAdminSessions,
 
@@ -69,8 +73,40 @@ export function usePostAdminSession() {
       } else {
         queryClient.invalidateQueries({ queryKey: ['sessions'] }).then();
       }
+
+      toast('인증 정보가 성공적으로 업데이트되었습니다.');
     },
 
-    onError: err => console.error(err),
+    onError: err => {
+      console.error(err);
+      toast('인증 정보 설정에 실패했습니다.');
+    },
+  });
+}
+
+interface UserSessionStatus {
+  userId: string;
+  isActive: boolean;
+  startTime: string | null;
+}
+
+interface UserSessionStatusResponse {
+  userSessionStatusResponses: UserSessionStatus[];
+}
+
+const getUserSessonStatus = async () => {
+  return await fetchJsonOnAPI<UserSessionStatusResponse>(`/api/admin/sessions/check`);
+};
+
+/**
+ *
+ * @returns userId, isActive, startTime
+ */
+export function useCheckAdminSession() {
+  return useQuery({
+    queryKey: ['check-admin-session'],
+    queryFn: () => getUserSessonStatus(),
+    refetchInterval: REFETCH_INTERVAL,
+    select: data => data.userSessionStatusResponses,
   });
 }

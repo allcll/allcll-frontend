@@ -49,18 +49,20 @@ function TokenSetting() {
 
   return (
     <Card>
-      <h3 className="text-md font-semibold mb-3">인증 정보 설정</h3>
+      <h3 className="text-md font-semibold">인증 정보를 먼저 설정해주세요.</h3>
+      <span className="text-sm text-gray-500">크롤러가 사용할 인증 토큰과 키를 설정합니다.</span>
       <form onSubmit={submitTokens}>
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-4 mt-4">
           {tokenType.map(token => (
             <div key={token}>
-              <label className="block text-sm mb-1 text-gray-700 capitalize">{token}</label>
+              <label className="block text-sm font-semibold text-gray-700 capitalize">{token}</label>
               <input
                 type="text"
                 value={tokens[token]}
                 onChange={e => handleTokenChange(token, e.target.value)}
                 placeholder="토큰을 입력하세요"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                required
               />
             </div>
           ))}
@@ -72,12 +74,13 @@ function TokenSetting() {
           value={session}
           onChange={e => setSession(e.target.value)}
           placeholder="어드민 인증 세션 입력"
+          required
           className="w-full pt-2 px-3 py-2 border border-gray-300 rounded-md text-sm"
         />
 
         <div className="mt-4 flex justify-end">
           <button type="submit" className="px-4 py-2 text-sm rounded-lg bg-blue-500 text-white">
-            토큰 설정
+            토큰 설정 요청
           </button>
         </div>
       </form>

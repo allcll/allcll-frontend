@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from '@/layouts/MainLayout.tsx';
 import Dashboard from '@/pages/Dashboard';
-import Clawlers from '@/pages/Clawlers';
+import Clawlers from '@/pages/Clawlers/ClawlersSetting';
 import Service from '@/pages/Service';
 import Logs from '@/pages/Logs';
 

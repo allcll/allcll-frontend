@@ -42,3 +42,8 @@ export interface PreiodService {
   endDate: string;
   message: string;
 }
+
+export enum SetupStep {
+  TOKEN = 1,
+  CONTROL = 2,
+}
