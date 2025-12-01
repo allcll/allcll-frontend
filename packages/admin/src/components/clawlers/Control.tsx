@@ -22,7 +22,6 @@ function Control() {
   const { mutate: cancelSseScheduler } = useCancelSseScheduler();
 
   const { data: isActiveSession } = useCheckSessionAlive();
-  console.log('isActiveSession', isActiveSession);
   const { data: isActiveSeat } = useCheckCrawlerSeat();
   const { data: isSentSseData } = useCheckSseScheduler();
 
