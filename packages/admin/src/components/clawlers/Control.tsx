@@ -27,14 +27,14 @@ function Control() {
 
   const [checked, setChecked] = useState({
     session: isActiveSession ?? false,
-    seat: isActiveSeat ?? false,
+    seat: isActiveSeat?.isActive ?? false,
     sseData: isSentSseData ?? false,
   });
 
   useEffect(() => {
     setChecked({
       session: isActiveSession ?? false,
-      seat: isActiveSeat ?? false,
+      seat: isActiveSeat?.isActive ?? false,
       sseData: isSentSseData ?? false,
     });
   }, [isActiveSession, isActiveSeat, isSentSseData]);

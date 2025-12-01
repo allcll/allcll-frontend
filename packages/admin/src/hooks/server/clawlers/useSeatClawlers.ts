@@ -42,6 +42,7 @@ interface CheckedCrawlerSeatResponse {
   userId: string;
   isActive: boolean;
 }
+
 const checkCrawlersSeat = async () => {
   return await fetchJsonOnAPI<CheckedCrawlerSeatResponse>('/api/admin/seat/check');
 };
@@ -89,7 +90,7 @@ export function useCheckCrawlerSeat() {
   return useQuery({
     queryKey: ['crawlers-sse'],
     queryFn: checkCrawlersSeat,
-    select: data => data.isActive,
+    select: data => data,
     staleTime: 0, // 항상 stale로 간주
     refetchInterval: REFETCH_INTERVAL,
     enabled: isValid,
