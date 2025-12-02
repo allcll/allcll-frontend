@@ -1,6 +1,5 @@
-import Card from '@allcll/common/components/Card';
-import InfoChip from '@allcll/common/components/chip/InfoChip';
 import { AdminApiLogs } from '@/utils/dbConfig';
+import LogItem from './LogItem';
 
 interface ILogList {
   logs: AdminApiLogs[];
@@ -16,36 +15,7 @@ function LogList({ logs }: ILogList) {
       <div className="overflow-y-hidden p-2 rounded-md bg-gray-200 shadow-sm">
         <div className="flex flex-col gap-2">
           {logs.map(log => (
-            <Card key={log.request_id} className="p-3">
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-2">
-                  <InfoChip
-                    type={log.statusCode === 200 ? 'success' : 'error'}
-                    label={`${log.statusCode}`}
-                    className="mb-1"
-                  />
-                  <p className="text-sm text-gray-800">{log.request_url}</p>
-                </div>
-
-                <p className="text-sm text-gray-500">
-                  <span className="font-semibold text-gray-700">메서드:</span>{' '}
-                  <span className="text-md text-blue-500">{log.method}</span>
-                </p>
-
-                <p className="text-sm text-gray-500 break-all">
-                  <span className="font-semibold text-gray-700">요청시간: </span>
-                  {log.timestamp}
-                </p>
-                <pre className="text-sm text-gray-500 whitespace-pre-wrap break-all">
-                  <span className="font-semibold text-gray-700">요청Body:</span>{' '}
-                  {JSON.stringify(log.request_body, null, 2)}
-                </pre>
-                <pre className="text-sm text-gray-500 whitespace-pre-wrap break-all">
-                  <span className="font-semibold text-gray-700">응답값:</span>{' '}
-                  {JSON.stringify(log.response_body, null, 2)}
-                </pre>
-              </div>
-            </Card>
+            <LogItem key={log.request_id} log={log} />
           ))}
         </div>
       </div>
