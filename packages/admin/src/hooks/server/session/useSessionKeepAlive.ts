@@ -1,6 +1,6 @@
 //인증정보 갱신 취소, 인증정보 갱신 관련 훅
 import { fetchOnAPI } from '@/utils/api';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useToastNotification from '@allcll/common/store/useToastNotification';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
 import { getSessionConfig } from '@/utils/sessionConfig.ts';
@@ -38,14 +38,18 @@ const startSessionKeepAlive = async (userId: string) => {
  * * 세션 KeepAlive 시작 요청입니다.
  * @returns
  */
+
 export function useStartSessionKeepAlive() {
   const toast = useToastNotification.getState().addToast;
   const session = getSessionConfig();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: () => startSessionKeepAlive(session?.userId ?? ''),
     onSuccess: async () => {
       toast('세션 KeepAlive이 시작되었습니다.');
+
+      await queryClient.invalidateQueries({ queryKey: ['check-session'] });
     },
     onError: err => console.error(err),
   });
@@ -57,11 +61,13 @@ export function useStartSessionKeepAlive() {
  */
 export function useCancelSessionKeepAlive() {
   const toast = useToastNotification.getState().addToast;
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: () => cancelSessionKeepAlive(),
     onSuccess: async () => {
       toast('세션 KeepAlive이 중지되었습니다.');
+      await queryClient.invalidateQueries({ queryKey: ['check-session'] });
     },
     onError: err => console.error(err),
   });

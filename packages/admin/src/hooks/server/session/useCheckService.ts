@@ -21,7 +21,7 @@ export function useCheckSessionAlive() {
   const session = getSessionConfig();
 
   return useQuery<CheckAliveApiResponse, Error, boolean>({
-    queryKey: ['session-check'],
+    queryKey: ['check-session'],
     queryFn: checkSessionAlive,
     select: data => data.userSessionStatusResponses.some(sessionStatus => sessionStatus.isActive),
     staleTime: 0,

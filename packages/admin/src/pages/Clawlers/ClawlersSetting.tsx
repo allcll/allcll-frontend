@@ -8,14 +8,13 @@ import TokenSetting from '@/components/clawlers/AuthTokenSetting';
 import { useCheckAdminSession } from '@/hooks/server/session/useAdminSession';
 import { getSessionConfig } from '@/utils/sessionConfig';
 import SessionList from '@/components/dashboard/SessionList';
-import { useState } from 'react';
 
 function CrawlerSettings() {
   const { data: sessionStatus } = useCheckAdminSession();
   const userId = getSessionConfig()?.userId;
   const mySessionStatus = sessionStatus?.find(status => status.userId === userId);
 
-  const [isSessionSet, setIsSessionSet] = useState(mySessionStatus?.isActive ?? false);
+  const isSessionSet = mySessionStatus?.isActive ?? false;
 
   return (
     <div className="p-6 space-y-10">
@@ -26,7 +25,7 @@ function CrawlerSettings() {
       <div className="flex flex-col gap-4">
         {!isSessionSet ? (
           <>
-            <TokenSetting setIsSessionSet={setIsSessionSet} />
+            <TokenSetting />
             <SessionList />
           </>
         ) : (

@@ -24,15 +24,13 @@ interface ITokenSetting {
   setIsSessionSet?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function AuthTokenSetting({ setIsSessionSet }: ITokenSetting) {
+function AuthTokenSetting({}: ITokenSetting) {
   const userId = localStorage.getItem('userId') ?? '';
   const { data: serverTokens } = useAdminSession();
 
   const [tokens, setTokens] = useState<tokensType>(initialTokens);
   const [session, setSession] = useState<string>(localStorage.getItem('session') || '');
-  const { mutate: postAdminSession } = usePostAdminSession({
-    onSuccess: () => setIsSessionSet && setIsSessionSet(true),
-  });
+  const { mutate: postAdminSession } = usePostAdminSession();
 
   useEffect(() => {
     setTokens(

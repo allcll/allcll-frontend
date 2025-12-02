@@ -8,6 +8,8 @@ import UpdateData from './UpdateData';
 import { useAdminActions } from '@/hooks/useAdminActions';
 import ControlRow from './ControlRow';
 
+const SEASON_DATE = new Date('2025-12-04T00:00:00+09:00');
+
 function Control() {
   const serviceActions = useAdminActions();
 
@@ -16,6 +18,7 @@ function Control() {
   const { data: isActiveSse } = useCheckSseScheduler();
 
   const isSeatActive = seatStatus?.isActive ?? false;
+  const isBeforeSeasonDeadline = new Date() > SEASON_DATE;
 
   const toggleSession = () => (isActiveSession ? serviceActions.session.stop() : serviceActions.session.start());
 
@@ -34,10 +37,13 @@ function Control() {
 
       <div className="space-y-4">
         <ControlRow label="인증정보 갱신" checked={isActiveSession ?? false} onToggle={toggleSession} />
-        <ControlRow label="여석 크롤링" checked={isSeatActive} onToggle={() => toggleSeat(false)} />
-        <ControlRow label="계절 여석 크롤링" checked={isSeatActive} onToggle={() => toggleSeat(true)} />
-        <ControlRow label="여석 데이터 전송" checked={isActiveSse ?? false} onToggle={toggleSse} />
 
+        {isBeforeSeasonDeadline ? (
+          <ControlRow label="일반 여석 크롤링" checked={isSeatActive} onToggle={() => toggleSeat(false)} />
+        ) : (
+          <ControlRow label="계절 여석 크롤링" checked={isSeatActive} onToggle={() => toggleSeat(true)} />
+        )}
+        <ControlRow label="여석 데이터 전송" checked={isActiveSse ?? false} onToggle={toggleSse} />
         <UpdateData />
       </div>
     </Card>
