@@ -1,26 +1,27 @@
 import Card from '@allcll/common/components/Card';
 
-import { useCheckSessionAlive } from '@/hooks/server/session/useCheckService';
 import { useCheckCrawlerSeat } from '@/hooks/server/clawlers/useSeatClawlers';
 import { useCheckSseScheduler } from '@/hooks/server/sse/useSeatScheduler';
 
 import UpdateData from './UpdateData';
 import { useAdminActions } from '@/hooks/useAdminActions';
 import ControlRow from './ControlRow';
+import { useCheckAdminSession } from '@/hooks/server/session/useAdminSession';
 
 const SEASON_DATE = new Date('2025-12-04T00:00:00+09:00');
 
 function Control() {
   const serviceActions = useAdminActions();
 
-  const { data: isActiveSession } = useCheckSessionAlive();
+  const { data: isActiveSession } = useCheckAdminSession();
   const { data: seatStatus } = useCheckCrawlerSeat();
   const { data: isActiveSse } = useCheckSseScheduler();
 
   const isSeatActive = seatStatus?.isActive ?? false;
   const isBeforeSeasonDeadline = new Date() > SEASON_DATE;
 
-  const toggleSession = () => (isActiveSession ? serviceActions.session.stop() : serviceActions.session.start());
+  const toggleSession = () =>
+    isActiveSession?.some(session => session.isActive) ? serviceActions.session.stop() : serviceActions.session.start();
 
   const toggleSeat = (isSeason: boolean) => {
     if (isSeatActive) return serviceActions.seat.stop();
@@ -36,7 +37,11 @@ function Control() {
       <p className="text-sm text-gray-500 mb-4">크롤러의 특정 기능을 제어합니다.</p>
 
       <div className="space-y-4">
-        <ControlRow label="인증정보 갱신" checked={isActiveSession ?? false} onToggle={toggleSession} />
+        <ControlRow
+          label="인증정보 갱신"
+          checked={isActiveSession?.some(session => session.isActive) ?? false}
+          onToggle={toggleSession}
+        />
 
         {isBeforeSeasonDeadline ? (
           <ControlRow label="일반 여석 크롤링" checked={isSeatActive} onToggle={() => toggleSeat(false)} />
