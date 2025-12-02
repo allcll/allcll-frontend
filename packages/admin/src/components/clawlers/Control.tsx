@@ -34,11 +34,8 @@ function Control() {
 
       <div className="space-y-4">
         <ControlRow label="인증정보 갱신" checked={isActiveSession ?? false} onToggle={toggleSession} />
-
         <ControlRow label="여석 크롤링" checked={isSeatActive} onToggle={() => toggleSeat(false)} />
-
         <ControlRow label="계절 여석 크롤링" checked={isSeatActive} onToggle={() => toggleSeat(true)} />
-
         <ControlRow label="여석 데이터 전송" checked={isActiveSse ?? false} onToggle={toggleSse} />
 
         <UpdateData />

@@ -6,6 +6,7 @@ import Filtering from '@allcll/common/components/filtering/Filtering';
 import MultiSelectFilterOption, { OptionType } from '../common/MultiSelectFilterOption';
 
 const StatusCodes: OptionType<number>[] = [
+  { value: 0, label: 'ALL' },
   { value: 200, label: '200' },
   { value: 400, label: '400' },
   { value: 401, label: '401' },

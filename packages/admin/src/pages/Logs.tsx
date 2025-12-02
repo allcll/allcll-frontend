@@ -5,12 +5,17 @@ import { filterRequestLogs } from '@/utils/log/adminApiLogs';
 import { useEffect, useState } from 'react';
 
 function Logs() {
-  const [selectedStatusCodes, setSelectedStatusCodes] = useState<number[]>([]);
+  const [selectedStatusCodes, setSelectedStatusCodes] = useState<number[]>([-1]);
   const [urlInput, setUrlInput] = useState<string>('');
   const [logs, setLogs] = useState<AdminApiLogs[]>([]);
 
+  const normalizeCodes = (codes: number[]) => {
+    if (codes.includes(0)) return [0, 200, 400, 500, 401, 403, 404];
+    return codes;
+  };
+
   const getLogs = async () => {
-    filterRequestLogs(selectedStatusCodes, urlInput).then(logs => {
+    filterRequestLogs(normalizeCodes(selectedStatusCodes), urlInput).then(logs => {
       if (!logs) return;
       setLogs(logs);
     });

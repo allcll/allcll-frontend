@@ -113,7 +113,7 @@ export function useCheckCrawlerSeat() {
 }
 
 /**
- * 계절학기 여석 크롤링을
+ * 계절학기 여석 크롤링을 시작하는 API입니다.
  * @returns
  */
 export function useStartSeasonCrawlersSeat() {
