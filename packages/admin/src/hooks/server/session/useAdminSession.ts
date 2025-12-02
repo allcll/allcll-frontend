@@ -58,23 +58,27 @@ export function useAdminSession(): UseQueryResult<Session, Error> {
  * tokenU가 없으면 전체 sessions 캐시를 무효화합니다.
  * @returns
  */
-export function usePostAdminSession() {
+export function usePostAdminSession(options?: { onSuccess?: () => void }) {
   const queryClient = useQueryClient();
-
   const toast = useToastNotification.getState().addToast;
 
   return useMutation({
     mutationFn: postAdminSessions,
 
-    onSuccess: (_data, variables) => {
+    onSuccess: async (_data, variables) => {
       if (variables?.tokenU) {
-        queryClient.invalidateQueries({ queryKey: ['sessions', variables.tokenU] }).then();
+        await queryClient.invalidateQueries({ queryKey: ['sessions', variables.tokenU] });
         localStorage.setItem('userId', variables.tokenU || '');
       } else {
-        queryClient.invalidateQueries({ queryKey: ['sessions'] }).then();
+        await queryClient.invalidateQueries({ queryKey: ['sessions'] });
       }
 
+      /**요청 성공시, session 상태도 무효화 -> 다시 GET요청 */
+      await queryClient.invalidateQueries({ queryKey: ['check-admin-session'] });
+
       toast('인증 정보가 성공적으로 업데이트되었습니다.');
+
+      options?.onSuccess?.();
     },
 
     onError: err => {

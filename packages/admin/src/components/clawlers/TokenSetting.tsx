@@ -20,13 +20,19 @@ interface tokensType {
 
 const tokenType = ['tokenJ', 'tokenU', 'tokenR', 'tokenL'];
 
-function TokenSetting() {
+interface ITokenSetting {
+  setIsSessionSet?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function TokenSetting({ setIsSessionSet }: ITokenSetting) {
   const userId = localStorage.getItem('userId') ?? '';
   const { data: serverTokens } = useAdminSession();
 
   const [tokens, setTokens] = useState<tokensType>(initialTokens);
   const [session, setSession] = useState<string>(localStorage.getItem('session') || '');
-  const { mutate: postAdminSession } = usePostAdminSession();
+  const { mutate: postAdminSession } = usePostAdminSession({
+    onSuccess: () => setIsSessionSet && setIsSessionSet(true),
+  });
 
   useEffect(() => {
     setTokens(
@@ -41,9 +47,10 @@ function TokenSetting() {
     setTokens(prev => ({ ...prev, [key]: value }));
   };
 
-  const submitTokens = (e: React.FormEvent) => {
+  const submitTokens = async (e: React.FormEvent) => {
     e.preventDefault();
     postAdminSession(tokens);
+
     localStorage.setItem('session', session);
   };
 

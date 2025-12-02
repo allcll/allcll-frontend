@@ -28,7 +28,7 @@ function SessionList() {
             className="grid grid-cols-3 px-3 py-2 text-sm text-gray-700 border-b hover:bg-gray-50 transition"
           >
             <div className="text-center">{data?.userId}</div>
-            <div className="text-center">{formatTime(data?.startTime)}</div>
+            <div className="text-center">{formatTime(data?.startTime ?? '')}</div>
             <div className={`text-center font-medium ${data?.isActive ? 'text-green-600' : 'text-red-500'}`}>
               <InfoChip label={data?.isActive ? 'ON' : 'OFF'} type={data?.isActive ? 'success' : 'error'} />
             </div>
