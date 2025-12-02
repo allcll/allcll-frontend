@@ -38,6 +38,21 @@ const cancelCrawlersSeat = async () => {
   return response;
 };
 
+const startSeasonCrawlersSeat = async (userId: string) => {
+  const response = await fetchOnAPI(`/api/admin/season-seat/start?userId=${userId}`, {
+    method: 'POST',
+  });
+
+  const response_body = await response.text();
+  if (!response.ok) {
+    await addRequestLog(response, 'POST', '');
+    throw new Error(response_body);
+  }
+
+  await addRequestLog(response, 'POST', '');
+  return response;
+};
+
 interface CheckedCrawlerSeatResponse {
   userId: string;
   isActive: boolean;
@@ -94,5 +109,22 @@ export function useCheckCrawlerSeat() {
     staleTime: 0, // 항상 stale로 간주
     refetchInterval: REFETCH_INTERVAL,
     enabled: isValid,
+  });
+}
+
+/**
+ * 계절학기 여석 크롤링을
+ * @returns
+ */
+export function useStartSeasonCrawlersSeat() {
+  const toast = useToastNotification.getState().addToast;
+  const session = getSessionConfig();
+
+  return useMutation({
+    mutationFn: () => startSeasonCrawlersSeat(session?.userId ?? ''),
+    onSuccess: async () => {
+      toast('계절 여석 크롤링이 시작되었습니다.');
+    },
+    onError: err => console.error(err),
   });
 }

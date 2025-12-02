@@ -1,10 +1,10 @@
-import SessionAdmin from '@/components/clawlers/SessionAdmin';
+import SessionAdmin from '@/components/clawlers/AuthTokenViewer';
 import Control from '@/components/clawlers/Control';
 import TostNotification from '@allcll/common/components/toast/ToastNotification';
 import DepartmentControl from '@/components/clawlers/SubjectAndDepartmentControl';
 import { SetupStep } from '@/utils/type';
 import SetupProgress from './SetupProgress';
-import TokenSetting from '@/components/clawlers/TokenSetting';
+import TokenSetting from '@/components/clawlers/AuthTokenSetting';
 import { useCheckAdminSession } from '@/hooks/server/session/useAdminSession';
 import { getSessionConfig } from '@/utils/sessionConfig';
 import SessionList from '@/components/dashboard/SessionList';
