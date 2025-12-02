@@ -24,7 +24,7 @@ interface ITokenSetting {
   setIsSessionSet?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function TokenSetting({ setIsSessionSet }: ITokenSetting) {
+function AuthTokenSetting({ setIsSessionSet }: ITokenSetting) {
   const userId = localStorage.getItem('userId') ?? '';
   const { data: serverTokens } = useAdminSession();
 
@@ -95,4 +95,4 @@ function TokenSetting({ setIsSessionSet }: ITokenSetting) {
   );
 }
 
-export default TokenSetting;
+export default AuthTokenSetting;
