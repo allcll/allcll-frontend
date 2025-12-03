@@ -20,7 +20,7 @@ admin/
 │   ├── pages/          # 페이지 컴포넌트
 │   ├── services/       # API 서비스
 │   ├── App.tsx         # 메인 App 컴포넌트
-│   ├── index.tsx       # 진입점
+│   ├── index.ts       # 진입점
 ├── tests/              # 테스트 파일
 ├── package.json        # 프로젝트 설정 및 의존성 관리 파일
 └── README.md           # 프로젝트 설명 파일

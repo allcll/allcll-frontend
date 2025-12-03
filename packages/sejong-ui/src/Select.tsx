@@ -1,7 +1,7 @@
-import { SelectHTMLAttributes } from 'react';
+import type { ComponentPropsWithRef } from 'react';
 import EssentialTag from './EssentialTag.tsx';
 
-interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectProps extends ComponentPropsWithRef<'select'> {
   essential?: boolean;
 }
 

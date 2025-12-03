@@ -7,6 +7,7 @@ import Checkbox from '@common/components/checkbox/Checkbox';
 import SejongUI from '@allcll/sejong-ui';
 import Modal from '@common/components/modal/Modal.tsx';
 import ModalHeader from '@/components/sejongUI/modal/ModalHeader.tsx';
+import { VisitTutorial } from '@/utils/simulation/VisitTutorial.ts';
 
 const tutorialVideos = [
   {
@@ -31,21 +32,6 @@ const tutorialVideos = [
   },
 ];
 
-export function checkExpiredTutorialPop() {
-  const visitedDate = localStorage.getItem('visitedTutorial');
-  if (!visitedDate) {
-    return true;
-  }
-
-  const today = new Date();
-  const visited = new Date(visitedDate);
-
-  const timeDifference = today.getTime() - visited.getTime();
-  const dayDifference = timeDifference / (1000 * 60 * 60 * 24);
-
-  return dayDifference >= 7;
-}
-
 function TutorialModal() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [popupChecked, setPopupChecked] = useState(false);
@@ -54,7 +40,7 @@ function TutorialModal() {
   const closeModal = useSimulationModalStore(state => state.closeModal);
   const isMobile = useMobile();
   const youTubeSize = isMobile ? { width: '250', height: '141' } : { width: '600', height: '338' };
-  const showTutorial = checkExpiredTutorialPop();
+  const showTutorial = VisitTutorial.get();
 
   if (!showTutorial) {
     openModal('wish');
@@ -73,9 +59,7 @@ function TutorialModal() {
       return;
     }
 
-    const TUTORIAL_VISITED = new Date().toISOString();
-    localStorage.setItem('visitedTutorial', TUTORIAL_VISITED);
-
+    VisitTutorial.set();
     setPopupChecked(true);
   };
 
