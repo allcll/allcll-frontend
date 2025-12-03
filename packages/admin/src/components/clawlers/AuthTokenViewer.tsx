@@ -3,7 +3,7 @@ import CustomButton from '@allcll/common/components/Button';
 import Card from '@allcll/common/components/Card';
 const tokenKeys = ['tokenJ', 'tokenU', 'tokenR', 'tokenL'];
 
-function SessionAdmin() {
+function AuthTokenViewer() {
   const { data, isFetching, refetch } = useAdminSession();
 
   return (
@@ -30,4 +30,4 @@ function SessionAdmin() {
   );
 }
 
-export default SessionAdmin;
+export default AuthTokenViewer;

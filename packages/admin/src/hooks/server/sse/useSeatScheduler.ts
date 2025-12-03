@@ -1,5 +1,5 @@
 import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useToastNotification from '@allcll/common/store/useToastNotification';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
 import { REFETCH_INTERVAL } from '@/hooks/server/session/useAdminSession.ts';
@@ -50,11 +50,14 @@ const checkSseScheduler = async () => {
  */
 export function useStartSseScheduler() {
   const toast = useToastNotification.getState().addToast;
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: startSseScheduler,
     onSuccess: async () => {
       toast('여석 데이터 전송이 시작되었습니다.');
+
+      await queryClient.invalidateQueries({ queryKey: ['check-sse-scheduler'] });
     },
     onError: err => console.error(err),
   });
@@ -66,11 +69,14 @@ export function useStartSseScheduler() {
  */
 export function useCancelSseScheduler() {
   const toast = useToastNotification.getState().addToast;
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: cancelSseScheduler,
     onSuccess: async () => {
       toast('여석 데이터 전송이 취소되었습니다.');
+
+      await queryClient.invalidateQueries({ queryKey: ['check-sse-scheduler'] });
     },
     onError: err => console.error(err),
   });
@@ -82,7 +88,7 @@ export function useCancelSseScheduler() {
  */
 export function useCheckSseScheduler() {
   return useQuery({
-    queryKey: ['crawlers-sse-scheduler'],
+    queryKey: ['check-sse-scheduler'],
     queryFn: checkSseScheduler,
     select: data => data.isSending,
     staleTime: 0,

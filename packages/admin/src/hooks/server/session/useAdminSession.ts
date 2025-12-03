@@ -60,19 +60,21 @@ export function useAdminSession(): UseQueryResult<Session, Error> {
  */
 export function usePostAdminSession() {
   const queryClient = useQueryClient();
-
   const toast = useToastNotification.getState().addToast;
 
   return useMutation({
     mutationFn: postAdminSessions,
 
-    onSuccess: (_data, variables) => {
+    onSuccess: async (_data, variables) => {
       if (variables?.tokenU) {
-        queryClient.invalidateQueries({ queryKey: ['sessions', variables.tokenU] }).then();
+        await queryClient.invalidateQueries({ queryKey: ['sessions', variables.tokenU] });
         localStorage.setItem('userId', variables.tokenU || '');
       } else {
-        queryClient.invalidateQueries({ queryKey: ['sessions'] }).then();
+        await queryClient.invalidateQueries({ queryKey: ['sessions'] });
       }
+
+      /**요청 성공시, session 상태도 무효화 -> 다시 GET요청 */
+      await queryClient.invalidateQueries({ queryKey: ['check-session'] });
 
       toast('인증 정보가 성공적으로 업데이트되었습니다.');
     },
@@ -104,7 +106,7 @@ const getUserSessonStatus = async () => {
  */
 export function useCheckAdminSession() {
   return useQuery({
-    queryKey: ['check-admin-session'],
+    queryKey: ['check-session'],
     queryFn: () => getUserSessonStatus(),
     refetchInterval: REFETCH_INTERVAL,
     select: data => data.userSessionStatusResponses,
