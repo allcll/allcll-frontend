@@ -31,11 +31,27 @@ function MultiSelectFilterOption<VALUE extends string | number>({
   className,
   ItemComponent,
 }: Readonly<IMultiSelectFilter<VALUE>>) {
+  const isAllSelected = selectedValues.includes(0 as VALUE);
+
   const checkSelected = (value: VALUE) => {
+    if (isAllSelected) return true;
     return selectedValues.includes(value);
   };
 
   const handleChangeCheckbox = (optionValue: VALUE) => {
+    const isCurrentlyAll = selectedValues.includes(0 as VALUE);
+
+    if (optionValue === (0 as VALUE)) {
+      if (isCurrentlyAll) {
+        setFilter(field, []);
+        return;
+      } else {
+        const allValues = options.map(option => option.value);
+        setFilter(field, allValues);
+        return;
+      }
+    }
+
     const checked = selectedValues.includes(optionValue);
     const newValues = checked
       ? selectedValues.filter(selected => selected !== optionValue)

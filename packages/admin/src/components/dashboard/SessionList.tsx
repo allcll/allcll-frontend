@@ -1,12 +1,13 @@
 import { useCheckAdminSession } from '@/hooks/server/session/useAdminSession';
 import { formatTime } from '@/utils/formatTime';
+import Card from '@allcll/common/components/Card';
 import InfoChip from '@allcll/common/components/chip/InfoChip';
 
 function SessionList() {
   const { data: sessionStatus, isLoading, error } = useCheckAdminSession();
 
   return (
-    <>
+    <Card>
       <h2 className="text-lg text-gray-700 font-bold mb-4">세션 목록</h2>
 
       <div className="w-full bg-white shadow rounded-lg p-6">
@@ -28,14 +29,14 @@ function SessionList() {
             className="grid grid-cols-3 px-3 py-2 text-sm text-gray-700 border-b hover:bg-gray-50 transition"
           >
             <div className="text-center">{data?.userId}</div>
-            <div className="text-center">{formatTime(data?.startTime)}</div>
+            <div className="text-center">{formatTime(data?.startTime ?? '')}</div>
             <div className={`text-center font-medium ${data?.isActive ? 'text-green-600' : 'text-red-500'}`}>
               <InfoChip label={data?.isActive ? 'ON' : 'OFF'} type={data?.isActive ? 'success' : 'error'} />
             </div>
           </div>
         ))}
       </div>
-    </>
+    </Card>
   );
 }
 

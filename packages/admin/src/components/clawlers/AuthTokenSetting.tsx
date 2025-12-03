@@ -20,7 +20,11 @@ interface tokensType {
 
 const tokenType = ['tokenJ', 'tokenU', 'tokenR', 'tokenL'];
 
-function TokenSetting() {
+interface ITokenSetting {
+  setIsSessionSet?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function AuthTokenSetting({}: ITokenSetting) {
   const userId = localStorage.getItem('userId') ?? '';
   const { data: serverTokens } = useAdminSession();
 
@@ -41,9 +45,10 @@ function TokenSetting() {
     setTokens(prev => ({ ...prev, [key]: value }));
   };
 
-  const submitTokens = (e: React.FormEvent) => {
+  const submitTokens = async (e: React.FormEvent) => {
     e.preventDefault();
     postAdminSession(tokens);
+
     localStorage.setItem('session', session);
   };
 
@@ -88,4 +93,4 @@ function TokenSetting() {
   );
 }
 
-export default TokenSetting;
+export default AuthTokenSetting;

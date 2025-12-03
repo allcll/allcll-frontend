@@ -3,9 +3,10 @@ import { Dispatch, SetStateAction } from 'react';
 import Card from '@allcll/common/components/Card';
 import CheckboxAdapter from '@allcll/common/components/checkbox/CheckboxAdapter';
 import Filtering from '@allcll/common/components/filtering/Filtering';
-import MultiSelectFilterOption, { OptionType } from './MultiSelectFilterOption';
+import MultiSelectFilterOption, { OptionType } from '../common/MultiSelectFilterOption';
 
 const StatusCodes: OptionType<number>[] = [
+  { value: 0, label: 'ALL' },
   { value: 200, label: '200' },
   { value: 400, label: '400' },
   { value: 401, label: '401' },
