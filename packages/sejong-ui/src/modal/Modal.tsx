@@ -9,7 +9,7 @@ interface IModalProps {
 
 function Modal({ children, onBackdropClick, preventAutoFocus, noBorder }: Readonly<IModalProps>) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const modalClassName = '' + (noBorder ? '' : 'border-3 border-black ');
+  const modalClassName = '' + (noBorder ? '' : 'border-[3px] border-slate-800 ');
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
