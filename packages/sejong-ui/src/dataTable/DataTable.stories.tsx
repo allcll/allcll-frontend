@@ -50,17 +50,16 @@ const sampleData: User[] = [
 ];
 
 const basicColumns: ColumnDefinition<User>[] = [
-  { header: 'ID', accessorKey: 'id' },
-  { header: '이름', accessorKey: 'name' },
-  { header: '이메일', accessorKey: 'email' },
-  { header: '역할', accessorKey: 'role' },
+  { header: 'ID', cell: user => user.id },
+  { header: '이름', cell: user => user.name },
+  { header: '이메일', cell: user => user.email },
+  { header: '역할', cell: user => user.role },
 ];
 
 const columnsWithCustomCell: ColumnDefinition<User>[] = [
   ...basicColumns,
   {
     header: '관리',
-    accessorKey: 'id', // Accessor is still useful as a key
     cell: item => (
       <div className="flex justify-center gap-2">
         <Button variant="primary" size="sm" onClick={fn()} className="text-xs py-0.5 px-1">
@@ -94,6 +93,7 @@ export const Basic: Story = {
   args: {
     columns: basicColumns,
     data: sampleData,
+    keyInfo: 'id',
   },
 };
 
@@ -102,6 +102,7 @@ export const WithCustomCells: Story = {
   args: {
     columns: columnsWithCustomCell,
     data: sampleData,
+    keyInfo: 'id',
   },
 };
 
@@ -111,5 +112,6 @@ export const Empty: Story = {
     columns: basicColumns,
     data: [],
     emptyComponent: <NothingComponent />,
+    keyInfo: 'id',
   },
 };
