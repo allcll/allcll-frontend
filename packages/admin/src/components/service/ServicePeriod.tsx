@@ -45,7 +45,7 @@ const initPeriodService: PreiodService[] = [
   {
     id: 'live',
     startDate: '2025-12-01',
-    endDate: '2025-12-03',
+    endDate: '2025-12-10',
     message: '',
   },
 ];
