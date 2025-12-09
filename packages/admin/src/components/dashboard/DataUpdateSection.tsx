@@ -2,7 +2,7 @@ import useDepartments from '@/hooks/server/useDepartments';
 import usePreRealSeats from '@/hooks/server/usePreRealSeats';
 import useSubject from '@/hooks/server/useSubject';
 import useWishes from '@/hooks/server/useWishes';
-import { Card } from '@allcll/allcll-ui';
+import { Card, Heading } from '@allcll/allcll-ui';
 
 function DataUpdateSection() {
   const { refetch: basketRefetch, isFetching: isBasketFetching } = useWishes();
@@ -24,7 +24,8 @@ function DataUpdateSection() {
 
   return (
     <section>
-      <h2 className="text-lg text-gray-700 font-bold mb-4">데이터 업데이트 상태</h2>
+      <Heading level={3}>데이터 업데이트</Heading>
+
       <Card>
         <table className="w-full text-xs text-left border-separate border-spacing-y-2">
           <thead>

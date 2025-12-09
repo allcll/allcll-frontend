@@ -4,7 +4,7 @@ import Card from '@allcll/common/components/Card';
 import CheckboxAdapter from '@allcll/common/components/checkbox/CheckboxAdapter';
 import Filtering from '@allcll/common/components/filtering/Filtering';
 import MultiSelectFilterOption, { OptionType } from '../common/MultiSelectFilterOption';
-import { Label, TextField } from '@allcll/allcll-ui';
+import { Heading, Label, SupportingText, TextField } from '@allcll/allcll-ui';
 
 const StatusCodes: OptionType<number>[] = [
   { value: 0, label: 'ALL' },
@@ -33,8 +33,8 @@ function RequestLogs({ urlInput, setUrlInput, selectedStatusCodes, setSelectedSt
   return (
     <section className="sticky top-16">
       <Card>
-        <h2 className="text-md font-semibold mb-3">API 요청 로그</h2>
-        <p className="text-gray-600 mb-4">API 요청 로그를 필터링하여 조회합니다.</p>
+        <Heading level={3}>API 요청 로그</Heading>
+        <SupportingText>API 요청 로그를 필터링하여 조회합니다.</SupportingText>
 
         <div className="w-full gap-4 justify-between max-w-3xl mx-auto space-y-4">
           <div className="flex flex-col gap-2">

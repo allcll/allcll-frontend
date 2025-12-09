@@ -2,6 +2,7 @@ import StatusCard from '@/components/dashboard/StatusCard';
 import ServiceOpen from '@/components/dashboard/ServiceOpen';
 import SesstionList from '@/components/dashboard/SessionList';
 import { useSystemStatus } from '@/hooks/useSystemStatus';
+import { Heading } from '@allcll/allcll-ui';
 
 export enum SystemStatusKey {
   SESSION = 'SESSION',
@@ -23,7 +24,9 @@ function Dashboard() {
   return (
     <div className="p-6 space-y-10">
       <section>
-        <h2 className="text-lg text-gray-700 font-bold mb-4">시스템 모니터링</h2>
+        <Heading size="large">시스템 모니터링</Heading>
+
+        <div className="mb-2" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {Object.entries(STATUS_CONFIG).map(([key, config]) => {

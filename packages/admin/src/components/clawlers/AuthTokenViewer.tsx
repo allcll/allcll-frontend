@@ -1,5 +1,5 @@
 import { useAdminSession } from '@/hooks/server/session/useAdminSession';
-import { Button } from '@allcll/allcll-ui';
+import { Button, Heading, SupportingText } from '@allcll/allcll-ui';
 import Card from '@allcll/common/components/Card';
 const tokenKeys = ['tokenJ', 'tokenU', 'tokenR', 'tokenL'];
 
@@ -9,8 +9,8 @@ function AuthTokenViewer() {
   return (
     <section>
       <Card>
-        <h3 className="text-lg font-semibold mb-3">인증정보 조회</h3>
-        <p className="text-sm text-gray-500 mb-4">현재 설정된 인증 정보를 조회합니다.</p>
+        <Heading level={3}>인증정보 조회</Heading>
+        <SupportingText>현재 설정된 인증 정보를 조회합니다.</SupportingText>
 
         <div className="flex gap-2 mb-4">
           <Button onClick={() => refetch()} variant="outlined" size="medium" disabled={isFetching}>

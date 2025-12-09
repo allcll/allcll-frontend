@@ -1,13 +1,13 @@
 import { useCheckAdminSession } from '@/hooks/server/session/useAdminSession';
 import { formatTime } from '@/utils/formatTime';
-import { Badge, Card } from '@allcll/allcll-ui';
+import { Badge, Card, Heading } from '@allcll/allcll-ui';
 
 function SessionList() {
   const { data: sessionStatus, isLoading, error } = useCheckAdminSession();
 
   return (
     <Card>
-      <h2 className="text-lg text-gray-700 font-bold mb-4">세션 목록</h2>
+      <Heading level={3}>세션 목록</Heading>
 
       <div className="w-full bg-white shadow rounded-lg p-6 overflow-x-auto">
         <table className="min-w-full border-collapse">

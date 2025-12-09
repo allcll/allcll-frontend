@@ -1,6 +1,6 @@
 import { CralwersParams, useClawlersDepartments } from '@/hooks/server/clawlers/useDepartmentClawlers';
 import { useSubjectsClawlers } from '@/hooks/server/clawlers/useSubjuectClawlers';
-import { Button, TextField } from '@allcll/allcll-ui';
+import { Button, Heading, SupportingText, TextField } from '@allcll/allcll-ui';
 import Card from '@allcll/common/components/Card';
 import { useState } from 'react';
 
@@ -32,8 +32,8 @@ function SubjectAndDepartmentControl() {
   return (
     <section>
       <Card>
-        <h3 className="text-md font-semibold mb-3">학과 및 과목 크롤링 제어</h3>
-        <p className="text-sm text-gray-500 mb-4">학과 및 과목 크롤러를 제어합니다.</p>
+        <Heading level={3}>학과 및 과목 크롤링 제어</Heading>
+        <SupportingText>학과 및 과목 크롤러를 제어합니다.</SupportingText>
 
         <div className="flex flex-col gap-3">
           {params.map(param => (

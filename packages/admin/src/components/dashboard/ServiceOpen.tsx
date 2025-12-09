@@ -1,4 +1,4 @@
-import { Badge, Card } from '@allcll/allcll-ui';
+import { Badge, Card, Heading } from '@allcll/allcll-ui';
 
 const systemOpenStatus = [
   {
@@ -30,7 +30,7 @@ const systemOpenStatus = [
 function ServiceOpen() {
   return (
     <section>
-      <h2 className="text-lg text-gray-700 font-bold mb-4">서비스 Open 여부</h2>
+      <Heading level={3}>서비스 Open 여부</Heading>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         {systemOpenStatus.map(({ name, start, end, status }) => (

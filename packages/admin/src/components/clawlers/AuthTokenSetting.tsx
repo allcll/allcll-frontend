@@ -1,7 +1,7 @@
 import { useAdminSession, usePostAdminSession } from '@/hooks/server/session/useAdminSession';
 import Card from '@allcll/common/components/Card';
 import { useEffect, useState } from 'react';
-import { Button, TextField } from '@allcll/allcll-ui';
+import { Button, Heading, SupportingText, TextField } from '@allcll/allcll-ui';
 
 const initialTokens = {
   tokenJ: '',
@@ -53,8 +53,8 @@ function AuthTokenSetting({}: ITokenSetting) {
 
   return (
     <Card>
-      <h3 className="text-md font-semibold">인증 정보를 먼저 설정해주세요.</h3>
-      <span className="text-sm text-gray-500">크롤러가 사용할 인증 토큰과 키를 설정합니다.</span>
+      <Heading level={3}>인증 정보를 먼저 설정해주세요.</Heading>
+      <SupportingText>크롤러가 사용할 인증 토큰과 키를 설정합니다.</SupportingText>
 
       <form onSubmit={submitTokens}>
         <div className="grid md:grid-cols-2 gap-4 mt-4">

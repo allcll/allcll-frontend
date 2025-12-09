@@ -1,4 +1,4 @@
-import { Badge, Card } from '@allcll/allcll-ui';
+import { Badge, Card, Heading } from '@allcll/allcll-ui';
 
 interface IStatusCard {
   title: string;
@@ -10,7 +10,7 @@ function StatusCard({ title, status, description }: IStatusCard) {
   return (
     <Card>
       <div className="flex justify-between items-start">
-        <h3 className="text-md text-gray-700 font-semibold">{title}</h3>
+        <Heading level={6}>{title}</Heading>
       </div>
       {description && <p className="text-sm text-gray-500">{description}</p>}
 

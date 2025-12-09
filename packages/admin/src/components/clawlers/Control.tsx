@@ -7,6 +7,7 @@ import UpdateData from './UpdateData';
 import { useAdminActions } from '@/hooks/useAdminActions';
 import ControlRow from './ControlRow';
 import { useCheckAdminSession } from '@/hooks/server/session/useAdminSession';
+import { Heading, SupportingText } from '@allcll/allcll-ui';
 
 const SEASON_DATE = new Date('2025-12-04T00:00:00+09:00');
 
@@ -33,8 +34,8 @@ function Control() {
 
   return (
     <Card>
-      <h3 className="text-md font-semibold mb-3">크롤러 실행 제어</h3>
-      <p className="text-sm text-gray-500 mb-4">크롤러의 특정 기능을 제어합니다.</p>
+      <Heading level={3}>크롤러 제어</Heading>
+      <SupportingText>크롤러의 특정 기능을 제어합니다.</SupportingText>
 
       <div className="space-y-4">
         <ControlRow
