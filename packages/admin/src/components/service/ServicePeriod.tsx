@@ -1,5 +1,5 @@
 import { PreiodService } from '@/utils/type';
-import { Button, Card, Label } from '@allcll/allcll-ui';
+import { Button, Card, Heading, Label, SupportingText } from '@allcll/allcll-ui';
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -73,8 +73,9 @@ function ServicePeriod() {
     <form onSubmit={submitServicePeriod}>
       <section>
         <Card>
-          <h3 className="text-md font-semibold mb-1">서비스별 운영 기간 설정</h3>
-          <p className="text-sm text-gray-500 mb-4">각 서비스의 오픈 시작일과 종료일을 설정합니다.</p>
+          <Heading level={3}>서비스 운영 기간 설정</Heading>
+          <SupportingText>각 서비스의 오픈 시작일과 종료일을 설정합니다.</SupportingText>
+
           <div className="space-y-6">
             {serviceList.map((label, index) => (
               <div key={label.id} className="flex flex-row gap-4">

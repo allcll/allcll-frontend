@@ -1,4 +1,4 @@
-import { Card, Checkbox } from '@allcll/allcll-ui';
+import { Card, Checkbox, Heading, SupportingText } from '@allcll/allcll-ui';
 import Filtering from '@allcll/common/components/filtering/Filtering';
 import { useState } from 'react';
 
@@ -10,8 +10,8 @@ function SemesterSetting() {
   return (
     <section>
       <Card>
-        <h3 className="text-md font-semibold mb-1">전체 학기 설정</h3>
-        <p className="text-sm text-gray-500 mb-3">서비스 전체에서 사용할 학기를 설정합니다.</p>
+        <Heading level={3}>학기 설정</Heading>
+        <SupportingText>서비스 전체에서 사용할 학기를 설정합니다.</SupportingText>
 
         <Filtering
           label={semester ?? '학기를 선택해주세요.'}
