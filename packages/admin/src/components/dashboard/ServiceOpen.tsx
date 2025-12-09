@@ -1,5 +1,4 @@
-import Card from '@allcll/common/components/Card';
-import InfoChip from '@allcll/common/components/chip/InfoChip';
+import { Badge, Card } from '@allcll/allcll-ui';
 
 const systemOpenStatus = [
   {
@@ -35,10 +34,10 @@ function ServiceOpen() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         {systemOpenStatus.map(({ name, start, end, status }) => (
-          <Card key={name} className="h-[120px] flex flex-col justify-between">
+          <Card key={name}>
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-gray-700">{name}</span>
-              <InfoChip label={status} type={status === 'OPEN' ? 'success' : 'error'} />
+              <Badge variant={status === 'OPEN' ? 'success' : 'danger'}>{status}</Badge>
             </div>
             <div className="text-xs text-gray-500">
               <p>시작: {start}</p>

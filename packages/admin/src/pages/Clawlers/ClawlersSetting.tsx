@@ -23,7 +23,7 @@ function CrawlerSettings() {
       <h1 className="text-lg text-gray-700 font-bold mb-4">크롤러 설정</h1>
       <SetupProgress current={isSessionSet ? SetupStep.CONTROL : SetupStep.TOKEN} />
       <div className="flex flex-col gap-4">
-        {!mySessionStatus ? (
+        {mySessionStatus ? (
           <>
             <TokenSetting />
             <SessionList />

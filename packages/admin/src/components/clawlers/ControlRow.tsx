@@ -1,4 +1,4 @@
-import Toggle from '../common/Toggle';
+import { Toggle } from '@allcll/allcll-ui';
 
 interface ControlRowProps {
   label: string;

@@ -1,7 +1,7 @@
 import { useAdminSession, usePostAdminSession } from '@/hooks/server/session/useAdminSession';
 import Card from '@allcll/common/components/Card';
 import { useEffect, useState } from 'react';
-import * as React from 'react';
+import { Button, TextField } from '@allcll/allcll-ui';
 
 const initialTokens = {
   tokenJ: '',
@@ -10,7 +10,7 @@ const initialTokens = {
   tokenL: '',
 };
 
-interface tokensType {
+interface TokensType {
   tokenJ: string;
   tokenU: string;
   tokenR: string;
@@ -28,7 +28,7 @@ function AuthTokenSetting({}: ITokenSetting) {
   const userId = localStorage.getItem('userId') ?? '';
   const { data: serverTokens } = useAdminSession();
 
-  const [tokens, setTokens] = useState<tokensType>(initialTokens);
+  const [tokens, setTokens] = useState<TokensType>(initialTokens);
   const [session, setSession] = useState<string>(localStorage.getItem('session') || '');
   const { mutate: postAdminSession } = usePostAdminSession();
 
@@ -41,14 +41,13 @@ function AuthTokenSetting({}: ITokenSetting) {
     );
   }, [serverTokens]);
 
-  const handleTokenChange = (key: keyof tokensType, value: string) => {
+  const handleTokenChange = (key: keyof TokensType, value: string) => {
     setTokens(prev => ({ ...prev, [key]: value }));
   };
 
   const submitTokens = async (e: React.FormEvent) => {
     e.preventDefault();
     postAdminSession(tokens);
-
     localStorage.setItem('session', session);
   };
 
@@ -56,37 +55,39 @@ function AuthTokenSetting({}: ITokenSetting) {
     <Card>
       <h3 className="text-md font-semibold">인증 정보를 먼저 설정해주세요.</h3>
       <span className="text-sm text-gray-500">크롤러가 사용할 인증 토큰과 키를 설정합니다.</span>
+
       <form onSubmit={submitTokens}>
         <div className="grid md:grid-cols-2 gap-4 mt-4">
           {tokenType.map(token => (
-            <div key={token}>
-              <label className="block text-sm font-semibold text-gray-700 capitalize">{token}</label>
-              <input
-                type="text"
-                value={tokens[token]}
-                onChange={e => handleTokenChange(token, e.target.value)}
-                placeholder="토큰을 입력하세요"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
-                required
-              />
-            </div>
+            <TextField
+              key={token}
+              id={token}
+              label={token}
+              size="medium"
+              value={tokens[token]}
+              required
+              placeholder="토큰을 입력하세요"
+              onChange={e => handleTokenChange(token, e.target.value)}
+            />
           ))}
         </div>
 
-        <label className="block text-sm mb-1 mt-4 text-gray-700 capitalize">어드민 인증 세션</label>
-        <input
-          type="text"
-          value={session}
-          onChange={e => setSession(e.target.value)}
-          placeholder="어드민 인증 세션 입력"
-          required
-          className="w-full pt-2 px-3 py-2 border border-gray-300 rounded-md text-sm"
-        />
+        <div className="mt-4 flex flex-col gap-4">
+          <TextField
+            id="adminSession"
+            label="어드민 인증 세션"
+            size="medium"
+            required={true}
+            value={session}
+            placeholder="어드민 인증 세션 입력"
+            onChange={e => setSession(e.target.value)}
+          />
 
-        <div className="mt-4 flex justify-end">
-          <button type="submit" className="px-4 py-2 text-sm rounded-lg bg-blue-500 text-white">
-            토큰 설정 요청
-          </button>
+          <div className="flex justify-end">
+            <Button variant="primary" size="medium" type="submit">
+              토큰 설정 요청
+            </Button>
+          </div>
         </div>
       </form>
     </Card>

@@ -1,5 +1,5 @@
 import { PreiodService } from '@/utils/type';
-import Card from '@allcll/common/components/Card';
+import { Button, Card, Label } from '@allcll/allcll-ui';
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -79,7 +79,7 @@ function ServicePeriod() {
             {serviceList.map((label, index) => (
               <div key={label.id} className="flex flex-row gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1">{label.name} 시작일</label>
+                  <Label className="block text-sm font-medium mb-1">{label.name} 시작일</Label>
                   <DatePicker
                     selected={serviceDates[index].startDate ? new Date(serviceDates[index].startDate) : null}
                     onChange={date => updateDate(index, 'startDate', date)}
@@ -89,7 +89,7 @@ function ServicePeriod() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">{label.name} 종료일</label>
+                  <Label className="block text-sm font-medium mb-1">{label.name} 종료일</Label>
                   <DatePicker
                     selected={serviceDates[index].startDate ? new Date(serviceDates[index].startDate) : null}
                     onChange={date => updateDate(index, 'endDate', date)}
@@ -105,9 +105,9 @@ function ServicePeriod() {
       </section>
 
       <div className="flex justify-end mt-5 ">
-        <button type="submit" className="px-4 py-2 text-sm bg-blue-500 text-white rounded-lg">
+        <Button type="submit" variant="primary" size="medium">
           전체 저장
-        </button>
+        </Button>
       </div>
     </form>
   );

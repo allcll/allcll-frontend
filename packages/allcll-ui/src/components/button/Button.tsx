@@ -49,9 +49,9 @@ function getSizeClass(size: string) {
     case 'small':
       return 'text-sm px-3 py-1';
     case 'medium':
-      return 'text-base px-4 py-1';
+      return 'text-sm px-4 py-2';
     case 'large':
-      return 'text-lg px-5 py-1';
+      return 'text-md px-5 py-2';
     default:
       return '';
   }

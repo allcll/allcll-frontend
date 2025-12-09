@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { Card, Checkbox } from '@allcll/allcll-ui';
 import Filtering from '@allcll/common/components/filtering/Filtering';
-import Card from '@allcll/common/components/Card';
-import Checkbox from '@allcll/common/components/checkbox/Checkbox';
+import { useState } from 'react';
 
 const semesters = ['2025-동계'];
 

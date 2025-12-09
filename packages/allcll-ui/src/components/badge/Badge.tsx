@@ -8,7 +8,7 @@ interface IBadge {
 function Badge({ variant, children }: IBadge) {
   const variantClass = getVariantClass(variant);
 
-  return <div className={`${variantClass} px-2 py-1 text-sm rounded-full `}>{children}</div>;
+  return <div className={`${variantClass} px-2 py-1 text-xs rounded-full inline-flex`}>{children}</div>;
 }
 
 export default Badge;
@@ -16,11 +16,11 @@ export default Badge;
 function getVariantClass(variant: BadgeVariants) {
   switch (variant) {
     case 'success':
-      return 'bg-green-100 text-green-700';
+      return 'bg-green-100 text-green-600 font-semibold';
     case 'warning':
-      return 'bg-yellow-100 text-yellow-700';
+      return 'bg-yellow-100 text-yellow-600 font-semibold';
     case 'danger':
-      return 'bg-secondary-100 text-secondary-700';
+      return 'bg-secondary-100 text-secondary-600 font-semibold';
     default:
       return '';
   }

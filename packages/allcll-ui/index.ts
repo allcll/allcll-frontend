@@ -20,3 +20,4 @@ export { default as TextField } from './src/components/textfield/TextField';
 export { default as Toast } from './src/components/toast/Toast';
 export { default as Toggle } from './src/components/toggle/toggle';
 export { default as Tooltip } from './src/components/tooltip/Tooltip';
+export * from './colors';

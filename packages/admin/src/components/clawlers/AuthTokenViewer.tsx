@@ -1,5 +1,5 @@
 import { useAdminSession } from '@/hooks/server/session/useAdminSession';
-import CustomButton from '@allcll/common/components/Button';
+import { Button } from '@allcll/allcll-ui';
 import Card from '@allcll/common/components/Card';
 const tokenKeys = ['tokenJ', 'tokenU', 'tokenR', 'tokenL'];
 
@@ -13,9 +13,9 @@ function AuthTokenViewer() {
         <p className="text-sm text-gray-500 mb-4">현재 설정된 인증 정보를 조회합니다.</p>
 
         <div className="flex gap-2 mb-4">
-          <CustomButton onClick={() => refetch()} variants="secondary" disabled={isFetching}>
+          <Button onClick={() => refetch()} variant="outlined" size="medium" disabled={isFetching}>
             {isFetching ? '조회 중…' : '인증정보 조회'}
-          </CustomButton>
+          </Button>
         </div>
 
         <div className="bg-gray-100 text-sm text-gray-700 px-4 py-3 rounded-md space-y-1">

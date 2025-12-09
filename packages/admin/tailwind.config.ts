@@ -1,15 +1,18 @@
 import { Config } from 'tailwindcss';
+import { colors } from '../allcll-ui/colors';
 
 /** @type {import('tailwindcss').Config} */
 const config: Config = {
-  content: ['./src/**/*.{html,js,jsx,ts,tsx}', '../common/src/**/*.{ts,tsx,js,jsx}'],
+  content: [
+    './src/**/*.{html,js,jsx,ts,tsx}',
+    '../common/src/**/*.{ts,tsx,js,jsx}',
+    '../allcll-ui/**/*.{ts,tsx,js,jsx}',
+  ],
   theme: {
     extend: {
       colors: {
-        primary: '#007aff',
-        blue: {
-          500: '#007aff',
-        },
+        primary: colors.primary,
+        secondary: colors.secondary,
       },
     },
   },
