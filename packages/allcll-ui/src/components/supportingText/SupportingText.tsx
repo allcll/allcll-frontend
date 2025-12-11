@@ -4,9 +4,9 @@ export interface SubtitleProps extends ComponentPropsWithoutRef<'p'> {}
 
 function SupportingText({ className, children, ...props }: SubtitleProps) {
   return (
-    <p className={`text-gray-600 text-sm leading-relaxed ${className ?? ''}`} {...props}>
+    <span className={`text-gray-600 text-sm leading-relaxed ${className ?? ''}`} {...props}>
       {children}
-    </p>
+    </span>
   );
 }
 

@@ -23,27 +23,30 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-  render: () => {
-    const [size, setSize] = useState<'xxLarge' | 'xLarge' | 'large' | 'medium' | 'small' | 'xSmall'>('medium');
+  args: {
+    level: 4,
+  },
+  render: args => {
+    const [level, setLevel] = useState<1 | 2 | 3 | 4 | 5>(args.level);
     return (
       <ul className="flex flex-col gap-5 items-center">
         <li>
           <select
-            value={size}
-            onChange={e => setSize(e.target.value as 'xxLarge' | 'xLarge' | 'large' | 'medium' | 'small' | 'xSmall')}
+            value={level}
+            onChange={e => setLevel(Number(e.target.value) as 1 | 2 | 3 | 4 | 5)}
             className="border border-gray-300 rounded-md px-3 py-1"
           >
-            <option value="xxLarge">xxLarge</option>
-            <option value="xLarge">xLarge</option>
-            <option value="large">large</option>
-            <option value="medium">medium</option>
-            <option value="small">small</option>
-            <option value="xSmall">xSmall</option>
+            <option value={1}>xxLarge</option>
+            <option value={2}>xLarge</option>
+            <option value={3}>large</option>
+            <option value={4}>medium</option>
+            <option value={5}>small</option>
+            <option value={6}>xSmall</option>
           </select>
         </li>
 
         <li>
-          <Heading size={size}>ALLCLL 타이틀 예시: {size}</Heading>
+          <Heading level={level}>ALLCLL 타이틀 예시: {level}</Heading>
         </li>
       </ul>
     );
@@ -51,25 +54,23 @@ export const Playground: Story = {
 };
 
 export const Sizes: Story = {
+  args: { level: 4 },
   render: () => (
     <ul className="flex flex-col gap-5 items-center">
       <li>
-        <Heading size="xxLarge">ALLCLL 타이틀 예시: xxLarge</Heading>
+        <Heading level={1}>ALLCLL 타이틀 예시: xxLarge</Heading>
       </li>
       <li>
-        <Heading size="xLarge">ALLCLL 타이틀 예시: xLarge</Heading>
+        <Heading level={2}>ALLCLL 타이틀 예시: xLarge</Heading>
       </li>
       <li>
-        <Heading size="large">ALLCLL 타이틀 예시: large</Heading>
+        <Heading level={3}>ALLCLL 타이틀 예시: large</Heading>
       </li>
       <li>
-        <Heading size="medium">ALLCLL 타이틀 예시: medium</Heading>
+        <Heading level={4}>ALLCLL 타이틀 예시: medium</Heading>
       </li>
       <li>
-        <Heading size="small">ALLCLL 타이틀 예시: small</Heading>
-      </li>
-      <li>
-        <Heading size="xSmall">ALLCLL 타이틀 예시: xSmall</Heading>
+        <Heading level={5}>ALLCLL 타이틀 예시: small</Heading>
       </li>
     </ul>
   ),

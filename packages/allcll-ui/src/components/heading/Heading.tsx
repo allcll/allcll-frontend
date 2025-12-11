@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef, ElementType } from 'react';
 
-type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
+type HeadingLevel = 1 | 2 | 3 | 4 | 5;
 type HeadingSize = 'xxl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs';
 
 interface HeadingProps extends ComponentPropsWithoutRef<'h1'> {
@@ -29,17 +29,16 @@ function levelToSize(level: HeadingLevel): HeadingSize {
     3: 'lg',
     4: 'md',
     5: 'sm',
-    6: 'xs',
   }[level] as HeadingSize;
 }
 
 function getSizeClass(size: HeadingSize) {
   return {
-    xxl: 'text-3xl font-semibold',
-    xl: 'text-2xl font-semibold',
-    lg: 'text-xl font-semibold',
-    md: 'text-lg font-semibold',
-    sm: 'text-base font-medium',
-    xs: 'text-sm font-medium',
+    xxl: 'text-xl font-semibold',
+    xl: 'text-lg font-semibold',
+    lg: 'text-base font-semibold',
+    md: 'text-sm font-semibold',
+    sm: 'text-xs font-semibold',
+    xs: 'text-[11px] font-semibold',
   }[size];
 }
