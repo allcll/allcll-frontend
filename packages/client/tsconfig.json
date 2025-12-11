@@ -26,8 +26,11 @@
     "paths": {
       "@/*": ["src/*"],
       "@public/*": ["public/*"],
-      "@common/*": ["../common/src/*"]
+      "@common/*": ["../common/src/*"],
+
+      "@allcll/allcll-ui": ["../allcll-ui"],
+      "@allcll/allcll-ui/*": ["../allcll-ui/*"]
     }
   },
-  "include": ["src", "vite.config.ts", "svg.d.ts", "tailwind.config.ts"]
+  "include": ["src", "vite.config.ts", "svg.d.ts", "tailwind.config.js"]
 }
