@@ -3,11 +3,14 @@ import Control from '@/components/clawlers/Control';
 import TostNotification from '@allcll/common/components/toast/ToastNotification';
 import DepartmentControl from '@/components/clawlers/SubjectAndDepartmentControl';
 import { SetupStep } from '@/utils/type';
-import SetupProgress from './SetupProgress';
+import SetupProgress from '../components/clawlers/SetupProgress';
 import TokenSetting from '@/components/clawlers/AuthTokenSetting';
 import { useCheckAdminSession } from '@/hooks/server/session/useAdminSession';
 import { getSessionConfig } from '@/utils/sessionConfig';
 import SessionList from '@/components/dashboard/SessionList';
+import { Flex } from '@allcll/allcll-ui';
+import PageHeader from '@/components/common/PageHeader';
+import UpdateData from '@/components/clawlers/UpdateData';
 
 function CrawlerSettings() {
   const { data: sessionStatus } = useCheckAdminSession();
@@ -17,26 +20,31 @@ function CrawlerSettings() {
   const isSessionSet = mySessionStatus?.isActive ?? false;
 
   return (
-    <div className="p-6 space-y-10">
+    <>
       <TostNotification />
 
-      <h1 className="text-lg text-gray-700 font-bold mb-4">크롤러 설정</h1>
-      <SetupProgress current={isSessionSet ? SetupStep.CONTROL : SetupStep.TOKEN} />
-      <div className="flex flex-col gap-4">
-        {mySessionStatus ? (
-          <>
-            <TokenSetting />
-            <SessionList />
-          </>
-        ) : (
-          <>
-            <SessionAdmin />
-            <Control />
-            <DepartmentControl />
-          </>
-        )}
-      </div>
-    </div>
+      <PageHeader title="크롤러 설정" description="크롤러 관련 설정을 변경합니다." />
+
+      <main className="space-y-5">
+        <SetupProgress current={isSessionSet ? SetupStep.CONTROL : SetupStep.TOKEN} />
+
+        <Flex direction="flex-col" gap="gap-4">
+          {mySessionStatus ? (
+            <>
+              <TokenSetting />
+              <SessionList />
+            </>
+          ) : (
+            <>
+              <SessionAdmin />
+              <Control />
+              <DepartmentControl />
+              <UpdateData />
+            </>
+          )}
+        </Flex>
+      </main>
+    </>
   );
 }
 

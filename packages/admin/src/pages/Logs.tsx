@@ -1,8 +1,8 @@
 import LogList from '@/components/apiLogs/LogList';
 import RequestLogs from '@/components/apiLogs/RequestLogs';
+import PageHeader from '@/components/common/PageHeader';
 import { AdminApiLogs } from '@/utils/dbConfig';
 import { filterRequestLogs } from '@/utils/log/adminApiLogs';
-import { Heading, SupportingText } from '@allcll/allcll-ui';
 import { useEffect, useState } from 'react';
 
 function Logs() {
@@ -27,18 +27,19 @@ function Logs() {
   }, [selectedStatusCodes, urlInput]);
 
   return (
-    <div className="p-6 space-y-10">
-      <Heading level={3}>로그 설정</Heading>
-      <SupportingText>로그 페이지입니다.</SupportingText>
+    <>
+      <PageHeader title="API 요청 로그" description="API 요청 로그를 필터링하여 조회합니다." />
 
-      <RequestLogs
-        urlInput={urlInput}
-        setUrlInput={setUrlInput}
-        selectedStatusCodes={selectedStatusCodes}
-        setSelectedStatusCodes={setSelectedStatusCodes}
-      />
-      <LogList logs={logs} />
-    </div>
+      <main className="space-y-5">
+        <RequestLogs
+          urlInput={urlInput}
+          setUrlInput={setUrlInput}
+          selectedStatusCodes={selectedStatusCodes}
+          setSelectedStatusCodes={setSelectedStatusCodes}
+        />
+        <LogList logs={logs} />
+      </main>
+    </>
   );
 }
 

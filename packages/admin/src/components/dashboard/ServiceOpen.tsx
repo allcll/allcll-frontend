@@ -1,4 +1,5 @@
-import { Badge, Card, Heading } from '@allcll/allcll-ui';
+import { Badge, Card, Flex, Grid } from '@allcll/allcll-ui';
+import SectionHeader from '../common/SectionHeader';
 
 const systemOpenStatus = [
   {
@@ -30,22 +31,21 @@ const systemOpenStatus = [
 function ServiceOpen() {
   return (
     <section>
-      <Heading level={3}>서비스 Open 여부</Heading>
+      <SectionHeader title="서비스 오픈 현황" description="각 서비스의 오픈 상태를 확인합니다." />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+      <Grid columns={{ md: 4, sm: 2 }} gap="gap-4">
         {systemOpenStatus.map(({ name, start, end, status }) => (
           <Card key={name}>
-            <div className="flex items-center justify-between">
+            <Flex align="items-start" justify="justify-between">
               <span className="text-sm font-medium text-gray-700">{name}</span>
               <Badge variant={status === 'OPEN' ? 'success' : 'danger'}>{status}</Badge>
-            </div>
-            <div className="text-xs text-gray-500">
-              <p>시작: {start}</p>
-              <p>종료: {end}</p>
-            </div>
+            </Flex>
+
+            <p className="text-sm text-gray-500">시작: {start}</p>
+            <p className="text-sm text-gray-500">종료: {end}</p>
           </Card>
         ))}
-      </div>
+      </Grid>
     </section>
   );
 }

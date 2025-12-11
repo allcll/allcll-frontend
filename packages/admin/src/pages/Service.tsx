@@ -1,16 +1,18 @@
 import 'react-datepicker/dist/react-datepicker.css';
 import SemesterSetting from '@/components/service/SemesterSetting';
 import ServicePeriod from '@/components/service/ServicePeriod';
-import { Heading } from '@allcll/allcll-ui';
+import PageHeader from '@/components/common/PageHeader';
 
 function ServiceSettings() {
   return (
-    <div className="p-6 space-y-10">
-      <Heading size="large">서비스 설정</Heading>
+    <>
+      <PageHeader title="서비스 설정" description="서비스 전반에 관한 설정을 변경합니다." />
 
-      <SemesterSetting />
-      <ServicePeriod />
-    </div>
+      <main className="space-y-5">
+        <SemesterSetting />
+        <ServicePeriod />
+      </main>
+    </>
   );
 }
 

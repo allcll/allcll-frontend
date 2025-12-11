@@ -2,7 +2,8 @@ import useDepartments from '@/hooks/server/useDepartments';
 import usePreRealSeats from '@/hooks/server/usePreRealSeats';
 import useSubject from '@/hooks/server/useSubject';
 import useWishes from '@/hooks/server/useWishes';
-import { Button, Heading, SupportingText } from '@allcll/allcll-ui';
+import { Button, Card, Grid } from '@allcll/allcll-ui';
+import SectionHeader from '../common/SectionHeader';
 
 function UpdateData() {
   const { refetch: basketRefetch, isFetching: isBasketFetching } = useWishes();
@@ -18,18 +19,17 @@ function UpdateData() {
   ];
 
   return (
-    <>
-      <Heading level={3}>데이터 업데이트</Heading>
-      <SupportingText>백엔드 서버로 보내는 요청(크롤링X)</SupportingText>
+    <Card>
+      <SectionHeader title="데이터 업데이트" description="백엔드 서버로 보내는 요청(크롤링X)" />
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
+      <Grid columns={{ md: 4, sm: 2 }} gap="gap-3">
         {dataSources.map(({ label, refetch, isFetching }) => (
           <Button key={label} onClick={() => refetch()} variant="outlined" size="medium" disabled={isFetching}>
             {isFetching ? `${label} 불러오는 중...` : `${label} 업데이트`}
           </Button>
         ))}
-      </div>
-    </>
+      </Grid>
+    </Card>
   );
 }
 

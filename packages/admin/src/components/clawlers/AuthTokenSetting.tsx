@@ -1,7 +1,7 @@
 import { useAdminSession, usePostAdminSession } from '@/hooks/server/session/useAdminSession';
-import Card from '@allcll/common/components/Card';
 import { useEffect, useState } from 'react';
-import { Button, Heading, SupportingText, TextField } from '@allcll/allcll-ui';
+import { Button, TextField, Grid, Flex, Card } from '@allcll/allcll-ui';
+import SectionHeader from '../common/SectionHeader';
 
 const initialTokens = {
   tokenJ: '',
@@ -53,11 +53,10 @@ function AuthTokenSetting({}: ITokenSetting) {
 
   return (
     <Card>
-      <Heading level={3}>인증 정보를 먼저 설정해주세요.</Heading>
-      <SupportingText>크롤러가 사용할 인증 토큰과 키를 설정합니다.</SupportingText>
+      <SectionHeader title="인증정보 설정" description="크롤러에 필요한 인증 정보를 설정합니다." />
 
       <form onSubmit={submitTokens}>
-        <div className="grid md:grid-cols-2 gap-4 mt-4">
+        <Grid columns={{ md: 2 }} gap="gap-4" className="w-full">
           {tokenType.map(token => (
             <TextField
               key={token}
@@ -70,9 +69,7 @@ function AuthTokenSetting({}: ITokenSetting) {
               onChange={e => handleTokenChange(token, e.target.value)}
             />
           ))}
-        </div>
 
-        <div className="mt-4 flex flex-col gap-4">
           <TextField
             id="adminSession"
             label="어드민 인증 세션"
@@ -82,13 +79,13 @@ function AuthTokenSetting({}: ITokenSetting) {
             placeholder="어드민 인증 세션 입력"
             onChange={e => setSession(e.target.value)}
           />
+        </Grid>
 
-          <div className="flex justify-end">
-            <Button variant="primary" size="medium" type="submit">
-              토큰 설정 요청
-            </Button>
-          </div>
-        </div>
+        <Flex justify="justify-end">
+          <Button variant="primary" size="medium" type="submit">
+            토큰 설정 요청
+          </Button>
+        </Flex>
       </form>
     </Card>
   );

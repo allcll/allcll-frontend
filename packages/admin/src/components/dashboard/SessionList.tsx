@@ -1,15 +1,16 @@
 import { useCheckAdminSession } from '@/hooks/server/session/useAdminSession';
 import { formatTime } from '@/utils/formatTime';
-import { Badge, Card, Heading } from '@allcll/allcll-ui';
+import { Badge, Card } from '@allcll/allcll-ui';
+import SectionHeader from '../common/SectionHeader';
 
 function SessionList() {
   const { data: sessionStatus, isLoading, error } = useCheckAdminSession();
 
   return (
-    <Card>
-      <Heading level={3}>세션 목록</Heading>
+    <section>
+      <SectionHeader title="세션 목록" description="현재 활성화된 인증 세션 목록을 확인합니다." />
 
-      <div className="w-full bg-white shadow rounded-lg p-6 overflow-x-auto">
+      <Card>
         <table className="min-w-full border-collapse">
           <thead>
             <tr className="bg-gray-50 text-sm text-gray-500">
@@ -45,7 +46,10 @@ function SessionList() {
             )}
 
             {sessionStatus?.map((data, idx) => (
-              <tr key={data?.userId ?? idx} className="text-sm text-gray-700 border-b hover:bg-gray-50 transition">
+              <tr
+                key={data?.userId ?? idx}
+                className="text-sm text-gray-700 border-b border-gray-500 hover:bg-gray-50 transition"
+              >
                 <td className="px-3 py-2 text-center">{data?.userId}</td>
                 <td className="px-3 py-2 text-center">{formatTime(data?.startTime ?? '')}</td>
                 <td className="px-3 py-2 text-center">
@@ -55,8 +59,8 @@ function SessionList() {
             ))}
           </tbody>
         </table>
-      </div>
-    </Card>
+      </Card>
+    </section>
   );
 }
 

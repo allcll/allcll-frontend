@@ -1,13 +1,11 @@
-import Card from '@allcll/common/components/Card';
-
 import { useCheckCrawlerSeat } from '@/hooks/server/clawlers/useSeatClawlers';
 import { useCheckSseScheduler } from '@/hooks/server/sse/useSeatScheduler';
 
-import UpdateData from './UpdateData';
 import { useAdminActions } from '@/hooks/useAdminActions';
 import ControlRow from './ControlRow';
 import { useCheckAdminSession } from '@/hooks/server/session/useAdminSession';
-import { Heading, SupportingText } from '@allcll/allcll-ui';
+import { Card } from '@allcll/allcll-ui';
+import SectionHeader from '../common/SectionHeader';
 
 const SEASON_DATE = new Date('2025-12-04T00:00:00+09:00');
 
@@ -34,10 +32,9 @@ function Control() {
 
   return (
     <Card>
-      <Heading level={3}>크롤러 제어</Heading>
-      <SupportingText>크롤러의 특정 기능을 제어합니다.</SupportingText>
+      <SectionHeader title="크롤러 제어" description="크롤러의 주요 기능을 제어합니다." />
 
-      <div className="space-y-4">
+      <Card.Content>
         <ControlRow
           label="인증정보 갱신"
           checked={isActiveSession?.some(session => session.isActive) ?? false}
@@ -50,8 +47,7 @@ function Control() {
           <ControlRow label="계절 여석 크롤링" checked={isSeatActive} onToggle={() => toggleSeat(true)} />
         )}
         <ControlRow label="여석 데이터 전송" checked={isActiveSse ?? false} onToggle={toggleSse} />
-        <UpdateData />
-      </div>
+      </Card.Content>
     </Card>
   );
 }

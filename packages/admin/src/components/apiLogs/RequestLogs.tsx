@@ -1,10 +1,9 @@
 import 'react-datepicker/dist/react-datepicker.css';
 import { Dispatch, SetStateAction } from 'react';
-import Card from '@allcll/common/components/Card';
 import CheckboxAdapter from '@allcll/common/components/checkbox/CheckboxAdapter';
 import Filtering from '@allcll/common/components/filtering/Filtering';
 import MultiSelectFilterOption, { OptionType } from '../common/MultiSelectFilterOption';
-import { Heading, Label, SupportingText, TextField } from '@allcll/allcll-ui';
+import { Card, Flex, Heading, Label, SupportingText, TextField } from '@allcll/allcll-ui';
 
 const StatusCodes: OptionType<number>[] = [
   { value: 0, label: 'ALL' },
@@ -33,15 +32,16 @@ function RequestLogs({ urlInput, setUrlInput, selectedStatusCodes, setSelectedSt
   return (
     <section className="sticky top-16">
       <Card>
-        <Heading level={3}>API 요청 로그</Heading>
-        <SupportingText>API 요청 로그를 필터링하여 조회합니다.</SupportingText>
+        <Card.Header>
+          <Heading level={3}>API 요청 로그</Heading>
+          <SupportingText>API 요청 로그를 필터링하여 조회합니다.</SupportingText>
+        </Card.Header>
 
-        <div className="w-full gap-4 justify-between max-w-3xl mx-auto space-y-4">
-          <div className="flex flex-col gap-2">
+        <Card.Content>
+          <Flex direction="flex-col" gap="gap-1">
             <Label id="filtering-option" className="font-semibold">
               필터링 옵션
             </Label>
-
             <Filtering label="상태" selected={selectedStatusCodes.length !== 0}>
               <MultiSelectFilterOption
                 labelPrefix="상태 코드"
@@ -52,7 +52,7 @@ function RequestLogs({ urlInput, setUrlInput, selectedStatusCodes, setSelectedSt
                 ItemComponent={CheckboxAdapter}
               />
             </Filtering>
-          </div>
+          </Flex>
 
           <TextField
             id="apiUrl"
@@ -64,7 +64,7 @@ function RequestLogs({ urlInput, setUrlInput, selectedStatusCodes, setSelectedSt
               setUrlInput(e.target.value);
             }}
           />
-        </div>
+        </Card.Content>
       </Card>
     </section>
   );
