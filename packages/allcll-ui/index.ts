@@ -22,4 +22,6 @@ export { default as Toggle } from './src/components/toggle/toggle';
 export { default as Tooltip } from './src/components/tooltip/Tooltip';
 export { default as Heading } from './src/components/heading/Heading';
 export { default as SupportingText } from './src/components/supportingText/SupportingText';
+export { default as Flex } from './src/components/flex/Flex';
+export { default as Grid } from './src/components/grid/Grid';
 export * from './colors';
