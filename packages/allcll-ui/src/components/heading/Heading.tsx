@@ -7,6 +7,7 @@ interface HeadingProps extends ComponentPropsWithoutRef<'h1'> {
   level: HeadingLevel;
   size?: HeadingSize;
   as?: ElementType;
+  className?: string;
 }
 
 function Heading({ level = 1, size, as, className, children, ...props }: HeadingProps) {

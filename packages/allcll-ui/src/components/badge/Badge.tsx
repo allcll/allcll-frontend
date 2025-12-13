@@ -1,4 +1,4 @@
-type BadgeVariants = 'success' | 'warning' | 'danger';
+type BadgeVariants = 'success' | 'warning' | 'danger' | 'default';
 
 interface IBadge {
   variant: BadgeVariants;
@@ -21,6 +21,8 @@ function getVariantClass(variant: BadgeVariants) {
       return 'bg-yellow-100 text-yellow-700 ';
     case 'danger':
       return 'bg-secondary-100 text-secondary-700 ';
+    case 'default':
+      return 'bg-gray-100 text-gray-700 ';
     default:
       return '';
   }

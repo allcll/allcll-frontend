@@ -22,7 +22,7 @@ function TextField({
   return (
     <div className="w-full flex flex-col">
       {label && (
-        <Label required={required} id={id} className="font-semibold">
+        <Label required={required} id={id}>
           {label}
         </Label>
       )}

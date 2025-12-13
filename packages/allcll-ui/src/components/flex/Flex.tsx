@@ -3,9 +3,9 @@ import type { ComponentPropsWithRef, ElementType } from 'react';
 type FlexProps = ComponentPropsWithRef<'div'> & {
   as?: ElementType;
 
-  direction?: 'flex-row' | 'flex-col';
+  direction?: 'flex-row' | 'flex-col' | 'flex-wrap' | 'flex-nowrap' | 'flex-grow';
   justify?: 'justify-start' | 'justify-center' | 'justify-end' | 'justify-between';
-  align?: 'items-start' | 'items-center' | 'items-end' | 'items-stretch';
+  align?: 'items-start' | 'items-center' | 'items-end' | 'items-stretch' | 'align-top' | 'items-baseline';
 
   gap?: `gap-${number}`;
 };
