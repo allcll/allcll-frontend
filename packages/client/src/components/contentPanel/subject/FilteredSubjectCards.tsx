@@ -19,7 +19,7 @@ interface ISubjectCards {
 export function FilteredSubjectCards({ subjects, expandToMax, isPending = false }: Readonly<ISubjectCards>) {
   const { visibleRows, loadMoreRef } = useInfScroll(subjects, 'ref');
 
-  const selectedCardRef = useRef<HTMLDivElement>(null);
+  const selectedCardRef = useRef<HTMLButtonElement>(null);
   const selectedSubjectId = useScheduleState(state => state.schedule.subjectId);
   const { openScheduleModal, cancelSchedule } = useScheduleModal();
 
@@ -90,7 +90,7 @@ interface ISubjectCard {
   isActive?: boolean;
   subject: Subject;
   onClick: () => void;
-  forwardedRef?: React.Ref<HTMLDivElement>;
+  forwardedRef?: React.Ref<HTMLButtonElement>;
 }
 
 function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: Readonly<ISubjectCard>) {
@@ -105,33 +105,36 @@ function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: Reado
   };
 
   return (
-    <div
-      className={`border border-gray-200 rounded-lg p-3 sm:p-4 gap-2 sm:gap-3 flex flex-col cursor-pointer ${color}`}
+    <button
+      type="button"
+      className={`border border-gray-200 rounded-lg p-3 sm:p-4 gap-2 sm:gap-3 ${color} cursor-pointer w-full text-left`}
       onClick={onClick}
-      tabIndex={-1}
-      role="button"
       ref={forwardedRef}
     >
-      <Flex justify="justify-between" align="items-center" gap="gap-2">
-        <Heading level={3}>{subject.subjectName}</Heading>
-        <span className="text-xs sm:text-sm text-gray-500">{subject.professorName}</span>
+      <Flex direction="flex-col">
+        <Flex justify="justify-between" align="items-center" gap="gap-2 ">
+          <Heading level={3}>{subject.subjectName}</Heading>
+          <span className="text-xs sm:text-sm text-gray-500">{subject.professorName}</span>
+        </Flex>
+
+        <Flex direction="flex-col" justify="justify-start" align="items-start" gap="gap-2 ">
+          <span className="text-xs sm:text-sm text-gray-500">{subject.lesnTime}</span>
+          <span className="text-xs sm:text-sm text-gray-500">{subject.lesnRoom}</span>
+          <span className="text-xs sm:text-sm text-gray-500">
+            {subject.studentYear}학년/{subject.manageDeptNm}
+          </span>
+        </Flex>
+
+        <Flex justify="justify-between" align="items-center">
+          <Badge variant="default">{subject.tmNum[0]}학점</Badge>
+
+          {isActive && (
+            <Button variant="primary" size="medium" onClick={handleAddOfficialSchedule}>
+              추가하기
+            </Button>
+          )}
+        </Flex>
       </Flex>
-
-      <span className="text-xs sm:text-sm text-gray-500">{subject.lesnTime}</span>
-      <span className="text-xs sm:text-sm text-gray-500">{subject.lesnRoom}</span>
-      <span className="text-xs sm:text-sm text-gray-500">
-        {subject.studentYear}학년/{subject.manageDeptNm}
-      </span>
-
-      <Flex justify="justify-between" align="items-center">
-        <Badge variant="default">{subject.tmNum[0]}학점</Badge>
-
-        {isActive && (
-          <Button variant="primary" size="medium" onClick={handleAddOfficialSchedule}>
-            추가하기
-          </Button>
-        )}
-      </Flex>
-    </div>
+    </button>
   );
 }
