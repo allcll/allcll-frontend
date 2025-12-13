@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { useState } from 'react';
 import Heading from './Heading';
 
 const meta = {
@@ -21,37 +20,6 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-
-export const Playground: Story = {
-  args: {
-    level: 4,
-  },
-  render: args => {
-    const [level, setLevel] = useState<1 | 2 | 3 | 4 | 5>(args.level);
-    return (
-      <ul className="flex flex-col gap-5 items-center">
-        <li>
-          <select
-            value={level}
-            onChange={e => setLevel(Number(e.target.value) as 1 | 2 | 3 | 4 | 5)}
-            className="border border-gray-300 rounded-md px-3 py-1"
-          >
-            <option value={1}>xxLarge</option>
-            <option value={2}>xLarge</option>
-            <option value={3}>large</option>
-            <option value={4}>medium</option>
-            <option value={5}>small</option>
-            <option value={6}>xSmall</option>
-          </select>
-        </li>
-
-        <li>
-          <Heading level={level}>ALLCLL 타이틀 예시: {level}</Heading>
-        </li>
-      </ul>
-    );
-  },
-};
 
 export const Sizes: Story = {
   args: { level: 4 },
