@@ -78,6 +78,9 @@ importers:
 
   packages/admin:
     dependencies:
+      '@allcll/allcll-ui':
+        specifier: workspace:^
+        version: link:../allcll-ui
       '@allcll/common':
         specifier: workspace:^
         version: link:../common
@@ -172,6 +175,9 @@ importers:
 
   packages/client:
     dependencies:
+      '@allcll/allcll-ui':
+        specifier: workspace:^
+        version: link:../allcll-ui
       '@allcll/common':
         specifier: workspace:^
         version: link:../common

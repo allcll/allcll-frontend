@@ -27,10 +27,7 @@
       "@public/*": ["public/*"],
 
       "@allcll/common": ["../common/src"],
-      "@allcll/common/*": ["../common/src/*"],
-
-      "@allcll/allcll-ui": ["../allcll-ui"],
-      "@allcll/allcll-ui/*": ["../allcll-ui/*"]
+      "@allcll/common/*": ["../common/src/*"]
     }
   },
   "include": ["src", "vite.config.ts", "svg.d.ts", "tailwind.config.js"]

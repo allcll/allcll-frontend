@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@allcll/common": "workspace:^",
+    "@allcll/allcll-ui": "workspace:^",
     "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query": "^5.83.0",
     "@vitejs/plugin-basic-ssl": "^2.1.0",

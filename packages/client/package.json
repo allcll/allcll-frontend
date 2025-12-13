@@ -12,6 +12,7 @@
   "dependencies": {
     "@allcll/common": "workspace:^",
     "@allcll/sejong-ui": "workspace:^",
+    "@allcll/allcll-ui": "workspace:^",
     "@amplitude/analytics-browser": "^2.20.1",
     "@microsoft/clarity": "^1.0.0",
     "@supabase/supabase-js": "^2.53.0",
