@@ -20,11 +20,7 @@ interface TokensType {
 
 const tokenType = ['tokenJ', 'tokenU', 'tokenR', 'tokenL'];
 
-interface ITokenSetting {
-  setIsSessionSet?: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function AuthTokenSetting({}: ITokenSetting) {
+function AuthTokenSetting() {
   const userId = localStorage.getItem('userId') ?? '';
   const { data: serverTokens } = useAdminSession();
 

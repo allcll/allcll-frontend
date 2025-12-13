@@ -23,9 +23,9 @@ function DialogMain({ children, isOpen, title, onClose }: IDialogMain) {
     if (!dialog) return;
 
     if (isOpen) {
-      if (!dialog.open) dialog.showModal();
+      dialog.showModal();
     } else {
-      if (dialog.open) dialog.close();
+      dialog.close();
     }
   }, [isOpen]);
 
