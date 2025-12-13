@@ -1,6 +1,7 @@
 import { Day } from '@/utils/types.ts';
 import React, { useEffect } from 'react';
 import InputTime from '@/components/common/InputTime.tsx';
+import { Button, Flex, Label } from '@allcll/allcll-ui';
 
 export interface IDayTimeItem {
   day: Day | '';
@@ -42,22 +43,22 @@ function DayTimeFilter({ items, onChange }: Readonly<IDayTimeFilter>) {
 
   return (
     <>
-      <label className="text-xs text-gray-500 sm:text-gray-600 sm:text-base">시간</label>
+      <Label>시간</Label>
 
-      {items.map((item, index) => (
-        <DayTime
-          key={`${item.day}-${item.type}-${item.start}-${item.end}`}
-          item={item}
-          onChange={handleChange(index)}
-          onDelete={handleDelete(index)}
-        />
-      ))}
-      <button
-        onClick={() => onChange([...items, { day: '', type: 'all' }])}
-        className="mt-2 text-blue-500 hover:text-blue-700"
-      >
-        추가
-      </button>
+      <Flex direction="flex-col" gap="gap-2">
+        {items.map((item, index) => (
+          <DayTime
+            key={`${item.day}-${item.type}-${item.start}-${item.end}`}
+            item={item}
+            onChange={handleChange(index)}
+            onDelete={handleDelete(index)}
+          />
+        ))}
+      </Flex>
+
+      <Button variant="text" size="small" onClick={() => onChange([...items, { day: '', type: 'all' }])}>
+        요일 추가
+      </Button>
     </>
   );
 }
@@ -103,9 +104,10 @@ function DayTime({ item, onChange, onDelete }: IDayTime) {
       )}
       {hasStart && <InputTime name="start" value={item.start || '00:00'} onChange={onChange} />}
       {hasEnd && <InputTime name="end" value={item.end || '00:00'} onChange={onChange} />}
-      <button onClick={onDelete} className="text-red-500 hover:text-red-700">
+
+      <Button variant="text" size="small" textColor="secondary" onClick={onDelete}>
         삭제
-      </button>
+      </Button>
     </div>
   );
 }

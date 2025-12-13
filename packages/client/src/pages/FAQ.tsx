@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import useFaq from '@/hooks/server/public/useFaq.ts';
 import ArrowSvg from '@/assets/arrow-down-gray.svg?react';
 import markdownComponents from '@/utils/markdownComponents.tsx';
-import Chip from '@common/components/chip/Chip';
+import { Chip, Flex, Heading } from '@allcll/allcll-ui';
 
 const Tags = {
   all: '기타',
@@ -67,30 +67,32 @@ function FAQ() {
       </Helmet>
 
       <div className="mx-auto max-w-7xl px-4 md:px-16 py-24">
-        <h1 className="text-3xl font-bold mb-6">자주 묻는 질문</h1>
+        <Flex direction="flex-col" gap="gap-4">
+          <Heading level={1}>자주 묻는 질문</Heading>
 
-        <div className="flex flex-wrap gap-2 mb-6">
-          {faqItemsWithTags.length > 0 &&
-            faqItemsWithTags.map((item, index) => (
-              <Chip
-                label={Tags[item as keyof typeof Tags] || item}
-                key={'faq-chip-' + index}
-                onClick={() => selectTag(item)}
-                selected={selectedTag === item}
+          <Flex direction="flex-wrap" gap="gap-2" className="mb-6">
+            {faqItemsWithTags.length > 0 &&
+              faqItemsWithTags.map((item, index) => (
+                <Chip
+                  label={Tags[item as keyof typeof Tags] || item}
+                  key={'faq-chip-' + index}
+                  onClick={() => selectTag(item)}
+                  selected={selectedTag === item}
+                />
+              ))}
+          </Flex>
+
+          {filteredFaqItems &&
+            filteredFaqItems.map(item => (
+              <FaqComponent
+                key={item.id}
+                item={item}
+                index={item.id}
+                isOpen={openIndex === item.id}
+                toggleAnswer={toggleAnswer}
               />
             ))}
-        </div>
-
-        {filteredFaqItems &&
-          filteredFaqItems.map(item => (
-            <FaqComponent
-              key={item.id}
-              item={item}
-              index={item.id}
-              isOpen={openIndex === item.id}
-              toggleAnswer={toggleAnswer}
-            />
-          ))}
+        </Flex>
       </div>
     </>
   );

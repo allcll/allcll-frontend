@@ -4,15 +4,16 @@ import useDepartments from '@/hooks/server/useDepartments';
 import { Filters } from '@/store/useFilterStore.ts';
 import { DepartmentType } from '@/utils/types';
 import Filtering from '@common/components/filtering/Filtering';
-import CustomButton from '@common/components/Button';
 import SearchBox from '../common/SearchBox';
+import { Button, Flex } from '@allcll/allcll-ui';
+import ResetSvg from '@/assets/reset-blue.svg?react';
 
 interface IDepartmentSelectFilter {
-  department: string;
   setFilter: (key: keyof Filters, value: string | null) => void;
+  selectedValue: string;
 }
 
-function DepartmentSelectFilter({ department, setFilter }: IDepartmentSelectFilter) {
+function DepartmentSelectFilter({ setFilter, selectedValue }: IDepartmentSelectFilter) {
   const { data: departments } = useDepartments();
   const [searchKeywords, setSearchKeywords] = useState('');
   const [category, setCategory] = useState<'전체' | '전공' | '교양'>('전공');
@@ -22,18 +23,6 @@ function DepartmentSelectFilter({ department, setFilter }: IDepartmentSelectFilt
     [departments],
   );
   const [filterDepartment, setFilterDepartment] = useState(departmentsList);
-
-  function pickCollegeOrMajor(selectedDepartment: string) {
-    const selectedDepartmentName = departmentsList.find(
-      department => department.departmentCode === selectedDepartment,
-    )?.departmentName;
-
-    if (!selectedDepartmentName) {
-      return '학과가 없습니다.';
-    }
-
-    return selectedDepartmentName;
-  }
 
   useEffect(() => {
     const result = departmentsList
@@ -60,9 +49,9 @@ function DepartmentSelectFilter({ department, setFilter }: IDepartmentSelectFilt
   }, [departments, searchKeywords, category]);
 
   return (
-    <Filtering label={pickCollegeOrMajor(department)} selected={!!department}>
-      <div className="flex flex-col h-80 max-h-80 w-[300px] overflow-y-auto">
-        <div className="shrink-0 gap-2 flex py-2 bg-white">
+    <Filtering label={pickCollegeOrMajor(selectedValue, departmentsList)} selected={!!selectedValue}>
+      <Flex direction="flex-col" className=" h-80 max-h-80 w-[300px] overflow-y-auto">
+        <Flex className="shrink-0 px-2 pt-2 bg-white" gap="gap-2">
           <select
             value={category}
             className="border border-gray-300 rounded-md py-1 text-sm text-gray-700 bg-white"
@@ -85,21 +74,23 @@ function DepartmentSelectFilter({ department, setFilter }: IDepartmentSelectFilt
             onChange={e => {
               setSearchKeywords(e.target.value);
             }}
+            className="w-full"
           />
-        </div>
+        </Flex>
 
-        <div className="overflow-y-auto flex-1 px-2 py-2 border-t border-gray-200">
+        <div className="overflow-y-auto flex-1 px-2 py-2 ">
           {(category === '전공' || category === '교양') && (
-            <SelectSubject departments={filterDepartment} setFilter={setFilter} />
+            <SelectSubject departments={filterDepartment} setFilter={setFilter} selectedValue={selectedValue} />
           )}
         </div>
-      </div>
+      </Flex>
 
-      <div className="flex justify-end w-full pt-1 border-t border-gray-200">
-        <CustomButton variants="primary" onClick={() => setFilter('department', '')}>
-          학과 초기화
-        </CustomButton>
-      </div>
+      <Flex justify="justify-end" className="w-full pt-1">
+        <Button variant="text" size="small" textColor="gray" onClick={() => setFilter('department', '')}>
+          <ResetSvg className="inline w-3 h-3 mr-1" stroke="currentColor" />
+          초기화
+        </Button>
+      </Flex>
     </Filtering>
   );
 }
@@ -109,11 +100,10 @@ export default DepartmentSelectFilter;
 interface ISelectSubject {
   departments: DepartmentType[];
   setFilter: (key: keyof Filters, value: string | null) => void;
+  selectedValue: string;
 }
 
-export function SelectSubject({ departments, setFilter }: ISelectSubject) {
-  const selected = '전체학과';
-
+export function SelectSubject({ departments, setFilter, selectedValue }: ISelectSubject) {
   const handleChangeDepartment = (department: string) => {
     setFilter('department', department || '');
   };
@@ -124,9 +114,9 @@ export function SelectSubject({ departments, setFilter }: ISelectSubject) {
         <div
           key={department.departmentCode}
           role="option"
-          aria-selected={selected === department.departmentName}
+          aria-selected={pickCollegeOrMajor(selectedValue, departments) === department.departmentName}
           className={`flex items-center gap-1 px-2 py-2 rounded cursor-pointer text-sm ${
-            selected === department.departmentName
+            pickCollegeOrMajor(selectedValue, departments) === department.departmentName
               ? 'bg-blue-50 text-blue-500 font-medium'
               : 'hover:bg-gray-50 text-gray-700'
           }`}
@@ -137,4 +127,16 @@ export function SelectSubject({ departments, setFilter }: ISelectSubject) {
       ))}
     </>
   );
+}
+
+function pickCollegeOrMajor(selectedDepartment: string, departmentsList: DepartmentType[]) {
+  const selectedDepartmentName = departmentsList?.find(
+    department => department.departmentCode === selectedDepartment,
+  )?.departmentName;
+
+  if (!selectedDepartmentName) {
+    return '학과가 없습니다.';
+  }
+
+  return selectedDepartmentName;
 }

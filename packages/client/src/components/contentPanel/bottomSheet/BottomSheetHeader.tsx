@@ -1,6 +1,7 @@
 import React from 'react';
 import XDarkGraySvg from '@/assets/x-darkgray.svg?react';
 import AddGraySvg from '@/assets/add-gray.svg?react';
+import { Heading } from '@allcll/allcll-ui';
 
 interface IBottomSheetHeader {
   title?: string;
@@ -11,17 +12,17 @@ interface IBottomSheetHeader {
 
 function BottomSheetHeader({ title, headerType, onClose, onClick }: IBottomSheetHeader) {
   return (
-    <header className="w-full px-5 flex items-center justify-between mb-2">
+    <header className="w-full px-2 flex items-center justify-between mb-2">
       {headerType === 'add' ? (
         <div className="w-full h-8 flex items-center  justify-between ">
           <HeaderTypeIcon headerType="add" onClick={onClick!} />
-          {title && <h3 className="text-sm font-semibold">{title}</h3>}
+          {title && <Heading level={3}>{title}</Heading>}
           <HeaderTypeIcon headerType="close" onClick={onClose} />
         </div>
       ) : (
         <>
           <div className="relative w-full flex items-center justify-center h-6">
-            <h3 className="text-sm font-semibold">{title}</h3>
+            <Heading level={3}>{title}</Heading>
 
             <div className="absolute right-0">
               <HeaderTypeIcon headerType="close" onClick={onClose} />

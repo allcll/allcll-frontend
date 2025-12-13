@@ -8,6 +8,7 @@ import useSearchRank from '@/hooks/useSearchRank.ts';
 import useWishes from '@/hooks/server/useWishes.ts';
 import SearchBox from '../common/SearchBox';
 import ScheduleFilter from './ScheduleFilter';
+import { Button, Card, Flex } from '@allcll/allcll-ui';
 
 const initSchedule = new ScheduleAdapter().toUiData();
 
@@ -21,30 +22,29 @@ function ScheduleContentPanel() {
   const filteredData = useDeferredValue(useFilteringSubjects(subjects, filters));
 
   return (
-    <div className="w-full h-screen md:basis-1/3 p-4 md:border-t-0 flex flex-col gap-3 bg-white shadow-md rounded-lg">
-      <SearchBox
-        type="text"
-        value={filters.keywords}
-        placeholder="과목명 검색"
-        onDelete={() => setFilters('keywords', '')}
-        onChange={e => setFilters('keywords', e.target.value)}
-      />
+    <Card>
+      <Flex direction="flex-col" gap="gap-3" className="w-full bg-white h-screen md:border-t-0">
+        <SearchBox
+          type="text"
+          value={filters.keywords}
+          placeholder="과목명 검색"
+          onDelete={() => setFilters('keywords', '')}
+          onChange={e => setFilters('keywords', e.target.value)}
+          className="w-full"
+        />
 
-      <ScheduleFilter />
-      <button
-        type="button"
-        className="text-blue-500 cursor-pointer text-sm"
-        onClick={() => openScheduleModal(initSchedule)}
-      >
-        + 커스텀 일정 생성
-      </button>
+        <ScheduleFilter />
+        <Button variant="text" size="small" onClick={() => openScheduleModal(initSchedule)}>
+          + 커스텀 일정 생성
+        </Button>
 
-      <div className="flex flex-col h-full overflow-hidden">
-        <div className="overflow-y-auto flex-grow">
-          <FilteredSubjectCards subjects={filteredData} isPending={isPending} />
-        </div>
-      </div>
-    </div>
+        <Flex direction="flex-col" className="h-full overflow-hidden">
+          <div className="overflow-y-auto">
+            <FilteredSubjectCards subjects={filteredData} isPending={isPending} />
+          </div>
+        </Flex>
+      </Flex>
+    </Card>
   );
 }
 

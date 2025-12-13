@@ -2,6 +2,7 @@ import { Filters } from '@/store/useFilterStore';
 import Filtering from '@common/components/filtering/Filtering';
 import DayTimeFilter, { IDayTimeItem } from './DayTimeFilter';
 import useMobile from '@/hooks/useMobile';
+import { Label } from '@allcll/allcll-ui';
 
 interface IDayFilter {
   times: IDayTimeItem[];
@@ -27,7 +28,7 @@ function DayFilter({ times, setFilter }: IDayFilter) {
     <DayTimeFilter items={times} onChange={items => setFilterWrapper('time', items)} />
   ) : (
     <Filtering label={labelPrefix} selected={times.length > 0 && times[0].day !== ''} className="min-w-max">
-      <label className="text-gray-600 font-medium sm:text-gray-600">강의 시간</label>
+      <Label>강의 시간</Label>
       <DayTimeFilter items={times} onChange={items => setFilterWrapper('time', items)} />
     </Filtering>
   );

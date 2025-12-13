@@ -1,4 +1,5 @@
 import useDepartments from '@/hooks/server/useDepartments.ts';
+import { Label } from '@allcll/allcll-ui';
 import React from 'react';
 
 interface IDepartmentFilter
@@ -15,9 +16,9 @@ function DepartmentFilter({ id, className, value, defaultValue = '전체', ...pr
 
   return (
     <>
-      <label htmlFor={customId} className="hidden">
+      <Label htmlFor={customId} hidden>
         학과
-      </label>
+      </Label>
       <select
         id={customId}
         className={'w-full p-2 rounded-md bg-white border border-gray-400 ' + className}

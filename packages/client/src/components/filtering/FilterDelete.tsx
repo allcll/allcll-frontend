@@ -1,6 +1,6 @@
-import Chip from '@common/components/chip/Chip';
 import RemoveFilterSvg from '@/assets/filter-remove-primary.svg?react';
 import { Filters, isFilterEmpty } from '@/store/useFilterStore.ts';
+import { Chip, Flex } from '@allcll/allcll-ui';
 
 interface FilterDelete {
   filters: Filters;
@@ -13,7 +13,18 @@ function FilterDelete({ filters, resetFilter }: FilterDelete) {
 
   if (!isFiltered) return null;
 
-  return <Chip label={<RemoveFilterSvg className="w-4 h-4" />} selected={true} onClick={resetFilter} />;
+  return (
+    <Chip
+      label={
+        <Flex align="items-center" gap="gap-1">
+          <span>필터 제거</span>
+          <RemoveFilterSvg className="w-4 h-4" />
+        </Flex>
+      }
+      selected={true}
+      onClick={resetFilter}
+    />
+  );
 }
 
 export default FilterDelete;

@@ -1,5 +1,6 @@
 import AlarmIcon from '@/components/svgs/AlarmIcon';
 import { Filters } from '@/store/useFilterStore';
+import { Button } from '@allcll/allcll-ui';
 
 interface IAlarmButton {
   alarmOnly: boolean;
@@ -8,13 +9,10 @@ interface IAlarmButton {
 
 function AlarmButton({ alarmOnly, setFilter }: IAlarmButton) {
   return (
-    <button
-      className="px-4 py-2 rounded-md flex gap-2 items-center text-nowrap border border-gray-400 hover:bg-white cursor-pointer"
-      onClick={() => setFilter('alarmOnly', !alarmOnly)}
-    >
+    <Button variant="outlined" size="medium" onClick={() => setFilter('alarmOnly', !alarmOnly)}>
       <AlarmIcon disabled={!alarmOnly} />
       알림과목
-    </button>
+    </Button>
   );
 }
 

@@ -21,12 +21,15 @@ import AddWhiteSvg from '@/assets/add-white.svg?react';
 import SearchSvg from '@/assets/search.svg?react';
 import DownloadSvg from '@/assets/download.svg?react';
 import Card from '@common/components/Card';
+import { Button, Flex, IconButton } from '@allcll/allcll-ui';
 import { useScheduleSearchStore } from '@/store/useFilterStore';
+import useMobile from '@/hooks/useMobile';
 
 type modalType = 'edit' | 'create' | null;
 
 function Timetable() {
   const [isOpenModal, setIsOpenModal] = useState<modalType>(null);
+  const isMobile = useMobile();
   const bottomSheetType = useBottomSheetStore(state => state.type);
   const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
   const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
@@ -46,14 +49,14 @@ function Timetable() {
   };
 
   return (
-    <div className="w-full p-4 ">
+    <div className="w-full p-4">
       <Helmet>
         <title>ALLCLL | 시간표</title>
       </Helmet>
 
       <div className="grid md:grid-cols-5 gap-4">
         <div className="md:col-span-3 w-full h-full">
-          <Card className="px-2 relative overflow-hidden">
+          <Card className="px-2 flex flex-col gap-2 relative overflow-hidden">
             <TimetableHeader setIsOpenModal={setIsOpenModal} />
             <TimetableComponent />
           </Card>
@@ -77,20 +80,22 @@ function Timetable() {
             {bottomSheetType === 'Info' && <ScheduleInfoBottomSheet />}
           </div>
         </div>
-
-        {bottomSheetType === 'edit' && <ScheduleFormModal />}
-        {bottomSheetType === 'Info' && <ScheduleInfoModal />}
+        {!isMobile && (
+          <>
+            {bottomSheetType === 'edit' && <ScheduleFormModal />}
+            {bottomSheetType === 'Info' && <ScheduleInfoModal />}
+          </>
+        )}
       </div>
 
       {isOpenModal && <EditTimetable type={isOpenModal} onClose={() => setIsOpenModal(null)} />}
 
       {bottomSheetType === null && (
-        <button
-          className="fixed bottom-4 right-4 z-50 w-15 h-15 rounded-full bg-blue-500 flex justify-center items-center shadow-lg md:hidden"
-          onClick={() => openBottomSheet('search')}
-        >
-          <AddWhiteSvg className="w-10 h-10 cursor-pointer" />
-        </button>
+        <div className="fixed bottom-4 right-4 z-5 md:hidden">
+          <Button size="small" variant="circle" onClick={() => openBottomSheet('search')}>
+            <AddWhiteSvg className="w-6 h-6 cursor-pointer" />
+          </Button>
+        </div>
       )}
     </div>
   );
@@ -140,39 +145,39 @@ function TimetableHeader({ setIsOpenModal }: ITimetableHeaderProps) {
   };
 
   return (
-    <header className="flex pb-2 justify-between items-center">
-      <DropdownSelect
-        timetables={timetables}
-        onSelect={handleSelect}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-        openCreateModal={handleCreateTimetable}
-      />
-      <div className="flex items-center gap-1">
-        <button
-          className="rounded-md hover:bg-gray-100 p-1 h-fit cursor-pointer"
-          onClick={handleSaveImage}
-          title="시간표 이미지 저장"
-        >
-          <DownloadSvg className="w-5 h-5" />
-        </button>
-        <button
-          className="rounded-md hover:bg-gray-100 p-1 h-fit cursor-pointer"
-          onClick={handleCreateSchedule}
-          title="커스텀 일정 생성"
-        >
-          <AddGraySvg className="w-5 h-5" />
-        </button>
-        {isMobile && (
-          <button
-            className="rounded-md hover:bg-gray-100 p-2 h-fit cursor-pointer"
-            onClick={() => openBottomSheet('search')}
-            title="과목 검색"
-          >
-            <SearchSvg className="w-3 h-3" />
-          </button>
-        )}
-      </div>
+    <header>
+      <Flex align="items-center" justify="justify-between" gap="gap-2">
+        <DropdownSelect
+          timetables={timetables}
+          onSelect={handleSelect}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          openCreateModal={handleCreateTimetable}
+        />
+        <Flex>
+          <IconButton
+            icon={<DownloadSvg className="w-5 h-5" />}
+            variant="plain"
+            label="시간표 이미지 저장"
+            onClick={handleSaveImage}
+          />
+          <IconButton
+            icon={<AddGraySvg className="w-5 h-5" />}
+            variant="plain"
+            label="커스텀 일정 생성"
+            onClick={handleCreateSchedule}
+          />
+
+          {isMobile && (
+            <IconButton
+              icon={<SearchSvg className="w-5 h-5" />}
+              variant="plain"
+              label="과목 검색"
+              onClick={() => openBottomSheet('search')}
+            />
+          )}
+        </Flex>
+      </Flex>
     </header>
   );
 }

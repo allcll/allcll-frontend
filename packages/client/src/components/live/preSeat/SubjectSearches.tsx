@@ -14,6 +14,7 @@ import DayFilter from '@/components/filtering/DayFilter';
 import FilterDelete from '@/components/filtering/FilterDelete';
 import useSubject from '@/hooks/server/useSubject';
 import FilteringModal from '@/components/filtering/FilteringModal';
+import { Flex, Label } from '@allcll/allcll-ui';
 
 function SubjectSearches() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
@@ -39,16 +40,15 @@ function SubjectSearches() {
   };
 
   return (
-    <div className="flex flex-wrap gap-2 mt-4 text-sm lg:flex-wrap lg:flex-row lg:items-center lg:gap-y-0 lg:gap-x-2">
-      <label className="hidden" htmlFor="searchOption">
+    <Flex direction="flex-wrap" gap="gap-2">
+      <Label className="hidden" htmlFor="searchOption">
         검색 옵션
-      </label>
+      </Label>
 
       <SearchBox
-        type="text"
         placeholder="과목명, 교수명 또는 학수번호 및 분반 검색"
         value={keywords}
-        className="pl-10 pr-6 py-2 rounded-md w-full bg-white border border-gray-400 text-[16px] placeholder:text-sm"
+        className="w-full"
         onDelete={() => setFilters('keywords', '')}
         onChange={e => setFilters('keywords', e.target.value)}
       />
@@ -66,72 +66,74 @@ function SubjectSearches() {
         />
       )}
 
-      <div className="flex items-center flex-wrap mt-2 gap-2">
-        <DepartmentSelectFilter department={department} setFilter={setFilters} />
-        <DayFilter times={time} setFilter={setFilters} />
+      <Flex align="items-center" direction="flex-wrap" gap="gap-2">
+        <Flex direction="flex-wrap" gap="gap-2" className="hidden md:flex">
+          <DepartmentSelectFilter selectedValue={filters.department ?? ''} setFilter={setFilters} />
+          <DayFilter times={time} setFilter={setFilters} />
 
-        <GenericMultiSelectFilter
-          filterKey="credits"
-          options={FilterDomains.credits}
-          selectedValues={filters.credits ?? []}
-          setFilter={setFilters}
-        />
-
-        <GenericMultiSelectFilter
-          filterKey="grades"
-          options={FilterDomains.grades}
-          selectedValues={filters.grades ?? []}
-          setFilter={setFilters}
-        />
-
-        {filters.classroom.length > 0 && (
           <GenericMultiSelectFilter
-            filterKey="classroom"
-            options={FilterDomains.classRoom}
-            selectedValues={filters.classroom ?? []}
+            filterKey="credits"
+            options={FilterDomains.credits}
+            selectedValues={filters.credits ?? []}
             setFilter={setFilters}
-            className="min-w-max"
           />
-        )}
 
-        <GenericMultiSelectFilter
-          filterKey="note"
-          options={FilterDomains.remark}
-          selectedValues={filters.note ?? []}
-          setFilter={setFilters}
-        />
-
-        {filters.categories.length > 0 && (
           <GenericMultiSelectFilter
-            filterKey="categories"
-            options={categoryOptions}
-            selectedValues={(filters.categories as string[]) ?? []}
+            filterKey="grades"
+            options={FilterDomains.grades}
+            selectedValues={filters.grades ?? []}
             setFilter={setFilters}
-            className="min-w-max"
           />
-        )}
 
-        <GenericSingleSelectFilter
-          filterKey="wishRange"
-          options={FilterDomains.wishRange}
-          selectedValue={filters.wishRange ?? null}
-          setFilter={setFilters}
-          ItemComponent={Chip}
-        />
+          {filters.classroom.length > 0 && (
+            <GenericMultiSelectFilter
+              filterKey="classroom"
+              options={FilterDomains.classRoom}
+              selectedValues={filters.classroom ?? []}
+              setFilter={setFilters}
+              className="min-w-max"
+            />
+          )}
 
-        <GenericSingleSelectFilter
-          filterKey="seatRange"
-          options={FilterDomains.seatRange}
-          selectedValue={filters.seatRange ?? null}
-          setFilter={setFilters}
-          ItemComponent={Chip}
-        />
+          <GenericMultiSelectFilter
+            filterKey="note"
+            options={FilterDomains.remark}
+            selectedValues={filters.note ?? []}
+            setFilter={setFilters}
+          />
+
+          {filters.categories.length > 0 && (
+            <GenericMultiSelectFilter
+              filterKey="categories"
+              options={categoryOptions}
+              selectedValues={(filters.categories as string[]) ?? []}
+              setFilter={setFilters}
+              className="min-w-max"
+            />
+          )}
+
+          <GenericSingleSelectFilter
+            filterKey="wishRange"
+            options={FilterDomains.wishRange}
+            selectedValue={filters.wishRange ?? null}
+            setFilter={setFilters}
+            ItemComponent={Chip}
+          />
+
+          <GenericSingleSelectFilter
+            filterKey="seatRange"
+            options={FilterDomains.seatRange}
+            selectedValue={filters.seatRange ?? null}
+            setFilter={setFilters}
+            ItemComponent={Chip}
+          />
+        </Flex>
 
         <FilterDelete filters={filters} resetFilter={resetFilter} />
         <FilteringButton handleOpenFilter={handleOpenFilter} />
         <AlarmButton alarmOnly={alarmOnly} setFilter={setFilters} />
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   );
 }
 

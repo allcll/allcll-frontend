@@ -2,6 +2,7 @@ import { useScheduleState } from '@/store/useScheduleState.ts';
 import { useTimetableSchedules, getEmptyScheduleSlots, GeneralSchedule } from '@/hooks/server/useTimetableSchedules.ts';
 import XGraySvg from '@/assets/x-darkgray.svg?react';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
+import { Flex, IconButton } from '@allcll/allcll-ui';
 
 function ScheduleSlotList() {
   const currentTimetable = useScheduleState(s => s.currentTimetable);
@@ -10,13 +11,13 @@ function ScheduleSlotList() {
   const scheduleSlots = getEmptyScheduleSlots(schedules);
 
   return (
-    <div className="flex flex-col gap-2 mt-3">
+    <Flex direction="flex-col" gap="gap-2" className="mt-3">
       {scheduleSlots
         // .filter(schedule => !schedule.selected)
         .map(schedule => (
           <EmptyScheduleSlot key={schedule.scheduleId} schedule={schedule} selected={schedule.selected} />
         ))}
-    </div>
+    </Flex>
   );
 }
 
@@ -35,13 +36,18 @@ function EmptyScheduleSlot({ schedule, selected }: Readonly<{ schedule: GeneralS
         (selected ? 'bg-blue-100 border-blue-500' : 'border-gray-200')
       }
     >
-      <div className="flex gap-5">
+      <Flex gap="gap-5">
         <p>{schedule.subjectName}</p>
         <p className="text-stone-400">{schedule.professorName}</p>
-      </div>
-      <button type="button" onClick={handleDeleteEmptySlot} className="cursor-pointer">
-        <XGraySvg className="w-5 h-5" />
-      </button>
+      </Flex>
+
+      <IconButton
+        aria-label="delete"
+        variant="plain"
+        label="delete"
+        icon={<XGraySvg className="w-5 h-5" />}
+        onClick={handleDeleteEmptySlot}
+      />
     </div>
   );
 }

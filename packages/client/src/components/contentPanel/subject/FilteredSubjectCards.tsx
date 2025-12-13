@@ -8,6 +8,7 @@ import { OfficialSchedule } from '@/hooks/server/useTimetableSchedules.ts';
 import { useScheduleState } from '@/store/useScheduleState';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 import { Subject } from '@/utils/types';
+import { Button, Badge, Flex, Heading } from '@allcll/allcll-ui';
 
 interface ISubjectCards {
   subjects: Subject[];
@@ -65,7 +66,7 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <Flex direction="flex-col" justify="justify-end" gap="gap-2">
       {subjects.slice(0, visibleRows).map(subject => {
         const isActive = selectedSubjectId === subject.subjectId;
 
@@ -81,7 +82,7 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
       })}
 
       {visibleRows < subjects.length && <div ref={loadMoreRef} className="load-more-trigger w-full h-10"></div>}
-    </div>
+    </Flex>
   );
 }
 
@@ -107,12 +108,14 @@ function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: Reado
     <div
       className={`border border-gray-200 rounded-lg p-3 sm:p-4 gap-2 sm:gap-3 flex flex-col cursor-pointer ${color}`}
       onClick={onClick}
+      tabIndex={-1}
+      role="button"
       ref={forwardedRef}
     >
-      <div className="flex justify-between items-center">
-        <h3 className="text-sm sm:text-lg font-semibold">{subject.subjectName}</h3>
+      <Flex justify="justify-between" align="items-center" gap="gap-2">
+        <Heading level={3}>{subject.subjectName}</Heading>
         <span className="text-xs sm:text-sm text-gray-500">{subject.professorName}</span>
-      </div>
+      </Flex>
 
       <span className="text-xs sm:text-sm text-gray-500">{subject.lesnTime}</span>
       <span className="text-xs sm:text-sm text-gray-500">{subject.lesnRoom}</span>
@@ -120,24 +123,15 @@ function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: Reado
         {subject.studentYear}학년/{subject.manageDeptNm}
       </span>
 
-      <div className="flex justify-between items-center">
-        <div
-          className={`w-fit rounded-xl flex items-center text-xs sm:text-sm text-gray-500 ${
-            isActive ? '' : 'bg-gray-100 px-2 py-0.5 sm:px-2.5 sm:py-0.5'
-          }`}
-        >
-          {subject.tmNum[0]}학점
-        </div>
+      <Flex justify="justify-between" align="items-center">
+        <Badge variant="default">{subject.tmNum[0]}학점</Badge>
 
         {isActive && (
-          <button
-            onClick={handleAddOfficialSchedule}
-            className="bg-blue-500 border-none cursor-pointer rounded-xl px-2 py-0.5 sm:px-2.5 sm:py-1 text-white text-xs sm:text-sm hover:bg-blue-600"
-          >
+          <Button variant="primary" size="medium" onClick={handleAddOfficialSchedule}>
             추가하기
-          </button>
+          </Button>
         )}
-      </div>
+      </Flex>
     </div>
   );
 }

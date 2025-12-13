@@ -3,6 +3,7 @@ import useInfScroll from '@/hooks/useInfScroll.ts';
 import SearchSvg from '@/assets/search.svg?react';
 import { WishesWithSeat } from '@/hooks/useWishesPreSeats.ts';
 import { Wishes } from '@/utils/types.ts';
+import { Flex, Grid } from '@allcll/allcll-ui';
 
 interface ISubjectCards {
   subjects: Wishes[] | WishesWithSeat[];
@@ -13,9 +14,9 @@ interface ISubjectCards {
 
 function SubjectCards({ subjects, isPending = false, className = '', isLive = false }: Readonly<ISubjectCards>) {
   return (
-    <div className={'flex flex-col gap-2 ' + className}>
+    <Flex direction="flex-col" gap="gap-2" className={className}>
       <Cards subjects={subjects} isPending={isPending} isLive={isLive} />
-    </div>
+    </Flex>
   );
 }
 
@@ -25,23 +26,21 @@ function Cards({ subjects, isPending = false, isLive = false }: Readonly<ISubjec
 
   if (isPending || !subjects) {
     return (
-      <div className="animate-pulse grid grid-cols-1 md:grid-cols-3 gap-4">
+      <Grid columns={{ base: 1, md: 3 }} gap="gap-4" className="animate-pulse">
         {[0, 0, 0].map((_, idx) => (
           <div key={'skeleton-card-' + idx} className="bg-gray-300 shadow-sm rounded-lg p-4 h-24" />
         ))}
-      </div>
+      </Grid>
     );
   }
 
   if (!subjects.length) {
     return (
-      <div className="text-center py-4">
-        <div className="flex flex-col items-center">
-          <SearchSvg className="w-12 h-12" />
-          <p className="text-gray-500 font-bold mt-4">검색된 과목이 없습니다.</p>
-          <p className="text-gray-400 text-xs mt-1">다른 검색어로 다시 시도해보세요.</p>
-        </div>
-      </div>
+      <Flex direction="flex-col" align="items-center" gap="gap-2" className="text-center py-4">
+        <SearchSvg className="w-12 h-12" />
+        <p className="text-gray-500 font-bold mt-4">검색된 과목이 없습니다.</p>
+        <p className="text-gray-400 text-xs mt-1">다른 검색어로 다시 시도해보세요.</p>
+      </Flex>
     );
   }
 

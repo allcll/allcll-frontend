@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import CardWrap from '@/components/CardWrap.tsx';
 import SkeletonRows from '@/components/live/skeletons/SkeletonRows.tsx';
 import NetworkError from '@/components/live/errors/NetworkError.tsx';
 import ZeroListError from '@/components/live/errors/ZeroListError.tsx';
@@ -20,6 +19,7 @@ import SystemChecking from './errors/SystemChecking';
 import { getDateLocale } from '@/utils/time.ts';
 import { SSE_STATE, useSSEState } from '@/store/useSseState.ts';
 import { HeadTitle, useLiveTableStore } from '@/store/useTableColumnStore.ts';
+import { Card, Flex, Heading, IconButton } from '@allcll/allcll-ui';
 
 interface IRealtimeTable {
   title: string;
@@ -32,7 +32,7 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
   const tableTitles = useLiveTableStore(state => state.tableTitles);
 
   return (
-    <CardWrap>
+    <Card>
       {isModalOpen && (
         <LiveTableTitleModal
           initialItems={tableTitles}
@@ -40,24 +40,18 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
           onClose={() => setIsModalOpen(false)}
         />
       )}
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-2 mb-4">
-          <h2 className="font-bold text-lg">{title} 실시간</h2>
-          {/*<Tooltip>*/}
-          {/*  <p className="text-sm">*/}
-          {/*    <b className="text-green-500">전체 과목 실시간 여석</b>을 <br />*/}
-          {/*    제공하고 있어요*/}
-          {/*  </p>*/}
-          {/*</Tooltip>*/}
-        </div>
-        <button
-          className="p-3 rounded-full hover:bg-blue-100"
+      <Flex justify="justify-between" align="items-center" className="mb-2">
+        <Heading level={2}>{title} 실시간</Heading>
+
+        <IconButton
+          label="테이블 수정"
+          variant="plain"
           aria-label="테이블 수정"
+          icon={<ListSvg className="w-4 h-4" />}
           onClick={() => setIsModalOpen(true)}
-        >
-          <ListSvg className="w-4 h-4 text-gray-600 hover:text-blue-500 transition-colors" />
-        </button>
-      </div>
+        />
+      </Flex>
+
       <div className="overflow-x-auto">
         <table className="w-full bg-white rounded-lg text-sm">
           <thead>
@@ -78,7 +72,7 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
       </div>
 
       <TableColorInfo />
-    </CardWrap>
+    </Card>
   );
 };
 

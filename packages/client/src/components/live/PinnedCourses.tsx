@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Tooltip from '@/components/common/Tooltip.tsx';
 import AlarmOptionModal from '@/components/toast/AlarmOptionModal.tsx';
 import RealtimeCard from '@/components/live/subjectTable/RealtimeCard.tsx';
 import NetworkError from '@/components/live/errors/NetworkError.tsx';
@@ -16,6 +15,7 @@ import AlarmAddButton from './AlarmAddButton.tsx';
 import useNotificationInstruction from '@/store/useNotificationInstruction.ts';
 import { SSE_STATE, useSSEState } from '@/store/useSseState.ts';
 import { usePinned } from '@/hooks/server/usePinned.ts';
+import { Card, Flex, Heading, IconButton, Tooltip } from '@allcll/allcll-ui';
 
 const PinnedCourses = () => {
   const [isAlarmSettingOpen, setIsAlarmSettingOpen] = useState(false);
@@ -23,53 +23,47 @@ const PinnedCourses = () => {
   const { isError, refetch } = useSseData(SSEType.PINNED);
 
   return (
-    <>
+    <Card>
       <AlarmOptionModal isOpen={isAlarmSettingOpen} close={() => setIsAlarmSettingOpen(false)} />
       <NotificationInstructionsModal />
-      <div>
-        <div className="flex justify-between align-top">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <h2 className="font-bold text-lg">여석 과목 알림</h2>
-            <Tooltip>
-              <p className="text-sm">
-                여석이 생기면 알림을 보내드려요 <br />
-                <span className="text-red-500">* 탭을 닫으면 알림이 울리지 않아요</span>
-              </p>
-            </Tooltip>
-          </div>
-          <div className="flex gap-1 items-center">
-            {isError && (
-              <button
-                className="p-2 rounded-full hover:bg-blue-100"
-                aria-label="알림 재연결"
-                title="알림 재연결"
-                onClick={refetch}
-              >
-                <ReloadSvg className="w-5 h-5" />
-              </button>
-            )}
-            <button
-              className="p-2 rounded-full hover:bg-blue-100"
-              aria-label="알림 설정"
-              title="알림 설정"
-              onClick={() => setIsAlarmSettingOpen(true)}
-            >
-              <SettingSvg className="w-5 h-5" />
-            </button>
-            <button
-              className="group relative p-2 rounded-full hover:bg-blue-100"
-              aria-label={isAlarm ? '알림 끄기' : '알림 켜기'}
-              title={isAlarm ? '알림 끄기' : '알림 켜기'}
-              onClick={changeAlarm}
-            >
-              <AlarmIcon isAlarm={isAlarm} />
-            </button>
-          </div>
-        </div>
 
-        <CoursesArea />
-      </div>
-    </>
+      <Flex direction="flex-row" justify="justify-between" align="align-top" className="mb-4">
+        <Flex align="items-center" justify="justify-center" gap="gap-2">
+          <Heading level={3}>여석 과목 알림</Heading>
+          <Tooltip>
+            <p className="text-sm">
+              여석이 생기면 알림을 보내드려요 <br />
+              <span className="text-red-500">* 탭을 닫으면 알림이 울리지 않아요</span>
+            </p>
+          </Tooltip>
+        </Flex>
+
+        <Flex align="items-center" gap="gap-1">
+          {isError && (
+            <IconButton
+              icon={<ReloadSvg className="w-5 h-5" />}
+              aria-label="알림 재연결"
+              label="알림 재연결"
+              onClick={refetch}
+            />
+          )}
+          <IconButton
+            icon={<SettingSvg className="w-5 h-5" />}
+            aria-label="알림 설정"
+            label="알림 설정"
+            onClick={() => setIsAlarmSettingOpen(true)}
+          />
+          <IconButton
+            icon={<AlarmIcon isAlarm={isAlarm} />}
+            aria-label={isAlarm ? '알림 끄기' : '알림 켜기'}
+            label={isAlarm ? '알림 끄기' : '알림 켜기'}
+            onClick={changeAlarm}
+          />
+        </Flex>
+      </Flex>
+
+      <CoursesArea />
+    </Card>
   );
 };
 

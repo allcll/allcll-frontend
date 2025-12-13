@@ -2,6 +2,7 @@ import AlarmButton from '@/components/live/AlarmButton.tsx';
 import { getTimeDiffString } from '@/utils/stringFormats.ts';
 import { Subject, Wishes } from '@/utils/types.ts';
 import { getSeatColor } from '@/utils/colors.ts';
+import { Card, Flex, Heading } from '@allcll/allcll-ui';
 
 interface IPinCard {
   subject: Subject | Wishes;
@@ -12,40 +13,41 @@ interface IPinCard {
   isLive?: boolean;
 }
 
-function PinCard({ subject, seats, queryTime, disableSeat = false, className, isLive = false }: Readonly<IPinCard>) {
+function PinCard({ subject, seats, queryTime, disableSeat = false, isLive = false }: Readonly<IPinCard>) {
   const isDeleted = subject.isDeleted;
   const isEng = subject.curiLangNm === '영어';
 
-  const credit = typeof subject.tmNum === 'string'
-    ? Number(subject.tmNum.split('/')[0]) || 0
-    : 0;
+  const credit = typeof subject.tmNum === 'string' ? Number(subject.tmNum.split('/')[0]) || 0 : 0;
 
   return (
-    <div className={'bg-gray-50 shadow-sm rounded-lg p-4 ' + className}>
-      <div className="flex justify-between">
-        <h3 className="font-bold">{subject.subjectName}</h3>
-        <AlarmButton subject={subject} />
-      </div>
-      <div className="mb-2 text-xs text-gray-500">
+    <Card variant="elevated">
+      <Flex justify="justify-between">
+        <Heading level={3}>{subject.subjectName}</Heading>
+        <AlarmButton subject={subject} variant="plain" />
+      </Flex>
+
+      <Flex className="text-xs text-gray-500" direction="flex-col">
         <p>{(subject as Wishes).departmentName}</p>
         <p>
           {subject.subjectCode}-{subject.classCode} | {subject.professorName}
         </p>
-      </div>
+      </Flex>
+
       <p className="text-xs text-gray-500 mb-2">
         {subject.studentYear}학년 {subject.curiTypeCdNm} | {credit}학점 | {subject.lesnTime}
       </p>
+
       {!disableSeat && (
-        <div className="flex justify-between items-baseline">
+        <Flex gap="gap-2" align="items-baseline" justify="justify-between">
           <p className={`text-sm px-2 py-1 rounded-full font-bold ${getSeatColor(seats)}`}>
             여석: {seats < 0 ? '???' : seats}
           </p>
           {!isLive && <p className={`text-xs text-gray-500`}>{getTimeDiffString(queryTime)}</p>}
           {isDeleted && <p className={`text-xs text-gray-500`}>폐강</p>}
           {isEng && <p className={`text-xs text-gray-500`}>영어</p>}
-        </div>
+        </Flex>
       )}
-    </div>
+    </Card>
   );
 }
 

@@ -10,6 +10,7 @@ import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import { BottomSheetType } from '@/store/useBottomSheetStore';
 import { ScheduleAdapter } from '@/utils/timetable/adapter';
 import FilterSvg from '@/assets/filter.svg?react';
+import { Flex, IconButton } from '@allcll/allcll-ui';
 
 interface ISearchBottomSheet {
   onCloseSearch: (bottomSheetType: BottomSheetType) => void;
@@ -44,16 +45,21 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
               value={keywords}
               onChange={e => setFilter('keywords', e.target.value)}
               onDelete={() => setFilter('keywords', '')}
-              className="pl-10 pr-6 py-2 rounded-md w-full bg-white border border-gray-400 text-[16px]"
+              className="w-full"
             />
-            <button className="w-20 justify-center flex cursor-pointer" onClick={() => onCloseSearch('filter')}>
-              <FilterSvg className="w-6 h-6" />
-            </button>
+
+            <IconButton
+              aria-label="filter"
+              variant="plain"
+              label="filter"
+              icon={<FilterSvg className="w-6 h-6" />}
+              onClick={() => onCloseSearch('filter')}
+            />
           </div>
 
-          <div className="max-h-[70vh] min-h-0 px-2 overflow-y-auto touch-auto flex flex-col">
+          <Flex direction="flex-col" className="max-h-[70vh] min-h-0 px-2 overflow-y-auto touch-auto">
             <FilteredSubjectCards expandToMax={expandToMax} subjects={filteredData} isPending={isPending} />
-          </div>
+          </Flex>
         </>
       )}
     </BottomSheet>

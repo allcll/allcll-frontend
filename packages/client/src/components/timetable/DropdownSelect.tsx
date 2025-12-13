@@ -1,8 +1,6 @@
-import { useRef } from 'react';
 import { TimetableType } from '@/hooks/server/useTimetableSchedules.ts';
 import { useScheduleState } from '@/store/useScheduleState';
-import Filtering from '@common/components/filtering/Filtering';
-import Checkbox from '@common/components/checkbox/Checkbox';
+import { Button, Checkbox, Flex, Popover, SupportingText } from '@allcll/allcll-ui';
 
 interface DropdownSelectProps {
   timetables: TimetableType[];
@@ -14,7 +12,6 @@ interface DropdownSelectProps {
 
 // Fixme : 기존에 있는 Chip 형태의 Selectbox 와 통합하기
 const DropdownSelect = ({ timetables, onSelect, onEdit, onDelete, openCreateModal }: DropdownSelectProps) => {
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const currentTimetable = useScheduleState(state => state.currentTimetable);
   const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
 
@@ -36,16 +33,13 @@ const DropdownSelect = ({ timetables, onSelect, onEdit, onDelete, openCreateModa
   };
 
   return (
-    <div className="relative inline-block w-full max-w-sm" ref={dropdownRef}>
-      <Filtering
-        label={currentTimetable?.timeTableName ?? '새 시간표'}
-        selected={currentTimetable?.timeTableId > -1}
-        className="min-w-max"
-      >
-        {timetables.length === 0 && <div> 새로운 시간표를 추가해주세요.</div>}
-        {timetables.length !== 0 &&
-          timetables.map(option => (
-            <div className="flex gap-5" key={option.timeTableName + option.timeTableId}>
+    <Popover>
+      <Popover.Trigger label={currentTimetable?.timeTableName ?? '새 시간표'} />
+      <Popover.Content>
+        <Flex direction="flex-col" gap="gap-4">
+          {timetables.length === 0 && <SupportingText>새로운 시간표를 추가해주세요.</SupportingText>}
+          {timetables.map(option => (
+            <Flex gap="gap-4" key={option.timeTableName + option.timeTableId}>
               <Checkbox
                 key={option.timeTableId}
                 label={option.timeTableName}
@@ -53,28 +47,29 @@ const DropdownSelect = ({ timetables, onSelect, onEdit, onDelete, openCreateModa
                 onChange={() => handleOptionClick(option)}
               />
               {currentTimetable.timeTableId === option.timeTableId && (
-                <div className="flex gap-4 text-sm">
-                  <button
-                    className="text-stone-500 text-sm hover:text-stone-600 font-medium cursor-pointer"
-                    onClick={() => handleEditClick(option.timeTableId)}
-                  >
+                <Flex gap="gap-4">
+                  <Button variant="text" size="small" onClick={() => handleEditClick(option.timeTableId)}>
                     수정
-                  </button>
-                  <button
-                    className="text-red-500  text-sm  hover:text-red-600 font-medium cursor-pointer"
+                  </Button>
+                  <Button
+                    variant="text"
+                    size="small"
+                    textColor="secondary"
                     onClick={() => handleDeleteClick(option.timeTableId)}
                   >
                     삭제
-                  </button>
-                </div>
+                  </Button>
+                </Flex>
               )}
-            </div>
+            </Flex>
           ))}
-        <button className="flex justify-center text-gray-500 text-sm hover:font-bold" onClick={openCreateModal}>
-          + 시간표 추가하기
-        </button>
-      </Filtering>
-    </div>
+
+          <Button variant="text" size="small" textColor="gray" onClick={openCreateModal}>
+            + 시간표 추가하기
+          </Button>
+        </Flex>
+      </Popover.Content>
+    </Popover>
   );
 };
 

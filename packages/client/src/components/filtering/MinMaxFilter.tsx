@@ -1,5 +1,6 @@
 import { Filters } from '@/store/useFilterStore';
 import { FilterValueType, RangeMinMaxFilter } from '@/utils/types';
+import { Flex, Input, Label } from '@allcll/allcll-ui';
 import { useState } from 'react';
 
 interface IMinMaxFilter<K extends keyof Filters> {
@@ -22,30 +23,33 @@ function MinMaxFilter<K extends keyof Filters>({ selectedValue, filterKey, setFi
 
   return (
     <div className="relative inline-block w-full space-y-2">
-      <label className=" text-gray-600">범위 설정</label>
-      <div className="flex gap-2 sm:gap-4 pt-2">
-        <input
+      <Label>범위 설정</Label>
+
+      <Flex gap="gap-2">
+        <Input
           type="text"
+          placeholder="이상"
           value={input.min}
           onChange={e => {
             const onlyDigits = e.target.value.replace(/[^\d]/g, '');
             handleChangeInput('min', onlyDigits);
           }}
-          placeholder="이상"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+          className="w-full"
         />
+
         <span className="flex items-center text-gray-400">~</span>
-        <input
+
+        <Input
           type="text"
+          placeholder="이하"
           value={input.max}
           onChange={e => {
             const onlyDigits = e.target.value.replace(/[^\d]/g, '');
             handleChangeInput('max', onlyDigits);
           }}
-          placeholder="이하"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+          className="w-full"
         />
-      </div>
+      </Flex>
     </div>
   );
 }

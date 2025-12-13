@@ -1,11 +1,9 @@
-import React from 'react';
-import TextField from '../common/TextField';
 import SelectTime from './SelectTime';
 import { Day, DAYS } from '@/utils/types';
 import Chip from '@common/components/chip/Chip';
 import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
-import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState';
-import { useBottomSheetStore } from '@/store/useBottomSheetStore.ts';
+import { useScheduleState } from '@/store/useScheduleState';
+import { Flex, Label, TextField } from '@allcll/allcll-ui';
 
 interface TimeRange {
   startHour: string;
@@ -15,10 +13,8 @@ interface TimeRange {
 }
 
 function ScheduleFormContent() {
-  const { schedule: scheduleForm, modalActionType } = useScheduleModalData();
-  const { editSchedule: setScheduleForm, saveSchedule, deleteSchedule, cancelSchedule } = useScheduleModal();
-
-  const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
+  const { schedule: scheduleForm } = useScheduleModalData();
+  const { editSchedule: setScheduleForm } = useScheduleModal();
 
   const isMobile = useScheduleState(state => state.options.isMobile);
 
@@ -113,37 +109,23 @@ function ScheduleFormContent() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    saveSchedule(e);
-  };
-
-  const handleDeleteSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
-    deleteSchedule(e);
-  };
-
-  const gotoSearchContents = () => {
-    cancelSchedule();
-    openBottomSheet('search');
-  };
-
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+    <Flex direction="flex-col" gap={isMobile ? 'gap-4' : 'gap-5'}>
       {textFields.map(({ id, name, value }) => (
-        <div key={'text-field' + id} className="flex gap-6">
-          <TextField
-            id={id}
-            placeholder={`${name}을 입력해주세요`}
-            value={value}
-            label={name}
-            onChange={e => setScheduleForm(prev => ({ ...prev, [id]: e.target.value }))}
-            required
-          />
-        </div>
+        <TextField
+          size="medium"
+          id={id}
+          placeholder={`${name}을 입력해주세요`}
+          value={value}
+          label={name}
+          onChange={e => setScheduleForm(prev => ({ ...prev, [id]: e.target.value }))}
+          required={true}
+        />
       ))}
 
-      <div className="flex gap-2 flex-row">
-        <div className="flex gap-2 items-center">
-          <p className="text-gray-400 text-xs">요일</p>
+      <Flex gap="gap-2" direction="flex-col">
+        <Label>요일</Label>
+        <Flex direction="flex-wrap">
           {DAYS.map(day => (
             <Chip
               key={day}
@@ -152,54 +134,20 @@ function ScheduleFormContent() {
               onClick={() => toggleDay(day)}
             />
           ))}
-        </div>
-      </div>
+        </Flex>
+      </Flex>
 
-      {scheduleForm.timeSlots.map(slot => {
-        return (
-          <div key={slot.dayOfWeeks} className="flex gap-2 ">
-            <p className="text-xs text-gray-400">{slot.dayOfWeeks}</p>
-            <SelectTime
-              day={slot.dayOfWeeks}
-              timeRange={extractTimeParts(slot.startTime, slot.endTime)}
-              onChange={onScheduleFormChange}
-            />
-          </div>
-        );
-      })}
-
-      <div className="flex justify-between items-center">
-        <div>
-          {isMobile && (
-            <button
-              type="button"
-              className="text-xs text-blue-500 hover:text-blue-600 hover:underline cursor-pointer"
-              onClick={gotoSearchContents}
-            >
-              + 과목 일정 추가
-            </button>
-          )}
-        </div>
-        <div className="flex justify-end gap-3">
-          {(modalActionType === ScheduleMutateType.EDIT || modalActionType === ScheduleMutateType.VIEW) && (
-            <button
-              type="button"
-              onClick={handleDeleteSchedule}
-              className="text-xs text-white bg-red-500 hover:bg-red-600 w-15 rounded-lg px-4 py-2 cursor-pointer "
-            >
-              삭제
-            </button>
-          )}
-
-          <button
-            type="submit"
-            className="text-xs text-white bg-blue-500 hover:bg-blue-600 w-15 rounded-lg px-4 py-2 cursor-pointer "
-          >
-            저장
-          </button>
-        </div>
-      </div>
-    </form>
+      {scheduleForm.timeSlots.map(slot => (
+        <Flex key={slot.dayOfWeeks} direction="flex-col" gap="gap-2">
+          <Label>{slot.dayOfWeeks}</Label>
+          <SelectTime
+            day={slot.dayOfWeeks}
+            timeRange={extractTimeParts(slot.startTime, slot.endTime)}
+            onChange={onScheduleFormChange}
+          />
+        </Flex>
+      ))}
+    </Flex>
   );
 }
 
