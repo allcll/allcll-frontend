@@ -113,6 +113,7 @@ function ScheduleFormContent() {
     <Flex direction="flex-col" gap={isMobile ? 'gap-4' : 'gap-5'}>
       {textFields.map(({ id, name, value }) => (
         <TextField
+          key={id}
           size="medium"
           id={id}
           placeholder={`${name}을 입력해주세요`}
