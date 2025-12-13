@@ -56,7 +56,7 @@ function AuthTokenSetting({}: ITokenSetting) {
       <SectionHeader title="인증정보 설정" description="크롤러에 필요한 인증 정보를 설정합니다." />
 
       <form onSubmit={submitTokens}>
-        <Grid columns={{ md: 2 }} gap="gap-4" className="w-full">
+        <Grid columns={{ base: 2 }} gap="gap-4" className="w-full">
           {tokenType.map(token => (
             <TextField
               key={token}

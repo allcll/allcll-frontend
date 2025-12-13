@@ -1,8 +1,9 @@
 import { PreiodService } from '@/utils/type';
-import { Button, Card, Heading, Label, SupportingText } from '@allcll/allcll-ui';
+import { Button, Card, Flex, Label } from '@allcll/allcll-ui';
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import SectionHeader from '../common/SectionHeader';
 
 const serviceList = [
   {
@@ -73,12 +74,11 @@ function ServicePeriod() {
     <form onSubmit={submitServicePeriod}>
       <section>
         <Card>
-          <Heading level={3}>서비스 운영 기간 설정</Heading>
-          <SupportingText>각 서비스의 오픈 시작일과 종료일을 설정합니다.</SupportingText>
+          <Flex direction="flex-col" gap="gap-4">
+            <SectionHeader title="서비스 운영 기간 설정" description="각 서비스의 오픈 시작일과 종료일을 설정합니다." />
 
-          <div className="space-y-6">
             {serviceList.map((label, index) => (
-              <div key={label.id} className="flex flex-row gap-4">
+              <Flex key={label.id} gap="gap-4">
                 <div>
                   <Label className="block text-sm font-medium mb-1">{label.name} 시작일</Label>
                   <DatePicker
@@ -99,17 +99,17 @@ function ServicePeriod() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
                   />
                 </div>
-              </div>
+              </Flex>
             ))}
-          </div>
+          </Flex>
+
+          <Flex justify="justify-end">
+            <Button type="submit" variant="primary" size="medium">
+              전체 저장
+            </Button>
+          </Flex>
         </Card>
       </section>
-
-      <div className="flex justify-end mt-5 ">
-        <Button type="submit" variant="primary" size="medium">
-          전체 저장
-        </Button>
-      </div>
     </form>
   );
 }

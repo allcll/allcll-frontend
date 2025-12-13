@@ -29,7 +29,7 @@ function CrawlerSettings() {
         <SetupProgress current={isSessionSet ? SetupStep.CONTROL : SetupStep.TOKEN} />
 
         <Flex direction="flex-col" gap="gap-4">
-          {mySessionStatus ? (
+          {!mySessionStatus ? (
             <>
               <TokenSetting />
               <SessionList />

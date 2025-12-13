@@ -24,7 +24,7 @@ function SystemChecking() {
     <section>
       <SectionHeader title="시스템 상태 점검" description="시스템의 상태를 확인합니다." />
 
-      <Grid columns={{ sm: 2, md: 4 }} gap="gap-4">
+      <Grid columns={{ base: 2, sm: 4 }} gap="gap-4">
         {Object.entries(STATUS_CONFIG).map(([key, config]) => {
           const { active, description } = statusData[key as SystemStatusKey];
           return <StatusCard key={key} title={config.title} status={active ? 'ON' : 'OFF'} description={description} />;

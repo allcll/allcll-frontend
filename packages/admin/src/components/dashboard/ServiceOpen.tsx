@@ -33,7 +33,7 @@ function ServiceOpen() {
     <section>
       <SectionHeader title="서비스 오픈 현황" description="각 서비스의 오픈 상태를 확인합니다." />
 
-      <Grid columns={{ md: 4, sm: 2 }} gap="gap-4">
+      <Grid columns={{ base: 2, sm: 4 }} gap="gap-4">
         {systemOpenStatus.map(({ name, start, end, status }) => (
           <Card key={name}>
             <Flex align="items-start" justify="justify-between">
