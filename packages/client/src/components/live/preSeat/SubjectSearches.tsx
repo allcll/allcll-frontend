@@ -21,7 +21,7 @@ function SubjectSearches() {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
   const setFilters = useAlarmSearchStore(state => state.setFilter);
-  const { department, keywords, alarmOnly, time } = useAlarmSearchStore(state => state.filters);
+  const { keywords, alarmOnly, time } = useAlarmSearchStore(state => state.filters);
   const filters = useAlarmSearchStore(state => state.filters);
   const resetFilter = useAlarmSearchStore(state => state.resetFilters);
   const isMobile = useMobile();
