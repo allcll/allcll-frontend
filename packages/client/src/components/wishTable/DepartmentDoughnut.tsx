@@ -10,6 +10,7 @@ import {
   getUniversityDoughnutData,
 } from '@/utils/doughnut';
 import { WishRegister } from '@/utils/types.ts';
+import { Flex, Heading, Label } from '@allcll/allcll-ui';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -28,11 +29,11 @@ function DepartmentDoughnut({ data, majorName }: Readonly<{ data?: WishRegister[
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
-      <div className="flex justify-between items-center">
-        <h2 className="text-lg font-semibold">관심과목 현황</h2>
-        <label className="hidden" htmlFor="doughnut-select">
+      <Flex justify="justify-between" align="items-center">
+        <Heading level={2}>관심과목 현황</Heading>
+        <Label className="hidden" htmlFor="doughnut-select">
           필터
-        </label>
+        </Label>
         <select
           className="border px-3 py-1 rounded-md"
           id="doughnut-select"
@@ -45,11 +46,12 @@ function DepartmentDoughnut({ data, majorName }: Readonly<{ data?: WishRegister[
             </option>
           ))}
         </select>
-      </div>
+      </Flex>
+
       {!totalCount ? (
-        <div className="flex justify-center items-center h-48">
+        <Flex justify="justify-center" align="items-center" className="h-48">
           <p className="text-center text-gray-500 font-semibold">관심과목을 담은 사람이 없습니다.</p>
-        </div>
+        </Flex>
       ) : (
         <Doughnut data={doughnutData} />
       )}

@@ -1,9 +1,9 @@
 import 'react-datepicker/dist/react-datepicker.css';
 import { Dispatch, SetStateAction } from 'react';
-import Card from '@allcll/common/components/Card';
 import CheckboxAdapter from '@allcll/common/components/checkbox/CheckboxAdapter';
 import Filtering from '@allcll/common/components/filtering/Filtering';
 import MultiSelectFilterOption, { OptionType } from '../common/MultiSelectFilterOption';
+import { Card, Flex, Heading, Label, SupportingText, TextField } from '@allcll/allcll-ui';
 
 const StatusCodes: OptionType<number>[] = [
   { value: 0, label: 'ALL' },
@@ -32,34 +32,39 @@ function RequestLogs({ urlInput, setUrlInput, selectedStatusCodes, setSelectedSt
   return (
     <section className="sticky top-16">
       <Card>
-        <h2 className="text-md font-semibold mb-3">API 요청 로그</h2>
-        <p className="text-gray-600 mb-4">API 요청 로그를 필터링하여 조회합니다.</p>
+        <Card.Header>
+          <Heading level={3}>API 요청 로그</Heading>
+          <SupportingText>API 요청 로그를 필터링하여 조회합니다.</SupportingText>
+        </Card.Header>
 
-        <div className="w-full gap-4  justify-between max-w-3xl mx-auto space-y-4">
-          <label className="block text-sm font-medium mb-1">상태 코드</label>
+        <Card.Content>
+          <Flex direction="flex-col" gap="gap-1">
+            <Label id="filtering-option" className="font-semibold">
+              필터링 옵션
+            </Label>
+            <Filtering label="상태" selected={selectedStatusCodes.length !== 0}>
+              <MultiSelectFilterOption
+                labelPrefix="상태 코드"
+                selectedValues={selectedStatusCodes}
+                field="selectedStatusCodes"
+                setFilter={setFilterScheduleWrapper}
+                options={StatusCodes}
+                ItemComponent={CheckboxAdapter}
+              />
+            </Filtering>
+          </Flex>
 
-          <Filtering label="상태" selected={selectedStatusCodes.length !== 0}>
-            <MultiSelectFilterOption
-              labelPrefix="상태 코드"
-              selectedValues={selectedStatusCodes}
-              field="selectedStatusCodes"
-              setFilter={setFilterScheduleWrapper}
-              options={StatusCodes}
-              ItemComponent={CheckboxAdapter}
-            />
-          </Filtering>
-
-          <label className="block text-sm font-medium mb-1">API 요청 URL</label>
-          <input
-            type="text"
-            value={urlInput}
+          <TextField
+            id="apiUrl"
+            label="API 요청 URL"
+            size="medium"
             placeholder="API 요청 URL을 입력하세요"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+            value={urlInput}
             onChange={e => {
               setUrlInput(e.target.value);
             }}
           />
-        </div>
+        </Card.Content>
       </Card>
     </section>
   );

@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js/auto';
 import Table from '@/components/wishTable/Table';
-import CardWrap from '@/components/CardWrap';
 import BlurComponents from '@/components/BlurComponents';
 import DepartmentDoughnut from '@/components/wishTable/DepartmentDoughnut.tsx';
 import { InitWishes } from '@/hooks/server/useWishes.ts';
@@ -14,6 +13,7 @@ import { getSeatColor, getWishesColor } from '@/utils/colors.ts';
 import FavoriteButton from '@/components/wishTable/FavoriteButton.tsx';
 import AlarmButton from '@/components/live/AlarmButton.tsx';
 import usePreSeatGate from '@/hooks/usePreSeatGate';
+import { Card, Flex, Grid, Heading, SupportingText } from '@allcll/allcll-ui';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -79,19 +79,21 @@ function WishesDetail() {
       <div className="min-h-screen bg-gray-50">
         {/* Course Info Section */}
         <div className="p-6 max-w-5xl mx-auto">
-          <CardWrap>
-            <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold">{data.subjectName}</h1>
+          <Card>
+            <Flex justify="justify-between" align="items-center">
+              <Heading level={1}>{data.subjectName}</Heading>
 
-              <div className="flex items-center gap-2">
-                <FavoriteButton subject={data} className="p-2 border rounded border-gray-300 hover:bg-gray-100" />
-                <AlarmButton subject={data} className="p-2 border rounded border-gray-300 hover:bg-gray-100" />
-              </div>
-            </div>
+              <Flex gap="gap-2">
+                <FavoriteButton subject={data} />
+                <AlarmButton subject={data} />
+              </Flex>
+            </Flex>
+
             <p className="text-gray-600">
               {data.subjectCode}-{data.classCode} | {data.departmentName} | {data.professorName}
             </p>
-            <div className="flex items-center gap-2 flex-wrap text-gray-600">
+
+            <Flex gap="gap-2" align="items-center" direction="flex-wrap" className="text-gray-600 text-sm">
               <span>{data.studentYear}학년</span>
               <span>{data.curiTypeCdNm}</span>
               <span>{Number(data.tmNum.split('/')[0].trim())}학점</span>
@@ -110,11 +112,11 @@ function WishesDetail() {
               {isDeleted && (
                 <span className="bg-red-100 rounded px-2 py-1 text-red-500 text-xs font-semibold">폐강</span>
               )}
-            </div>
+            </Flex>
             <p className="text-sm text-gray-500">{data.remark}</p>
 
             {/* Analytics Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <Grid columns={{ md: 2, base: 1 }} gap="gap-6" className=" mt-6">
               {/* Doughnut Chart */}
               <DepartmentDoughnut
                 data={registers?.eachDepartmentRegisters ?? []}
@@ -122,15 +124,15 @@ function WishesDetail() {
               />
 
               {/* Competition Analysis */}
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-lg font-semibold">관심과목 경쟁률 예상</h2>
+              <Card>
+                <Flex gap="gap-2" align="items-center" className="mb-4">
+                  <Heading level={2}>관심과목 경쟁률 예상</Heading>
                   {isWishesAvailable && (
                     <p className={`${getWishesColor(data.totalCount ?? -1)} font-bold text-xl`}>
                       총 {data.totalCount}명
                     </p>
                   )}
-                </div>
+                </Flex>
 
                 <BlurComponents>
                   <p className="text-sm text-gray-500">작년 대비 관심도 20% 증가 → 경쟁 치열할 가능성 높음</p>
@@ -138,19 +140,21 @@ function WishesDetail() {
                     <Bar data={gradeData} />
                   </div>
                 </BlurComponents>
-              </div>
-            </div>
+              </Card>
+            </Grid>
 
             {/* Alternative Course Table */}
-            <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-lg font-semibold">대체과목 추천</h2>
-              <p className="text-gray-500 text-sm mb-4">학수번호가 같은 과목을 알려드려요</p>
+            <Card>
+              <Heading level={2} className="mt-2">
+                대체과목 추천
+              </Heading>
+              <SupportingText>학수번호가 같은 과목을 알려드려요</SupportingText>
 
               <div className="overflow-x-auto">
                 <Table data={recommend ?? []} />
               </div>
-            </div>
-          </CardWrap>
+            </Card>
+          </Card>
         </div>
       </div>
     </>

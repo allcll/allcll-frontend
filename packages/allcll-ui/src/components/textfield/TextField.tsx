@@ -6,9 +6,19 @@ interface TextFieldProps extends Omit<ComponentPropsWithoutRef<'input'>, 'size'>
   isError?: boolean;
   errorMessage?: string;
   size: 'small' | 'medium' | 'large';
+  className?: string;
 }
 
-function TextField({ label, isError, errorMessage, required, id, size = 'medium', ...rest }: TextFieldProps) {
+function TextField({
+  label,
+  isError,
+  errorMessage,
+  required,
+  id,
+  size = 'medium',
+  className = '',
+  ...rest
+}: TextFieldProps) {
   return (
     <div className="w-full flex flex-col">
       {label && (

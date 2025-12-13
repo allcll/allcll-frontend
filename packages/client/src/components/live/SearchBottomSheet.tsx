@@ -57,6 +57,7 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
               placeholder="과목명 교수명 검색"
               onChange={e => setSearchInput(e.target.value)}
               onDelete={() => setSearchInput('')}
+              className="w-full"
             />
             <DepartmentFilter
               className="flex-auto"
@@ -66,7 +67,6 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
           </div>
 
           <div className="max-h-[70vh] min-h-0 px-2 overflow-y-auto touch-auto flex flex-col">
-            {/* Search Results */}
             <SubjectCards
               className="flex flex-full overflow-auto max-h-screen"
               subjects={filteredData}

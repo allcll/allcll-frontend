@@ -46,7 +46,6 @@ function BottomSheet({ children }: IBottomSheet) {
           transform: `translateY(${MIN_Y}px)`,
         }}
       >
-        {/* header button*/}
         <div className="w-full flex justify-center py-2 h-7 shrink-0">
           <button
             className="w-20 h-2 cursor-pointer bg-gray-300 rounded-full"

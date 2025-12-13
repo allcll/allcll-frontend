@@ -15,13 +15,13 @@ import FilteringBottomSheet from '../contentPanel/bottomSheet/FilteringBottomShe
 import GenericMultiSelectFilter from '../filtering/GenericMultiSelectFilter';
 import GenericSingleSelectFilter from '../filtering/GenericSingleSelectFilter';
 import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains';
-import Chip from '@common/components/chip/Chip';
 import FilteringButton from '../filtering/button/FilteringButton';
 import DepartmentSelectFilter from '../filtering/DepartmentFilter';
 import FilterDelete from '../filtering/FilterDelete';
 import FilteringModal from '../filtering/FilteringModal';
 import usePreSeatGate from '@/hooks/usePreSeatGate.ts';
 import useWishesPreSeats from '@/hooks/useWishesPreSeats.ts';
+import { IconButton, Flex, Chip } from '@allcll/allcll-ui';
 
 export interface WishSearchParams {
   searchInput: string;
@@ -37,7 +37,7 @@ function Searches() {
   const setFilter = useWishSearchStore(state => state.setFilter);
   const resetFilter = useWishSearchStore(state => state.resetFilters);
 
-  const { keywords, department, favoriteOnly } = filters;
+  const { keywords, favoriteOnly } = filters;
 
   const tableTitles = useWishesTableStore(state => state.tableTitles);
   const setTableTitles = useWishesTableStore(state => state.setTableTitles);
@@ -103,16 +103,16 @@ function Searches() {
 
       <SearchBox
         type="text"
-        className="pl-10 pr-6 py-2 rounded-md w-full bg-white border border-gray-400 text-[16px] placeholder:text-sm"
         placeholder="과목명, 교수명 또는 학수번호 및 분반 검색"
         value={keywords}
         onDelete={() => setFilter('keywords', '')}
         onChange={event => setFilter('keywords', event.target.value)}
+        className="w-full"
       />
 
       <div className="flex items-center flex-wrap mt-2 gap-2">
         <div className="hidden md:flex flex-wrap gap-2">
-          <DepartmentSelectFilter department={department} setFilter={setFilter} />
+          <DepartmentSelectFilter setFilter={setFilter} selectedValue={filters.department ?? ''} />
 
           {isWishesAvailable && (
             <GenericSingleSelectFilter
@@ -189,37 +189,34 @@ function Searches() {
         <FilterDelete filters={filters} resetFilter={resetFilter} />
         <FilteringButton handleOpenFilter={handleOpenFilter} />
 
-        <button
-          className="p-2 rounded-md flex gap-2 items-center border border-gray-400 bg-white hover:bg-gray-100"
-          onClick={setToggleFavorite}
+        <IconButton
+          variant="contain"
+          icon={<StarIcon disabled={!favoriteOnly} />}
           aria-label={favoriteOnly ? '즐겨찾기 필터 제거' : '즐겨찾기 필터 추가'}
-          title={favoriteOnly ? '즐겨찾기 필터 제거' : '즐겨찾기 필터 추가'}
-        >
-          <StarIcon disabled={!favoriteOnly} />
-        </button>
+          label={favoriteOnly ? '즐겨찾기 필터 제거' : '즐겨찾기 필터 추가'}
+          onClick={setToggleFavorite}
+        />
 
-        <button
-          className="p-2 rounded-md flex gap-2 items-center border border-gray-400 bg-white hover:bg-gray-100"
-          aria-label="테이블 수정"
-          title="테이블 수정"
+        <IconButton
+          variant="contain"
+          label="테이블 수정"
+          icon={<ListSvg className="w-5 h-5" />}
           onClick={() => setIsModalOpen(true)}
-        >
-          <ListSvg className="w-4 h-4 text-gray-600 hover:text-blue-500 transition-colors" />
-        </button>
+        />
 
-        <div className="flex flex-wrap gap-2 w-fit md:hidden">
+        <Flex direction="flex-wrap" gap="gap-2" className="w-fit md:hidden">
           {allSelectedFilters.map(filter => {
             return (
               <Chip
                 key={`${filter.filterKey}-${filter.values}`}
-                chipType="cancel"
+                variant="cancel"
                 label={filter.label}
                 selected={true}
                 onClick={() => handleDeleteFilter(filter.filterKey, filter.values)}
               />
             );
           })}
-        </div>
+        </Flex>
       </div>
     </div>
   );

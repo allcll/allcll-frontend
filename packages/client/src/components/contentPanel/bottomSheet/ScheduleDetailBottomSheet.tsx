@@ -5,6 +5,7 @@ import ClockGraySvg from '@/assets/clock-gray.svg?react';
 import HouseSvg from '@/assets/house.svg?react';
 import useSubject from '@/hooks/server/useSubject';
 import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
+import { Button, Flex, Heading } from '@allcll/allcll-ui';
 
 function ScheduleInfoBottomSheet() {
   const { schedule } = useScheduleModalData();
@@ -23,39 +24,37 @@ function ScheduleInfoBottomSheet() {
   return (
     <BottomSheet>
       <BottomSheetHeader headerType="close" onClose={cancelSchedule} />
-      <div className="w-full flex items-center gap-2 border-b border-gray-200 p-2 h-12">
-        <h3 className="font-semibold text-md">{schedule.subjectName}</h3>
-      </div>
-
-      <div className="flex flex-col gap-1 px-2 py-3 text-gray-500 text-sm">
+      <Flex direction="flex-col" className="px-2 py-3 w-full text-sm text-gray-500 gap-2">
+        <Heading level={3}>{schedule.subjectName}</Heading>
         <p className="text-sm text-gray-500">{schedule.professorName ?? '교수 정보 없음'}</p>
-        <div className="flex items-center gap-1">
-          <ClockGraySvg className="w-4 h-4 text-gray-400" />
-          <span className="text-gray-500 text-sm">{findSubjectById?.lesnTime}</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <HouseSvg className="w-4 h-4 text-gray-400" />
-          <span className="text-gray-500 text-sm">{findSubjectById?.lesnRoom ?? '장소 정보 없음'}</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <span className="text-gray-500 text-sm">{findSubjectById?.manageDeptNm}</span>
-          <span className="text-gray-500 text-sm"> {findSubjectById?.studentYear + '학년'}</span>
 
+        <Flex align="items-center">
+          <ClockGraySvg className="w-4 h-4 text-gray-400" />
+          <span>{findSubjectById?.lesnTime}</span>
+        </Flex>
+
+        <Flex align="items-center">
+          <HouseSvg className="w-4 h-4 text-gray-400" />
+          <span>{findSubjectById?.lesnRoom ?? '장소 정보 없음'}</span>
+        </Flex>
+
+        <Flex>
+          <span>{findSubjectById?.manageDeptNm}</span>
+          <span> {findSubjectById?.studentYear + '학년'}</span>
           <span className="text-blue-500 text-sm">{findSubjectById?.tmNum[0] + '학점'}</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <span className="text-gray-500 text-sm font-bold">{findSubjectById?.curiTypeCdNm ?? ''} </span>
-          <span className="text-gray-500 text-sm">{findSubjectById?.remark ?? ''}</span>
-        </div>
-      </div>
-      <div className="px-4 py-4">
-        <button
-          onClick={handleDeleteOfficialSchedule}
-          className="text-sm text-red-500 cursor-pointer font-medium ml-auto block"
-        >
-          삭제
-        </button>
-      </div>
+        </Flex>
+
+        <Flex>
+          <span>{findSubjectById?.curiTypeCdNm ?? ''} </span>
+          <span>{findSubjectById?.remark ?? ''}</span>
+        </Flex>
+
+        <Flex justify="justify-end" className="px-2">
+          <Button variant="text" size="medium" textColor="secondary" onClick={handleDeleteOfficialSchedule}>
+            삭제
+          </Button>
+        </Flex>
+      </Flex>
     </BottomSheet>
   );
 }

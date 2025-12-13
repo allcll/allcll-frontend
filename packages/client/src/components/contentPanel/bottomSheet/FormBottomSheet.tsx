@@ -4,6 +4,7 @@ import BottomSheetHeader from './BottomSheetHeader';
 import ScheduleFormContent from '../ScheduleFormContent';
 import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
 import { ScheduleMutateType } from '@/store/useScheduleState.ts';
+import { Flex } from '@allcll/allcll-ui';
 
 function FormBottomSheet() {
   const { modalActionType } = useScheduleModalData();
@@ -18,9 +19,9 @@ function FormBottomSheet() {
   return (
     <BottomSheet>
       <BottomSheetHeader title={`커스텀 일정 ${title}`} headerType="close" onClose={handleCancelSchedule} />
-      <div className="flex flex-col py-5 px-5 gap-5 overflow-y-auto max-h-[70vh]">
+      <Flex direction="flex-col" className="py-5 px-2 overflow-y-auto max-h-[80vh]">
         <ScheduleFormContent />
-      </div>
+      </Flex>
     </BottomSheet>
   );
 }

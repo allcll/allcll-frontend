@@ -3,6 +3,8 @@ import { Filters } from '@/store/useFilterStore';
 import { getLabelFormatter, labelPrefix } from '@/utils/filtering/getFilteringFormatter';
 import { FilterItemProps, RangeMinMaxFilter } from '@/utils/types';
 import MinMaxFilter from './MinMaxFilter';
+import { Button, Flex, Label } from '@allcll/allcll-ui';
+import useMobile from '@/hooks/useMobile';
 
 type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer U)[] ? U : Filters[K];
 
@@ -25,6 +27,8 @@ function SingleSelectFilterOption<K extends keyof Filters>({
   className,
   isMinMax = false,
 }: Readonly<ISingleSelectFilter<K>>) {
+  const isMobile = useMobile();
+
   const handleChangeCheckbox = (optionValue: FilterValueType<K>) => {
     const checked = selectedValue === optionValue;
     const newValue = checked ? null : optionValue;
@@ -40,15 +44,8 @@ function SingleSelectFilterOption<K extends keyof Filters>({
 
   return (
     <div className="relative inline-block">
-      <label className="text-xs text-gray-500 sm:text-gray-600 sm:text-base">{labelPrefix[filterKey]}</label>
-      <div
-        className={`
-        gap-2 grid [grid-template-columns:repeat(auto-fit,minmax(80px,1fr))]
-        grid grid-cols-2 pt-2
-        min-w-max
-        ${className ?? ''}
-    `}
-      >
+      <Label>{labelPrefix[filterKey]}</Label>
+      <Flex direction="flex-wrap" gap="gap-2" className={className ?? 'mt-1'}>
         {options.map(option => (
           <ItemComponent
             key={String(option)}
@@ -57,7 +54,7 @@ function SingleSelectFilterOption<K extends keyof Filters>({
             onClick={() => handleChangeCheckbox(option)}
           />
         ))}
-      </div>
+      </Flex>
       {isMinMax && (
         <div className="mt-2">
           <MinMaxFilter
@@ -68,15 +65,15 @@ function SingleSelectFilterOption<K extends keyof Filters>({
           />
         </div>
       )}
-      <div className="flex justify-end w-full mt-2">
-        <button
-          onClick={() => handleClickReset()}
-          className="text-gray-500 hover:text-blue-500 cursor-pointer sm:text-sm text-xs px-1 py-0.5"
-        >
-          <ResetSvg className="inline w-4 h-4 mr-1 mb-0.5" stroke="currentColor" />
-          초기화
-        </button>
-      </div>
+
+      {!isMobile && (
+        <Flex justify="justify-end">
+          <Button variant="text" size="small" textColor="gray" onClick={() => handleClickReset()}>
+            <ResetSvg className="inline w-3 h-3 mr-1" stroke="currentColor" />
+            초기화
+          </Button>
+        </Flex>
+      )}
     </div>
   );
 }

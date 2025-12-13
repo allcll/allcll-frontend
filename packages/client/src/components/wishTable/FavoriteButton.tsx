@@ -2,12 +2,14 @@ import React from 'react';
 import StarIcon from '@/components/svgs/StarIcon.tsx';
 import { Subject } from '@/utils/types.ts';
 import useFavorites from '@/store/useFavorites';
+import { IconButton } from '@allcll/allcll-ui';
 
 interface IFavoriteButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   subject: Subject;
+  variant?: 'contain' | 'plain';
 }
 
-function FavoriteButton({ subject, className, onClick, ...props }: IFavoriteButtonProps) {
+function FavoriteButton({ subject, variant = 'contain', className, onClick, ...props }: IFavoriteButtonProps) {
   const isFavorite = useFavorites(state => state.isFavorite(subject.subjectId));
   const toggleFavorite = useFavorites(state => state.toggleFavorite);
 
@@ -20,15 +22,15 @@ function FavoriteButton({ subject, className, onClick, ...props }: IFavoriteButt
   };
 
   return (
-    <button
-      className={'cursor-pointer ' + (className ?? '')}
+    <IconButton
+      variant={variant}
       onClick={handleFavorite}
-      title={title}
+      label={title}
+      icon={<StarIcon disabled={!isFavorite} />}
       aria-label={title}
+      className={className}
       {...props}
-    >
-      <StarIcon disabled={!isFavorite} />
-    </button>
+    />
   );
 }
 

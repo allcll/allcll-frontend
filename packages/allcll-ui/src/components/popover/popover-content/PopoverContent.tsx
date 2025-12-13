@@ -1,22 +1,24 @@
 import { usePopoverContext } from '../popover/Popover';
+import { createPortal } from 'react-dom';
 
-const PopoverContent = ({ children }: { children: React.ReactNode; icon?: React.ReactNode }) => {
-  const { isOpen, position, contentRef } = usePopoverContext();
-  if (!isOpen) return null;
+function PopoverContent({ children }: { children: React.ReactNode }) {
+  const { isOpen, triggerRef } = usePopoverContext();
+  if (!isOpen || !triggerRef.current) return null;
 
-  return (
+  const rect = triggerRef.current.getBoundingClientRect();
+
+  return createPortal(
     <div
-      ref={contentRef}
+      className="fixed z-50 rounded-md bg-white shadow-lg p-4"
       style={{
-        top: 0,
-        left: 0,
-        transform: `translate(${position?.x}px, ${position?.y}px)`,
+        top: rect.bottom + 8,
+        left: rect.left,
       }}
-      className="border mt-1 border-gray-200  shadow-lg rounded-lg bg-white p-4"
     >
       {children}
-    </div>
+    </div>,
+    document.body,
   );
-};
+}
 
 export default PopoverContent;

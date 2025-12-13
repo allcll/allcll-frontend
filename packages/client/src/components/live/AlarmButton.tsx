@@ -4,12 +4,14 @@ import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
 import { useAddPinned, usePinned, useRemovePinned } from '@/hooks/server/usePinned.ts';
 import { loggingDepartment } from '@/hooks/useSearchRank.ts';
 import useSearchLogging from '@/hooks/useSearchLogging.ts';
+import { IconButton } from '@allcll/allcll-ui';
 
 interface IAlarmButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   subject: Subject;
+  variant?: 'contain' | 'plain';
 }
 
-function AlarmButton({ subject, className, onClick, ...props }: IAlarmButtonProps) {
+function AlarmButton({ subject, variant = 'contain', className, onClick, ...props }: IAlarmButtonProps) {
   const { data: pinnedSubjects } = usePinned();
   const { mutate: deletePin } = useRemovePinned();
   const { mutate: addPin } = useAddPinned();
@@ -33,15 +35,15 @@ function AlarmButton({ subject, className, onClick, ...props }: IAlarmButtonProp
   };
 
   return (
-    <button
-      className={'cursor-pointer ' + (className ?? '')}
-      title={title}
+    <IconButton
       aria-label={title}
+      title={title}
+      variant={variant === 'contain' ? 'contain' : 'plain'}
       onClick={handlePin}
+      icon={<AlarmIcon disabled={!isPinned} />}
+      className={className}
       {...props}
-    >
-      <AlarmIcon disabled={!isPinned} />
-    </button>
+    />
   );
 }
 

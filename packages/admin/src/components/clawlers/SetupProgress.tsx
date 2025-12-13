@@ -1,9 +1,10 @@
 import CheckSvg from '@/assets/check.svg?react';
 import { SetupStep } from '@/utils/type';
+import { Flex } from '@allcll/allcll-ui';
 
 function SetupProgress({ current }: { current: number }) {
   return (
-    <div className="flex items-center gap-4">
+    <Flex align="items-center">
       <Step
         number={SetupStep.TOKEN}
         finish={current > SetupStep.TOKEN}
@@ -17,7 +18,7 @@ function SetupProgress({ current }: { current: number }) {
         active={current >= SetupStep.CONTROL}
         label="크롤러 제어"
       />
-    </div>
+    </Flex>
   );
 }
 
@@ -30,7 +31,7 @@ interface StepProps {
 
 function Step({ number, finish, active, label }: StepProps) {
   return (
-    <div className="flex items-center gap-2">
+    <Flex align="items-center">
       <div
         className={`w-8 h-8 flex items-center justify-center rounded-full border 
           ${active ? 'bg-blue-500 border-blue-500 text-white' : 'bg-white border-gray-300 text-gray-400'}
@@ -40,7 +41,7 @@ function Step({ number, finish, active, label }: StepProps) {
       </div>
 
       <span className="text-sm text-gray-600">{label}</span>
-    </div>
+    </Flex>
   );
 }
 

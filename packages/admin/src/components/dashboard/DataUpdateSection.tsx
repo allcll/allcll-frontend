@@ -2,7 +2,8 @@ import useDepartments from '@/hooks/server/useDepartments';
 import usePreRealSeats from '@/hooks/server/usePreRealSeats';
 import useSubject from '@/hooks/server/useSubject';
 import useWishes from '@/hooks/server/useWishes';
-import Card from '@allcll/common/components/Card';
+import { Button, Card } from '@allcll/allcll-ui';
+import SectionHeader from '../common/SectionHeader';
 
 function DataUpdateSection() {
   const { refetch: basketRefetch, isFetching: isBasketFetching } = useWishes();
@@ -24,8 +25,9 @@ function DataUpdateSection() {
 
   return (
     <section>
-      <h2 className="text-lg text-gray-700 font-bold mb-4">데이터 업데이트 상태</h2>
-      <Card className="overflow-hidden">
+      <SectionHeader title="데이터 업데이트" description="백엔드 서버로 보내는 요청(크롤링X)" />
+
+      <Card>
         <table className="w-full text-xs text-left border-separate border-spacing-y-2">
           <thead>
             <tr className="border-b border-gray-200">
@@ -40,9 +42,9 @@ function DataUpdateSection() {
                 <td className="px-4 py-2 border-b border-gray-200">{label}</td>
                 <td className="px-4 py-2 border-b border-gray-200">{time}</td>
                 <td className="px-4 py-2 border-b border-gray-200">
-                  <button onClick={() => refetch()} className="text-gray-500 hover:underline cursor-pointer">
+                  <Button onClick={() => refetch()} variant="outlined" size="medium">
                     업데이트
-                  </button>
+                  </Button>
                 </td>
               </tr>
             ))}

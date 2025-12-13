@@ -1,5 +1,5 @@
-import Card from '@allcll/common/components/Card';
-import InfoChip from '@allcll/common/components/chip/InfoChip';
+import { Badge, Card, Flex, Grid } from '@allcll/allcll-ui';
+import SectionHeader from '../common/SectionHeader';
 
 const systemOpenStatus = [
   {
@@ -31,22 +31,21 @@ const systemOpenStatus = [
 function ServiceOpen() {
   return (
     <section>
-      <h2 className="text-lg text-gray-700 font-bold mb-4">서비스 Open 여부</h2>
+      <SectionHeader title="서비스 오픈 현황" description="각 서비스의 오픈 상태를 확인합니다." />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+      <Grid columns={{ base: 2, sm: 4 }} gap="gap-4">
         {systemOpenStatus.map(({ name, start, end, status }) => (
-          <Card key={name} className="h-[120px] flex flex-col justify-between">
-            <div className="flex items-center justify-between">
+          <Card key={name}>
+            <Flex align="items-start" justify="justify-between">
               <span className="text-sm font-medium text-gray-700">{name}</span>
-              <InfoChip label={status} type={status === 'OPEN' ? 'success' : 'error'} />
-            </div>
-            <div className="text-xs text-gray-500">
-              <p>시작: {start}</p>
-              <p>종료: {end}</p>
-            </div>
+              <Badge variant={status === 'OPEN' ? 'success' : 'danger'}>{status}</Badge>
+            </Flex>
+
+            <p className="text-sm text-gray-500">시작: {start}</p>
+            <p className="text-sm text-gray-500">종료: {end}</p>
           </Card>
         ))}
-      </div>
+      </Grid>
     </section>
   );
 }

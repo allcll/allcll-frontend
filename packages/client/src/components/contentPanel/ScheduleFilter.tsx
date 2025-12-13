@@ -7,6 +7,7 @@ import DepartmentSelectFilter from '../filtering/DepartmentFilter';
 import FilterDelete from '../filtering/FilterDelete';
 import useSubject from '@/hooks/server/useSubject';
 import FilteringModal from '../filtering/FilteringModal';
+import { Flex } from '@allcll/allcll-ui';
 
 function ScheduleFilter() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
@@ -20,9 +21,9 @@ function ScheduleFilter() {
     .map(cat => cat);
 
   return (
-    <div className="flex items-center flex-wrap gap-2 mr-20">
+    <Flex direction="flex-wrap" align="items-center" gap="gap-2" className="w-full">
       <FilteringButton handleOpenFilter={() => setIsFilterModalOpen(true)} />
-      <DepartmentSelectFilter department={filters.department} setFilter={setFilters} />
+      <DepartmentSelectFilter setFilter={setFilters} selectedValue={filters.department} />
 
       <GenericMultiSelectFilter
         filterKey="days"
@@ -45,7 +46,7 @@ function ScheduleFilter() {
         setFilter={setFilters}
       />
 
-      {filters.note.length > 0 && (
+      {filters.note?.length > 0 && (
         <GenericMultiSelectFilter
           filterKey="note"
           options={FilterDomains.remark}
@@ -54,7 +55,7 @@ function ScheduleFilter() {
         />
       )}
 
-      {filters.categories.length > 0 && (
+      {filters.categories?.length > 0 && (
         <GenericMultiSelectFilter
           filterKey="categories"
           options={categoryOptions}
@@ -63,7 +64,7 @@ function ScheduleFilter() {
         />
       )}
 
-      {filters.classroom.length > 0 && (
+      {filters.classroom?.length > 0 && (
         <GenericMultiSelectFilter
           filterKey="classroom"
           options={FilterDomains.classRoom}
@@ -76,7 +77,7 @@ function ScheduleFilter() {
       {isFilterModalOpen && (
         <FilteringModal filterStore={useScheduleSearchStore} onClose={() => setIsFilterModalOpen(false)} />
       )}
-    </div>
+    </Flex>
   );
 }
 

@@ -1,16 +1,25 @@
+import { CardContent } from './CardContent';
+import CardHeader from './CardHeader';
+
 interface ICard {
   children: React.ReactNode;
   size?: 'small' | 'medium' | 'large';
   variant?: 'elevated' | 'outlined' | 'filled';
+  className?: string;
 }
 
-function Card({ children, size, variant }: ICard) {
+function CardRoot({ children, size, variant, className }: ICard) {
   const sizeClass = getSizeClass(size || 'medium');
   const variantClass = getVariantClass(variant);
   const defaultClass = 'rounded-lg';
 
-  return <div className={`card ${defaultClass} ${sizeClass} ${variantClass}`}>{children}</div>;
+  return <div className={`card ${defaultClass} ${sizeClass} ${variantClass} ${className || ''}`}>{children}</div>;
 }
+
+export const Card = Object.assign(CardRoot, {
+  Header: CardHeader,
+  Content: CardContent,
+});
 
 export default Card;
 
@@ -32,7 +41,7 @@ function getVariantClass(variant: 'elevated' | 'outlined' | 'filled' = 'elevated
     case 'elevated':
       return 'bg-white shadow-md';
     case 'outlined':
-      return 'bg-white border border-gray-300';
+      return 'bg-white border border-gray-200';
     case 'filled':
       return 'bg-gray-100';
     default:

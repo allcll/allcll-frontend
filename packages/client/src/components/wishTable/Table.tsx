@@ -12,6 +12,7 @@ import FavoriteButton from '@/components/wishTable/FavoriteButton.tsx';
 import { useWishesTableStore } from '@/store/useTableColumnStore.ts';
 import usePreSeatGate from '@/hooks/usePreSeatGate';
 import SearchSvg from '@/assets/search.svg?react';
+import { Flex } from '@allcll/allcll-ui';
 
 interface ITable {
   data: Wishes[] | (Wishes & IPreRealSeat)[] | undefined;
@@ -91,11 +92,11 @@ export function ZeroElementRow({ col }: Readonly<{ col: number }>) {
   return (
     <tr>
       <td colSpan={col} className="text-center py-4">
-        <div className="flex flex-col items-center">
+        <Flex direction="flex-col" align="items-center">
           <SearchSvg className="w-12 h-12" />
           <p className="text-gray-500 font-bold mt-4">검색된 과목이 없습니다.</p>
           <p className="text-gray-400 text-xs mt-1">다른 검색어로 다시 시도해보세요.</p>
-        </div>
+        </Flex>
       </td>
     </tr>
   );
@@ -118,9 +119,9 @@ const TableRow = ({ data, tableHeaders }: TableRowProps) => {
   return (
     <tr className={`border-t border-gray-200 text-black ${bgColor}`}>
       <td className="px-4 py-2">
-        <div className="flex items-center gap-2">
-          <FavoriteButton subject={data} />
-        </div>
+        <Flex align="items-center" gap="gap-2">
+          <FavoriteButton subject={data} variant="plain" />
+        </Flex>
       </td>
 
       <MemoTableRow data={data} tableHeaders={tableHeaders} />
