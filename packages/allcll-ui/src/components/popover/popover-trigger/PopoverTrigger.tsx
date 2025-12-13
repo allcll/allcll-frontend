@@ -1,4 +1,4 @@
-import Chip from '@/components/chip/Chip';
+import Chip from '../../chip/Chip';
 import { usePopoverContext } from '../popover/Popover';
 
 function PopoverTrigger({ label }: { label: string }) {
