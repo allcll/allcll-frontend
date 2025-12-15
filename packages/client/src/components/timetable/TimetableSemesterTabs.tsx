@@ -3,7 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 
 const SEMESTERS = ['2025-2', '2025-WINTER'];
 
-function TimetableTabs() {
+function TimetableSemesterTabs() {
   const [searchParams] = useSearchParams();
   const currentSemester = searchParams.get('semester');
 
@@ -28,4 +28,4 @@ function TimetableTabs() {
   );
 }
 
-export default TimetableTabs;
+export default TimetableSemesterTabs;
