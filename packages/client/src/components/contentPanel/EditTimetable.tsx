@@ -56,10 +56,11 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
   }, []);
 
   const handleTimetableSemester = (semester: string) => {
-    if ((type = 'edit')) {
+    if (type === 'edit') {
       alert('학기는 수정할 수 없습니다.');
       return;
     }
+
     setSelectedSemester(semester);
   };
 
