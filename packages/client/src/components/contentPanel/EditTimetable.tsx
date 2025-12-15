@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Chip from '@common/components/chip/Chip';
-import { useCreateTimetable, useDeleteTimetable, useUpdateTimetable } from '@/hooks/server/useTimetableSchedules.ts';
+import { useCreateTimetable, useDeleteTimetable, useUpdateTimetable } from '@/hooks/server/useTimetableSchedules';
 import { useScheduleState } from '@/store/useScheduleState.ts';
-import { Button, Dialog, TextField } from '@allcll/allcll-ui';
+import { Button, Dialog, Grid, Label, TextField } from '@allcll/allcll-ui';
+
+const semesters = ['2025-2', '2025-WINTER'];
 
 interface IEditTimetable {
   onClose: () => void;
@@ -11,6 +13,7 @@ interface IEditTimetable {
 
 function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
   const [timeTableName, setTimeTableName] = useState('');
+  const [selectedSemester, setSelectedSemester] = useState('2025-2');
   const timeTable = useScheduleState(state => state.currentTimetable);
 
   const { mutate: updateTimetable } = useUpdateTimetable();
@@ -35,7 +38,7 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
     if (type === 'create') {
       createTimetable({
         timeTableName: timeTableName,
-        semester: '2025-2',
+        semester: selectedSemester,
       });
       onClose();
     }
@@ -52,11 +55,30 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
     };
   }, []);
 
+  const handleTimetableSemester = (semester: string) => {
+    if ((type = 'edit')) {
+      alert('학기는 수정할 수 없습니다.');
+      return;
+    }
+    setSelectedSemester(semester);
+  };
+
   return (
     <Dialog title={`${type === 'edit' ? '시간표 수정' : '시간표 생성'}`} onClose={onClose} isOpen={true}>
       <form onSubmit={handleSubmit}>
         <Dialog.Content>
-          <Chip label="2025학년-2학기" selected={false} />
+          <Label>학기 선택</Label>
+          <Grid columns={{ base: 2 }} gap="gap-2">
+            {semesters.map(semester => (
+              <Chip
+                key={semester}
+                label={semester}
+                selected={semester === selectedSemester}
+                onClick={() => handleTimetableSemester(semester)}
+              />
+            ))}
+          </Grid>
+
           <TextField
             key="timetableName"
             id="timetableName"
