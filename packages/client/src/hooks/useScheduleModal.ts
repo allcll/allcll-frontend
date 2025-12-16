@@ -52,7 +52,7 @@ function useScheduleModal() {
     } else if (targetSchedule.scheduleType === 'official') {
       currentMode = ScheduleMutateType.VIEW;
       console.log(globalPrevTimetable);
-      openBottomSheet('Info');
+      openBottomSheet('info');
     } else {
       currentMode = ScheduleMutateType.EDIT;
       openBottomSheet('edit');
@@ -72,6 +72,7 @@ function useScheduleModal() {
   /** Schedule 의 생성 / 수정 로직
    * @param e - React.MouseEvent<HTMLButtonElement> | React.FormEvent
    * @param close - 모달을 닫을지 여부 (기본값: true)
+   * 학기TODO: 학기에 맞는 과목인지 판별
    */
   const saveSchedule = (
     e?: React.MouseEvent<HTMLButtonElement> | React.FormEvent,
@@ -123,7 +124,7 @@ function useScheduleModal() {
 
     // 모달 state 초기화
     changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);
-    closeBottomSheet();
+    closeBottomSheet('edit');
   };
 
   const cancelSchedule = (
@@ -134,7 +135,7 @@ function useScheduleModal() {
 
     // 모달 state 초기화
     changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);
-    if (close) closeBottomSheet();
+    if (close) closeBottomSheet('edit');
   };
 
   return {
