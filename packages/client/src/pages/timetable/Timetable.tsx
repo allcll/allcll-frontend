@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet';
 import TimetableComponent from '@/components/timetable/TimetableComponent.tsx';
 import ContentPanel from '@/components/contentPanel/ScheduleContentPanel';
 import TimetableHeader from '@/components/timetable/TimetableHeader';
-import { Card, Flex, Grid, Heading } from '@allcll/allcll-ui';
+import { Card, Flex, Heading } from '@allcll/allcll-ui';
 import TimetableSemesterTabs from '@/components/timetable/TimetableSemesterTabs';
 import { SERVICE_SEMESTER_DUMMY } from '@/hooks/server/useServiceSemester';
 import { Navigate, useSearchParams } from 'react-router-dom';
