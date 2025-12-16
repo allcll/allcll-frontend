@@ -7,18 +7,17 @@ import useSubject from '@/hooks/server/useSubject';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects';
 import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
-import { BottomSheetType } from '@/store/useBottomSheetStore';
 import { ScheduleAdapter } from '@/utils/timetable/adapter';
 import FilterSvg from '@/assets/filter.svg?react';
 import { Flex, IconButton } from '@allcll/allcll-ui';
 
 interface ISearchBottomSheet {
-  onCloseSearch: (bottomSheetType: BottomSheetType) => void;
+  onCloseSearch: () => void;
 }
 
 function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
   const { data: subjects = [], isPending } = useSubject();
-  const { openScheduleModal, cancelSchedule } = useScheduleModal();
+  const { openScheduleModal } = useScheduleModal();
   const filters = useScheduleSearchStore(state => state.filters);
   const setFilter = useScheduleSearchStore(state => state.setFilter);
   const { keywords } = filters;
@@ -34,7 +33,7 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
           <BottomSheetHeader
             title="과목검색"
             headerType="add"
-            onClose={cancelSchedule}
+            onClose={onCloseSearch}
             onClick={() => openScheduleModal(initSchedule)}
           />
 
@@ -53,7 +52,7 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
               variant="plain"
               label="filter"
               icon={<FilterSvg className="w-6 h-6" />}
-              onClick={() => onCloseSearch('filter')}
+              onClick={() => onCloseSearch()}
             />
           </div>
 

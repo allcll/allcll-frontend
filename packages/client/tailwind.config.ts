@@ -11,6 +11,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Pretendard'],
+      },
       colors: {
         primary: colors.primary,
         secondary: colors.secondary,

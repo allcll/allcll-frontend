@@ -14,6 +14,7 @@ const initSchedule = new ScheduleAdapter().toUiData();
 
 function ScheduleContentPanel() {
   const { openScheduleModal } = useScheduleModal();
+  //학기TODO:  학기에 맞는 시간표 data가져오기
   const { data, isPending } = useWishes();
   const subjects = useSearchRank(data) ?? [];
 
