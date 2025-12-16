@@ -16,8 +16,7 @@ import { useDeleteTimetable, useTimetables } from '@/hooks/server/useTimetableSc
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 import { saveImageFromElement } from '@/utils/saveImage.ts';
-import AddGraySvg from '@/assets/add-gray.svg?react';
-import AddWhiteSvg from '@/assets/add-white.svg?react';
+import AddSvg from '@/assets/add.svg?react';
 import SearchSvg from '@/assets/search.svg?react';
 import DownloadSvg from '@/assets/download.svg?react';
 import Card from '@common/components/Card';
@@ -93,7 +92,7 @@ function Timetable() {
       {bottomSheetType === null && (
         <div className="fixed bottom-4 right-4 z-5 md:hidden">
           <Button size="small" variant="circle" onClick={() => openBottomSheet('search')}>
-            <AddWhiteSvg className="w-6 h-6 cursor-pointer" />
+            <AddSvg className="w-6 h-6 text-white cursor-pointer" />
           </Button>
         </div>
       )}
@@ -162,7 +161,7 @@ function TimetableHeader({ setIsOpenModal }: ITimetableHeaderProps) {
             onClick={handleSaveImage}
           />
           <IconButton
-            icon={<AddGraySvg className="w-5 h-5" />}
+            icon={<AddSvg className="w-5 h-5 text-gray-400" />}
             variant="plain"
             label="커스텀 일정 생성"
             onClick={handleCreateSchedule}
