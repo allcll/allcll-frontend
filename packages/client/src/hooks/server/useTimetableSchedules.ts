@@ -99,20 +99,10 @@ export const useTimetables = () => {
   const onSelect = (res: TimetableListResponse) => {
     const { timeTables } = res;
 
-    const exists = timeTables.some(timetable => timetable.timeTableId === currentTimetable?.timeTableId);
-
-    /**
-     * currentTimetable이 timeTables에 존재하지 않을 때
-     */
-    if (!exists) {
-      pickTimetable(timeTables[timeTables.length - 1]);
-      return;
-    }
-
     /**
      * currentTimetable이 존재하는데, timetables가 없을 떄
      */
-    if (timeTables.length <= 0 && currentTimetable.timeTableId !== -1) {
+    if (timeTables.length <= 0 && currentTimetable?.timeTableId !== -1) {
       pickTimetable({
         timeTableId: -1,
         timeTableName: '새 시간표',
