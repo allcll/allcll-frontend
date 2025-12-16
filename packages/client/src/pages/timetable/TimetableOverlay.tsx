@@ -4,7 +4,7 @@ import useMobile from '@/hooks/useMobile';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import { useScheduleSearchStore } from '@/store/useFilterStore';
 import { Button } from '@allcll/allcll-ui';
-import AddWhiteSvg from '@/assets/add-white.svg?react';
+import AddSvg from '@/assets/add.svg?react';
 import SearchBottomSheet from '@/components/contentPanel/bottomSheet/SearchBottomSheet';
 import FilteringBottomSheet from '@/components/contentPanel/bottomSheet/FilteringBottomSheet';
 import FormBottomSheet from '@/components/contentPanel/bottomSheet/FormBottomSheet';
@@ -76,7 +76,7 @@ function MobileTimetableOverlay() {
       >
         <div className="fixed bottom-4 right-4 z-5">
           <Button size="small" variant="circle" onClick={handleClickSearch}>
-            <AddWhiteSvg className="w-6 h-6 cursor-pointer" />
+            <AddSvg className="w-6 h-6 cursor-pointer" />
           </Button>
         </div>
       </RenderIf>
