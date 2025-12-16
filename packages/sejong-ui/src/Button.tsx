@@ -1,14 +1,16 @@
-import { HTMLAttributes } from 'react';
+import { type ComponentPropsWithRef } from 'react';
 
-interface Button extends HTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'cancel' | 'danger';
+interface ButtonProps extends ComponentPropsWithRef<'button'> {
+  variant?: 'primary' | 'secondary' | 'dark' | 'cancel' | 'danger';
+  size?: 'sm' | 'md' | 'lg';
   disabled?: boolean;
 }
 
-function Button({ variant = 'primary', className = '', children, ...rest }: Button) {
-  const buttonClass = 'px-3 py-2 flex flex-row gap-1 cursor-pointer rounded';
+function Button({ variant = 'primary', size = 'md', className = '', children, ...rest }: ButtonProps) {
+  const baseClass = 'flex flex-row gap-1 cursor-pointer rounded';
   const variantClass = getVariantClass(variant);
-  const finalClassName = `${buttonClass} ${variantClass} ${className}`.trim();
+  const sizeClass = getSizeClass(size);
+  const finalClassName = `${baseClass} ${variantClass} ${sizeClass} ${className}`.trim();
 
   return (
     <button className={finalClassName} {...rest}>
@@ -23,10 +25,25 @@ function getVariantClass(variant: string) {
       return 'bg-blue-500 text-white hover:bg-blue-600';
     case 'secondary':
       return 'bg-gray-500 text-white hover:bg-gray-600';
+    case 'dark':
+      return 'bg-gray-700 text-white hover:bg-gray-900';
     case 'cancel':
       return 'bg-white border border-gray-700 hover:bg-gray-100';
     case 'danger':
       return 'bg-red-500 text-white hover:bg-red-600';
+    default:
+      return '';
+  }
+}
+
+function getSizeClass(size: string) {
+  switch (size) {
+    case 'sm':
+      return 'px-2 py-0.5 text-xs rounded-xs';
+    case 'md':
+      return 'px-3 py-2 text-sm';
+    case 'lg':
+      return 'px-4 py-3 text-base';
     default:
       return '';
   }

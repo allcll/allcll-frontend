@@ -6,7 +6,6 @@ import FilteringBottomSheet from '@/components/contentPanel/bottomSheet/Filterin
 import GenericMultiSelectFilter from '@/components/filtering/GenericMultiSelectFilter';
 import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains';
 import GenericSingleSelectFilter from '@/components/filtering/GenericSingleSelectFilter';
-import Chip from '@common/components/chip/Chip';
 import FilteringButton from '@/components/filtering/button/FilteringButton';
 import AlarmButton from '@/components/filtering/button/AlarmButton';
 import DepartmentSelectFilter from '@/components/filtering/DepartmentFilter';
@@ -14,7 +13,7 @@ import DayFilter from '@/components/filtering/DayFilter';
 import FilterDelete from '@/components/filtering/FilterDelete';
 import useSubject from '@/hooks/server/useSubject';
 import FilteringModal from '@/components/filtering/FilteringModal';
-import { Flex, Label } from '@allcll/allcll-ui';
+import { Chip, Flex, Label } from '@allcll/allcll-ui';
 
 function SubjectSearches() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);

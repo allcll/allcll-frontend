@@ -3,7 +3,7 @@ import ModalButtonContainer from './ModalButtonContainer.tsx';
 import ModalButton from './ModalButton.tsx';
 
 const meta = {
-  title: 'SejongUI/ModalButtonContainer',
+  title: 'SejongUI/modal/ModalButtonContainer',
   component: ModalButtonContainer,
   parameters: {
     layout: 'centered',

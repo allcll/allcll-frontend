@@ -11,7 +11,7 @@ export enum ScheduleMutateType {
 }
 
 export interface IMutateScheduleState {
-  currentTimetable: TimetableType;
+  currentTimetable: TimetableType | null;
   options: {
     containerRef: HTMLDivElement | null;
     timetableRef: HTMLDivElement | null;
@@ -28,18 +28,14 @@ export interface IMutateScheduleState {
     isMobile: boolean;
   };
   mode: ScheduleMutateType;
-  pickTimetable: (timetable: TimetableType) => void;
+  pickTimetable: (timetable: TimetableType | null) => void;
   setOptions: (options: Partial<IMutateScheduleState['options']>) => void;
   changeScheduleData: (schedule: Partial<GeneralSchedule>, mode?: ScheduleMutateType) => void;
   schedule: GeneralSchedule;
 }
 
 export const useScheduleState = create<IMutateScheduleState>(set => ({
-  currentTimetable: {
-    timeTableId: -1,
-    timeTableName: '새 시간표',
-    semester: '',
-  },
+  currentTimetable: null,
   options: {
     containerRef: null,
     timetableRef: null,
@@ -58,7 +54,7 @@ export const useScheduleState = create<IMutateScheduleState>(set => ({
   mode: ScheduleMutateType.NONE,
   schedule: new ScheduleAdapter().toUiData(),
 
-  pickTimetable: (timetable: TimetableType) => {
+  pickTimetable: (timetable: TimetableType | null) => {
     set(state => ({
       ...state,
       currentTimetable: timetable,

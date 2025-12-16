@@ -11,7 +11,10 @@ function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
   const inputId = label ? `checkbox-${label}` : `checkbox-${reactId}`;
 
   return (
-    <label htmlFor={inputId} className="flex flex-row items-center gap-3 text-md cursor-pointer select-none">
+    <label
+      htmlFor={inputId}
+      className="flex flex-row items-center gap-3 text-sm md:text-base cursor-pointer select-none"
+    >
       <div className="relative w-5 h-5">
         <input
           id={inputId}

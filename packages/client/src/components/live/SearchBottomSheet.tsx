@@ -1,14 +1,12 @@
-import { useDeferredValue, useEffect, useState } from 'react';
+import { useDeferredValue, useState } from 'react';
 import SearchBox from '@/components/common/SearchBox';
 import BottomSheet from '@/components/contentPanel/bottomSheet/BottomSheet';
 import BottomSheetHeader from '@/components/contentPanel/bottomSheet/BottomSheetHeader';
-import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects';
 import useWishes from '@/hooks/server/useWishes.ts';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
 import SubjectCards from '@/components/live/subjectTable/SubjectCards.tsx';
-import useAlarmModalStore from '@/store/useAlarmModalStore.ts';
 import { initialFilters } from '@/store/useFilterStore.ts';
 
 interface ISearchBottomSheet {
@@ -18,9 +16,6 @@ interface ISearchBottomSheet {
 function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
   const [searchInput, setSearchInput] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
-  const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
-  const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
-  const isSearchOpen = useAlarmModalStore(state => state.isSearchOpen);
 
   const { data: wishes, isPending } = useWishes();
   const data = useSearchRank(wishes);
@@ -32,14 +27,6 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
       department: selectedDepartment,
     }),
   );
-
-  useEffect(() => {
-    if (!isSearchOpen) {
-      closeBottomSheet();
-    } else {
-      openBottomSheet('search');
-    }
-  }, [isSearchOpen]);
 
   return (
     <BottomSheet>
