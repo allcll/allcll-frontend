@@ -1,4 +1,3 @@
-import { TimetableType, useTimetables } from '@/hooks/server/useTimetableSchedules';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import { useScheduleState } from '@/store/useScheduleState';
 import { saveImageFromElement } from '@/utils/saveImage';
@@ -6,29 +5,13 @@ import { Button, Flex, IconButton } from '@allcll/allcll-ui';
 import DropdownSelect from './DropdownSelect';
 import SearchSvg from '@/assets/search.svg?react';
 import DownloadSvg from '@/assets/download.svg?react';
-import { useSearchParams } from 'react-router-dom';
+import EditTimetable from '../contentPanel/EditTimetable';
+import { useState } from 'react';
 
 type modalType = 'edit' | 'create' | null;
 
-interface ITimetableHeaderProps {
-  setIsOpenModal: React.Dispatch<React.SetStateAction<modalType>>;
-}
-
-function TimetableHeader({ setIsOpenModal }: ITimetableHeaderProps) {
-  const [searchParams] = useSearchParams();
-  const semester = searchParams.get('semester');
-
-  const { data: timetables = [] } = useTimetables();
-  const filteredTimetablesBySemester = timetables.filter((timetable: TimetableType) => timetable.semester === semester);
-  const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
-
-  const handleSelect = (optionId: number) => {
-    const selectedTimetable = timetables.find((timetable: TimetableType) => timetable.timeTableId === optionId);
-
-    if (selectedTimetable) {
-      setCurrentTimetable(selectedTimetable);
-    }
-  };
+function TimetableHeader() {
+  const [isOpenModal, setIsOpenModal] = useState<modalType>(null);
 
   const handleCreateTimetable = () => {
     setIsOpenModal('create');
@@ -37,14 +20,9 @@ function TimetableHeader({ setIsOpenModal }: ITimetableHeaderProps) {
   return (
     <header>
       <Flex align="items-center" justify="justify-between" gap="gap-2">
-        <DropdownSelect
-          onSelect={handleSelect}
-          timetables={filteredTimetablesBySemester}
-          setIsOpenModal={setIsOpenModal}
-          openCreateModal={handleCreateTimetable}
-        />
-
+        <DropdownSelect setIsOpenModal={setIsOpenModal} openCreateModal={handleCreateTimetable} />
         <TimetableHeaderActions setIsOpenModal={setIsOpenModal} />
+        {isOpenModal && <EditTimetable type={isOpenModal} onClose={() => setIsOpenModal(null)} />}
       </Flex>
     </header>
   );
@@ -52,7 +30,11 @@ function TimetableHeader({ setIsOpenModal }: ITimetableHeaderProps) {
 
 export default TimetableHeader;
 
-function TimetableHeaderActions({ setIsOpenModal }: ITimetableHeaderProps) {
+function TimetableHeaderActions({
+  setIsOpenModal,
+}: {
+  setIsOpenModal: React.Dispatch<React.SetStateAction<modalType>>;
+}) {
   const isMobile = useScheduleState(state => state.options.isMobile);
   const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
 
@@ -68,9 +50,6 @@ function TimetableHeaderActions({ setIsOpenModal }: ITimetableHeaderProps) {
 
   return (
     <Flex>
-      <Button variant="text" size="medium" onClick={handleCreateTimetable}>
-        + 시간표 만들기
-      </Button>
       <IconButton
         icon={<DownloadSvg className="w-5 h-5" />}
         variant="plain"
@@ -85,6 +64,12 @@ function TimetableHeaderActions({ setIsOpenModal }: ITimetableHeaderProps) {
           label="과목 검색"
           onClick={() => openBottomSheet('search')}
         />
+      )}
+
+      {!isMobile && (
+        <Button variant="text" size="medium" onClick={handleCreateTimetable}>
+          + 시간표 만들기
+        </Button>
       )}
     </Flex>
   );

@@ -1,103 +1,46 @@
-import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import TimetableComponent from '@/components/timetable/TimetableComponent.tsx';
-import SearchBottomSheet from '@/components/contentPanel/bottomSheet/SearchBottomSheet';
-import FilteringBottomSheet from '@/components/contentPanel/bottomSheet/FilteringBottomSheet';
-import FormBottomSheet from '@/components/contentPanel/bottomSheet/FormBottomSheet';
-import ScheduleFormModal from '@/components/contentPanel/ScheduleFormModal';
 import ContentPanel from '@/components/contentPanel/ScheduleContentPanel';
-import EditTimetable from '@/components/contentPanel/EditTimetable';
 import TimetableHeader from '@/components/timetable/TimetableHeader';
-import ScheduleInfoModal from '@/components/contentPanel/ScheduleInfoModal';
-import ScheduleInfoBottomSheet from '@/components/contentPanel/bottomSheet/ScheduleDetailBottomSheet';
-import { BottomSheetType, useBottomSheetStore } from '@/store/useBottomSheetStore';
-import AddWhiteSvg from '@/assets/add-white.svg?react';
-import Card from '@common/components/Card';
-import { Button, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
-import { useScheduleSearchStore } from '@/store/useFilterStore';
-import useMobile from '@/hooks/useMobile';
-import TimetableTabs from '@/components/timetable/TimetableTabs';
-
-type modalType = 'edit' | 'create' | null;
+import { Card, Flex, Grid, Heading } from '@allcll/allcll-ui';
+import TimetableSemesterTabs from '@/components/timetable/TimetableSemesterTabs';
+import { SERVICE_SEMESTER_DUMMY } from '@/hooks/server/useServiceSemester';
+import { Navigate, useSearchParams } from 'react-router-dom';
+import TimetableOverlay from './TimetableOverlay';
 
 function Timetable() {
-  const [isOpenModal, setIsOpenModal] = useState<modalType>(null);
-  const isMobile = useMobile();
+  const [searchParams] = useSearchParams();
+  const semester = searchParams.get('semester');
 
-  const bottomSheetType = useBottomSheetStore(state => state.type);
-  const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
-  const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
-
-  const filters = useScheduleSearchStore(state => state.filters);
-  const setFilter = useScheduleSearchStore(state => state.setFilter);
-  const resetFilter = useScheduleSearchStore(state => state.resetFilters);
-
-  const handleClickFiltering = (bottomSheetType: BottomSheetType) => {
-    closeBottomSheet('search');
-    openBottomSheet(bottomSheetType);
-  };
-
-  const handleCloseFiltering = () => {
-    closeBottomSheet('filter');
-    openBottomSheet('search');
-  };
+  if (!semester) {
+    return <Navigate to={`/timetable?semester=${SERVICE_SEMESTER_DUMMY.semester}`} replace />;
+  }
 
   return (
-    <div className="w-full p-4">
+    <div className="px-4  py-2">
       <Helmet>
         <title>ALLCLL | 시간표</title>
       </Helmet>
-
-      <div className="grid md:grid-cols-5 gap-4 mt-4">
+      <div className="grid md:grid-cols-5 gap-4 mb-4">
         <div className="md:col-span-3 w-full">
-          <Flex direction="flex-col" gap="gap-0" className="pb-3">
+          <Flex direction="flex-col" gap="gap-2">
             <Heading level={1}>올클시간표</Heading>
-            <SupportingText>나만의 시간표를 만들어보세요.</SupportingText>
+            <TimetableSemesterTabs currentSemester={semester} />
+            <Card className="px-2 flex flex-col gap-2 relative overflow-hidden">
+              <TimetableHeader />
+              <TimetableComponent />
+            </Card>
           </Flex>
-
-          <TimetableTabs />
-
-          <Card className="px-2 flex flex-col gap-2 relative overflow-hidden">
-            <TimetableHeader setIsOpenModal={setIsOpenModal} />
-            <TimetableComponent />
-          </Card>
         </div>
 
         <div className="md:col-span-2 w-full">
           <div className="hidden md:block">
             <ContentPanel />
           </div>
-          <div className="md:hidden">
-            {bottomSheetType === 'search' && <SearchBottomSheet onCloseSearch={handleClickFiltering} />}
-            {bottomSheetType === 'filter' && (
-              <FilteringBottomSheet
-                onCloseFiltering={handleCloseFiltering}
-                filters={filters}
-                setFilter={setFilter}
-                resetFilter={resetFilter}
-              />
-            )}
-            {bottomSheetType === 'edit' && <FormBottomSheet />}
-            {bottomSheetType === 'Info' && <ScheduleInfoBottomSheet />}
-          </div>
         </div>
-        {!isMobile && (
-          <>
-            {bottomSheetType === 'edit' && <ScheduleFormModal />}
-            {bottomSheetType === 'Info' && <ScheduleInfoModal />}
-          </>
-        )}
       </div>
 
-      {isOpenModal && <EditTimetable type={isOpenModal} onClose={() => setIsOpenModal(null)} />}
-
-      {bottomSheetType === null && (
-        <div className="fixed bottom-4 right-4 z-5 md:hidden">
-          <Button size="small" variant="circle" onClick={() => openBottomSheet('search')}>
-            <AddWhiteSvg className="w-6 h-6 cursor-pointer" />
-          </Button>
-        </div>
-      )}
+      <TimetableOverlay />
     </div>
   );
 }
