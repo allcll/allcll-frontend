@@ -215,7 +215,7 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
   };
 
   return (
-    <SejongUI.Modal onClose={() => {}}>
+    <SejongUI.Modal>
       <div className="flex sm:w-[450px] border-1 border-gray-800 flex-col justify-between overflow-hidden">
         <SejongUI.Modal.Header title="" onClose={handleClickCloseButton} />
 
@@ -233,7 +233,7 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
           )}
         </div>
 
-        <SejongUI.Modal.ButtonContainer className="px-6 py-4 bg-gray-100">
+        <SejongUI.Modal.ButtonContainer className="px-6 py-2 bg-gray-100">
           {modalData.status === APPLY_STATUS.PROGRESS ||
             (modalData.status === APPLY_STATUS.SUCCESS && (
               <SejongUI.Modal.Button variant="cancel" onClick={handleClickCancel}>

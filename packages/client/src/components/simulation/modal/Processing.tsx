@@ -4,7 +4,7 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 function ProcessingModal() {
   const closeModal = useSimulationModalStore(state => state.closeModal);
   return (
-    <SejongUI.Modal onClose={() => closeModal()}>
+    <SejongUI.Modal onBackdropClick={() => closeModal()} noBorder>
       <div className="p-6 w-80 bg-white rounded shadow">
         <p className="text-sm text-gray-800 mb-4">데이터 처리중 입니다.</p>
         <div className="w-full h-4 bg-gray-200 rounded overflow-hidden">

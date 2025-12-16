@@ -86,12 +86,12 @@ function SimulationSearchForm() {
       <div className="flex flex-col gap-1 sm:gap-2">
         <div className="flex flex-col sm:flex-row gap-1 sm:gap-8">
           <div className="flex justify-end items-center sm:justify-start gap-2">
-            <MutedSelect id="organization-type" label="조직 분류" className="w-48" disabled>
+            <MutedSelect id="organization-type" label="조직 분류" className="w-48" essential disabled>
               <option></option>
             </MutedSelect>
           </div>
           <div className="flex justify-end items-center sm:justify-start gap-2">
-            <MutedSelect id="semester-type" label="년도/학기" className="w-48" disabled>
+            <MutedSelect id="semester-type" label="년도/학기" className="w-48" essential disabled>
               <option></option>
             </MutedSelect>
           </div>
@@ -115,7 +115,7 @@ function SimulationSearchForm() {
         <div className="flex flex-col sm:flex-col md:flex-row justify-between gap-2">
           <div className="flex flex-col sm:flex-row gap-2">
             <div className="flex justify-end items-center sm:justify-start gap-2">
-              <MutedSelect id="search-division" label="검색구분" className="w-48" disabled>
+              <MutedSelect id="search-division" label="검색구분" className="w-48" essential disabled>
                 <option>주전공검색</option>
               </MutedSelect>
             </div>
@@ -124,7 +124,7 @@ function SimulationSearchForm() {
                 주전공
               </label>
               <div className="flex flex-col sm:flex-row gap-1">
-                <SejongUI.Select id="search-major" className="w-48 sm:w-30" disabled>
+                <SejongUI.Select id="search-major" className="w-48 sm:w-30" essential disabled>
                   <option>학부</option>
                 </SejongUI.Select>
                 <MutedSelect
@@ -174,6 +174,7 @@ function SimulationSearchForm() {
 
 interface IMutedSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label: string;
+  essential?: boolean;
   hideLabel?: boolean;
   children?: React.ReactNode;
 }

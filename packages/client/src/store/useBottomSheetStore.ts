@@ -1,27 +1,50 @@
 import { create } from 'zustand';
 
-export type BottomSheetType = 'filter' | 'search' | 'edit' | 'Info' | null;
+export type BottomSheetType = 'search' | 'filter' | 'edit' | 'info';
 
-interface IBottomSheetStore {
-  type: BottomSheetType;
-  props?: unknown;
-  openBottomSheet: (type: BottomSheetType, props?: unknown) => void;
-  closeBottomSheet: (targetType?: BottomSheetType) => void;
+type BottomSheetState = {
+  isOpen: boolean;
+};
+
+type BottomSheets = Record<BottomSheetType, BottomSheetState>;
+
+interface BottomSheetStore {
+  type: BottomSheets;
+
+  openBottomSheet: <T extends BottomSheetType>(type: T) => void;
+
+  closeBottomSheet: (type: BottomSheetType) => void;
   resetBottomSheet: () => void;
 }
 
-export const useBottomSheetStore = create<IBottomSheetStore>((set, get) => ({
-  type: null,
-  openBottomSheet: (type, props) => {
-    set({ type, props });
-  },
-  closeBottomSheet: targetType => {
-    const currentType = get().type;
-    if (!targetType || currentType === targetType) {
-      set({ type: null, props: undefined });
-    }
-  },
-  resetBottomSheet: () => {
-    set({ type: null });
-  },
+const initialSheets: BottomSheets = {
+  search: { isOpen: false },
+  filter: { isOpen: false },
+  edit: { isOpen: false },
+  info: { isOpen: false },
+};
+
+export const useBottomSheetStore = create<BottomSheetStore>(set => ({
+  type: initialSheets,
+
+  openBottomSheet: type =>
+    set(state => ({
+      type: {
+        ...state.type,
+        [type]: { isOpen: true },
+      },
+    })),
+
+  closeBottomSheet: type =>
+    set(state => ({
+      type: {
+        ...state.type,
+        [type]: { isOpen: false },
+      },
+    })),
+
+  resetBottomSheet: () =>
+    set({
+      type: initialSheets,
+    }),
 }));
