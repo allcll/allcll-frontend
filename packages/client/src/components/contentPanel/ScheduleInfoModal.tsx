@@ -4,10 +4,12 @@ import HouseSvg from '@/assets/house.svg?react';
 import useSubject from '@/hooks/server/useSubject';
 import React from 'react';
 import { Button, Dialog, Flex } from '@allcll/allcll-ui';
+import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 
 function ScheduleInfoModal() {
   const { schedule } = useScheduleModalData();
-  const { deleteSchedule, cancelSchedule } = useScheduleModal();
+  const { deleteSchedule } = useScheduleModal();
+  const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
   const { data: subjects } = useSubject();
 
   const handleDeleteOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -20,7 +22,7 @@ function ScheduleInfoModal() {
   const findSubjectById = subjects?.find(subject => subject.subjectId === schedule.subjectId);
 
   return (
-    <Dialog title={schedule.subjectName} onClose={cancelSchedule} isOpen={true}>
+    <Dialog title={schedule.subjectName} onClose={() => closeBottomSheet('info')} isOpen={true}>
       <Dialog.Content>
         <Flex direction="flex-col" gap="gap-1" className="w-80 text-sm text-gray-500">
           <p>{schedule.professorName ?? '교수 정보 없음'}</p>
