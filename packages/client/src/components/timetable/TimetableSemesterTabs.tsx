@@ -1,16 +1,16 @@
+import { SEMESTERS } from '@/hooks/server/useServiceSemester';
 import { Flex } from '@allcll/allcll-ui';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-const SEMESTERS = ['2025-2', '2025-WINTER'];
+interface TimetableSemesterTabsProps {
+  currentSemester: string | null;
+}
 
-function TimetableSemesterTabs() {
-  const [searchParams] = useSearchParams();
-  const currentSemester = searchParams.get('semester');
-
+function TimetableSemesterTabs({ currentSemester }: TimetableSemesterTabsProps) {
   const activeClassName = 'border-b-2 border-primary text-primary pb-2';
 
   return (
-    <Flex gap="gap-4" className="border-b px-4 border-gray-200 mb-4">
+    <Flex gap="gap-4" className="border-b text-sm md:text-base border-gray-200">
       {SEMESTERS.map(semester => {
         const isActive = currentSemester === semester;
 

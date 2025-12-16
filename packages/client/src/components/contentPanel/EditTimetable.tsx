@@ -3,8 +3,7 @@ import Chip from '@common/components/chip/Chip';
 import { useCreateTimetable, useDeleteTimetable, useUpdateTimetable } from '@/hooks/server/useTimetableSchedules';
 import { useScheduleState } from '@/store/useScheduleState.ts';
 import { Button, Dialog, Grid, Label, TextField } from '@allcll/allcll-ui';
-
-const semesters = ['2025-2', '2025-WINTER'];
+import { SEMESTERS, SERVICE_SEMESTER_DUMMY } from '@/hooks/server/useServiceSemester';
 
 interface IEditTimetable {
   onClose: () => void;
@@ -13,7 +12,7 @@ interface IEditTimetable {
 
 function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
   const [timeTableName, setTimeTableName] = useState('');
-  const [selectedSemester, setSelectedSemester] = useState('2025-2');
+  const [selectedSemester, setSelectedSemester] = useState(SERVICE_SEMESTER_DUMMY.semester);
   const timeTable = useScheduleState(state => state.currentTimetable);
 
   const { mutate: updateTimetable } = useUpdateTimetable();
@@ -70,7 +69,7 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
         <Dialog.Content>
           <Label>학기 선택</Label>
           <Grid columns={{ base: 2 }} gap="gap-2">
-            {semesters.map(semester => (
+            {SEMESTERS.map(semester => (
               <Chip
                 key={semester}
                 label={semester}
