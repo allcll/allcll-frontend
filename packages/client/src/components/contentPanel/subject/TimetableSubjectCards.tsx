@@ -6,7 +6,7 @@ import { OfficialSchedule } from '@/entities/timetable/api/useTimetableSchedules
 import { useScheduleState } from '@/store/useScheduleState';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 import { Subject } from '@/utils/types';
-import FilteredSubjectCard from '@/components/contentPanel/subject/FilteredSubjectCard.tsx';
+import FilteredSubjectCard from '@/components/contentPanel/subject/TimetableSubjectCard';
 import { Flex } from '@allcll/allcll-ui';
 
 interface ISubjectCards {
@@ -15,7 +15,7 @@ interface ISubjectCards {
   expandToMax?: () => void;
 }
 
-export function FilteredSubjectCards({ subjects, expandToMax, isPending = false }: Readonly<ISubjectCards>) {
+function TimetableSubjectCards({ subjects, expandToMax, isPending = false }: Readonly<ISubjectCards>) {
   const { visibleRows, loadMoreRef } = useInfScroll(subjects, 'ref');
 
   const selectedCardRef = useRef<HTMLButtonElement>(null);
@@ -84,3 +84,5 @@ export function FilteredSubjectCards({ subjects, expandToMax, isPending = false 
     </Flex>
   );
 }
+
+export default TimetableSubjectCards;

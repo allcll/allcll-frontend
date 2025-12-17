@@ -12,7 +12,7 @@ interface ISubjectCard {
   forwardedRef?: React.Ref<HTMLButtonElement>;
 }
 
-function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: Readonly<ISubjectCard>) {
+function TimetableSubjectCard({ isActive, subject, onClick, forwardedRef }: Readonly<ISubjectCard>) {
   const color = isActive ? 'text-blue-500 bg-blue-50' : 'text-gray-700 bg-white hover:bg-gray-50';
   const { saveSchedule } = useScheduleModal();
   const { selectTargetOnly } = useSearchLogging();
@@ -58,4 +58,4 @@ function FilteredSubjectCard({ isActive, subject, onClick, forwardedRef }: Reado
   );
 }
 
-export default FilteredSubjectCard;
+export default TimetableSubjectCard;
