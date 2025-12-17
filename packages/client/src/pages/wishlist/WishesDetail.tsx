@@ -1,3 +1,4 @@
+// fixme: 컴포넌트 분리
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { Bar } from 'react-chartjs-2';
