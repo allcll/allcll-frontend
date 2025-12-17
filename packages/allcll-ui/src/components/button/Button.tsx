@@ -13,7 +13,10 @@ interface IButton extends ComponentPropsWithoutRef<'button'> {
 }
 
 function Button({ variant, size, children, disabled, textColor, ...rest }: IButton) {
-  const buttonClass = variant === 'circle' ? '' : 'flex flex-row gap-1 items-center justify-center cursor-pointer';
+  const buttonClass =
+    variant === 'circle'
+      ? ''
+      : 'flex flex-row gap-1 items-center justify-center cursor-pointer disabled:cursor-not-allowed';
   const variantClass = textColor ? getVariantClass(variant, textColor) : getVariantClass(variant, 'primary');
   const sizeClass = variant === 'circle' ? '' : getSizeClass(size);
   const finalClassName = `${buttonClass} ${variantClass} ${sizeClass}`.trim();
