@@ -2,10 +2,9 @@
  * FSD_TODO: feature, widget 분리 필요
  */
 import { useEffect, useState } from 'react';
-import Modal from '@common/components/modal/Modal.tsx';
-import ModalHeader from '../../../components/sejongUI/modal/ModalHeader.tsx';
 import useNotificationInstruction from '../model/useNotificationInstruction.ts';
 import SiteOptionIcon from '@/assets/chrome-options.svg?react';
+import { Dialog } from '@allcll/allcll-ui';
 
 // --- OS/Browser Detection Utilities ---
 
@@ -42,9 +41,8 @@ function NotificationInstructionsModal() {
     if (!isOpen) setPage(0);
   }, [isOpen]);
 
-  return !isOpen ? null : (
-    <Modal onClose={onClose}>
-      <ModalHeader title="알림 설정 방법" onClose={onClose} />
+  return (
+    <Dialog title="알림 설정 방법" onClose={onClose} isOpen={isOpen}>
       <div className="p-4 text-sm text-gray-700 w-lg max-w-full">
         {page === 0 && <BrowserPermissionGuide />}
         {page === 1 && <SystemPermissionGuide />}
@@ -75,7 +73,7 @@ function NotificationInstructionsModal() {
           </div>
         </div>
       </div>
-    </Modal>
+    </Dialog>
   );
 }
 

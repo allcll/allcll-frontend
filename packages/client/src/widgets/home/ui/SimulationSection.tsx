@@ -1,10 +1,10 @@
-import Section from '@/components/Landing/Section.tsx';
-import SectionHeader from '@/components/Landing/SectionHeader.tsx';
+import Section from '@/widgets/home/ui/Section.tsx';
+import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
 import RadarChart from '@/components/simulation/detail/RadarChart.tsx';
 import React, { ButtonHTMLAttributes, useEffect, useRef, useState } from 'react';
 import { drawCaptcha } from '@/utils/captcha.ts';
-import Card from '@common/components/Card';
-import SejongUI from '@allcll/sejong-ui';
+import Card from '@common/components/Card.tsx';
+import SejongUI from '../../../../../sejong-ui';
 
 const InitRadarData = {
   user_ability: {

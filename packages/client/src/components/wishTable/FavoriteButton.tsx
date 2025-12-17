@@ -1,5 +1,5 @@
 import React from 'react';
-import StarIcon from '@/components/svgs/StarIcon.tsx';
+import StarIcon from '@/shared/ui/svgs/StarIcon.tsx';
 import { Subject } from '@/utils/types.ts';
 import useFavorites from '@/store/useFavorites';
 import { IconButton } from '@allcll/allcll-ui';

@@ -11,7 +11,7 @@ import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
 import ScrollToTopButton from '@/components/common/ScrollTopButton';
 import { NavLink } from 'react-router-dom';
 import useAlarmModalStore from '@/store/useAlarmModalStore.ts';
-import AlarmIcon from '@/components/svgs/AlarmIcon';
+import AlarmIcon from '@/shared/ui/svgs/AlarmIcon';
 import { Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 
 function WishTable() {

@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import StarIcon from '@/components/svgs/StarIcon.tsx';
+import StarIcon from '@/shared/ui/svgs/StarIcon.tsx';
 import SearchBox from '@/shared/ui/SearchBox';
-import Modal from '@common/components/modal/Modal.tsx';
-import ModalHeader from '../sejongUI/modal/ModalHeader.tsx';
 import DraggableList from '@/components/live/subjectTable/DraggableList.tsx';
 import { Filters, getAllSelectedLabels, initialFilters, useWishSearchStore } from '@/store/useFilterStore.ts';
 import { HeadTitle, useWishesTableStore } from '@/store/useTableColumnStore.ts';
@@ -21,7 +19,7 @@ import FilterDelete from '../filtering/FilterDelete';
 import FilteringModal from '../filtering/FilteringModal';
 import usePreSeatGate from '@/hooks/usePreSeatGate.ts';
 import useWishesPreSeats from '@/hooks/useWishesPreSeats.ts';
-import { IconButton, Flex, Chip } from '@allcll/allcll-ui';
+import { IconButton, Flex, Chip, Dialog } from '@allcll/allcll-ui';
 
 export interface WishSearchParams {
   searchInput: string;
@@ -235,12 +233,11 @@ function LiveTableTitleModal({ initialItems, onChange, onClose }: ITableTitleMod
   });
 
   return (
-    <Modal onClose={onClose}>
-      <ModalHeader title="테이블 설정" onClose={onClose} />
+    <Dialog title="테이블 설정" onClose={onClose} isOpen={true}>
       <div className="p-4">
         <DraggableList initialItems={initialItems} onChange={onChange} />
       </div>
-    </Modal>
+    </Dialog>
   );
 }
 

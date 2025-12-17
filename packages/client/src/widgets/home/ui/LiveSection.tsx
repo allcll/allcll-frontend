@@ -1,7 +1,7 @@
-import Section from '@/components/Landing/Section.tsx';
-import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
+import Section from '@/widgets/home/ui/Section.tsx';
+import AlarmIcon from '@/shared/ui/svgs/AlarmIcon.tsx';
 import { getSeatColor } from '@/utils/colors.ts';
-import SectionHeader from '@/components/Landing/SectionHeader.tsx';
+import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
 
 function LiveSection() {
   return (

@@ -1,10 +1,10 @@
-import MainBanner from '@/components/Landing/MainBanner.tsx';
-import TimetableSection from '@/components/Landing/TimetableSection.tsx';
-import SimulationSection from '@/components/Landing/SimulationSection.tsx';
-import WishesSection from '@/components/Landing/WishesSection.tsx';
-import LiveSection from '@/components/Landing/LiveSection.tsx';
-import PainPointSection from '@/components/Landing/PainPointSection.tsx';
-import FeedbacksSection from '@/components/Landing/FeedbacksSection.tsx';
+import MainBanner from '@/widgets/home/ui/MainBanner.tsx';
+import TimetableSection from '@/widgets/home/ui/TimetableSection.tsx';
+import SimulationSection from '@/widgets/home/ui/SimulationSection.tsx';
+import WishesSection from '@/widgets/home/ui/WishesSection.tsx';
+import LiveSection from '@/widgets/home/ui/LiveSection.tsx';
+import PainPointSection from '@/widgets/home/ui/PainPointSection.tsx';
+import FeedbacksSection from '@/widgets/home/ui/FeedbacksSection.tsx';
 
 function Landing() {
   return (

@@ -1,4 +1,4 @@
-import Section from '@/components/Landing/Section.tsx';
+import Section from '@/widgets/home/ui/Section.tsx';
 import ProfileSvg from '@/assets/profile.svg?react';
 
 function FeedbacksSection() {

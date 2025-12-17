@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Section from '@/components/Landing/Section.tsx';
+import Section from '@/widgets/home/ui/Section.tsx';
 import RightArrowSvg from '@/assets/right-arrow.svg?react';
 import RightArrowBlueSvg from '@/assets/arrow-blue.svg?react';
 

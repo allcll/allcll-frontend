@@ -1,6 +1,6 @@
 import AlarmAddButton from '@/components/live/AlarmAddButton.tsx';
 import NoneLayout from '@/components/live/NoneLayout.tsx';
-import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
+import AlarmIcon from '@/shared/ui/svgs/AlarmIcon.tsx';
 
 function ZeroPinError() {
   return (

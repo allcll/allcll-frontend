@@ -5,9 +5,8 @@ import ArrowdownSvg from '@/assets/arrow-down-gray.svg?react';
 import useMobile from '@/hooks/useMobile';
 import Checkbox from '@common/components/checkbox/Checkbox';
 import SejongUI from '@allcll/sejong-ui';
-import Modal from '@common/components/modal/Modal.tsx';
-import ModalHeader from '@/components/sejongUI/modal/ModalHeader.tsx';
 import { VisitTutorial } from '@/utils/simulation/VisitTutorial.ts';
+import { Dialog } from '@allcll/allcll-ui';
 
 const tutorialVideos = [
   {
@@ -67,7 +66,6 @@ function TutorialModal() {
 
   const handleCloseModal = () => {
     closeModal();
-    hidePopupForAWeek();
   };
 
   const handleClickSkipTutorial = () => {
@@ -77,10 +75,8 @@ function TutorialModal() {
   };
 
   return (
-    showTutorial && (
-      <Modal onClose={closeModal}>
-        {/* Todo: ModalHeader 따로 추가하기 - SejongUI 와 분리 */}
-        <ModalHeader title="올클연습 소개" onClose={handleCloseModal} />
+    <Dialog title="올클연습 소개" onClose={handleCloseModal} isOpen={showTutorial}>
+      <Dialog.Content>
         <div className="w-full flex flex-col p-4">
           <div className="mx-auto" style={{ width: youTubeSize.width + 'px', height: youTubeSize.height + 'px' }}>
             <YouTube
@@ -130,8 +126,8 @@ function TutorialModal() {
             </SejongUI.Modal.ButtonContainer>
           </div>
         </div>
-      </Modal>
-    )
+      </Dialog.Content>
+    </Dialog>
   );
 }
 

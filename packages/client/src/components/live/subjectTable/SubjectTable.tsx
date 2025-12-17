@@ -1,4 +1,4 @@
-import AlarmIcon from '@/components/svgs/AlarmIcon.tsx';
+import AlarmIcon from '@/shared/ui/svgs/AlarmIcon.tsx';
 import SkeletonRows from '@/components/live/skeletons/SkeletonRows.tsx';
 import { ZeroElementRow } from '@/components/wishTable/Table.tsx';
 import { useAddPinned, usePinned, useRemovePinned } from '@/hooks/server/usePinned.ts';

@@ -1,4 +1,4 @@
-import Section from '@/components/Landing/Section.tsx';
+import Section from '@/widgets/home/ui/Section.tsx';
 import ClockBlueSvg from '@/assets/clock-blue.svg?react';
 import DisabledBlueSvg from '@/assets/disabled-blue.svg?react';
 import ReloadBlueSvg from '@/assets/reload-blue.svg?react';

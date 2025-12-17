@@ -1,8 +1,8 @@
 import { Doughnut } from 'react-chartjs-2';
-import Section from '@/components/Landing/Section.tsx';
+import Section from '@/widgets/home/ui/Section.tsx';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js/auto';
 import { DoughnutColors } from '@/utils/doughnut.ts';
-import SectionHeader from '@/components/Landing/SectionHeader.tsx';
+import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 

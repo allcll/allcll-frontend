@@ -10,16 +10,14 @@ import useSSESeats, { SseSubject } from '@/hooks/server/useSSESeats.ts';
 import { getTimeDiffString } from '@/utils/stringFormats.ts';
 import { getSeatColor } from '@/utils/colors.ts';
 import TableColorInfo from '@/components/wishTable/TableColorInfo.tsx';
-import Modal from '@common/components/modal/Modal';
 import DraggableList from '@/components/live/subjectTable/DraggableList.tsx';
-import ModalHeader from '@/components/sejongUI/modal/ModalHeader.tsx';
 import ListSvg from '@/assets/list.svg?react';
 import useBackSignal from '@/hooks/useBackSignal.ts';
 import SystemChecking from './errors/SystemChecking';
 import { getDateLocale } from '@/utils/time.ts';
 import { SSE_STATE, useSSEState } from '@/store/useSseState.ts';
 import { HeadTitle, useLiveTableStore } from '@/store/useTableColumnStore.ts';
-import { Card, Flex, Heading, IconButton } from '@allcll/allcll-ui';
+import { Card, Dialog, Flex, Heading, IconButton } from '@allcll/allcll-ui';
 
 interface IRealtimeTable {
   title: string;
@@ -207,12 +205,11 @@ function LiveTableTitleModal({ initialItems, onChange, onClose }: ITableTitleMod
   });
 
   return (
-    <Modal onClose={onClose}>
-      <ModalHeader title="테이블 설정" onClose={onClose} />
+    <Dialog title="테이블 설정" onClose={onClose} isOpen>
       <div className="p-4">
         <DraggableList initialItems={initialItems} onChange={onChange} />
       </div>
-    </Modal>
+    </Dialog>
   );
 }
 

@@ -1,4 +1,4 @@
-import AlarmIcon from '@/components/svgs/AlarmIcon';
+import AlarmIcon from '@/shared/ui/svgs/AlarmIcon';
 import { Filters } from '@/store/useFilterStore';
 import { Button } from '@allcll/allcll-ui';
 

@@ -14,7 +14,7 @@ interface IDialogMain {
   onClose: () => void;
 }
 
-function DialogMain({ children, isOpen, title, onClose }: IDialogMain) {
+function DialogMain({ children, isOpen = true, title, onClose }: IDialogMain) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
 
