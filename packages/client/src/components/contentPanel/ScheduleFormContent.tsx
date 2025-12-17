@@ -4,6 +4,8 @@ import Chip from '@common/components/chip/Chip';
 import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
 import { useScheduleState } from '@/store/useScheduleState';
 import { Flex, Label, TextField } from '@allcll/allcll-ui';
+import { updateTimeSlot } from './lib/updateTimeSlot';
+import { extractTimeRange, toggleDaySlot } from './lib/time';
 
 interface TimeRange {
   startHour: string;
@@ -13,10 +15,10 @@ interface TimeRange {
 }
 
 function ScheduleFormContent() {
+  const isMobile = useScheduleState(state => state.options.isMobile);
+
   const { schedule: scheduleForm } = useScheduleModalData();
   const { editSchedule: setScheduleForm } = useScheduleModal();
-
-  const isMobile = useScheduleState(state => state.options.isMobile);
 
   const textFields = [
     {
@@ -36,73 +38,20 @@ function ScheduleFormContent() {
     },
   ];
 
-  const extractTimeParts = (startTime: string, endTime: string) => {
-    const [startHour, startMinute] = startTime.split(':');
-    const [endHour, endMinute] = endTime.split(':');
-
-    return { startHour, startMinute, endHour, endMinute };
-  };
-
   const toggleDay = (day: Day) => {
-    const exists = scheduleForm.timeSlots.find(slot => slot.dayOfWeeks === day);
-
-    if (exists) {
-      setScheduleForm(prev => ({
-        ...prev,
-        timeSlots: prev.timeSlots.filter(slot => slot.dayOfWeeks !== day),
-      }));
-    } else {
-      setScheduleForm(prev => ({
-        ...prev,
-        timeSlots: [
-          ...prev.timeSlots,
-          {
-            dayOfWeeks: day,
-            startTime: '',
-            endTime: '',
-          },
-        ],
-      }));
-    }
+    setScheduleForm(prev => ({
+      ...prev,
+      timeSlots: toggleDaySlot(prev.timeSlots, day),
+    }));
   };
 
-  const onScheduleFormChange = (key: keyof TimeRange, value: string, targetDay?: Day) => {
-    const parseValue = (timeSlot: string) => {
-      let [hour, minute] = timeSlot.split(':').map(Number);
-
-      if (isNaN(hour)) hour = 9;
-      if (isNaN(minute)) minute = 0;
-
-      return [hour.toString(), minute.toString().padStart(2, '0')];
-    };
-
-    const reconcileTimeString = (timeString: string) => {
-      const [hour, minute] = parseValue(timeString);
-      return `${hour}:${minute}`;
-    };
-
+  const handleFormChange = (key: keyof TimeRange, value: string, targetDay?: Day) => {
     setScheduleForm(prev => {
       const updated = prev.timeSlots.map(slot => {
-        console.log(slot);
-
-        if (slot.dayOfWeeks !== targetDay) return slot;
-
-        const [startHour, startMinute] = parseValue(slot.startTime);
-        const [endHour, endMinute] = parseValue(slot.endTime);
-
-        let newStartTime = slot.startTime;
-        let newEndTime = slot.endTime;
-
-        if (key === 'startHour') newStartTime = `${value}:${startMinute}`;
-        if (key === 'startMinute') newStartTime = `${startHour}:${value}`;
-        if (key === 'endHour') newEndTime = `${value}:${endMinute}`;
-        if (key === 'endMinute') newEndTime = `${endHour}:${value}`;
-
-        return {
-          ...slot,
-          startTime: reconcileTimeString(newStartTime),
-          endTime: reconcileTimeString(newEndTime),
-        };
+        if (slot.dayOfWeeks === targetDay) {
+          return updateTimeSlot(slot, key, value);
+        }
+        return slot;
       });
 
       return { ...prev, timeSlots: updated };
@@ -143,8 +92,8 @@ function ScheduleFormContent() {
           <Label>{slot.dayOfWeeks}</Label>
           <SelectTime
             day={slot.dayOfWeeks}
-            timeRange={extractTimeParts(slot.startTime, slot.endTime)}
-            onChange={onScheduleFormChange}
+            timeRange={extractTimeRange(slot.startTime, slot.endTime)}
+            onChange={handleFormChange}
           />
         </Flex>
       ))}

@@ -2,7 +2,6 @@
  * 확신의 Widgets
  */
 import { useDeferredValue } from 'react';
-import { FilteredSubjectCards } from './subject/FilteredSubjectCards';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
@@ -12,6 +11,7 @@ import useWishes from '@/entities/wishes/api/useWishes.ts';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import ScheduleFilter from './ScheduleFilter';
 import { Button, Card, Flex } from '@allcll/allcll-ui';
+import TimetableSubjectCards from './subject/TimetableSubjectCards';
 
 const initSchedule = new ScheduleAdapter().toUiData();
 
@@ -44,7 +44,7 @@ function ScheduleContentPanel() {
 
         <Flex direction="flex-col" className="h-full overflow-hidden">
           <div className="overflow-y-auto">
-            <FilteredSubjectCards subjects={filteredData} isPending={isPending} />
+            <TimetableSubjectCards subjects={filteredData} isPending={isPending} />
           </div>
         </Flex>
       </Flex>
