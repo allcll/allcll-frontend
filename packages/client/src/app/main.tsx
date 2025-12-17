@@ -7,7 +7,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import ReactGA from 'react-ga4';
 import Clarity from '@microsoft/clarity';
 import Sentry from '@/utils/3party/sentry';
-import router from '@/utils/routing.tsx';
+import router from '@/app/routing';
 import './index.css';
 
 const queryClient = new QueryClient();
