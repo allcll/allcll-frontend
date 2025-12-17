@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Wishes } from '@/utils/types.ts';
-import useWishes, { InitWishes } from '@/hooks/server/useWishes.ts';
+import useWishes, { InitWishes } from '@/entities/wishes/api/useWishes.ts';
 import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
 
 interface TableNames {

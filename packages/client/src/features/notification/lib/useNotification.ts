@@ -12,7 +12,7 @@ import BrowserNotification from '../lib/browserNotification.ts';
 import VibrationNotification from '../lib/vibrationNotification.ts';
 import ToastNotification from '../lib/toastNotification.ts';
 import SoundNotification from '../lib/SoundNotification.ts';
-import { getSubjects } from '@/hooks/server/useSubject.ts';
+import { getSubjects } from '@/entities/subjects/api/useSubject.ts';
 import { PinnedSeats } from '@/utils/types.ts';
 
 export interface CustomNotification {

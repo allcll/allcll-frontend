@@ -1,3 +1,6 @@
+/**
+ * 확신의 Widgets
+ */
 import { useDeferredValue } from 'react';
 import { FilteredSubjectCards } from './subject/FilteredSubjectCards';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
@@ -5,8 +8,8 @@ import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects';
 import useSearchRank from '@/hooks/useSearchRank.ts';
-import useWishes from '@/hooks/server/useWishes.ts';
-import SearchBox from '@/shared/ui/SearchBox';
+import useWishes from '@/entities/wishes/api/useWishes.ts';
+import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import ScheduleFilter from './ScheduleFilter';
 import { Button, Card, Flex } from '@allcll/allcll-ui';
 

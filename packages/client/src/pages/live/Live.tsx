@@ -1,12 +1,12 @@
 import { Helmet } from 'react-helmet';
-import RealtimeTable from '@/components/live/RealtimeTable.tsx';
-import PinnedCourses from '@/components/live/PinnedCourses.tsx';
-import SearchSideBar from '@/components/live/SearchSideBar.tsx';
-import SearchBottomSheet from '@/components/live/SearchBottomSheet.tsx';
+import RealtimeTable from '@/widgets/live/RealtimeTable.tsx';
+import PinnedCourses from '@/widgets/live/PinnedCourses.tsx';
+import SearchSideBar from '@/widgets/live/SearchSideBar.tsx';
+import SearchBottomSheet from '@/widgets/live/SearchBottomSheet.tsx';
 import useAlarmModalStore from '@/store/useAlarmModalStore.ts';
-import useMobile from '@/hooks/useMobile.ts';
+import useMobile from '@/shared/lib/useMobile.ts';
 import usePreSeatGate from '@/hooks/usePreSeatGate';
-import PreSeat from '@/components/live/preSeat/PreSeat';
+import PreSeat from '@/widgets/live/preSeat/PreSeat';
 import { Flex, Grid, SupportingText } from '@allcll/allcll-ui';
 
 function Live() {

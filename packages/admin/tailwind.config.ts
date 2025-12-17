@@ -1,5 +1,5 @@
 import { Config } from 'tailwindcss';
-import { colors } from '../allcll-ui/colors';
+import { colors } from '@allcll/allcll-ui/colors';
 
 /** @type {import('tailwindcss').Config} */
 const config: Config = {

@@ -1,4 +1,4 @@
-import useWishes from '@/hooks/server/useWishes.ts';
+import useWishes from '@/entities/wishes/api/useWishes.ts';
 
 function useFindWishes(subjectIds: number[]) {
   const { data } = useWishes();

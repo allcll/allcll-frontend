@@ -1,3 +1,5 @@
+// fixme: 타입 도메인 별로 쪼개서 타입 각자 관리하기
+
 import { Filters } from '@/store/useFilterStore';
 import { FilterDomainsType } from './filtering/filterDomains';
 

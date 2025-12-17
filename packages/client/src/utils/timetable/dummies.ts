@@ -1,4 +1,4 @@
-import { Timetable } from '@/hooks/server/useTimetableSchedules.ts';
+import { Timetable } from '@/entities/timetable/api/useTimetableSchedules.ts';
 
 export const timetableAPIDummies: Timetable = {
   timetableId: 1,

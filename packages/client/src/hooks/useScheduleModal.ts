@@ -9,7 +9,7 @@ import {
   useCreateSchedule,
   useDeleteSchedule,
   useUpdateSchedule,
-} from '@/hooks/server/useTimetableSchedules.ts';
+} from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { ScheduleMutateType, useScheduleState } from '@/store/useScheduleState.ts';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';

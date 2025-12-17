@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import useFaq from '@/hooks/server/public/useFaq.ts';
 import ArrowSvg from '@/assets/arrow-down-gray.svg?react';
-import markdownComponents from '@/utils/markdownComponents.tsx';
+import markdownComponents from '@/shared/config/markdownComponents.tsx';
 import { Chip, Flex, Heading } from '@allcll/allcll-ui';
 
 const Tags = {

@@ -1,4 +1,4 @@
-import { getDateLocale } from '@/utils/time';
+import { getDateLocale } from '@/shared/lib/time.ts';
 
 export type PreSeatMode = 'force-open' | 'auto' | 'force-close';
 export const PRESEAT_MODE: PreSeatMode = 'force-open';

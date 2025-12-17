@@ -1,12 +1,15 @@
-import GenericMultiSelectFilter from '../filtering/GenericMultiSelectFilter';
+/**
+ * 확신의 Widgets
+ */
+import GenericMultiSelectFilter from '../../features/filtering/ui/GenericMultiSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains';
 import { useScheduleSearchStore } from '@/store/useFilterStore';
 import { useState } from 'react';
-import FilteringButton from '../filtering/button/FilteringButton';
-import DepartmentSelectFilter from '../filtering/DepartmentFilter';
-import FilterDelete from '../filtering/FilterDelete';
-import useSubject from '@/hooks/server/useSubject';
-import FilteringModal from '../filtering/FilteringModal';
+import FilteringButton from '@/features/filtering/ui/button/FilteringButton';
+import DepartmentSelectFilter from '../../features/filtering/ui/DepartmentFilter.tsx';
+import FilterDelete from '../../features/filtering/ui/FilterDelete.tsx';
+import useSubject from '@/entities/subjects/api/useSubject.ts';
+import FilteringModal from '../../widgets/filtering/ui/FilteringModal.tsx';
 import { Flex } from '@allcll/allcll-ui';
 
 function ScheduleFilter() {

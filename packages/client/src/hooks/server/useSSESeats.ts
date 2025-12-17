@@ -1,5 +1,5 @@
 import { SSEType, useSseData } from '@/hooks/useSSEManager.ts';
-import useSubject, { InitSubject } from '@/hooks/server/useSubject.ts';
+import useSubject, { InitSubject } from '@/entities/subjects/api/useSubject.ts';
 import { Subject } from '@/utils/types.ts';
 
 export interface SseSubject extends Subject {

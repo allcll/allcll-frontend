@@ -1,5 +1,5 @@
-import useSubject from '@/hooks/server/useSubject.ts';
-import useDepartments, { Department } from '@/hooks/server/useDepartments.ts';
+import useSubject from '@/entities/subjects/api/useSubject.ts';
+import useDepartments, { Department } from '@/entities/departments/api/useDepartments.ts';
 import { Subject } from '@/utils/types.ts';
 
 export interface Lecture {

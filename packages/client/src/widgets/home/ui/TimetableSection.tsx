@@ -1,9 +1,9 @@
 import Section from '@/widgets/home/ui/Section.tsx';
 import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
-import TimetableGridComponent from '@/components/timetable/TimetableGridComponent.tsx';
-import { GeneralSchedule, getScheduleSlots, ScheduleSlot } from '@/hooks/server/useTimetableSchedules.ts';
-import Schedule from '@/components/timetable/Schedule.tsx';
-import { Card } from '../../../../../allcll-ui';
+import TimetableGridComponent from '@/widgets/timetable/TimetableGridComponent.tsx';
+import { GeneralSchedule, getScheduleSlots, ScheduleSlot } from '@/entities/timetable/api/useTimetableSchedules.ts';
+import Schedule from '@/widgets/timetable/Schedule.tsx';
+import { Card } from '@allcll/allcll-ui';
 
 const colNames = ['월', '화', '수', '목', '금'];
 const rowNames = Array.from({ length: 5 }, (_, i) => `${i + 9}`);

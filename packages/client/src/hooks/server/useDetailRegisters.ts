@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { WishRegister } from '@/utils/types.ts';
-import { BadRequestError } from '@/utils/errors.ts';
-import { fetchOnAPI } from '@/utils/api.ts';
+import { BadRequestError } from '@/shared/lib/errors.ts';
+import { fetchOnAPI } from '@/shared/api/api.ts';
 
 interface DetailRegistersResponse {
   eachDepartmentRegisters: WishRegister[];

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { GeneralSchedule, TimetableType } from '@/hooks/server/useTimetableSchedules.ts';
+import { GeneralSchedule, TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 import { Day, DAYS } from '@/utils/types.ts';
 

@@ -1,14 +1,14 @@
 import ScheduleFormModal from '@/components/contentPanel/ScheduleFormModal';
 import ScheduleInfoModal from '@/components/contentPanel/ScheduleInfoModal';
-import useMobile from '@/hooks/useMobile';
+import useMobile from '@/shared/lib/useMobile.ts';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import { useScheduleSearchStore } from '@/store/useFilterStore';
 import { Button } from '@allcll/allcll-ui';
 import AddSvg from '@/assets/add.svg?react';
-import SearchBottomSheet from '@/components/contentPanel/bottomSheet/SearchBottomSheet';
-import FilteringBottomSheet from '@/components/contentPanel/bottomSheet/FilteringBottomSheet';
-import FormBottomSheet from '@/components/contentPanel/bottomSheet/FormBottomSheet';
-import ScheduleInfoBottomSheet from '@/components/contentPanel/bottomSheet/ScheduleDetailBottomSheet';
+import SearchBottomSheet from '@/widgets/bottomSheet/SearchBottomSheet';
+import FilteringBottomSheet from '@/widgets/bottomSheet/FilteringBottomSheet';
+import FormBottomSheet from '@/widgets/bottomSheet/FormBottomSheet';
+import ScheduleInfoBottomSheet from '@/widgets/bottomSheet/ScheduleDetailBottomSheet';
 
 function TimetableOverlay() {
   const isMobile = useMobile();

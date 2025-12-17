@@ -1,4 +1,4 @@
-import { db, SimulationRun, SimulationRunSelections } from '@/utils/dbConfig.ts';
+import { db, SimulationRun, SimulationRunSelections } from '@/shared/config/dbConfig.ts';
 import { getInterestedId, getRecentInterestedSnapshot } from '@/utils/simulation/subjects';
 import { getAccuracy, getAccuracyScore, getSpeedScore } from '@/utils/simulation/score.ts';
 import { checkSubjectResult } from '@/utils/checkSubjectResult.ts';

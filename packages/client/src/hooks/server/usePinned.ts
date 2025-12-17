@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api.ts';
+import { fetchJsonOnAPI, fetchOnAPI } from '@/shared/api/api.ts';
 
 const PinLimit = 5;
 

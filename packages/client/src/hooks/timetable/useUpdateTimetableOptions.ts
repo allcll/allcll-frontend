@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { GeneralSchedule } from '@/hooks/server/useTimetableSchedules.ts';
+import { GeneralSchedule } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/store/useScheduleState.ts';
 import { DAYS } from '@/utils/types.ts';
 

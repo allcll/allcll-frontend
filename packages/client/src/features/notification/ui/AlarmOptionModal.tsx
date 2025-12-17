@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '@common/components/Button.tsx';
 import Toggle from '@common/components/Toggle.tsx';
 import Modal from '@common/components/modal/Modal.tsx';
-import useBackSignal from '@/hooks/useBackSignal.ts';
+import useBackSignal from '@/shared/lib/useBackSignal.ts';
 import BrowserNotification from '../lib/browserNotification';
 import useNotificationInstruction from '../model/useNotificationInstruction';
 import ToastNotification from '../lib/toastNotification';

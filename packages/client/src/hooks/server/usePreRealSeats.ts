@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchJsonOnPublic } from '@/utils/api.ts';
+import { fetchJsonOnPublic } from '@/shared/api/api.ts';
 
 const SEC = 1000;
 const MIN = 60 * SEC;

@@ -1,10 +1,10 @@
-import useGlobalEffect from '@/hooks/useGlobalEffect.ts';
+import useGlobalEffect from '@/shared/lib/useGlobalEffect.ts';
 import ToastNotification from '@/features/notification/ui/ToastNotification.tsx';
-import Header from '@/components/Header.tsx';
+import Header from '@/shared/ui/Header.tsx';
 import BannerNotification from '@/features/notification/ui/BannerNotification.tsx';
 import { Outlet } from 'react-router-dom';
-import Footer from '@/components/Footer.tsx';
-import ServiceEnabled from '@/components/ServiceEnabled.tsx';
+import Footer from '@/shared/ui/Footer.tsx';
+import ServiceEnabled from '@/entities/semester/ui/ServiceEnabled.tsx';
 
 interface IServiceLayoutProps {
   serviceId: string;

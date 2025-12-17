@@ -1,5 +1,5 @@
 import { WishRegister } from '@/utils/types.ts';
-import { searchFromCollege, searchFromUniversity } from '@/hooks/server/useDepartments.ts';
+import { searchFromCollege, searchFromUniversity } from '@/entities/departments/api/useDepartments.ts';
 
 interface DoughnutData {
   labels: string[];

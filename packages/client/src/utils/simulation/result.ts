@@ -1,4 +1,4 @@
-import { db, SimulationRunSelections } from '@/utils/dbConfig.ts';
+import { db, SimulationRunSelections } from '@/shared/config/dbConfig.ts';
 import { getInterestedSnapshotById } from '@/utils/simulation/subjects.ts';
 import { APPLY_STATUS, BUTTON_EVENT, getSimulationById } from '@/utils/simulation/simulation.ts';
 

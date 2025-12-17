@@ -5,8 +5,8 @@ import { usePinned } from '@/hooks/server/usePinned.ts';
 import useFavorites from '@/store/useFavorites.ts';
 import { Filters, isFilterEmpty } from '@/store/useFilterStore.ts';
 import { TimeslotAdapter } from '@/utils/timetable/adapter.ts';
-import { Time } from '@/utils/time.ts';
-import { IDayTimeItem } from '@/components/filtering/DayTimeFilter';
+import { Time } from '@/shared/lib/time.ts';
+import { IDayTimeItem } from '@/features/filtering/ui/DayTimeFilter.tsx';
 
 /** 활성화 된 필터만 실행하는 함수를 반환 (최적화) */
 export function useFilterFunctions(filters: Filters) {

@@ -3,7 +3,7 @@ import ScheduleFormContent from './ScheduleFormContent';
 import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
 import { ScheduleMutateType } from '@/store/useScheduleState.ts';
 import { Button, Dialog } from '@allcll/allcll-ui';
-import useMobile from '@/hooks/useMobile';
+import useMobile from '@/shared/lib/useMobile.ts';
 
 function ScheduleFormModal() {
   const { modalActionType } = useScheduleModalData();

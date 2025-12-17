@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Subject } from '@/utils/types.ts';
 import usePreRealSeats, { InitPreRealSeat, IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
-import { InitSubject } from '@/hooks/server/useSubject.ts';
+import { InitSubject } from '@/entities/subjects/api/useSubject.ts';
 
 interface SubjectData {
   subjectId: number;

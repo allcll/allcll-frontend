@@ -1,4 +1,4 @@
-import { MIN_Y, MAX_Y } from '@/components/contentPanel/bottomSheet/BottomSheet';
+import { MIN_Y, MAX_Y } from '@/shared/ui/bottomsheet/BottomSheet.tsx';
 import { useRef, useEffect } from 'react';
 
 interface BottomSheetMetrics {

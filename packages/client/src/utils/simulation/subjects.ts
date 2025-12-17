@@ -1,4 +1,4 @@
-import { db } from '@/utils/dbConfig.ts';
+import { db } from '@/shared/config/dbConfig.ts';
 import { checkOngoingSimulation } from '@/utils/simulation/simulation.ts';
 
 /**

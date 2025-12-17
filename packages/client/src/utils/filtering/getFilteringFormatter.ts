@@ -1,4 +1,4 @@
-import { IDayTimeItem } from '@/components/filtering/DayTimeFilter';
+import { IDayTimeItem } from '@/features/filtering/ui/DayTimeFilter.tsx';
 import { FilterOptions } from './filterDomains';
 import { Filters } from '@/store/useFilterStore';
 import { Credit, Day, DepartmentType, Grade, RangeMinMaxFilter, RemarkType } from '../types';

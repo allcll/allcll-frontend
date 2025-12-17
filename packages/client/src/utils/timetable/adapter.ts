@@ -1,5 +1,10 @@
-import { CustomSchedule, OfficialSchedule, GeneralSchedule, TimeSlot } from '@/hooks/server/useTimetableSchedules.ts';
-import { ROW_HEIGHT } from '@/components/timetable/TimetableComponent.tsx';
+import {
+  CustomSchedule,
+  OfficialSchedule,
+  GeneralSchedule,
+  TimeSlot,
+} from '@/entities/timetable/api/useTimetableSchedules.ts';
+import { ROW_HEIGHT } from '@/widgets/timetable/TimetableComponent.tsx';
 import { Day, Subject } from '@/utils/types.ts';
 
 interface ApiUiAdapter<T, U> {

@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet';
-import AllResult from '@/components/simulation/AllResult.tsx';
-import SimulationList from '@/components/simulation/SimulationList.tsx';
+import AllResult from '@/widgets/simulation/AllResult.tsx';
+import SimulationList from '@/widgets/simulation/SimulationList.tsx';
 
 function Dashboard() {
   return (
