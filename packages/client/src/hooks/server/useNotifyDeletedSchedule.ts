@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { GeneralSchedule } from '@/hooks/server/useTimetableSchedules.ts';
-import useBannerNotification from '@/store/useBannerNotification.tsx';
+import useBannerNotification from '@/features/notification/model/useBannerNotification';
 
 function useNotifyDeletedSchedule(schedules?: GeneralSchedule[]) {
   const isNotified = useRef<boolean>(false);

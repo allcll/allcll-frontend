@@ -1,5 +1,5 @@
-import { CustomNotification } from '@/hooks/useNotification.ts';
-import { isSubAlarmActivated, SubAlarmType } from '@/store/useAlarmSettings.ts';
+import { isSubAlarmActivated, SubAlarmType } from '../model/useAlarmSettings';
+import { CustomNotification } from './useNotification';
 
 // Vendor prefixes for cross-browser compatibility
 const getVibrate = (): ((pattern: VibratePattern) => boolean) | undefined => {

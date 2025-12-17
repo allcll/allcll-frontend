@@ -1,5 +1,5 @@
 import useGlobalEffect from '@/hooks/useGlobalEffect.ts';
-import ToastNotification from '@/components/toast/ToastNotification.tsx';
+import ToastNotification from '@/features/notification/ui/ToastNotification.tsx';
 import Header from '@/components/Header.tsx';
 // import BannerNotification from '@/components/banner/BannerNotification.tsx';
 import { Outlet } from 'react-router-dom';

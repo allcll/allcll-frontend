@@ -1,4 +1,4 @@
-import { CustomNotification } from '@/hooks/useNotification.ts';
+import { CustomNotification } from '../lib/useNotification.ts';
 
 // Define the path to your notification sound file
 const NOTIFICATION_SOUND_PATH = '/notification.mp3';

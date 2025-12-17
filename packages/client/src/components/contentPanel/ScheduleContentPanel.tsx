@@ -6,7 +6,7 @@ import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import useWishes from '@/hooks/server/useWishes.ts';
-import SearchBox from '../common/SearchBox';
+import SearchBox from '@/shared/ui/SearchBox';
 import ScheduleFilter from './ScheduleFilter';
 import { Button, Card, Flex } from '@allcll/allcll-ui';
 

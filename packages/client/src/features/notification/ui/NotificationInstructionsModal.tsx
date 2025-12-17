@@ -1,7 +1,10 @@
+/**
+ * FSD_TODO: feature, widget 분리 필요
+ */
 import { useEffect, useState } from 'react';
 import Modal from '@common/components/modal/Modal.tsx';
-import ModalHeader from '../sejongUI/modal/ModalHeader.tsx';
-import useNotificationInstruction from '@/store/useNotificationInstruction.ts';
+import ModalHeader from '../../../components/sejongUI/modal/ModalHeader.tsx';
+import useNotificationInstruction from '../model/useNotificationInstruction.ts';
 import SiteOptionIcon from '@/assets/chrome-options.svg?react';
 
 // --- OS/Browser Detection Utilities ---

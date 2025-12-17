@@ -4,7 +4,7 @@ import useDepartments from '@/hooks/server/useDepartments';
 import { Filters } from '@/store/useFilterStore.ts';
 import { DepartmentType } from '@/utils/types';
 import Filtering from '@common/components/filtering/Filtering';
-import SearchBox from '../common/SearchBox';
+import SearchBox from '@/shared/ui/SearchBox';
 import { Button, Flex } from '@allcll/allcll-ui';
 import ResetSvg from '@/assets/reset-blue.svg?react';
 

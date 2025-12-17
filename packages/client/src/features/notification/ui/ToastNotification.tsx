@@ -1,7 +1,7 @@
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import useToastNotification, { IToastMessage } from '@/store/useToastNotification.ts';
 import CloseSvg from '@/assets/x-gray.svg?react';
 import AlarmSvg from '@/assets/alarm.svg?react';
+import useToastNotification, { IToastMessage } from '../model/useToastNotification';
 
 function ToastNotification() {
   const messages = useToastNotification(state => state.messages);

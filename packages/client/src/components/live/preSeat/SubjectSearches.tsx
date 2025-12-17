@@ -1,4 +1,4 @@
-import SearchBox from '@/components/common/SearchBox';
+import SearchBox from '@/shared/ui/SearchBox';
 import useMobile from '@/hooks/useMobile';
 import { useAlarmSearchStore } from '@/store/useFilterStore';
 import { useState } from 'react';

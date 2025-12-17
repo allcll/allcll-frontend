@@ -1,6 +1,6 @@
 import React, { useDeferredValue, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import SearchBox from '@/components/common/SearchBox.tsx';
+import SearchBox from '@/shared/ui/SearchBox';
 import DepartmentFilter from '@/components/live/DepartmentFilter.tsx';
 import SubjectCards from '@/components/live/subjectTable/SubjectCards.tsx';
 import { initialFilters } from '@/store/useFilterStore.ts';

@@ -1,5 +1,5 @@
 import { useDeferredValue, useState } from 'react';
-import SearchBox from '@/components/common/SearchBox';
+import SearchBox from '@/shared/ui/SearchBox';
 import BottomSheet from '@/components/contentPanel/bottomSheet/BottomSheet';
 import BottomSheetHeader from '@/components/contentPanel/bottomSheet/BottomSheetHeader';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects';

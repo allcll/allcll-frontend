@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import VibrationNotification from '@/utils/notification/vibrationNotification.ts';
+import VibrationNotification from '../lib/vibrationNotification.ts';
 
 export enum AlarmType {
   NONE = 0,
@@ -68,6 +68,5 @@ export function isSubAlarmActivated(type: SubAlarmType) {
   const subAlarmTypes = useAlarmSettings.getState().subAlarmType;
   return Boolean(subAlarmTypes & type);
 }
-
 
 export default useAlarmSettings;

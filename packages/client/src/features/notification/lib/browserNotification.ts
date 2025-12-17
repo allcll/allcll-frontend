@@ -1,8 +1,8 @@
-import AlarmBanner from '@/components/banner/AlarmBanner.tsx';
-import { AlarmType, isAlarmActivated } from '@/store/useAlarmSettings.ts';
-import useNotificationInstruction from '@/store/useNotificationInstruction.ts';
-import useBannerNotification, { ISetBanner } from '@/store/useBannerNotification.tsx';
-import { CustomNotification } from '@/hooks/useNotification.ts';
+import AlarmBanner from '../ui/AlarmBanner.tsx';
+import { AlarmType, isAlarmActivated } from '../model/useAlarmSettings.ts';
+import useNotificationInstruction from '../model/useNotificationInstruction.ts';
+import useBannerNotification, { ISetBanner } from '../model/useBannerNotification.ts';
+import { CustomNotification } from '../lib/useNotification.ts';
 
 const getNotification = () => {
   return Notification ?? window.Notification;

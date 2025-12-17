@@ -1,4 +1,4 @@
-import SearchBox from '@/components/common/SearchBox';
+import SearchBox from '@/shared/ui/SearchBox';
 import useLectures, { Lecture } from '@/hooks/server/useLectures';
 import useInfScroll from '@/hooks/useInfScroll';
 import { disassemble } from 'es-hangul';

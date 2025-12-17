@@ -2,7 +2,7 @@ import { useDeferredValue } from 'react';
 import BottomSheet from './BottomSheet';
 import BottomSheetHeader from './BottomSheetHeader';
 import { FilteredSubjectCards } from '../subject/FilteredSubjectCards';
-import SearchBox from '@/components/common/SearchBox';
+import SearchBox from '@/shared/ui/SearchBox';
 import useSubject from '@/hooks/server/useSubject';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects';

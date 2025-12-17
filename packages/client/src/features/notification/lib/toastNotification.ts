@@ -1,5 +1,5 @@
-import { CustomNotification } from '@/hooks/useNotification.ts';
-import useToastNotification from '@/store/useToastNotification.ts';
+import { CustomNotification } from '../lib/useNotification';
+import useToastNotification from '../model/useToastNotification.ts';
 
 const ToastNotification: CustomNotification = {
   canNotify() {

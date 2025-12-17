@@ -6,12 +6,12 @@ import useAlarmSettings, {
   isAlarmActivated,
   isSubAlarmActivated,
   SubAlarmType,
-} from '@/store/useAlarmSettings.ts';
-import useNotificationInstruction from '@/store/useNotificationInstruction.ts';
-import BrowserNotification from '@/utils/notification/browserNotification.ts';
-import VibrationNotification from '@/utils/notification/vibrationNotification.ts';
-import ToastNotification from '@/utils/notification/toastNotification.ts';
-import SoundNotification from '@/utils/notification/SoundNotification.ts';
+} from '../model/useAlarmSettings.ts';
+import useNotificationInstruction from '../model/useNotificationInstruction.ts';
+import BrowserNotification from '../lib/browserNotification.ts';
+import VibrationNotification from '../lib/vibrationNotification.ts';
+import ToastNotification from '../lib/toastNotification.ts';
+import SoundNotification from '../lib/SoundNotification.ts';
 import { getSubjects } from '@/hooks/server/useSubject.ts';
 import { PinnedSeats } from '@/utils/types.ts';
 

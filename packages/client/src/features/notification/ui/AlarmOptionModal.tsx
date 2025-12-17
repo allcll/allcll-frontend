@@ -2,14 +2,14 @@ import React from 'react';
 import Button from '@common/components/Button.tsx';
 import Toggle from '@common/components/Toggle.tsx';
 import Modal from '@common/components/modal/Modal.tsx';
-import ModalHeader from '../sejongUI/modal/ModalHeader.tsx';
 import useBackSignal from '@/hooks/useBackSignal.ts';
-import { AlarmNotification } from '@/hooks/useNotification.ts';
-import useAlarmSettings, { AlarmType, isSubAlarmActivated, SubAlarmType } from '@/store/useAlarmSettings.ts';
-import UseNotificationInstruction from '@/store/useNotificationInstruction.ts';
-import VibrationNotification from '@/utils/notification/vibrationNotification.ts';
-import BrowserNotification from '@/utils/notification/browserNotification.ts';
-import ToastNotification from '@/utils/notification/toastNotification.ts';
+import BrowserNotification from '../lib/browserNotification';
+import useNotificationInstruction from '../model/useNotificationInstruction';
+import ToastNotification from '../lib/toastNotification';
+import { AlarmNotification } from '../lib/useNotification';
+import ModalHeader from '@allcll/sejong-ui/src/modal/ModalHeader';
+import VibrationNotification from '../lib/vibrationNotification';
+import useAlarmSettings, { AlarmType, isSubAlarmActivated, SubAlarmType } from '../model/useAlarmSettings';
 
 interface IAlarmOptionModal {
   isOpen: boolean;
@@ -28,7 +28,7 @@ const AlarmTypeNames = [
 ];
 
 function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
-  const hasPermission = UseNotificationInstruction(state => state.isPermitted);
+  const hasPermission = useNotificationInstruction(state => state.isPermitted);
 
   const onTestAlarm = () => {
     AlarmNotification.show('알림 기능을 테스트합니다', 'test-alarm');
@@ -62,7 +62,7 @@ function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
 function AlarmOptionContent() {
   const alarmType = useAlarmSettings(state => state.alarmType);
   const saveSettings = useAlarmSettings(state => state.saveSettings);
-  const hasPermission = UseNotificationInstruction(state => state.isPermitted);
+  const hasPermission = useNotificationInstruction(state => state.isPermitted);
   const canBrowserNotify = BrowserNotification.canNotify();
 
   const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

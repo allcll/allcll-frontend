@@ -1,4 +1,4 @@
-import useBannerNotification from '@/store/useBannerNotification.tsx';
+import useBannerNotification from '../model/useBannerNotification.ts';
 import { Banner } from '@allcll/allcll-ui';
 
 function BannerNotification() {

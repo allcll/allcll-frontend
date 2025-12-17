@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import StarIcon from '@/components/svgs/StarIcon.tsx';
-import SearchBox from '@/components/common/SearchBox.tsx';
+import SearchBox from '@/shared/ui/SearchBox';
 import Modal from '@common/components/modal/Modal.tsx';
 import ModalHeader from '../sejongUI/modal/ModalHeader.tsx';
 import DraggableList from '@/components/live/subjectTable/DraggableList.tsx';
