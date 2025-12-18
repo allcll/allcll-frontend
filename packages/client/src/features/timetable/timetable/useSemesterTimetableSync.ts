@@ -1,7 +1,7 @@
-import { useScheduleState } from '@/store/useScheduleState';
+import { useScheduleState } from '@/store/useScheduleState.ts';
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { TimetableType } from '../../entities/timetable/api/useTimetableSchedules.ts';
+import { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
 
 /**
  * 시간표의 학기 정보가 바뀌면 동기화 하는 훅

@@ -1,7 +1,7 @@
 import SearchSvg from '@/assets/search.svg?react';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
-import { ScheduleAdapter } from '@/utils/timetable/adapter';
-import { Button } from '@allcll/allcll-ui';
+import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
+import { Button } from '../../../../../allcll-ui';
 
 function ZeroListError() {
   const { openScheduleModal } = useScheduleModal();

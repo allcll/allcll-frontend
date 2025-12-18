@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import DaySchedule from '@/widgets/timetable/DaySchedule.tsx';
 import TmNumsComponent from '@/widgets/timetable/TmNumsComponent.tsx';
 import ScheduleSlotList from '@/widgets/timetable/ScheduleSlotList.tsx';
-import { useUpdateTimetableOptions } from '@/hooks/timetable/useUpdateTimetableOptions.ts';
+import { useUpdateTimetableOptions } from '@/features/timetable/timetable/useUpdateTimetableOptions.ts';
 import {
   getScheduleSlots,
   ScheduleSlot,

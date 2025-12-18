@@ -5,7 +5,7 @@ import { Button, Flex, IconButton } from '../../../../allcll-ui';
 import DropdownSelect from './DropdownSelect.tsx';
 import SearchSvg from '@/assets/search.svg?react';
 import DownloadSvg from '@/assets/download.svg?react';
-import EditTimetable from '../../components/contentPanel/EditTimetable.tsx';
+import EditTimetable from '../../features/timetable/EditTimetable.tsx';
 import { useState } from 'react';
 
 type modalType = 'edit' | 'create' | null;

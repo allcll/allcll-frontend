@@ -1,5 +1,5 @@
 import { TimetableType, useDeleteTimetable, useTimetables } from '@/entities/timetable/api/useTimetableSchedules.ts';
-import useSemesterTimetableSync from '@/hooks/timetable/useSemesterTimetableSync.ts';
+import useSemesterTimetableSync from '@/features/timetable/timetable/useSemesterTimetableSync.ts';
 import { useScheduleState } from '@/store/useScheduleState.ts';
 import { Button, Checkbox, Flex, Popover, SupportingText } from '../../../../allcll-ui';
 

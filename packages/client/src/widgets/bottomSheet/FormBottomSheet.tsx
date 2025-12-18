@@ -1,7 +1,7 @@
 import React from 'react';
 import BottomSheet from '../../shared/ui/bottomsheet/BottomSheet.tsx';
 import BottomSheetHeader from '../../shared/ui/bottomsheet/BottomSheetHeader.tsx';
-import ScheduleFormContent from '../../components/contentPanel/ScheduleFormContent.tsx';
+import ScheduleFormContent from '../../features/timetable/ScheduleFormContent.tsx';
 import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
 import { ScheduleMutateType } from '@/store/useScheduleState.ts';
 import { Button, Flex } from '@allcll/allcll-ui';

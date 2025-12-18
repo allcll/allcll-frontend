@@ -1,5 +1,5 @@
-import { TimeSlot } from '@/entities/timetable/api/useTimetableSchedules';
-import { Day } from '@/utils/types';
+import { TimeSlot } from '@/entities/timetable/api/useTimetableSchedules.ts';
+import { Day } from '@/utils/types.ts';
 
 export const extractTimeRange = (startTime: string, endTime: string) => {
   const start = parseTime(startTime);

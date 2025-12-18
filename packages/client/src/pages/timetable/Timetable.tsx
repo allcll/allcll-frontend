@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet';
 import TimetableComponent from '@/widgets/timetable/TimetableComponent.tsx';
-import ContentPanel from '@/components/contentPanel/ScheduleContentPanel';
+import ContentPanel from '@/features/timetable/ScheduleContentPanel.tsx';
 import TimetableHeader from '@/widgets/timetable/TimetableHeader';
 import { Card, Flex, Heading } from '@allcll/allcll-ui';
 import TimetableSemesterTabs from '@/widgets/timetable/TimetableSemesterTabs';

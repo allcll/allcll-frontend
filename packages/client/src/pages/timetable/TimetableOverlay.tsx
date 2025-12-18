@@ -1,5 +1,5 @@
-import ScheduleFormModal from '@/components/contentPanel/ScheduleFormModal';
-import ScheduleInfoModal from '@/components/contentPanel/ScheduleInfoModal';
+import ScheduleFormModal from '@/features/timetable/ScheduleFormModal.tsx';
+import ScheduleInfoModal from '@/features/timetable/ScheduleInfoModal.tsx';
 import useMobile from '@/shared/lib/useMobile.ts';
 import { useBottomSheetStore } from '@/store/useBottomSheetStore';
 import { useScheduleSearchStore } from '@/store/useFilterStore';

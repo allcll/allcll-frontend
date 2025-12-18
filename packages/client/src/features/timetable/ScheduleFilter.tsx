@@ -1,16 +1,16 @@
 /**
  * 확신의 Widgets
  */
-import GenericMultiSelectFilter from '../../features/filtering/ui/GenericMultiSelectFilter.tsx';
-import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains';
-import { useScheduleSearchStore } from '@/store/useFilterStore';
+import GenericMultiSelectFilter from '../filtering/ui/GenericMultiSelectFilter.tsx';
+import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains.ts';
+import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
 import { useState } from 'react';
-import FilteringButton from '@/features/filtering/ui/button/FilteringButton';
-import DepartmentSelectFilter from '../../features/filtering/ui/DepartmentFilter.tsx';
-import FilterDelete from '../../features/filtering/ui/FilterDelete.tsx';
+import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
+import DepartmentSelectFilter from '../filtering/ui/DepartmentFilter.tsx';
+import FilterDelete from '../filtering/ui/FilterDelete.tsx';
 import useSubject from '@/entities/subjects/api/useSubject.ts';
 import FilteringModal from '../../widgets/filtering/ui/FilteringModal.tsx';
-import { Flex } from '@allcll/allcll-ui';
+import { Flex } from '../../../../allcll-ui';
 
 function ScheduleFilter() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);

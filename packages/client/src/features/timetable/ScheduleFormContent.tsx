@@ -1,11 +1,11 @@
-import SelectTime from './SelectTime';
-import { Day, DAYS } from '@/utils/types';
-import Chip from '@common/components/chip/Chip';
+import SelectTime from './SelectTime.tsx';
+import { Day, DAYS } from '@/utils/types.ts';
+import Chip from '@common/components/chip/Chip.tsx';
 import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
-import { useScheduleState } from '@/store/useScheduleState';
-import { Flex, Label, TextField } from '@allcll/allcll-ui';
-import { updateTimeSlot } from './lib/updateTimeSlot';
-import { extractTimeRange, toggleDaySlot } from './lib/time';
+import { useScheduleState } from '@/store/useScheduleState.ts';
+import { Flex, Label, TextField } from '../../../../allcll-ui';
+import { updateTimeSlot } from './lib/updateTimeSlot.ts';
+import { extractTimeRange, toggleDaySlot } from './lib/time.ts';
 
 interface TimeRange {
   startHour: string;

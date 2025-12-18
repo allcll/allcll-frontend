@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useScheduleState } from '@/store/useScheduleState.ts';
-import { useUpdateTimetableRef } from '@/hooks/timetable/useUpdateTimetableOptions.ts';
+import { useUpdateTimetableRef } from '@/features/timetable/timetable/useUpdateTimetableOptions.ts';
 import { ROW_HEIGHT } from '@/widgets/timetable/TimetableComponent.tsx';
 
 interface ITimetableGridComponent {

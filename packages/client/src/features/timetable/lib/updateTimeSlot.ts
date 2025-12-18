@@ -1,5 +1,5 @@
-import { TimeSlot } from '@/entities/timetable/api/useTimetableSchedules';
-import { parseTime, reconcileTimeString } from './time';
+import { TimeSlot } from '@/entities/timetable/api/useTimetableSchedules.ts';
+import { parseTime, reconcileTimeString } from './time.ts';
 
 export type TimeKey = 'startHour' | 'startMinute' | 'endHour' | 'endMinute';
 

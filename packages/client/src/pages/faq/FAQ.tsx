@@ -3,7 +3,7 @@ import remarkGfm from 'remark-gfm';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import useFaq from '@/hooks/server/public/useFaq.ts';
+import useFaq from '@/features/faq/model/useFaq.ts';
 import ArrowSvg from '@/assets/arrow-down-gray.svg?react';
 import markdownComponents from '@/shared/config/markdownComponents.tsx';
 import { Chip, Flex, Heading } from '@allcll/allcll-ui';

@@ -1,6 +1,6 @@
-import { OfficialSchedule } from '@/entities/timetable/api/useTimetableSchedules';
-import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter';
-import { Subject } from '@/utils/types';
+import { OfficialSchedule } from '@/entities/timetable/api/useTimetableSchedules.ts';
+import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
+import { Subject } from '@/utils/types.ts';
 
 const MIN_TIME = 9;
 
