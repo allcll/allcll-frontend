@@ -1,6 +1,6 @@
 import { IDayTimeItem } from '@/features/filtering/ui/DayTimeFilter.tsx';
 import { FilterOptions } from './filterDomains';
-import { Filters } from '@/store/useFilterStore';
+import { Filters } from '@/shared/model/useFilterStore.ts';
 import { Credit, Day, DepartmentType, Grade, RangeMinMaxFilter, RemarkType } from '../types';
 
 export const labelPrefix: Record<keyof Filters, string> = {

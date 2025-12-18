@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { IMutateScheduleState, useScheduleState } from '@/store/useScheduleState.ts';
+import { IMutateScheduleState, useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 
 interface IDragData {
   dragging: boolean;

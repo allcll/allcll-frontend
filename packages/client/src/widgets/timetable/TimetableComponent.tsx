@@ -2,16 +2,17 @@ import React, { useEffect, useRef } from 'react';
 import DaySchedule from '@/widgets/timetable/DaySchedule.tsx';
 import TmNumsComponent from '@/widgets/timetable/TmNumsComponent.tsx';
 import ScheduleSlotList from '@/widgets/timetable/ScheduleSlotList.tsx';
-import { useUpdateTimetableOptions } from '@/features/timetable/timetable/useUpdateTimetableOptions.ts';
+import { useUpdateTimetableOptions } from '@/features/timetable/lib/useUpdateTimetableOptions.ts';
 import {
   getScheduleSlots,
   ScheduleSlot,
   useTimetableSchedules,
 } from '@/entities/timetable/api/useTimetableSchedules.ts';
-import { useScheduleState } from '@/store/useScheduleState.ts';
-import { Day, DAYS } from '@/utils/types.ts';
+import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
+import { Day } from '@/utils/types.ts';
 import useNotifyDeletedSchedule from '@/features/notification/lib/useNotifyDeletedSchedule.ts';
 import TimetableGridComponent from '@/widgets/timetable/TimetableGridComponent.tsx';
+import { DAYS } from '@/features/timetable/model/types.ts';
 
 export const ROW_HEIGHT = 40;
 

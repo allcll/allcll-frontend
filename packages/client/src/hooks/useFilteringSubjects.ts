@@ -1,5 +1,5 @@
 import useSearchLogging from '@/hooks/useSearchLogging.ts';
-import { Filters } from '@/store/useFilterStore.ts';
+import { Filters } from '@/shared/model/useFilterStore.ts';
 import { useFilterFunctions } from '@/utils/filtering/filterSubjects';
 import { Subject } from '@/utils/types';
 

@@ -1,23 +1,18 @@
-import ScheduleFormModal from '@/features/timetable/ScheduleFormModal.tsx';
-import ScheduleInfoModal from '@/features/timetable/ScheduleInfoModal.tsx';
-import useMobile from '@/shared/lib/useMobile.ts';
-import { useBottomSheetStore } from '@/store/useBottomSheetStore';
-import { useScheduleSearchStore } from '@/store/useFilterStore';
 import { Button } from '@allcll/allcll-ui';
 import AddSvg from '@/assets/add.svg?react';
-import SearchBottomSheet from '@/widgets/bottomSheet/SearchBottomSheet';
-import FilteringBottomSheet from '@/widgets/bottomSheet/FilteringBottomSheet';
-import FormBottomSheet from '@/widgets/bottomSheet/FormBottomSheet';
-import ScheduleInfoBottomSheet from '@/widgets/bottomSheet/ScheduleDetailBottomSheet';
+import SearchBottomSheet from '@/widgets/bottomSheet/SearchBottomSheet.tsx';
+import FilteringBottomSheet from '@/widgets/bottomSheet/FilteringBottomSheet.tsx';
+import FormBottomSheet from '@/widgets/bottomSheet/FormBottomSheet.tsx';
+import ScheduleInfoBottomSheet from '@/widgets/bottomSheet/ScheduleDetailBottomSheet.tsx';
+import ScheduleFormModal from '@/features/timetable/ui/ScheduleFormModal.tsx';
+import ScheduleInfoModal from '@/features/timetable/ui/ScheduleInfoModal.tsx';
+import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
+import { useScheduleSearchStore } from '@/shared/model/useFilterStore.ts';
+import useMobile from '@/shared/lib/useMobile.ts';
 
 function TimetableOverlay() {
   const isMobile = useMobile();
-
-  if (!isMobile) {
-    return <DesktopTimetableOverlay />;
-  }
-
-  return <MobileTimetableOverlay />;
+  return isMobile ? <MobileTimetableOverlay /> : <DesktopTimetableOverlay />;
 }
 
 export default TimetableOverlay;

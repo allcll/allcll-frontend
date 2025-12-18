@@ -1,4 +1,4 @@
-import { useScheduleState } from '@/store/useScheduleState.ts';
+import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';

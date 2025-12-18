@@ -1,11 +1,11 @@
-import { useBottomSheetStore } from '@/store/useBottomSheetStore.ts';
-import { useScheduleState } from '@/store/useScheduleState.ts';
+import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
+import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { saveImageFromElement } from '@/shared/lib/saveImage.ts';
 import { Button, Flex, IconButton } from '../../../../allcll-ui';
 import DropdownSelect from './DropdownSelect.tsx';
 import SearchSvg from '@/assets/search.svg?react';
 import DownloadSvg from '@/assets/download.svg?react';
-import EditTimetable from '../../features/timetable/EditTimetable.tsx';
+import EditTimetable from '../../features/timetable/ui/EditTimetable.tsx';
 import { useState } from 'react';
 
 type modalType = 'edit' | 'create' | null;

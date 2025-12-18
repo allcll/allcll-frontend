@@ -4,7 +4,7 @@ import BottomSheetHeader from '../../shared/ui/bottomsheet/BottomSheetHeader.tsx
 import ClockGraySvg from '@/assets/clock-gray.svg?react';
 import HouseSvg from '@/assets/house.svg?react';
 import useSubject from '@/entities/subjects/api/useSubject.ts';
-import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
+import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib/useScheduleModal.ts';
 import { Button, Flex, Heading } from '../../../../allcll-ui';
 
 function ScheduleInfoBottomSheet() {

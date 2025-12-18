@@ -1,5 +1,5 @@
 import { useTimetableSchedules } from '@/entities/timetable/api/useTimetableSchedules.ts';
-import { useScheduleState } from '@/store/useScheduleState.ts';
+import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 
 function TmNumsComponent() {
   const timetableId = useScheduleState(state => state.currentTimetable?.timeTableId);

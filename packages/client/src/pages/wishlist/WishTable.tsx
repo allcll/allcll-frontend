@@ -4,7 +4,7 @@ import useWishes, { InitWishes } from '@/entities/wishes/api/useWishes.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects';
 import Table from '@/widgets/wishlist/Table.tsx';
 import Searches from '@/widgets/live/Searches.tsx';
-import { useWishSearchStore } from '@/store/useFilterStore.ts';
+import { useWishSearchStore } from '@/shared/model/useFilterStore.ts';
 import TableColorInfo from '@/widgets/wishlist/TableColorInfo.tsx';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';

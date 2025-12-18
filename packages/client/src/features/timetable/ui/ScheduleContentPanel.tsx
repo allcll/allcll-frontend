@@ -2,16 +2,16 @@
  * 확신의 Widgets
  */
 import { useDeferredValue } from 'react';
-import useScheduleModal from '@/hooks/useScheduleModal.ts';
+import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
-import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
+import { useScheduleSearchStore } from '@/shared/model/useFilterStore.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects.ts';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import useWishes from '@/entities/wishes/api/useWishes.ts';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import ScheduleFilter from './ScheduleFilter.tsx';
-import { Button, Card, Flex } from '../../../../allcll-ui';
-import TimetableSubjectCards from './subject/TimetableSubjectCards.tsx';
+import { Button, Card, Flex } from '../../../../../allcll-ui';
+import TimetableSubjectCards from '@/features/timetable/ui/subject/TimetableSubjectCards.tsx';
 
 const initSchedule = new ScheduleAdapter().toUiData();
 

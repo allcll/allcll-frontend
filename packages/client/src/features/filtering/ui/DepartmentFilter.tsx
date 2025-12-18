@@ -1,7 +1,7 @@
 import { disassemble } from 'es-hangul';
 import { useEffect, useMemo, useState } from 'react';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
-import { Filters } from '@/store/useFilterStore.ts';
+import { Filters } from '@/shared/model/useFilterStore.ts';
 import { DepartmentType } from '@/utils/types.ts';
 import Filtering from '@common/components/filtering/Filtering.tsx';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';

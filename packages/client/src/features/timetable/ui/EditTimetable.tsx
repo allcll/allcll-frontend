@@ -5,8 +5,8 @@ import {
   useDeleteTimetable,
   useUpdateTimetable,
 } from '@/entities/timetable/api/useTimetableSchedules.ts';
-import { useScheduleState } from '@/store/useScheduleState.ts';
-import { Button, Dialog, Grid, Label, TextField } from '../../../../allcll-ui';
+import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
+import { Button, Dialog, Grid, Label, TextField } from '../../../../../allcll-ui';
 import { SEMESTERS, SERVICE_SEMESTER_DUMMY } from '@/entities/semester/api/useServiceSemester.ts';
 
 interface IEditTimetable {

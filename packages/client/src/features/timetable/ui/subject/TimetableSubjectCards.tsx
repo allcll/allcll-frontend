@@ -1,13 +1,13 @@
 import { useRef } from 'react';
 import ZeroListError from '../errors/ZeroListError.tsx';
 import useInfScroll from '@/shared/lib/useInfScroll.ts';
-import useScheduleModal from '@/hooks/useScheduleModal.ts';
+import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import { OfficialSchedule } from '@/entities/timetable/api/useTimetableSchedules.ts';
-import { useScheduleState } from '@/store/useScheduleState.ts';
+import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 import { Subject } from '@/utils/types.ts';
-import FilteredSubjectCard from '@/features/timetable/subject/TimetableSubjectCard.tsx';
-import { Flex } from '../../../../../allcll-ui';
+import FilteredSubjectCard from '@/features/timetable/ui/subject/TimetableSubjectCard.tsx';
+import { Flex } from '../../../../../../allcll-ui';
 
 interface ISubjectCards {
   subjects: Subject[];

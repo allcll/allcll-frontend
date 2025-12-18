@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import useScheduleModal from '@/hooks/useScheduleModal.ts';
+import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import { useEffect } from 'react';
 
 function useCloseBottomSheetOnBackKey() {

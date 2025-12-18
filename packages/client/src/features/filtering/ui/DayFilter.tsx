@@ -1,4 +1,4 @@
-import { Filters } from '@/store/useFilterStore.ts';
+import { Filters } from '@/shared/model/useFilterStore.ts';
 import Filtering from '@common/components/filtering/Filtering.tsx';
 import DayTimeFilter, { IDayTimeItem } from './DayTimeFilter.tsx';
 import useMobile from '@/shared/lib/useMobile.ts';

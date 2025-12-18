@@ -1,5 +1,5 @@
 import ResetSvg from '@/assets/reset-blue.svg?react';
-import { Filters } from '@/store/useFilterStore.ts';
+import { Filters } from '@/shared/model/useFilterStore.ts';
 import { getLabelFormatter, labelPrefix } from '@/utils/filtering/getFilteringFormatter.ts';
 import { FilterItemProps, RangeMinMaxFilter } from '@/utils/types.ts';
 import MinMaxFilter from './MinMaxFilter.tsx';

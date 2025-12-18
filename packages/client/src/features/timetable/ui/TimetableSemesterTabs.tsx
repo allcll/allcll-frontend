@@ -1,12 +1,17 @@
+import { Flex } from '@allcll/allcll-ui';
+import { Link, Navigate, useSearchParams } from 'react-router-dom';
 import { SEMESTERS } from '@/entities/semester/api/useServiceSemester.ts';
-import { Flex } from '../../../../allcll-ui';
-import { Link } from 'react-router-dom';
+import { SERVICE_SEMESTER_DUMMY } from '@/entities/semester/api/useServiceSemester.ts';
 
-interface TimetableSemesterTabsProps {
-  currentSemester: string | null;
-}
+function TimetableSemesterTabs() {
+  const [searchParams] = useSearchParams();
+  const currentSemester = searchParams.get('semester');
 
-function TimetableSemesterTabs({ currentSemester }: TimetableSemesterTabsProps) {
+  // todo: 훅으로 분리
+  if (!currentSemester) {
+    return <Navigate to={`/timetable?semester=${SERVICE_SEMESTER_DUMMY.semester}`} replace />;
+  }
+
   const activeClassName = 'border-b-2 border-primary text-primary pb-2';
 
   return (

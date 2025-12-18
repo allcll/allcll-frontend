@@ -1,8 +1,8 @@
 import React from 'react';
 import useBottomSheet from '@/hooks/useBottomSheet.ts';
-import { useBottomSheetStore } from '@/store/useBottomSheetStore.ts';
+import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import useCloseBottomSheetOnBackKey from '@/widgets/bottomSheet/useCloseBottomSheetOnBackKey.ts';
-import useScheduleModal from '@/hooks/useScheduleModal.ts';
+import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 
 type IBottomSheetChildren =
   | React.ReactNode

@@ -3,7 +3,7 @@ import { Day, Grade, RangeFilter, RangeMinMaxFilter, RemarkType, Subject, Wishes
 import { IPreRealSeat } from '@/features/live/preseat/api/usePreRealSeats';
 import { usePinned } from '@/features/live/pin/api/usePinned';
 import useFavorites from '@/store/useFavorites.ts';
-import { Filters, isFilterEmpty } from '@/store/useFilterStore.ts';
+import { Filters, isFilterEmpty } from '@/shared/model/useFilterStore.ts';
 import { TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 import { Time } from '@/shared/lib/time.ts';
 import { IDayTimeItem } from '@/features/filtering/ui/DayTimeFilter.tsx';

@@ -1,16 +1,16 @@
 /**
  * 확신의 Widgets
  */
-import GenericMultiSelectFilter from '../filtering/ui/GenericMultiSelectFilter.tsx';
+import GenericMultiSelectFilter from '../../filtering/ui/GenericMultiSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains.ts';
-import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
+import { useScheduleSearchStore } from '@/shared/model/useFilterStore.ts';
 import { useState } from 'react';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
-import DepartmentSelectFilter from '../filtering/ui/DepartmentFilter.tsx';
-import FilterDelete from '../filtering/ui/FilterDelete.tsx';
+import DepartmentSelectFilter from '../../filtering/ui/DepartmentFilter.tsx';
+import FilterDelete from '../../filtering/ui/FilterDelete.tsx';
 import useSubject from '@/entities/subjects/api/useSubject.ts';
-import FilteringModal from '../../widgets/filtering/ui/FilteringModal.tsx';
-import { Flex } from '../../../../allcll-ui';
+import FilteringModal from '../../../widgets/filtering/ui/FilteringModal.tsx';
+import { Flex } from '../../../../../allcll-ui';
 
 function ScheduleFilter() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);

@@ -1,6 +1,6 @@
 import { TimetableType, useDeleteTimetable, useTimetables } from '@/entities/timetable/api/useTimetableSchedules.ts';
-import useSemesterTimetableSync from '@/features/timetable/timetable/useSemesterTimetableSync.ts';
-import { useScheduleState } from '@/store/useScheduleState.ts';
+import useSemesterTimetableSync from '@/features/timetable/lib/useSemesterTimetableSync.ts';
+import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { Button, Checkbox, Flex, Popover, SupportingText } from '../../../../allcll-ui';
 
 interface DropdownSelectProps {

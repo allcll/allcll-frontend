@@ -1,10 +1,10 @@
-import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
+import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib/useScheduleModal.ts';
 import ClockGraySvg from '@/assets/clock-gray.svg?react';
 import HouseSvg from '@/assets/house.svg?react';
 import useSubject from '@/entities/subjects/api/useSubject.ts';
 import React from 'react';
-import { Button, Dialog, Flex } from '../../../../allcll-ui';
-import { useBottomSheetStore } from '@/store/useBottomSheetStore.ts';
+import { Button, Dialog, Flex } from '../../../../../allcll-ui';
+import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 
 function ScheduleInfoModal() {
   const { schedule } = useScheduleModalData();

@@ -1,9 +1,9 @@
 import React from 'react';
-import useScheduleModal from '@/hooks/useScheduleModal.ts';
+import { Button, Badge, Flex, Heading } from '@allcll/allcll-ui';
+import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import useSearchLogging from '@/hooks/useSearchLogging.ts';
 import { loggingDepartment } from '@/hooks/useSearchRank.ts';
 import { Subject } from '@/utils/types.ts';
-import { Button, Badge, Flex, Heading } from '../../../../../allcll-ui';
 
 interface ISubjectCard {
   isActive?: boolean;

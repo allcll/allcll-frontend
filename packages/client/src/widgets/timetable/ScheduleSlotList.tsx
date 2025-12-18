@@ -1,11 +1,11 @@
-import { useScheduleState } from '@/store/useScheduleState.ts';
+import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import {
   useTimetableSchedules,
   getEmptyScheduleSlots,
   GeneralSchedule,
 } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import XGraySvg from '@/assets/x-darkgray.svg?react';
-import useScheduleModal from '@/hooks/useScheduleModal.ts';
+import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import { Flex, IconButton } from '../../../../allcll-ui';
 
 function ScheduleSlotList() {

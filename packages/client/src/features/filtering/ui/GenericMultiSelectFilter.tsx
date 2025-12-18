@@ -1,5 +1,5 @@
 import useMobile from '@/shared/lib/useMobile.ts';
-import { Filters } from '@/store/useFilterStore.ts';
+import { Filters } from '@/shared/model/useFilterStore.ts';
 import { getMultiSelectedLabel } from '@/utils/filtering/getFilteringFormatter.ts';
 import Filtering from '@common/components/filtering/Filtering.tsx';
 import MultiSelectFilter from './MultiSelectFilter.tsx';

@@ -1,6 +1,6 @@
 import { HTMLAttributes } from 'react';
 import useSubject from '@/entities/subjects/api/useSubject.ts';
-import { useScheduleState } from '@/store/useScheduleState.ts';
+import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { IScheduleProps } from '@/widgets/timetable/Schedule.tsx';
 import { Day } from '@/utils/types.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';

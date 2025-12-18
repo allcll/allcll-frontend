@@ -97,6 +97,7 @@ const isDevServer = import.meta.env.VITE_DEV_SERVER === 'true';
 
 export const SEMESTERS = ['2025-2', '2025-WINTER'];
 
+// fixme: semester, code 내부 조작용, 외부 노출용 구분 필요
 //서비스 API연결하기 전까지 해당 데이터 사용하기
 export const SERVICE_SEMESTER_DUMMY: ServiceSemesterApiResponse = {
   code: 'WINTER-2025',

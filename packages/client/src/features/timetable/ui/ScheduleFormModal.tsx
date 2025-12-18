@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import ScheduleFormContent from './ScheduleFormContent.tsx';
-import useScheduleModal, { useScheduleModalData } from '@/hooks/useScheduleModal.ts';
-import { ScheduleMutateType } from '@/store/useScheduleState.ts';
-import { Button, Dialog } from '../../../../allcll-ui';
+import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib/useScheduleModal.ts';
+import { ScheduleMutateType } from '@/features/timetable/model/useScheduleState.ts';
+import { Button, Dialog } from '../../../../../allcll-ui';
 import useMobile from '@/shared/lib/useMobile.ts';
 
 function ScheduleFormModal() {
