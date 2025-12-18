@@ -5,14 +5,19 @@ import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader.tsx';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects.ts';
 import useWishes from '@/entities/wishes/api/useWishes.ts';
 import useSearchRank from '@/hooks/useSearchRank.ts';
-import DepartmentFilter from '@/widgets/live/DepartmentFilter.tsx';
-import SubjectCards from '@/widgets/live/subjectTable/SubjectCards.tsx';
+import DepartmentFilter from '@/widgets/live/pinned/sidebar/DepartmentFilter';
+import SubjectCards from '@/widgets/live/common/SubjectCards';
 import { initialFilters } from '@/store/useFilterStore.ts';
 
 interface ISearchBottomSheet {
   onCloseSearch: () => void;
 }
 
+/**
+ * widget
+ * @param param0
+ * @returns
+ */
 function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
   const [searchInput, setSearchInput] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');

@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet';
 import { useDeferredValue } from 'react';
-import SubjectTable from '@/widgets/live/subjectTable/SubjectTable.tsx';
+import SubjectTable from '@/widgets/live/liveBoard/SubjectTable.tsx';
 import useMobile from '@/shared/lib/useMobile.ts';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import useWishesPreSeats from '@/hooks/useWishesPreSeats.ts';
@@ -8,7 +8,7 @@ import useFilteringSubjects from '@/hooks/useFilteringSubjects.ts';
 import { PRESEAT_CLOSE_DATE } from '@/hooks/usePreSeatGate.ts';
 import { Filters, useAlarmSearchStore } from '@/store/useFilterStore.ts';
 import ScrollToTopButton from '@/shared/ui/ScrollTopButton.tsx';
-import SubjectCards from '@/widgets/live/subjectTable/SubjectCards.tsx';
+import SubjectCards from '@/widgets/live/common/SubjectCards.tsx';
 import TableColorInfo from '@/widgets/wishlist/TableColorInfo.tsx';
 import SubjectSearches from './SubjectSearches.tsx';
 import { Card, Flex, Heading, SupportingText } from '../../../../../allcll-ui';

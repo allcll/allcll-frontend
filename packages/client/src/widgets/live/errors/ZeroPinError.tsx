@@ -1,5 +1,5 @@
-import AlarmAddButton from '@/widgets/live/AlarmAddButton.tsx';
-import NoneLayout from '@/widgets/live/NoneLayout.tsx';
+import AlarmAddButton from '@/widgets/live/pinned/AlarmAddButton';
+import NoneLayout from '@/widgets/live/errors/NoneLayout';
 import AlarmIcon from '@/shared/ui/svgs/AlarmIcon.tsx';
 
 function ZeroPinError() {

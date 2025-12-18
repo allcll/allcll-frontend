@@ -1,8 +1,8 @@
-import AlarmButton from '@/widgets/live/AlarmButton.tsx';
+import AlarmButton from '@/widgets/live/pinned/AlarmButton';
 import { getTimeDiffString } from '@/shared/lib/stringFormats.ts';
 import { Subject, Wishes } from '@/utils/types.ts';
 import { getSeatColor } from '@/shared/config/colors.ts';
-import { Card, Flex, Heading } from '../../../../../allcll-ui';
+import { Card, Flex, Heading } from '@allcll/allcll-ui';
 
 interface IPinCard {
   subject: Subject | Wishes;

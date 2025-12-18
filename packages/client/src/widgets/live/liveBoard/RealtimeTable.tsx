@@ -10,14 +10,13 @@ import useSSESeats, { SseSubject } from '@/hooks/server/useSSESeats.ts';
 import { getTimeDiffString } from '@/shared/lib/stringFormats.ts';
 import { getSeatColor } from '@/shared/config/colors.ts';
 import TableColorInfo from '@/widgets/wishlist/TableColorInfo.tsx';
-import DraggableList from '@/widgets/live/subjectTable/DraggableList.tsx';
 import ListSvg from '@/assets/list.svg?react';
-import useBackSignal from '@/shared/lib/useBackSignal.ts';
-import SystemChecking from './errors/SystemChecking.tsx';
+import SystemChecking from '../errors/SystemChecking.tsx';
 import { getDateLocale } from '@/shared/lib/time.ts';
 import { SSE_STATE, useSSEState } from '@/store/useSseState.ts';
 import { HeadTitle, useLiveTableStore } from '@/store/useTableColumnStore.ts';
-import { Card, Dialog, Flex, Heading, IconButton } from '../../../../allcll-ui';
+import { Card, Flex, Heading, IconButton } from '@allcll/allcll-ui';
+import LiveTableTitleModal from '../common/LiveTableTitleModal.tsx';
 
 interface IRealtimeTable {
   title: string;
@@ -39,7 +38,7 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
         />
       )}
       <Flex justify="justify-between" align="items-center" className="mb-2">
-        <Heading level={2}>{title} 실시간</Heading>
+        <Heading level={3}>{title} 실시간</Heading>
 
         <IconButton
           label="테이블 수정"
@@ -189,27 +188,6 @@ function QueryTimeTd({ queryTime }: Readonly<{ queryTime?: string }>) {
     <td className="w-18 px-4 py-2 text-center text-xs">
       <span className="text-gray-500">{getTimeDiffString(queryTime)}</span>
     </td>
-  );
-}
-
-interface ITableTitleModal {
-  initialItems: HeadTitle<SseSubject>[];
-  onChange: (items: HeadTitle<SseSubject>[]) => void;
-  onClose: () => void;
-}
-
-function LiveTableTitleModal({ initialItems, onChange, onClose }: ITableTitleModal) {
-  useBackSignal({
-    enabled: true,
-    onClose: onClose,
-  });
-
-  return (
-    <Dialog title="테이블 설정" onClose={onClose} isOpen>
-      <div className="p-4">
-        <DraggableList initialItems={initialItems} onChange={onChange} />
-      </div>
-    </Dialog>
   );
 }
 

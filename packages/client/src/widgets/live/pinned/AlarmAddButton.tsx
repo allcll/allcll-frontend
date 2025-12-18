@@ -1,6 +1,10 @@
 import useAlarmModalStore from '@/store/useAlarmModalStore.ts';
-import { Button, Flex } from '../../../../allcll-ui';
+import { Button, Flex } from '@allcll/allcll-ui';
 
+/**
+ * feature
+ * @returns
+ */
 function AlarmAddButton() {
   const setIsSearchOpen = useAlarmModalStore(state => state.setIsSearchOpen);
 

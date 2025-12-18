@@ -1,4 +1,4 @@
-import NoneLayout from '@/widgets/live/NoneLayout.tsx';
+import NoneLayout from '@/widgets/live/errors/NoneLayout';
 import ImportantSVG from '@/assets/important.svg?react';
 import ReloadSvg from '@/assets/reload-white.svg?react';
 

@@ -42,7 +42,7 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
       if (newIndex !== -1) {
         itemRefs.current[newIndex]?.focus();
       }
-      setFocusedItemTitle(null); // Reset after focusing
+      setFocusedItemTitle(null);
     }
   }, [items, focusedItemTitle]);
 

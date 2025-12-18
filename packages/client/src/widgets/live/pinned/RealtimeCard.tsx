@@ -12,6 +12,9 @@ interface IPinCard {
   disableSeat?: boolean;
 }
 
+/**
+ * feature
+ */
 function RealtimeCard({ subject, seats, queryTime, disableSeat = false }: Readonly<IPinCard>) {
   const { mutate: deletePin } = useRemovePinned();
 

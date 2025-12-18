@@ -1,4 +1,4 @@
-import NoneLayout from '@/widgets/live/NoneLayout.tsx';
+import NoneLayout from '@/widgets/live/errors/NoneLayout';
 import ListSVG from '@/assets/list.svg?react';
 
 interface ServiceSoonProps {

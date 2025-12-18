@@ -1,4 +1,4 @@
-import NoneLayout from '@/widgets/live/NoneLayout.tsx';
+import NoneLayout from '@/widgets/live/errors/NoneLayout';
 import ImportantSvg from '@/assets/important.svg?react';
 
 function SystemChecking() {

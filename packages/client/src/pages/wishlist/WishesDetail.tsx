@@ -12,7 +12,7 @@ import useRecommendWishes from '@/entities/wishes/api/useRecommendWishes.ts';
 import useDetailRegisters from '@/hooks/server/useDetailRegisters.ts';
 import { getSeatColor, getWishesColor } from '@/shared/config/colors.ts';
 import FavoriteButton from '@/features/filtering/ui/button/FavoriteButton.tsx';
-import AlarmButton from '@/widgets/live/AlarmButton.tsx';
+import AlarmButton from '@/widgets/live/pinned/AlarmButton';
 import usePreSeatGate from '@/hooks/usePreSeatGate';
 import { Card, Flex, Grid, Heading, SupportingText } from '@allcll/allcll-ui';
 

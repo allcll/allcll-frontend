@@ -1,5 +1,5 @@
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
-import { Label } from '../../../../allcll-ui';
+import { Label } from '@allcll/allcll-ui';
 import React from 'react';
 
 interface IDepartmentFilter
@@ -8,6 +8,11 @@ interface IDepartmentFilter
   defaultValue?: string;
 }
 
+/**
+ * feature
+ * @param param0
+ * @returns
+ */
 function DepartmentFilter({ id, className, value, defaultValue = '전체', ...props }: IDepartmentFilter) {
   const { data: departments } = useDepartments();
   const departmentsList = [{ departmentName: defaultValue, departmentCode: '' }, ...(departments ?? [])];

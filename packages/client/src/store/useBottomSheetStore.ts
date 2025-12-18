@@ -1,19 +1,22 @@
 import { create } from 'zustand';
 
-export type BottomSheetType = 'search' | 'filter' | 'edit' | 'info';
+/**
+ * TODO: 디자인 시스템화
+ */
+export type ScheduleBottomSheetType = 'search' | 'filter' | 'edit' | 'info';
 
 type BottomSheetState = {
   isOpen: boolean;
 };
 
-type BottomSheets = Record<BottomSheetType, BottomSheetState>;
+type BottomSheets = Record<ScheduleBottomSheetType, BottomSheetState>;
 
 interface BottomSheetStore {
   type: BottomSheets;
 
-  openBottomSheet: <T extends BottomSheetType>(type: T) => void;
+  openBottomSheet: <T extends ScheduleBottomSheetType>(type: T) => void;
 
-  closeBottomSheet: (type: BottomSheetType) => void;
+  closeBottomSheet: (type: ScheduleBottomSheetType) => void;
   resetBottomSheet: () => void;
 }
 

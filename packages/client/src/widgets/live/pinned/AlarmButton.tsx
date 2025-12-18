@@ -4,8 +4,11 @@ import AlarmIcon from '@/shared/ui/svgs/AlarmIcon.tsx';
 import { useAddPinned, usePinned, useRemovePinned } from '@/hooks/server/usePinned.ts';
 import { loggingDepartment } from '@/hooks/useSearchRank.ts';
 import useSearchLogging from '@/hooks/useSearchLogging.ts';
-import { IconButton } from '../../../../allcll-ui';
+import { IconButton } from '@allcll/allcll-ui';
 
+/**
+ * feature
+ */
 interface IAlarmButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   subject: Subject;
   variant?: 'contain' | 'plain';

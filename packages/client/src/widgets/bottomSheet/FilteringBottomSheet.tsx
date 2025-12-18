@@ -1,7 +1,7 @@
 import BottomSheet from '../../shared/ui/bottomsheet/BottomSheet.tsx';
 import BottomSheetHeader from '../../shared/ui/bottomsheet/BottomSheetHeader.tsx';
 import { Filters, getAllSelectedLabels, initialFilters } from '@/store/useFilterStore.ts';
-import DepartmentFilter from '@/widgets/live/DepartmentFilter.tsx';
+import DepartmentFilter from '@/widgets/live/pinned/sidebar/DepartmentFilter.tsx';
 import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';
 import GenericSingleSelectFilter from '@/features/filtering/ui/GenericSingleSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains.ts';

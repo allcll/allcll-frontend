@@ -1,9 +1,9 @@
-import PinCard from '@/widgets/live/subjectTable/PinCard.tsx';
 import useInfScroll from '@/shared/lib/useInfScroll.ts';
 import SearchSvg from '@/assets/search.svg?react';
 import { WishesWithSeat } from '@/hooks/useWishesPreSeats.ts';
 import { Wishes } from '@/utils/types.ts';
-import { Flex, Grid } from '../../../../../allcll-ui';
+import { Flex, Grid } from '@allcll/allcll-ui';
+import PinCard from './PinCard';
 
 interface ISubjectCards {
   subjects: Wishes[] | WishesWithSeat[];

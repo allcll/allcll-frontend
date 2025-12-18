@@ -1,4 +1,4 @@
-import NoneLayout from '@/widgets/live/NoneLayout.tsx';
+import NoneLayout from '@/widgets/live/errors/NoneLayout';
 import AlarmSVG from '@/assets/alarm.svg?react';
 import { Flex } from '../../../../../allcll-ui';
 

@@ -1,15 +1,18 @@
 import React, { useDeferredValue, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
-import DepartmentFilter from '@/widgets/live/DepartmentFilter.tsx';
-import SubjectCards from '@/widgets/live/subjectTable/SubjectCards.tsx';
+import DepartmentFilter from '@/widgets/live/pinned/sidebar/DepartmentFilter';
+import SubjectCards from '@/widgets/live/common/SubjectCards';
 import { initialFilters } from '@/store/useFilterStore.ts';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects.ts';
 import useWishes from '@/entities/wishes/api/useWishes.ts';
 import XSvg from '@/assets/x.svg?react';
-import { Flex, Heading, IconButton } from '../../../../allcll-ui';
+import { Flex, Heading, IconButton } from '@allcll/allcll-ui';
 
+/**
+ * widget
+ */
 interface SearchSideBarProps {
   isOpen: boolean;
   onClose: () => void;

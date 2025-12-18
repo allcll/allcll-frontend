@@ -1,3 +1,8 @@
+/**
+ * TODO: shared로 옮겨야함.
+ * @param param0
+ * @returns
+ */
 function SkeletonRows({ col, row }: Readonly<{ col: number; row: number }>) {
   return (
     <>

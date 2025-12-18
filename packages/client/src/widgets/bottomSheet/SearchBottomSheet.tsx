@@ -1,7 +1,7 @@
 import { useDeferredValue } from 'react';
 import BottomSheet from '../../shared/ui/bottomsheet/BottomSheet.tsx';
 import BottomSheetHeader from '../../shared/ui/bottomsheet/BottomSheetHeader.tsx';
-import { FilteredSubjectCards } from '../../components/contentPanel/subject/FilteredSubjectCards.tsx';
+import { FilteredSubjectCards } from '../../components/contentPanel/subject/TimetableSubjectCards.tsx';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import useSubject from '@/entities/subjects/api/useSubject.ts';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
