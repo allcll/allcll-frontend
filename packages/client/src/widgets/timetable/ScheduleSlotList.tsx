@@ -6,7 +6,7 @@ import {
 } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import XGraySvg from '@/assets/x-darkgray.svg?react';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
-import { Flex, IconButton } from '../../../../allcll-ui';
+import { Flex, IconButton } from '@allcll/allcll-ui';
 
 function ScheduleSlotList() {
   const currentTimetable = useScheduleState(s => s.currentTimetable);

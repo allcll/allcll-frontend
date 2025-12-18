@@ -2,7 +2,7 @@ import { useState } from 'react';
 import StarIcon from '@/shared/ui/svgs/StarIcon.tsx';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import DraggableList from '@/features/live/board/ui/DraggableList.tsx';
-import { Filters, getAllSelectedLabels, initialFilters, useWishSearchStore } from '@/store/useFilterStore.ts';
+import { Filters, getAllSelectedLabels, initialFilters, useWishSearchStore } from '@/shared/model/useFilterStore.ts';
 import { IPreRealSeat } from '@/features/live/preseat/api/usePreRealSeats.ts';
 import useBackSignal from '@/shared/lib/useBackSignal.ts';
 import { FilterValueType, Wishes } from '@/utils/types.ts';
@@ -18,7 +18,7 @@ import FilterDelete from '../../features/filtering/ui/FilterDelete.tsx';
 import FilteringModal from '../filtering/ui/FilteringModal.tsx';
 import usePreSeatGate from '@/features/live/preseat/lib/usePreSeatGate.ts';
 import useWishesPreSeats from '@/hooks/useWishesPreSeats.ts';
-import { IconButton, Flex, Chip, Dialog } from '../../../../allcll-ui';
+import { IconButton, Flex, Chip, Dialog } from '@allcll/allcll-ui';
 import { useWishesTableStore } from '@/features/wish/model/useWishTableColumnStore.ts';
 import { HeadTitle } from '@/shared/model/createColumnStore.ts';
 

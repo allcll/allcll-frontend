@@ -10,7 +10,7 @@ import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
 import { FilterValueType } from '@/utils/types.ts';
 import useSubject from '@/entities/subjects/api/useSubject.ts';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
-import { Button, Flex } from '../../../../allcll-ui';
+import { Button, Flex } from '@allcll/allcll-ui';
 
 interface FilteringBottomSheetProps {
   onCloseFiltering: () => void;

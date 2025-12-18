@@ -10,7 +10,7 @@ import DepartmentSelectFilter from '../../filtering/ui/DepartmentFilter.tsx';
 import FilterDelete from '../../filtering/ui/FilterDelete.tsx';
 import useSubject from '@/entities/subjects/api/useSubject.ts';
 import FilteringModal from '../../../widgets/filtering/ui/FilteringModal.tsx';
-import { Flex } from '../../../../../allcll-ui';
+import { Flex } from '@allcll/allcll-ui';
 
 function ScheduleFilter() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);

@@ -3,7 +3,7 @@ import { Filters } from '@/shared/model/useFilterStore.ts';
 import { getLabelFormatter, labelPrefix } from '@/utils/filtering/getFilteringFormatter.ts';
 import { FilterItemProps, RangeMinMaxFilter } from '@/utils/types.ts';
 import MinMaxFilter from './MinMaxFilter.tsx';
-import { Button, Flex, Label } from '../../../../../allcll-ui';
+import { Button, Flex, Label } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile.ts';
 
 type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer U)[] ? U : Filters[K];

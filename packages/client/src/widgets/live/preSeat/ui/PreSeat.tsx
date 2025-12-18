@@ -6,7 +6,7 @@ import useSearchRank from '@/hooks/useSearchRank.ts';
 import useWishesPreSeats from '@/hooks/useWishesPreSeats.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects.ts';
 import { PRESEAT_CLOSE_DATE } from '@/features/live/preseat/lib/usePreSeatGate.ts';
-import { Filters, useAlarmSearchStore } from '@/store/useFilterStore.ts';
+import { Filters, useAlarmSearchStore } from '@/shared/model/useFilterStore.ts';
 import ScrollToTopButton from '@/shared/ui/ScrollTopButton.tsx';
 import SubjectCards from '@/widgets/live/pin/ui/PinCards.tsx';
 import TableColorInfo from '@/widgets/wishlist/TableColorInfo.tsx';

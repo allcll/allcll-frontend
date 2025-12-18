@@ -1,15 +1,15 @@
 import { useDeferredValue } from 'react';
 import BottomSheet from '../../shared/ui/bottomsheet/BottomSheet.tsx';
 import BottomSheetHeader from '../../shared/ui/bottomsheet/BottomSheetHeader.tsx';
-import TimetableSubjectCards from '@/features/timetable/subject/TimetableSubjectCards.tsx';
+import TimetableSubjectCards from '@/features/timetable/ui/subject/TimetableSubjectCards.tsx';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import useSubject from '@/entities/subjects/api/useSubject.ts';
-import useScheduleModal from '@/hooks/useScheduleModal.ts';
+import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects.ts';
-import { useScheduleSearchStore } from '@/store/useFilterStore.ts';
+import { useScheduleSearchStore } from '@/shared/model/useFilterStore.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 import FilterSvg from '@/assets/filter.svg?react';
-import { Flex, IconButton } from '../../../../allcll-ui';
+import { Flex, IconButton } from '@allcll/allcll-ui';
 
 interface ISearchBottomSheet {
   onCloseSearch: () => void;

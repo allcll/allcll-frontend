@@ -1,7 +1,7 @@
 import React, { useDeferredValue, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
-import { initialFilters } from '@/store/useFilterStore.ts';
+import { initialFilters } from '@/shared/model/useFilterStore.ts';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects.ts';
 import useWishes from '@/entities/wishes/api/useWishes.ts';

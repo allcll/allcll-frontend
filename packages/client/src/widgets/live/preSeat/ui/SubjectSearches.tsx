@@ -1,6 +1,6 @@
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import useMobile from '@/shared/lib/useMobile.ts';
-import { useAlarmSearchStore } from '@/store/useFilterStore.ts';
+import { useAlarmSearchStore } from '@/shared/model/useFilterStore.ts';
 import { useState } from 'react';
 import FilteringBottomSheet from '@/widgets/bottomSheet/FilteringBottomSheet.tsx';
 import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';

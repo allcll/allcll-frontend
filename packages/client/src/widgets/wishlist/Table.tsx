@@ -11,7 +11,7 @@ import SkeletonRows from '@/shared/ui/SkeletonRows';
 import FavoriteButton from '@/features/filtering/ui/button/FavoriteButton.tsx';
 import usePreSeatGate from '@/features/live/preseat/lib/usePreSeatGate';
 import SearchSvg from '@/assets/search.svg?react';
-import { Flex } from '../../../../allcll-ui';
+import { Flex } from '@allcll/allcll-ui';
 import { useWishesTableStore } from '@/features/wish/model/useWishTableColumnStore';
 
 interface ITable {

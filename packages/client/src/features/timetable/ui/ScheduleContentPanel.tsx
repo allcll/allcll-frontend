@@ -10,7 +10,7 @@ import useSearchRank from '@/hooks/useSearchRank.ts';
 import useWishes from '@/entities/wishes/api/useWishes.ts';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import ScheduleFilter from './ScheduleFilter.tsx';
-import { Button, Card, Flex } from '../../../../../allcll-ui';
+import { Button, Card, Flex } from '@allcll/allcll-ui';
 import TimetableSubjectCards from '@/features/timetable/ui/subject/TimetableSubjectCards.tsx';
 
 const initSchedule = new ScheduleAdapter().toUiData();

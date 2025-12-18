@@ -2,7 +2,7 @@ import { Filters } from '@/shared/model/useFilterStore.ts';
 import Filtering from '@common/components/filtering/Filtering.tsx';
 import DayTimeFilter, { IDayTimeItem } from './DayTimeFilter.tsx';
 import useMobile from '@/shared/lib/useMobile.ts';
-import { Label } from '../../../../../allcll-ui';
+import { Label } from '@allcll/allcll-ui';
 
 interface IDayFilter {
   times: IDayTimeItem[];

@@ -5,7 +5,7 @@ import ClockGraySvg from '@/assets/clock-gray.svg?react';
 import HouseSvg from '@/assets/house.svg?react';
 import useSubject from '@/entities/subjects/api/useSubject.ts';
 import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib/useScheduleModal.ts';
-import { Button, Flex, Heading } from '../../../../allcll-ui';
+import { Button, Flex, Heading } from '@allcll/allcll-ui';
 
 function ScheduleInfoBottomSheet() {
   const { schedule } = useScheduleModalData();

@@ -6,7 +6,7 @@ import useFilteringSubjects from '@/hooks/useFilteringSubjects.ts';
 import useWishes from '@/entities/wishes/api/useWishes.ts';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 
-import { initialFilters } from '@/store/useFilterStore.ts';
+import { initialFilters } from '@/shared/model/useFilterStore.ts';
 import SubjectCards from './PinCards';
 import DepartmentFilter from '../../../../features/live/pin/ui/DepartmentFilter';
 

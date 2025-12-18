@@ -1,6 +1,6 @@
 import AlarmIcon from '@/shared/ui/svgs/AlarmIcon.tsx';
 import { Filters } from '@/shared/model/useFilterStore.ts';
-import { Button } from '../../../../../../allcll-ui';
+import { Button } from '@allcll/allcll-ui';
 
 interface IAlarmButton {
   alarmOnly: boolean;

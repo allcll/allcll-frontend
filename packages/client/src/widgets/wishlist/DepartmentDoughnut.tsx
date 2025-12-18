@@ -10,7 +10,7 @@ import {
   getUniversityDoughnutData,
 } from '@/utils/doughnut.ts';
 import { WishRegister } from '@/utils/types.ts';
-import { Flex, Heading, Label } from '../../../../allcll-ui';
+import { Flex, Heading, Label } from '@allcll/allcll-ui';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 

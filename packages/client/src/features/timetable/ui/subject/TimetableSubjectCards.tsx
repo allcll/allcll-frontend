@@ -7,7 +7,7 @@ import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts
 import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
 import { Subject } from '@/utils/types.ts';
 import FilteredSubjectCard from '@/features/timetable/ui/subject/TimetableSubjectCard.tsx';
-import { Flex } from '../../../../../../allcll-ui';
+import { Flex } from '@allcll/allcll-ui';
 
 interface ISubjectCards {
   subjects: Subject[];

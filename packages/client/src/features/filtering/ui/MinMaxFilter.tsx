@@ -1,6 +1,6 @@
 import { Filters } from '@/shared/model/useFilterStore.ts';
 import { FilterValueType, RangeMinMaxFilter } from '@/utils/types.ts';
-import { Flex, Input, Label } from '../../../../../allcll-ui';
+import { Flex, Input, Label } from '@allcll/allcll-ui';
 import { useState } from 'react';
 
 interface IMinMaxFilter<K extends keyof Filters> {

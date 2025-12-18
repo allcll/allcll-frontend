@@ -1,5 +1,5 @@
 import FilterSvg from '@/assets/filter.svg?react';
-import { IconButton } from '../../../../../../allcll-ui';
+import { IconButton } from '@allcll/allcll-ui';
 
 function FilteringButton({ handleOpenFilter }: { handleOpenFilter: () => void }) {
   return (

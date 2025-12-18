@@ -5,7 +5,7 @@ import { Filters } from '@/shared/model/useFilterStore.ts';
 import { DepartmentType } from '@/utils/types.ts';
 import Filtering from '@common/components/filtering/Filtering.tsx';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
-import { Button, Flex } from '../../../../../allcll-ui';
+import { Button, Flex } from '@allcll/allcll-ui';
 import ResetSvg from '@/assets/reset-blue.svg?react';
 
 interface IDepartmentSelectFilter {

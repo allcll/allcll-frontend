@@ -1,7 +1,7 @@
 import { TimetableType, useDeleteTimetable, useTimetables } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import useSemesterTimetableSync from '@/features/timetable/lib/useSemesterTimetableSync.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
-import { Button, Checkbox, Flex, Popover, SupportingText } from '../../../../allcll-ui';
+import { Button, Checkbox, Flex, Popover, SupportingText } from '@allcll/allcll-ui';
 
 interface DropdownSelectProps {
   setIsOpenModal: React.Dispatch<React.SetStateAction<'edit' | 'create' | null>>;

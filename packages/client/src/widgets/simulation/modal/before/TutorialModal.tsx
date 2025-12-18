@@ -6,7 +6,7 @@ import useMobile from '@/shared/lib/useMobile.ts';
 import Checkbox from '@common/components/checkbox/Checkbox.tsx';
 import SejongUI from '../../../../../../sejong-ui';
 import { VisitTutorial } from '@/utils/simulation/VisitTutorial.ts';
-import { Dialog } from '../../../../../../allcll-ui';
+import { Dialog } from '@allcll/allcll-ui';
 
 const tutorialVideos = [
   {
