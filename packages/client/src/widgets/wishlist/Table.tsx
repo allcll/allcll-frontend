@@ -4,15 +4,15 @@ import { Wishes } from '@/utils/types.ts';
 import { getSeatColor, getWishesColor } from '@/shared/config/colors.ts';
 import useInfScroll from '@/shared/lib/useInfScroll.ts';
 import useSearchLogging from '@/hooks/useSearchLogging.ts';
-import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
+import { IPreRealSeat } from '@/features/live/preseat/api/usePreRealSeats';
 import { loggingDepartment } from '@/hooks/useSearchRank.ts';
-import SkeletonRows from '@/widgets/live/skeletons/SkeletonRows.tsx';
+import SkeletonRows from '@/shared/ui/SkeletonRows';
 // import AlarmButton from '@/components/live/AlarmButton.tsx';
 import FavoriteButton from '@/features/filtering/ui/button/FavoriteButton.tsx';
-import { useWishesTableStore } from '@/store/useTableColumnStore.ts';
-import usePreSeatGate from '@/hooks/usePreSeatGate.ts';
+import usePreSeatGate from '@/features/live/preseat/lib/usePreSeatGate';
 import SearchSvg from '@/assets/search.svg?react';
 import { Flex } from '../../../../allcll-ui';
+import { useWishesTableStore } from '@/features/wish/model/useWishTableColumnStore';
 
 interface ITable {
   data: Wishes[] | (Wishes & IPreRealSeat)[] | undefined;

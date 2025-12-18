@@ -12,8 +12,8 @@ import useRecommendWishes from '@/entities/wishes/api/useRecommendWishes.ts';
 import useDetailRegisters from '@/hooks/server/useDetailRegisters.ts';
 import { getSeatColor, getWishesColor } from '@/shared/config/colors.ts';
 import FavoriteButton from '@/features/filtering/ui/button/FavoriteButton.tsx';
-import AlarmButton from '@/widgets/live/pinned/AlarmButton';
-import usePreSeatGate from '@/hooks/usePreSeatGate';
+import AlarmButton from '@/features/live/pin/ui/AlarmButton';
+import usePreSeatGate from '@/features/live/preseat/lib/usePreSeatGate';
 import { Card, Flex, Grid, Heading, SupportingText } from '@allcll/allcll-ui';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);

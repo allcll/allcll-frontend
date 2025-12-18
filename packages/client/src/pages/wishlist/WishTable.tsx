@@ -10,13 +10,10 @@ import useSearchRank from '@/hooks/useSearchRank.ts';
 import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
 import ScrollToTopButton from '@/shared/ui/ScrollTopButton.tsx';
 import { NavLink } from 'react-router-dom';
-import useAlarmModalStore from '@/store/useAlarmModalStore.ts';
 import AlarmIcon from '@/shared/ui/svgs/AlarmIcon';
 import { Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 
 function WishTable() {
-  const setIsSearchOpen = useAlarmModalStore(state => state.setIsSearchOpen);
-
   return (
     <>
       <Helmet>
@@ -36,7 +33,6 @@ function WishTable() {
           <Card>
             <NavLink
               to="/live"
-              onClick={() => setIsSearchOpen(true)}
               state={{ openSearch: true }}
               className="inline-flex items-center gap-2 rounded-md border border-blue-500 px-3 py-2 text-sm text-blue-500 hover:bg-blue-50"
             >

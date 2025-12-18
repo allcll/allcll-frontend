@@ -1,7 +1,7 @@
 import { useDeferredValue } from 'react';
 import BottomSheet from '../../shared/ui/bottomsheet/BottomSheet.tsx';
 import BottomSheetHeader from '../../shared/ui/bottomsheet/BottomSheetHeader.tsx';
-import { FilteredSubjectCards } from '@/features/timetable/subject/TimetableSubjectCards.tsx';
+import TimetableSubjectCards from '@/features/timetable/subject/TimetableSubjectCards.tsx';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import useSubject from '@/entities/subjects/api/useSubject.ts';
 import useScheduleModal from '@/hooks/useScheduleModal.ts';
@@ -57,7 +57,7 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
           </div>
 
           <Flex direction="flex-col" className="max-h-[70vh] min-h-0 px-2 overflow-y-auto touch-auto">
-            <FilteredSubjectCards expandToMax={expandToMax} subjects={filteredData} isPending={isPending} />
+            <TimetableSubjectCards expandToMax={expandToMax} subjects={filteredData} isPending={isPending} />
           </Flex>
         </>
       )}

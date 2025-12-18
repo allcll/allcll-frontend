@@ -1,7 +1,7 @@
 import { disassemble } from 'es-hangul';
 import { Day, Grade, RangeFilter, RangeMinMaxFilter, RemarkType, Subject, Wishes } from '../types';
-import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
-import { usePinned } from '@/hooks/server/usePinned.ts';
+import { IPreRealSeat } from '@/features/live/preseat/api/usePreRealSeats';
+import { usePinned } from '@/features/live/pin/api/usePinned';
 import useFavorites from '@/store/useFavorites.ts';
 import { Filters, isFilterEmpty } from '@/store/useFilterStore.ts';
 import { TimeslotAdapter } from '@/utils/timetable/adapter.ts';

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { QueryClient } from '@tanstack/react-query';
-import useSSECondition from '@/store/useSSECondition.ts';
+import useSSECondition from '@/features/live/board/model/useSSECondition.ts';
 import useAlarmSettings, {
   AlarmType,
   isAlarmActivated,

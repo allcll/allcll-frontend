@@ -1,6 +1,6 @@
 import { Lecture } from '@/hooks/server/useLectures.ts';
 import ResetSvg from '@/assets/reset.svg?react';
-import SkeletonRows from '@/widgets/live/skeletons/SkeletonRows.tsx';
+import SkeletonRows from '@/shared/ui/SkeletonRows';
 
 interface ISubjectTable {
   isLoadingLectures: boolean;

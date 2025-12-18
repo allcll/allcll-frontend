@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import useDepartments, { Department } from '@/entities/departments/api/useDepartments.ts';
-import DepartmentFilter from '@/widgets/live/pinned/sidebar/DepartmentFilter';
+import DepartmentFilter from '@/features/live/pin/ui/DepartmentFilter';
 import { getDepartmentRanks } from '@/hooks/useSearchRank.ts';
 
 interface ISelectDepartment {

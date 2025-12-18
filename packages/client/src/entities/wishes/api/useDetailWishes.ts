@@ -1,6 +1,6 @@
 import { Wishes } from '@/utils/types.ts';
 import useWishes, { InitWishes } from '@/entities/wishes/api/useWishes.ts';
-import { IPreRealSeat } from '@/hooks/server/usePreRealSeats.ts';
+import { IPreRealSeat } from '@/features/live/preseat/api/usePreRealSeats';
 import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
 
 interface DetailWishes {

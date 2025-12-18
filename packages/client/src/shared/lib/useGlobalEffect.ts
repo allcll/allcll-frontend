@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
-import useSSEManager from '@/hooks/useSSEManager.ts';
+import useSSEManager from '@/features/live/common/api/useSSEManager';
 
 interface IHistory {
   key?: string;

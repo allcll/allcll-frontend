@@ -1,11 +1,11 @@
-import usePreSeatGate from '@/hooks/usePreSeatGate';
+import usePreSeatGate from '@/features/live/preseat/lib/usePreSeatGate';
 import useMobile from '@/shared/lib/useMobile';
-import useAlarmModalStore from '@/store/useAlarmModalStore';
+import useAlarmModalStore from '@/features/live/pin/model/useAlarmModalStore';
 import SearchBottomSheet from '@/widgets/bottomSheet/SearchBottomSheet';
-import LivePinnedCourses from '@/widgets/live/pinned/LivePinnedCourses';
-import PreSeat from '@/widgets/live/preSeat/PreSeat';
-import RealtimeTable from '@/widgets/live/liveBoard/RealtimeTable';
-import SearchSideBar from '@/widgets/live/pinned/sidebar/SearchSideBar';
+import LivePinnedCourses from '@/widgets/live/pin/ui/LivePinnedCourses';
+import PreSeat from '@/widgets/live/preSeat/ui/PreSeat';
+import RealtimeTable from '@/features/live/board/ui/RealtimeTable';
+import SearchSideBar from '@/widgets/live/pin/ui/SearchSideBar';
 import { Flex, Grid, Heading, SupportingText } from '@allcll/allcll-ui';
 import { Helmet } from 'react-helmet';
 
