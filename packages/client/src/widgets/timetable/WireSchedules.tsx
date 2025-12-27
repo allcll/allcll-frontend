@@ -1,5 +1,5 @@
 import { HTMLAttributes } from 'react';
-import useSubject from '@/entities/subjects/api/useSubject.ts';
+import useSubject from '@/entities/subjects/model/useSubject.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { IScheduleProps } from '@/widgets/timetable/Schedule.tsx';
 import { Day } from '@/utils/types.ts';

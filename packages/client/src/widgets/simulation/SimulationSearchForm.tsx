@@ -4,7 +4,7 @@ import SejongUI from '../../../../sejong-ui';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
 import { useReloadSimulation } from '@/hooks/useReloadSimulation.ts';
-import useLectures from '@/hooks/server/useLectures.ts';
+import useLectures from '@/entities/subjects/model/useLectures.ts';
 import {
   BUTTON_EVENT,
   checkOngoingSimulation,

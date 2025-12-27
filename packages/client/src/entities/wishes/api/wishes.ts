@@ -1,23 +1,21 @@
-import { useQuery } from '@tanstack/react-query';
+import { fetchJsonOnPublic, fetchOnAPI } from '@/shared/api/api.ts';
 import { WishRegister } from '@/utils/types.ts';
 import { BadRequestError } from '@/shared/lib/errors.ts';
-import { fetchOnAPI } from '@/shared/api/api.ts';
+
+export interface WishesApiResponse {
+  baskets: { subjectId: number; totalCount: number }[];
+}
+
+export const fetchWishesData = async () => {
+  return await fetchJsonOnPublic<WishesApiResponse>('/baskets.json');
+};
 
 interface DetailRegistersResponse {
   eachDepartmentRegisters: WishRegister[];
   everytimeLectureId: number;
 }
 
-function useDetailRegisters(id: string) {
-  return useQuery({
-    queryKey: ['detail-registers', id],
-    queryFn: () => fetchDetailRegisters(id),
-    staleTime: Infinity,
-    retry: retryCondition,
-  });
-}
-
-const fetchDetailRegisters = async (subjectId: string): Promise<DetailRegistersResponse> => {
+export const fetchDetailRegisters = async (subjectId: string): Promise<DetailRegistersResponse> => {
   const response = await fetchOnAPI(`/api/baskets/${subjectId}`);
 
   if (!response.ok) {
@@ -34,13 +32,6 @@ const fetchDetailRegisters = async (subjectId: string): Promise<DetailRegistersR
   return response.json();
 };
 
-const retryCondition = (failureCount: number, error: Error) => {
-  if (failureCount >= 3) return false;
-
-  // error 따라서 재시도 여부 결정
-  return !(error instanceof BadRequestError);
-};
-
 const jsonParse = (data: string) => {
   try {
     return JSON.parse(data);
@@ -48,5 +39,3 @@ const jsonParse = (data: string) => {
     return null;
   }
 };
-
-export default useDetailRegisters;

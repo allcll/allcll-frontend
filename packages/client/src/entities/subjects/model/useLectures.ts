@@ -1,4 +1,4 @@
-import useSubject from '@/entities/subjects/api/useSubject.ts';
+import useSubject from '@/entities/subjects/model/useSubject.ts';
 import useDepartments, { Department } from '@/entities/departments/api/useDepartments.ts';
 import { Subject } from '@/utils/types.ts';
 

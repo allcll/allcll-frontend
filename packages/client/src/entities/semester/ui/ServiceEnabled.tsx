@@ -1,5 +1,5 @@
 import React from 'react';
-import useServiceSemester from '@/entities/semester/api/useServiceSemester.ts';
+import useServiceSemester from '@/entities/semester/model/useServiceSemester.ts';
 import ServiceClosed from '@/entities/semester/ui/ServiceClosed.tsx';
 
 interface IServiceEnabled {

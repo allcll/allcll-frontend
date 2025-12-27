@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import useWishes from '@/entities/wishes/api/useWishes.ts';
+import useWishes from '@/entities/wishes/model/useWishes.ts';
 import {
   startSimulation,
   checkOngoingSimulation,
@@ -12,7 +12,7 @@ import {
 import { getRecentInterestedSnapshot, saveInterestedSnapshot } from '@/utils/simulation/subjects.ts';
 import { InterestedSubject } from '@/shared/config/dbConfig.ts';
 import { backupDatabase, restoreDatabase } from '@/utils/simulation/backupData.ts';
-import useLectures from '@/hooks/server/useLectures.ts';
+import useLectures from '@/entities/subjects/model/useLectures.ts';
 
 export function SimulationTestUI() {
   const [log, setLog] = useState('');

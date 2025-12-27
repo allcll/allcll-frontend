@@ -17,7 +17,7 @@ import DepartmentSelectFilter from '../../features/filtering/ui/DepartmentFilter
 import FilterDelete from '../../features/filtering/ui/FilterDelete.tsx';
 import FilteringModal from '../filtering/ui/FilteringModal.tsx';
 import usePreSeatGate from '@/features/live/preseat/lib/usePreSeatGate.ts';
-import useWishesPreSeats from '@/hooks/useWishesPreSeats.ts';
+import useWishesPreSeats from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
 import { IconButton, Flex, Chip, Dialog } from '@allcll/allcll-ui';
 import { useWishesTableStore } from '@/features/wish/model/useWishTableColumnStore.ts';
 import { HeadTitle } from '@/shared/model/createColumnStore.ts';

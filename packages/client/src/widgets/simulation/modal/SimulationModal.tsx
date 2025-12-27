@@ -5,7 +5,7 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.t
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject.ts';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
 import { APPLY_STATUS, BUTTON_EVENT, forceStopSimulation, triggerButtonEvent } from '@/utils/simulation/simulation.ts';
-import useLectures from '@/hooks/server/useLectures.ts';
+import useLectures from '@/entities/subjects/model/useLectures.ts';
 
 const SIMULATION_MODAL_CONTENTS = [
   {

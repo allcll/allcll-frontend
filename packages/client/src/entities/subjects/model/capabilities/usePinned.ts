@@ -1,5 +1,10 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchJsonOnAPI, fetchOnAPI } from '@/shared/api/api.ts';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  addPinnedSubject,
+  fetchPinnedSubjects,
+  PinnedSubjectResponse,
+  removePinnedSubject,
+} from '@/entities/subjects/api/pinned.ts';
 
 const PinLimit = 5;
 
@@ -79,30 +84,3 @@ export const useRemovePinned = () => {
   });
 };
 
-interface PinnedSubject {
-  subjectId: number;
-}
-
-interface PinnedSubjectResponse {
-  subjects: PinnedSubject[];
-}
-
-const fetchPinnedSubjects = async () => {
-  return await fetchJsonOnAPI<PinnedSubjectResponse>('/api/pins');
-};
-
-const addPinnedSubject = async (subjectId: number) => {
-  const response = await fetchOnAPI(`/api/pin?subjectId=${subjectId}`, { method: 'POST' });
-
-  if (!response.ok) {
-    throw new Error(await response.text());
-  }
-};
-
-const removePinnedSubject = async (subjectId: number) => {
-  const response = await fetchOnAPI(`/api/pin/${subjectId}`, { method: 'DELETE' });
-
-  if (!response.ok) {
-    throw new Error(await response.text());
-  }
-};

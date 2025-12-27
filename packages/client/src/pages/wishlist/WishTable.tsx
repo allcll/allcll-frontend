@@ -1,13 +1,13 @@
 import { useDeferredValue } from 'react';
 import { Helmet } from 'react-helmet';
-import useWishes, { InitWishes } from '@/entities/wishes/api/useWishes.ts';
+import useWishes, { InitWishes } from '@/entities/wishes/model/useWishes.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects';
 import Table from '@/widgets/wishlist/Table.tsx';
 import Searches from '@/widgets/live/Searches.tsx';
 import { useWishSearchStore } from '@/shared/model/useFilterStore.ts';
 import TableColorInfo from '@/widgets/wishlist/TableColorInfo.tsx';
 import useSearchRank from '@/hooks/useSearchRank.ts';
-import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
+import { useJoinPreSeats } from '@/entities/subjectAggregate/lib/joinSubjects.ts';
 import ScrollToTopButton from '@/shared/ui/ScrollTopButton.tsx';
 import { NavLink } from 'react-router-dom';
 import AlarmIcon from '@/shared/ui/svgs/AlarmIcon';

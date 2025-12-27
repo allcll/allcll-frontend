@@ -8,7 +8,7 @@ import { useState } from 'react';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
 import DepartmentSelectFilter from '../../filtering/ui/DepartmentFilter.tsx';
 import FilterDelete from '../../filtering/ui/FilterDelete.tsx';
-import useSubject from '@/entities/subjects/api/useSubject.ts';
+import useSubject from '@/entities/subjects/model/useSubject.ts';
 import FilteringModal from '../../../widgets/filtering/ui/FilteringModal.tsx';
 import { Flex } from '@allcll/allcll-ui';
 

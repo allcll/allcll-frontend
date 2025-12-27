@@ -1,14 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchJsonOnPublic } from '@/shared/api/api.ts';
+import { FaqAPIResponse, fetchFaq } from '../api/faq.ts';
 
 export interface FaqElement {
   tag: string;
   question: string;
   answer: string;
-}
-
-interface FaqAPIResponse {
-  faq: FaqElement[];
 }
 
 function useFaq() {
@@ -19,9 +15,5 @@ function useFaq() {
     select: (data: FaqAPIResponse) => data.faq.map((item, index) => ({ ...item, id: index })),
   });
 }
-
-const fetchFaq = async () => {
-  return await fetchJsonOnPublic<FaqAPIResponse>('/faq.json');
-};
 
 export default useFaq;

@@ -1,6 +1,6 @@
 import CloseIcon from '@/assets/x.svg?react';
-import useTick from '@/hooks/useTick.ts';
-import { useRemovePinned } from '@/features/live/pin/api/usePinned';
+import useTick from '@/shared/lib/useTick.ts';
+import { useRemovePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
 import { getTimeDiffString } from '@/shared/lib/stringFormats.ts';
 import { getSeatColor } from '@/shared/config/colors.ts';
 import { Subject, Wishes } from '@/utils/types.ts';

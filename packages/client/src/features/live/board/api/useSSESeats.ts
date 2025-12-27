@@ -1,5 +1,5 @@
 import { SSEType, useSseData } from '@/features/live/common/api/useSSEManager';
-import useSubject, { InitSubject } from '@/entities/subjects/api/useSubject.ts';
+import useSubject, { InitSubject } from '@/entities/subjects/model/useSubject.ts';
 import { Subject } from '@/utils/types.ts';
 
 export interface SseSubject extends Subject {

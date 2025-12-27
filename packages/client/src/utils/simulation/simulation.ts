@@ -3,7 +3,7 @@ import { getInterestedId, getRecentInterestedSnapshot } from '@/utils/simulation
 import { getAccuracy, getAccuracyScore, getSpeedScore } from '@/utils/simulation/score.ts';
 import { checkSubjectResult } from '@/utils/checkSubjectResult.ts';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
-import { Lecture } from '@/hooks/server/useLectures';
+import { Lecture } from '@/entities/subjects/model/useLectures.ts';
 
 export enum BUTTON_EVENT {
   SEARCH,

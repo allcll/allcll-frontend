@@ -1,4 +1,4 @@
-import { Lecture } from '@/hooks/server/useLectures';
+import { Lecture } from '@/entities/subjects/model/useLectures.ts';
 
 const POPULAR_SUBJECTS = [
   '현대인의정신건강과자기발견',

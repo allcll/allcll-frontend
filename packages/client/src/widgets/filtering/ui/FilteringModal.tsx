@@ -1,6 +1,6 @@
 import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains.ts';
 import { Filters, FilterStore, getAllSelectedLabels, initialFilters } from '@/shared/model/useFilterStore.ts';
-import useSubject from '@/entities/subjects/api/useSubject.ts';
+import useSubject from '@/entities/subjects/model/useSubject.ts';
 import Chip from '@common/components/chip/Chip.tsx';
 import MultiSelectFilter from '../../../features/filtering/ui/MultiSelectFilter.tsx';
 import DayTimeFilter from '../../../features/filtering/ui/DayTimeFilter.tsx';

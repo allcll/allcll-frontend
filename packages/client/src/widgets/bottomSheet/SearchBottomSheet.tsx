@@ -3,7 +3,7 @@ import BottomSheet from '../../shared/ui/bottomsheet/BottomSheet.tsx';
 import BottomSheetHeader from '../../shared/ui/bottomsheet/BottomSheetHeader.tsx';
 import TimetableSubjectCards from '@/features/timetable/ui/subject/TimetableSubjectCards.tsx';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
-import useSubject from '@/entities/subjects/api/useSubject.ts';
+import useSubject from '@/entities/subjects/model/useSubject.ts';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects.ts';
 import { useScheduleSearchStore } from '@/shared/model/useFilterStore.ts';

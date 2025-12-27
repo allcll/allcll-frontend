@@ -4,7 +4,7 @@ import { drawCaptcha } from '@/utils/captcha.ts';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject.ts';
 import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation.ts';
-import useLectures from '@/hooks/server/useLectures.ts';
+import useLectures from '@/entities/subjects/model/useLectures.ts';
 
 function generateNumericText() {
   return Math.floor(1000 + Math.random() * 9000).toString();

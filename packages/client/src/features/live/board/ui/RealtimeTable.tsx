@@ -4,7 +4,7 @@ import SkeletonRows from '@/shared/ui/SkeletonRows.tsx';
 import NetworkError from '@/widgets/live/errors/ui/NetworkError.tsx';
 import ZeroListError from '@/widgets/live/errors/ui/ZeroListError.tsx';
 import PreSeatWillAvailable from '@/widgets/live/errors/ui/PreSeatWillAvailable.tsx';
-import useTick from '@/hooks/useTick.ts';
+import useTick from '@/shared/lib/useTick.ts';
 import { SSEType } from '@/features/live/common/api/useSSEManager.ts';
 import useSSESeats, { SseSubject } from '@/features/live/board/api/useSSESeats.ts';
 import { getTimeDiffString } from '@/shared/lib/stringFormats.ts';

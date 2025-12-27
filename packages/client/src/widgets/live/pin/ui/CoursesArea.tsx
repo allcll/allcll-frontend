@@ -1,5 +1,5 @@
-import { usePinned } from '@/features/live/pin/api/usePinned';
-import useFindWishes from '@/hooks/useFindWishes';
+import { usePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
+import useFindWishes from '@/entities/wishes/lib/useFindWishes.ts';
 import { SSEType, useSseData } from '@/features/live/common/api/useSSEManager';
 import NetworkError from '../../errors/ui/NetworkError';
 import ZeroPinError from '../../errors/ui/ZeroPinError';

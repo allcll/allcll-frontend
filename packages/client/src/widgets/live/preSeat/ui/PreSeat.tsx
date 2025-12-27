@@ -3,7 +3,7 @@ import { useDeferredValue } from 'react';
 import SubjectTable from '@/features/live/preseat/ui/PreseatSubjectTable.tsx';
 import useMobile from '@/shared/lib/useMobile.ts';
 import useSearchRank from '@/hooks/useSearchRank.ts';
-import useWishesPreSeats from '@/hooks/useWishesPreSeats.ts';
+import useWishesPreSeats from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects.ts';
 import { PRESEAT_CLOSE_DATE } from '@/features/live/preseat/lib/usePreSeatGate.ts';
 import { Filters, useAlarmSearchStore } from '@/shared/model/useFilterStore.ts';

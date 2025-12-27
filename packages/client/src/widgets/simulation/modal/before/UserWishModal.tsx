@@ -11,7 +11,7 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.t
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
 import { getRecentInterestedSnapshot, saveInterestedSnapshot } from '@/utils/simulation/subjects.ts';
 import { startSimulation } from '@/utils/simulation/simulation.ts';
-import useLectures, { Lecture } from '@/hooks/server/useLectures.ts';
+import useLectures, { Lecture } from '@/entities/subjects/model/useLectures.ts';
 import { Department } from '@/entities/departments/api/useDepartments.ts';
 import { TimetableType, useTimetableSchedules } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';

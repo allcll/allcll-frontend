@@ -4,7 +4,7 @@ import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import { initialFilters } from '@/shared/model/useFilterStore.ts';
 import useSearchRank from '@/hooks/useSearchRank.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects.ts';
-import useWishes from '@/entities/wishes/api/useWishes.ts';
+import useWishes from '@/entities/wishes/model/useWishes.ts';
 import XSvg from '@/assets/x.svg?react';
 import { Flex, Heading, IconButton } from '@allcll/allcll-ui';
 import SubjectCards from './PinCards';

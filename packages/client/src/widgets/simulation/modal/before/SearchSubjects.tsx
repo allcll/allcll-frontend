@@ -1,5 +1,5 @@
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
-import useLectures, { Lecture } from '@/hooks/server/useLectures.ts';
+import useLectures, { Lecture } from '@/entities/subjects/model/useLectures.ts';
 import useInfScroll from '@/shared/lib/useInfScroll.ts';
 import { disassemble } from 'es-hangul';
 import { useState, useEffect } from 'react';

@@ -28,7 +28,7 @@ if (!isProduction || !isDevServer) {
   window.__TANSTACK_QUERY_CLIENT__ = queryClient;
 }
 
-// load mock server
+// load mock model
 if (!isProduction && UsingMockServer) {
   const { server } = await import('@allcll/mock-server');
 

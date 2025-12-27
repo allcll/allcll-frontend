@@ -2,7 +2,7 @@ import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.t
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
 import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject.ts';
 import { BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation.ts';
-import useLectures from '@/hooks/server/useLectures.ts';
+import useLectures from '@/entities/subjects/model/useLectures.ts';
 import SejongUI, { type ColumnDefinition } from '../../../../../sejong-ui';
 import { SimulationSubject } from '@/utils/types.ts';
 import { formatSemesterAt, formatTMNum } from '@/utils/simulation/formators.ts';

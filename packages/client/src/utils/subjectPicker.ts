@@ -1,5 +1,5 @@
 import { SimulationSubject } from '@/utils/types';
-import { Lecture } from '@/hooks/server/useLectures';
+import { Lecture } from '@/entities/subjects/model/useLectures.ts';
 
 const TOTAL_SUBJECTS = 5;
 

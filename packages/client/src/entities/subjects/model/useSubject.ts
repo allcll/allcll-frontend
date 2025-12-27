@@ -1,10 +1,6 @@
-import { fetchJsonOnAPI } from '@/shared/api/api.ts';
 import { Subject } from '@/utils/types.ts';
 import { QueryClient, useQuery } from '@tanstack/react-query';
-
-type SubjectResponse = {
-  subjectResponses: Subject[];
-};
+import { fetchSubjects, SubjectResponse } from '@/entities/subjects/api/subjects.ts';
 
 export const InitSubject: Subject = {
   subjectId: -1,
@@ -22,10 +18,6 @@ export const InitSubject: Subject = {
   curiTypeCdNm: '', // 수업 유형 코드명 ('공필'/'전필'/'전선' 등)
   curiLangNm: null, // 수업 언어 코드명 ('한국어'/'영어' 등)
   isDeleted: true, // 삭제 여부
-};
-
-const fetchSubjects = async () => {
-  return await fetchJsonOnAPI<SubjectResponse>('/api/subjects');
 };
 
 function useSubject() {

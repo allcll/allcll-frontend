@@ -1,7 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
 // import { fetchJsonOnAPI } from '@/utils/api.ts';
 
-interface ServicePeriod {
+export interface ServicePeriod {
   id: string;
   startDate: Date;
   endDate: Date;
@@ -11,7 +10,7 @@ interface ServicePeriod {
   message: string | null;
 }
 
-interface ServiceSemesters {
+export interface ServiceSemesters {
   code: string;
   semester: string;
   services: ServicePeriod[];
@@ -23,7 +22,7 @@ export interface ServiceSemester {
   service: ServicePeriod | undefined;
 }
 
-interface ServicePeriodApiResponse {
+export interface ServicePeriodApiResponse {
   id: string;
   startDate: string;
   endDate: string;
@@ -36,69 +35,21 @@ export interface ServiceSemesterApiResponse {
   services: ServicePeriodApiResponse[];
 }
 
-function useServiceSemester(serviceId?: string) {
-  const query = useQuery({
-    queryKey: ['serviceSemester'],
-    queryFn: fetchServiceSemester,
-    staleTime: Infinity,
-    select: data => {
-      if (!data) return null;
-
-      return {
-        ...data,
-        services: data.services.map(getServiceDate),
-      } as ServiceSemesters;
-    },
-  });
-
-  if (!serviceId || !query.data) return query;
-
-  const service = query.data.services.find(s => s.id === serviceId);
-
-  return {
-    ...query,
-    data: {
-      code: query.data.code,
-      semester: query.data.semester,
-      service,
-    },
-  };
-}
-
-const fetchServiceSemester = async () => {
+export const fetchServiceSemester = async () => {
   // Todo: API 연동으로 바꾸기
   // return await fetchJsonOnAPI<ServiceSemester>('/api/service/semester');
   return SERVICE_SEMESTER_DUMMY;
-};
-
-const getServiceDate = (period: ServicePeriodApiResponse): ServicePeriod => {
-  const now = new Date();
-  const startDate = new Date(period.startDate);
-  const endDate = new Date(period.endDate);
-
-  // Normalize start and end dates to ensure correct comparison
-  startDate.setHours(0, 0, 0, 0);
-  endDate.setHours(23, 59, 59, 999);
-
-  const withinPeriod = startDate <= now && now <= endDate;
-
-  return {
-    id: period.id,
-    startDate,
-    endDate,
-    withinPeriod,
-    startDateStr: period.startDate,
-    endDateStr: period.endDate,
-    message: period.message,
-  };
 };
 
 const isDevServer = import.meta.env.VITE_DEV_SERVER === 'true';
 
 export const SEMESTERS = ['2025-2', '2025-WINTER'];
 
-// fixme: semester, code 내부 조작용, 외부 노출용 구분 필요
-//서비스 API연결하기 전까지 해당 데이터 사용하기
+/** @description 서비스 학기 더미 데이터
+ * 서비스 API연결하기 전까지 해당 데이터 사용하기
+ * @deprecated fetchServiceSemester로 대체, 또는 useServiceSemester 을 사용하세요.
+ * fixme: semester, code 내부 조작용, 외부 노출용 구분 필요
+ * todo: export 제거하기 */
 export const SERVICE_SEMESTER_DUMMY: ServiceSemesterApiResponse = {
   code: 'WINTER-2025',
   semester: '2025-WINTER',
@@ -135,5 +86,3 @@ export const SERVICE_SEMESTER_DUMMY: ServiceSemesterApiResponse = {
     },
   ],
 };
-
-export default useServiceSemester;

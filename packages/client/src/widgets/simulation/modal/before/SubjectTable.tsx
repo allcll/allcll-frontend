@@ -1,4 +1,4 @@
-import { Lecture } from '@/hooks/server/useLectures.ts';
+import { Lecture } from '@/entities/subjects/model/useLectures.ts';
 import ResetSvg from '@/assets/reset.svg?react';
 import SkeletonRows from '@/shared/ui/SkeletonRows';
 

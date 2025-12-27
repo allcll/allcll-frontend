@@ -1,10 +1,10 @@
 import AlarmIcon from '@/shared/ui/svgs/AlarmIcon.tsx';
 import SkeletonRows from '@/shared/ui/SkeletonRows';
-import { useAddPinned, usePinned, useRemovePinned } from '@/features/live/pin/api/usePinned';
+import { useAddPinned, usePinned, useRemovePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
 import useInfScroll from '@/shared/lib/useInfScroll.ts';
 import useSearchLogging from '@/hooks/useSearchLogging.ts';
 import { loggingDepartment } from '@/hooks/useSearchRank.ts';
-import { WishesWithSeat } from '@/hooks/useWishesPreSeats.ts';
+import { WishesWithSeat } from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
 import { getSeatColor } from '@/shared/config/colors.ts';
 import { Wishes } from '@/utils/types.ts';
 import { ZeroElementRow } from '@/shared/ui/ZeroElementRow';

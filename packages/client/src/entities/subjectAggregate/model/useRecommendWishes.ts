@@ -1,5 +1,5 @@
-import useWishes, { InitWishes } from '@/entities/wishes/api/useWishes.ts';
-import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
+import useWishes, { InitWishes } from '@/entities/wishes/model/useWishes.ts';
+import { useJoinPreSeats } from '@/entities/subjectAggregate/lib/joinSubjects.ts';
 
 function useRecommendWishes(subjectCode: string, excludeSubjectIds: number[] = []) {
   const { data: wishes } = useWishes();

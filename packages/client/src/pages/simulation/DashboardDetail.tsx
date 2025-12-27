@@ -7,7 +7,7 @@ import { findSubjectsById } from '@/utils/subjectPicker.ts';
 import Timeline from '@/widgets/simulation/detail/Timeline.tsx';
 import RadarChart from '@/widgets/simulation/detail/RadarChart.tsx';
 import SubjectDetailResult from '@/widgets/simulation/detail/SubjectDetailResult.tsx';
-import useLectures, { Lecture } from '@/hooks/server/useLectures';
+import useLectures, { Lecture } from '@/entities/subjects/model/useLectures.ts';
 
 function DashboardDetail() {
   const { runId } = useParams();

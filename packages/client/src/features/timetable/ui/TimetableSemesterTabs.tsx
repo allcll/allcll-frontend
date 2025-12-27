@@ -1,7 +1,7 @@
 import { Flex } from '@allcll/allcll-ui';
 import { Link, Navigate, useSearchParams } from 'react-router-dom';
-import { SEMESTERS } from '@/entities/semester/api/useServiceSemester.ts';
-import { SERVICE_SEMESTER_DUMMY } from '@/entities/semester/api/useServiceSemester.ts';
+
+import { SEMESTERS, SERVICE_SEMESTER_DUMMY } from '@/entities/semester/api/semester.ts';
 
 function TimetableSemesterTabs() {
   const [searchParams] = useSearchParams();

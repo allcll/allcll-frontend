@@ -1,5 +1,5 @@
 import React from 'react';
-import { Lecture } from '@/hooks/server/useLectures.ts';
+import { Lecture } from '@/entities/subjects/model/useLectures.ts';
 import Button from '@common/components/Button.tsx';
 
 interface IActionButton {

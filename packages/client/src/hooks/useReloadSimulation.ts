@@ -3,7 +3,7 @@ import { findSubjectsById } from '@/utils/subjectPicker';
 import { SimulationSubject } from '@/utils/types';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
-import useLectures from './server/useLectures';
+import useLectures from '@/entities/subjects/model/useLectures.ts';
 
 export function useReloadSimulation() {
   const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);

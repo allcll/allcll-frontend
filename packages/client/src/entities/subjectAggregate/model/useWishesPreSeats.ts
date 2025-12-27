@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Wishes } from '@/utils/types.ts';
-import useWishes, { InitWishes } from '@/entities/wishes/api/useWishes.ts';
-import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
+import useWishes, { InitWishes } from '@/entities/wishes/model/useWishes.ts';
+import { useJoinPreSeats } from '@/entities/subjectAggregate/lib/joinSubjects.ts';
 
 interface TableNames {
   title: string;

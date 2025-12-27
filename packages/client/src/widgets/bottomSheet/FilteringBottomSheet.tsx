@@ -8,7 +8,7 @@ import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains.ts
 import Chip from '@common/components/chip/Chip.tsx';
 import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
 import { FilterValueType } from '@/utils/types.ts';
-import useSubject from '@/entities/subjects/api/useSubject.ts';
+import useSubject from '@/entities/subjects/model/useSubject.ts';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { Button, Flex } from '@allcll/allcll-ui';
 

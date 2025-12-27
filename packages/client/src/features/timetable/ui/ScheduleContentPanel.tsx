@@ -7,7 +7,7 @@ import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 import { useScheduleSearchStore } from '@/shared/model/useFilterStore.ts';
 import useFilteringSubjects from '@/hooks/useFilteringSubjects.ts';
 import useSearchRank from '@/hooks/useSearchRank.ts';
-import useWishes from '@/entities/wishes/api/useWishes.ts';
+import useWishes from '@/entities/wishes/model/useWishes.ts';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import ScheduleFilter from './ScheduleFilter.tsx';
 import { Button, Card, Flex } from '@allcll/allcll-ui';

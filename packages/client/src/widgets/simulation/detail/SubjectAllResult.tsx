@@ -1,5 +1,5 @@
 import { AggregatedResultResponse, ISubjectsAnalysis } from '@/utils/simulation/result.ts';
-import useWishes from '@/entities/wishes/api/useWishes.ts';
+import useWishes from '@/entities/wishes/model/useWishes.ts';
 import { Wishes } from '@/utils/types.ts';
 import { useMemo } from 'react';
 

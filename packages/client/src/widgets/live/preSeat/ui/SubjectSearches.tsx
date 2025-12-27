@@ -11,7 +11,7 @@ import AlarmButton from '@/features/filtering/ui/button/AlarmButton.tsx';
 import DepartmentSelectFilter from '@/features/filtering/ui/DepartmentFilter.tsx';
 import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
 import FilterDelete from '@/features/filtering/ui/FilterDelete.tsx';
-import useSubject from '@/entities/subjects/api/useSubject.ts';
+import useSubject from '@/entities/subjects/model/useSubject.ts';
 import FilteringModal from '@/widgets/filtering/ui/FilteringModal.tsx';
 import { Chip, Flex, Label } from '@allcll/allcll-ui';
 

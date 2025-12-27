@@ -6,10 +6,10 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScal
 import Table from '@/widgets/wishlist/Table';
 import BlurComponents from '@/shared/ui/BlurComponents.tsx';
 import DepartmentDoughnut from '@/widgets/wishlist/DepartmentDoughnut.tsx';
-import { InitWishes } from '@/entities/wishes/api/useWishes.ts';
-import useDetailWishes from '@/entities/wishes/api/useDetailWishes.ts';
-import useRecommendWishes from '@/entities/wishes/api/useRecommendWishes.ts';
-import useDetailRegisters from '@/hooks/server/useDetailRegisters.ts';
+import { InitWishes } from '@/entities/wishes/model/useWishes.ts';
+import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes.ts';
+import useRecommendWishes from '@/entities/subjectAggregate/model/useRecommendWishes.ts';
+import useDetailRegisters from '@/entities/wishes/model/useDetailRegisters.ts';
 import { getSeatColor, getWishesColor } from '@/shared/config/colors.ts';
 import FavoriteButton from '@/features/filtering/ui/button/FavoriteButton.tsx';
 import AlarmButton from '@/features/live/pin/ui/AlarmButton';

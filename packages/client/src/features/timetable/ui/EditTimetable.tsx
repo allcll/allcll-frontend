@@ -7,7 +7,7 @@ import {
 } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { Button, Dialog, Grid, Label, TextField } from '@allcll/allcll-ui';
-import { SEMESTERS, SERVICE_SEMESTER_DUMMY } from '@/entities/semester/api/useServiceSemester.ts';
+import { SEMESTERS, SERVICE_SEMESTER_DUMMY } from '@/entities/semester/api/semester.ts';
 
 interface IEditTimetable {
   onClose: () => void;
