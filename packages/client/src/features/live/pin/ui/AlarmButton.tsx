@@ -2,8 +2,8 @@ import React from 'react';
 import { Subject } from '@/utils/types.ts';
 import AlarmIcon from '@/shared/ui/svgs/AlarmIcon.tsx';
 import { useAddPinned, usePinned, useRemovePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
-import { loggingDepartment } from '@/hooks/useSearchRank.ts';
-import useSearchLogging from '@/hooks/useSearchLogging.ts';
+import { loggingDepartment } from '@/features/filtering/lib/useSearchRank.ts';
+import useSearchLogging from '@/features/filtering/lib/useSearchLogging.ts';
 import { IconButton } from '@allcll/allcll-ui';
 
 interface IAlarmButtonProps extends React.HTMLAttributes<HTMLButtonElement> {

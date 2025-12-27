@@ -5,7 +5,7 @@ import TimetableSubjectCards from '@/features/timetable/ui/subject/TimetableSubj
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
-import useFilteringSubjects from '@/hooks/useFilteringSubjects.ts';
+import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
 import { useScheduleSearchStore } from '@/shared/model/useFilterStore.ts';
 import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
 import FilterSvg from '@/assets/filter.svg?react';

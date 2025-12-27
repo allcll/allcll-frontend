@@ -2,9 +2,9 @@ import { useDeferredValue, useState } from 'react';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet.tsx';
 import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader.tsx';
-import useFilteringSubjects from '@/hooks/useFilteringSubjects.ts';
+import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
 import useWishes from '@/entities/wishes/model/useWishes.ts';
-import useSearchRank from '@/hooks/useSearchRank.ts';
+import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
 
 import { initialFilters } from '@/shared/model/useFilterStore.ts';
 import SubjectCards from './PinCards';

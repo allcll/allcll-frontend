@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import useDepartments, { Department } from '@/entities/departments/api/useDepartments.ts';
 import DepartmentFilter from '@/features/live/pin/ui/DepartmentFilter';
-import { getDepartmentRanks } from '@/hooks/useSearchRank.ts';
+import { getDepartmentRanks } from '@/features/filtering/lib/useSearchRank.ts';
 
 interface ISelectDepartment {
   department: Department;

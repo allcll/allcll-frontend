@@ -12,7 +12,7 @@ import SimulationSearchForm from '@/widgets/simulation/SimulationSearchForm.tsx'
 import Stopwatch from '@/widgets/simulation/Stopwatch.tsx';
 import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
 import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
-import { useReloadSimulation } from '@/hooks/useReloadSimulation';
+import { useReloadSimulation } from '@/features/simulation/lib/useReloadSimulation.ts';
 import { useTimetables } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { checkOngoingSimulation, forceStopSimulation, SIMULATION_TIME_LIMIT } from '@/utils/simulation/simulation';
 import { VisitTutorial } from '@/utils/simulation/VisitTutorial.ts';

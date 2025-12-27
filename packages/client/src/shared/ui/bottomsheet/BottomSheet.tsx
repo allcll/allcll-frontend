@@ -1,5 +1,5 @@
 import React from 'react';
-import useBottomSheet from '@/hooks/useBottomSheet.ts';
+import useBottomSheet from '@/shared/model/useBottomSheet.ts';
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import useCloseBottomSheetOnBackKey from '@/widgets/bottomSheet/useCloseBottomSheetOnBackKey.ts';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
