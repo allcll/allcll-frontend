@@ -1,6 +1,5 @@
 import AlarmIcon from '@/shared/ui/svgs/AlarmIcon.tsx';
 import SkeletonRows from '@/shared/ui/SkeletonRows';
-import { ZeroElementRow } from '@/widgets/wishlist/Table.tsx';
 import { useAddPinned, usePinned, useRemovePinned } from '@/features/live/pin/api/usePinned';
 import useInfScroll from '@/shared/lib/useInfScroll.ts';
 import useSearchLogging from '@/hooks/useSearchLogging.ts';
@@ -8,6 +7,7 @@ import { loggingDepartment } from '@/hooks/useSearchRank.ts';
 import { WishesWithSeat } from '@/hooks/useWishesPreSeats.ts';
 import { getSeatColor } from '@/shared/config/colors.ts';
 import { Wishes } from '@/utils/types.ts';
+import { ZeroElementRow } from '@/shared/ui/ZeroElementRow';
 
 export interface ITableHead {
   title: string;
@@ -50,7 +50,13 @@ function TableBody({ titles, subjects, isPending = false }: Readonly<ISubjectTab
   }
 
   if (!filteredSubjects.length) {
-    return <ZeroElementRow col={titles.length} />;
+    return (
+      <ZeroElementRow
+        col={titles.length}
+        title="검색 결과가 없습니다."
+        description="다른 검색어로 다시 시도해보세요."
+      />
+    );
   }
 
   return (
