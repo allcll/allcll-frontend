@@ -55,3 +55,23 @@ export function getSelectedColor(selected: boolean) {
     ? 'bg-blue-100 text-blue-500 focus:outline-blue-500'
     : 'bg-gray-100 text-gray-700 focus:outline-gray-400';
 }
+
+export function getSeatStatus(seats: number | undefined | null) {
+  if (seats === undefined || seats === null) return 'default';
+
+  if (seats > 5) return 'success';
+  if (seats > 0) return 'warning';
+  if (seats == 0) return 'danger';
+
+  return 'default';
+}
+
+export function getWishesStatus(wishCount: number | undefined | null) {
+  if (wishCount === undefined || wishCount === null) return 'default';
+
+  if (wishCount >= 100) return 'danger';
+  if (wishCount >= 50) return 'warning';
+  if (wishCount >= 0) return 'success';
+
+  return 'default';
+}

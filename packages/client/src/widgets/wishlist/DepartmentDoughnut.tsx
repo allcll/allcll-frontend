@@ -28,7 +28,7 @@ function DepartmentDoughnut({ data, majorName }: Readonly<{ data?: WishRegister[
   const { doughnutData, totalCount } = useDoughnutData(data, departmentDict, majorName, selectedFilter);
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
+    <>
       <Flex justify="justify-between" align="items-center">
         <Heading level={2}>관심과목 현황</Heading>
         <Label className="hidden" htmlFor="doughnut-select">
@@ -55,7 +55,7 @@ function DepartmentDoughnut({ data, majorName }: Readonly<{ data?: WishRegister[
       ) : (
         <Doughnut data={doughnutData} />
       )}
-    </div>
+    </>
   );
 }
 
