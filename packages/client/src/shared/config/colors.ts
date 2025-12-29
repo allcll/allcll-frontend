@@ -56,7 +56,7 @@ export function getSelectedColor(selected: boolean) {
     : 'bg-gray-100 text-gray-700 focus:outline-gray-400';
 }
 
-export function getSeatStatus(seats: number | undefined | null) {
+export function getSeatVariant(seats: number | undefined | null) {
   if (seats === undefined || seats === null) return 'default';
 
   if (seats > 5) return 'success';
@@ -66,7 +66,7 @@ export function getSeatStatus(seats: number | undefined | null) {
   return 'default';
 }
 
-export function getWishesStatus(wishCount: number | undefined | null) {
+export function getWishesVariant(wishCount: number | undefined | null) {
   if (wishCount === undefined || wishCount === null) return 'default';
 
   if (wishCount >= 100) return 'danger';
