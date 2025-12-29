@@ -1,16 +1,15 @@
 import { useDeferredValue } from 'react';
 import { Helmet } from 'react-helmet';
-import useWishes, { InitWishes } from '@/entities/wishes/model/useWishes.ts';
-import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
 import Table from '@/widgets/wishlist/Table.tsx';
 import Searches from '@/widgets/live/Searches.tsx';
-import { useWishSearchStore } from '@/shared/model/useFilterStore.ts';
+import GotoLive from '@/widgets/wishlist/GotoLive.tsx';
 import TableColorInfo from '@/widgets/wishlist/TableColorInfo.tsx';
 import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
+import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
+import useWishes, { InitWishes } from '@/entities/wishes/model/useWishes.ts';
 import { useJoinPreSeats } from '@/entities/subjectAggregate/lib/joinSubjects.ts';
+import { useWishSearchStore } from '@/shared/model/useFilterStore.ts';
 import ScrollToTopButton from '@/shared/ui/ScrollTopButton.tsx';
-import { NavLink } from 'react-router-dom';
-import AlarmIcon from '@/shared/ui/svgs/AlarmIcon';
 import { Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 
 function WishTable() {
@@ -31,20 +30,14 @@ function WishTable() {
 
         <Flex gap="gap-4" direction="flex-col" className="mt-6">
           <Card>
-            <NavLink
-              to="/live"
-              state={{ openSearch: true }}
-              className="inline-flex items-center gap-2 rounded-md border border-blue-500 px-3 py-2 text-sm text-blue-500 hover:bg-blue-50"
-            >
-              <AlarmIcon />
-              알림등록하러가기
-            </NavLink>
-
+            <GotoLive />
             <Searches />
             <TableColorInfo />
           </Card>
 
-          <WishTableComponent />
+          <Card variant="elevated" className="mt-6 overflow-x-auto">
+            <WishTableComponent />
+          </Card>
 
           <ScrollToTopButton right="right-2 sm:right-20" />
         </Flex>
@@ -60,11 +53,7 @@ function WishTableComponent() {
   const filters = useWishSearchStore(state => state.filters);
   const filteredData = useDeferredValue(useFilteringSubjects(data ?? [], filters));
 
-  return (
-    <div className="bg-white mt-6 shadow-md rounded-lg overflow-x-auto">
-      <Table data={filteredData} isPending={isPending} />
-    </div>
-  );
+  return <Table data={filteredData} isPending={isPending} />;
 }
 
 export default WishTable;

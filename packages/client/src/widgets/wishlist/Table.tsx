@@ -13,6 +13,7 @@ import ColoredText from '@/entities/wishes/ui/ColoredText';
 import ColoredPreSeat from '@/entities/wishes/ui/ColoredPreseat';
 import useHeaderSelector from '@/features/wish/lib/useHeaderSelector';
 import { ZeroElementRow } from '../../shared/ui/ZeroElementRow';
+import { getSubjectColorClass } from '@/entities/subjects/ui/subjectColor.ts';
 
 interface ITable {
   data: Wishes[] | (Wishes & IPreRealSeat)[] | undefined;
@@ -76,13 +77,7 @@ interface TableRowProps {
 }
 
 const TableRow = ({ data, tableHeaders }: TableRowProps) => {
-  const isEng = data.curiLangNm === '영어';
-  const isDeleted = data.isDeleted;
-  const bgColor = isDeleted
-    ? 'bg-gray-100 hover:bg-gray-200'
-    : isEng
-      ? 'bg-green-50 hover:bg-green-100'
-      : 'bg-white hover:bg-gray-100';
+  const bgColor = getSubjectColorClass(data, true);
 
   return (
     <tr className={`border-t border-gray-200 text-black ${bgColor}`}>

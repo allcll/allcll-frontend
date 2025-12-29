@@ -15,6 +15,7 @@ import FavoriteButton from '@/features/filtering/ui/button/FavoriteButton.tsx';
 import AlarmButton from '@/features/live/pin/ui/AlarmButton';
 import usePreSeatGate from '@/features/live/preseat/lib/usePreSeatGate';
 import { Card, Flex, Grid, Heading, SupportingText } from '@allcll/allcll-ui';
+import { WishesWithSeat } from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -32,12 +33,7 @@ const gradeData = {
 function WishesDetail() {
   const params = useParams();
   const { data: wishes, isPending, isLastSemesterWish } = useDetailWishes(params.id ?? '-1');
-
   const { data: registers, error } = useDetailRegisters(params.id ?? '-1');
-  const { data: recommend } = useRecommendWishes(
-    wishes?.subjectCode ?? '',
-    wishes?.subjectId ? [wishes.subjectId] : [],
-  );
 
   const hasPreSeats = wishes && 'seat' in wishes;
   const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
@@ -73,12 +69,12 @@ function WishesDetail() {
 
       {isLastSemesterWish && (
         <p className="bg-red-100 text-red-500 py-2 px-4 font-bold">
-          이번 학기의 데이터가 아닙니다. 수강 신청에 유의해주세요.
+          이번 학기의 과목이 아닙니다. 수강 신청에 유의해주세요.
         </p>
       )}
 
+      {/*Fixme: div depth 최적화하기*/}
       <div className="min-h-screen bg-gray-50">
-        {/* Course Info Section */}
         <div className="p-6 max-w-5xl mx-auto">
           <Card>
             <Flex justify="justify-between" align="items-center">
@@ -90,31 +86,13 @@ function WishesDetail() {
               </Flex>
             </Flex>
 
-            <p className="text-gray-600">
-              {data.subjectCode}-{data.classCode} | {data.departmentName} | {data.professorName}
-            </p>
-
-            <Flex gap="gap-2" align="items-center" direction="flex-wrap" className="text-gray-600 text-sm">
-              <span>{data.studentYear}학년</span>
-              <span>{data.curiTypeCdNm}</span>
-              <span>{Number(data.tmNum.split('/')[0].trim())}학점</span>
-              <span>
-                {' '}
-                | {data.lesnRoom} | {data.lesnTime}
-              </span>
-              {isPreSeatAvailable && (
-                <p className={`text-sm px-2 py-1 rounded-full font-bold ${getSeatColor(seats)}`}>
-                  여석: {seats < 0 ? '???' : seats}
-                </p>
-              )}
-              {isEng && (
-                <span className="bg-green-100 rounded px-2 py-1 text-green-500 text-xs font-semibold">영어</span>
-              )}
-              {isDeleted && (
-                <span className="bg-red-100 rounded px-2 py-1 text-red-500 text-xs font-semibold">폐강</span>
-              )}
-            </Flex>
-            <p className="text-sm text-gray-500">{data.remark}</p>
+            <SubjectDetail
+              data={data}
+              isPreSeatAvailable={isPreSeatAvailable}
+              isEng={isEng}
+              isDeleted={isDeleted}
+              seats={seats}
+            />
 
             {/* Analytics Section */}
             <Grid columns={{ md: 2, base: 1 }} gap="gap-6" className=" mt-6">
@@ -152,7 +130,7 @@ function WishesDetail() {
               <SupportingText>학수번호가 같은 과목을 알려드려요</SupportingText>
 
               <div className="overflow-x-auto">
-                <Table data={recommend ?? []} />
+                <RecommendationTable id={params.id} />
               </div>
             </Card>
           </Card>
@@ -160,6 +138,62 @@ function WishesDetail() {
       </div>
     </>
   );
+}
+
+interface ISubjectDetailProps {
+  data: WishesWithSeat;
+  isPreSeatAvailable: boolean;
+  isEng: boolean;
+  isDeleted: boolean;
+  seats?: number;
+}
+
+// Todo: 컴포넌트 props 최적화,
+function SubjectDetail({ data, isPreSeatAvailable, isEng, isDeleted, seats }: ISubjectDetailProps) {
+  return (
+    <>
+      <p className="text-gray-600">
+        {data.subjectCode}-{data.classCode} | {data.departmentName} | {data.professorName}
+      </p>
+
+      <Flex gap="gap-2" align="items-center" direction="flex-wrap" className="text-gray-600 text-sm">
+        <span>{data.studentYear}학년</span>
+        <span>{data.curiTypeCdNm}</span>
+        <span>{Number(data.tmNum.split('/')[0].trim())}학점</span>
+        <span>
+          {' '}
+          | {data.lesnRoom} | {data.lesnTime}
+        </span>
+
+        {isPreSeatAvailable && (
+          <p className={`text-sm px-2 py-1 rounded-full font-bold ${getSeatColor(seats ?? -1)}`}>
+            여석: {(seats ?? 0) < 0 ? '???' : seats}
+          </p>
+        )}
+
+        {isEng && <span className="bg-green-100 rounded px-2 py-1 text-green-500 text-xs font-semibold">영어</span>}
+        {isDeleted && <span className="bg-red-100 rounded px-2 py-1 text-red-500 text-xs font-semibold">폐강</span>}
+      </Flex>
+      <p className="text-sm text-gray-500">{data.remark}</p>
+    </>
+  );
+}
+
+// Todo: 대체 과목 테이블, WishesTable 컴포넌트 합칠 수 있는지 확인
+// 대체과목 테이블 컴포넌트
+interface IRecommendationTableProps {
+  id: string | undefined | null;
+}
+
+function RecommendationTable({ id }: IRecommendationTableProps) {
+  const { data: wishes } = useDetailWishes(id ?? '-1');
+
+  const { data: recommend } = useRecommendWishes(
+    wishes?.subjectCode ?? '',
+    wishes?.subjectId ? [wishes.subjectId] : [],
+  );
+
+  return <Table data={recommend ?? []} />;
 }
 
 export default WishesDetail;
