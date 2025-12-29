@@ -9,7 +9,7 @@ import { SSEType } from '@/features/live/common/api/useSSEManager.ts';
 import useSSESeats, { SseSubject } from '@/entities/subjectAggregate/model/useSSESeats.ts';
 import { getTimeDiffString } from '@/shared/lib/stringFormats.ts';
 import { getSeatColor } from '@/shared/config/colors.ts';
-import TableColorInfo from '@/widgets/wishlist/TableColorInfo.tsx';
+import TableColorInfo from '@/shared/ui/TableColorInfo.tsx';
 import ListSvg from '@/assets/list.svg?react';
 import SystemChecking from '../../../../widgets/live/errors/ui/SystemChecking.tsx';
 import { getDateLocale } from '@/shared/lib/time.ts';

@@ -9,7 +9,7 @@ import { PRESEAT_CLOSE_DATE } from '@/features/live/preseat/lib/usePreSeatGate.t
 import { Filters, useAlarmSearchStore } from '@/shared/model/useFilterStore.ts';
 import ScrollToTopButton from '@/shared/ui/ScrollTopButton.tsx';
 import SubjectCards from '@/widgets/live/pin/ui/PinCards.tsx';
-import TableColorInfo from '@/widgets/wishlist/TableColorInfo.tsx';
+import TableColorInfo from '@/shared/ui/TableColorInfo.tsx';
 import SubjectSearches from './SubjectSearches.tsx';
 import { Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 

@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import Table from '@/widgets/wishlist/Table.tsx';
 import Searches from '@/widgets/live/Searches.tsx';
 import GotoLive from '@/widgets/wishlist/GotoLive.tsx';
-import TableColorInfo from '@/widgets/wishlist/TableColorInfo.tsx';
+import TableColorInfo from '@/shared/ui/TableColorInfo';
 import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
 import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
 import useWishes, { InitWishes } from '@/entities/wishes/model/useWishes.ts';
