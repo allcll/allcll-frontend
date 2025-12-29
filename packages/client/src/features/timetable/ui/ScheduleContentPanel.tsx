@@ -15,6 +15,7 @@ import TimetableSubjectCards from '@/features/timetable/ui/subject/TimetableSubj
 
 const initSchedule = new ScheduleAdapter().toUiData();
 
+// fixme: div depth 최적화 필요
 function ScheduleContentPanel() {
   const { openScheduleModal } = useScheduleModal();
   //학기TODO:  학기에 맞는 시간표 data가져오기
@@ -42,10 +43,8 @@ function ScheduleContentPanel() {
           + 커스텀 일정 생성
         </Button>
 
-        <Flex direction="flex-col" className="h-full overflow-hidden">
-          <div className="overflow-y-auto">
-            <TimetableSubjectCards subjects={filteredData} isPending={isPending} />
-          </div>
+        <Flex direction="flex-col" className="h-full overflow-hidden overflow-y-auto">
+          <TimetableSubjectCards subjects={filteredData} isPending={isPending} />
         </Flex>
       </Flex>
     </Card>
