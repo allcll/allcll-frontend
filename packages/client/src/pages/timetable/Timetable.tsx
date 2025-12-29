@@ -25,10 +25,8 @@ function Timetable() {
           </Flex>
         </div>
 
-        <div className="md:col-span-2 w-full">
-          <div className="hidden md:block">
-            <ContentPanel />
-          </div>
+        <div className="w-full md:col-span-2 hidden md:block">
+          <ContentPanel />
         </div>
       </div>
 

@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { BadRequestError } from '@/shared/lib/errors.ts';
 import { fetchDetailRegisters } from '@/entities/wishes/api/wishes.ts';
 
-function useDetailRegisters(id: string) {
+function useDetailRegisters(id: number) {
   return useQuery({
     queryKey: ['detail-registers', id],
     queryFn: () => fetchDetailRegisters(id),

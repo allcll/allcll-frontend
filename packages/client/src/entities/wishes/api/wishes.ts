@@ -15,7 +15,7 @@ interface DetailRegistersResponse {
   everytimeLectureId: number;
 }
 
-export const fetchDetailRegisters = async (subjectId: string): Promise<DetailRegistersResponse> => {
+export const fetchDetailRegisters = async (subjectId: number): Promise<DetailRegistersResponse> => {
   const response = await fetchOnAPI(`/api/baskets/${subjectId}`);
 
   if (!response.ok) {

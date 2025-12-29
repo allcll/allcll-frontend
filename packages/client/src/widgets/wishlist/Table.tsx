@@ -9,8 +9,8 @@ import SkeletonRows from '@/shared/ui/SkeletonRows';
 // import AlarmButton from '@/components/live/AlarmButton.tsx';
 import FavoriteButton from '@/features/filtering/ui/button/FavoriteButton.tsx';
 import { Flex } from '@allcll/allcll-ui';
-import ColoredText from '@/entities/wishes/ui/ColoredText';
-import ColoredPreSeat from '@/entities/wishes/ui/ColoredPreseat';
+import BasketBadge from '@/entities/wishes/ui/BasketBadge.tsx';
+import SeatBadge from '@/entities/wishes/ui/SeatBadge.tsx';
 import useHeaderSelector from '@/features/wish/lib/useHeaderSelector';
 import { ZeroElementRow } from '../../shared/ui/ZeroElementRow';
 import { getSubjectColorClass } from '@/entities/subjects/ui/subjectColor.ts';
@@ -118,9 +118,9 @@ function UiSelector({ data, headerType }: Readonly<{ data: Wishes | (Wishes & IP
     case '':
       return <>시간표</>;
     case 'totalCount':
-      return <ColoredText wishCount={data.totalCount ?? -1} />;
+      return <BasketBadge wishCount={data.totalCount ?? -1} />;
     case 'seat':
-      return <ColoredPreSeat seat={(data as IPreRealSeat).seat} />;
+      return <SeatBadge seat={(data as IPreRealSeat).seat} />;
     default:
       return data[headerType as keyof Wishes]?.toString();
   }

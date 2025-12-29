@@ -11,13 +11,13 @@ interface DetailWishes {
 
 type WishesWithSeat = Wishes | (Wishes & IPreRealSeat);
 
-function useDetailWishes(id: string): DetailWishes {
+function useDetailWishes(subjectId: number): DetailWishes {
   const { data: wishes } = useWishes();
   const data = useJoinPreSeats(wishes, InitWishes);
 
   if (!data) return { isPending: true };
 
-  const detail = data?.find(basket => basket.subjectId === Number(id));
+  const detail = data?.find(basket => basket.subjectId === subjectId);
 
   return {
     isPending: false,
