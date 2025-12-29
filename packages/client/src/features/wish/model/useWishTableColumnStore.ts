@@ -1,4 +1,4 @@
-import { IPreRealSeat } from '@/features/live/preseat/api/usePreRealSeats';
+import { IPreRealSeat } from '@/entities/seat/api/usePreRealSeats';
 import { createColumnStore, HeadTitle } from '@/shared/model/createColumnStore';
 import { Wishes } from '@/utils/types';
 

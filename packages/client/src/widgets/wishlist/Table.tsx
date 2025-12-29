@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Wishes } from '@/utils/types.ts';
 import useInfScroll from '@/shared/lib/useInfScroll.ts';
 import useSearchLogging from '@/features/filtering/lib/useSearchLogging.ts';
-import { IPreRealSeat } from '@/features/live/preseat/api/usePreRealSeats';
+import { IPreRealSeat } from '@/entities/seat/api/usePreRealSeats';
 import { loggingDepartment } from '@/features/filtering/lib/useSearchRank.ts';
 import SkeletonRows from '@/shared/ui/SkeletonRows';
 // import AlarmButton from '@/components/live/AlarmButton.tsx';

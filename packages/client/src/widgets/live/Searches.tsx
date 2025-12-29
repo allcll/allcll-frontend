@@ -3,7 +3,7 @@ import StarIcon from '@/shared/ui/svgs/StarIcon.tsx';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import DraggableList from '@/features/live/board/ui/DraggableList.tsx';
 import { Filters, getAllSelectedLabels, initialFilters, useWishSearchStore } from '@/shared/model/useFilterStore.ts';
-import { IPreRealSeat } from '@/features/live/preseat/api/usePreRealSeats.ts';
+import { IPreRealSeat } from '@/entities/seat/api/usePreRealSeats.ts';
 import useBackSignal from '@/shared/lib/useBackSignal.ts';
 import { FilterValueType, Wishes } from '@/utils/types.ts';
 import ListSvg from '@/assets/list.svg?react';

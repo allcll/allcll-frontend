@@ -1,6 +1,6 @@
 import { Wishes } from '@/utils/types';
 import { useWishesTableStore } from '../model/useWishTableColumnStore';
-import { IPreRealSeat } from '@/features/live/preseat/api/usePreRealSeats';
+import { IPreRealSeat } from '@/entities/seat/api/usePreRealSeats';
 import usePreSeatGate from '@/features/live/preseat/lib/usePreSeatGate';
 
 /** 사용하는 헤더를 반환해줍니다. 기간에 따라, wishes, pre-seats 변경 가능 */
