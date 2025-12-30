@@ -114,12 +114,7 @@ interface IRecommendationTableProps {
 }
 
 function RecommendationTable({ subjectId }: IRecommendationTableProps) {
-  const { data: wishes } = useDetailWishes(subjectId);
-
-  const { data: recommend } = useRecommendWishes(
-    wishes?.subjectCode ?? '',
-    wishes?.subjectId ? [wishes.subjectId] : [],
-  );
+  const { data: recommend } = useRecommendWishes(subjectId);
 
   return <Table data={recommend ?? []} />;
 }

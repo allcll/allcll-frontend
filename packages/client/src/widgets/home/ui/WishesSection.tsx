@@ -3,6 +3,7 @@ import Section from '@/widgets/home/ui/Section.tsx';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js/auto';
 import { DoughnutColors } from '@/features/simulation/lib/doughnut.ts';
 import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
+import BasketBadge from '@/entities/wishes/ui/BasketBadge.tsx';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -34,8 +35,8 @@ function WishesSection() {
         <div className="bg-white p-6 shadow-md rounded-md">
           <h3 className="text-lg font-semibold">대체 과목 추천</h3>
           {[
-            { name: '데이터베이스개론', dept: '데이터베이스 시스템', status: '30명' },
-            { name: '알고리즘분석', dept: '고급알고리즘', status: '14명' },
+            { name: '데이터베이스개론', dept: '데이터베이스 시스템', status: 30 },
+            { name: '알고리즘분석', dept: '고급알고리즘', status: 14 },
           ].map((course, index) => (
             <div
               key={'recommend-course-' + index}
@@ -45,7 +46,9 @@ function WishesSection() {
                 <p className="font-semibold">{course.name}</p>
                 <p className="text-sm text-gray-500">{course.dept}</p>
               </div>
-              <span className="text-yellow-500">{course.status}</span>
+              <span>
+                <BasketBadge wishCount={course.status} formatter={value => `관심: ${value}명`} />
+              </span>
             </div>
           ))}
         </div>

@@ -1,7 +1,7 @@
 import Section from '@/widgets/home/ui/Section.tsx';
-import AlarmIcon from '@/shared/ui/svgs/AlarmIcon.tsx';
-import { getSeatColor } from '@/shared/config/colors.ts';
 import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
+import SeatBadge from '@/entities/wishes/ui/SeatBadge.tsx';
+import AlarmIcon from '@/shared/ui/svgs/AlarmIcon.tsx';
 
 function LiveSection() {
   return (
@@ -31,7 +31,7 @@ function LiveSection() {
                 </div>
                 <div className="flex justify-between">
                   <p className="text-sm text-gray-500">{prof}</p>
-                  <p className={`text-sm text-red-500 font-bold`}>여석: 0</p>
+                  <SeatBadge seat={0} formatter={value => `여석: ${value}`} />
                 </div>
               </div>
             ))}
@@ -65,7 +65,7 @@ function LiveSection() {
                     <td className="px-4 py-2 text-center">{name}</td>
                     <td className="px-4 py-2 text-center">{prof}</td>
                     <td className="px-4 py-2 text-center font-bold">
-                      <p className={`px-3 py-1 rounded-full text-xs font-bold ${getSeatColor(seats)}`}>{seats}</p>
+                      <SeatBadge seat={seats} />
                     </td>
                   </tr>
                 ))}
