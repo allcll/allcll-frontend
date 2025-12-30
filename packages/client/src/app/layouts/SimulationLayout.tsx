@@ -5,7 +5,7 @@ import Header from '@/shared/ui/Header.tsx';
 import { Outlet } from 'react-router-dom';
 import Footer from '@/shared/ui/Footer.tsx';
 import ServiceEnabled from '@/entities/semester/ui/ServiceEnabled.tsx';
-import { ASIDE_MENU, SimulationTabList } from '@/utils/simulation/routing.ts';
+import { ASIDE_MENU, SimulationTabList } from '@/features/simulation/lib/routing.ts';
 import SejongUI from '@allcll/sejong-ui';
 
 function SimulationLayout() {

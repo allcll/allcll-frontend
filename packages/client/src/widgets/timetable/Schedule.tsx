@@ -3,7 +3,7 @@ import { useScheduleDrag } from '@/features/timetable/lib/useScheduleDrag.ts';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import { GeneralSchedule as ScheduleType, ScheduleSlot } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { ROW_HEIGHT } from '@/widgets/timetable/TimetableComponent.tsx';
-import { moveTimeSlot } from '@/utils/timetable/adapter.ts';
+import { moveTimeSlot } from '@/entities/timetable/model/adapter.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 
 export interface IScheduleProps extends HTMLAttributes<HTMLDivElement> {

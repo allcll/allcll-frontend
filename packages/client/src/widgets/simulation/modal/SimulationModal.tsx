@@ -1,10 +1,15 @@
 import { useRef } from 'react';
 import SejongUI from '../../../../../sejong-ui';
 import CheckBlueSvg from '@/assets/check-blue.svg?react';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
-import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject.ts';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
-import { APPLY_STATUS, BUTTON_EVENT, forceStopSimulation, triggerButtonEvent } from '@/utils/simulation/simulation.ts';
+import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
+import useSimulationSubjectStore from '@/features/simulation/model/useSimulationSubject.ts';
+import useSimulationProcessStore from '@/features/simulation/model/useSimulationProcess.ts';
+import {
+  APPLY_STATUS,
+  BUTTON_EVENT,
+  forceStopSimulation,
+  triggerButtonEvent,
+} from '@/features/simulation/lib/simulation.ts';
 import useLectures from '@/entities/subjects/model/useLectures.ts';
 
 const SIMULATION_MODAL_CONTENTS = [

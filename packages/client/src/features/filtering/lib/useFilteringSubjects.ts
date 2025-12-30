@@ -1,7 +1,7 @@
 import useSearchLogging from '@/features/filtering/lib/useSearchLogging.ts';
 import { Filters } from '@/shared/model/useFilterStore.ts';
-import { useFilterFunctions } from '@/utils/filtering/filterSubjects.ts';
-import { Subject } from '@/utils/types.ts';
+import { useFilterFunctions } from '@/features/filtering/lib/filterSubjects.ts';
+import { Subject } from '@/shared/model/types.ts';
 
 function useFilteringSubjects<T extends Subject>(subjects: T[], filters: Filters) {
   const filterFunctions = useFilterFunctions(filters);

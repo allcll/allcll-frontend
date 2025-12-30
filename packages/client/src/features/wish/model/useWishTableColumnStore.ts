@@ -1,6 +1,6 @@
 import { IPreRealSeat } from '@/entities/seat/api/usePreRealSeats';
 import { createColumnStore, HeadTitle } from '@/shared/model/createColumnStore';
-import { Wishes } from '@/utils/types';
+import { Wishes } from '@/shared/model/types.ts';
 
 const WishesColumns: HeadTitle<Wishes & IPreRealSeat>[] = [
   { title: '학수번호', visible: true, key: 'subjectCode' },

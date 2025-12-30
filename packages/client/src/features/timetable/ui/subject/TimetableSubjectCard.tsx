@@ -3,7 +3,7 @@ import { Button, Badge, Flex, Heading } from '@allcll/allcll-ui';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import useSearchLogging from '@/features/filtering/lib/useSearchLogging.ts';
 import { loggingDepartment } from '@/features/filtering/lib/useSearchRank.ts';
-import { Subject } from '@/utils/types.ts';
+import { Subject } from '@/shared/model/types.ts';
 
 interface ISubjectCard {
   isActive?: boolean;

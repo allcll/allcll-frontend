@@ -1,9 +1,9 @@
 import SejongUI from '../../../../../sejong-ui';
 import { type ColumnDefinition } from '../../../../../sejong-ui';
-import { SimulationSubject } from '@/utils/types.ts';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
-import { formatTMNum } from '@/utils/simulation/formators.ts';
+import { SimulationSubject } from '@/shared/model/types.ts';
+import useSimulationProcessStore from '@/features/simulation/model/useSimulationProcess.ts';
+import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
+import { formatTMNum } from '@/features/simulation/lib/formators.ts';
 
 const columns: ColumnDefinition<SimulationSubject>[] = [
   {

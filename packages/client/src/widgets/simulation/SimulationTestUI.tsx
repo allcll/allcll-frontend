@@ -8,10 +8,10 @@ import {
   forceStopSimulation,
   BUTTON_EVENT,
   APPLY_STATUS,
-} from '@/utils/simulation/simulation.ts';
-import { getRecentInterestedSnapshot, saveInterestedSnapshot } from '@/utils/simulation/subjects.ts';
+} from '@/features/simulation/lib/simulation.ts';
+import { getRecentInterestedSnapshot, saveInterestedSnapshot } from '@/features/simulation/lib/subjects.ts';
 import { InterestedSubject } from '@/shared/config/dbConfig.ts';
-import { backupDatabase, restoreDatabase } from '@/utils/simulation/backupData.ts';
+import { backupDatabase, restoreDatabase } from '@/features/simulation/lib/backupData.ts';
 import useLectures from '@/entities/subjects/model/useLectures.ts';
 
 export function SimulationTestUI() {

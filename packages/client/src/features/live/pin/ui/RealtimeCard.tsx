@@ -1,9 +1,9 @@
 import CloseIcon from '@/assets/x.svg?react';
-import useTick from '@/shared/lib/useTick.ts';
+import useTick from '@/features/live/board/lib/useTick.ts';
 import { useRemovePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
 import { getTimeDiffString } from '@/shared/lib/stringFormats.ts';
 import { getSeatColor } from '@/shared/config/colors.ts';
-import { Subject, Wishes } from '@/utils/types.ts';
+import { Subject, Wishes } from '@/shared/model/types.ts';
 
 interface IPinCard {
   subject: Subject | Wishes;

@@ -1,5 +1,5 @@
 import SejongUI from '../../../../../sejong-ui';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
+import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
 
 function ProcessingModal() {
   const closeModal = useSimulationModalStore(state => state.closeModal);

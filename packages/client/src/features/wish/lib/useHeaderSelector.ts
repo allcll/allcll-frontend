@@ -1,4 +1,4 @@
-import { Wishes } from '@/utils/types';
+import { Wishes } from '@/shared/model/types.ts';
 import { useWishesTableStore } from '../model/useWishTableColumnStore';
 import { IPreRealSeat } from '@/entities/seat/api/usePreRealSeats';
 import usePreSeatGate from '@/features/live/preseat/lib/usePreSeatGate';

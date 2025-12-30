@@ -1,5 +1,5 @@
 import { Filters } from '@/shared/model/useFilterStore.ts';
-import { FilterValueType, RangeMinMaxFilter } from '@/utils/types.ts';
+import { FilterValueType, RangeMinMaxFilter } from '@/shared/model/types.ts';
 import { Flex, Input, Label } from '@allcll/allcll-ui';
 import { useState } from 'react';
 

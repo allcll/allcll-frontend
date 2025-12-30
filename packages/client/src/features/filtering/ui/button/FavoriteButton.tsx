@@ -1,7 +1,7 @@
 import React from 'react';
 import StarIcon from '@/shared/ui/svgs/StarIcon.tsx';
-import { Subject } from '@/utils/types.ts';
-import useFavorites from '@/store/useFavorites.ts';
+import { Subject } from '@/shared/model/types.ts';
+import useFavorites from '@/features/filtering/model/useFavorites.ts';
 import { IconButton } from '@allcll/allcll-ui';
 
 interface IFavoriteButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import SejongUI from '../../../../sejong-ui';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
+import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
+import useSimulationProcessStore from '@/features/simulation/model/useSimulationProcess.ts';
 import { useReloadSimulation } from '@/features/simulation/lib/useReloadSimulation.ts';
 import useLectures from '@/entities/subjects/model/useLectures.ts';
 import {
@@ -10,7 +10,7 @@ import {
   checkOngoingSimulation,
   forceStopSimulation,
   triggerButtonEvent,
-} from '@/utils/simulation/simulation.ts';
+} from '@/features/simulation/lib/simulation.ts';
 import SearchSvg from '@/assets/search-white.svg?react';
 import LogoSvg from '@public/ci.svg?react';
 

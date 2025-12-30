@@ -1,4 +1,4 @@
-import { SimulationSubject } from '@/utils/types';
+import { SimulationSubject } from '@/shared/model/types.ts';
 import { Lecture } from '@/entities/subjects/model/useLectures.ts';
 
 const TOTAL_SUBJECTS = 5;

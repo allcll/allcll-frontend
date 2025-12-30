@@ -6,11 +6,15 @@ import GameTips from './GameTips.tsx';
 import SelectDepartment from './SelectDepartment.tsx';
 import TimetableChip from '../TimetableChip.tsx';
 import Modal from '@common/components/modal/Modal.tsx';
-import { applyCreditLimit, pickNonRandomSubjects, pickRandomsubjects } from '@/utils/subjectPicker.ts';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
-import { getRecentInterestedSnapshot, saveInterestedSnapshot } from '@/utils/simulation/subjects.ts';
-import { startSimulation } from '@/utils/simulation/simulation.ts';
+import {
+  applyCreditLimit,
+  pickNonRandomSubjects,
+  pickRandomsubjects,
+} from '@/features/simulation/lib/subjectPicker.ts';
+import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
+import useSimulationProcessStore from '@/features/simulation/model/useSimulationProcess.ts';
+import { getRecentInterestedSnapshot, saveInterestedSnapshot } from '@/features/simulation/lib/subjects.ts';
+import { startSimulation } from '@/features/simulation/lib/simulation.ts';
 import useLectures, { Lecture } from '@/entities/subjects/model/useLectures.ts';
 import { Department } from '@/entities/departments/api/useDepartments.ts';
 import { TimetableType, useTimetableSchedules } from '@/entities/timetable/api/useTimetableSchedules.ts';

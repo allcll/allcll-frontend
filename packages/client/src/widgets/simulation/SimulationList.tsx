@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { getSimulationList } from '@/utils/simulation/result.ts';
+import { getSimulationList } from '@/features/simulation/lib/result.ts';
 import { SimulationRun } from '@/shared/config/dbConfig.ts';
 import CursorBlue from '@/assets/cursor-blue.svg?react';
 

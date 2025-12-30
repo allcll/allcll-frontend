@@ -6,7 +6,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 // import { HTML5Backend } from 'react-dnd-html5-backend';
 import ReactGA from 'react-ga4';
 import Clarity from '@microsoft/clarity';
-import Sentry from '@/utils/3party/sentry';
+import Sentry from '@/app/config/sentry.ts';
 import router from '@/app/routing';
 import './index.css';
 

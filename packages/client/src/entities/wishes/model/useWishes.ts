@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Subject, Wishes } from '@/utils/types.ts';
+import { Subject, Wishes } from '@/shared/model/types.ts';
 import useSubject, { InitSubject } from '@/entities/subjects/model/useSubject.ts';
 import { joinData } from '@/entities/subjectAggregate/lib/joinSubjects.ts';
 import { fetchWishesData, WishesApiResponse } from '@/entities/wishes/api/wishes.ts';

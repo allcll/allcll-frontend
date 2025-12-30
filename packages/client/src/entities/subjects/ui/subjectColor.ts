@@ -1,4 +1,4 @@
-import { Subject } from '@/utils/types.ts';
+import { Subject } from '@/shared/model/types.ts';
 
 /** subject의 표시 색상(배경색)을 반환합니다.
  * ex) 영어과목 - 초록색, 삭제된 과목 - 회색 */

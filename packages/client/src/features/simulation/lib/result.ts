@@ -1,6 +1,6 @@
 import { db, SimulationRunSelections } from '@/shared/config/dbConfig.ts';
-import { getInterestedSnapshotById } from '@/utils/simulation/subjects.ts';
-import { APPLY_STATUS, BUTTON_EVENT, getSimulationById } from '@/utils/simulation/simulation.ts';
+import { getInterestedSnapshotById } from '@/features/simulation/lib/subjects.ts';
+import { APPLY_STATUS, BUTTON_EVENT, getSimulationById } from '@/features/simulation/lib/simulation.ts';
 
 const SEC = 1 / 1000;
 

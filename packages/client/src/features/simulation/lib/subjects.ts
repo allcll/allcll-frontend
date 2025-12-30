@@ -1,5 +1,5 @@
 import { db } from '@/shared/config/dbConfig.ts';
-import { checkOngoingSimulation } from '@/utils/simulation/simulation.ts';
+import { checkOngoingSimulation } from '@/features/simulation/lib/simulation.ts';
 
 /**
  * 최근의 관심과목 스냅샷과 과목을 불러옵니다.

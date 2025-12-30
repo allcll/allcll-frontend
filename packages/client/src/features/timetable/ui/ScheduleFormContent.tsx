@@ -1,4 +1,4 @@
-import { Day } from '@/utils/types.ts';
+import { Day } from '@/shared/model/types.ts';
 import { Flex, Label, TextField } from '@allcll/allcll-ui';
 import Chip from '@common/components/chip/Chip.tsx';
 import { extractTimeRange, toggleDaySlot } from '../lib/time.ts';

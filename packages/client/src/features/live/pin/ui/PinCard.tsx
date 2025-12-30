@@ -1,6 +1,6 @@
 import AlarmButton from '@/features/live/pin/ui/AlarmButton';
 import { getTimeDiffString } from '@/shared/lib/stringFormats.ts';
-import { Subject, Wishes } from '@/utils/types.ts';
+import { Subject, Wishes } from '@/shared/model/types.ts';
 import { getSeatColor } from '@/shared/config/colors.ts';
 import { Card, Flex, Heading } from '@allcll/allcll-ui';
 

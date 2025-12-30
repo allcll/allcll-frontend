@@ -13,7 +13,7 @@ import VibrationNotification from '../lib/vibrationNotification.ts';
 import ToastNotification from '../lib/toastNotification.ts';
 import SoundNotification from '../lib/SoundNotification.ts';
 import { getSubjects } from '@/entities/subjects/model/useSubject.ts';
-import { PinnedSeats } from '@/utils/types.ts';
+import { PinnedSeats } from '@/shared/model/types.ts';
 
 export interface CustomNotification {
   canNotify(): boolean;

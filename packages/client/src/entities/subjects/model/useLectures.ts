@@ -1,6 +1,6 @@
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import useDepartments, { Department } from '@/entities/departments/api/useDepartments.ts';
-import { Subject } from '@/utils/types.ts';
+import { Subject } from '@/shared/model/types.ts';
 
 export interface Lecture {
   subjectId: number;

@@ -1,4 +1,4 @@
-import { Subject } from '@/utils/types.ts';
+import { Subject } from '@/shared/model/types.ts';
 import { fetchJsonOnAPI } from '@/shared/api/api.ts';
 
 export type SubjectResponse = {

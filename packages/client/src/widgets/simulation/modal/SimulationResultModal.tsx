@@ -3,9 +3,9 @@ import { NavLink } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import ProcessingModal from './Processing.tsx';
 import Modal from '@common/components/modal/Modal.tsx';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
-import { getSummaryResult, SIMULATION_ERROR } from '@/utils/simulation/simulation.ts';
-import { getAggregatedSimulationResults } from '@/utils/simulation/result.ts';
+import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
+import { getSummaryResult, SIMULATION_ERROR } from '@/features/simulation/lib/simulation.ts';
+import { getAggregatedSimulationResults } from '@/features/simulation/lib/result.ts';
 
 function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number }>) {
   const openModal = useSimulationModalStore(state => state.openModal);

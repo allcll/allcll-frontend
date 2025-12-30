@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
-import { Wishes } from '@/utils/types.ts';
+import { Wishes } from '@/shared/model/types.ts';
 import useInfScroll from '@/shared/lib/useInfScroll.ts';
 import useSearchLogging from '@/features/filtering/lib/useSearchLogging.ts';
 import { IPreRealSeat } from '@/entities/seat/api/usePreRealSeats';

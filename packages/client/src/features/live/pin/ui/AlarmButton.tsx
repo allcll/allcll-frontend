@@ -1,5 +1,5 @@
 import React from 'react';
-import { Subject } from '@/utils/types.ts';
+import { Subject } from '@/shared/model/types.ts';
 import AlarmIcon from '@/shared/ui/svgs/AlarmIcon.tsx';
 import { useAddPinned, usePinned, useRemovePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
 import { loggingDepartment } from '@/features/filtering/lib/useSearchRank.ts';

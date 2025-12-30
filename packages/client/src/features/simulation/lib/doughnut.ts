@@ -1,4 +1,4 @@
-import { WishRegister } from '@/utils/types.ts';
+import { WishRegister } from '@/shared/model/types.ts';
 import { searchFromCollege, searchFromUniversity } from '@/entities/departments/api/useDepartments.ts';
 
 interface DoughnutData {

@@ -1,8 +1,8 @@
 import { db, SimulationRun, SimulationRunSelections } from '@/shared/config/dbConfig.ts';
-import { getInterestedId, getRecentInterestedSnapshot } from '@/utils/simulation/subjects';
-import { getAccuracy, getAccuracyScore, getSpeedScore } from '@/utils/simulation/score.ts';
-import { checkSubjectResult } from '@/utils/checkSubjectResult.ts';
-import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject';
+import { getInterestedId, getRecentInterestedSnapshot } from '@/features/simulation/lib/subjects.ts';
+import { getAccuracy, getAccuracyScore, getSpeedScore } from '@/features/simulation/lib/score.ts';
+import { checkSubjectResult } from '@/features/simulation/lib/checkSubjectResult.ts';
+import useSimulationSubjectStore from '@/features/simulation/model/useSimulationSubject.ts';
 import { Lecture } from '@/entities/subjects/model/useLectures.ts';
 
 export enum BUTTON_EVENT {

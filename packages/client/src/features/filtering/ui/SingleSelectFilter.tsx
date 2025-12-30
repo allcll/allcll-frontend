@@ -1,7 +1,7 @@
 import ResetSvg from '@/assets/reset-blue.svg?react';
 import { Filters } from '@/shared/model/useFilterStore.ts';
-import { getLabelFormatter, labelPrefix } from '@/utils/filtering/getFilteringFormatter.ts';
-import { FilterItemProps, RangeMinMaxFilter } from '@/utils/types.ts';
+import { getLabelFormatter, labelPrefix } from '@/features/filtering/lib/getFilteringFormatter.ts';
+import { FilterItemProps, RangeMinMaxFilter } from '@/shared/model/types.ts';
 import MinMaxFilter from './MinMaxFilter.tsx';
 import { Button, Flex, Label } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile.ts';

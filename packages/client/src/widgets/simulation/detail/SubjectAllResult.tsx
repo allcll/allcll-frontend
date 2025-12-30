@@ -1,6 +1,6 @@
-import { AggregatedResultResponse, ISubjectsAnalysis } from '@/utils/simulation/result.ts';
+import { AggregatedResultResponse, ISubjectsAnalysis } from '@/features/simulation/lib/result.ts';
 import useWishes from '@/entities/wishes/model/useWishes.ts';
-import { Wishes } from '@/utils/types.ts';
+import { Wishes } from '@/shared/model/types.ts';
 import { useMemo } from 'react';
 
 function SubjectAllResult({ result }: Readonly<{ result: AggregatedResultResponse }>) {

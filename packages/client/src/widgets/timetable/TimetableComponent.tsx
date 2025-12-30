@@ -9,7 +9,7 @@ import {
   useTimetableSchedules,
 } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
-import { Day } from '@/utils/types.ts';
+import { Day } from '@/shared/model/types.ts';
 import useNotifyDeletedSchedule from '@/features/notification/lib/useNotifyDeletedSchedule.ts';
 import TimetableGridComponent from '@/widgets/timetable/TimetableGridComponent.tsx';
 import { DAYS } from '@/features/timetable/model/types.ts';

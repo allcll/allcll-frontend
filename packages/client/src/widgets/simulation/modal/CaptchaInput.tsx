@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import SejongUI from '../../../../../sejong-ui';
-import { drawCaptcha } from '@/utils/captcha.ts';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
-import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject.ts';
-import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation.ts';
+import { drawCaptcha } from '@/features/simulation/lib/captcha.ts';
+import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
+import useSimulationSubjectStore from '@/features/simulation/model/useSimulationSubject.ts';
+import { APPLY_STATUS, BUTTON_EVENT, triggerButtonEvent } from '@/features/simulation/lib/simulation.ts';
 import useLectures from '@/entities/subjects/model/useLectures.ts';
 
 function generateNumericText() {

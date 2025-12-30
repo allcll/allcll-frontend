@@ -1,7 +1,7 @@
 import ResetSvg from '@/assets/reset-blue.svg?react';
 import { Filters } from '@/shared/model/useFilterStore.ts';
-import { getLabelFormatter, labelPrefix } from '@/utils/filtering/getFilteringFormatter.ts';
-import { FilterItemProps, FilterValueType } from '@/utils/types.ts';
+import { getLabelFormatter, labelPrefix } from '@/features/filtering/lib/getFilteringFormatter.ts';
+import { FilterItemProps, FilterValueType } from '@/shared/model/types.ts';
 import { Button, Flex, Label } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile.ts';
 

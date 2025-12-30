@@ -3,7 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import RadarChart from '@/widgets/simulation/detail/RadarChart.tsx';
 import StatisticsChart from '@/widgets/simulation/detail/StatisticsChart.tsx';
 import SubjectAllResult from '@/widgets/simulation/detail/SubjectAllResult.tsx';
-import { getAggregatedSimulationResults } from '@/utils/simulation/result.ts';
+import { getAggregatedSimulationResults } from '@/features/simulation/lib/result.ts';
 import ImportantSvg from '@/assets/important.svg?react';
 
 function AllResult() {

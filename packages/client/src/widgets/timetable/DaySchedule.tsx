@@ -4,8 +4,8 @@ import WireSchedules from '@/widgets/timetable/WireSchedules.tsx';
 import { ScheduleSlot } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleDrag } from '@/features/timetable/lib/useScheduleDrag.ts';
 import useScheduleModal, { useScheduleTimeslot } from '@/features/timetable/lib/useScheduleModal.ts';
-import { ScheduleAdapter } from '@/utils/timetable/adapter.ts';
-import { Day } from '@/utils/types.ts';
+import { ScheduleAdapter } from '@/entities/timetable/model/adapter.ts';
+import { Day } from '@/shared/model/types.ts';
 
 interface IDayScheduleProps {
   dayOfWeeks: Day;

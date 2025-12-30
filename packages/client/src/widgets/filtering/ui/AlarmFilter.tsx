@@ -4,7 +4,7 @@ import { useAlarmSearchStore } from '@/shared/model/useFilterStore.ts';
 import { useState } from 'react';
 import FilterBottomSheet from '@/widgets/filtering/ui/FilterBottomSheet';
 import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';
-import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains.ts';
+import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
 import GenericSingleSelectFilter from '@/features/filtering/ui/GenericSingleSelectFilter.tsx';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
 import AlarmButton from '@/features/filtering/ui/button/AlarmButton.tsx';

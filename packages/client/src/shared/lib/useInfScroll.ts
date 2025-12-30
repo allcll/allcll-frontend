@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Subject, Wishes } from '@/utils/types.ts';
+import { Subject, Wishes } from '@/shared/model/types.ts';
 import { Lecture } from '@/entities/subjects/model/useLectures.ts';
 
 const PAGE_SIZE = 45;

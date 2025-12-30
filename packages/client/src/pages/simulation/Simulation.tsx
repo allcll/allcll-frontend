@@ -10,12 +10,16 @@ import NoneRegisteredTable from '@/widgets/simulation/table/NoneRegisteredTable.
 import RegisteredTable from '@/widgets/simulation/table/RegisteredTable.tsx';
 import SimulationSearchForm from '@/widgets/simulation/SimulationSearchForm.tsx';
 import Stopwatch from '@/widgets/simulation/Stopwatch.tsx';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
+import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
+import useSimulationProcessStore from '@/features/simulation/model/useSimulationProcess.ts';
 import { useReloadSimulation } from '@/features/simulation/lib/useReloadSimulation.ts';
 import { useTimetables } from '@/entities/timetable/api/useTimetableSchedules.ts';
-import { checkOngoingSimulation, forceStopSimulation, SIMULATION_TIME_LIMIT } from '@/utils/simulation/simulation';
-import { VisitTutorial } from '@/utils/simulation/VisitTutorial.ts';
+import {
+  checkOngoingSimulation,
+  forceStopSimulation,
+  SIMULATION_TIME_LIMIT,
+} from '@/features/simulation/lib/simulation.ts';
+import { VisitTutorial } from '@/features/simulation/lib/VisitTutorial.ts';
 import SejongUI from '@allcll/sejong-ui';
 
 function Simulation() {

@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import { ScheduleMutateType, useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
-import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
+import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 import { fetchDeleteJsonOnAPI, fetchJsonOnAPI, fetchOnAPI } from '@/shared/api/api.ts';
-import { Day, Subject } from '@/utils/types.ts';
+import { Day, Subject } from '@/shared/model/types.ts';
 import { timeSleep } from '@/shared/lib/time.ts';
 
 export interface Timetable {

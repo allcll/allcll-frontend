@@ -1,4 +1,4 @@
-import { NonMajorSeats, PinnedSeats } from '@/utils/types';
+import { NonMajorSeats, PinnedSeats } from '@/shared/model/types.ts';
 
 type SSESeats = NonMajorSeats | PinnedSeats;
 

@@ -4,10 +4,10 @@ import { Filters, getAllSelectedLabels, initialFilters } from '@/shared/model/us
 import DepartmentFilter from '@/widgets/filtering/ui/DepartmentFilter.tsx';
 import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';
 import GenericSingleSelectFilter from '@/features/filtering/ui/GenericSingleSelectFilter.tsx';
-import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains.ts';
+import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
 import Chip from '@common/components/chip/Chip.tsx';
 import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
-import { FilterValueType } from '@/utils/types.ts';
+import { FilterValueType } from '@/shared/model/types.ts';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { Button, Flex } from '@allcll/allcll-ui';

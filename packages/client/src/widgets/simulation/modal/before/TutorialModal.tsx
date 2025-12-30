@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import YouTube from 'react-youtube';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
+import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
 import ArrowdownSvg from '@/assets/arrow-down-gray.svg?react';
 import useMobile from '@/shared/lib/useMobile.ts';
 import Checkbox from '@common/components/checkbox/Checkbox.tsx';
 import SejongUI from '../../../../../../sejong-ui';
-import { VisitTutorial } from '@/utils/simulation/VisitTutorial.ts';
+import { VisitTutorial } from '@/features/simulation/lib/VisitTutorial.ts';
 import { Dialog } from '@allcll/allcll-ui';
 
 const tutorialVideos = [

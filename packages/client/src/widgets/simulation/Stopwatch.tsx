@@ -1,6 +1,10 @@
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
-import { forceStopSimulation, getOngoingSimulation, SIMULATION_TIME_LIMIT } from '@/utils/simulation/simulation.ts';
+import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
+import useSimulationProcessStore from '@/features/simulation/model/useSimulationProcess.ts';
+import {
+  forceStopSimulation,
+  getOngoingSimulation,
+  SIMULATION_TIME_LIMIT,
+} from '@/features/simulation/lib/simulation.ts';
 import { useState, useEffect, useRef } from 'react';
 
 function Stopwatch() {

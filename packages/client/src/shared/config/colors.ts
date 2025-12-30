@@ -1,4 +1,4 @@
-import { APPLY_STATUS } from '@/utils/simulation/simulation.ts';
+import { APPLY_STATUS } from '@/features/simulation/lib/simulation.ts';
 
 export function getSeatColor(seats: number) {
   if (seats > 5) return 'text-green-500 bg-green-100';

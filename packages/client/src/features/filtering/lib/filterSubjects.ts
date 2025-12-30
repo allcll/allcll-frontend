@@ -1,10 +1,18 @@
 import { disassemble } from 'es-hangul';
-import { Day, Grade, RangeFilter, RangeMinMaxFilter, RemarkType, Subject, Wishes } from '../types';
-import { IPreRealSeat } from '@/entities/seat/api/usePreRealSeats';
+import {
+  Day,
+  Grade,
+  RangeFilter,
+  RangeMinMaxFilter,
+  RemarkType,
+  Subject,
+  Wishes,
+} from '../../../shared/model/types.ts';
+import { IPreRealSeat } from '@/entities/seat/api/usePreRealSeats.ts';
 import { usePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
-import useFavorites from '@/store/useFavorites.ts';
+import useFavorites from '@/features/filtering/model/useFavorites.ts';
 import { Filters, isFilterEmpty } from '@/shared/model/useFilterStore.ts';
-import { TimeslotAdapter } from '@/utils/timetable/adapter.ts';
+import { TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 import { Time } from '@/shared/lib/time.ts';
 import { IDayTimeItem } from '@/features/filtering/ui/DayTimeFilter.tsx';
 

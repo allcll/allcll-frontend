@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Wishes } from '@/utils/types.ts';
+import { Wishes } from '@/shared/model/types.ts';
 import useWishes, { InitWishes } from '@/entities/wishes/model/useWishes.ts';
 import { useJoinPreSeats } from '@/entities/subjectAggregate/lib/joinSubjects.ts';
 

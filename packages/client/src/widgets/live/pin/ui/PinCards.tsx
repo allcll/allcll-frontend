@@ -1,7 +1,7 @@
 import useInfScroll from '@/shared/lib/useInfScroll.ts';
 import SearchSvg from '@/assets/search.svg?react';
 import { WishesWithSeat } from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
-import { Wishes } from '@/utils/types.ts';
+import { Wishes } from '@/shared/model/types.ts';
 import { Flex, Grid } from '@allcll/allcll-ui';
 import PinCard from '@/features/live/pin/ui/PinCard';
 

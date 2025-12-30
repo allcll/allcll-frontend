@@ -1,11 +1,11 @@
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
-import useSimulationSubjectStore from '@/store/simulation/useSimulationSubject.ts';
-import { BUTTON_EVENT, triggerButtonEvent } from '@/utils/simulation/simulation.ts';
+import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
+import useSimulationProcessStore from '@/features/simulation/model/useSimulationProcess.ts';
+import useSimulationSubjectStore from '@/features/simulation/model/useSimulationSubject.ts';
+import { BUTTON_EVENT, triggerButtonEvent } from '@/features/simulation/lib/simulation.ts';
 import useLectures from '@/entities/subjects/model/useLectures.ts';
 import SejongUI, { type ColumnDefinition } from '../../../../../sejong-ui';
-import { SimulationSubject } from '@/utils/types.ts';
-import { formatSemesterAt, formatTMNum } from '@/utils/simulation/formators.ts';
+import { SimulationSubject } from '@/shared/model/types.ts';
+import { formatSemesterAt, formatTMNum } from '@/features/simulation/lib/formators.ts';
 
 const columns: ColumnDefinition<SimulationSubject>[] = [
   {

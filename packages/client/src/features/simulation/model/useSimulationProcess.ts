@@ -1,4 +1,4 @@
-import { SimulationStatusType, SimulationSubject } from '@/utils/types';
+import { SimulationStatusType, SimulationSubject } from '@/shared/model/types.ts';
 import { create } from 'zustand';
 
 interface SimulationState {

@@ -1,5 +1,5 @@
 import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
-import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains.ts';
+import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
 import { useScheduleSearchStore } from '@/shared/model/useFilterStore.ts';
 import { useState } from 'react';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';

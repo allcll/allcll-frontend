@@ -1,5 +1,5 @@
 import { fetchJsonOnPublic, fetchOnAPI } from '@/shared/api/api.ts';
-import { WishRegister } from '@/utils/types.ts';
+import { WishRegister } from '@/shared/model/types.ts';
 import { BadRequestError } from '@/shared/lib/errors.ts';
 
 export interface WishesApiResponse {

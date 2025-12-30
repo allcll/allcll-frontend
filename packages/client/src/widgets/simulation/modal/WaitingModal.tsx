@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import SejongUI from '../../../../../sejong-ui';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
+import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
+import useSimulationProcessStore from '@/features/simulation/model/useSimulationProcess.ts';
 
 function calculateBehindPeople(
   elapsedTime: number,

@@ -1,4 +1,4 @@
-import { Day } from '@/utils/types.ts';
+import { Day } from '@/shared/model/types.ts';
 
 interface TimeRange {
   startHour: string;

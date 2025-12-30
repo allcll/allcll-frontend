@@ -1,7 +1,7 @@
 // fixme: 타입 도메인 별로 쪼개서 타입 각자 관리하기
 
 import { Filters } from '@/shared/model/useFilterStore.ts';
-import { FilterDomainsType } from './filtering/filterDomains';
+import { FilterDomainsType } from '../../features/filtering/lib/filterDomains.ts';
 
 export type With<T, K> = T & {
   [P in keyof K]?: K[P];

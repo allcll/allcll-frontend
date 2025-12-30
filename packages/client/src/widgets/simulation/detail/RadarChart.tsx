@@ -15,7 +15,7 @@ import {
   getTotalSpeedRank,
   getAccuracyRank,
   getCaptchaSpeedRank,
-} from '@/utils/simulation/score.ts';
+} from '@/features/simulation/lib/score.ts';
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, ChartTooltip, Legend);
 

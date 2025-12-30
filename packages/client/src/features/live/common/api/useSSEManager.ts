@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AlarmNotification, onChangePinned } from '@/features/notification/lib/useNotification.ts';
-import { NonMajorSeats, PinnedSeats } from '@/utils/types.ts';
+import { NonMajorSeats, PinnedSeats } from '@/shared/model/types.ts';
 import useSSECondition, { RELOAD_INTERVAL, RELOAD_MAX_COUNT } from '@/features/live/board/model/useSSECondition';
 import { fetchEventSource } from '@/shared/api/api.ts';
 import { useSSEState } from '@/features/live/board/model/useSseState';

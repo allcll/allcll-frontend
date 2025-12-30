@@ -1,4 +1,4 @@
-import { Subject } from '@/utils/types.ts';
+import { Subject } from '@/shared/model/types.ts';
 import { QueryClient, useQuery } from '@tanstack/react-query';
 import { fetchSubjects, SubjectResponse } from '@/entities/subjects/api/subjects.ts';
 

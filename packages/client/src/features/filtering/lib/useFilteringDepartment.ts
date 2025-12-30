@@ -1,18 +1,24 @@
 import { disassemble } from 'es-hangul';
 import { useMemo } from 'react';
-import { DepartmentType } from '@/utils/types';
+import { DepartmentType } from '@/shared/model/types.ts';
 
 export type DepartmentCategory = '전체' | '전공' | '교양';
 
-interface useFilteringDepartmentProps{
-    category: DepartmentCategory;
-    setCategory: (category: DepartmentCategory) => void;
-    searchKeywords: string;
-    setSearchKeywords: (keywords: string) => void;
-    departments: DepartmentType[];
+interface useFilteringDepartmentProps {
+  category: DepartmentCategory;
+  setCategory: (category: DepartmentCategory) => void;
+  searchKeywords: string;
+  setSearchKeywords: (keywords: string) => void;
+  departments: DepartmentType[];
 }
 
-export function useFilteringDepartment({departments, category, setCategory, searchKeywords, setSearchKeywords}: Partial<useFilteringDepartmentProps> = {}) {
+export function useFilteringDepartment({
+  departments,
+  category,
+  setCategory,
+  searchKeywords,
+  setSearchKeywords,
+}: Partial<useFilteringDepartmentProps> = {}) {
   const departmentsList = useMemo<DepartmentType[]>(
     () => [{ departmentName: '전체학과', departmentCode: '' }, ...(departments ?? [])],
     [departments],

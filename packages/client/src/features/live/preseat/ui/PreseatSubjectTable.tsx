@@ -6,7 +6,7 @@ import useSearchLogging from '@/features/filtering/lib/useSearchLogging.ts';
 import { loggingDepartment } from '@/features/filtering/lib/useSearchRank.ts';
 import { WishesWithSeat } from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
 import { getSeatColor } from '@/shared/config/colors.ts';
-import { Wishes } from '@/utils/types.ts';
+import { Wishes } from '@/shared/model/types.ts';
 import { ZeroElementRow } from '@/shared/ui/ZeroElementRow';
 
 export interface ITableHead {

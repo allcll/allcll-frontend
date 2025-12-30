@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Subject } from '@/utils/types.ts';
+import { Subject } from '@/shared/model/types.ts';
 import usePreRealSeats, { InitPreRealSeat, IPreRealSeat } from '@/entities/seat/api/usePreRealSeats';
 import { InitSubject } from '@/entities/subjects/model/useSubject.ts';
 

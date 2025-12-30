@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Wishes } from '@/utils/types.ts';
+import { Wishes } from '@/shared/model/types.ts';
 
 let departmentRank: Record<string, number> | undefined;
 

@@ -8,8 +8,8 @@ import {
   getDoughnutTotalCount,
   getMajorDoughnutData,
   getUniversityDoughnutData,
-} from '@/utils/doughnut.ts';
-import { WishRegister } from '@/utils/types.ts';
+} from '@/features/simulation/lib/doughnut.ts';
+import { WishRegister } from '@/shared/model/types.ts';
 import { Flex, Heading, Label } from '@allcll/allcll-ui';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);

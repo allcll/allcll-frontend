@@ -2,8 +2,8 @@ import { HTMLAttributes } from 'react';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { IScheduleProps } from '@/widgets/timetable/Schedule.tsx';
-import { Day } from '@/utils/types.ts';
-import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
+import { Day } from '@/shared/model/types.ts';
+import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 
 interface IWireSchedulesProps extends HTMLAttributes<HTMLDivElement> {
   dayOfWeeks: Day;

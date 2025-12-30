@@ -1,4 +1,4 @@
-import { APPLY_STATUS } from '@/utils/simulation/simulation';
+import { APPLY_STATUS } from '@/features/simulation/lib/simulation.ts';
 import { create } from 'zustand';
 
 interface IUseSimulationSubjectStore {

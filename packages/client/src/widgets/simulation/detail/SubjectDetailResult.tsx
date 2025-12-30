@@ -1,5 +1,5 @@
 import { getStausColor } from '@/shared/config/colors.ts';
-import { APPLY_STATUS } from '@/utils/simulation/simulation.ts';
+import { APPLY_STATUS } from '@/features/simulation/lib/simulation.ts';
 import { ExtendedResultResponse } from '@/pages/simulation/DashboardDetail.tsx';
 
 function SubjectDetailResult({ result }: Readonly<{ result: ExtendedResultResponse }>) {

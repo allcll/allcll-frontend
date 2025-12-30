@@ -4,8 +4,8 @@ import useInfScroll from '@/shared/lib/useInfScroll.ts';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import { OfficialSchedule } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
-import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
-import { Subject } from '@/utils/types.ts';
+import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
+import { Subject } from '@/shared/model/types.ts';
 import FilteredSubjectCard from '@/features/timetable/ui/subject/TimetableSubjectCard.tsx';
 import { Flex } from '@allcll/allcll-ui';
 

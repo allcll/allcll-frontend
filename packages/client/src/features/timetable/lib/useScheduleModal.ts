@@ -12,7 +12,7 @@ import {
 } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { ScheduleMutateType, useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
-import { ScheduleAdapter, TimeslotAdapter } from '@/utils/timetable/adapter.ts';
+import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 
 const getInitCustomSchedule = () => new ScheduleAdapter().toUiData();
 let globalPrevTimetable: Timetable | undefined = undefined;

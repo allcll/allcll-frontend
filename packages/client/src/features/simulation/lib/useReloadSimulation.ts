@@ -1,8 +1,8 @@
-import { getSimulateStatus } from '@/utils/simulation/subjects.ts';
-import { findSubjectsById } from '@/utils/subjectPicker.ts';
-import { SimulationSubject } from '@/utils/types.ts';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess.ts';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal.ts';
+import { getSimulateStatus } from '@/features/simulation/lib/subjects.ts';
+import { findSubjectsById } from '@/features/simulation/lib/subjectPicker.ts';
+import { SimulationSubject } from '@/shared/model/types.ts';
+import useSimulationProcessStore from '@/features/simulation/model/useSimulationProcess.ts';
+import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
 import useLectures from '@/entities/subjects/model/useLectures.ts';
 
 export function useReloadSimulation() {
