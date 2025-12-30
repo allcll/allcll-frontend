@@ -1,5 +1,5 @@
-import BottomSheet from '../../shared/ui/bottomsheet/BottomSheet.tsx';
-import BottomSheetHeader from '../../shared/ui/bottomsheet/BottomSheetHeader.tsx';
+import BottomSheet from '../../../shared/ui/bottomsheet/BottomSheet.tsx';
+import BottomSheetHeader from '../../../shared/ui/bottomsheet/BottomSheetHeader.tsx';
 import { Filters, getAllSelectedLabels, initialFilters } from '@/shared/model/useFilterStore.ts';
 import DepartmentFilter from '@/features/live/pin/ui/DepartmentFilter.tsx';
 import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';
@@ -19,7 +19,7 @@ interface FilteringBottomSheetProps {
   resetFilter: () => void;
 }
 
-function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }: FilteringBottomSheetProps) {
+function FilterBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }: FilteringBottomSheetProps) {
   const handleClickSave = () => {
     onCloseFiltering();
   };
@@ -140,4 +140,4 @@ function FilteringBottomSheet({ onCloseFiltering, filters, setFilter, resetFilte
   );
 }
 
-export default FilteringBottomSheet;
+export default FilterBottomSheet;

@@ -1,6 +1,6 @@
 import { useDeferredValue } from 'react';
-import BottomSheet from '../../shared/ui/bottomsheet/BottomSheet.tsx';
-import BottomSheetHeader from '../../shared/ui/bottomsheet/BottomSheetHeader.tsx';
+import BottomSheet from '../../../../shared/ui/bottomsheet/BottomSheet.tsx';
+import BottomSheetHeader from '../../../../shared/ui/bottomsheet/BottomSheetHeader.tsx';
 import TimetableSubjectCards from '@/features/timetable/ui/subject/TimetableSubjectCards.tsx';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';

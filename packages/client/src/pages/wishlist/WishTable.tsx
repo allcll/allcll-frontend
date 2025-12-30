@@ -1,7 +1,7 @@
 import { useDeferredValue } from 'react';
 import { Helmet } from 'react-helmet';
 import Table from '@/widgets/wishlist/Table.tsx';
-import Searches from '@/widgets/live/Searches.tsx';
+import WishFilter from '@/widgets/filtering/ui/WishFilter';
 import GotoLive from '@/widgets/wishlist/GotoLive.tsx';
 import TableColorInfo from '@/shared/ui/TableColorInfo';
 import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
@@ -31,7 +31,7 @@ function WishTable() {
         <Flex gap="gap-4" direction="flex-col" className="mt-6">
           <Card>
             <GotoLive />
-            <Searches />
+            <WishFilter />
             <TableColorInfo />
           </Card>
 

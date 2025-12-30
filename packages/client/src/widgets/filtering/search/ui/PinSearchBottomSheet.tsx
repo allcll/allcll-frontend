@@ -7,14 +7,14 @@ import useWishes from '@/entities/wishes/model/useWishes.ts';
 import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
 
 import { initialFilters } from '@/shared/model/useFilterStore.ts';
-import SubjectCards from './PinCards';
+import PinCards from '../../../live/pin/ui/PinCards';
 import DepartmentFilter from '../../../../features/live/pin/ui/DepartmentFilter';
 
 interface ISearchBottomSheet {
   onCloseSearch: () => void;
 }
 
-function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
+function SearchPinBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
   const [searchInput, setSearchInput] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
 
@@ -55,7 +55,7 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
           </div>
 
           <div className="max-h-[70vh] min-h-0 px-2 overflow-y-auto touch-auto flex flex-col">
-            <SubjectCards
+            <PinCards
               className="flex flex-full overflow-auto max-h-screen"
               subjects={filteredData}
               isPending={isPending}
@@ -67,4 +67,4 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
   );
 }
 
-export default SearchBottomSheet;
+export default SearchPinBottomSheet;

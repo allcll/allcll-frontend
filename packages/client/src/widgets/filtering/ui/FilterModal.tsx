@@ -39,6 +39,7 @@ function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
       setFilter(filterKey, initialFilters[filterKey]);
     }
   };
+
   return (
     <Dialog title="상세 필터링" onClose={onClose} isOpen={true}>
       <Flex direction="flex-row">

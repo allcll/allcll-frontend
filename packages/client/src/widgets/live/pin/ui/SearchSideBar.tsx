@@ -7,7 +7,7 @@ import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.
 import useWishes from '@/entities/wishes/model/useWishes.ts';
 import XSvg from '@/assets/x.svg?react';
 import { Flex, Heading, IconButton } from '@allcll/allcll-ui';
-import SubjectCards from './PinCards';
+import PinCards from './PinCards';
 import DepartmentFilter from '../../../../features/live/pin/ui/DepartmentFilter';
 
 interface SearchSideBarProps {
@@ -61,7 +61,7 @@ const SearchSideBar: React.FC<SearchSideBarProps> = ({ isOpen, onClose }) => {
             />
           </Flex>
 
-          <SubjectCards
+          <PinCards
             className="flex flex-full overflow-auto max-h-screen"
             subjects={filteredData}
             isPending={isPending}

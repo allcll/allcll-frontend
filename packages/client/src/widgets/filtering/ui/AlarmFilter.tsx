@@ -2,7 +2,7 @@ import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import useMobile from '@/shared/lib/useMobile.ts';
 import { useAlarmSearchStore } from '@/shared/model/useFilterStore.ts';
 import { useState } from 'react';
-import FilteringBottomSheet from '@/widgets/bottomSheet/FilteringBottomSheet.tsx';
+import FilterBottomSheet from '@/widgets/filtering/ui/FilterBottomSheet';
 import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains.ts';
 import GenericSingleSelectFilter from '@/features/filtering/ui/GenericSingleSelectFilter.tsx';
@@ -12,7 +12,7 @@ import DepartmentSelectFilter from '@/features/filtering/ui/DepartmentFilter.tsx
 import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
 import FilterDelete from '@/features/filtering/ui/FilterDelete.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
-import FilteringModal from '@/widgets/filtering/ui/FilteringModal.tsx';
+import FilteringModal from '@/widgets/filtering/ui/FilterModal';
 import { Chip, Flex, Label } from '@allcll/allcll-ui';
 
 function SubjectSearches() {
@@ -57,7 +57,7 @@ function SubjectSearches() {
       )}
 
       {isBottomSheetOpen && (
-        <FilteringBottomSheet
+        <FilterBottomSheet
           onCloseFiltering={() => setIsBottomSheetOpen(false)}
           filters={filters}
           setFilter={setFilters}

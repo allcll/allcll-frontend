@@ -8,14 +8,14 @@ import useBackSignal from '@/shared/lib/useBackSignal.ts';
 import { FilterValueType, Wishes } from '@/utils/types.ts';
 import ListSvg from '@/assets/list.svg?react';
 import useMobile from '@/shared/lib/useMobile.ts';
-import FilteringBottomSheet from '@/widgets/bottomSheet/FilteringBottomSheet.tsx';
-import GenericMultiSelectFilter from '../../features/filtering/ui/GenericMultiSelectFilter.tsx';
-import GenericSingleSelectFilter from '../../features/filtering/ui/GenericSingleSelectFilter.tsx';
+import FilterBottomSheet from '@/widgets/filtering/ui/FilterBottomSheet.tsx';
+import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
+import GenericSingleSelectFilter from '../../../features/filtering/ui/GenericSingleSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains.ts';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
-import DepartmentSelectFilter from '../../features/filtering/ui/DepartmentFilter.tsx';
-import FilterDelete from '../../features/filtering/ui/FilterDelete.tsx';
-import FilteringModal from '../filtering/ui/FilteringModal.tsx';
+import DepartmentSelectFilter from '../../../features/filtering/ui/DepartmentFilter.tsx';
+import FilterDelete from '../../../features/filtering/ui/FilterDelete.tsx';
+import FilteringModal from './FilterModal.tsx';
 import usePreSeatGate from '@/features/live/preseat/lib/usePreSeatGate.ts';
 import useWishesPreSeats from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
 import { IconButton, Flex, Chip, Dialog } from '@allcll/allcll-ui';
@@ -28,7 +28,7 @@ export interface WishSearchParams {
   isFavorite: boolean;
 }
 
-function Searches() {
+function WishFilter() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
@@ -92,7 +92,7 @@ function Searches() {
       )}
 
       {isBottomSheetOpen && (
-        <FilteringBottomSheet
+        <FilterBottomSheet
           onCloseFiltering={() => setIsBottomSheetOpen(false)}
           filters={filters}
           setFilter={setFilter}
@@ -242,4 +242,4 @@ function LiveTableTitleModal({ initialItems, onChange, onClose }: ITableTitleMod
   );
 }
 
-export default Searches;
+export default WishFilter;

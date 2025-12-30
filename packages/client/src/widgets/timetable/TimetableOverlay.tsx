@@ -1,7 +1,7 @@
 import { Button } from '@allcll/allcll-ui';
 import AddSvg from '@/assets/add.svg?react';
-import SearchBottomSheet from '@/widgets/bottomSheet/SearchBottomSheet.tsx';
-import FilteringBottomSheet from '@/widgets/bottomSheet/FilteringBottomSheet.tsx';
+import SearchBottomSheet from '@/widgets/filtering/search/ui/ScheduleSearchBottomSheet';
+import FilterBottomSheet from '@/widgets/filtering/ui/FilterBottomSheet';
 import FormBottomSheet from '@/widgets/bottomSheet/FormBottomSheet.tsx';
 import ScheduleInfoBottomSheet from '@/widgets/bottomSheet/ScheduleDetailBottomSheet.tsx';
 import ScheduleFormModal from '@/features/timetable/ui/ScheduleFormModal.tsx';
@@ -46,7 +46,7 @@ function MobileTimetableOverlay() {
       </RenderIf>
 
       <RenderIf when={bottomSheetType.filter.isOpen}>
-        <FilteringBottomSheet
+        <FilterBottomSheet
           onCloseFiltering={handleCloseFiltering}
           filters={filters}
           setFilter={setFilter}
