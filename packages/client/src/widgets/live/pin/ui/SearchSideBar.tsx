@@ -8,7 +8,7 @@ import useWishes from '@/entities/wishes/model/useWishes.ts';
 import XSvg from '@/assets/x.svg?react';
 import { Flex, Heading, IconButton } from '@allcll/allcll-ui';
 import PinCards from './PinCards';
-import DepartmentFilter from '../../../../features/live/pin/ui/DepartmentFilter';
+import DepartmentFilter from '../../../filtering/ui/DepartmentFilter';
 
 interface SearchSideBarProps {
   isOpen: boolean;

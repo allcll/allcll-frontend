@@ -3,7 +3,7 @@ import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains.ts
 import { useScheduleSearchStore } from '@/shared/model/useFilterStore.ts';
 import { useState } from 'react';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
-import DepartmentSelectFilter from '../../../features/filtering/ui/DepartmentFilter.tsx';
+import DepartmentFilterDesktop from '../../../features/filtering/ui/DepartmentFilterDesktop.tsx';
 import FilterDelete from '../../../features/filtering/ui/FilterDelete.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import FilteringModal from './FilterModal.tsx';
@@ -23,7 +23,7 @@ function ScheduleFilter() {
   return (
     <Flex direction="flex-wrap" align="items-center" gap="gap-2" className="w-full">
       <FilteringButton handleOpenFilter={() => setIsFilterModalOpen(true)} />
-      <DepartmentSelectFilter setFilter={setFilters} selectedValue={filters.department} />
+      <DepartmentFilterDesktop setFilter={setFilters} selectedValue={filters.department} />
 
       <GenericMultiSelectFilter
         filterKey="days"

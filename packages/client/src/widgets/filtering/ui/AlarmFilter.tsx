@@ -8,7 +8,7 @@ import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains.ts
 import GenericSingleSelectFilter from '@/features/filtering/ui/GenericSingleSelectFilter.tsx';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
 import AlarmButton from '@/features/filtering/ui/button/AlarmButton.tsx';
-import DepartmentSelectFilter from '@/features/filtering/ui/DepartmentFilter.tsx';
+import DepartmentFilterDesktop from '@/features/filtering/ui/DepartmentFilterDesktop';
 import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
 import FilterDelete from '@/features/filtering/ui/FilterDelete.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
@@ -67,7 +67,7 @@ function SubjectSearches() {
 
       <Flex align="items-center" direction="flex-wrap" gap="gap-2">
         <Flex direction="flex-wrap" gap="gap-2" className="hidden md:flex">
-          <DepartmentSelectFilter selectedValue={filters.department ?? ''} setFilter={setFilters} />
+          <DepartmentFilterDesktop selectedValue={filters.department ?? ''} setFilter={setFilters} />
           <DayFilter times={time} setFilter={setFilters} />
 
           <GenericMultiSelectFilter

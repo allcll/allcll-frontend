@@ -13,7 +13,7 @@ import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMult
 import GenericSingleSelectFilter from '../../../features/filtering/ui/GenericSingleSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/utils/filtering/filterDomains.ts';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
-import DepartmentSelectFilter from '../../../features/filtering/ui/DepartmentFilter.tsx';
+import DepartmentFilterDesktop from '../../../features/filtering/ui/DepartmentFilterDesktop.tsx';
 import FilterDelete from '../../../features/filtering/ui/FilterDelete.tsx';
 import FilteringModal from './FilterModal.tsx';
 import usePreSeatGate from '@/features/live/preseat/lib/usePreSeatGate.ts';
@@ -111,7 +111,7 @@ function WishFilter() {
 
       <div className="flex items-center flex-wrap mt-2 gap-2">
         <div className="hidden md:flex flex-wrap gap-2">
-          <DepartmentSelectFilter setFilter={setFilter} selectedValue={filters.department ?? ''} />
+          <DepartmentFilterDesktop setFilter={setFilter} selectedValue={filters.department ?? ''} />
 
           {isWishesAvailable && (
             <GenericSingleSelectFilter

@@ -8,7 +8,7 @@ import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
 
 import { initialFilters } from '@/shared/model/useFilterStore.ts';
 import PinCards from '../../../live/pin/ui/PinCards';
-import DepartmentFilter from '../../../../features/live/pin/ui/DepartmentFilter';
+import DepartmentFilter from '../../ui/DepartmentFilter';
 
 interface ISearchBottomSheet {
   onCloseSearch: () => void;
