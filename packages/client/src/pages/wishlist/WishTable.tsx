@@ -53,7 +53,12 @@ function WishTableComponent() {
   const filters = useWishSearchStore(state => state.filters);
   const filteredData = useDeferredValue(useFilteringSubjects(data ?? [], filters));
 
-  return <Table data={filteredData} isPending={isPending} />;
+  const placeholder = {
+    title: '검색 결과가 없습니다.',
+    description: '다른 검색어로 다시 시도해보세요.',
+  };
+
+  return <Table data={filteredData} isPending={isPending} placeholder={placeholder} />;
 }
 
 export default WishTable;

@@ -18,13 +18,20 @@ import { getSubjectColorClass } from '@/entities/subjects/ui/subjectColor.ts';
 interface ITable {
   data: Wishes[] | (Wishes & IPreRealSeat)[] | undefined;
   isPending?: boolean;
+  placeholder: ZeroElementProps;
 }
 
 interface IBody extends ITable {
   headers: { title: string; key: string }[];
+  placeholder: ZeroElementProps;
 }
 
-function Table({ data, isPending = false }: Readonly<ITable>) {
+interface ZeroElementProps {
+  title: string;
+  description?: string;
+}
+
+function Table({ data, isPending = false, placeholder }: Readonly<ITable>) {
   const headers = useHeaderSelector(data);
 
   return (
@@ -39,13 +46,13 @@ function Table({ data, isPending = false }: Readonly<ITable>) {
         </tr>
       </thead>
       <tbody>
-        <TableBody headers={headers} data={data} isPending={isPending} />
+        <TableBody headers={headers} data={data} isPending={isPending} placeholder={placeholder} />
       </tbody>
     </table>
   );
 }
 
-function TableBody({ headers, data, isPending = false }: Readonly<IBody>) {
+function TableBody({ headers, data, isPending = false, placeholder }: Readonly<IBody>) {
   const { visibleRows } = useInfScroll(data ?? [], 'selector');
   const wishes = data ? data.slice(0, visibleRows) : [];
 
@@ -54,7 +61,7 @@ function TableBody({ headers, data, isPending = false }: Readonly<IBody>) {
   }
 
   if (!data.length) {
-    return <ZeroElementRow col={headers.length} />;
+    return <ZeroElementRow col={headers.length} {...placeholder} />;
   }
 
   return (

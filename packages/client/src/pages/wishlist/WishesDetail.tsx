@@ -115,8 +115,9 @@ interface IRecommendationTableProps {
 
 function RecommendationTable({ subjectId }: IRecommendationTableProps) {
   const { data: recommend } = useRecommendWishes(subjectId);
+  const placeholder = { title: '추천할 대체 과목이 없습니다.' };
 
-  return <Table data={recommend ?? []} />;
+  return <Table data={recommend ?? []} placeholder={placeholder} />;
 }
 
 export default WishesDetail;
