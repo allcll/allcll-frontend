@@ -9,7 +9,7 @@ function DialogContents({ children, width, height }: IDialogContents) {
 
   return (
     <div
-      className={`z-60 flex flex-col justify-center item bg-white min-w-80 rounded-2xl sm:${dialogSize}`}
+      className={`z-60 flex flex-col justify-center item bg-white min-w-80 rounded-lg sm:${dialogSize}`}
       onClick={e => e.stopPropagation()}
     >
       {children}
