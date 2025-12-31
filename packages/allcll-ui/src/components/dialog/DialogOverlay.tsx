@@ -15,7 +15,7 @@ function DialogOverlay({ children, onClose }: IDialogOverlay) {
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black/20 z-50"
+      className="fixed inset-0 flex items-center bg-transparent justify-center z-50"
       role="none"
       ref={containerRef}
       onClick={handleBackdropClick}
