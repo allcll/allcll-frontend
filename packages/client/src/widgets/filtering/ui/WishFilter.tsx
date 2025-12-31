@@ -1,11 +1,8 @@
 import { useState } from 'react';
 import StarIcon from '@/shared/ui/svgs/StarIcon.tsx';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
-import DraggableList from '@/features/live/board/ui/DraggableList.tsx';
 import { Filters, getAllSelectedLabels, initialFilters, useWishSearchStore } from '@/shared/model/useFilterStore.ts';
-import { IPreRealSeat } from '@/entities/seat/api/usePreRealSeats.ts';
-import useBackSignal from '@/shared/lib/useBackSignal.ts';
-import { FilterValueType, Wishes } from '@/shared/model/types.ts';
+import { FilterValueType } from '@/shared/model/types.ts';
 import ListSvg from '@/assets/list.svg?react';
 import useMobile from '@/shared/lib/useMobile.ts';
 import FilterBottomSheet from '@/widgets/filtering/ui/FilterBottomSheet.tsx';
@@ -18,9 +15,9 @@ import FilterDelete from '../../../features/filtering/ui/FilterDelete.tsx';
 import FilteringModal from './FilterModal.tsx';
 import usePreSeatGate from '@/features/live/preseat/lib/usePreSeatGate.ts';
 import useWishesPreSeats from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
-import { IconButton, Flex, Chip, Dialog } from '@allcll/allcll-ui';
+import { IconButton, Flex, Chip } from '@allcll/allcll-ui';
 import { useWishesTableStore } from '@/features/wish/model/useWishTableColumnStore.ts';
-import { HeadTitle } from '@/shared/model/createColumnStore.ts';
+import TableTitleSettingModal from '@/shared/ui/TableTitleSettingModal.tsx';
 
 export interface WishSearchParams {
   searchInput: string;
@@ -80,7 +77,7 @@ function WishFilter() {
   return (
     <div className="flex flex-wrap gap-2 mt-4 lg:flex-wrap lg:flex-row lg:items-center lg:gap-y-0 lg:gap-x-2">
       {isModalOpen && (
-        <LiveTableTitleModal
+        <TableTitleSettingModal
           initialItems={tableTitles}
           onChange={setTableTitles}
           onClose={() => setIsModalOpen(false)}
@@ -218,27 +215,6 @@ function WishFilter() {
         </Flex>
       </div>
     </div>
-  );
-}
-
-interface ITableTitleModal {
-  initialItems: HeadTitle<Wishes & IPreRealSeat>[];
-  onChange: (items: HeadTitle<Wishes & IPreRealSeat>[]) => void;
-  onClose: () => void;
-}
-
-function LiveTableTitleModal({ initialItems, onChange, onClose }: ITableTitleModal) {
-  useBackSignal({
-    enabled: true,
-    onClose: onClose,
-  });
-
-  return (
-    <Dialog title="테이블 설정" onClose={onClose} isOpen={true}>
-      <div className="p-4">
-        <DraggableList initialItems={initialItems} onChange={onChange} />
-      </div>
-    </Dialog>
   );
 }
 

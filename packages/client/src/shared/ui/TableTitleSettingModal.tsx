@@ -1,15 +1,15 @@
 import { Dialog } from '@allcll/allcll-ui';
 import useBackSignal from '@/shared/lib/useBackSignal';
-import DraggableList from '@/features/live/board/ui/DraggableList';
+import DraggableList from '@/shared/ui/DraggableList';
 import { HeadTitle } from '@/shared/model/createColumnStore';
 
-interface ITableTitleModal<T> {
+interface ITableTitleSettingModal<T> {
   initialItems: HeadTitle<T>[];
   onChange: (items: HeadTitle<T>[]) => void;
   onClose: () => void;
 }
 
-function LiveTableTitleModal<T>({ initialItems, onChange, onClose }: ITableTitleModal<T>) {
+function TableTitleSettingModal<T>({ initialItems, onChange, onClose }: ITableTitleSettingModal<T>) {
   useBackSignal({
     enabled: true,
     onClose: onClose,
@@ -24,4 +24,4 @@ function LiveTableTitleModal<T>({ initialItems, onChange, onClose }: ITableTitle
   );
 }
 
-export default LiveTableTitleModal;
+export default TableTitleSettingModal;

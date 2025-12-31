@@ -16,7 +16,7 @@ import { getDateLocale } from '@/shared/lib/time.ts';
 import { SSE_STATE, useSSEState } from '@/features/live/board/model/useSseState.ts';
 import { useLiveTableStore } from '@/features/live/board/model/useLiveTableColumnStore.ts';
 import { Card, Flex, Heading, IconButton } from '@allcll/allcll-ui';
-import LiveTableTitleModal from '@/widgets/live/board/ui/LiveTableTitleModal.tsx';
+import LiveTableTitleModal from '@/shared/ui/TableTitleSettingModal.tsx';
 import { HeadTitle } from '@/shared/model/createColumnStore.ts';
 
 interface IRealtimeTable {
