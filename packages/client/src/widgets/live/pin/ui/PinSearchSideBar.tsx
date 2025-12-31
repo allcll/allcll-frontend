@@ -7,7 +7,7 @@ import useWishes from '@/entities/wishes/model/useWishes';
 import SearchBox from '@/features/filtering/ui/SearchBox';
 import useSearchRank from '@/features/filtering/lib/useSearchRank';
 import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects';
-import DepartmentFilter from '@/widgets/filtering/ui/DepartmentFilter';
+import DepartmentFilter from '@/entities/departments/ui/DepartmentSelect';
 import PinCards from './PinCards';
 
 interface PinSearchSideBarProps {

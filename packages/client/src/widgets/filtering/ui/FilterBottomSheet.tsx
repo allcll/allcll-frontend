@@ -1,7 +1,7 @@
 import BottomSheet from '../../../shared/ui/bottomsheet/BottomSheet.tsx';
 import BottomSheetHeader from '../../../shared/ui/bottomsheet/BottomSheetHeader.tsx';
 import { Filters, getAllSelectedLabels, initialFilters } from '@/shared/model/useFilterStore.ts';
-import DepartmentFilter from '@/widgets/filtering/ui/DepartmentFilter.tsx';
+import DepartmentSelect from '@/entities/departments/ui/DepartmentSelect.tsx';
 import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';
 import GenericSingleSelectFilter from '@/features/filtering/ui/GenericSingleSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
@@ -12,14 +12,14 @@ import useSubject from '@/entities/subjects/model/useSubject.ts';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { Button, Flex } from '@allcll/allcll-ui';
 
-interface FilteringBottomSheetProps {
+interface FilterBottomSheetProps {
   onCloseFiltering: () => void;
   filters: Filters;
   setFilter: (field: keyof Filters, value: Filters[keyof Filters]) => void;
   resetFilter: () => void;
 }
 
-function FilterBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }: FilteringBottomSheetProps) {
+function FilterBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }: FilterBottomSheetProps) {
   const handleClickSave = () => {
     onCloseFiltering();
   };
@@ -65,7 +65,7 @@ function FilterBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }
         </Flex>
 
         <Flex direction="flex-col" justify="justify-center" gap="gap-8" className="w-full">
-          <DepartmentFilter
+          <DepartmentSelect
             className="cursor-pointer border-gray-100 rounded-sm py-1 text-sm"
             value={filters.department}
             onChange={e => setFilter('department', e.target.value)}

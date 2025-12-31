@@ -7,7 +7,7 @@ import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDom
 import GenericSingleSelectFilter from '@/features/filtering/ui/GenericSingleSelectFilter.tsx';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
 import AlarmButton from '@/features/filtering/ui/button/AlarmButton.tsx';
-import DepartmentFilterDesktop from '@/features/filtering/ui/DepartmentFilterDesktop';
+import DepartmentFilter from '@/features/filtering/ui/DepartmentFilter';
 import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
 import FilterDelete from '@/features/filtering/ui/FilterDelete.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
@@ -68,7 +68,7 @@ function AlarmFilter() {
 
       <Flex align="items-center" direction="flex-wrap" gap="gap-2">
         <Flex direction="flex-wrap" gap="gap-2" className="hidden md:flex">
-          <DepartmentFilterDesktop selectedValue={filters.department ?? ''} setFilter={setFilters} />
+          <DepartmentFilter selectedValue={filters.department ?? ''} setFilter={setFilters} />
           <DayFilter times={time} setFilter={setFilters} />
 
           <GenericMultiSelectFilter

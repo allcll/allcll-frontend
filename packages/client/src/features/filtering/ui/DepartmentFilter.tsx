@@ -8,12 +8,12 @@ import { Button, Flex } from '@allcll/allcll-ui';
 import ResetSvg from '@/assets/reset-blue.svg?react';
 import { useFilteringDepartment } from '../lib/useFilteringDepartment';
 
-interface IDepartmentFilterDesktop {
+interface IDepartmentFilter {
   setFilter: (key: keyof Filters, value: string | null) => void;
   selectedValue: string;
 }
 
-function DepartmentFilterDesktop({ setFilter, selectedValue }: IDepartmentFilterDesktop) {
+function DepartmentFilter({ setFilter, selectedValue }: IDepartmentFilter) {
   const { data: departments } = useDepartments();
   const [searchKeywords, setSearchKeywords] = useState('');
   const [category, setCategory] = useState<'전체' | '전공' | '교양'>('전공');
@@ -73,7 +73,7 @@ function DepartmentFilterDesktop({ setFilter, selectedValue }: IDepartmentFilter
   );
 }
 
-export default DepartmentFilterDesktop;
+export default DepartmentFilter;
 
 interface ISelectSubject {
   departments: DepartmentType[];

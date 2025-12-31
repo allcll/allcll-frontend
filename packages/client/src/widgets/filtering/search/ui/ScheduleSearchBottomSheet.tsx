@@ -15,7 +15,7 @@ interface ISearchBottomSheet {
   onCloseSearch: () => void;
 }
 
-function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
+function ScheduleSearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
   const { data: subjects = [], isPending } = useSubject();
   const { openScheduleModal } = useScheduleModal();
   const filters = useScheduleSearchStore(state => state.filters);
@@ -65,4 +65,4 @@ function SearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
   );
 }
 
-export default SearchBottomSheet;
+export default ScheduleSearchBottomSheet;

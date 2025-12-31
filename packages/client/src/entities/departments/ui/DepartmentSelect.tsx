@@ -2,13 +2,13 @@ import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { Label } from '@allcll/allcll-ui';
 import React from 'react';
 
-interface IDepartmentFilter
+interface IDepartmentSelect
   extends React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> {
   value?: string;
   defaultValue?: string;
 }
 
-function DepartmentFilter({ id, className, value, defaultValue = '전체', ...props }: IDepartmentFilter) {
+function DepartmentSelect({ id, className, value, defaultValue = '전체', ...props }: IDepartmentSelect) {
   const { data: departments } = useDepartments();
   const departmentsList = [{ departmentName: defaultValue, departmentCode: '' }, ...(departments ?? [])];
 
@@ -35,4 +35,4 @@ function DepartmentFilter({ id, className, value, defaultValue = '전체', ...pr
   );
 }
 
-export default DepartmentFilter;
+export default DepartmentSelect;

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import useDepartments, { Department } from '@/entities/departments/api/useDepartments.ts';
-import DepartmentFilter from '@/widgets/filtering/ui/DepartmentFilter';
+import DepartmentSelect from '@/entities/departments/ui/DepartmentSelect';
 import { getDepartmentRanks } from '@/features/filtering/lib/useSearchRank.ts';
 
 interface ISelectDepartment {
@@ -38,7 +38,7 @@ function SelectDepartment({ department, setDepartment }: ISelectDepartment) {
     <div className="flex flex-col gap-2">
       <h2 className="text-left font-semibold text-sm sm:text-md">학과 검색</h2>
 
-      <DepartmentFilter
+      <DepartmentSelect
         className="cursor-pointer rounded-sm px-2 py-1 w-50 sm:w-120 bg-white mb-4"
         value={department.departmentCode}
         onChange={onSelectDepartment}

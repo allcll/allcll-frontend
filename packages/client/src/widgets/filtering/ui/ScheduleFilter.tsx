@@ -4,7 +4,7 @@ import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDom
 import { useScheduleSearchStore } from '@/shared/model/useFilterStore.ts';
 import { useState } from 'react';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
-import DepartmentFilterDesktop from '../../../features/filtering/ui/DepartmentFilterDesktop.tsx';
+import DepartmentFilter from '../../../features/filtering/ui/DepartmentFilter.tsx';
 import FilterDelete from '../../../features/filtering/ui/FilterDelete.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import { Flex } from '@allcll/allcll-ui';
@@ -24,7 +24,7 @@ function ScheduleFilter() {
   return (
     <Flex direction="flex-wrap" align="items-center" gap="gap-2" className="w-full">
       <FilteringButton handleOpenFilter={() => setIsFilterModalOpen(true)} />
-      <DepartmentFilterDesktop setFilter={setFilters} selectedValue={filters.department} />
+      <DepartmentFilter setFilter={setFilters} selectedValue={filters.department} />
 
       <GenericMultiSelectFilter
         filterKey="days"
