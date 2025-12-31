@@ -1,4 +1,4 @@
-import NoneLayout from '@/widgets/live/errors/ui/NoneLayout';
+import NoneLayout from '@/shared/ui/NoneLayout';
 import ListSVG from '@/assets/list.svg?react';
 
 function ZeroListError() {
