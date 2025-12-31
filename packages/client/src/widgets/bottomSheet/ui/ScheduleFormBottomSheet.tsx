@@ -1,13 +1,13 @@
 import React from 'react';
-import BottomSheet from '../../shared/ui/bottomsheet/BottomSheet.tsx';
-import BottomSheetHeader from '../../shared/ui/bottomsheet/BottomSheetHeader.tsx';
-import ScheduleFormContent from '../../features/timetable/ui/ScheduleFormContent.tsx';
 import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib/useScheduleModal.ts';
 import { ScheduleMutateType } from '@/features/timetable/model/useScheduleState.ts';
 import { Button, Flex } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile.ts';
+import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
+import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader';
+import ScheduleFormContent from '@/features/timetable/ui/ScheduleFormContent';
 
-function FormBottomSheet() {
+function ScheduleFormBottomSheet() {
   const { modalActionType } = useScheduleModalData();
   const { cancelSchedule, deleteSchedule } = useScheduleModal();
 
@@ -38,4 +38,4 @@ function FormBottomSheet() {
   );
 }
 
-export default FormBottomSheet;
+export default ScheduleFormBottomSheet;

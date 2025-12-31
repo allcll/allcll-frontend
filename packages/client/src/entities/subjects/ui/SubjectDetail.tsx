@@ -1,7 +1,7 @@
 import React from 'react';
 import { InitWishes } from '@/entities/wishes/model/useWishes.ts';
 import { WishesWithSeat } from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
-import usePreSeatGate from '@/features/live/preseat/lib/usePreSeatGate.ts';
+import usePreSeatGate from '@/widgets/live/preSeat/model/usePreSeatGate';
 import { getSeatColor } from '@/shared/config/colors.ts';
 import { Flex } from '@allcll/allcll-ui';
 

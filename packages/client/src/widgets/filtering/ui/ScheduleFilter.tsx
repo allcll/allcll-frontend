@@ -1,3 +1,4 @@
+//TODO:  widget/timetable로 옮기기
 import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
 import { useScheduleSearchStore } from '@/shared/model/useFilterStore.ts';
@@ -6,8 +7,8 @@ import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx'
 import DepartmentFilterDesktop from '../../../features/filtering/ui/DepartmentFilterDesktop.tsx';
 import FilterDelete from '../../../features/filtering/ui/FilterDelete.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
-import FilteringModal from './FilterModal.tsx';
 import { Flex } from '@allcll/allcll-ui';
+import DetailFilterModal from '@/features/filtering/ui/DetailFilterModal.tsx';
 
 function ScheduleFilter() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
@@ -75,7 +76,7 @@ function ScheduleFilter() {
 
       <FilterDelete filters={filters} resetFilter={resetFilter} />
       {isFilterModalOpen && (
-        <FilteringModal filterStore={useScheduleSearchStore} onClose={() => setIsFilterModalOpen(false)} />
+        <DetailFilterModal filterStore={useScheduleSearchStore} onClose={() => setIsFilterModalOpen(false)} />
       )}
     </Flex>
   );

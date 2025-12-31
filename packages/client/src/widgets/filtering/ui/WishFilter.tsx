@@ -1,3 +1,4 @@
+//TODO:  widget/wish로 옮기기
 import { useState } from 'react';
 import StarIcon from '@/shared/ui/svgs/StarIcon.tsx';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
@@ -12,12 +13,12 @@ import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDom
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
 import DepartmentFilterDesktop from '../../../features/filtering/ui/DepartmentFilterDesktop.tsx';
 import FilterDelete from '../../../features/filtering/ui/FilterDelete.tsx';
-import FilteringModal from './FilterModal.tsx';
-import usePreSeatGate from '@/features/live/preseat/lib/usePreSeatGate.ts';
+import usePreSeatGate from '@/widgets/live/preSeat/model/usePreSeatGate.ts';
 import useWishesPreSeats from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
 import { IconButton, Flex, Chip } from '@allcll/allcll-ui';
 import { useWishesTableStore } from '@/features/wish/model/useWishTableColumnStore.ts';
 import TableTitleSettingModal from '@/shared/ui/TableTitleSettingModal.tsx';
+import DetailFilterModal from '@/features/filtering/ui/DetailFilterModal.tsx';
 
 export interface WishSearchParams {
   searchInput: string;
@@ -85,7 +86,7 @@ function WishFilter() {
       )}
 
       {isFilterModalOpen && (
-        <FilteringModal filterStore={useWishSearchStore} onClose={() => setIsFilterModalOpen(false)} />
+        <DetailFilterModal filterStore={useWishSearchStore} onClose={() => setIsFilterModalOpen(false)} />
       )}
 
       {isBottomSheetOpen && (

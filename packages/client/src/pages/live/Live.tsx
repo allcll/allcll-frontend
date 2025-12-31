@@ -1,13 +1,13 @@
-import usePreSeatGate from '@/features/live/preseat/lib/usePreSeatGate';
 import useMobile from '@/shared/lib/useMobile';
-import useAlarmModalStore from '@/features/live/pin/model/useAlarmModalStore';
-import SearchBottomSheet from '@/widgets/filtering/search/ui/ScheduleSearchBottomSheet';
 import LivePinnedCourses from '@/widgets/live/pin/ui/LivePinnedCourses';
-import PreSeat from '@/widgets/live/preSeat/ui/PreSeat';
-import RealtimeTable from '@/features/live/board/ui/RealtimeTable';
-import SearchSideBar from '@/widgets/live/pin/ui/SearchSideBar';
+import PreSeat from '@/widgets/live/preSeat/ui/PreSeatComponent';
+import PinSearchSideBar from '@/widgets/live/pin/ui/PinSearchSideBar';
 import { Flex, Grid, Heading, SupportingText } from '@allcll/allcll-ui';
 import { Helmet } from 'react-helmet';
+import PinSearchBottomSheet from '@/widgets/live/pin/ui/PinSearchBottomSheet';
+import RealtimeTable from '@/widgets/live/board/ui/RealtimeTable';
+import useAlarmModalStore from '@/features/live/pin/model/useAlarmModalStore';
+import usePreSeatGate from '@/widgets/live/preSeat/model/usePreSeatGate';
 
 function Live() {
   const isSearchOpen = useAlarmModalStore(state => state.isSearchOpen);
@@ -54,16 +54,20 @@ function Live() {
 
 export default Live;
 
-function SearchOverlay({ isMobile, isOpen, onClose }: { isMobile: boolean; isOpen: boolean; onClose: () => void }) {
-  if (!isOpen) return null;
-
-  return isMobile ? <SearchBottomSheet onCloseSearch={onClose} /> : <SearchSideBar isOpen={isOpen} onClose={onClose} />;
-}
-
 function LiveMainContent({ isPreSeatAvailable }: { isPreSeatAvailable: boolean }) {
   if (isPreSeatAvailable) {
     return <PreSeat />;
   }
 
   return <RealtimeTable title="교양과목" />;
+}
+
+function SearchOverlay({ isMobile, isOpen, onClose }: { isMobile: boolean; isOpen: boolean; onClose: () => void }) {
+  if (!isOpen) return null;
+
+  return isMobile ? (
+    <PinSearchBottomSheet onCloseSearch={onClose} />
+  ) : (
+    <PinSearchSideBar isOpen={isOpen} onClose={onClose} />
+  );
 }

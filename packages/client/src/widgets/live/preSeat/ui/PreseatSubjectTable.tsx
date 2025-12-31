@@ -114,7 +114,6 @@ function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
       <td className="px-2 py-2 text-center">{subject.departmentName}</td>
       <td className="px-2 py-2 text-center">{subject.subjectName}</td>
       <td className="px-2 py-2 text-center">{subject.professorName}</td>
-      {/*<td className="px-4 py-2 text-center">{-1}</td>*/}
       {subject.seat !== undefined ? (
         <td className="px-2 py-2 text-center">
           {subject.seat >= 0 ? (

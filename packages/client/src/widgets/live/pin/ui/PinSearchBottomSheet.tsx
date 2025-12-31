@@ -1,20 +1,19 @@
 import { useDeferredValue, useState } from 'react';
-import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet.tsx';
 import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader.tsx';
-import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
 import useWishes from '@/entities/wishes/model/useWishes.ts';
-import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
-
 import { initialFilters } from '@/shared/model/useFilterStore.ts';
-import PinCards from '../../../live/pin/ui/PinCards';
-import DepartmentFilter from '../../ui/DepartmentFilter';
+import PinCards from './PinCards';
+import DepartmentFilter from '../../../filtering/ui/DepartmentFilter';
+import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
+import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
+import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 
 interface ISearchBottomSheet {
   onCloseSearch: () => void;
 }
 
-function SearchPinBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
+function PinSearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
   const [searchInput, setSearchInput] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
 
@@ -67,4 +66,4 @@ function SearchPinBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
   );
 }
 
-export default SearchPinBottomSheet;
+export default PinSearchBottomSheet;

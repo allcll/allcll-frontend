@@ -14,7 +14,7 @@ interface IModalProps {
 
 type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer U)[] ? U : Filters[K];
 
-function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
+function DetailFilterModal({ filterStore, onClose }: Readonly<IModalProps>) {
   const { classroom, note, categories, time } = filterStore(state => state.filters);
   const departments = useDepartments();
   const filters = filterStore(state => state.filters);
@@ -110,4 +110,4 @@ function FilteringModal({ filterStore, onClose }: Readonly<IModalProps>) {
   );
 }
 
-export default FilteringModal;
+export default DetailFilterModal;

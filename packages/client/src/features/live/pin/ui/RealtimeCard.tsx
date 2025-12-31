@@ -2,8 +2,9 @@ import CloseIcon from '@/assets/x.svg?react';
 import useTick from '@/features/live/board/lib/useTick.ts';
 import { useRemovePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
 import { getTimeDiffString } from '@/shared/lib/stringFormats.ts';
-import { getSeatColor } from '@/shared/config/colors.ts';
+import { getSeatVariant } from '@/shared/config/colors.ts';
 import { Subject, Wishes } from '@/shared/model/types.ts';
+import { Badge, Card, Flex, Heading, IconButton } from '@allcll/allcll-ui';
 
 interface IPinCard {
   subject: Subject | Wishes;
@@ -20,13 +21,16 @@ function RealtimeCard({ subject, seats, queryTime, disableSeat = false }: Readon
   };
 
   return (
-    <div className="bg-gray-50 shadow-sm rounded-lg p-4 border border-gray-200 hover:shadow-md">
-      <div className="flex justify-between">
-        <h3 className="font-bold">{subject.subjectName}</h3>
-        <button className="p-2 rounded-full hover:bg-blue-100" aria-label="알림 과목 제거" onClick={handlePin}>
-          <CloseIcon className="text-gray-400 w-3 h-3" />
-        </button>
-      </div>
+    <Card variant="filled">
+      <Flex justify="justify-between">
+        <Heading level={3}>{subject.subjectName}</Heading>
+        <IconButton
+          variant="plain"
+          aria-label="알림 과목 제거"
+          icon={<CloseIcon className="text-gray-400 w-3 h-3" />}
+          onClick={handlePin}
+        />
+      </Flex>
       <div className="mb-2 text-xs text-gray-500">
         <p>{(subject as Wishes).departmentName}</p>
         <p>
@@ -34,14 +38,12 @@ function RealtimeCard({ subject, seats, queryTime, disableSeat = false }: Readon
         </p>
       </div>
       {!disableSeat && (
-        <div className="flex justify-between items-baseline">
-          <p className={`px-2 py-1 rounded-full text-xs font-bold ${getSeatColor(seats)}`}>
-            여석: {seats < 0 ? '???' : seats}
-          </p>
+        <Flex justify="justify-between">
+          <SeatBadge seats={seats} />
           <QueryTimeComponent queryTime={queryTime} />
-        </div>
+        </Flex>
       )}
-    </div>
+    </Card>
   );
 }
 
@@ -49,6 +51,14 @@ function QueryTimeComponent({ queryTime }: Readonly<{ queryTime?: string }>) {
   useTick();
 
   return <p className={`text-xs text-gray-500`}>{getTimeDiffString(queryTime)}</p>;
+}
+
+function SeatBadge({ seats }: Readonly<{ seats: number }>) {
+  const isValid = seats !== null && seats !== undefined && seats >= 0;
+  const variant = getSeatVariant(seats);
+  const value = isValid ? seats : '???';
+
+  return <Badge variant={variant}>여석: {value}</Badge>;
 }
 
 export default RealtimeCard;

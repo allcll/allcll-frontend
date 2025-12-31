@@ -1,13 +1,15 @@
 import { useState } from 'react';
+import { Card, Flex, Heading, IconButton, Tooltip } from '@allcll/allcll-ui';
+import SettingSvg from '@/assets/settings.svg?react';
+import ReloadSvg from '@/assets/reload-blue.svg?react';
+
 import AlarmOptionModal from '@/features/notification/ui/AlarmOptionModal.tsx';
 import NotificationInstructionsModal from '@/features/notification/ui/NotificationInstructionsModal.tsx';
 import { SSEType, useSseData } from '@/features/live/common/api/useSSEManager.ts';
 import useNotification from '@/features/notification/lib/useNotification.ts';
-import SettingSvg from '@/assets/settings.svg?react';
-import ReloadSvg from '@/assets/reload-blue.svg?react';
-import { Card, Flex, Heading, IconButton, Tooltip } from '@allcll/allcll-ui';
-import CoursesArea from './CoursesArea.tsx';
-import AlarmStatusIcon from '../../../../features/live/pin/ui/AlarmStatusIcon.tsx';
+import AlarmStatusIcon from '@/features/live/pin/ui/AlarmStatusIcon.tsx';
+
+import PinCoursesBody from './PinCoursesBody.tsx';
 
 const LivePinnedCourses = () => {
   const [isAlarmSettingOpen, setIsAlarmSettingOpen] = useState(false);
@@ -18,7 +20,7 @@ const LivePinnedCourses = () => {
       <NotificationInstructionsModal />
 
       <PinCoursesHeader setIsAlarmSettingOpen={setIsAlarmSettingOpen} />
-      <CoursesArea />
+      <PinCoursesBody />
     </Card>
   );
 };

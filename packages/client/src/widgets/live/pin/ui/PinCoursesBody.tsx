@@ -1,13 +1,15 @@
 import { usePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
 import useFindWishes from '@/entities/wishes/lib/useFindWishes.ts';
 import { SSEType, useSseData } from '@/features/live/common/api/useSSEManager';
-import NetworkError from '../../errors/ui/NetworkError';
-import ZeroPinError from '../../errors/ui/ZeroPinError';
-import RealtimeCard from '../../../../features/live/pin/ui/RealtimeCard';
-import AlarmAddButton from '../../../../features/live/pin/ui/AlarmAddButton';
-import { Button, Flex, Grid } from '@allcll/allcll-ui';
+import { Grid } from '@allcll/allcll-ui';
+import RealtimeCard from '@/features/live/pin/ui/RealtimeCard';
+import AlarmAddButton from '@/features/live/pin/ui/AlarmAddButton';
 
-function CoursesArea() {
+import NetworkError from '../../_errors/ui/NetworkError';
+import ZeroPinError from '../../_errors/ui/ZeroPinError';
+import AlarmCountAlert from '@/features/live/pin/ui/AlarmCountAlert';
+
+function PinCoursesBody() {
   const { data, isPending, isError, refetch } = usePinned();
   const { data: pinnedSeats } = useSseData(SSEType.PINNED);
 
@@ -50,17 +52,7 @@ function CoursesArea() {
   );
 }
 
-export default CoursesArea;
-
-function AlarmCountAlert() {
-  return (
-    <Flex justify="justify-center" align="items-center">
-      <Button variant="ghost" size="medium" disabled={true}>
-        알림 과목은 최대 5개까지 등록할 수 있어요.
-      </Button>
-    </Flex>
-  );
-}
+export default PinCoursesBody;
 
 function SkeletonBox() {
   return (

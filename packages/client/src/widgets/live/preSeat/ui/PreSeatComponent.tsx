@@ -1,17 +1,20 @@
 import { Helmet } from 'react-helmet';
 import { useDeferredValue } from 'react';
-import SubjectTable from '@/features/live/preseat/ui/PreseatSubjectTable.tsx';
 import useMobile from '@/shared/lib/useMobile.ts';
-import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
-import useWishesPreSeats from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
-import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
-import { PRESEAT_CLOSE_DATE } from '@/features/live/preseat/lib/usePreSeatGate.ts';
-import { Filters, useAlarmSearchStore } from '@/shared/model/useFilterStore.ts';
 import ScrollToTopButton from '@/shared/ui/ScrollTopButton.tsx';
-import PinCards from '@/widgets/live/pin/ui/PinCards.tsx';
+import { Filters, useAlarmSearchStore } from '@/shared/model/useFilterStore.ts';
 import TableColorInfo from '@/shared/ui/TableColorInfo.tsx';
-import SubjectSearches from '../../../filtering/ui/AlarmFilter.tsx';
+import useWishesPreSeats from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
+
+import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
+import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
+import { PRESEAT_CLOSE_DATE } from '@/widgets/live/preSeat/model/usePreSeatGate.ts';
+
 import { Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import PreseatSubjectTable from './PreseatSubjectTable.tsx';
+
+import PinCards from '../../pin/ui/PinCards.tsx';
+import AlarmFilter from './AlarmFilter.tsx';
 
 const TableHeadTitles = [
   { title: '알림', key: 'pin' },
@@ -27,9 +30,7 @@ export interface ISubjectSearch {
   selectedDepartment: string;
 }
 
-function PreSeat() {
-  const isMobile = useMobile();
-
+function PreSeatComponent() {
   const filters = useAlarmSearchStore(state => state.filters);
 
   return (
@@ -48,32 +49,32 @@ function PreSeat() {
         </SupportingText>
 
         <Card>
-          {/* Fixme: 컴포넌트명 변경 */}
-          <SubjectSearches />
+          <AlarmFilter />
           <TableColorInfo />
         </Card>
 
-        <PreSeatBody isMobile={isMobile} filters={filters} />
+        <PreSeatBody filters={filters} />
         <ScrollToTopButton right="right-2 sm:right-10" />
       </Flex>
     </>
   );
 }
 
-function PreSeatBody({ isMobile, filters }: { isMobile: boolean; filters: Filters }) {
+function PreSeatBody({ filters }: { filters: Filters }) {
   const { data: wishes, titles, isPending } = useWishesPreSeats(TableHeadTitles);
   const data = useSearchRank(wishes);
   const filteredData = useDeferredValue(useFilteringSubjects(data ?? [], filters));
+  const isMobile = useMobile();
 
   return (
     <Card>
       {isMobile ? (
         <PinCards subjects={filteredData} isPending={isPending} isLive={true} />
       ) : (
-        <SubjectTable titles={titles} subjects={filteredData} isPending={isPending} />
+        <PreseatSubjectTable titles={titles} subjects={filteredData} isPending={isPending} />
       )}
     </Card>
   );
 }
 
-export default PreSeat;
+export default PreSeatComponent;

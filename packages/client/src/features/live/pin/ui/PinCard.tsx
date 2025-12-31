@@ -2,7 +2,7 @@ import AlarmButton from '@/features/live/pin/ui/AlarmButton';
 import { getTimeDiffString } from '@/shared/lib/stringFormats.ts';
 import { Subject, Wishes } from '@/shared/model/types.ts';
 import { getSeatColor } from '@/shared/config/colors.ts';
-import { Card, Flex, Heading } from '@allcll/allcll-ui';
+import { Badge, Card, Flex, Heading } from '@allcll/allcll-ui';
 
 interface IPinCard {
   subject: Subject | Wishes;
@@ -42,9 +42,9 @@ function PinCard({ subject, seats, queryTime, disableSeat = false, isLive = fals
           <p className={`text-sm px-2 py-1 rounded-full font-bold ${getSeatColor(seats)}`}>
             여석: {seats < 0 ? '???' : seats}
           </p>
-          {!isLive && <p className={`text-xs text-gray-500`}>{getTimeDiffString(queryTime)}</p>}
-          {isDeleted && <p className={`text-xs text-gray-500`}>폐강</p>}
-          {isEng && <p className={`text-xs text-gray-500`}>영어</p>}
+          {!isLive && <Badge variant="default">{getTimeDiffString(queryTime)}</Badge>}
+          {isDeleted && <Badge variant="danger">폐강</Badge>}
+          {isEng && <Badge variant="success">영어</Badge>}
         </Flex>
       )}
     </Card>

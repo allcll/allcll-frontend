@@ -1,7 +1,7 @@
 import { Wishes } from '@/shared/model/types.ts';
 import { useWishesTableStore } from '../model/useWishTableColumnStore';
 import { IPreRealSeat } from '@/entities/seat/api/usePreRealSeats';
-import usePreSeatGate from '@/features/live/preseat/lib/usePreSeatGate';
+import usePreSeatGate from '@/widgets/live/preSeat/model/usePreSeatGate';
 
 /** 사용하는 헤더를 반환해줍니다. 기간에 따라, wishes, pre-seats 변경 가능 */
 function useHeaderSelector(data: Wishes[] | (Wishes & IPreRealSeat)[] | null | undefined) {

@@ -1,4 +1,3 @@
-// sse conditional global state
 import { create } from 'zustand';
 
 export const RELOAD_INTERVAL = 1.5 * 1000;

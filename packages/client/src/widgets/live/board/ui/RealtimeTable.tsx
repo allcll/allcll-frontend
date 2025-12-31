@@ -1,23 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import ListSvg from '@/assets/list.svg?react';
+import { Card, Flex, Heading, IconButton } from '@allcll/allcll-ui';
+
 import SkeletonRows from '@/shared/ui/SkeletonRows.tsx';
-import NetworkError from '@/widgets/live/errors/ui/NetworkError.tsx';
-import ZeroListError from '@/widgets/live/errors/ui/ZeroListError.tsx';
-import PreSeatWillAvailable from '@/widgets/live/errors/ui/PreSeatWillAvailable.tsx';
-import useTick from '@/features/live/board/lib/useTick.ts';
-import { SSEType } from '@/features/live/common/api/useSSEManager.ts';
-import useSSESeats, { SseSubject } from '@/entities/subjectAggregate/model/useSSESeats.ts';
 import { getTimeDiffString } from '@/shared/lib/stringFormats.ts';
 import { getSeatColor } from '@/shared/config/colors.ts';
 import TableColorInfo from '@/shared/ui/TableColorInfo.tsx';
-import ListSvg from '@/assets/list.svg?react';
-import SystemChecking from '../../../../widgets/live/errors/ui/SystemChecking.tsx';
 import { getDateLocale } from '@/shared/lib/time.ts';
-import { SSE_STATE, useSSEState } from '@/features/live/board/model/useSseState.ts';
-import { useLiveTableStore } from '@/features/live/board/model/useLiveTableColumnStore.ts';
-import { Card, Flex, Heading, IconButton } from '@allcll/allcll-ui';
 import LiveTableTitleModal from '@/shared/ui/TableTitleSettingModal.tsx';
 import { HeadTitle } from '@/shared/model/createColumnStore.ts';
+
+import useSSESeats, { SseSubject } from '@/entities/subjectAggregate/model/useSSESeats.ts';
+
+import useTick from '@/features/live/board/lib/useTick.ts';
+import { SSE_STATE, useSSEState } from '@/features/live/board/model/useSseState.ts';
+import { SSEType } from '@/features/live/common/api/useSSEManager.ts';
+
+import NetworkError from '../../_errors/ui/NetworkError.tsx';
+import ZeroListError from '../../_errors/ui/ZeroListError.tsx';
+import PreSeatWillAvailable from '../../_errors/ui/PreSeatWillAvailable.tsx';
+import SystemChecking from '../../_errors/ui/SystemChecking';
+import { useLiveTableStore } from '../model/useLiveTableColumnStore.ts';
 
 interface IRealtimeTable {
   title: string;

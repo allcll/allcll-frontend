@@ -2,13 +2,13 @@ import { Button } from '@allcll/allcll-ui';
 import AddSvg from '@/assets/add.svg?react';
 import SearchBottomSheet from '@/widgets/filtering/search/ui/ScheduleSearchBottomSheet';
 import FilterBottomSheet from '@/widgets/filtering/ui/FilterBottomSheet';
-import FormBottomSheet from '@/widgets/bottomSheet/FormBottomSheet.tsx';
-import ScheduleInfoBottomSheet from '@/widgets/bottomSheet/ScheduleDetailBottomSheet.tsx';
 import ScheduleFormModal from '@/features/timetable/ui/ScheduleFormModal.tsx';
 import ScheduleInfoModal from '@/features/timetable/ui/ScheduleInfoModal.tsx';
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import { useScheduleSearchStore } from '@/shared/model/useFilterStore.ts';
 import useMobile from '@/shared/lib/useMobile.ts';
+import FormBottomSheet from '../bottomSheet/ui/ScheduleFormBottomSheet';
+import ScheduleInfoBottomSheet from '../bottomSheet/ui/ScheduleDetailBottomSheet';
 
 function TimetableOverlay() {
   const isMobile = useMobile();
