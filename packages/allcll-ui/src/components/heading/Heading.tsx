@@ -35,7 +35,7 @@ function levelToSize(level: HeadingLevel): HeadingSize {
 
 function getSizeClass(size: HeadingSize) {
   return {
-    xxl: 'text-base font-semibold md:text-xl',
+    xxl: 'text-lg font-semibold md:text-xl',
     xl: 'text-base md:text-lg font-semibold',
     lg: 'text-base font-semibold',
     md: 'text-sm font-semibold',

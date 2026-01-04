@@ -2,6 +2,7 @@ import Section from '@/widgets/home/ui/Section.tsx';
 import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
 import SeatBadge from '@/entities/wishes/ui/SeatBadge.tsx';
 import AlarmIcon from '@/shared/ui/svgs/AlarmIcon.tsx';
+import { Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 
 function LiveSection() {
   return (
@@ -14,34 +15,32 @@ function LiveSection() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-lg font-semibold mb-2">여석 과목 알림</h2>
-          <p className="text-gray-500">
+          <Heading level={3}>여석 과목 알림</Heading>
+          <SupportingText>
             등록된 알림 과목에 대해서, 여석이 생기면 <span className="text-blue-500 font-bold">알림</span>을 드려요
-          </p>
+          </SupportingText>
           <div className="flex flex-col gap-4 mt-4">
-            {/* 실시간 수강 여석 차트 */}
             {[
               { name: '컴퓨터그래픽스', prof: '003281 | 최수미' },
               { name: '운영체제', prof: '004310 | LEE KANGWON' },
             ].map(({ name, prof }) => (
               <div key={prof} className="bg-gray-50 shadow-sm rounded-lg p-4 w-full">
-                <div className="flex justify-between mb-2">
-                  <h3 className="font-bold">{name}</h3>
+                <Flex justify="justify-between" className="mb-2">
+                  <Heading level={4}>{name}</Heading>
                   <AlarmIcon />
-                </div>
-                <div className="flex justify-between">
+                </Flex>
+                <Flex justify="justify-between">
                   <p className="text-sm text-gray-500">{prof}</p>
                   <SeatBadge seat={0} formatter={value => `여석: ${value}`} />
-                </div>
+                </Flex>
               </div>
             ))}
           </div>
         </div>
 
-        {/* 여석 수 TOP 10 */}
         <div className="bg-white p-6 shadow-md rounded-md">
-          <h3 className="text-lg font-semibold">여석 수 TOP 10</h3>
-          <p className="text-gray-500 mb-4">여석이 많은 과목을 놓치지 마세요!</p>
+          <Heading level={3}>여석 수 TOP 10</Heading>
+          <SupportingText>여석이 많은 과목을 놓치지 마세요!</SupportingText>
           <div className="overflow-x-auto">
             <table className="w-full bg-white rounded-lg text-sm">
               <thead>
@@ -64,7 +63,7 @@ function LiveSection() {
                     <td className="px-4 py-2 text-center">{id}</td>
                     <td className="px-4 py-2 text-center">{name}</td>
                     <td className="px-4 py-2 text-center">{prof}</td>
-                    <td className="px-4 py-2 text-center font-bold">
+                    <td className="px-4 py-2 text-center">
                       <SeatBadge seat={seats} />
                     </td>
                   </tr>

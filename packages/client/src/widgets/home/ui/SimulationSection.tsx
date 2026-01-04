@@ -5,6 +5,7 @@ import React, { ButtonHTMLAttributes, useEffect, useRef, useState } from 'react'
 import { drawCaptcha } from '@/features/simulation/lib/captcha.ts';
 import Card from '@common/components/Card.tsx';
 import SejongUI from '../../../../../sejong-ui';
+import { Heading, SupportingText } from '@allcll/allcll-ui';
 
 const InitRadarData = {
   user_ability: {
@@ -28,14 +29,14 @@ function SimulationSection() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         <Card>
-          <h3 className="text-lg font-semibold">수강 신청 연습</h3>
-          <p className="text-gray-600 mb-4">실전처럼 연습하고, 수강 신청 성공률을 높여보세요!</p>
+          <Heading level={3}>수강 신청 연습</Heading>
+          <SupportingText>실제 수강신청과 동일한 환경에서 수강 신청 연습을 해보세요.</SupportingText>
 
           <CaptchaInput setRadarData={setRadarData} />
         </Card>
         <Card className="relative">
-          <h3 className="text-lg font-semibold">연습 결과 분석</h3>
-          <p className="text-gray-600 mb-4">연습 결과를 분석하여 더 나은 전략을 세워보세요.</p>
+          <Heading level={3}>연습 결과 분석</Heading>
+          <SupportingText>연습 결과를 분석하여 더 나은 전략을 세워보세요.</SupportingText>
           <RadarChart result={radarData} />
         </Card>
       </div>

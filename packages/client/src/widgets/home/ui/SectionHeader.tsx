@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import LinkBlue from '@/assets/link-blue.svg?react';
+import { Heading, SupportingText } from '@allcll/allcll-ui';
 
 interface ISectionHeader {
   title?: string;
@@ -15,14 +16,14 @@ function SectionHeader({ title, subtitle, href, disabled = false }: ISectionHead
     <>
       {isLink ? (
         <Link to={href} className="flex items-center gap-2 hover:underline focus:underline">
-          <h2 className="text-2xl font-semibold">{title}</h2>
+          <Heading level={2}>{title}</Heading>
           <LinkBlue className="w-4 h-4" />
         </Link>
       ) : (
-        <h2 className="text-2xl font-semibold">{title}</h2>
+        <Heading level={2}>{title}</Heading>
       )}
 
-      {subtitle && <h3 className="text-gray-500">{subtitle}</h3>}
+      {subtitle && <SupportingText>{subtitle}</SupportingText>}
     </>
   );
 }

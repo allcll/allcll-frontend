@@ -2,11 +2,14 @@ import Section from '@/widgets/home/ui/Section.tsx';
 import ClockBlueSvg from '@/assets/clock-blue.svg?react';
 import DisabledBlueSvg from '@/assets/disabled-blue.svg?react';
 import ReloadBlueSvg from '@/assets/reload-blue.svg?react';
+import { Heading, SupportingText } from '@allcll/allcll-ui';
 
 function PainPointSection() {
   return (
     <Section className="text-center">
-      <h2 className="text-2xl font-semibold">우리가 겪는 어려움</h2>
+      <Heading level={2}>
+        우리가 겪는 어려움
+        </Heading>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
         {[
           {
@@ -27,8 +30,8 @@ function PainPointSection() {
         ].map(({ icon, title, text }, index) => (
           <div key={'pain-point-' + index} className="flex flex-col gap-4 p-6 rounded-md bg-gray-50 text-left">
             {icon}
-            <h3 className="font-extrabold">{title}</h3>
-            <p className="text-xs text-gray-500">{text}</p>
+            <Heading level={3} className="font-extrabold">{title}</Heading>
+            <SupportingText >{text}</SupportingText>
           </div>
         ))}
       </div>
