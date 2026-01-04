@@ -1,4 +1,5 @@
 import type { ComponentPropsWithoutRef } from 'react';
+import { Slot } from '@radix-ui/react-slot';
 
 type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'text' | 'contain' | 'outlined' | 'ghost' | 'circle';
 
@@ -10,21 +11,24 @@ interface IButton extends ComponentPropsWithoutRef<'button'> {
   size: ButtonSize;
   disabled?: boolean;
   textColor?: TextColor;
+  asChild?: boolean;
 }
 
-function Button({ variant, size, children, disabled, textColor, ...rest }: IButton) {
+function Button({ variant, size, children, disabled, textColor, asChild, ...rest }: IButton) {
+  const Comp = asChild ? Slot : 'button';
   const buttonClass =
     variant === 'circle'
       ? ''
       : 'flex flex-row gap-1 items-center justify-center cursor-pointer disabled:cursor-not-allowed';
+
   const variantClass = textColor ? getVariantClass(variant, textColor) : getVariantClass(variant, 'primary');
   const sizeClass = variant === 'circle' ? '' : getSizeClass(size);
   const finalClassName = `${buttonClass} ${variantClass} ${sizeClass}`.trim();
 
   return (
-    <button className={finalClassName} disabled={disabled} {...rest}>
+    <Comp className={finalClassName} disabled={disabled} {...rest}>
       {children}
-    </button>
+    </Comp>
   );
 }
 

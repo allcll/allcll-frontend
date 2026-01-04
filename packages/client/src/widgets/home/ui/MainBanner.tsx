@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import Section from '@/widgets/home/ui/Section.tsx';
-import RightArrowSvg from '@/assets/right-arrow.svg?react';
-import RightArrowBlueSvg from '@/assets/arrow-blue.svg?react';
+
+import { Button, SupportingText } from '@allcll/allcll-ui';
 
 const SEMESTER = '동계';
 const YEAR = '2025';
@@ -25,24 +25,17 @@ function MainBanner() {
           <img src="/logo-name.svg" alt="logo-name" className="w-20 sm:w-32 md:w-40 lg:w-48 mr-2 animate-updown" />이
           도와드립니다!
         </div>
-        <p className="text-gray-400 mt-4">
-          시간표 만들기부터 수강 신청 연습, 실시간 여석 확인까지 ALLCLL이 여러분과 함께합니다
-        </p>
-        <div className="flex flex-col md:flex-row gap-4 ">
-          <Link
-            to="/live"
-            className="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-6 py-3 mt-6 flex items-center gap-2 w-fit"
-          >
-            실시간 여석 확인하기
-            <RightArrowSvg className="w-4 h-4" />
-          </Link>
-          <Link
-            to="/simulation"
-            className="bg-white hover:bg-gray-100 text-blue-500 rounded-md px-6 py-3 mt-6 flex items-center gap-2 w-fit"
-          >
-            수강 신청 연습하기
-            <RightArrowBlueSvg className="w-4 h-4" />
-          </Link>
+        <SupportingText>
+          시간표 만들기부터 수강 신청 연습, 실시간 여석 확인까지 ALLCLL이 여러분과 함께합니다.
+        </SupportingText>
+
+        <div className="flex flex-col md:flex-row gap-4 mt-4">
+          <Button variant="primary" size="medium" asChild>
+            <Link to="/live">실시간 여석 확인하기</Link>
+          </Button>
+          <Button variant="outlined" size="medium" asChild>
+            <Link to="/simulation">수강 신청 연습하기</Link>
+          </Button>
         </div>
       </div>
       <img src="/summer-banner.png" alt="summer-banner" className="w-90 hidden sm:block  mt-8 md:mt-4" />
