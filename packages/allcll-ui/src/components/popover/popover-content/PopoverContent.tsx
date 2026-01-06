@@ -21,15 +21,23 @@ function PopoverContent({ children }: { children: React.ReactNode }) {
 
   return createPortal(
     <div
-      className="fixed rounded-md bg-white shadow-lg px-4 py-4"
       ref={contentRef}
-      onMouseDown={e => e.stopPropagation()}
-      onClick={e => e.stopPropagation()}
+      className={`
+        fixed rounded-md bg-white shadow-lg border border-gray-200 px-4 py-4
+        transition-all duration-150 ease-out
+        ${
+          isOpen
+            ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
+            : 'opacity-0 -translate-y-1 scale-95 pointer-events-none'
+        }
+      `}
       style={{
         zIndex: 120,
         top: rect.bottom + 8,
         left: rect.left,
       }}
+      onMouseDown={e => e.stopPropagation()}
+      onClick={e => e.stopPropagation()}
     >
       {children}
     </div>,

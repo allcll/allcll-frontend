@@ -101,7 +101,7 @@ function DetailFilterModal({ filterStore, onClose }: Readonly<IModalProps>) {
       <Dialog.Footer>
         <Flex direction="flex-col" gap="gap-2">
           <Flex justify="justify-end">
-            <Button variant="primary" size="medium" onClick={resetFilters}>
+            <Button variant="primary" size="medium" onClick={resetFilters} disabled={allSelectedFilters.length === 0}>
               필터 초기화
             </Button>
           </Flex>

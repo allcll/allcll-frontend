@@ -1,4 +1,3 @@
-import ResetSvg from '@/assets/reset-blue.svg?react';
 import { Filters } from '@/shared/model/useFilterStore.ts';
 import { getLabelFormatter, labelPrefix } from '@/features/filtering/lib/getFilteringFormatter.ts';
 import { FilterItemProps, FilterValueType } from '@/shared/model/types.ts';
@@ -84,10 +83,15 @@ function MultiSelectFilter<K extends keyof Filters>({
         </Button>
       )}
 
-      {!isMobile && selectedValues && selectedValues.length > 0 && (
+      {!isMobile && (
         <Flex justify="justify-end">
-          <Button variant="text" size="small" textColor="gray" onClick={() => handleClickReset()}>
-            <ResetSvg className="inline w-3 h-3 mr-1" stroke="currentColor" />
+          <Button
+            variant="text"
+            size="small"
+            textColor="gray"
+            disabled={selectedValues == null || selectedValues.length === 0}
+            onClick={() => handleClickReset()}
+          >
             초기화
           </Button>
         </Flex>

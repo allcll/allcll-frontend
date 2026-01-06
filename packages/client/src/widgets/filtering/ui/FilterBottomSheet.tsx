@@ -126,7 +126,7 @@ function FilterBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }
           />
 
           <div className="sticky bottom-0 py-3 bg-white flex justify-end items-center gap-2 border-gray-200">
-            <Button variant="outlined" size="medium" onClick={resetFilter}>
+            <Button variant="outlined" size="medium" onClick={resetFilter} disabled={allSelectedFilters.length === 0}>
               필터 초기화
             </Button>
             <Button type="submit" variant="primary" size="medium" onClick={handleClickSave}>

@@ -4,7 +4,6 @@ import { Filters } from '@/shared/model/useFilterStore.ts';
 import { DepartmentType } from '@/shared/model/types.ts';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import { Button, Flex, Label, ListboxOption } from '@allcll/allcll-ui';
-import ResetSvg from '@/assets/reset-blue.svg?react';
 import { useFilteringDepartment } from '../lib/useFilteringDepartment';
 import CheckSvg from '@/assets/checkbox-blue.svg?react';
 import { ZeroContent } from '@/shared/ui/ZeroContent';
@@ -67,8 +66,13 @@ function DepartmentFilter({ setFilter, selectedValue }: IDepartmentFilter) {
       </Flex>
 
       <Flex justify="justify-end" className="w-full pt-1">
-        <Button variant="text" size="small" textColor="gray" onClick={() => setFilter('department', '')}>
-          <ResetSvg className="inline w-3 h-3 mr-1" stroke="currentColor" />
+        <Button
+          variant="text"
+          size="small"
+          textColor="gray"
+          disabled={!selectedValue}
+          onClick={() => setFilter('department', '')}
+        >
           초기화
         </Button>
       </Flex>
