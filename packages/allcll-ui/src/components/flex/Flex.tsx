@@ -15,7 +15,7 @@ function Flex({
   direction = 'flex-row',
   justify = 'justify-start',
   align = 'items-stretch',
-  gap = 'gap-3',
+  gap = 'gap-2',
   className,
   children,
   ...rest

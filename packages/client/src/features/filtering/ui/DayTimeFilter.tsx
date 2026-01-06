@@ -43,9 +43,9 @@ function DayTimeFilter({ items, onChange }: Readonly<IDayTimeFilter>) {
 
   return (
     <>
-      <Label>시간</Label>
-
       <Flex direction="flex-col" gap="gap-2">
+        <Label>시간</Label>
+
         {items.map((item, index) => (
           <DayTime
             key={`${item.day}-${item.type}-${item.start}-${item.end}`}

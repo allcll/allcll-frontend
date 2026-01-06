@@ -7,12 +7,11 @@ interface IFilterOption {
   contentRef: RefObject<HTMLDivElement | null>;
 }
 
-function FilterOption({ children, contentRef, className = '', isChipOpen }: IFilterOption) {
+function FilterOption({ children, className = '', isChipOpen }: IFilterOption) {
   if (!isChipOpen) return null;
 
   return (
     <div
-      ref={contentRef}
       className={`
         absolute left-0 top-full mt-2 z-20
         flex flex-col gap-1 rounded-lg border border-gray-200 bg-white shadow-lg

@@ -49,7 +49,7 @@ function Chip({
       )}
 
       {variant === 'cancel' && (
-        <CancelIcon aria-hidden="true" selected={selected} className="pointer-events-none w-5 h-5" />
+        <CancelIcon aria-hidden="true" selected={selected} className="pointer-events-none w-4 h-4" />
       )}
     </button>
   );

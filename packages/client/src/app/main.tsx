@@ -9,6 +9,7 @@ import Clarity from '@microsoft/clarity';
 import Sentry from '@/app/config/sentry.ts';
 import router from '@/app/routing';
 import './index.css';
+import { PopoverGroup } from '@allcll/allcll-ui';
 
 const queryClient = new QueryClient();
 const UsingMockServer = import.meta.env.VITE_USE_MOCK === 'true';
@@ -43,8 +44,12 @@ function loadApp() {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        {/*<DndProvider backend={HTML5Backend}>*/}
-        <RouterProvider router={router} />
+        <PopoverGroup>
+          {/*<DndProvider backend={HTML5Backend}>*/}
+
+          <RouterProvider router={router} />
+        </PopoverGroup>
+
         {/*</DndProvider>*/}
       </QueryClientProvider>
     </StrictMode>,

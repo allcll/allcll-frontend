@@ -88,7 +88,7 @@ function ScheduleFormContent() {
       </Flex>
 
       {scheduleForm.timeSlots.map(slot => (
-        <Flex key={slot.dayOfWeeks} direction="flex-col" gap="gap-2">
+        <Flex key={slot.dayOfWeeks} direction="flex-col" gap="gap-4">
           <Label>{slot.dayOfWeeks}</Label>
           <SelectTime
             day={slot.dayOfWeeks}

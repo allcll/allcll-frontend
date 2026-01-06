@@ -32,8 +32,8 @@
     "vite.config.ts",
     "svg.d.ts",
     "tailwind.config.ts",
-    "../client/src/features/filtering/ui/Filtering.tsx",
+    "src/components/filtering/Filtering.tsx",
     "../client/src/shared/lib/useDetectClose.ts",
-    "../client/src/features/filtering/ui/FilterOption.tsx"
+    "src/components/filtering/FilterOption.tsx"
   ]
 }

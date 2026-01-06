@@ -46,6 +46,7 @@ const DropdownSelect = ({ setIsOpenModal, openCreateModal }: DropdownSelectProps
   return (
     <Popover>
       <Popover.Trigger label={currentTimetable ? currentTimetable.timeTableName : '새 시간표'} />
+
       <Popover.Content>
         <Flex direction="flex-col" gap="gap-4">
           {filteredTimetablesBySemester.length === 0 && <SupportingText>새로운 시간표를 추가해주세요.</SupportingText>}

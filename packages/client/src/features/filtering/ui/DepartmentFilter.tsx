@@ -2,13 +2,13 @@ import { useState } from 'react';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { Filters } from '@/shared/model/useFilterStore.ts';
 import { DepartmentType } from '@/shared/model/types.ts';
-import Filtering from '@/features/filtering/ui/Filtering';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import { Button, Flex, Label, ListboxOption } from '@allcll/allcll-ui';
 import ResetSvg from '@/assets/reset-blue.svg?react';
 import { useFilteringDepartment } from '../lib/useFilteringDepartment';
 import CheckSvg from '@/assets/checkbox-blue.svg?react';
 import { ZeroContent } from '@/shared/ui/ZeroContent';
+import Filtering from '@common/components/filtering/Filtering';
 
 interface IDepartmentFilter {
   setFilter: (key: keyof Filters, value: string | null) => void;
@@ -30,12 +30,12 @@ function DepartmentFilter({ setFilter, selectedValue }: IDepartmentFilter) {
 
   return (
     <Filtering label={pickCollegeOrMajor(selectedValue, departmentsList)} selected={!!selectedValue}>
-      <Flex direction="flex-col" className="h-80 max-h-80 w-[300px] overflow-y-auto">
+      <Flex direction="flex-col" className="h-80 w-80 overflow-y-auto">
         <Label>학과</Label>
-        <Flex className="shrink-0 pt-2 bg-white" gap="gap-2">
+        <Flex className="shrink-0 bg-white" gap="gap-2">
           <select
             value={category}
-            className="border border-gray-300 rounded-md py-1 text-sm text-gray-700 bg-white"
+            className="border border-gray-300 rounded-md text-sm text-gray-700 bg-white"
             onChange={e => {
               const value = e.target.value as '전체' | '전공' | '교양';
               setCategory(value);

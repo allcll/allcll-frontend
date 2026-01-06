@@ -50,19 +50,19 @@ function getTextVariant(textColor: TextColor) {
 function getVariantClass(variant: ButtonVariant, textColor: TextColor) {
   switch (variant) {
     case 'primary':
-      return 'bg-primary-500 text-white hover:bg-primary-600 rounded-md';
+      return 'bg-primary-500 text-white hover:bg-primary-600 rounded-md px-4 py-2';
     case 'secondary':
-      return 'bg-gray-100  hover:bg-gray-300 rounded-md';
+      return 'bg-gray-100  hover:bg-gray-300 rounded-md px-4 py-2';
     case 'outlined':
-      return 'bg-transparent border border-gray-700 hover:bg-gray-100 rounded-md';
+      return 'bg-transparent border border-gray-700 hover:bg-gray-100 rounded-md px-4 py-2';
     case 'danger':
-      return 'bg-secondary-500 text-white hover:bg-secondary-600 rounded-md';
+      return 'bg-secondary-500 text-white hover:bg-secondary-600 rounded-md px-4 py-2';
     case 'ghost':
-      return 'bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-200 rounded-full';
+      return 'bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-200 rounded-full px-4 py-2';
     case 'circle':
       return 'px-2 py-2 bg-primary-500 text-white hover:bg-primary-600 rounded-full shadow-md ';
     case 'text':
-      return `${getTextVariant(textColor)} px-0 py-0`;
+      return `${getTextVariant(textColor)} px-0 py-2`;
     default:
       return '';
   }
@@ -71,11 +71,11 @@ function getVariantClass(variant: ButtonVariant, textColor: TextColor) {
 function getSizeClass(size: string) {
   switch (size) {
     case 'small':
-      return 'text-sm px-4 py-2';
+      return 'text-sm';
     case 'medium':
-      return 'text-sm px-4 py-2';
+      return 'text-sm';
     case 'large':
-      return 'text-md px-5 py-2';
+      return 'text-md';
     default:
       return '';
   }

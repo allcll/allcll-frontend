@@ -1,8 +1,8 @@
 import { Filters } from '@/shared/model/useFilterStore.ts';
-import Filtering from '@/features/filtering/ui/Filtering.tsx';
 import DayTimeFilter, { IDayTimeItem } from './DayTimeFilter.tsx';
 import useMobile from '@/shared/lib/useMobile.ts';
-import { Label } from '@allcll/allcll-ui';
+import { Flex, Label } from '@allcll/allcll-ui';
+import Filtering from '@common/components/filtering/Filtering.tsx';
 
 interface IDayFilter {
   times: IDayTimeItem[];
@@ -28,8 +28,10 @@ function DayFilter({ times, setFilter }: IDayFilter) {
     <DayTimeFilter items={times} onChange={items => setFilterWrapper('time', items)} />
   ) : (
     <Filtering label={labelPrefix} selected={times.length > 0 && times[0].day !== ''} className="min-w-max">
-      <Label>강의 시간</Label>
-      <DayTimeFilter items={times} onChange={items => setFilterWrapper('time', items)} />
+      <Flex direction="flex-col" gap="gap-2">
+        <Label>강의 시간</Label>
+        <DayTimeFilter items={times} onChange={items => setFilterWrapper('time', items)} />
+      </Flex>
     </Filtering>
   );
 }

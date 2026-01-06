@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import useDepartments, { Department } from '@/entities/departments/api/useDepartments.ts';
 import DepartmentSelect from '@/entities/departments/ui/DepartmentSelect';
 import { getDepartmentRanks } from '@/features/filtering/lib/useSearchRank.ts';
+import { Label } from '@allcll/allcll-ui';
 
 interface ISelectDepartment {
   department: Department;
@@ -36,7 +37,7 @@ function SelectDepartment({ department, setDepartment }: ISelectDepartment) {
 
   return (
     <div className="flex flex-col gap-2">
-      <h2 className="text-left font-semibold text-sm sm:text-md">학과 검색</h2>
+      <Label>학과를 선택해주세요.</Label>
 
       <DepartmentSelect
         className="cursor-pointer rounded-sm px-2 py-1 w-50 sm:w-120 bg-white mb-4"

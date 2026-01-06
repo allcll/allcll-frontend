@@ -50,33 +50,33 @@ function MultiSelectFilter<K extends keyof Filters>({
 
   return (
     <div className="relative inline-block w-full">
-      <Flex direction="flex-row" gap="gap-2" className="mb-4">
+      <Flex direction="flex-col" gap="gap-2">
         <Label>{labelPrefix[filterKey]}</Label>
-      </Flex>
 
-      {layout === 'grid' ? (
-        <Grid columns={{ md: 3 }} gap="gap-2">
-          {visibleOptions.map(option => (
-            <ItemComponent
-              key={String(option)}
-              label={labelFormatters[filterKey]?.(option) ?? String(option)}
-              selected={selectedValues?.includes(option) ?? false}
-              onClick={() => handleChangeCheckbox(option)}
-            />
-          ))}
-        </Grid>
-      ) : (
-        <Flex direction="flex-col" gap="gap-2">
-          {visibleOptions.map(option => (
-            <ItemComponent
-              key={String(option)}
-              label={labelFormatters[filterKey]?.(option) ?? String(option)}
-              selected={selectedValues?.includes(option) ?? false}
-              onClick={() => handleChangeCheckbox(option)}
-            />
-          ))}
-        </Flex>
-      )}
+        {layout === 'grid' ? (
+          <Grid columns={{ md: 3 }} gap="gap-2">
+            {visibleOptions.map(option => (
+              <ItemComponent
+                key={String(option)}
+                label={labelFormatters[filterKey]?.(option) ?? String(option)}
+                selected={selectedValues?.includes(option) ?? false}
+                onClick={() => handleChangeCheckbox(option)}
+              />
+            ))}
+          </Grid>
+        ) : (
+          <Flex direction="flex-col" gap="gap-2" className="pr-4">
+            {visibleOptions.map(option => (
+              <ItemComponent
+                key={String(option)}
+                label={labelFormatters[filterKey]?.(option) ?? String(option)}
+                selected={selectedValues?.includes(option) ?? false}
+                onClick={() => handleChangeCheckbox(option)}
+              />
+            ))}
+          </Flex>
+        )}
+      </Flex>
 
       {options.length > MAX_VISIBLE && (
         <Button variant="text" size="small" textColor="gray" onClick={() => setIsExpanded(prev => !prev)}>

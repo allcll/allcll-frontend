@@ -42,28 +42,30 @@ function SingleSelectFilterOption<K extends keyof Filters>({
 
   return (
     <div className="relative inline-block">
-      <Label>{labelPrefix[filterKey]}</Label>
-      <Grid columns={{ md: 3 }} gap="gap-2">
-        {options.map(option => (
-          <ItemComponent
-            key={String(option)}
-            label={labelFormatters[filterKey]?.(option) ?? String(option)}
-            selected={selectedValue === option}
-            onClick={() => handleChangeCheckbox(option)}
-          />
-        ))}
-      </Grid>
+      <Flex direction="flex-col" gap="gap-2">
+        <Label>{labelPrefix[filterKey]}</Label>
+        <Grid columns={{ md: 3 }} gap="gap-2">
+          {options.map(option => (
+            <ItemComponent
+              key={String(option)}
+              label={labelFormatters[filterKey]?.(option) ?? String(option)}
+              selected={selectedValue === option}
+              onClick={() => handleChangeCheckbox(option)}
+            />
+          ))}
+        </Grid>
 
-      {isMinMax && (
-        <div className="mt-2">
-          <MinMaxFilter
-            selectedValue={selectedValue as RangeMinMaxFilter | null}
-            filterKey={filterKey}
-            setFilter={(filterKey, value) => setFilter(filterKey, value as FilterValueType<K> | null)}
-            options={options}
-          />
-        </div>
-      )}
+        {isMinMax && (
+          <div className="mt-2">
+            <MinMaxFilter
+              selectedValue={selectedValue as RangeMinMaxFilter | null}
+              filterKey={filterKey}
+              setFilter={(filterKey, value) => setFilter(filterKey, value as FilterValueType<K> | null)}
+              options={options}
+            />
+          </div>
+        )}
+      </Flex>
 
       {!isMobile && (
         <Flex justify="justify-end">

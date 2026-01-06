@@ -3,9 +3,8 @@ import YouTube from 'react-youtube';
 import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
 import ArrowdownSvg from '@/assets/arrow-down.svg?react';
 import useMobile from '@/shared/lib/useMobile.ts';
-import Checkbox from '@common/components/checkbox/Checkbox.tsx';
 import SejongUI from '../../../../../../sejong-ui';
-import { Button, Dialog, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import { Button, Checkbox, Dialog, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import { visitTutorial } from '@/features/simulation/lib/VisitTutorial';
 
 const tutorialVideos = [

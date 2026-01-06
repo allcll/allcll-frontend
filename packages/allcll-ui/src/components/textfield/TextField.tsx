@@ -1,5 +1,6 @@
 import type { ComponentPropsWithoutRef } from 'react';
 import Label from '../label/Label';
+import Flex from '../flex/Flex';
 
 interface TextFieldProps extends Omit<ComponentPropsWithoutRef<'input'>, 'size'> {
   label?: string;
@@ -20,7 +21,7 @@ function TextField({
   ...rest
 }: TextFieldProps) {
   return (
-    <div className="w-full flex flex-col">
+    <Flex direction="flex-col" gap="gap-2" className={className}>
       {label && (
         <Label required={required} id={id}>
           {label}
@@ -37,7 +38,7 @@ function TextField({
       />
 
       {isError && <span className="text-secondary-500 text-xs">{errorMessage}</span>}
-    </div>
+    </Flex>
   );
 }
 

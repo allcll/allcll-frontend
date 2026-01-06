@@ -1,9 +1,9 @@
 import 'react-datepicker/dist/react-datepicker.css';
 import { Dispatch, SetStateAction } from 'react';
-import CheckboxAdapter from '@allcll/common/components/checkbox/CheckboxAdapter';
-import Filtering from '@allcll/common/components/filtering/Filtering';
 import MultiSelectFilterOption, { OptionType } from '../common/MultiSelectFilterOption';
 import { Card, Flex, Heading, Label, SupportingText, TextField } from '@allcll/allcll-ui';
+import Filtering from '@allcll/common/components/filtering/Filtering';
+import CheckboxAdapter from '@allcll/common/components/checkbox/CheckboxAdapter';
 
 const StatusCodes: OptionType<number>[] = [
   { value: 0, label: 'ALL' },
@@ -23,10 +23,8 @@ interface IRequestLogs {
 }
 
 function RequestLogs({ urlInput, setUrlInput, selectedStatusCodes, setSelectedStatusCodes }: Readonly<IRequestLogs>) {
-  const setFilterScheduleWrapper = (field: string, value: number[]) => {
-    if (field === 'selectedStatusCodes') {
-      setSelectedStatusCodes(value);
-    }
+  const setFilterScheduleWrapper = (value: number[]) => {
+    setSelectedStatusCodes(value);
   };
 
   return (
@@ -38,15 +36,14 @@ function RequestLogs({ urlInput, setUrlInput, selectedStatusCodes, setSelectedSt
         </Card.Header>
 
         <Card.Content>
-          <Flex direction="flex-col" gap="gap-1">
-            <Label id="filtering-option" className="font-semibold">
-              필터링 옵션
-            </Label>
+          <Label id="filtering-option" className="font-semibold">
+            필터링 옵션
+          </Label>
+          <Flex direction="flex-col" gap="gap-1" className="w-30">
             <Filtering label="상태" selected={selectedStatusCodes.length !== 0}>
               <MultiSelectFilterOption
                 labelPrefix="상태 코드"
                 selectedValues={selectedStatusCodes}
-                field="selectedStatusCodes"
                 setFilter={setFilterScheduleWrapper}
                 options={StatusCodes}
                 ItemComponent={CheckboxAdapter}
