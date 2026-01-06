@@ -1,11 +1,10 @@
 import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
 import { Filters, FilterStore, getAllSelectedLabels, initialFilters } from '@/shared/model/useFilterStore.ts';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
-import Chip from '@common/components/chip/Chip.tsx';
 import MultiSelectFilter from '../../../features/filtering/ui/MultiSelectFilter.tsx';
 import DayTimeFilter from '../../../features/filtering/ui/DayTimeFilter.tsx';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
-import { Button, Card, Dialog, Flex } from '@allcll/allcll-ui';
+import { Button, Card, Chip, Dialog, Flex, Label } from '@allcll/allcll-ui';
 
 interface IModalProps {
   filterStore: FilterStore;
@@ -45,6 +44,25 @@ function DetailFilterModal({ filterStore, onClose }: Readonly<IModalProps>) {
       <Flex direction="flex-row">
         <Dialog.Content>
           <Flex direction="flex-col" gap="gap-4" className="w-130">
+            {allSelectedFilters.length > 0 && (
+              <Card variant="outlined">
+                <Flex direction="flex-col" gap="gap-2">
+                  <Label>선택된 필터</Label>
+                  <Flex gap="gap-2" direction="flex-wrap" justify="justify-start" className="w-120">
+                    {allSelectedFilters.map(filter => (
+                      <Chip
+                        key={`${filter.filterKey}-${filter.values}`}
+                        variant="cancel"
+                        label={filter.label}
+                        selected
+                        onClick={() => handleDeleteFilter(filter.filterKey, filter.values)}
+                      />
+                    ))}
+                  </Flex>
+                </Flex>
+              </Card>
+            )}
+
             <Card variant="outlined">
               <MultiSelectFilter
                 selectedValues={categories}
@@ -52,7 +70,6 @@ function DetailFilterModal({ filterStore, onClose }: Readonly<IModalProps>) {
                 filterKey="categories"
                 setFilter={setFilter}
                 ItemComponent={Chip}
-                className="md:overflow-y-visible"
               />
             </Card>
 
@@ -67,7 +84,6 @@ function DetailFilterModal({ filterStore, onClose }: Readonly<IModalProps>) {
                 filterKey="note"
                 setFilter={setFilter}
                 ItemComponent={Chip}
-                className="md:overflow-y-visible"
               />
             </Card>
 
@@ -78,7 +94,6 @@ function DetailFilterModal({ filterStore, onClose }: Readonly<IModalProps>) {
                 filterKey="classroom"
                 setFilter={setFilter}
                 ItemComponent={Chip}
-                className="md:overflow-y-visible"
               />
             </Card>
           </Flex>
@@ -87,18 +102,6 @@ function DetailFilterModal({ filterStore, onClose }: Readonly<IModalProps>) {
 
       <Dialog.Footer>
         <Flex direction="flex-col" gap="gap-2">
-          <Flex gap="gap-2" direction="flex-wrap" justify="justify-end" className="w-120">
-            {allSelectedFilters.map(filter => (
-              <Chip
-                key={`${filter.filterKey}-${filter.values}`}
-                chipType="cancel"
-                label={filter.label}
-                selected
-                onClick={() => handleDeleteFilter(filter.filterKey, filter.values)}
-              />
-            ))}
-          </Flex>
-
           <Flex justify="justify-end">
             <Button variant="primary" size="medium" onClick={resetFilters}>
               필터 초기화

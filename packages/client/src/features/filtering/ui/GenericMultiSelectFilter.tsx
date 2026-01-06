@@ -4,7 +4,7 @@ import { getMultiSelectedLabel } from '@/features/filtering/lib/getFilteringForm
 import Filtering from '@common/components/filtering/Filtering.tsx';
 import MultiSelectFilter from './MultiSelectFilter.tsx';
 import Chip from '@common/components/chip/Chip.tsx';
-import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter.tsx';
+import CheckboxAdapter from '@/features/filtering/ui/CheckboxAdapter.tsx';
 import { FilterItemProps, FilterValueType } from '@/shared/model/types.ts';
 
 interface GenericMultiSelectFilterProps<K extends keyof Filters> {

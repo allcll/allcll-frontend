@@ -35,4 +35,7 @@ function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
   );
 }
 
+Checkbox.layout = 'flex' as const;
+
+
 export default Checkbox;

@@ -41,7 +41,7 @@ function getTextVariant(textColor: TextColor) {
     case 'secondary':
       return 'bg-transparent text-secondary-500 hover:text-secondary-600';
     case 'gray':
-      return 'bg-transparent text-gray-500 hover:text-gray-600';
+      return 'bg-transparent text-gray-700 hover:text-gray-800';
     default:
       return '';
   }
@@ -71,7 +71,7 @@ function getVariantClass(variant: ButtonVariant, textColor: TextColor) {
 function getSizeClass(size: string) {
   switch (size) {
     case 'small':
-      return 'text-sm px-3 py-1';
+      return 'text-sm px-1 py-2';
     case 'medium':
       return 'text-sm px-4 py-2';
     case 'large':

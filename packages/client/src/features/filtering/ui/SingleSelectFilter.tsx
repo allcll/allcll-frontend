@@ -3,7 +3,7 @@ import { Filters } from '@/shared/model/useFilterStore.ts';
 import { getLabelFormatter, labelPrefix } from '@/features/filtering/lib/getFilteringFormatter.ts';
 import { FilterItemProps, RangeMinMaxFilter } from '@/shared/model/types.ts';
 import MinMaxFilter from './MinMaxFilter.tsx';
-import { Button, Flex, Label } from '@allcll/allcll-ui';
+import { Button, Flex, Grid, Label } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile.ts';
 
 type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer U)[] ? U : Filters[K];
@@ -13,7 +13,6 @@ interface ISingleSelectFilter<K extends keyof Filters> {
   filterKey: K;
   setFilter: (field: K, value: FilterValueType<K> | null) => void;
   options: FilterValueType<K>[];
-  className?: string;
   ItemComponent: React.ComponentType<FilterItemProps>;
   isMinMax?: boolean;
 }
@@ -24,7 +23,6 @@ function SingleSelectFilterOption<K extends keyof Filters>({
   setFilter,
   options,
   ItemComponent,
-  className,
   isMinMax = false,
 }: Readonly<ISingleSelectFilter<K>>) {
   const isMobile = useMobile();
@@ -45,7 +43,7 @@ function SingleSelectFilterOption<K extends keyof Filters>({
   return (
     <div className="relative inline-block">
       <Label>{labelPrefix[filterKey]}</Label>
-      <Flex direction="flex-wrap" gap="gap-2" className={className ?? 'mt-1'}>
+      <Grid columns={{ md: 3 }} gap="gap-2">
         {options.map(option => (
           <ItemComponent
             key={String(option)}
@@ -54,7 +52,8 @@ function SingleSelectFilterOption<K extends keyof Filters>({
             onClick={() => handleChangeCheckbox(option)}
           />
         ))}
-      </Flex>
+      </Grid>
+
       {isMinMax && (
         <div className="mt-2">
           <MinMaxFilter

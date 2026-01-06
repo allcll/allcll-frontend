@@ -7,7 +7,7 @@ interface IDialogHeader {
 
 function DialogHeader({ children, onClose }: IDialogHeader) {
   return (
-    <div className="w-full px-8 py-5 border-b border-gray-100 flex flex-row justify-between z-60">
+    <div className="w-full px-4 sm:px-6 py-2 sm:py-4 border-b border-gray-100 flex flex-row justify-between">
       {children}
 
       <button
@@ -16,7 +16,7 @@ function DialogHeader({ children, onClose }: IDialogHeader) {
         className="w-6 h-6 cursor-pointer flex items-center justify-center bg-gray-100 rounded-full"
         onClick={onClose}
       >
-        <XDarkGraySvg className="text-gray-600 w-4 h-4" />
+        <XDarkGraySvg className="text-gray-600 w-3 h-3" />
       </button>
     </div>
   );

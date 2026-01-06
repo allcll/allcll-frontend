@@ -26,11 +26,14 @@ function Chip({
   isChipOpen,
   ...rest
 }: Readonly<IChip>) {
+  const baseClasses =
+    'flex flex-row justify-center items-center px-4 py-2 cursor-pointer gap-4 transition-colors duration-300 ease-out active:scale-[0.97]';
+
   return (
     <button
       type="button"
       ref={containerRef}
-      className={`flex flex-row justify-between items-center px-4 py-2 rounded-lg cursor-pointer gap-4 ${getSelectedColor(selected)}`}
+      className={`${baseClasses} ${getTypeRoundedClass(variant)} ${getColorClass(selected, variant)}`}
       aria-pressed={selected}
       onClick={onClick}
       {...rest}
@@ -52,10 +55,42 @@ function Chip({
   );
 }
 
+/**Chip 컴포넌트의 기본 레이아웃은 그리드입니다. */
+Chip.layout = 'grid' as const;
+
 export default Chip;
 
-function getSelectedColor(selected: boolean) {
-  return selected
-    ? `bg-primary-100 text-primary-500 focus:outline-primary-500 hover:bg-primary-200`
-    : `bg-gray-100 text-gray-700 focus:outline-gray-400 hover:bg-gray-200`;
+function getColorClass(selected: boolean, variant: ChipVariantType) {
+  if (selected) {
+    return `
+      bg-primary-100
+      text-primary-500
+      hover:bg-primary-200
+      focus:outline-primary-500
+    `;
+  }
+
+  if (variant === 'none') {
+    return `
+      bg-transparent
+      text-gray-700
+      border border-gray-200
+      hover:bg-gray-100
+      focus:outline-gray-400
+    `;
+  }
+
+  return `
+    bg-gray-100
+    text-gray-700
+    hover:bg-gray-200
+    focus:outline-gray-400
+  `;
+}
+
+function getTypeRoundedClass(variant: ChipVariantType) {
+  if (variant === 'cancel') {
+    return 'rounded-full text-xs py-0';
+  }
+  return 'rounded-lg text-sm py-2';
 }

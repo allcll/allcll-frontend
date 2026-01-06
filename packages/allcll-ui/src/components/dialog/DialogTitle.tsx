@@ -1,8 +1,8 @@
 function DialogTitle({ children }: React.PropsWithChildren<{ id?: string }>) {
   return (
-    <h3 id="dialog-title" className="font-semibold">
+    <h2 id="dialog-title" className="font-semibold text-base">
       {children}
-    </h3>
+    </h2>
   );
 }
 

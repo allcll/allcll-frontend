@@ -56,7 +56,12 @@ function DayTimeFilter({ items, onChange }: Readonly<IDayTimeFilter>) {
         ))}
       </Flex>
 
-      <Button variant="text" size="small" onClick={() => onChange([...items, { day: '', type: 'all' }])}>
+      <Button
+        variant="text"
+        size="small"
+        textColor="gray"
+        onClick={() => onChange([...items, { day: '', type: 'all' }])}
+      >
         요일 추가
       </Button>
     </>

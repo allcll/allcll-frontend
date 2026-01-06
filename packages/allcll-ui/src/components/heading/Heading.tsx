@@ -15,7 +15,7 @@ function Heading({ level = 1, size, as, className, children, ...props }: Heading
   const appliedSize = size ?? levelToSize(level);
 
   return (
-    <Tag className={`${getSizeClass(appliedSize)} ${className || ''}`} {...props}>
+    <Tag className={`${className ?? ''} ${getSizeClass(appliedSize)} text-text-200`} {...props}>
       {children}
     </Tag>
   );
