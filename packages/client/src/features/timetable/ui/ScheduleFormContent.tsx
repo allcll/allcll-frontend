@@ -1,6 +1,5 @@
 import { Day } from '@/shared/model/types.ts';
-import { Flex, Label, TextField } from '@allcll/allcll-ui';
-import Chip from '@common/components/chip/Chip.tsx';
+import { Chip, Flex, Label, TextField } from '@allcll/allcll-ui';
 import { extractTimeRange, toggleDaySlot } from '../lib/time.ts';
 import useScheduleModal, { useScheduleModalData } from '../lib/useScheduleModal.ts';
 import { updateTimeSlot } from '../lib/updateTimeSlot.ts';

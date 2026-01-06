@@ -5,12 +5,11 @@ import DepartmentSelect from '@/entities/departments/ui/DepartmentSelect.tsx';
 import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';
 import GenericSingleSelectFilter from '@/features/filtering/ui/GenericSingleSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
-import Chip from '@common/components/chip/Chip.tsx';
 import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
 import { FilterValueType } from '@/shared/model/types.ts';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
-import { Button, Flex } from '@allcll/allcll-ui';
+import { Button, Chip, Flex } from '@allcll/allcll-ui';
 
 interface FilterBottomSheetProps {
   onCloseFiltering: () => void;
@@ -56,7 +55,7 @@ function FilterBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }
           {allSelectedFilters.map(filter => (
             <Chip
               key={`${filter.filterKey}-${filter.values}`}
-              chipType="cancel"
+              variant="cancel"
               label={filter.label}
               selected={true}
               onClick={() => handleDeleteFilter(filter.filterKey, filter.values)}

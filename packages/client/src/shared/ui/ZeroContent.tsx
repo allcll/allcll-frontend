@@ -8,7 +8,7 @@ interface ZeroContentProps {
 
 export function ZeroContent({ title, description }: ZeroContentProps) {
   return (
-    <Flex direction="flex-col" align="items-center" gap="gap-1">
+    <Flex direction="flex-col" align="items-center" gap="gap-1" className="mt-2">
       <SearchSvg className="w-7 h-7" />
       <p className="text-gray-500 font-medium">{title}</p>
       {description && <p className="text-gray-400 text-xs">{description}</p>}

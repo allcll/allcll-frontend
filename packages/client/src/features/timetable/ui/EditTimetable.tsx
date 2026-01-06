@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Chip from '@common/components/chip/Chip.tsx';
 import {
   useCreateTimetable,
   useDeleteTimetable,
   useUpdateTimetable,
 } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
-import { Button, Dialog, Grid, Label, TextField } from '@allcll/allcll-ui';
+import { Button, Chip, Dialog, Grid, Label, TextField } from '@allcll/allcll-ui';
 import { SEMESTERS, SERVICE_SEMESTER_DUMMY } from '@/entities/semester/api/semester.ts';
 
 interface IEditTimetable {

@@ -42,7 +42,7 @@ interface IHeaderTypeIcon {
 }
 
 function HeaderTypeIcon({ headerType, onClick }: IHeaderTypeIcon) {
-  const icon = headerType === 'close' ? <XDarkGraySvg /> : <AddSvg className="text-gray-400" />;
+  const icon = headerType === 'close' ? <XDarkGraySvg /> : <AddSvg className="text-gray-400" width={16} height={16} />;
 
   return (
     <button
