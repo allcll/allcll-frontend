@@ -46,20 +46,16 @@ function ServiceClosed({ data }: IServiceClosed) {
           <Heading level={3}>문의</Heading>
 
           <SupportingText className="flex items-center justify-center gap-2 mt-2">allcllclla@google.com</SupportingText>
-          <a
-            className="text-gray-500 flex items-center justify-center gap-2 mt-1 hover:text-blue-500 hover:underline"
-            href="https://forms.gle/bCDTVujEHunnvHe88"
-            target="_blank"
-          >
-            오류 및 제안
-          </a>
-          <a
-            className="text-gray-500 flex items-center justify-center gap-2 mt-1 hover:text-blue-500 hover:underline"
-            href="https://open.kakao.com/o/g3MztXfh"
-            target="_blank"
-          >
-            오픈 채팅
-          </a>
+          <Button variant="text" size="medium" textColor="primary" asChild>
+            <a href="https://forms.gle/bCDTVujEHunnvHe88" target="_blank">
+              오류 및 제안
+            </a>
+          </Button>
+          <Button variant="text" size="medium" textColor="primary" asChild>
+            <a href="https://open.kakao.com/o/g3MztXfh" target="_blank">
+              오픈 채팅
+            </a>
+          </Button>
         </Card>
 
         <Flex className="mt-6" justify="justify-center">
