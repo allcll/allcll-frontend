@@ -1,4 +1,5 @@
 import CheckSvg from '@/assets/check.svg?react';
+import type { KeyboardEvent } from 'react';
 import { useId } from 'react';
 import type { ComponentPropsWithRef } from 'react';
 
@@ -9,6 +10,18 @@ interface ICheckbox extends ComponentPropsWithRef<'input'> {
 function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
   const reactId = useId();
   const inputId = label ? `checkbox-${label}` : `checkbox-${reactId}`;
+
+  const inputClass = `w-5 h-5 rounded-sm border flex-shrink-0 appearance-none flex items-center justify-center
+    ${getCheckboxClass(!!rest.checked)}`;
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      e.currentTarget.click();
+    }
+
+    rest.onKeyDown?.(e);
+  };
 
   return (
     <label
@@ -21,10 +34,8 @@ function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
           type="checkbox"
           aria-checked={rest.checked}
           aria-label={label ? undefined : 'toggle checkbox'}
-          className={`
-            appearance-none w-5 h-5 rounded-sm border cursor-pointer transition-colors hover:bg-gray-50
-            ${rest.checked ? 'bg-blue-50 border-blue-500' : 'bg-white border-gray-400'}
-          `}
+          className={inputClass}
+          onKeyDown={handleKeyDown}
           {...rest}
         />
         {rest.checked && <CheckSvg className="text-blue-500 w-4 h-4 absolute inset-0 m-auto pointer-events-none" />}
@@ -37,5 +48,17 @@ function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
 
 Checkbox.layout = 'flex' as const;
 
+function getCheckboxClass(checked: boolean) {
+  return checked
+    ? `
+      bg-blue-50
+      border-blue-500
+    `
+    : `
+      bg-white
+      border-gray-400
+      hover:bg-gray-50
+    `;
+}
 
 export default Checkbox;
