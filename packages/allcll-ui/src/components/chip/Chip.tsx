@@ -27,7 +27,7 @@ function Chip({
   ...rest
 }: Readonly<IChip>) {
   const baseClasses =
-    'flex flex-row justify-center items-center px-4 py-2 cursor-pointer gap-4 transition-colors duration-300 ease-out active:scale-[0.97]';
+    'flex flex-row justify-center items-center cursor-pointer gap-4 transition-colors duration-300 ease-out active:scale-[0.97]';
 
   return (
     <button
@@ -90,7 +90,7 @@ function getColorClass(selected: boolean, variant: ChipVariantType) {
 
 function getTypeRoundedClass(variant: ChipVariantType) {
   if (variant === 'cancel') {
-    return 'rounded-full text-xs py-0';
+    return 'rounded-full text-xs py-1.5 px-4';
   }
-  return 'rounded-lg text-sm py-2';
+  return 'rounded-lg text-sm py-2 px-4';
 }

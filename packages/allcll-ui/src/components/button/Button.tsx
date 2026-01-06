@@ -62,7 +62,7 @@ function getVariantClass(variant: ButtonVariant, textColor: TextColor) {
     case 'circle':
       return 'px-2 py-2 bg-primary-500 text-white hover:bg-primary-600 rounded-full shadow-md ';
     case 'text':
-      return getTextVariant(textColor);
+      return `${getTextVariant(textColor)} px-0 py-0`;
     default:
       return '';
   }
@@ -71,7 +71,7 @@ function getVariantClass(variant: ButtonVariant, textColor: TextColor) {
 function getSizeClass(size: string) {
   switch (size) {
     case 'small':
-      return 'text-sm px-1 py-2';
+      return 'text-sm px-4 py-2';
     case 'medium':
       return 'text-sm px-4 py-2';
     case 'large':

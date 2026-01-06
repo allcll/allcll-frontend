@@ -7,7 +7,7 @@ interface IDialogHeader {
 
 function DialogHeader({ children, onClose }: IDialogHeader) {
   return (
-    <div className="w-full px-4 sm:px-6 py-2 sm:py-4 border-b border-gray-100 flex flex-row justify-between">
+    <div className="w-full px-4 sm:px-6 py-4 sm:py-4 border-b border-gray-100 flex flex-row justify-between">
       {children}
 
       <button
