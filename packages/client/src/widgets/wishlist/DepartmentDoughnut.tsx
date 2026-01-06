@@ -8,7 +8,7 @@ import {
   getDoughnutTotalCount,
   getMajorDoughnutData,
   getUniversityDoughnutData,
-} from '@/features/simulation/lib/doughnut.ts';
+} from '@/features/wish/lib/doughnut';
 import { WishRegister } from '@/shared/model/types.ts';
 import { Flex, Heading, Label } from '@allcll/allcll-ui';
 

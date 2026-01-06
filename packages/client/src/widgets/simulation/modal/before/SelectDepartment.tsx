@@ -13,19 +13,19 @@ let isInit = false;
 function SelectDepartment({ department, setDepartment }: ISelectDepartment) {
   const { data: departments } = useDepartments();
 
-  function onSelectDepartment(e: React.ChangeEvent<HTMLSelectElement>) {
+  const onSelectDepartment = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const departmentCode = e.target.value;
     const departmentName = departments?.find(d => d.departmentCode === departmentCode)?.departmentName ?? '';
 
     setDepartment({ departmentName, departmentCode });
-  }
+  };
 
   useEffect(() => {
     if (isInit || !departments) return;
 
     // 초기화 시 첫 번째 학과를 선택
     const ranks = getDepartmentRanks();
-    const filteredRanks = ranks.filter(([code]) => code !== '9005'); // 대양휴머니티칼리지는 제외
+    const filteredRanks = ranks.filter(([code]) => code !== '9005');
     if (filteredRanks.length <= 0) return;
 
     const departmentCode = filteredRanks[0][0];

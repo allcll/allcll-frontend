@@ -1,6 +1,7 @@
 import { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
-import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter.tsx';
-import Filtering from '@common/components/filtering/Filtering.tsx';
+import { Button, Label } from '@allcll/allcll-ui';
+import CheckboxAdapter from '@/features/filtering/ui/CheckboxAdapter';
+import Filtering from '@/features/filtering/ui/Filtering';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -20,7 +21,7 @@ function TimetableChip({ selectedTimetable, onSelect, timetables }: ITimetableCh
 
   return (
     <div className="flex flex-col gap-2">
-      <h2 className="text-left font-semibold text-sm sm:text-md">시간표를 선택해주세요.</h2>
+      <Label>시간표를 선택해주세요.</Label>
       <div className="relative inline-block max-w-sm" ref={dropdownRef}>
         <Filtering
           label={selectedTimetable.timeTableName}
@@ -36,9 +37,9 @@ function TimetableChip({ selectedTimetable, onSelect, timetables }: ITimetableCh
             />
           ))}
         </Filtering>
-        <Link to="/timetable" className="px-6 py-2 hover:text-blue-500 text-gray-500 rounded-md">
-          새 시간표 추가
-        </Link>
+        <Button variant="text" size="small">
+          <Link to="/timetable">+ 새 시간표 추가</Link>
+        </Button>
       </div>
     </div>
   );

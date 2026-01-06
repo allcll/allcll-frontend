@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import SejongUI from '../../../../../../sejong-ui';
-import Chip from '@common/components/chip/Chip.tsx';
 import GameTips from './GameTips.tsx';
 import SelectDepartment from './SelectDepartment.tsx';
 import TimetableChip from '../TimetableChip.tsx';
-import Modal from '@common/components/modal/Modal.tsx';
 import {
   applyCreditLimit,
   pickNonRandomSubjects,
@@ -21,6 +18,7 @@ import { TimetableType, useTimetableSchedules } from '@/entities/timetable/api/u
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import SubjectTable from './SubjectTable.tsx';
 import ActionButtons from './ActionButton.tsx';
+import { Chip, Dialog, Label } from '@allcll/allcll-ui';
 
 interface UserWishModalIProps {
   timetables: TimetableType[];
@@ -171,12 +169,10 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
   }, [prevSnapshot, timetables]);
 
   return (
-    <Modal onClose={() => setIsModalOpen(false)}>
+    <Dialog title="수강 신청 연습 시작" onClose={() => setIsModalOpen(false)}>
       <div className="flex flex-col w-full overflow-y-auto max-h-[90vh] max-w-[900px] sm:min-w-[600px]">
-        <SejongUI.Modal.Header title="수강 신청 연습을 시작하시겠습니까?" onClose={() => setIsModalOpen(false)} />
-
         <div className="flex flex-col gap-2 p-2 sm:p-6">
-          <h2 className="text-left font-semibold text-sm sm:text-md">어떤 과목으로 진행하시겠습니까?</h2>
+          <Label>어떤 과목으로 진행하시겠습니까?</Label>
           <div className="flex gap-2 py-2">
             {prevSnapshot && (
               <Chip
@@ -218,7 +214,7 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
           setToggleTip={setToggleTip}
         />
       </div>
-    </Modal>
+    </Dialog>
   );
 }
 

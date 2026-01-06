@@ -1,6 +1,6 @@
 const VISIT_TUTORIAL_KEY = 'visitedTutorial';
 
-export const VisitTutorial = {
+export const visitTutorial = {
   _visited: undefined as string | undefined | null,
   get() {
     if (this._visited === undefined) {

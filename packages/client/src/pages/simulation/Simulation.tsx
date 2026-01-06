@@ -19,7 +19,7 @@ import {
   forceStopSimulation,
   SIMULATION_TIME_LIMIT,
 } from '@/features/simulation/lib/simulation.ts';
-import { VisitTutorial } from '@/features/simulation/lib/VisitTutorial.ts';
+import { visitTutorial } from '@/features/simulation/lib/VisitTutorial';
 import SejongUI from '@allcll/sejong-ui';
 
 function Simulation() {
@@ -27,7 +27,7 @@ function Simulation() {
   const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
   const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
   const { reloadSimulationStatus } = useReloadSimulation();
-  const isExpiredTutorial = VisitTutorial.get();
+  const isExpiredTutorial = visitTutorial.get();
 
   const forceSimulation = async () => {
     try {
@@ -90,7 +90,7 @@ function Simulation() {
         </div>
 
         {!isExpiredTutorial && (
-          <button className="text-gray-600 hover:text-blue-500 cursor-pointer" onClick={VisitTutorial.reset}>
+          <button className="text-gray-600 hover:text-blue-500 cursor-pointer" onClick={visitTutorial.reset}>
             튜토리얼 활성화
           </button>
         )}
@@ -104,7 +104,6 @@ function Simulation() {
         <NoneRegisteredTable />
       </section>
 
-      {/* 담은 과목인 수강신청 내역 */}
       <section className="mt-4">
         <div className="w-full flex flex-col sm:flex-row sm:items-center justify-start gap-2 mb-2">
           <SejongUI.SectionHeader>수강 신청 내역</SejongUI.SectionHeader>

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import YouTube from 'react-youtube';
 import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
-import ArrowdownSvg from '@/assets/arrow-down-gray.svg?react';
+import ArrowdownSvg from '@/assets/arrow-down.svg?react';
 import useMobile from '@/shared/lib/useMobile.ts';
 import Checkbox from '@common/components/checkbox/Checkbox.tsx';
 import SejongUI from '../../../../../../sejong-ui';
-import { VisitTutorial } from '@/features/simulation/lib/VisitTutorial.ts';
-import { Dialog } from '@allcll/allcll-ui';
+import { Button, Dialog, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import { visitTutorial } from '@/features/simulation/lib/VisitTutorial';
 
 const tutorialVideos = [
   {
@@ -39,7 +39,7 @@ function TutorialModal() {
   const closeModal = useSimulationModalStore(state => state.closeModal);
   const isMobile = useMobile();
   const youTubeSize = isMobile ? { width: '250', height: '141' } : { width: '600', height: '338' };
-  const showTutorial = VisitTutorial.get();
+  const showTutorial = visitTutorial.get();
 
   if (!showTutorial) {
     openModal('wish');
@@ -58,7 +58,7 @@ function TutorialModal() {
       return;
     }
 
-    VisitTutorial.set();
+    visitTutorial.set();
     setPopupChecked(true);
   };
 
@@ -77,7 +77,8 @@ function TutorialModal() {
   return (
     <Dialog title="올클연습 소개" onClose={handleCloseModal} isOpen={showTutorial}>
       <Dialog.Content>
-        <div className="w-full flex flex-col p-4">
+        <Flex className="w-full" direction="flex-col">
+          <SupportingText>올클연습은 실제 수강신청과 유사한 환경에서 연습할 수 있는 기능입니다.</SupportingText>
           <div className="mx-auto" style={{ width: youTubeSize.width + 'px', height: youTubeSize.height + 'px' }}>
             <YouTube
               videoId={currentVideo.videoId}
@@ -93,38 +94,32 @@ function TutorialModal() {
               onEnd={goToNextTutorial}
             />
           </div>
+        </Flex>
 
-          <div className="mt-4 flex flex-col justify-center items-center gap-2">
-            <div className="flex justify-center items-center gap-5">
-              <button className="cursor-pointer w-5 h-5" aria-label="이전 튜토리얼" onClick={goToPreviousTutorial}>
-                {currentIndex !== 0 && <ArrowdownSvg className="w-5 h-5 transform rotate-90" />}
-              </button>
-              <h2 className="text-gray-700 text-xl font-semibold">{currentVideo.title}</h2>
-              <button className="cursor-pointer" aria-label="이전 튜토리얼" onClick={goToNextTutorial}>
-                {currentIndex < 3 && <ArrowdownSvg className="w-5 h-5 transform -rotate-90" />}
-              </button>
-            </div>
+        <div className="mt-4 flex flex-col justify-center items-center gap-2">
+          <Flex justify="justify-center" align="items-center" className="gap-4">
+            <Button variant="text" size="medium" aria-label="이전 튜토리얼" onClick={goToPreviousTutorial}>
+              {currentIndex !== 0 && <ArrowdownSvg className="w-5 h-5 transform rotate-90" />}
+            </Button>
+            <Heading level={3}>{currentVideo.title}</Heading>
+            <Button variant="text" size="medium" aria-label="이전 튜토리얼" onClick={goToNextTutorial}>
+              {currentIndex < 3 && <ArrowdownSvg className="w-5 h-5 transform -rotate-90" />}
+            </Button>
+          </Flex>
+          <SupportingText>
+            각 영상을 통해 연습 과목 선택, 연습 시작 방법, 연습 종료 및 결과 분석 방법을 배울 수 있습니다.
+          </SupportingText>
 
-            <p className="text-gray-500 text-sm">
-              올클연습은 실제 수강신청과 유사한 환경에서 연습할 수 있는 기능입니다.
-            </p>
-            <p className="text-gray-500 text-sm">
-              각 영상을 통해 연습 과목 선택, 연습 시작 방법, 연습 종료 및 결과 분석 방법을 배울 수 있습니다.
-            </p>
-            <SejongUI.Modal.ButtonContainer className="mt-4">
-              <Checkbox
-                label="일주일 동안 보지 않기"
-                checked={popupChecked}
-                onChange={() => setPopupChecked(!popupChecked)}
-              />
-              <button
-                onClick={handleClickSkipTutorial}
-                className="px-4 cursor-pointer text-white py-2 bg-blue-500 hover:bg-blue-600 rounded-md"
-              >
-                튜토리얼 건너뛰기
-              </button>
-            </SejongUI.Modal.ButtonContainer>
-          </div>
+          <SejongUI.Modal.ButtonContainer className="mt-4">
+            <Checkbox
+              label="일주일 동안 보지 않기"
+              checked={popupChecked}
+              onChange={() => setPopupChecked(!popupChecked)}
+            />
+            <Button variant="primary" size="medium" onClick={handleClickSkipTutorial}>
+              튜토리얼 건너뛰기
+            </Button>
+          </SejongUI.Modal.ButtonContainer>
         </div>
       </Dialog.Content>
     </Dialog>
