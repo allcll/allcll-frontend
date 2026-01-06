@@ -41,64 +41,62 @@ function DetailFilterModal({ filterStore, onClose }: Readonly<IModalProps>) {
 
   return (
     <Dialog title="상세 필터링" onClose={onClose} isOpen={true}>
-      <Flex direction="flex-row">
-        <Dialog.Content>
-          <Flex direction="flex-col" gap="gap-4" className="w-130">
-            {allSelectedFilters.length > 0 && (
-              <Card variant="outlined">
-                <Flex direction="flex-col" gap="gap-2">
-                  <Label>선택된 필터</Label>
-                  <Flex gap="gap-2" direction="flex-wrap" justify="justify-start" className="w-120">
-                    {allSelectedFilters.map(filter => (
-                      <Chip
-                        key={`${filter.filterKey}-${filter.values}`}
-                        variant="cancel"
-                        label={filter.label}
-                        selected
-                        onClick={() => handleDeleteFilter(filter.filterKey, filter.values)}
-                      />
-                    ))}
-                  </Flex>
+      <Dialog.Content>
+        <Flex direction="flex-col" gap="gap-4" className="w-130">
+          {allSelectedFilters.length > 0 && (
+            <Card variant="outlined">
+              <Flex direction="flex-col" gap="gap-2">
+                <Label>선택된 필터</Label>
+                <Flex gap="gap-2" direction="flex-wrap" justify="justify-start" className="w-120">
+                  {allSelectedFilters.map(filter => (
+                    <Chip
+                      key={`${filter.filterKey}-${filter.values}`}
+                      variant="cancel"
+                      label={filter.label}
+                      selected
+                      onClick={() => handleDeleteFilter(filter.filterKey, filter.values)}
+                    />
+                  ))}
                 </Flex>
-              </Card>
-            )}
-
-            <Card variant="outlined">
-              <MultiSelectFilter
-                selectedValues={categories}
-                options={categoryOptions}
-                filterKey="categories"
-                setFilter={setFilter}
-                ItemComponent={Chip}
-              />
+              </Flex>
             </Card>
+          )}
 
-            <Card variant="outlined">
-              <DayTimeFilter items={time} onChange={items => setFilter('time', items)} />
-            </Card>
+          <Card variant="outlined">
+            <MultiSelectFilter
+              selectedValues={categories}
+              options={categoryOptions}
+              filterKey="categories"
+              setFilter={setFilter}
+              ItemComponent={Chip}
+            />
+          </Card>
 
-            <Card variant="outlined">
-              <MultiSelectFilter
-                selectedValues={note}
-                options={FilterDomains.remark}
-                filterKey="note"
-                setFilter={setFilter}
-                ItemComponent={Chip}
-              />
-            </Card>
+          <Card variant="outlined">
+            <DayTimeFilter items={time} onChange={items => setFilter('time', items)} />
+          </Card>
 
-            <Card variant="outlined">
-              <MultiSelectFilter
-                selectedValues={classroom}
-                options={FilterDomains.classRoom}
-                filterKey="classroom"
-                setFilter={setFilter}
-                ItemComponent={Chip}
-              />
-            </Card>
-          </Flex>
-        </Dialog.Content>
-      </Flex>
+          <Card variant="outlined">
+            <MultiSelectFilter
+              selectedValues={note}
+              options={FilterDomains.remark}
+              filterKey="note"
+              setFilter={setFilter}
+              ItemComponent={Chip}
+            />
+          </Card>
+
+          <Card variant="outlined">
+            <MultiSelectFilter
+              selectedValues={classroom}
+              options={FilterDomains.classRoom}
+              filterKey="classroom"
+              setFilter={setFilter}
+              ItemComponent={Chip}
+            />
+          </Card>
+        </Flex>
+      </Dialog.Content>
 
       <Dialog.Footer>
         <Flex direction="flex-col" gap="gap-2">

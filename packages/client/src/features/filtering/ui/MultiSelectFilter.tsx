@@ -80,7 +80,7 @@ function MultiSelectFilter<K extends keyof Filters>({
 
       {options.length > MAX_VISIBLE && (
         <Button variant="text" size="small" textColor="gray" onClick={() => setIsExpanded(prev => !prev)}>
-          {isExpanded ? '간략히' : '더보기'}
+          {isExpanded ? '- 간략히' : '+ 더보기'}
         </Button>
       )}
 

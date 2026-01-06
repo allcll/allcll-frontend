@@ -1,5 +1,5 @@
 import { Filters } from '@/shared/model/useFilterStore.ts';
-import Filtering from '@common/components/filtering/Filtering.tsx';
+import Filtering from '@/features/filtering/ui/Filtering.tsx';
 import DayTimeFilter, { IDayTimeItem } from './DayTimeFilter.tsx';
 import useMobile from '@/shared/lib/useMobile.ts';
 import { Label } from '@allcll/allcll-ui';

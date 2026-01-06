@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-import Chip from '../chip/Chip';
-import useDetectClose from '../../hooks/useDetectClose';
+import { Chip } from '@allcll/allcll-ui';
+import useDetectClose from '@/shared/lib/useDetectClose';
 import FilterOption from './FilterOption';
 
 interface IFiltering {
@@ -36,7 +36,7 @@ function Filtering({ label, selected, children, className = '' }: Readonly<IFilt
         isChipOpen={isChipOpen}
         label={label}
         containerRef={containerRef}
-        chipType="select"
+        variant="select"
         selected={selected}
         onClick={handleClickChip}
       />

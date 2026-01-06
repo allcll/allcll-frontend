@@ -2,11 +2,13 @@ import { useState } from 'react';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { Filters } from '@/shared/model/useFilterStore.ts';
 import { DepartmentType } from '@/shared/model/types.ts';
-import Filtering from '@common/components/filtering/Filtering.tsx';
+import Filtering from '@/features/filtering/ui/Filtering';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
-import { Button, Flex } from '@allcll/allcll-ui';
+import { Button, Flex, Label, ListboxOption } from '@allcll/allcll-ui';
 import ResetSvg from '@/assets/reset-blue.svg?react';
 import { useFilteringDepartment } from '../lib/useFilteringDepartment';
+import CheckSvg from '@/assets/checkbox-blue.svg?react';
+import { ZeroContent } from '@/shared/ui/ZeroContent';
 
 interface IDepartmentFilter {
   setFilter: (key: keyof Filters, value: string | null) => void;
@@ -28,8 +30,9 @@ function DepartmentFilter({ setFilter, selectedValue }: IDepartmentFilter) {
 
   return (
     <Filtering label={pickCollegeOrMajor(selectedValue, departmentsList)} selected={!!selectedValue}>
-      <Flex direction="flex-col" className=" h-80 max-h-80 w-[300px] overflow-y-auto">
-        <Flex className="shrink-0 px-2 pt-2 bg-white" gap="gap-2">
+      <Flex direction="flex-col" className="h-80 max-h-80 w-[300px] overflow-y-auto">
+        <Label>학과</Label>
+        <Flex className="shrink-0 pt-2 bg-white" gap="gap-2">
           <select
             value={category}
             className="border border-gray-300 rounded-md py-1 text-sm text-gray-700 bg-white"
@@ -56,7 +59,7 @@ function DepartmentFilter({ setFilter, selectedValue }: IDepartmentFilter) {
           />
         </Flex>
 
-        <div className="overflow-y-auto flex-1 px-2 py-2 ">
+        <div className="overflow-y-auto flex-1 py-2 ">
           {(category === '전공' || category === '교양') && (
             <SelectSubject departments={filteredDepartments} setFilter={setFilter} selectedValue={selectedValue} />
           )}
@@ -86,30 +89,33 @@ function SelectSubject({ departments, setFilter, selectedValue }: ISelectSubject
     setFilter('department', department || '');
   };
 
+  if (!departments) {
+    return <ZeroContent title="학과 리스트들이 없습니다." />;
+  }
+
+  const filteredDepartments = departments.filter(
+    department => pickCollegeOrMajor(selectedValue, departments) === department.departmentName,
+  );
+
+  if (filteredDepartments.length === 0) {
+    return <ZeroContent title="검색 결과가 없습니다." description="다른 학과 이름으로 검색해주세요." />;
+  }
+
   return (
     <>
-      {departments?.map(department => (
-        <div
-          key={department.departmentCode}
-          role="option"
-          tabIndex={0}
-          aria-selected={pickCollegeOrMajor(selectedValue, departments) === department.departmentName}
-          className={`flex items-center gap-1 px-2 py-2 rounded cursor-pointer text-sm ${
-            pickCollegeOrMajor(selectedValue, departments) === department.departmentName
-              ? 'bg-blue-50 text-blue-500 font-medium'
-              : 'hover:bg-gray-50 text-gray-700'
-          }`}
-          onClick={() => handleChangeDepartment(department.departmentCode)}
-          onKeyDown={e => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              handleChangeDepartment(department.departmentCode);
-            }
-          }}
-        >
-          {department.departmentName}
-        </div>
-      ))}
+      {departments.map(department => {
+        const isSelected = pickCollegeOrMajor(selectedValue, departments) === department.departmentName;
+
+        return (
+          <ListboxOption
+            key={department.departmentCode}
+            selected={isSelected}
+            left={department.departmentName.split(' ').slice(-1)[0]}
+            right={isSelected ? <CheckSvg className="w-4 h-4 shrink-0" /> : null}
+            onSelect={() => handleChangeDepartment(department.departmentCode)}
+          />
+        );
+      })}
     </>
   );
 }

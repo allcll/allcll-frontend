@@ -71,7 +71,7 @@ function MobileTimetableOverlay() {
       >
         <div className="fixed bottom-4 right-4 z-5">
           <Button size="small" variant="circle" onClick={handleClickSearch}>
-            <AddSvg className="w-6 h-6 cursor-pointer" />
+            <AddSvg fill="#ffffff" className="w-6 h-6 cursor-pointer" />
           </Button>
         </div>
       </RenderIf>
