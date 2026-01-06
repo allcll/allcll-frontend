@@ -24,4 +24,5 @@ export { default as Heading } from './src/components/heading/Heading';
 export { default as SupportingText } from './src/components/supportingText/SupportingText';
 export { default as Flex } from './src/components/flex/Flex';
 export { default as Grid } from './src/components/grid/Grid';
+export { default as ListboxOption } from './src/components/listbox/ListboxOption';
 export * from './colors';
