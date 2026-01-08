@@ -1,10 +1,11 @@
 import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
-import { Filters, FilterStore, getAllSelectedLabels, initialFilters } from '@/shared/model/useFilterStore.ts';
+import { Filters, FilterStore, initialFilters } from '@/features/filtering/model/useFilterStore.ts';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import MultiSelectFilter from '../../../features/filtering/ui/MultiSelectFilter.tsx';
 import DayTimeFilter from '../../../features/filtering/ui/DayTimeFilter.tsx';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { Button, Card, Chip, Dialog, Flex, Label } from '@allcll/allcll-ui';
+import { getAllSelectedLabels } from '@/features/filtering/lib/filterUtils.ts';
 
 interface IModalProps {
   filterStore: FilterStore;

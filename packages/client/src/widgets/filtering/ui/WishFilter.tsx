@@ -2,8 +2,7 @@
 import { useState } from 'react';
 import StarIcon from '@/shared/ui/svgs/StarIcon.tsx';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
-import { Filters, getAllSelectedLabels, initialFilters, useWishSearchStore } from '@/shared/model/useFilterStore.ts';
-import { FilterValueType } from '@/shared/model/types.ts';
+import { Filters, initialFilters, useWishSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import ListSvg from '@/assets/list.svg?react';
 import useMobile from '@/shared/lib/useMobile.ts';
 import FilterBottomSheet from '@/widgets/filtering/ui/FilterBottomSheet.tsx';
@@ -19,6 +18,8 @@ import { IconButton, Flex, Chip } from '@allcll/allcll-ui';
 import { useWishesTableStore } from '@/features/wish/model/useWishTableColumnStore.ts';
 import TableTitleSettingModal from '@/shared/ui/TableTitleSettingModal.tsx';
 import DetailFilterModal from '@/features/filtering/ui/DetailFilterModal.tsx';
+import { getAllSelectedLabels } from '@/features/filtering/lib/filterUtils.ts';
+import { FilterValueType } from '@/features/filtering/model/types.ts';
 
 export interface WishSearchParams {
   searchInput: string;

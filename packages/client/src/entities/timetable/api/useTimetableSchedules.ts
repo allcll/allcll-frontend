@@ -3,8 +3,9 @@ import useSubject from '@/entities/subjects/model/useSubject.ts';
 import { ScheduleMutateType, useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 import { fetchDeleteJsonOnAPI, fetchJsonOnAPI, fetchOnAPI } from '@/shared/api/api.ts';
-import { Day, Subject } from '@/shared/model/types.ts';
+import { Subject } from '@/shared/model/types.ts';
 import { timeSleep } from '@/shared/lib/time.ts';
+import { Day } from '@/features/filtering/model/types.ts';
 
 export interface Timetable {
   timetableId: number;

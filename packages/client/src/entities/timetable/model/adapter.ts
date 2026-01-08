@@ -5,7 +5,8 @@ import {
   TimeSlot,
 } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { ROW_HEIGHT } from '@/widgets/timetable/TimetableComponent.tsx';
-import { Day, Subject } from '@/shared/model/types.ts';
+import { Subject } from '@/shared/model/types.ts';
+import { Day } from '@/features/filtering/model/types.ts';
 
 interface ApiUiAdapter<T, U> {
   data: U; // Initial data

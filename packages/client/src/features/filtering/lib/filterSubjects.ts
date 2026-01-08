@@ -1,20 +1,14 @@
 import { disassemble } from 'es-hangul';
-import {
-  Day,
-  Grade,
-  RangeFilter,
-  RangeMinMaxFilter,
-  RemarkType,
-  Subject,
-  Wishes,
-} from '../../../shared/model/types.ts';
+import { Subject, Wishes } from '@/shared/model/types.ts';
 import { IPreRealSeat } from '@/entities/seat/api/usePreRealSeats.ts';
 import { usePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
 import useFavorites from '@/features/filtering/model/useFavorites.ts';
-import { Filters, isFilterEmpty } from '@/shared/model/useFilterStore.ts';
+import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 import { Time } from '@/shared/lib/time.ts';
 import { IDayTimeItem } from '@/features/filtering/ui/DayTimeFilter.tsx';
+import { isFilterEmpty } from '@/features/filtering/lib/filterUtils.ts';
+import { Day, Grade, RangeFilter, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
 
 /** 활성화 된 필터만 실행하는 함수를 반환 (최적화) */
 export function useFilterFunctions(filters: Filters) {

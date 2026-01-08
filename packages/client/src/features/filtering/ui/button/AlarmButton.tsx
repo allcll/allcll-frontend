@@ -1,5 +1,5 @@
 import AlarmIcon from '@/shared/ui/svgs/AlarmIcon.tsx';
-import { Filters } from '@/shared/model/useFilterStore.ts';
+import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { Button } from '@allcll/allcll-ui';
 
 interface IAlarmButton {

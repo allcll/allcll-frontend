@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet';
 import { useDeferredValue } from 'react';
 import useMobile from '@/shared/lib/useMobile.ts';
 import ScrollToTopButton from '@/shared/ui/ScrollTopButton.tsx';
-import { Filters, useAlarmSearchStore } from '@/shared/model/useFilterStore.ts';
+import { Filters, useAlarmSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import TableColorInfo from '@/shared/ui/TableColorInfo.tsx';
 import useWishesPreSeats from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
 

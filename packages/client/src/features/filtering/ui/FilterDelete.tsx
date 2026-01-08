@@ -1,6 +1,7 @@
 import RemoveFilterSvg from '@/assets/filter-remove-primary.svg?react';
-import { Filters, isFilterEmpty } from '@/shared/model/useFilterStore.ts';
+import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { Chip, Flex } from '@allcll/allcll-ui';
+import { isFilterEmpty } from '@/features/filtering/lib/filterUtils.ts';
 
 interface FilterDelete {
   filters: Filters;

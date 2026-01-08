@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import { GeneralSchedule, TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { ScheduleAdapter } from '@/entities/timetable/model/adapter.ts';
-import { Day } from '@/shared/model/types.ts';
 import { DAYS } from '@/features/timetable/model/types.ts';
+import { Day } from '@/features/filtering/model/types.ts';
 
 export enum ScheduleMutateType {
   NONE = 'none',

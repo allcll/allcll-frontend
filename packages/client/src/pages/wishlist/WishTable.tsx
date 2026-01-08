@@ -8,7 +8,7 @@ import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
 import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
 import useWishes, { InitWishes } from '@/entities/wishes/model/useWishes.ts';
 import { useJoinPreSeats } from '@/entities/subjectAggregate/lib/joinSubjects.ts';
-import { useWishSearchStore } from '@/shared/model/useFilterStore.ts';
+import { useWishSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import ScrollToTopButton from '@/shared/ui/ScrollTopButton.tsx';
 import { Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 

@@ -2,7 +2,7 @@ import { useDeferredValue, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import XSvg from '@/assets/x.svg?react';
 import { Flex, Heading, IconButton } from '@allcll/allcll-ui';
-import { initialFilters } from '@/shared/model/useFilterStore';
+import { initialFilters } from '@/features/filtering/model/useFilterStore.ts';
 import useWishes from '@/entities/wishes/model/useWishes';
 import SearchBox from '@/features/filtering/ui/SearchBox';
 import useSearchRank from '@/features/filtering/lib/useSearchRank';

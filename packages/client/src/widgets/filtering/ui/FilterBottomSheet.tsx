@@ -1,15 +1,16 @@
 import BottomSheet from '../../../shared/ui/bottomsheet/BottomSheet.tsx';
 import BottomSheetHeader from '../../../shared/ui/bottomsheet/BottomSheetHeader.tsx';
-import { Filters, getAllSelectedLabels, initialFilters } from '@/shared/model/useFilterStore.ts';
+import { Filters, initialFilters } from '@/features/filtering/model/useFilterStore.ts';
 import DepartmentSelect from '@/entities/departments/ui/DepartmentSelect.tsx';
 import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';
 import GenericSingleSelectFilter from '@/features/filtering/ui/GenericSingleSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
 import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
-import { FilterValueType } from '@/shared/model/types.ts';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { Button, Chip, Flex } from '@allcll/allcll-ui';
+import { getAllSelectedLabels } from '@/features/filtering/lib/filterUtils.ts';
+import { FilterValueType } from '@/features/filtering/model/types.ts';
 
 interface FilterBottomSheetProps {
   onCloseFiltering: () => void;

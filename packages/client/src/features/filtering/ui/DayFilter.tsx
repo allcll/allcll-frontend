@@ -1,4 +1,4 @@
-import { Filters } from '@/shared/model/useFilterStore.ts';
+import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import DayTimeFilter, { IDayTimeItem } from './DayTimeFilter.tsx';
 import useMobile from '@/shared/lib/useMobile.ts';
 import { Flex, Label } from '@allcll/allcll-ui';

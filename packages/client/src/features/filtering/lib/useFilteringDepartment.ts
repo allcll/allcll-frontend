@@ -1,6 +1,7 @@
 import { disassemble } from 'es-hangul';
 import { useMemo } from 'react';
-import { DepartmentType } from '@/shared/model/types.ts';
+
+import { DepartmentType } from '@/features/filtering/model/types.ts';
 
 export type DepartmentCategory = '전체' | '전공' | '교양';
 

@@ -1,7 +1,7 @@
-import { Filters } from '@/shared/model/useFilterStore.ts';
-import { FilterValueType, RangeMinMaxFilter } from '@/shared/model/types.ts';
+import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { Flex, Input, Label } from '@allcll/allcll-ui';
 import { useState } from 'react';
+import { FilterValueType, RangeMinMaxFilter } from '@/features/filtering/model/types.ts';
 
 interface IMinMaxFilter<K extends keyof Filters> {
   selectedValue: RangeMinMaxFilter | null;

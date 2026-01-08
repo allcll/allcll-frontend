@@ -1,7 +1,8 @@
 /** Filter Domain 은 2가지로 구분 가능
  * 1. 미리 정의 (하드 코딩)
  * 2. 동적 정의 (Data 기반 ex..unique) */
-import { Credit, Day, Grade, RangeMinMaxFilter, RemarkType, Subject } from '@/shared/model/types.ts';
+import { Subject } from '@/shared/model/types.ts';
+import { Credit, Day, Grade, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
 
 /** Filtering 기능도 2가지로 정의 가능
  * 1. 키워드 Search: string[] 에 속해있는 string 과 비교

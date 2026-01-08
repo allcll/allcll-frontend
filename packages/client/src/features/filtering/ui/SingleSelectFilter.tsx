@@ -1,10 +1,10 @@
 import ResetSvg from '@/assets/reset-blue.svg?react';
-import { Filters } from '@/shared/model/useFilterStore.ts';
+import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { getLabelFormatter, labelPrefix } from '@/features/filtering/lib/getFilteringFormatter.ts';
-import { FilterItemProps, RangeMinMaxFilter } from '@/shared/model/types.ts';
 import MinMaxFilter from './MinMaxFilter.tsx';
 import { Button, Flex, Grid, Label } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile.ts';
+import { FilterItemProps, RangeMinMaxFilter } from '@/features/filtering/model/types.ts';
 
 type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer U)[] ? U : Filters[K];
 

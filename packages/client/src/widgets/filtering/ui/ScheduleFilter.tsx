@@ -1,7 +1,7 @@
 //TODO:  widget/timetable로 옮기기
 import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
-import { useScheduleSearchStore } from '@/shared/model/useFilterStore.ts';
+import { useScheduleSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import { useState } from 'react';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
 import DepartmentFilter from '../../../features/filtering/ui/DepartmentFilter.tsx';

@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
-import { Filters } from '@/shared/model/useFilterStore.ts';
-import { DepartmentType } from '@/shared/model/types.ts';
+import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import { Button, Flex, Label, ListboxOption } from '@allcll/allcll-ui';
 import { useFilteringDepartment } from '../lib/useFilteringDepartment';
 import CheckSvg from '@/assets/checkbox-blue.svg?react';
 import { ZeroContent } from '@/shared/ui/ZeroContent';
 import Filtering from '@common/components/filtering/Filtering';
+import { DepartmentType } from '@/features/filtering/model/types.ts';
 
 interface IDepartmentFilter {
   setFilter: (key: keyof Filters, value: string | null) => void;

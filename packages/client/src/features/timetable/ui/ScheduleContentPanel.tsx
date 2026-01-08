@@ -1,7 +1,7 @@
 import { useDeferredValue } from 'react';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import { ScheduleAdapter } from '@/entities/timetable/model/adapter.ts';
-import { useScheduleSearchStore } from '@/shared/model/useFilterStore.ts';
+import { useScheduleSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
 import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
 import useWishes from '@/entities/wishes/model/useWishes.ts';

@@ -1,9 +1,9 @@
-import { Filters } from '@/shared/model/useFilterStore.ts';
+import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { getLabelFormatter, labelPrefix } from '@/features/filtering/lib/getFilteringFormatter.ts';
-import { FilterItemProps, FilterValueType } from '@/shared/model/types.ts';
 import { Button, Flex, Grid, Label } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile.ts';
 import { useState } from 'react';
+import { FilterItemProps, FilterValueType } from '@/features/filtering/model/types.ts';
 
 const MAX_VISIBLE = 9;
 
