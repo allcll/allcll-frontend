@@ -28,8 +28,8 @@ export const parseTime = (time: string, fallback = DEFAULT_TIME): TimeParts => {
   if (Number.isNaN(minute)) minute = Number(fallback.minute);
 
   return {
-    hour: hour.toString(),
-    minute: minute.toString().padStart(2, '0'),
+    hour: String(hour),
+    minute: String(minute).padStart(2, '0'),
   };
 };
 
