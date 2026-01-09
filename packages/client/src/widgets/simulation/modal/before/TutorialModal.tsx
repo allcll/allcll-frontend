@@ -5,7 +5,7 @@ import ArrowdownSvg from '@/assets/arrow-down.svg?react';
 import useMobile from '@/shared/lib/useMobile.ts';
 import SejongUI from '../../../../../../sejong-ui';
 import { Button, Checkbox, Dialog, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
-import { visitTutorial } from '@/features/simulation/lib/VisitTutorial';
+import { visitTutorial } from '@/features/simulation/lib/visitTutorial';
 
 const tutorialVideos = [
   {

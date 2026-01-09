@@ -2,7 +2,7 @@ import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { saveImageFromElement } from '@/shared/lib/saveImage.ts';
 import { Button, Flex, IconButton } from '@allcll/allcll-ui';
-import DropdownSelect from './DropdownSelect.tsx';
+import DropdownSelect from './TimetableSelect.tsx';
 import SearchSvg from '@/assets/search.svg?react';
 import DownloadSvg from '@/assets/download.svg?react';
 import EditTimetable from '../../features/timetable/ui/EditTimetable.tsx';

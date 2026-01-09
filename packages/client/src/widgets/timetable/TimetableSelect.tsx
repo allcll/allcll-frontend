@@ -3,13 +3,13 @@ import useSemesterTimetableSync from '@/features/timetable/lib/useSemesterTimeta
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { Button, Checkbox, Flex, Popover, SupportingText } from '@allcll/allcll-ui';
 
-interface DropdownSelectProps {
+interface TimetableSelectProps {
   setIsOpenModal: React.Dispatch<React.SetStateAction<'edit' | 'create' | null>>;
   openCreateModal?: () => void;
 }
 
 // Fixme : 기존에 있는 Chip 형태의 Selectbox 와 통합하기
-const DropdownSelect = ({ setIsOpenModal, openCreateModal }: DropdownSelectProps) => {
+const TimetableSelect = ({ setIsOpenModal, openCreateModal }: TimetableSelectProps) => {
   const { data: timetables = [] } = useTimetables();
 
   const { currentTimetable, filteredTimetablesBySemester } = useSemesterTimetableSync(timetables);
@@ -85,4 +85,4 @@ const DropdownSelect = ({ setIsOpenModal, openCreateModal }: DropdownSelectProps
   );
 };
 
-export default DropdownSelect;
+export default TimetableSelect;
