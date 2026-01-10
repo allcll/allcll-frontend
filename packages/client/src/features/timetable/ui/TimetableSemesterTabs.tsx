@@ -7,7 +7,7 @@ function TimetableSemesterTabs() {
   const [searchParams] = useSearchParams();
   const currentSemester = searchParams.get('semester');
 
-  // todo: 훅으로 분리
+  // Todo: 훅으로 분리
   if (!currentSemester) {
     return <Navigate to={`/timetable?semester=${SERVICE_SEMESTER_DUMMY.semester}`} replace />;
   }

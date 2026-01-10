@@ -1,4 +1,4 @@
-//TODO:  widget/timetable로 옮기기
+// Todo:  widget/timetable로 옮기기
 import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
 import { useScheduleSearchStore } from '@/features/filtering/model/useFilterStore.ts';

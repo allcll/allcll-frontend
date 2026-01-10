@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 /**
- * TODO: 디자인 시스템화
+ * Todo: 디자인 시스템화
  */
 export type ScheduleBottomSheetType = 'search' | 'filter' | 'edit' | 'info';
 

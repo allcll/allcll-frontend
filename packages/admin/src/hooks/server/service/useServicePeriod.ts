@@ -37,7 +37,7 @@ const editServicePeriod = async (service: ServicePeriodApi) => {
  * @returns
  */
 const getServicePeriod = async () => {
-  //TODO: API나오면 url 변경하기
+  // Todo: API나오면 url 변경하기
   return await fetchJsonOnAPI<ServicePeriodApi>('/api/service');
 };
 

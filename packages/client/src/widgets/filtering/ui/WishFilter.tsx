@@ -1,4 +1,4 @@
-//TODO:  widget/wish로 옮기기
+// Todo:  widget/wish로 옮기기
 import { useState } from 'react';
 import StarIcon from '@/shared/ui/svgs/StarIcon.tsx';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';

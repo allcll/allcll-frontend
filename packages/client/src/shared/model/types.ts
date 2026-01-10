@@ -1,4 +1,4 @@
-// fixme: 타입 도메인 별로 쪼개서 타입 각자 관리하기
+// Fixme: 타입 도메인 별로 쪼개서 타입 각자 관리하기
 
 export type With<T, K> = T & {
   [P in keyof K]?: K[P];

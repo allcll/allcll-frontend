@@ -1,7 +1,7 @@
 import useTickStore from '@/features/live/board/model/useTickStore.ts';
 import { useEffect } from 'react';
 
-// todo: addRefCount, removeRefCount 기능 분리하기
+// Todo: addRefCount, removeRefCount 기능 분리하기
 const useTick = (callback?: () => void) => {
   const tick = useTickStore(state => state.tick);
   const addRefCount = useTickStore(state => state.addRefCount);

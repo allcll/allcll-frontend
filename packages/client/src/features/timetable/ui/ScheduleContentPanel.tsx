@@ -12,10 +12,10 @@ import TimetableSubjectCards from '@/features/timetable/ui/subject/TimetableSubj
 
 const initSchedule = new ScheduleAdapter().toUiData();
 
-// fixme: div depth 최적화 필요
+// Fixme: div depth 최적화 필요
 function ScheduleContentPanel() {
   const { openScheduleModal } = useScheduleModal();
-  //학기TODO:  학기에 맞는 시간표 data가져오기
+  // Todo:  학기에 맞는 시간표 data가져오기
   const { data, isPending } = useWishes();
   const subjects = useSearchRank(data) ?? [];
 

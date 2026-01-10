@@ -72,7 +72,7 @@ function useScheduleModal() {
   /** Schedule 의 생성 / 수정 로직
    * @param e - React.MouseEvent<HTMLButtonElement> | React.FormEvent
    * @param close - 모달을 닫을지 여부 (기본값: true)
-   * 학기TODO: 학기에 맞는 과목인지 판별
+   * 학기Todo: 학기에 맞는 과목인지 판별
    */
   const saveSchedule = (
     e?: React.MouseEvent<HTMLButtonElement> | React.FormEvent,

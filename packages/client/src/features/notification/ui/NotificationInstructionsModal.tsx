@@ -1,5 +1,5 @@
 /**
- * FSD_TODO: feature, widget 분리 필요
+ * FSD Todo: feature, widget 분리 필요
  */
 import { useEffect, useState } from 'react';
 import useNotificationInstruction from '../model/useNotificationInstruction.ts';
