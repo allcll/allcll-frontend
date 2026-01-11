@@ -1,15 +1,14 @@
 import React from 'react';
-import Button from '@common/components/Button.tsx';
+// Todo: Toggle 컴포넌트 - onChange state 반환 필요
 import Toggle from '@common/components/Toggle.tsx';
-import Modal from '@common/components/modal/Modal.tsx';
 import useBackSignal from '@/shared/lib/useBackSignal.ts';
 import BrowserNotification from '../lib/browserNotification';
 import useNotificationInstruction from '../model/useNotificationInstruction';
 import ToastNotification from '../lib/toastNotification';
 import { AlarmNotification } from '../lib/useNotification';
-import ModalHeader from '@allcll/sejong-ui/src/modal/ModalHeader';
 import VibrationNotification from '../lib/vibrationNotification';
 import useAlarmSettings, { AlarmType, isSubAlarmActivated, SubAlarmType } from '../model/useAlarmSettings';
+import { Dialog, Button } from '@allcll/allcll-ui';
 
 interface IAlarmOptionModal {
   isOpen: boolean;
@@ -43,19 +42,18 @@ function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
   useBackSignal({ enabled: isOpen, onClose: onClose });
 
   return !isOpen ? null : (
-    <Modal onClose={onClose}>
-      <ModalHeader title="알림설정" onClose={onClose} />
-      <div className="p-4 w-md max-w-full">
+    <Dialog title="알림설정" onClose={onClose} isOpen={isOpen}>
+      <Dialog.Content>
         <AlarmOptionContent />
         <SubAlarmOption />
 
         <div className="mt-4 flex justify-end">
-          <Button variants="secondary" onClick={onTestAlarm} disabled={!hasPermission}>
+          <Button variant="outlined" size="medium" onClick={onTestAlarm} disabled={!hasPermission}>
             알림테스트
           </Button>
         </div>
-      </div>
-    </Modal>
+      </Dialog.Content>
+    </Dialog>
   );
 }
 
