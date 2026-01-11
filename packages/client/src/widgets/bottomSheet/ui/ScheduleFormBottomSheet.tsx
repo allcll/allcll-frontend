@@ -9,7 +9,7 @@ import ScheduleFormContent from '@/features/timetable/ui/ScheduleFormContent';
 
 function ScheduleFormBottomSheet() {
   const { modalActionType } = useScheduleModalData();
-  const { cancelSchedule, deleteSchedule } = useScheduleModal();
+  const { cancelSchedule, deleteSchedule, saveSchedule } = useScheduleModal();
 
   const handleCancelSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
     cancelSchedule(e);
@@ -18,22 +18,30 @@ function ScheduleFormBottomSheet() {
   const title = modalActionType === ScheduleMutateType.CREATE ? '생성' : '수정';
   const isMobile = useMobile();
 
+  const handleSubmit = (e: React.FormEvent) => {
+    saveSchedule(e);
+  };
+
   return (
     <BottomSheet>
       <BottomSheetHeader title={`커스텀 일정 ${title}`} headerType="close" onClose={handleCancelSchedule} />
-      <Flex direction="flex-col" className="py-5 px-2 overflow-y-auto max-h-[80vh]">
-        <ScheduleFormContent />
-      </Flex>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <Flex direction="flex-col" className="py-5 px-2 overflow-y-auto max-h-[80vh]">
+          <ScheduleFormContent />
+        </Flex>
 
-      {(modalActionType === ScheduleMutateType.EDIT || modalActionType === ScheduleMutateType.VIEW) && (
-        <Button variant="secondary" size={isMobile ? 'small' : 'medium'} onClick={deleteSchedule}>
-          삭제
-        </Button>
-      )}
+        <Flex justify="justify-end" gap={isMobile ? 'gap-2' : 'gap-4'} className="p-4">
+          {(modalActionType === ScheduleMutateType.EDIT || modalActionType === ScheduleMutateType.VIEW) && (
+            <Button variant="secondary" size={isMobile ? 'small' : 'medium'} onClick={deleteSchedule}>
+              삭제
+            </Button>
+          )}
 
-      <Button type="submit" variant="primary" size={isMobile ? 'small' : 'medium'}>
-        저장
-      </Button>
+          <Button type="submit" variant="primary" size={isMobile ? 'small' : 'medium'}>
+            저장
+          </Button>
+        </Flex>
+      </form>
     </BottomSheet>
   );
 }

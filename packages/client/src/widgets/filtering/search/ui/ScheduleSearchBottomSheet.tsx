@@ -13,9 +13,10 @@ import { Flex, IconButton } from '@allcll/allcll-ui';
 
 interface ISearchBottomSheet {
   onCloseSearch: () => void;
+  onOpenFiltering: () => void;
 }
 
-function ScheduleSearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
+function ScheduleSearchBottomSheet({ onCloseSearch, onOpenFiltering }: ISearchBottomSheet) {
   const { data: subjects = [], isPending } = useSubject();
   const { openScheduleModal } = useScheduleModal();
   const filters = useScheduleSearchStore(state => state.filters);
@@ -52,7 +53,7 @@ function ScheduleSearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
               variant="plain"
               label="filter"
               icon={<FilterSvg className="w-6 h-6" />}
-              onClick={() => onCloseSearch()}
+              onClick={() => onOpenFiltering()}
             />
           </div>
 

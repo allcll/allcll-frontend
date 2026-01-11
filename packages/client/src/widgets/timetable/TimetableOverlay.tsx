@@ -24,15 +24,19 @@ function MobileTimetableOverlay() {
 
   const handleCloseSearch = () => {
     closeBottomSheet('search');
-    openBottomSheet('filter');
   };
 
   const handleCloseFiltering = () => {
     closeBottomSheet('filter');
+    openBottomSheet('search');
   };
 
-  const handleClickSearch = () => {
+  const handleOpenSearch = () => {
     openBottomSheet('search');
+  };
+
+  const handleOpenFiltering = () => {
+    openBottomSheet('filter');
   };
 
   const filters = useScheduleSearchStore(state => state.filters);
@@ -42,7 +46,9 @@ function MobileTimetableOverlay() {
   return (
     <>
       <RenderIf when={bottomSheetType.search.isOpen}>
-        <ScheduleSearchBottomSheet onCloseSearch={handleCloseSearch} />
+        <ScheduleSearchBottomSheet onCloseSearch={handleCloseSearch} 
+        onOpenFiltering={handleOpenFiltering}
+        />
       </RenderIf>
 
       <RenderIf when={bottomSheetType.filter.isOpen}>
@@ -70,7 +76,7 @@ function MobileTimetableOverlay() {
         }
       >
         <div className="fixed bottom-4 right-4 z-5">
-          <Button size="small" variant="circle" onClick={handleClickSearch}>
+          <Button size="small" variant="circle" onClick={handleOpenSearch}>
             <AddSvg fill="#ffffff" className="w-6 h-6 cursor-pointer" />
           </Button>
         </div>
