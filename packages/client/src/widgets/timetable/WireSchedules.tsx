@@ -3,7 +3,8 @@ import useSubject from '@/entities/subjects/model/useSubject.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { IScheduleProps } from '@/widgets/timetable/Schedule.tsx';
 import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
-import { Day } from '@/features/filtering/model/types.ts';
+
+import {Day} from '@/entities/timetable/model/types.ts';
 
 interface IWireSchedulesProps extends HTMLAttributes<HTMLDivElement> {
   dayOfWeeks: Day;

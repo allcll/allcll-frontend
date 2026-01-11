@@ -8,7 +8,8 @@ import { TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 import { Time } from '@/shared/lib/time.ts';
 import { IDayTimeItem } from '@/features/filtering/ui/DayTimeFilter.tsx';
 import { isFilterEmpty } from '@/features/filtering/lib/filterUtils.ts';
-import { Day, Grade, RangeFilter, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
+import { Grade, RangeFilter, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
+import {Day} from '@/entities/timetable/model/types.ts';
 
 /** 활성화 된 필터만 실행하는 함수를 반환 (최적화) */
 export function useFilterFunctions(filters: Filters) {

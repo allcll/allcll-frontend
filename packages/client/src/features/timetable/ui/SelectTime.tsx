@@ -1,4 +1,4 @@
-import { Day } from '@/features/filtering/model/types.ts';
+import {Day} from '@/entities/timetable/model/types.ts';
 
 interface TimeRange {
   startHour: string;

@@ -5,7 +5,7 @@ import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/ada
 import { fetchDeleteJsonOnAPI, fetchJsonOnAPI, fetchOnAPI } from '@/shared/api/api.ts';
 import { Subject } from '@/shared/model/types.ts';
 import { timeSleep } from '@/shared/lib/time.ts';
-import { Day } from '@/features/filtering/model/types.ts';
+import { Day } from '@/entities/timetable/model/types.ts';
 
 export interface Timetable {
   timetableId: number;

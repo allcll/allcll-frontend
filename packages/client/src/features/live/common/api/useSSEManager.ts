@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AlarmNotification, onChangePinned } from '@/features/notification/lib/useNotification.ts';
 import { NonMajorSeats, PinnedSeats } from '@/shared/model/types.ts';
-import useSSECondition, { RELOAD_INTERVAL, RELOAD_MAX_COUNT } from '@/features/live/board/model/useSSECondition';
+import useSSECondition, { RELOAD_INTERVAL, RELOAD_MAX_COUNT } from '@/features/live/board/model/useSSECondition.ts';
 import { fetchEventSource } from '@/shared/api/api.ts';
-import { useSSEState } from '@/features/live/board/model/useSseState';
-import { mergeUpdated, mergeUpdatedOnly } from '../lib/mergeUpdated';
+import { useSSEState } from '@/features/live/board/model/useSseState.ts';
+import { mergeUpdated, mergeUpdatedOnly } from '@/features/live/common/lib/mergeUpdated.ts';
 
 export enum SSEType {
   NON_MAJOR = 'nonMajorSeats',

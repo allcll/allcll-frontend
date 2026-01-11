@@ -6,7 +6,8 @@ import { useScheduleDrag } from '@/features/timetable/lib/useScheduleDrag.ts';
 import useScheduleModal, { useScheduleTimeslot } from '@/features/timetable/lib/useScheduleModal.ts';
 import { ScheduleAdapter } from '@/entities/timetable/model/adapter.ts';
 
-import { Day } from '@/features/filtering/model/types.ts';
+
+import {Day} from '@/entities/timetable/model/types.ts';
 
 interface IDayScheduleProps {
   dayOfWeeks: Day;

@@ -11,8 +11,8 @@ import {
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import useNotifyDeletedSchedule from '@/features/notification/lib/useNotifyDeletedSchedule.ts';
 import TimetableGridComponent from '@/widgets/timetable/TimetableGridComponent.tsx';
-import { DAYS } from '@/features/timetable/model/types.ts';
-import { Day } from '@/features/filtering/model/types.ts';
+
+import { Day, DAYS } from '@/entities/timetable/model/types.ts';
 
 export const ROW_HEIGHT = 40;
 

@@ -18,7 +18,6 @@ export interface RangeMinMaxFilter {
 
 export type RemarkType = '외국인대상' | 'SHP대상' | '기타';
 export type Grade = 1 | 2 | 3 | 4;
-export type Day = '월' | '화' | '수' | '목' | '금' | '토' | '일';
 export type Curitype = '교필' | '교선' | '전필' | '전선' | '전기' | '공필' | '균필' | '기필' | '교직' | 'ROTC';
 export type Credit = 1 | 2 | 3;
 

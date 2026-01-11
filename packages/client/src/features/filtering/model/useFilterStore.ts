@@ -1,6 +1,7 @@
 import { create, StoreApi, UseBoundStore } from 'zustand';
 import { IDayTimeItem } from '@/features/filtering/ui/DayTimeFilter.tsx';
-import { Credit, Day, Grade, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
+import { Credit, Grade, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
+import {Day} from '@/entities/timetable/model/types.ts';
 
 export interface Filters {
   keywords: string;

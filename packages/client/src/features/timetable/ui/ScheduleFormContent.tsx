@@ -3,9 +3,9 @@ import { extractTimeRange, toggleDaySlot } from '../lib/time.ts';
 import useScheduleModal, { useScheduleModalData } from '../lib/useScheduleModal.ts';
 import { updateTimeSlot } from '../lib/updateTimeSlot.ts';
 import { useScheduleState } from '../model/useScheduleState.ts';
-import { DAYS } from '../model/types.ts';
 import SelectTime from './SelectTime.tsx';
-import { Day } from '@/features/filtering/model/types.ts';
+
+import { Day, DAYS } from '@/entities/timetable/model/types.ts';
 
 interface TimeRange {
   startHour: string;

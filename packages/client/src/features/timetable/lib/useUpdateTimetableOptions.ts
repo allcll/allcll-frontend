@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { GeneralSchedule } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 
-import { DAYS } from '@/features/timetable/model/types.ts';
+
+import {DAYS} from '@/entities/timetable/model/types.ts';
 
 /** 이 부분은 useUpdateTimetableOptions.tsx 파일에서 테이블의 옵션을 업데이트하는 훅입니다.
  * @param schedule

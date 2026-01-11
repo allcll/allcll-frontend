@@ -1,7 +1,8 @@
 import { IDayTimeItem } from '@/features/filtering/ui/DayTimeFilter.tsx';
 import { FilterOptions } from './filterDomains.ts';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
-import { Credit, Day, DepartmentType, Grade, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
+import { Credit, DepartmentType, Grade, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
+import {Day} from '@/entities/timetable/model/types.ts';
 
 export const labelPrefix: Record<keyof Filters, string> = {
   keywords: '키워드',
