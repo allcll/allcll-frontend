@@ -1,7 +1,6 @@
 import { TimeSlot } from '@/entities/timetable/api/useTimetableSchedules.ts';
 
-
-import {Day} from '@/entities/timetable/model/types.ts';
+import { Day } from '@/entities/timetable/model/types.ts';
 
 export const extractTimeRange = (startTime: string, endTime: string) => {
   const start = parseTime(startTime);
@@ -23,14 +22,18 @@ export interface TimeParts {
 const DEFAULT_TIME: TimeParts = { hour: '10', minute: '00' };
 
 export const parseTime = (time: string, fallback = DEFAULT_TIME): TimeParts => {
+  if (!time) {
+    return fallback;
+  }
+
   let [hour, minute] = time.split(':').map(Number);
 
   if (Number.isNaN(hour)) hour = Number(fallback.hour);
   if (Number.isNaN(minute)) minute = Number(fallback.minute);
 
   return {
-    hour: String(hour),
-    minute: String(minute).padStart(2, '0'),
+    hour: hour.toString(),
+    minute: minute.toString().padStart(2, '0'),
   };
 };
 
