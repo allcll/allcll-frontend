@@ -1,7 +1,21 @@
-# ALLCLL E2E Test
-ALLCLL E2E 테스트를 관리하는 공간입니다.
+# 🌀 ALLCLL E2E Test
+ALLCLL E2E 테스트를 관리합니다.
 
-## 환경 변수 설정
+## 🔵 테스트 목록
+- 
+
+## 🔵 폴더 구조
+```plaintext
+/packages/e2e/
+├── fixtures/                  # 테스트 공통 모듈
+├── tests/                     # e2e 테스트 파일
+│   ├── example.spec.ts        # 예시 테스트 파일
+├── tests-examples/            # e2e 예시 테스트 파일
+│   ├── demo-todo-app.spec.ts  # Playwright 예시 테스트 파일
+└── environment.json           # 테스트 환경 변수 파일
+```
+
+## 🔵 환경 변수 설정
 테스트를 실행하기 위해서는 `environment.json` 파일이 필요합니다.\
 아래의 내용을 참고하여 `environment.json` 파일을 생성해주세요.\
 `.env` 의 `VITE_TEST_ENV` 는 GitHub Actions 에서만 사용됩니다.
@@ -13,7 +27,12 @@ ALLCLL E2E 테스트를 관리하는 공간입니다.
 ```
 
 
-## 실행 방법
+## 🔵 실행 방법
+### 0. 의존성 설치
+```bash
+    pnpm install
+```
+
 ### 1. 테스트 생성
 브라우저에서 행동을 감지하여, 자동으로 테스트를 생성해줍니다.
 ```bash

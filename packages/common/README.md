@@ -1,16 +1,16 @@
-# Common Module - ALLCLL
+# 🌀 Common Module - ALLCLL
 
 ALLCLL의 공통 모듈은 다른 프로젝트에서 재사용 가능한 코드와 유틸리티를 제공합니다.
 Admin 기능을 추가함에 따라서 공통 모듈을 분리할 예정입니다.
 이 프로젝트는 ALLCLL monorepo의 일부입니다.
 
-## 기능
+## 🔵 기능
 
 - 공통 유틸리티 함수
 - 공통 타입 정의
 - 공통 API 서비스
 
-## 프로젝트 구조
+## 🔵 프로젝트 구조
 
 ```plaintext
 common/
@@ -25,11 +25,11 @@ common/
 └── README.md           # 프로젝트 설명 파일
 ```
 
-## 사용 기술
+## 🔵 사용 기술
 
-- **언어**: TypeScript, react
+- TypeScript, react
 
-## 시작하기
+## 🔵 시작하기
 
 ### 사전 준비
 
@@ -43,10 +43,10 @@ common/
    pnpm install @allcll/common
    ```
 
-## 기여하기
+## 🔵 기여하기
 
-기여를 환영합니다! 자세한 내용은 [기여 가이드라인](../CONTRIBUTING.md)을 참조하세요.
+기여를 환영합니다! 자세한 내용은 [기여 가이드라인](../../CONTRIBUTING.md)을 참조하세요.
 
-## 라이선스
+## 🔵 라이선스
 
-이 프로젝트는 MIT 라이선스를 따릅니다. 자세한 내용은 [LICENSE](../LICENSE) 파일을 참조하세요.
+이 프로젝트는 MIT 라이선스를 따릅니다. 자세한 내용은 [LICENSE](../../LICENSE.md) 파일을 참조하세요.
