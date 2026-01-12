@@ -73,7 +73,7 @@ function Simulation() {
 
   const totalCredits = currentSimulation.registeredSubjects.reduce((acc, subject) => {
     const firstNumber = subject.tm_num.split('/')[0];
-    return acc + parseInt(firstNumber, 10);
+    return acc + Number.parseInt(firstNumber, 10);
   }, 0);
 
   return (

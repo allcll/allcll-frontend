@@ -1,6 +1,5 @@
 interface IDialogContents {
   children: React.ReactNode;
-  isOpen?: boolean;
   width?: string;
   height?: string;
 }

@@ -149,10 +149,10 @@ export class TimeslotAdapter {
 
     return {
       dayOfWeeks: data.dayOfWeeks,
-      startHour: parseInt(sh),
-      startMinute: parseInt(sm),
-      endHour: parseInt(eh),
-      endMinute: parseInt(em),
+      startHour: Number.parseInt(sh),
+      startMinute: Number.parseInt(sm),
+      endHour: Number.parseInt(eh),
+      endMinute: Number.parseInt(em),
     };
   }
 

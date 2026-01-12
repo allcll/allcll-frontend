@@ -57,7 +57,7 @@ function TimetableSubjectCards({ subjects, expandToMax, isPending = false }: Rea
 
       setTimeout(() => {
         if (top) {
-          const topPx = parseFloat(top); // '180px' → 180
+          const topPx = Number.parseFloat(top); // '180px' → 180
           window.scrollTo({ top: topPx, behavior: 'smooth' });
         }
       }, 400);

@@ -41,7 +41,7 @@ export function useSelectOfficialSubject({
       expandToMax();
 
       setTimeout(() => {
-        const topPx = parseFloat(top);
+        const topPx = Number.parseFloat(top);
         window.scrollTo({ top: topPx, behavior: 'smooth' });
       }, 400);
     }

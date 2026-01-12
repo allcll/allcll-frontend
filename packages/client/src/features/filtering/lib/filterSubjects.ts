@@ -9,7 +9,7 @@ import { Time } from '@/shared/lib/time.ts';
 import { IDayTimeItem } from '@/features/filtering/ui/DayTimeFilter.tsx';
 import { isFilterEmpty } from '@/features/filtering/lib/filterUtils.ts';
 import { Grade, RangeFilter, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
-import {Day} from '@/entities/timetable/model/types.ts';
+import { Day } from '@/entities/timetable/model/types.ts';
 
 /** 활성화 된 필터만 실행하는 함수를 반환 (최적화) */
 export function useFilterFunctions(filters: Filters) {
@@ -106,7 +106,7 @@ function filterGrades(subject: Wishes | Subject, selectedGrades: (Grade | '전�
 
 function filterCredits(subject: Wishes | Subject, selectedCredits: number[]) {
   const credit = Number(subject.tmNum.split('/')[0]);
-  if (!credit || isNaN(credit)) return true;
+  if (!credit || Number.isNaN(credit)) return true;
 
   return filterMatches(credit, selectedCredits);
 }

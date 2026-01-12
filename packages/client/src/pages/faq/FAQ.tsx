@@ -23,7 +23,7 @@ function unique(array: string[]) {
 function FAQ() {
   const location = useLocation();
   const hash = location.hash;
-  const selectedIndex = hash ? parseInt(hash.replace('#', '')) : null;
+  const selectedIndex = hash ? Number.parseInt(hash.replace('#', '')) : null;
 
   const [openIndex, setOpenIndex] = useState<number | null>(selectedIndex);
   const { data: faqItems } = useFaq();
@@ -39,7 +39,7 @@ function FAQ() {
 
   useEffect(() => {
     if (location.hash) {
-      const selectedIndex = parseInt(location.hash.replace('#', ''));
+      const selectedIndex = Number.parseInt(location.hash.replace('#', ''));
 
       setTimeout(() => {
         const targetElement = document.getElementById('faq-container-' + selectedIndex);

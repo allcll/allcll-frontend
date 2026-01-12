@@ -26,10 +26,10 @@ export function useUpdateTimetableOptions(schedule?: GeneralSchedule[]) {
   const { minTime, maxTime } = scheduleToUse.reduce(
     (acc, item) => {
       item.timeSlots.forEach(time => {
-        const start = parseInt(time.startTime.split(':')[0]);
-        const end = parseInt(time.endTime.split(':')[0]);
+        const start = Number.parseInt(time.startTime.split(':')[0]);
+        const end = Number.parseInt(time.endTime.split(':')[0]);
 
-        if (isNaN(start) || isNaN(end)) return;
+        if (Number.isNaN(start) || Number.isNaN(end)) return;
 
         acc.minTime = Math.min(acc.minTime, start);
         acc.maxTime = Math.max(acc.maxTime, end);

@@ -11,7 +11,7 @@ function TmNumsComponent() {
 
       const tms = cur.tmNum.split('/').map(tm => {
         const num = Number(tm);
-        return isNaN(num) ? 0 : num;
+        return Number.isNaN(num) ? 0 : num;
       });
 
       return acc.map((num, index) => num + (tms[index] ?? 0));

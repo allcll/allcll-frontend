@@ -4,7 +4,7 @@ import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts
 import { IScheduleProps } from '@/widgets/timetable/Schedule.tsx';
 import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 
-import {Day} from '@/entities/timetable/model/types.ts';
+import { Day } from '@/entities/timetable/model/types.ts';
 
 interface IWireSchedulesProps extends HTMLAttributes<HTMLDivElement> {
   dayOfWeeks: Day;
@@ -18,7 +18,7 @@ function WireSchedules({ dayOfWeeks }: Readonly<IWireSchedulesProps>) {
 
   if (!subjects || schedule.scheduleId > 0 || !schedule.timeSlots || schedule.timeSlots.length <= 0) return null;
 
-  let minTime = parseInt(options.rowNames[0].replace('시', ''));
+  let minTime = Number.parseInt(options.rowNames[0].replace('시', ''));
   if (Number.isNaN(minTime)) minTime = 9;
 
   // Fixme: schedule 형태 통일

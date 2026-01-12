@@ -40,7 +40,7 @@ export class Time {
     }
 
     const MAX_TIME = 24 * 60;
-    if (isNaN(this.time) || this.time < 0 || this.time >= MAX_TIME) {
+    if (Number.isNaN(this.time) || this.time < 0 || this.time >= MAX_TIME) {
       this.time = 0;
       throw new Error('Invalid time value');
     }

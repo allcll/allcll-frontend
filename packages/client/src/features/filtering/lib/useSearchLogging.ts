@@ -34,7 +34,7 @@ const Logging = {
 
   /** 검색 로그 데이터를 업데이트합니다. */
   updateLoggingData(searchTerm: string | undefined, departmentCode: string | undefined, subjectId: number) {
-    const departmentCodeValue = !departmentCode || isNaN(Number(departmentCode)) ? -1 : Number(departmentCode);
+    const departmentCodeValue = !departmentCode || Number.isNaN(Number(departmentCode)) ? -1 : Number(departmentCode);
     const term =
       searchTerm === undefined && Logging.data.length > 0
         ? Logging.data[Logging.data.length - 1].search

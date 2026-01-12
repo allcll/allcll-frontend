@@ -23,7 +23,7 @@ function InputTime({ className, onChange, ...props }: IInputTime) {
 
 function reconcileTime(value: string) {
   const [hours, minutes] = value.split(':').map(Number);
-  if (isNaN(hours) || isNaN(minutes)) {
+  if (Number.isNaN(hours) || Number.isNaN(minutes)) {
     return '00:00';
   }
 

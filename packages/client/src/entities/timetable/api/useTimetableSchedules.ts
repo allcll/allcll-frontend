@@ -555,7 +555,7 @@ function applyScheduleDepth(ScheduleSlots: ScheduleSlot[]): ScheduleSlot[] {
   const DepthSize = isMobile ? 8 : 16;
 
   const parsePixel = (value: string) => {
-    return parseFloat(value.replace('px', ''));
+    return Number.parseFloat(value.replace('px', ''));
   };
 
   // 영역이 큰 순서대로 배치
