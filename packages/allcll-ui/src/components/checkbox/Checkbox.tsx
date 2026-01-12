@@ -1,7 +1,5 @@
+import { useId, type ComponentPropsWithRef, type KeyboardEvent } from 'react';
 import CheckSvg from '@/assets/check.svg?react';
-import type { KeyboardEvent } from 'react';
-import { useId } from 'react';
-import type { ComponentPropsWithRef } from 'react';
 
 interface ICheckbox extends ComponentPropsWithRef<'input'> {
   label?: string;

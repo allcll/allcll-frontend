@@ -19,7 +19,7 @@ import {
   forceStopSimulation,
   SIMULATION_TIME_LIMIT,
 } from '@/features/simulation/lib/simulation.ts';
-import { visitTutorial } from '@/features/simulation/lib/VisitTutorial';
+import { visitTutorial } from '@/features/simulation/lib/visitTutorial.ts';
 import SejongUI from '@allcll/sejong-ui';
 
 function Simulation() {

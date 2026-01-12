@@ -1,7 +1,7 @@
-import useDetectClose from '@/hooks/useDetectClose';
-import { usePopoverContext } from '../popover/Popover';
-import { createPortal } from 'react-dom';
 import { useRef } from 'react';
+import { createPortal } from 'react-dom';
+import { usePopoverContext } from '../popover/Popover';
+import useDetectClose from '../../../hooks/useDetectClose';
 
 function PopoverContent({ children }: { children: React.ReactNode }) {
   const { isOpen, close, open, triggerRef } = usePopoverContext();

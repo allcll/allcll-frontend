@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef } from 'react';
 import { Slot } from '@radix-ui/react-slot';
-import { INTERACTION } from '@/config';
+import { INTERACTION } from '../../config';
 
 type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'text' | 'contain' | 'outlined' | 'ghost' | 'circle';
 

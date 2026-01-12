@@ -1,6 +1,6 @@
 import type { ReactNode, KeyboardEvent } from 'react';
 import RowSlots from '../row/RowSlots';
-import { INTERACTION } from '@/config';
+import { INTERACTION } from '../../config';
 
 interface ListboxOptionProps {
   selected: boolean;

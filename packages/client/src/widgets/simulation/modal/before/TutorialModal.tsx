@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import YouTube from 'react-youtube';
 import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
-import { visitTutorial } from '@/features/simulation/lib/visitTutorial';
+import { visitTutorial } from '@/features/simulation/lib/visitTutorial.ts';
 import ArrowdownSvg from '@/assets/arrow-down.svg?react';
 import useMobile from '@/shared/lib/useMobile.ts';
 import { Button, Checkbox, Dialog, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
