@@ -1,5 +1,4 @@
-import SejongUI from '../../../../../sejong-ui';
-import { type ColumnDefinition } from '../../../../../sejong-ui';
+import SejongUI, { type ColumnDefinition } from '@allcll/sejong-ui';
 import { SimulationSubject } from '@/shared/model/types.ts';
 import useSimulationProcessStore from '@/features/simulation/model/useSimulationProcess.ts';
 import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';

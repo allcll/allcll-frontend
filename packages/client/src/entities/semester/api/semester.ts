@@ -75,7 +75,7 @@ export const SERVICE_SEMESTER_DUMMY: ServiceSemesterApiResponse = {
     {
       id: 'live',
       startDate: isDevServer ? '2025-11-29' : '2025-12-01', //dev서버에서 먼저 확인 하기 위해
-      endDate: '2026-12-31',
+      endDate: '2025-12-31',
       message: null,
     },
     {

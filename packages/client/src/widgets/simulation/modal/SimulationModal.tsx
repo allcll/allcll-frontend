@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import SejongUI from '../../../../../sejong-ui';
+import SejongUI from '@allcll/sejong-ui';
 import CheckBlueSvg from '@/assets/check-blue.svg?react';
 import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
 import useSimulationSubjectStore from '@/features/simulation/model/useSimulationSubject.ts';

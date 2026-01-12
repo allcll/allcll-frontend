@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Label, Popover } from '@allcll/allcll-ui';
+import { Flex, Popover } from '@allcll/allcll-ui';
 
 interface IFiltering {
   label: string;
