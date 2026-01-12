@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
-import InputTime from '@/features/timetable/ui/common/InputTime.tsx';
 import { Button, Flex, Label } from '@allcll/allcll-ui';
-
-import {Day} from '@/entities/timetable/model/types.ts';
+import InputTime from '@/features/timetable/ui/common/InputTime.tsx';
+import { Day } from '@/entities/timetable/model/types.ts';
 
 export interface IDayTimeItem {
   day: Day | '';
