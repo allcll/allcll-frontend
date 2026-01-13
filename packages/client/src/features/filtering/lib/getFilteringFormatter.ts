@@ -46,7 +46,7 @@ export function getMultiSelectedLabel<K extends keyof Filters>(
   filterKey: K,
   selectedValues: FilterValueType<K>[],
 ): string {
-  if (!Array.isArray(selectedValues) || selectedValues.length === 0) {
+  if (selectedValues.length === 0) {
     return labelPrefix[filterKey];
   }
 
@@ -118,7 +118,7 @@ export function getLabelFormatter(departments?: DepartmentType[]): Partial<{
 
   return {
     keywords: value => (typeof value === 'string' ? value : ''),
-    department: value => getDepartmentLabel(value as string),
+    department: value => getDepartmentLabel(value),
     grades: value => getLabelWithSuffix(value, labelPrefix.grades),
     credits: value => getLabelWithSuffix(value, labelPrefix.credits),
     classroom: getClassRoomLabel,
@@ -126,9 +126,9 @@ export function getLabelFormatter(departments?: DepartmentType[]): Partial<{
     wishRange: getRangeLabel,
     time: getTimesLabel,
     days: getDaysLabel,
-    categories: value => value as string,
-    note: value => value as string,
-    language: value => value as string,
+    categories: value => value,
+    note: value => value,
+    language: value => value,
     alarmOnly: () => labelPrefix.alarmOnly,
     favoriteOnly: () => labelPrefix.favoriteOnly,
   };
