@@ -1,4 +1,3 @@
-import React from 'react';
 import { Flex, Popover } from '@allcll/allcll-ui';
 
 interface IFiltering {
