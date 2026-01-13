@@ -3,9 +3,8 @@ import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
 import RadarChart from '@/widgets/simulation/detail/RadarChart.tsx';
 import React, { ButtonHTMLAttributes, useEffect, useRef, useState } from 'react';
 import { drawCaptcha } from '@/features/simulation/lib/captcha.ts';
-import Card from '@common/components/Card.tsx';
 import SejongUI from '@allcll/sejong-ui';
-import { Heading, SupportingText } from '@allcll/allcll-ui';
+import { Card, Heading, SupportingText } from '@allcll/allcll-ui';
 
 const InitRadarData = {
   user_ability: {
