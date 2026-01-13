@@ -2,7 +2,7 @@ import { IDayTimeItem } from '@/features/filtering/ui/DayTimeFilter.tsx';
 import { FilterOptions } from './filterDomains.ts';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { Credit, DepartmentType, Grade, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
-import {Day} from '@/entities/timetable/model/types.ts';
+import { Day } from '@/entities/timetable/model/types.ts';
 
 export const labelPrefix: Record<keyof Filters, string> = {
   keywords: '키워드',
@@ -42,12 +42,15 @@ export type FiltersValueMap = {
 export type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer T)[] ? T : Filters[K];
 
 // 선택된 여러 필터의 라벨을 가져오는 함수
-export function getMultiSelectedLabel<K extends keyof Filters>(filterKey: K, selectedValues: Filters[K]): string {
+export function getMultiSelectedLabel<K extends keyof Filters>(
+  filterKey: K,
+  selectedValues: FilterValueType<K>[],
+): string {
   if (!Array.isArray(selectedValues) || selectedValues.length === 0) {
     return labelPrefix[filterKey];
   }
 
-  const firstValue = selectedValues[0] as FilterValueType<K>;
+  const firstValue = selectedValues[0];
   if (selectedValues.length === 1) {
     return getLabelFormatter()[filterKey]?.(firstValue) ?? labelPrefix[filterKey];
   }

@@ -10,7 +10,7 @@ interface GenericSingleSelectFilterProps<K extends keyof Filters> {
   options: FilterValueType<K>[];
   ItemComponent: React.ComponentType<FilterItemProps>;
   selectedValue: FilterValueType<K> | null;
-  setFilter: (field: K, value: Filters[K]) => void;
+  setFilter: (field: K, value: FilterValueType<K> | null) => void;
   className?: string;
   isMinMax?: boolean;
 }
@@ -26,13 +26,13 @@ function GenericSingleSelectFilter<K extends keyof Filters>({
 }: GenericSingleSelectFilterProps<K>) {
   const isMobile = useMobile();
 
-  const selectedSingleChipLabel = getSingleSelectedLabel(filterKey, selectedValue) ?? '';
+  const selectedSingleChipLabel = getSingleSelectedLabel(filterKey, selectedValue);
 
   const SingleSelectContent = (
     <SingleSelectFilterOption
       selectedValue={selectedValue}
       filterKey={filterKey}
-      setFilter={(filterKey, value) => setFilter(filterKey, value as Filters[K])}
+      setFilter={(filterKey, value) => setFilter(filterKey, value)}
       options={options}
       ItemComponent={ItemComponent}
       isMinMax={isMinMax}

@@ -26,7 +26,7 @@ function GenericMultiSelectFilter<K extends keyof Filters>({
 }: GenericMultiSelectFilterProps<K>) {
   const isMobile = useMobile();
 
-  const selectedMultiChipLabel = getMultiSelectedLabel(filterKey, selectedValues as unknown as Filters[K]);
+  const selectedMultiChipLabel = getMultiSelectedLabel(filterKey, selectedValues);
 
   const Generalcomponent = isMobile ? Chip : CheckboxAdapter;
 
@@ -34,7 +34,7 @@ function GenericMultiSelectFilter<K extends keyof Filters>({
     <MultiSelectFilter
       filterKey={filterKey}
       selectedValues={selectedValues}
-      setFilter={(field, value) => setFilter(field, value ?? [])}
+      setFilter={(field, value) => setFilter(field, value)}
       options={options}
       ItemComponent={ItemComponent ? ItemComponent : Generalcomponent}
     />
@@ -43,7 +43,7 @@ function GenericMultiSelectFilter<K extends keyof Filters>({
   return isMobile ? (
     MultiFilterContent
   ) : (
-    <Filtering label={selectedMultiChipLabel} selected={(selectedValues ?? []).length > 0} className={className}>
+    <Filtering label={selectedMultiChipLabel} selected={selectedValues.length > 0} className={className}>
       {MultiFilterContent}
     </Filtering>
   );
