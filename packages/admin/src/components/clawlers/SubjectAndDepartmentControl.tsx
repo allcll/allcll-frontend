@@ -1,7 +1,6 @@
 import { CralwersParams, useClawlersDepartments } from '@/hooks/server/clawlers/useDepartmentClawlers';
 import { useSubjectsClawlers } from '@/hooks/server/clawlers/useSubjuectClawlers';
-import { Button, Flex, TextField } from '@allcll/allcll-ui';
-import Card from '@allcll/common/components/Card';
+import { Button, Card, Flex, TextField } from '@allcll/allcll-ui';
 import { useState } from 'react';
 import SectionHeader from '../common/SectionHeader';
 

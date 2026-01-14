@@ -1,5 +1,5 @@
 import { Config } from 'tailwindcss';
-import { colors } from '../allcll-ui/colors';
+import { colors } from '@allcll/allcll-ui/colors';
 
 /** @type {import('tailwindcss').Config} */
 const config: Config = {
@@ -17,6 +17,7 @@ const config: Config = {
       colors: {
         primary: colors.primary,
         secondary: colors.secondary,
+        text: colors.text,
         blue: {
           500: '#007aff',
         },

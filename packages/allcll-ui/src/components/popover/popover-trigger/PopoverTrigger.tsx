@@ -1,16 +1,30 @@
 import Chip from '../../chip/Chip';
 import { usePopoverContext } from '../popover/Popover';
 
-function PopoverTrigger({ label }: { label: string }) {
-  const { open, close, isOpen, triggerRef } = usePopoverContext();
+interface IPopoverTrigger {
+  label: string;
+  selected?: boolean;
+}
+
+function PopoverTrigger({ label, selected }: IPopoverTrigger) {
+  const { isOpen, triggerRef, open, close } = usePopoverContext();
+
+  const handleClick = () => {
+    if (isOpen) {
+      close();
+    } else {
+      open();
+    }
+  };
 
   return (
     <Chip
+      type="button"
       label={label}
       isChipOpen={isOpen}
       variant="select"
-      selected={isOpen}
-      onClick={isOpen ? close : open}
+      selected={selected ?? false}
+      onClick={handleClick}
       containerRef={triggerRef}
     />
   );

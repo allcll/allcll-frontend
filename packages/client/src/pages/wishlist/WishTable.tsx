@@ -1,22 +1,18 @@
 import { useDeferredValue } from 'react';
 import { Helmet } from 'react-helmet';
-import useWishes, { InitWishes } from '@/hooks/server/useWishes.ts';
-import useFilteringSubjects from '@/hooks/useFilteringSubjects';
-import Table from '@/components/wishTable/Table.tsx';
-import Searches from '@/components/live/Searches.tsx';
-import { useWishSearchStore } from '@/store/useFilterStore.ts';
-import TableColorInfo from '@/components/wishTable/TableColorInfo.tsx';
-import useSearchRank from '@/hooks/useSearchRank.ts';
-import { useJoinPreSeats } from '@/hooks/joinSubjects.ts';
-import ScrollToTopButton from '@/components/common/ScrollTopButton';
-import { NavLink } from 'react-router-dom';
-import useAlarmModalStore from '@/store/useAlarmModalStore.ts';
-import AlarmIcon from '@/components/svgs/AlarmIcon';
+import Table from '@/widgets/wishlist/Table.tsx';
+import WishFilter from '@/widgets/filtering/ui/WishFilter';
+import GotoLive from '@/widgets/wishlist/GotoLive.tsx';
+import TableColorInfo from '@/shared/ui/TableColorInfo';
+import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
+import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
+import useWishes, { InitWishes } from '@/entities/wishes/model/useWishes.ts';
+import { useJoinPreSeats } from '@/entities/subjectAggregate/lib/joinSubjects.ts';
+import { useWishSearchStore } from '@/features/filtering/model/useFilterStore.ts';
+import ScrollToTopButton from '@/shared/ui/ScrollTopButton.tsx';
 import { Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 
 function WishTable() {
-  const setIsSearchOpen = useAlarmModalStore(state => state.setIsSearchOpen);
-
   return (
     <>
       <Helmet>
@@ -34,21 +30,14 @@ function WishTable() {
 
         <Flex gap="gap-4" direction="flex-col" className="mt-6">
           <Card>
-            <NavLink
-              to="/live"
-              onClick={() => setIsSearchOpen(true)}
-              state={{ openSearch: true }}
-              className="inline-flex items-center gap-2 rounded-md border border-blue-500 px-3 py-2 text-sm text-blue-500 hover:bg-blue-50"
-            >
-              <AlarmIcon />
-              알림등록하러가기
-            </NavLink>
-
-            <Searches />
+            <GotoLive />
+            <WishFilter />
             <TableColorInfo />
           </Card>
 
-          <WishTableComponent />
+          <Card variant="elevated" className="mt-6 overflow-x-auto">
+            <WishTableComponent />
+          </Card>
 
           <ScrollToTopButton right="right-2 sm:right-20" />
         </Flex>
@@ -64,11 +53,12 @@ function WishTableComponent() {
   const filters = useWishSearchStore(state => state.filters);
   const filteredData = useDeferredValue(useFilteringSubjects(data ?? [], filters));
 
-  return (
-    <div className="bg-white mt-6 shadow-md rounded-lg overflow-x-auto">
-      <Table data={filteredData} isPending={isPending} />
-    </div>
-  );
+  const placeholder = {
+    title: '검색 결과가 없습니다.',
+    description: '다른 검색어로 다시 시도해보세요.',
+  };
+
+  return <Table data={filteredData} isPending={isPending} placeholder={placeholder} />;
 }
 
 export default WishTable;

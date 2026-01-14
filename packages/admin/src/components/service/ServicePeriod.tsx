@@ -67,7 +67,7 @@ function ServicePeriod() {
 
   const submitServicePeriod = (e: React.FormEvent) => {
     e.preventDefault();
-    //TODO: 서비스 수정 API 연결
+    // Todo: 서비스 수정 API 연결
   };
 
   return (

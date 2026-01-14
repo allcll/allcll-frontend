@@ -16,6 +16,9 @@ interface GridProps extends ComponentPropsWithoutRef<'div'> {
 function Grid({ columns, gap = 'gap-0', className, children, ...rest }: GridProps) {
   const classes: string[] = ['grid', gap];
 
+  const baseCols = columns.base ?? 2;
+  classes.push(`grid-cols-${baseCols}`);
+
   if (columns.base) classes.push(`grid-cols-${columns.base}`);
   if (columns.sm) classes.push(`sm:grid-cols-${columns.sm}`);
   if (columns.md) classes.push(`md:grid-cols-${columns.md}`);

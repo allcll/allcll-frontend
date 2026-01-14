@@ -1,7 +1,7 @@
 import { useRouteError } from 'react-router-dom';
-import NotFound from '@/pages/NotFound.tsx';
+import NotFound from '@/pages/notfound/NotFound';
 import ErrorPage from '@/pages/ErrorPage.tsx';
-import { BadRequestError, NotFoundError } from '@/utils/errors.ts';
+import { BadRequestError, NotFoundError } from '@/shared/lib/errors.ts';
 
 const ErrorPageWith404 = () => {
   const error = useRouteError();

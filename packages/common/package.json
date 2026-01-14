@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "react-transition-group": "^4.4.5",
-    "zustand": "^5.0.6"
+    "zustand": "^5.0.6",
+    "@allcll/allcll-ui": "workspace:^"
   },
   "devDependencies": {
     "@types/react-transition-group": "^4.4.12"

@@ -1,52 +1,26 @@
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
-import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js/auto';
-import Table from '@/components/wishTable/Table';
-import BlurComponents from '@/components/BlurComponents';
-import DepartmentDoughnut from '@/components/wishTable/DepartmentDoughnut.tsx';
-import { InitWishes } from '@/hooks/server/useWishes.ts';
-import useDetailWishes from '@/hooks/server/useDetailWishes';
-import useRecommendWishes from '@/hooks/server/useRecommendWishes';
-import useDetailRegisters from '@/hooks/server/useDetailRegisters.ts';
-import { getSeatColor, getWishesColor } from '@/utils/colors.ts';
-import FavoriteButton from '@/components/wishTable/FavoriteButton.tsx';
-import AlarmButton from '@/components/live/AlarmButton.tsx';
-import usePreSeatGate from '@/hooks/usePreSeatGate';
+import Table from '@/widgets/wishlist/Table';
+import WishesBarChart from '@/widgets/wishlist/WishesBarChart.tsx';
+import DepartmentDoughnut from '@/widgets/wishlist/DepartmentDoughnut.tsx';
+import FavoriteButton from '@/features/filtering/ui/button/FavoriteButton.tsx';
+import AlarmButton from '@/features/live/pin/ui/AlarmButton';
+import { InitWishes } from '@/entities/wishes/model/useWishes.ts';
+import SubjectDetail from '@/entities/subjects/ui/SubjectDetail.tsx';
+import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes.ts';
+import useRecommendWishes from '@/entities/subjectAggregate/model/useRecommendWishes.ts';
+import useDetailRegisters from '@/entities/wishes/model/useDetailRegisters.ts';
+import { getWishesColor } from '@/shared/config/colors.ts';
 import { Card, Flex, Grid, Heading, SupportingText } from '@allcll/allcll-ui';
-
-ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
-
-// 학년별 관심도 (막대 그래프)
-const gradeData = {
-  labels: ['4학년', '3학년', '2학년', '1학년'],
-  datasets: [
-    {
-      data: [50, 40, 25, 20],
-      backgroundColor: '#60a5fa',
-    },
-  ],
-};
 
 function WishesDetail() {
   const params = useParams();
-  const { data: wishes, isPending, isLastSemesterWish } = useDetailWishes(params.id ?? '-1');
-
-  const { data: registers, error } = useDetailRegisters(params.id ?? '-1');
-  const { data: recommend } = useRecommendWishes(
-    wishes?.subjectCode ?? '',
-    wishes?.subjectId ? [wishes.subjectId] : [],
-  );
-
-  const hasPreSeats = wishes && 'seat' in wishes;
-  const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
-  const isWishesAvailable = wishes && 'totalCount' in wishes;
-
-  const seats = hasPreSeats ? wishes.seat : -1;
+  const subjectId = Number(params.id ?? '-1');
+  const { data: wishes, isPending, isLastSemesterWish } = useDetailWishes(subjectId);
+  const { data: registers, error } = useDetailRegisters(subjectId);
 
   const data = wishes ?? InitWishes;
-  const isEng = wishes?.curiLangNm === '영어';
-  const isDeleted = wishes?.isDeleted ?? false;
+  const isWishesAvailable = wishes && 'totalCount' in wishes;
 
   if (isPending || !data) {
     return (
@@ -72,12 +46,12 @@ function WishesDetail() {
 
       {isLastSemesterWish && (
         <p className="bg-red-100 text-red-500 py-2 px-4 font-bold">
-          이번 학기의 데이터가 아닙니다. 수강 신청에 유의해주세요.
+          이번 학기의 과목이 아닙니다. 수강 신청에 유의해주세요.
         </p>
       )}
 
+      {/*Fixme: div depth 최적화하기*/}
       <div className="min-h-screen bg-gray-50">
-        {/* Course Info Section */}
         <div className="p-6 max-w-5xl mx-auto">
           <Card>
             <Flex justify="justify-between" align="items-center">
@@ -88,40 +62,17 @@ function WishesDetail() {
                 <AlarmButton subject={data} />
               </Flex>
             </Flex>
-
-            <p className="text-gray-600">
-              {data.subjectCode}-{data.classCode} | {data.departmentName} | {data.professorName}
-            </p>
-
-            <Flex gap="gap-2" align="items-center" direction="flex-wrap" className="text-gray-600 text-sm">
-              <span>{data.studentYear}학년</span>
-              <span>{data.curiTypeCdNm}</span>
-              <span>{Number(data.tmNum.split('/')[0].trim())}학점</span>
-              <span>
-                {' '}
-                | {data.lesnRoom} | {data.lesnTime}
-              </span>
-              {isPreSeatAvailable && (
-                <p className={`text-sm px-2 py-1 rounded-full font-bold ${getSeatColor(seats)}`}>
-                  여석: {seats < 0 ? '???' : seats}
-                </p>
-              )}
-              {isEng && (
-                <span className="bg-green-100 rounded px-2 py-1 text-green-500 text-xs font-semibold">영어</span>
-              )}
-              {isDeleted && (
-                <span className="bg-red-100 rounded px-2 py-1 text-red-500 text-xs font-semibold">폐강</span>
-              )}
-            </Flex>
-            <p className="text-sm text-gray-500">{data.remark}</p>
+            <SubjectDetail wishes={wishes} />
 
             {/* Analytics Section */}
             <Grid columns={{ md: 2, base: 1 }} gap="gap-6" className=" mt-6">
               {/* Doughnut Chart */}
-              <DepartmentDoughnut
-                data={registers?.eachDepartmentRegisters ?? []}
-                majorName={data.departmentName ?? data.manageDeptNm}
-              />
+              <Card className="p-6">
+                <DepartmentDoughnut
+                  data={registers?.eachDepartmentRegisters ?? []}
+                  majorName={data.departmentName ?? data.manageDeptNm}
+                />
+              </Card>
 
               {/* Competition Analysis */}
               <Card>
@@ -134,12 +85,7 @@ function WishesDetail() {
                   )}
                 </Flex>
 
-                <BlurComponents>
-                  <p className="text-sm text-gray-500">작년 대비 관심도 20% 증가 → 경쟁 치열할 가능성 높음</p>
-                  <div className="mt-4">
-                    <Bar data={gradeData} />
-                  </div>
-                </BlurComponents>
+                <WishesBarChart />
               </Card>
             </Grid>
 
@@ -151,7 +97,7 @@ function WishesDetail() {
               <SupportingText>학수번호가 같은 과목을 알려드려요</SupportingText>
 
               <div className="overflow-x-auto">
-                <Table data={recommend ?? []} />
+                <RecommendationTable subjectId={subjectId} />
               </div>
             </Card>
           </Card>
@@ -159,6 +105,19 @@ function WishesDetail() {
       </div>
     </>
   );
+}
+
+// Todo: 대체 과목 테이블, WishesTable 컴포넌트 합칠 수 있는지 확인
+// 대체과목 테이블 컴포넌트
+interface IRecommendationTableProps {
+  subjectId: number;
+}
+
+function RecommendationTable({ subjectId }: IRecommendationTableProps) {
+  const { data: recommend } = useRecommendWishes(subjectId);
+  const placeholder = { title: '추천할 대체 과목이 없습니다.' };
+
+  return <Table data={recommend ?? []} placeholder={placeholder} />;
 }
 
 export default WishesDetail;

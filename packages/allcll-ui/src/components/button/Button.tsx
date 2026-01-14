@@ -1,4 +1,6 @@
 import type { ComponentPropsWithoutRef } from 'react';
+import { Slot } from '@radix-ui/react-slot';
+import { INTERACTION } from '../../config';
 
 type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'text' | 'contain' | 'outlined' | 'ghost' | 'circle';
 
@@ -10,18 +12,24 @@ interface IButton extends ComponentPropsWithoutRef<'button'> {
   size: ButtonSize;
   disabled?: boolean;
   textColor?: TextColor;
+  asChild?: boolean;
 }
 
-function Button({ variant, size, children, disabled, textColor, ...rest }: IButton) {
-  const buttonClass = variant === 'circle' ? '' : 'flex flex-row gap-1 items-center justify-center cursor-pointer';
+function Button({ variant, size, children, disabled, textColor, asChild, ...rest }: IButton) {
+  const Comp = asChild ? Slot : 'button';
+  const buttonClass =
+    variant === 'circle'
+      ? ''
+      : `flex flex-row gap-1 items-center justify-center cursor-pointer disabled:cursor-not-allowed ${INTERACTION.hoverable} ${INTERACTION.pressable}`;
+
   const variantClass = textColor ? getVariantClass(variant, textColor) : getVariantClass(variant, 'primary');
   const sizeClass = variant === 'circle' ? '' : getSizeClass(size);
   const finalClassName = `${buttonClass} ${variantClass} ${sizeClass}`.trim();
 
   return (
-    <button className={finalClassName} disabled={disabled} {...rest}>
+    <Comp className={finalClassName} disabled={disabled} {...rest}>
       {children}
-    </button>
+    </Comp>
   );
 }
 
@@ -34,7 +42,7 @@ function getTextVariant(textColor: TextColor) {
     case 'secondary':
       return 'bg-transparent text-secondary-500 hover:text-secondary-600';
     case 'gray':
-      return 'bg-transparent text-gray-500 hover:text-gray-600';
+      return 'bg-transparent text-gray-700 hover:text-gray-800';
     default:
       return '';
   }
@@ -43,19 +51,19 @@ function getTextVariant(textColor: TextColor) {
 function getVariantClass(variant: ButtonVariant, textColor: TextColor) {
   switch (variant) {
     case 'primary':
-      return 'bg-primary-500 text-white hover:bg-primary-600 rounded-md';
+      return 'bg-primary-500 text-white hover:bg-primary-600 rounded-md px-4 py-2 disabled:bg-gray-100 disabled:text-gray-300';
     case 'secondary':
-      return 'bg-gray-100  hover:bg-gray-300 rounded-md';
+      return 'bg-gray-100  hover:bg-gray-300 rounded-md px-4 py-2 disabled:text-white';
     case 'outlined':
-      return 'bg-transparent border border-gray-700 hover:bg-gray-100 rounded-md';
+      return 'bg-transparent border border-gray-700 hover:bg-gray-100 rounded-md px-4 py-2 disabled:border-gray-200  disabled:text-gray-400';
     case 'danger':
-      return 'bg-secondary-500 text-white hover:bg-secondary-600 rounded-md';
+      return 'bg-secondary-500 text-white hover:bg-secondary-600 rounded-md px-4 py-2 disabled:bg-gray-100';
     case 'ghost':
-      return 'bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-200 rounded-full';
+      return 'bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-200 rounded-full px-4 py-2';
     case 'circle':
       return 'px-2 py-2 bg-primary-500 text-white hover:bg-primary-600 rounded-full shadow-md ';
     case 'text':
-      return getTextVariant(textColor);
+      return `${getTextVariant(textColor)} px-0 py-2  disabled:text-gray-400`;
     default:
       return '';
   }
@@ -64,11 +72,11 @@ function getVariantClass(variant: ButtonVariant, textColor: TextColor) {
 function getSizeClass(size: string) {
   switch (size) {
     case 'small':
-      return 'text-sm px-3 py-1';
+      return 'text-sm px-2';
     case 'medium':
-      return 'text-sm px-4 py-2';
+      return 'text-sm';
     case 'large':
-      return 'text-md px-5 py-2';
+      return 'text-md';
     default:
       return '';
   }

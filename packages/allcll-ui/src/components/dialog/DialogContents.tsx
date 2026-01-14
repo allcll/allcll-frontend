@@ -9,7 +9,7 @@ function DialogContents({ children, width, height }: IDialogContents) {
 
   return (
     <div
-      className={`z-60 flex flex-col justify-center item bg-white min-w-80 rounded-2xl sm:${dialogSize}`}
+      className={`flex flex-col justify-center item bg-white min-w-80 max-w-[90%] rounded-lg sm:${dialogSize}`}
       onClick={e => e.stopPropagation()}
     >
       {children}
@@ -20,7 +20,7 @@ function DialogContents({ children, width, height }: IDialogContents) {
 export default DialogContents;
 
 function getDialogSizeClass(width?: string, height?: string) {
-  const widthClass = width ? `w-${width}` : 'max-w-200';
+  const widthClass = width ? `w-${width}` : 'max-w-[90%]';
   const heightClass = height ? `h-${height}` : 'auto';
   return `${widthClass} ${heightClass}`;
 }

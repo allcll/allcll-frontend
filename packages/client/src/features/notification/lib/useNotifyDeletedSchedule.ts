@@ -1,0 +1,19 @@
+import { useEffect, useRef } from 'react';
+import { GeneralSchedule } from '@/entities/timetable/api/useTimetableSchedules.ts';
+import useBannerNotification from '@/features/notification/model/useBannerNotification.ts';
+
+function useNotifyDeletedSchedule(schedules?: GeneralSchedule[]) {
+  const isNotified = useRef<boolean>(false);
+  const setBanner = useBannerNotification(state => state.setBanner);
+
+  useEffect(() => {
+    const isDeleted = schedules?.some(schedule => schedule.isDeleted);
+
+    if (isDeleted && !isNotified.current) {
+      isNotified.current = true;
+      setBanner('삭제된 과목이 있습니다! 삭제된 과목은 회색으로 표시됩니다');
+    }
+  }, [schedules]);
+}
+
+export default useNotifyDeletedSchedule;

@@ -1,3 +1,4 @@
+import { Label } from '@allcll/allcll-ui';
 import ResetSvg from '@allcll/common/assets/reset-blue.svg?react';
 
 export interface OptionType<VALUE extends string | number> {
@@ -15,8 +16,7 @@ interface FilterItemProps<VALUE extends string | number> {
 interface IMultiSelectFilter<VALUE extends string | number> {
   labelPrefix?: string;
   selectedValues: VALUE[];
-  field: string;
-  setFilter: (field: string, value: VALUE[]) => void;
+  setFilter: ( value: VALUE[]) => void;
   options: OptionType<VALUE>[];
   className?: string;
   ItemComponent: React.ComponentType<FilterItemProps<VALUE>>;
@@ -25,7 +25,7 @@ interface IMultiSelectFilter<VALUE extends string | number> {
 function MultiSelectFilterOption<VALUE extends string | number>({
   labelPrefix,
   selectedValues,
-  field,
+
   setFilter,
   options,
   className,
@@ -43,30 +43,32 @@ function MultiSelectFilterOption<VALUE extends string | number>({
 
     if (optionValue === (0 as VALUE)) {
       if (isCurrentlyAll) {
-        setFilter(field, []);
+        setFilter([]);
         return;
       } else {
         const allValues = options.map(option => option.value);
-        setFilter(field, allValues);
+        setFilter(allValues);
         return;
       }
     }
 
     const checked = selectedValues.includes(optionValue);
+    console.log('checked', checked);
+
     const newValues = checked
       ? selectedValues.filter(selected => selected !== optionValue)
       : [...selectedValues, optionValue];
 
-    setFilter(field, newValues);
+    setFilter(newValues);
   };
 
   const handleClickReset = () => {
-    setFilter(field, []);
+    setFilter([]);
   };
 
   return (
     <div className="relative inline-block">
-      <h3 className="text-xs mb-1 sm:text-lg text-gray-500 font-medium sm:text-gray-600">{labelPrefix ?? ''}</h3>
+      <Label>{labelPrefix ?? ''}</Label>
       <div
         className={`
           gap-y-2 
@@ -85,6 +87,7 @@ function MultiSelectFilterOption<VALUE extends string | number>({
           />
         ))}
       </div>
+
       <div className="flex justify-end w-full mt-2">
         <button
           onClick={() => handleClickReset()}

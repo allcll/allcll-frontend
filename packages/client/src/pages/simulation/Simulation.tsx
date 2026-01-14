@@ -1,21 +1,25 @@
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import CaptchaInput from '@/components/simulation/modal/CaptchaInput';
-import SimulationModal from '@/components/simulation/modal/SimulationModal';
-import SimulationResultModal from '@/components/simulation/modal/SimulationResultModal';
-import UserWishModal from '@/components/simulation/modal/before/UserWishModal';
-import WaitingModal from '@/components/simulation/modal/WaitingModal';
-import TutorialModal from '@/components/simulation/modal/before/TutorialModal';
-import NoneRegisteredTable from '@/components/simulation/table/NoneRegisteredTable.tsx';
-import RegisteredTable from '@/components/simulation/table/RegisteredTable.tsx';
-import SimulationSearchForm from '@/components/simulation/SimulationSearchForm';
-import Stopwatch from '@/components/simulation/Stopwatch';
-import { useSimulationModalStore } from '@/store/simulation/useSimulationModal';
-import useSimulationProcessStore from '@/store/simulation/useSimulationProcess';
-import { useReloadSimulation } from '@/hooks/useReloadSimulation';
-import { useTimetables } from '@/hooks/server/useTimetableSchedules';
-import { checkOngoingSimulation, forceStopSimulation, SIMULATION_TIME_LIMIT } from '@/utils/simulation/simulation';
-import { VisitTutorial } from '@/utils/simulation/VisitTutorial.ts';
+import CaptchaInput from '@/widgets/simulation/modal/CaptchaInput.tsx';
+import SimulationModal from '@/widgets/simulation/modal/SimulationModal.tsx';
+import SimulationResultModal from '@/widgets/simulation/modal/SimulationResultModal.tsx';
+import UserWishModal from '@/widgets/simulation/modal/before/UserWishModal';
+import WaitingModal from '@/widgets/simulation/modal/WaitingModal.tsx';
+import TutorialModal from '@/widgets/simulation/modal/before/TutorialModal';
+import NoneRegisteredTable from '@/widgets/simulation/table/NoneRegisteredTable.tsx';
+import RegisteredTable from '@/widgets/simulation/table/RegisteredTable.tsx';
+import SimulationSearchForm from '@/widgets/simulation/SimulationSearchForm.tsx';
+import Stopwatch from '@/widgets/simulation/Stopwatch.tsx';
+import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
+import useSimulationProcessStore from '@/features/simulation/model/useSimulationProcess.ts';
+import { useReloadSimulation } from '@/features/simulation/lib/useReloadSimulation.ts';
+import { useTimetables } from '@/entities/timetable/api/useTimetableSchedules.ts';
+import {
+  checkOngoingSimulation,
+  forceStopSimulation,
+  SIMULATION_TIME_LIMIT,
+} from '@/features/simulation/lib/simulation.ts';
+import { visitTutorial } from '@/features/simulation/lib/visitTutorial.ts';
 import SejongUI from '@allcll/sejong-ui';
 
 function Simulation() {
@@ -23,7 +27,7 @@ function Simulation() {
   const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
   const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
   const { reloadSimulationStatus } = useReloadSimulation();
-  const isExpiredTutorial = VisitTutorial.get();
+  const isExpiredTutorial = visitTutorial.get();
 
   const forceSimulation = async () => {
     try {
@@ -69,7 +73,7 @@ function Simulation() {
 
   const totalCredits = currentSimulation.registeredSubjects.reduce((acc, subject) => {
     const firstNumber = subject.tm_num.split('/')[0];
-    return acc + parseInt(firstNumber, 10);
+    return acc + Number.parseInt(firstNumber, 10);
   }, 0);
 
   return (
@@ -86,7 +90,7 @@ function Simulation() {
         </div>
 
         {!isExpiredTutorial && (
-          <button className="text-gray-600 hover:text-blue-500 cursor-pointer" onClick={VisitTutorial.reset}>
+          <button className="text-gray-600 hover:text-blue-500 cursor-pointer" onClick={visitTutorial.reset}>
             튜토리얼 활성화
           </button>
         )}
@@ -100,7 +104,6 @@ function Simulation() {
         <NoneRegisteredTable />
       </section>
 
-      {/* 담은 과목인 수강신청 내역 */}
       <section className="mt-4">
         <div className="w-full flex flex-col sm:flex-row sm:items-center justify-start gap-2 mb-2">
           <SejongUI.SectionHeader>수강 신청 내역</SejongUI.SectionHeader>

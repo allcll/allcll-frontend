@@ -29,5 +29,13 @@
       "@common/*": ["../common/src/*"]
     }
   },
-  "include": ["src", "vite.config.ts", "svg.d.ts", "tailwind.config.js"]
+  "include": [
+    "src",
+    "vite.config.ts",
+    "svg.d.ts",
+    "tailwind.config.js",
+    "../common/src/components/checkbox/CheckboxAdapter.tsx",
+    "../common/src/components/filtering/Filtering.tsx",
+    "../common/src/components/filtering/FilterOption.tsx"
+  ]
 }

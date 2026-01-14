@@ -43,7 +43,7 @@ function getVariantClass(variant: 'elevated' | 'outlined' | 'filled' = 'elevated
     case 'outlined':
       return 'bg-white border border-gray-200';
     case 'filled':
-      return 'bg-gray-100';
+      return 'bg-gray-50 shadow-sm rounded-lg p-4 border border-gray-200 hover:shadow-md';
     default:
       return '';
   }
