@@ -8,6 +8,7 @@ import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/ada
 import { Subject } from '@/shared/model/types.ts';
 import FilteredSubjectCard from '@/features/timetable/ui/subject/TimetableSubjectCard.tsx';
 import { Flex } from '@allcll/allcll-ui';
+import Loading from '@/shared/ui/Loading.tsx';
 
 interface ISubjectCards {
   subjects: Subject[];
@@ -23,7 +24,7 @@ function TimetableSubjectCards({ subjects, expandToMax, isPending = false }: Rea
   const { openScheduleModal, cancelSchedule } = useScheduleModal();
 
   if (isPending || !subjects) {
-    return <div className="w-full h-10"></div>;
+    return <Loading message="과목 정보를 불러오는 중이에요..." />;
   }
 
   if (!subjects.length) {
