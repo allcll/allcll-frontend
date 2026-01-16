@@ -33,7 +33,7 @@ const useSemesterTimetableSync = (timetables: TimetableType[]) => {
       // 해당 학기에 맞는 시간표가 없으면 초기화
       pickTimetable(null);
     }
-  }, [currentSemester, timetables]);
+  }, [timetables]);
 
   return {
     currentSemester,
