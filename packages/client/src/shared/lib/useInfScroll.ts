@@ -24,7 +24,10 @@ function useInfScroll(
       entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            setVisibleRows(prev => prev + PAGE_SIZE);
+            setVisibleRows(prev => {
+              if (prev >= data.length) return prev;
+              return prev + PAGE_SIZE;
+            });
           }
         });
       },

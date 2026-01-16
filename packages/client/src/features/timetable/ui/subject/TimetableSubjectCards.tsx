@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import ZeroListError from '../errors/ZeroListError.tsx';
 import useInfScroll from '@/shared/lib/useInfScroll.ts';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
@@ -23,7 +23,8 @@ function TimetableSubjectCards({ subjects, expandToMax, isPending = false }: Rea
   const selectedSubjectId = useScheduleState(state => state.schedule.subjectId);
   const { openScheduleModal, cancelSchedule } = useScheduleModal();
 
-  if (isPending || !subjects) {
+  if (isPending) {
+    console.log('Loading subjects...');
     return <Loading message="과목 정보를 불러오는 중이에요..." />;
   }
 

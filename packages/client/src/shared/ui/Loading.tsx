@@ -9,12 +9,12 @@ const Loading = ({ message }: LoadingProps) => {
     <Flex
       flex-direction="column"
       justify-content="center"
+      align-item="center"
       style={{
         height: '100%',
       }}
     >
       <SupportingText>{message || '로딩 중이에요'}</SupportingText>
-
       <SupportingText>잠시만 기다려 주세요.</SupportingText>
     </Flex>
   );

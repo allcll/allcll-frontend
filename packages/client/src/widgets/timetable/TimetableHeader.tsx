@@ -2,7 +2,7 @@ import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { saveImageFromElement } from '@/shared/lib/saveImage.ts';
 import { Button, Flex, IconButton } from '@allcll/allcll-ui';
-import DropdownSelect from './TimetableSelect.tsx';
+import TimetableSelect from './TimetableSelect.tsx';
 import SearchSvg from '@/assets/search.svg?react';
 import DownloadSvg from '@/assets/download.svg?react';
 import EditTimetable from '../../features/timetable/ui/EditTimetable.tsx';
@@ -20,7 +20,7 @@ function TimetableHeader() {
   return (
     <header>
       <Flex align="items-center" justify="justify-between" gap="gap-2">
-        <DropdownSelect setIsOpenModal={setIsOpenModal} openCreateModal={handleCreateTimetable} />
+        <TimetableSelect setIsOpenModal={setIsOpenModal} openCreateModal={handleCreateTimetable} />
         <TimetableHeaderActions setIsOpenModal={setIsOpenModal} />
         {isOpenModal && <EditTimetable type={isOpenModal} onClose={() => setIsOpenModal(null)} />}
       </Flex>
