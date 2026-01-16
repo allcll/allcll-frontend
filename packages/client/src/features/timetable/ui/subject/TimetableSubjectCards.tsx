@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import ZeroListError from '../errors/ZeroListError.tsx';
 import useInfScroll from '@/shared/lib/useInfScroll.ts';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
