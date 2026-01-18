@@ -5,7 +5,7 @@ import RowRight from './RowRight';
 
 interface RowSlotsProps {
   left: React.ReactNode;
-  center: React.ReactNode;
+  center?: React.ReactNode;
   right: React.ReactNode;
   className?: string;
   withPadding?: boolean;
@@ -17,7 +17,7 @@ function RowSlots({ left, center, right, className, withPadding }: RowSlotsProps
       className={className}
       withPadding={withPadding}
       left={<RowLeft>{left}</RowLeft>}
-      center={<RowCenter>{center}</RowCenter>}
+      center={center ? <RowCenter>{center}</RowCenter> : null}
       right={<RowRight>{right}</RowRight>}
     />
   );

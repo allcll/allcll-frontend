@@ -1,6 +1,6 @@
 import { useCheckCrawlerSeat } from '@/hooks/server/clawlers/useSeatClawlers';
 import { useCheckSseScheduler } from '@/hooks/server/sse/useSeatScheduler';
-import { SystemStatusKey } from '@/pages/Dashboard';
+import { SystemStatusKey } from '@/components/dashboard/SystemChecking';
 import { useCheckAdminSession } from './server/session/useAdminSession';
 
 export const useSystemStatus = () => {

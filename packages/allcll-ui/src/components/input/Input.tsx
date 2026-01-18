@@ -18,7 +18,7 @@ export function Input({ className = '', leftIcon, rightIcon, ...rest }: IInput) 
       <input
         ref={ref}
         type="text"
-        className={`py-2 border rounded-md border-gray-300 py-2 px-3 focus:outline-none focus:ring-0 focus:border-primary-500 ${paddingLeft} ${paddingRight} ${className}`}
+        className={`py-2 border rounded-md border-gray-400 py-2 px-3 focus:outline-none focus:ring-0 focus:border-primary-500 ${paddingLeft} ${paddingRight} ${className}`}
         {...rest}
       />
 

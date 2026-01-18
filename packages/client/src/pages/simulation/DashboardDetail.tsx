@@ -2,12 +2,12 @@ import { useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { getSimulationResult, ResultResponse } from '@/utils/simulation/result.ts';
-import { findSubjectsById } from '@/utils/subjectPicker.ts';
-import Timeline from '@/components/simulation/detail/Timeline.tsx';
-import RadarChart from '@/components/simulation/detail/RadarChart.tsx';
-import SubjectDetailResult from '@/components/simulation/detail/SubjectDetailResult.tsx';
-import useLectures, { Lecture } from '@/hooks/server/useLectures';
+import { getSimulationResult, ResultResponse } from '@/features/simulation/lib/result.ts';
+import { findSubjectsById } from '@/features/simulation/lib/subjectPicker.ts';
+import Timeline from '@/widgets/simulation/detail/Timeline.tsx';
+import RadarChart from '@/widgets/simulation/detail/RadarChart.tsx';
+import SubjectDetailResult from '@/widgets/simulation/detail/SubjectDetailResult.tsx';
+import useLectures, { Lecture } from '@/entities/subjects/model/useLectures.ts';
 
 function DashboardDetail() {
   const { runId } = useParams();

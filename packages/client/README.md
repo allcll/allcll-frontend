@@ -1,86 +1,59 @@
-# Client Page - ALLCLL
+# 🌀 올클 (ALLCLL) - Client
 
-ALLCLL의 클라이언트 페이지는 학생들이 수강 여석을 확인하고 알림을 받을 수 있도록 도와줍니다. 이 프로젝트는 ALLCLL monorepo의 일부입니다.
+세종대학교 학생들을 위한 수강신청 도우미 **올클(ALLCLL)** 의 메인 웹 애플리케이션입니다.
+이 프로젝트는 ALLCLL monorepo의 일부입니다.
 
-## 기능
+## 🔵 주요 기능
 
-- 실시간 여석 확인
-- 과목 검색 및 핀 기능
-- 웹 푸시 및 익스텐션 알림
+- **실시간 여석 확인**: 인기 교양 과목 및 전체 과목의 여석 현황을 실시간 대시보드와 테이블로 제공
+- **빈자리 알림 (Pin)**: 원하는 과목에 빈자리가 생기면 즉시 브라우저 알림 발송
+- **수강신청 연습**: 실제와 동일한 환경(매크로 방지 입력 포함)에서 모의 수강신청 연습 및 결과 분석
+- **커스텀 시간표**: 강의 시간표와 개인 일정을 통합 관리하며, 중복 시간대 허용으로 최적의 조합 탐색
+- **관심 과목 분석**: 과목별 관심 인원 확인을 통한 경쟁률 예측
 
-## 프로젝트 구조
+## 🔵 기술 스택
+
+- **Core**: React, TypeScript, Vite
+- **State Management**: Zustand, TanStack Query (React Query)
+- **Styling**: Tailwind CSS
+- **UI Components**: `@allcll/allcll-ui`, `@allcll/sejong-ui`
+- **Testing**: Vitest, Playwright
+
+## 🔵 프로젝트 구조
+ALLCLL Client는 fsd (Feature-Sliced Design) 아키텍처를 따릅니다:
+[Feature-Sliced Design 공식 문서](https://feature-sliced.design/)
 
 ```plaintext
-client/
-├── public/             # 정적 파일
-├── src/                # 소스 코드
-│   ├── assets/         # SVG 아이콘
-│   ├── components/     # React 컴포넌트
-│   ├── hooks/          # React Hooks / Query Hooks
-│   ├── layouts/        # 레이아웃 컴포넌트
-│   ├── pages/          # 페이지 컴포넌트
-│   ├── store/          # Zustand 스토어
-│   ├── utils/          # 각종 설정 파일
-│   ├── main.tsx        # 메인 App 컴포넌트
-├── package.json        # 프로젝트 설정 및 의존성 관리 파일
-└── README.md           # 프로젝트 설명 파일
+src/
+├── app/            # 앱 전역 설정 (Provider, Router, Styles)
+├── pages/          # 라우팅 페이지
+├── widgets/        # 페이지를 구성하는 독립적인 UI 블록
+├── features/       # 사용자 기능 및 비즈니스 로직
+├── entities/       # 핵심 데이터 모델 (과목, 시간표 등)
+└── shared/         # 공통 유틸리티 및 설정
 ```
 
-## 사용 기술
+## 🔵 시작하기
 
-- **프론트엔드**: React, TypeScript
-- **백엔드**: Node.js, Express
-- **빌드 도구**: Vite
-
-## 시작하기
-
-### 사전 준비
-
-- Node.js (^18.0.0)
-- npm 또는 pnpm
-
-### 설치
-
-1. 레포지토리를 클론합니다:
-
-   ```sh
-   git clone https://github.com/allcll/frontend.git
-   cd ALLCLL/packages/client
-   ```
-
-2. 의존성을 설치합니다:
-   ```sh
-   pnpm install
-   ```
-
-### 개발 서버 실행
-
-개발 서버를 시작합니다:
-
+### 의존성 설치
 ```sh
-pnpm run dev
+pnpm install
 ```
 
-### 프로덕션 빌드
-
-프로덕션 빌드를 수행합니다:
-
+### 실행
 ```sh
-pnpm run build
+pnpm run client
 ```
 
-### 테스트 실행
-
-테스트를 실행합니다:
-
+### 빌드
 ```sh
-pnpm run test
+pnpm run build-client
 ```
 
-## 기여하기
+## 🔵 기여하기
 
-기여를 환영합니다! 자세한 내용은 [기여 가이드라인](../CONTRIBUTING.md)을 참조하세요.
+기여를 환영합니다! 자세한 내용은 [기여 가이드라인](../../CONTRIBUTING.md)을 참조하세요.
 
-## 라이선스
+## 🔵 라이선스
 
-이 프로젝트는 MIT 라이선스를 따릅니다. 자세한 내용은 [LICENSE](../LICENSE) 파일을 참조하세요.
+이 프로젝트는 MIT 라이선스를 따릅니다. 자세한 내용은 [LICENSE](../../LICENSE.md) 파일을 참조하세요.

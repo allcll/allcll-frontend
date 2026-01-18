@@ -1,4 +1,4 @@
-import Checkbox from './Checkbox';
+import { Checkbox } from '@allcll/allcll-ui';
 
 type FilterItemProps = {
   label: string;
@@ -9,5 +9,7 @@ type FilterItemProps = {
 function CheckboxAdapter({ label, selected, onClick }: FilterItemProps) {
   return <Checkbox label={label} checked={selected} onChange={onClick} />;
 }
+
+CheckboxAdapter.layout = 'flex' as const;
 
 export default CheckboxAdapter;

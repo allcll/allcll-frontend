@@ -1,15 +1,15 @@
-# Mock Server - ALLCLL
+# 🌀 Mock Server - ALLCLL
 
 ALLCLL의 모의 서버는 테스트 및 개발 환경에서 실제 서버와의 통신을 시뮬레이션합니다.
 이 프로젝트는 ALLCLL monorepo의 일부입니다.
 
-## 기능
+## 🔵 기능
 
 - API 엔드포인트 모킹
 - 테스트 데이터 제공
 - 개발 환경에서의 빠른 피드백
 
-## 프로젝트 구조
+## 🔵 프로젝트 구조
 
 ```plaintext
 mock-server/
@@ -22,11 +22,11 @@ mock-server/
 └── README.md           # 프로젝트 설명 파일
 ```
 
-## 사용 기술
+## 🔵 사용 기술
 
 - msw.js (Mock Service Worker)
 
-## 시작하기
+## 🔵 시작하기
 
 ### 사전 준비
 
@@ -63,10 +63,10 @@ mock-server/
    });
    ```
 
-## 기여하기
+## 🔵 기여하기
 
-기여를 환영합니다! 자세한 내용은 [기여 가이드라인](../CONTRIBUTING.md)을 참조하세요.
+기여를 환영합니다! 자세한 내용은 [기여 가이드라인](../../CONTRIBUTING.md)을 참조하세요.
 
-## 라이선스
+## 🔵 라이선스
 
-이 프로젝트는 MIT 라이선스를 따릅니다. 자세한 내용은 [LICENSE](../LICENSE) 파일을 참조하세요.
+이 프로젝트는 MIT 라이선스를 따릅니다. 자세한 내용은 [LICENSE](../../LICENSE.md) 파일을 참조하세요.

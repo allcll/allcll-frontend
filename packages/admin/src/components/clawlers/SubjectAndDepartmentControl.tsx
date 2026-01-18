@@ -1,8 +1,8 @@
 import { CralwersParams, useClawlersDepartments } from '@/hooks/server/clawlers/useDepartmentClawlers';
 import { useSubjectsClawlers } from '@/hooks/server/clawlers/useSubjuectClawlers';
-import CustomButton from '@allcll/common/components/Button';
-import Card from '@allcll/common/components/Card';
+import { Button, Card, Flex, TextField } from '@allcll/allcll-ui';
 import { useState } from 'react';
+import SectionHeader from '../common/SectionHeader';
 
 function SubjectAndDepartmentControl() {
   const { mutate: clawlersDepartments } = useClawlersDepartments();
@@ -32,34 +32,32 @@ function SubjectAndDepartmentControl() {
   return (
     <section>
       <Card>
-        <h3 className="text-md font-semibold mb-3">학과 및 과목 크롤링 제어</h3>
-        <p className="text-sm text-gray-500 mb-4">학과 및 과목 크롤러를 제어합니다.</p>
+        <SectionHeader title="학과 및 과목 크롤링 제어" description="학과 및 과목 크롤러를 제어합니다." />
 
-        <div className="flex flex-col gap-3">
+        <Flex direction="flex-col" gap="gap-4">
           {params.map(param => (
-            <div key={param} className="flex flex-col gap-2">
-              <label htmlFor={param} className="text-sm text-gray-700">
-                {param}
-              </label>
-              <input
-                type="text"
-                id={param}
-                value={clawlersParams[param]}
-                onChange={e => handleParamsChange(param, e.target.value)}
-                placeholder={`${param}을 입력해주세요`}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
-              />
-            </div>
+            <TextField
+              key={param}
+              id={param}
+              label={param}
+              size="medium"
+              required
+              value={clawlersParams[param]}
+              onChange={e => handleParamsChange(param, e.target.value)}
+              placeholder={`${param}을 입력해주세요`}
+            />
           ))}
 
-          <CustomButton type="button" variants="secondary" onClick={() => handleSubmit('department')}>
-            학과 데이터 크롤링
-          </CustomButton>
+          <Flex justify="justify-end" gap="gap-2">
+            <Button variant="outlined" size="medium" onClick={() => handleSubmit('department')}>
+              학과 데이터 크롤링
+            </Button>
 
-          <CustomButton type="button" variants="secondary" onClick={() => handleSubmit('subject')}>
-            과목 데이터 크롤링
-          </CustomButton>
-        </div>
+            <Button variant="outlined" size="medium" onClick={() => handleSubmit('subject')}>
+              과목 데이터 크롤링
+            </Button>
+          </Flex>
+        </Flex>
       </Card>
     </section>
   );

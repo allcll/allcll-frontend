@@ -1,4 +1,4 @@
-import Toggle from '../common/Toggle';
+import { Flex, Label, Toggle } from '@allcll/allcll-ui';
 
 interface ControlRowProps {
   label: string;
@@ -8,9 +8,9 @@ interface ControlRowProps {
 
 export default function ControlRow({ label, checked, onToggle }: ControlRowProps) {
   return (
-    <div className="flex justify-between items-center">
-      <span className="text-sm text-gray-700">{label}</span>
+    <Flex justify="justify-between" align="items-center" className="w-full">
+      <Label>{label}</Label>
       <Toggle checked={checked} onChange={onToggle} />
-    </div>
+    </Flex>
   );
 }

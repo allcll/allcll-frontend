@@ -1,8 +1,9 @@
 import { PreiodService } from '@/utils/type';
-import Card from '@allcll/common/components/Card';
+import { Button, Card, Flex, Label } from '@allcll/allcll-ui';
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import SectionHeader from '../common/SectionHeader';
 
 const serviceList = [
   {
@@ -66,20 +67,20 @@ function ServicePeriod() {
 
   const submitServicePeriod = (e: React.FormEvent) => {
     e.preventDefault();
-    //TODO: 서비스 수정 API 연결
+    // Todo: 서비스 수정 API 연결
   };
 
   return (
     <form onSubmit={submitServicePeriod}>
       <section>
         <Card>
-          <h3 className="text-md font-semibold mb-1">서비스별 운영 기간 설정</h3>
-          <p className="text-sm text-gray-500 mb-4">각 서비스의 오픈 시작일과 종료일을 설정합니다.</p>
-          <div className="space-y-6">
+          <Flex direction="flex-col" gap="gap-4">
+            <SectionHeader title="서비스 운영 기간 설정" description="각 서비스의 오픈 시작일과 종료일을 설정합니다." />
+
             {serviceList.map((label, index) => (
-              <div key={label.id} className="flex flex-row gap-4">
+              <Flex key={label.id} gap="gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1">{label.name} 시작일</label>
+                  <Label className="block text-sm font-medium mb-1">{label.name} 시작일</Label>
                   <DatePicker
                     selected={serviceDates[index].startDate ? new Date(serviceDates[index].startDate) : null}
                     onChange={date => updateDate(index, 'startDate', date)}
@@ -89,7 +90,7 @@ function ServicePeriod() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">{label.name} 종료일</label>
+                  <Label className="block text-sm font-medium mb-1">{label.name} 종료일</Label>
                   <DatePicker
                     selected={serviceDates[index].startDate ? new Date(serviceDates[index].startDate) : null}
                     onChange={date => updateDate(index, 'endDate', date)}
@@ -98,17 +99,17 @@ function ServicePeriod() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
                   />
                 </div>
-              </div>
+              </Flex>
             ))}
-          </div>
+          </Flex>
+
+          <Flex justify="justify-end">
+            <Button type="submit" variant="primary" size="medium">
+              전체 저장
+            </Button>
+          </Flex>
         </Card>
       </section>
-
-      <div className="flex justify-end mt-5 ">
-        <button type="submit" className="px-4 py-2 text-sm bg-blue-500 text-white rounded-lg">
-          전체 저장
-        </button>
-      </div>
     </form>
   );
 }

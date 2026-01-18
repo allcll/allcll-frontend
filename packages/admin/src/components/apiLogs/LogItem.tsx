@@ -1,17 +1,15 @@
-import Card from '@allcll/common/components/Card';
-import InfoChip from '@allcll/common/components/chip/InfoChip';
+import { Badge, Card, Flex } from '@allcll/allcll-ui';
 import { DetailRow } from './LogDetail';
 import { AdminApiLogs } from '@/utils/dbConfig';
 
 function LogItem({ log }: { log: AdminApiLogs }) {
   return (
-    <Card key={log.request_id} className="p-3">
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center gap-2">
-          <InfoChip type={log.statusCode === 200 ? 'success' : 'error'} label={`${log.statusCode}`} className="mb-1" />
+    <Card key={log.request_id}>
+      <Flex direction="flex-col" gap="gap-3">
+        <Flex>
+          <Badge variant={log.statusCode === 200 ? 'success' : 'danger'}>{log.statusCode}</Badge>
           <p className="text-sm text-gray-800">{log.request_url}</p>
-        </div>
-
+        </Flex>
         <DetailRow label="메서드">
           <span className="text-md text-blue-500">{log.method}</span>
         </DetailRow>
@@ -22,7 +20,7 @@ function LogItem({ log }: { log: AdminApiLogs }) {
         <DetailRow label="응답값">
           <span className="whitespace-pre-wrap">{JSON.stringify(log.response_body, null, 2)}</span>
         </DetailRow>
-      </div>
+      </Flex>
     </Card>
   );
 }
