@@ -32,7 +32,7 @@ const TimetableSelect = ({ setIsOpenModal, openCreateModal, timetables, currentT
     deleteTimetable(optionId);
   };
 
-  if (!currentTimetable) {
+  if (!currentTimetable && timetables.length === 0) {
     return (
       <Button variant="primary" size="medium" onClick={openCreateModal}>
         시간표 만들기
@@ -52,10 +52,10 @@ const TimetableSelect = ({ setIsOpenModal, openCreateModal, timetables, currentT
               <Checkbox
                 key={option.timeTableId}
                 label={option.timeTableName}
-                checked={currentTimetable.timeTableId === option.timeTableId}
+                checked={currentTimetable?.timeTableId === option.timeTableId}
                 onChange={() => handleOptionClick(option)}
               />
-              {currentTimetable.timeTableId === option.timeTableId && (
+              {currentTimetable?.timeTableId === option.timeTableId && (
                 <Flex gap="gap-4">
                   <Button variant="text" size="small" onClick={handleTimetableEdit}>
                     수정

@@ -187,7 +187,6 @@ export function useUpdateTimetable() {
  */
 export function useDeleteTimetable() {
   const queryClient = useQueryClient();
-  const setTimetable = useScheduleState(state => state.pickTimetable);
 
   return useMutation({
     mutationFn: async (timeTableId: number) => {
@@ -204,27 +203,10 @@ export function useDeleteTimetable() {
       await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
     },
     onSuccess: async (_, __, context) => {
-      const { timeTables } = queryClient.getQueryData(['timetableList']) as TimetableListResponse;
-
-      // 현재 시간표가 삭제된 시간표와 일치하는 경우, 마지막 시간표로 변경
-      if (timeTables && timeTables.length > 1 && context?.timeTableId) {
-        const filtered = timeTables.filter(timetable => timetable.timeTableId !== context.timeTableId);
-        const lastTimetable = filtered[filtered.length - 1];
-        setTimetable({
-          timeTableId: lastTimetable.timeTableId,
-          timeTableName: lastTimetable.timeTableName,
-          semester: lastTimetable.semester,
-        });
-      } else {
-        setTimetable({
-          timeTableId: -1,
-          timeTableName: '새 시간표',
-          semester: '',
-        });
-      }
-
       await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
-      await queryClient.invalidateQueries({ queryKey: ['timetableData', context?.timeTableId] });
+      await queryClient.invalidateQueries({
+        queryKey: ['timetableData', context?.timeTableId],
+      });
     },
   });
 }
@@ -246,24 +228,6 @@ export function useCreateTimetable() {
         }),
       });
     },
-    onMutate: async ({ timeTableName, semester }) => {
-      await queryClient.cancelQueries({ queryKey: ['timetableList'] });
-
-      const previous = queryClient.getQueryData<TimetableListResponse>(['timetableList']);
-
-      const newTimetable: TimetableType = {
-        timeTableId: -1,
-        timeTableName,
-        semester,
-      };
-
-      queryClient.setQueryData<TimetableListResponse>(['timetableList'], old => ({
-        timeTables: [...(old?.timeTables ?? []), newTimetable],
-      }));
-
-      return { previous };
-    },
-
     onSuccess: async (data: TimetableType) => {
       const { pickTimetable } = useScheduleState.getState();
 

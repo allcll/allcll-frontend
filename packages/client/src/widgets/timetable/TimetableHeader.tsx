@@ -2,50 +2,19 @@ import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { saveImageFromElement } from '@/shared/lib/saveImage.ts';
 import { Button, Flex, IconButton } from '@allcll/allcll-ui';
-import TimetableSelect from './TimetableSelect.tsx';
 import SearchSvg from '@/assets/search.svg?react';
 import DownloadSvg from '@/assets/download.svg?react';
-import EditTimetable from '../../features/timetable/ui/EditTimetable.tsx';
-import { useState } from 'react';
+
 import { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
 
 type modalType = 'edit' | 'create' | null;
 
-function TimetableHeader({
-  timetables,
-  currentTimetable,
-}: {
-  timetables?: TimetableType[];
-  currentTimetable: TimetableType | null;
-}) {
-  const [isOpenModal, setIsOpenModal] = useState<modalType>(null);
-
-  const handleCreateTimetable = () => {
-    setIsOpenModal('create');
-  };
-
-  return (
-    <header>
-      <Flex align="items-center" justify="justify-between" gap="gap-2">
-        <TimetableSelect
-          timetables={timetables ?? []}
-          currentTimetable={currentTimetable}
-          setIsOpenModal={setIsOpenModal}
-          openCreateModal={handleCreateTimetable}
-        />
-        <TimetableHeaderActions setIsOpenModal={setIsOpenModal} />
-        {isOpenModal && <EditTimetable type={isOpenModal} onClose={() => setIsOpenModal(null)} />}
-      </Flex>
-    </header>
-  );
-}
-
-export default TimetableHeader;
-
 export function TimetableHeaderActions({
   setIsOpenModal,
+  timetables,
 }: {
   setIsOpenModal: React.Dispatch<React.SetStateAction<modalType>>;
+  timetables?: TimetableType[];
 }) {
   const isMobile = useScheduleState(state => state.options.isMobile);
   const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
@@ -78,7 +47,7 @@ export function TimetableHeaderActions({
         />
       )}
 
-      {!isMobile && (
+      {!isMobile && timetables && timetables.length >= 0 && (
         <Button variant="text" size="medium" onClick={handleCreateTimetable}>
           + 시간표 만들기
         </Button>
