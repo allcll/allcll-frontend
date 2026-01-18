@@ -1,6 +1,5 @@
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
 
 /**
@@ -10,35 +9,17 @@ import { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts
  * - Timetables
  * -과목 데이터
  */
-const useSemesterTimetableSync = (timetables: TimetableType[]) => {
-  const [params] = useSearchParams();
-  const currentSemester = params.get('semester');
-
+const useSemesterTimetableSync = (currentSemester: string, timetables: TimetableType[]) => {
   const currentTimetable = useScheduleState(state => state.currentTimetable);
   const pickTimetable = useScheduleState(state => state.pickTimetable);
 
-  const filteredTimetablesBySemester = timetables.filter(
-    (timetable: TimetableType) => timetable.semester === currentSemester,
-  );
-
   useEffect(() => {
-    if (currentTimetable?.semester !== currentSemester) {
-      const semesterTimetable = timetables.find(timetable => timetable.semester === currentSemester);
-
-      if (semesterTimetable !== undefined) {
-        pickTimetable(semesterTimetable);
-        return;
-      }
-
-      // 해당 학기에 맞는 시간표가 없으면 초기화
-      pickTimetable(null);
-    }
-  }, [timetables]);
+    pickTimetable(timetables[0]);
+  }, [timetables, currentSemester]);
 
   return {
     currentSemester,
     currentTimetable,
-    filteredTimetablesBySemester,
   };
 };
 

@@ -21,6 +21,8 @@ import {
 } from '@/features/simulation/lib/simulation.ts';
 import { visitTutorial } from '@/features/simulation/lib/visitTutorial.ts';
 import SejongUI from '@allcll/sejong-ui';
+import useServiceSemester from '@/entities/semester/model/useServiceSemester';
+import { DEFAULT_SEMESTER } from '../timetable/Timetable';
 
 function Simulation() {
   const openModal = useSimulationModalStore(state => state.openModal);
@@ -129,7 +131,10 @@ function RenderModal() {
   const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
   const { type, closeModal } = useSimulationModalStore();
   const { reloadSimulationStatus } = useReloadSimulation();
-  const { data: timetables = [] } = useTimetables();
+
+  const { data } = useServiceSemester('timetable');
+
+  const { data: timetables = [] } = useTimetables(data?.semester ?? DEFAULT_SEMESTER);
 
   switch (type) {
     case 'tutorial':

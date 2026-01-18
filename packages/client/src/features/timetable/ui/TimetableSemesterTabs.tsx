@@ -1,12 +1,9 @@
 import { Flex } from '@allcll/allcll-ui';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { SEMESTERS } from '@/entities/semester/api/semester.ts';
 
-function TimetableSemesterTabs() {
-  const [searchParams] = useSearchParams();
-  const currentSemester = searchParams.get('semester');
-
+function TimetableSemesterTabs({ currentSemester }: { currentSemester?: string }) {
   const activeClassName = 'border-b-2 border-primary text-primary pb-2';
 
   return (

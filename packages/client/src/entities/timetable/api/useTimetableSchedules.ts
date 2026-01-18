@@ -6,6 +6,7 @@ import { fetchDeleteJsonOnAPI, fetchJsonOnAPI, fetchOnAPI } from '@/shared/api/a
 import { Subject } from '@/shared/model/types.ts';
 import { timeSleep } from '@/shared/lib/time.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
+import { DEFAULT_SEMESTER } from '@/pages/timetable/Timetable';
 
 export interface Timetable {
   timetableId: number;
@@ -94,31 +95,16 @@ export const getTimetables = async (): Promise<TimetableListResponse> => {
   return await fetchJsonOnAPI<TimetableListResponse>('/api/timetables');
 };
 
-export const useTimetables = () => {
-  const pickTimetable = useScheduleState(state => state.pickTimetable);
-  const currentTimetable = useScheduleState(state => state.currentTimetable);
-  const onSelect = (res: TimetableListResponse) => {
-    const { timeTables } = res;
-
-    /**
-     * currentTimetable이 존재하는데, timetables가 없을 떄
-     */
-    if (timeTables.length <= 0 && currentTimetable?.timeTableId !== -1) {
-      pickTimetable({
-        timeTableId: -1,
-        timeTableName: '새 시간표',
-        semester: '',
-      });
-      return;
-    }
-
-    return timeTables;
-  };
-
+/**
+ * TODO: select -> API 연결 후 백엔드에서 필터링 되도록 수정
+ * @param semester
+ * @returns
+ */
+export const useTimetables = (semester: string) => {
   return useQuery({
-    queryKey: ['timetableList'],
+    queryKey: ['timetableList', semester],
     queryFn: getTimetables,
-    select: onSelect,
+    select: data => data.timeTables.filter(timetable => timetable.semester === semester),
     staleTime: 1000 * 60 * 5,
   });
 };
@@ -126,7 +112,7 @@ export const useTimetables = () => {
 /** timetableId에 대한 Timetable 데이터를 가져옵니다.
  * @param timetableId
  */
-export function useTimetableSchedules(timetableId?: number) {
+export function useGetTimetableSchedules(timetableId?: number) {
   const { data: subjects } = useSubject();
 
   const queryFn = async () => {
@@ -260,30 +246,33 @@ export function useCreateTimetable() {
         }),
       });
     },
-    onMutate: async ({ timeTableName, semester }: InitTimetableType) => {
+    onMutate: async ({ timeTableName, semester }) => {
       await queryClient.cancelQueries({ queryKey: ['timetableList'] });
-      const { timeTables: previousTimetables } = queryClient.getQueryData<TimetableListResponse>(['timetableList']) ?? {
-        timetables: [],
-      };
+
+      const previous = queryClient.getQueryData<TimetableListResponse>(['timetableList']);
 
       const newTimetable: TimetableType = {
         timeTableId: -1,
-        timeTableName: timeTableName,
-        semester: semester,
+        timeTableName,
+        semester,
       };
 
-      if (previousTimetables) {
-        const newTimetables = [...previousTimetables, newTimetable];
+      queryClient.setQueryData<TimetableListResponse>(['timetableList'], old => ({
+        timeTables: [...(old?.timeTables ?? []), newTimetable],
+      }));
 
-        queryClient.setQueryData<TimetableListResponse>(['timetableList'], { timeTables: newTimetables });
-        previousTimetables.push(newTimetable);
-      }
-
-      return { previousTimetables };
+      return { previous };
     },
+
     onSuccess: async (data: TimetableType) => {
       const { pickTimetable } = useScheduleState.getState();
 
+      /**
+       * timetable POST요청
+       * -> currentTimetable 설정
+       * -> timetables GET요청
+       * -> schedules GET 요청(렌더링)
+       */
       pickTimetable({
         timeTableId: data.timeTableId,
         timeTableName: data.timeTableName,
@@ -323,9 +312,17 @@ export function useCreateSchedule(timetableId?: number) {
     mutationFn: async ({ schedule }: ScheduleMutationProps) => {
       let targetTimetableId = timetableId;
 
-      if (!timetableId || timetableId <= 0) {
-        const timetable = await createTimetable({ timeTableName: '새 시간표', semester: '2025-2' });
+      if (!targetTimetableId || targetTimetableId <= 0) {
+        const timetable = await createTimetable({
+          timeTableName: '새 시간표',
+          semester: DEFAULT_SEMESTER,
+        });
         targetTimetableId = timetable.timeTableId;
+
+        /* timetable 생성 후, transaction을 위해 잠시 대기
+        -> targetTimetableId로 스케줄을 생성하기 위해
+        */
+        await timeSleep(300);
 
         // 시간표 생성 후, optimistic하게 스케줄을 설정합니다.
         queryClient.setQueryData(['timetableData', targetTimetableId], {
@@ -334,9 +331,6 @@ export function useCreateSchedule(timetableId?: number) {
           semester: timetable.semester,
           schedules: [schedule],
         });
-
-        // timetable 생성 후, transaction을 위해 잠시 대기
-        await timeSleep(300);
       }
 
       const newSchedule = await fetchJsonOnAPI<ScheduleApiResponse>(`/api/timetables/${targetTimetableId}/schedules`, {
@@ -347,6 +341,7 @@ export function useCreateSchedule(timetableId?: number) {
       return { schedule: newSchedule, targetTimetableId };
     },
     onMutate: async mutateData => {
+      if (!timetableId || timetableId <= 0) return;
       const prevTimetableSchedules = queryClient.getQueryData<Timetable>(['timetableData', timetableId]) ?? {
         ...InitTimetableSchedules,
       };

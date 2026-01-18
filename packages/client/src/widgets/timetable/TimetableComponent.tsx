@@ -3,11 +3,7 @@ import DaySchedule from '@/widgets/timetable/DaySchedule.tsx';
 import TmNumsComponent from '@/widgets/timetable/TmNumsComponent.tsx';
 import ScheduleSlotList from '@/widgets/timetable/ScheduleSlotList.tsx';
 import { useUpdateTimetableOptions } from '@/features/timetable/lib/useUpdateTimetableOptions.ts';
-import {
-  getScheduleSlots,
-  ScheduleSlot,
-  useTimetableSchedules,
-} from '@/entities/timetable/api/useTimetableSchedules.ts';
+import { GeneralSchedule, getScheduleSlots, ScheduleSlot } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import useNotifyDeletedSchedule from '@/features/notification/lib/useNotifyDeletedSchedule.ts';
 import TimetableGridComponent from '@/widgets/timetable/TimetableGridComponent.tsx';
@@ -16,7 +12,11 @@ import { Day, DAYS } from '@/entities/timetable/model/types.ts';
 
 export const ROW_HEIGHT = 40;
 
-function TimetableComponent() {
+interface ITimetableComponentProps {
+  schedules: GeneralSchedule[];
+}
+
+function TimetableComponent({ schedules }: ITimetableComponentProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const setOptions = useScheduleState(state => state.setOptions);
 
@@ -28,11 +28,11 @@ function TimetableComponent() {
     <>
       <div className="bg-white" ref={containerRef}>
         <TimetableGrid>
-          <WeekTable />
+          <WeekTable schedules={schedules} />
         </TimetableGrid>
-        <ScheduleSlotList />
+        <ScheduleSlotList schedules={schedules} />
       </div>
-      <TmNumsComponent />
+      <TmNumsComponent schedules={schedules} />
     </>
   );
 }
@@ -45,11 +45,9 @@ const DefaultScheduleTimes: Record<Day, ScheduleSlot[]> = DAYS.reduce(
   {} as Record<Day, ScheduleSlot[]>,
 );
 
-function WeekTable() {
-  const currentTimetable = useScheduleState(s => s.currentTimetable);
+function WeekTable({ schedules }: { schedules: GeneralSchedule[] }) {
   const { colNames, minTime } = useScheduleState(state => state.options);
 
-  const { data: schedules } = useTimetableSchedules(currentTimetable?.timeTableId);
   const scheduleSlots = getScheduleSlots(schedules, minTime) ?? DefaultScheduleTimes;
 
   useNotifyDeletedSchedule(schedules);

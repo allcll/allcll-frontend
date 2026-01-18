@@ -7,10 +7,17 @@ import SearchSvg from '@/assets/search.svg?react';
 import DownloadSvg from '@/assets/download.svg?react';
 import EditTimetable from '../../features/timetable/ui/EditTimetable.tsx';
 import { useState } from 'react';
+import { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
 
 type modalType = 'edit' | 'create' | null;
 
-function TimetableHeader() {
+function TimetableHeader({
+  timetables,
+  currentTimetable,
+}: {
+  timetables?: TimetableType[];
+  currentTimetable: TimetableType | null;
+}) {
   const [isOpenModal, setIsOpenModal] = useState<modalType>(null);
 
   const handleCreateTimetable = () => {
@@ -20,7 +27,12 @@ function TimetableHeader() {
   return (
     <header>
       <Flex align="items-center" justify="justify-between" gap="gap-2">
-        <TimetableSelect setIsOpenModal={setIsOpenModal} openCreateModal={handleCreateTimetable} />
+        <TimetableSelect
+          timetables={timetables ?? []}
+          currentTimetable={currentTimetable}
+          setIsOpenModal={setIsOpenModal}
+          openCreateModal={handleCreateTimetable}
+        />
         <TimetableHeaderActions setIsOpenModal={setIsOpenModal} />
         {isOpenModal && <EditTimetable type={isOpenModal} onClose={() => setIsOpenModal(null)} />}
       </Flex>
@@ -30,7 +42,7 @@ function TimetableHeader() {
 
 export default TimetableHeader;
 
-function TimetableHeaderActions({
+export function TimetableHeaderActions({
   setIsOpenModal,
 }: {
   setIsOpenModal: React.Dispatch<React.SetStateAction<modalType>>;

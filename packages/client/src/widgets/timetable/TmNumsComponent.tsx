@@ -1,10 +1,10 @@
-import { useTimetableSchedules } from '@/entities/timetable/api/useTimetableSchedules.ts';
-import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
+import { GeneralSchedule } from '@/entities/timetable/api/useTimetableSchedules';
 
-function TmNumsComponent() {
-  const timetableId = useScheduleState(state => state.currentTimetable?.timeTableId);
-  const { data: schedules } = useTimetableSchedules(timetableId);
+interface ITmNumsComponentProps {
+  schedules: GeneralSchedule[];
+}
 
+function TmNumsComponent({ schedules }: ITmNumsComponentProps) {
   const tmNums = schedules?.reduce<number[]>(
     (acc, cur) => {
       if (cur.scheduleType !== 'official' || !cur.tmNum) return acc;

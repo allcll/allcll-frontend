@@ -1,17 +1,13 @@
-import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
-import {
-  useTimetableSchedules,
-  getEmptyScheduleSlots,
-  GeneralSchedule,
-} from '@/entities/timetable/api/useTimetableSchedules.ts';
+import { getEmptyScheduleSlots, GeneralSchedule } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import XGraySvg from '@/assets/x-darkgray.svg?react';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import { Flex, IconButton } from '@allcll/allcll-ui';
 
-function ScheduleSlotList() {
-  const currentTimetable = useScheduleState(s => s.currentTimetable);
+interface IScheduleSlotList {
+  schedules: GeneralSchedule[];
+}
 
-  const { data: schedules } = useTimetableSchedules(currentTimetable?.timeTableId);
+function ScheduleSlotList({ schedules }: IScheduleSlotList) {
   const scheduleSlots = getEmptyScheduleSlots(schedules);
 
   return (
