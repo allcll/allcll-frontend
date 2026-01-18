@@ -24,7 +24,6 @@ function TimetableSubjectCards({ subjects, expandToMax, isPending = false }: Rea
   const { openScheduleModal, cancelSchedule } = useScheduleModal();
 
   if (isPending) {
-    console.log('Loading subjects...');
     return <Loading message="과목 정보를 불러오는 중이에요..." />;
   }
 

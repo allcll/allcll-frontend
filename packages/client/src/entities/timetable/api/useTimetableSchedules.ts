@@ -6,7 +6,7 @@ import { fetchDeleteJsonOnAPI, fetchJsonOnAPI, fetchOnAPI } from '@/shared/api/a
 import { Subject } from '@/shared/model/types.ts';
 import { timeSleep } from '@/shared/lib/time.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
-import { DEFAULT_SEMESTER } from '@/pages/timetable/Timetable';
+import { SEMESTERS } from '@/entities/semester/api/semester';
 
 export interface Timetable {
   timetableId: number;
@@ -315,7 +315,7 @@ export function useCreateSchedule(timetableId?: number) {
       if (!targetTimetableId || targetTimetableId <= 0) {
         const timetable = await createTimetable({
           timeTableName: '새 시간표',
-          semester: DEFAULT_SEMESTER,
+          semester: SEMESTERS[0],
         });
         targetTimetableId = timetable.timeTableId;
 

@@ -22,7 +22,7 @@ import {
 import { visitTutorial } from '@/features/simulation/lib/visitTutorial.ts';
 import SejongUI from '@allcll/sejong-ui';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
-import { DEFAULT_SEMESTER } from '../timetable/Timetable';
+import { SEMESTERS } from '@/entities/semester/api/semester';
 
 function Simulation() {
   const openModal = useSimulationModalStore(state => state.openModal);
@@ -134,7 +134,7 @@ function RenderModal() {
 
   const { data } = useServiceSemester('timetable');
 
-  const { data: timetables = [] } = useTimetables(data?.semester ?? DEFAULT_SEMESTER);
+  const { data: timetables = [] } = useTimetables(data?.semester ?? SEMESTERS[0]);
 
   switch (type) {
     case 'tutorial':
