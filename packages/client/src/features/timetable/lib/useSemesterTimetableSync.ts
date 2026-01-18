@@ -15,7 +15,7 @@ const useSemesterTimetableSync = (currentSemester: string, timetables: Timetable
 
   useEffect(() => {
     pickTimetable(timetables[0]);
-  }, [timetables, currentSemester]);
+  }, [currentSemester]);
 
   return {
     currentSemester,
