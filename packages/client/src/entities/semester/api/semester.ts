@@ -43,6 +43,10 @@ export const fetchServiceSemester = async () => {
 
 const isDevServer = import.meta.env.VITE_DEV_SERVER === 'true';
 
+/**
+ * 학기 목록 -> length-1 이 가장 최신 학기
+ * @description
+ */
 export const SEMESTERS = ['2025-2', '2025-WINTER'];
 
 /** @description 서비스 학기 더미 데이터
