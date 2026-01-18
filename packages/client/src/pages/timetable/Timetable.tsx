@@ -1,19 +1,12 @@
 import { Helmet } from 'react-helmet';
-import TimetableComponent from '@/widgets/timetable/TimetableComponent.tsx';
 import ContentPanel from '@/features/timetable/ui/ScheduleContentPanel.tsx';
-import { TimetableHeaderActions } from '@/widgets/timetable/TimetableHeader';
-import { Card, Flex, Heading } from '@allcll/allcll-ui';
+import {  Flex, Heading } from '@allcll/allcll-ui';
 import TimetableSemesterTabs from '@/features/timetable/ui/TimetableSemesterTabs.tsx';
-import TimetableOverlay from '../../widgets/timetable/TimetableOverlay.tsx';
-import { useGetTimetableSchedules, useTimetables } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useSearchParams } from 'react-router-dom';
-import useSemesterTimetableSync from '@/features/timetable/lib/useSemesterTimetableSync.ts';
-import TimetableSelect from '@/widgets/timetable/TimetableSelect.tsx';
-import { useEffect, useState } from 'react';
-import EditTimetable from '@/features/timetable/ui/EditTimetable.tsx';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester.ts';
 import { SEMESTERS } from '@/entities/semester/api/semester.ts';
-import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
+import TimetableBody from '@/features/timetable/ui/TimetableBody.tsx';
+import TimetableOverlay from '@/widgets/timetable/TimetableOverlay';
 
 function Timetable() {
   const { data } = useServiceSemester('timetable');
@@ -43,59 +36,6 @@ function Timetable() {
 
       <TimetableOverlay />
     </div>
-  );
-}
-
-type modalType = 'edit' | 'create' | null;
-
-function TimetableBody({ currentSemester }: { currentSemester: string }) {
-  const { data: timetables } = useTimetables(currentSemester);
-
-  const { currentTimetable } = useSemesterTimetableSync(currentSemester, timetables ?? []);
-  const pickTimetable = useScheduleState(state => state.pickTimetable);
-  const { data: schedules } = useGetTimetableSchedules(currentTimetable?.timeTableId);
-
-  const [isOpenModal, setIsOpenModal] = useState<modalType>(null);
-
-  const handleCreateTimetable = () => {
-    setIsOpenModal('create');
-  };
-
-  useEffect(() => {
-    if (!timetables) return;
-
-    /**
-     * 새로 고침 시 동기화 위해
-     */
-    if (!currentTimetable && timetables.length > 0) {
-      pickTimetable(timetables[0]);
-    }
-
-    /**
-     * Delete된 시간표가 현재 선택된 시간표인 경우 대비
-     */
-    const isExistTimetable = timetables.find(t => t.timeTableId === currentTimetable?.timeTableId);
-    if (!isExistTimetable) {
-      pickTimetable(timetables[timetables.length - 1]);
-    }
-  }, [timetables]);
-
-  return (
-    <Card className="px-2 flex flex-col gap-2 relative overflow-hidden">
-      <header>
-        <Flex align="items-center" justify="justify-between" gap="gap-2">
-          <TimetableSelect
-            timetables={timetables ?? []}
-            currentTimetable={currentTimetable}
-            setIsOpenModal={setIsOpenModal}
-            openCreateModal={handleCreateTimetable}
-          />
-          <TimetableHeaderActions setIsOpenModal={setIsOpenModal} />
-          {isOpenModal && <EditTimetable type={isOpenModal} onClose={() => setIsOpenModal(null)} />}
-        </Flex>
-      </header>
-      <TimetableComponent schedules={schedules ?? []} />
-    </Card>
   );
 }
 
