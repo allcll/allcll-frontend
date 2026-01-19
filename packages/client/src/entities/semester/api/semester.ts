@@ -47,7 +47,7 @@ const isDevServer = import.meta.env.VITE_DEV_SERVER === 'true';
  * 학기 목록 -> length-1 이 가장 최신 학기
  * @description
  */
-export const SEMESTERS = ['2025-2', '2025-WINTER'];
+export const SEMESTERS = ['2025-2', '2025-겨울', '2026-1'];
 
 /** @description 서비스 학기 더미 데이터
  * 서비스 API연결하기 전까지 해당 데이터 사용하기
@@ -55,8 +55,8 @@ export const SEMESTERS = ['2025-2', '2025-WINTER'];
  * Fixme: semester, code 내부 조작용, 외부 노출용 구분 필요
  * todo: export 제거하기 */
 export const SERVICE_SEMESTER_DUMMY: ServiceSemesterApiResponse = {
-  code: 'WINTER-2025',
-  semester: '2025-WINTER',
+  code: '2025-겨울',
+  semester: '2025-겨울',
   services: [
     {
       id: 'timetable',

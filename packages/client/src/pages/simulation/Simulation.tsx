@@ -134,7 +134,7 @@ function RenderModal() {
 
   const { data } = useServiceSemester('timetable');
 
-  const { data: timetables = [] } = useTimetables(data?.semester ?? SEMESTERS[0]);
+  const { data: timetables = [] } = useTimetables(data?.semester ?? SEMESTERS[SEMESTERS.length - 1]);
 
   switch (type) {
     case 'tutorial':

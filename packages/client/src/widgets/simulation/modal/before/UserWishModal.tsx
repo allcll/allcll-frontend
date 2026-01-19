@@ -44,7 +44,7 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
     currentTimetable ?? {
       timeTableId: -1,
       timeTableName: '선택된 시간표 없음',
-      semester: SEMESTERS[0],
+      semester: SEMESTERS[SEMESTERS.length - 1],
     },
   );
   const [subjectMode, setSubjectMode] = useState<ModeType>('timetable');

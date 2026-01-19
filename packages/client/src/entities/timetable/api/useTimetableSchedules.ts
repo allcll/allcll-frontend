@@ -7,6 +7,7 @@ import { Subject } from '@/shared/model/types.ts';
 import { timeSleep } from '@/shared/lib/time.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
 import { SEMESTERS } from '@/entities/semester/api/semester';
+import { useSearchParams } from 'react-router-dom';
 
 export interface Timetable {
   timetableId: number;
@@ -91,8 +92,10 @@ const InitTimetableSchedules = {
   schedules: [],
 };
 
-export const getTimetables = async (): Promise<TimetableListResponse> => {
-  return await fetchJsonOnAPI<TimetableListResponse>('/api/timetables');
+export const getTimetables = async (semester: string): Promise<TimetableListResponse> => {
+  return await fetchJsonOnAPI<TimetableListResponse>(`/api/timetables?semester=${encodeURIComponent(semester)}`, {
+    method: 'GET',
+  });
 };
 
 /**
@@ -103,7 +106,7 @@ export const getTimetables = async (): Promise<TimetableListResponse> => {
 export const useTimetables = (semester: string) => {
   return useQuery({
     queryKey: ['timetableList', semester],
-    queryFn: getTimetables,
+    queryFn: () => getTimetables(semester),
     select: data => data.timeTables.filter(timetable => timetable.semester === semester),
     staleTime: 1000 * 60 * 5,
   });
@@ -272,6 +275,11 @@ export function useCreateSchedule(timetableId?: number) {
   const setSelectedSchedule = useScheduleState(state => state.changeScheduleData);
   const { mutateAsync: createTimetable } = useCreateTimetable();
 
+  const [searchParams] = useSearchParams();
+
+  // semester가 없으면 최신 학기로 간주합니다.
+  const semester = searchParams.get('semester') ?? SEMESTERS[SEMESTERS.length - 1];
+
   return useMutation({
     mutationFn: async ({ schedule }: ScheduleMutationProps) => {
       let targetTimetableId = timetableId;
@@ -279,7 +287,7 @@ export function useCreateSchedule(timetableId?: number) {
       if (!targetTimetableId || targetTimetableId <= 0) {
         const timetable = await createTimetable({
           timeTableName: '새 시간표',
-          semester: SEMESTERS[0],
+          semester: semester,
         });
         targetTimetableId = timetable.timeTableId;
 
