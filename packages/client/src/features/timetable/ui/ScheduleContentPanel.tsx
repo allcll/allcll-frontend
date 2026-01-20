@@ -15,7 +15,8 @@ const initSchedule = new ScheduleAdapter().toUiData();
 // Fixme: div depth 최적화 필요
 function ScheduleContentPanel() {
   const { openScheduleModal } = useScheduleModal();
-  // Todo:  학기에 맞는 시간표 data가져오기
+
+  // Todo:  학기에 맞는 과목 데이터 불러오기 semester로
   const { data, isPending } = useWishes();
   const subjects = useSearchRank(data) ?? [];
 
