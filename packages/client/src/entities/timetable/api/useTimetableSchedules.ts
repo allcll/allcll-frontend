@@ -107,7 +107,7 @@ export const useTimetables = (semester: string) => {
   return useQuery({
     queryKey: ['timetableList', semester],
     queryFn: () => getTimetables(semester),
-    select: data => data.timeTables.filter(timetable => timetable.semester === semester),
+    select: data => data.timeTables,
     staleTime: 1000 * 60 * 5,
   });
 };
