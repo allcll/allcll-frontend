@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import SejongUI from '@allcll/sejong-ui';
 import CheckBlueSvg from '@/assets/check-blue.svg?react';
+import ImportantSvg from '@/assets/important.svg?react';
 import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
 import useSimulationSubjectStore from '@/features/simulation/model/useSimulationSubject.ts';
 import useSimulationProcessStore from '@/features/simulation/model/useSimulationProcess.ts';
@@ -221,35 +222,33 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
 
   return (
     <SejongUI.Modal>
-      <div className="flex sm:w-[450px] border-1 border-gray-800 flex-col justify-between overflow-hidden">
-        <SejongUI.Modal.Header title="" onClose={handleClickCloseButton} />
+      <SejongUI.Modal.Header title="" onClose={handleClickCloseButton} />
 
-        <div className="px-6 pb-6 text-center ">
-          <div className="flex justify-center mb-4 py-5">
-            <div className="w-10 h-10">
-              <CheckBlueSvg />
-            </div>
-          </div>
-
-          <p className="text-gray-700 text-base mb-4">{modalData.topMessage}</p>
-
-          {modalData.description && (
-            <p className="text-sm text-gray-700 whitespace-pre-line">{modalData.description}</p>
+      <div className="px-6 pb-6 flex items-center flex-col sm:h-auto sm:min-h-[280px] h-[80vh]">
+        <div className="flex justify-center mb-4 py-5">
+          {modalData.status === APPLY_STATUS.SUCCESS || modalData.status === APPLY_STATUS.PROGRESS ? (
+            <CheckBlueSvg className="w-12 h-12" />
+          ) : (
+            <ImportantSvg className="w-12 h-12" fill="#C4C4C4" />
           )}
         </div>
 
-        <SejongUI.Modal.ButtonContainer className="px-6 py-2 bg-gray-100">
-          {modalData.status === APPLY_STATUS.PROGRESS ||
-            (modalData.status === APPLY_STATUS.SUCCESS && (
-              <SejongUI.Modal.Button variant="cancel" onClick={handleClickCancel}>
-                취소
-              </SejongUI.Modal.Button>
-            ))}
-          <SejongUI.Modal.Button variant="primary" onClick={handleClickCheck}>
-            확인
-          </SejongUI.Modal.Button>
-        </SejongUI.Modal.ButtonContainer>
+        <p className="text-gray-700 text-base mb-4">{modalData.topMessage}</p>
+
+        {modalData.description && <p className="text-sm text-gray-700 whitespace-pre-line">{modalData.description}</p>}
       </div>
+
+      <SejongUI.Modal.ButtonContainer className="px-6 py-2 bg-gray-100">
+        {modalData.status === APPLY_STATUS.PROGRESS ||
+          (modalData.status === APPLY_STATUS.SUCCESS && (
+            <SejongUI.Modal.Button variant="cancel" onClick={handleClickCancel}>
+              취소
+            </SejongUI.Modal.Button>
+          ))}
+        <SejongUI.Modal.Button variant="primary" onClick={handleClickCheck}>
+          확인
+        </SejongUI.Modal.Button>
+      </SejongUI.Modal.ButtonContainer>
     </SejongUI.Modal>
   );
 }
