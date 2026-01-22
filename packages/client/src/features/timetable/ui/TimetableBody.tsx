@@ -7,6 +7,7 @@ import { useGetTimetableSchedules, useTimetables } from '@/entities/timetable/ap
 import useSemesterTimetableSync from '../lib/useSemesterTimetableSync';
 import { useScheduleState } from '../model/useScheduleState';
 import { useEffect, useState } from 'react';
+import useScheduleModal from '../lib/useScheduleModal';
 
 type modalType = 'edit' | 'create' | null;
 
@@ -18,10 +19,15 @@ function TimetableBody({ currentSemester }: { currentSemester: string }) {
   const { data: schedules } = useGetTimetableSchedules(currentTimetable?.timeTableId, currentSemester);
 
   const [isOpenModal, setIsOpenModal] = useState<modalType>(null);
+  const { cancelSchedule } = useScheduleModal();
 
   const handleCreateTimetable = () => {
     setIsOpenModal('create');
   };
+
+  useEffect(() => {
+    cancelSchedule(undefined, true);
+  }, [currentSemester, cancelSchedule]);
 
   useEffect(() => {
     if (!timetables) return;
