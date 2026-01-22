@@ -44,9 +44,10 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
     currentTimetable ?? {
       timeTableId: -1,
       timeTableName: '선택된 시간표 없음',
-      semester: SEMESTERS[SEMESTERS.length - 1],
+      semesterCode: SEMESTERS[SEMESTERS.length - 1].semesterCode,
     },
   );
+
   const [subjectMode, setSubjectMode] = useState<ModeType>('timetable');
   const [toggleTip, setToggleTip] = useState(false);
 
@@ -102,7 +103,7 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
     const timetable = timetables.find(timetable => timetable.timeTableId === optionId) ?? {
       timeTableId: -1,
       timeTableName: '선택된 시간표 없음',
-      semester: SEMESTERS[0],
+      semesterCode: SEMESTERS[SEMESTERS.length - 1].semesterCode,
     };
 
     if (!timetable) {

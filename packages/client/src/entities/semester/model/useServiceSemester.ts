@@ -28,8 +28,8 @@ function useServiceSemester(serviceId?: string) {
   return {
     ...query,
     data: {
-      code: query.data.code,
-      semester: query.data.semester,
+      semesterCode: query.data.semesterCode,
+      semesterValue: query.data.semesterValue,
       service,
     },
   };

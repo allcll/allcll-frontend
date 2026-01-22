@@ -73,7 +73,7 @@ export interface ScheduleSlot {
 export interface TimetableType {
   timeTableId: number;
   timeTableName: string;
-  semester: string; // ex: "2025-2"
+  semesterCode: string; // ex: "2025-2"
 }
 
 export interface TimetableListResponse {
@@ -82,18 +82,18 @@ export interface TimetableListResponse {
 
 export interface InitTimetableType {
   timeTableName: string;
-  semester: string;
+  semesterCode: string;
 }
 
 const InitTimetableSchedules = {
   timeTableId: -1,
   timeTableName: '새 시간표',
-  semester: '',
+  semesterCode: '',
   schedules: [],
 };
 
-export const getTimetables = async (semester: string): Promise<TimetableListResponse> => {
-  return await fetchJsonOnAPI<TimetableListResponse>(`/api/timetables?semester=${encodeURIComponent(semester)}`, {
+export const getTimetables = async (semesterCode: string): Promise<TimetableListResponse> => {
+  return await fetchJsonOnAPI<TimetableListResponse>(`/api/timetables?semester=${encodeURIComponent(semesterCode)}`, {
     method: 'GET',
   });
 };
@@ -103,10 +103,10 @@ export const getTimetables = async (semester: string): Promise<TimetableListResp
  * @param semester
  * @returns
  */
-export const useTimetables = (semester: string) => {
+export const useTimetables = (semesterCode: string) => {
   return useQuery({
-    queryKey: ['timetableList', semester],
-    queryFn: () => getTimetables(semester),
+    queryKey: ['timetableList', semesterCode],
+    queryFn: () => getTimetables(semesterCode),
     select: data => data.timeTables,
     staleTime: 1000 * 60 * 5,
   });
@@ -168,7 +168,7 @@ export function useUpdateTimetable() {
         pickTimetable({
           timeTableId: updated.timeTableId,
           timeTableName: updated.timeTableName,
-          semester: updated.semester,
+          semesterCode: updated.semesterCode,
         });
       }
 
@@ -222,12 +222,12 @@ export function useCreateTimetable() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ timeTableName, semester }: InitTimetableType) => {
+    mutationFn: async ({ timeTableName, semesterCode }: InitTimetableType) => {
       return await fetchJsonOnAPI<TimetableType>('/api/timetables', {
         method: 'POST',
         body: JSON.stringify({
           timeTableName: timeTableName,
-          semester: semester,
+          semesterCode: semesterCode,
         }),
       });
     },
@@ -243,7 +243,7 @@ export function useCreateTimetable() {
       pickTimetable({
         timeTableId: data.timeTableId,
         timeTableName: data.timeTableName,
-        semester: data.semester,
+        semesterCode: data.semesterCode,
       });
 
       await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
@@ -278,7 +278,7 @@ export function useCreateSchedule(timetableId?: number) {
   const [searchParams] = useSearchParams();
 
   // semester가 없으면 최신 학기로 간주합니다.
-  const semester = searchParams.get('semester') ?? SEMESTERS[SEMESTERS.length - 1];
+  const semesterCode = searchParams.get('semester') ?? SEMESTERS[SEMESTERS.length - 1].semesterCode;
 
   return useMutation({
     mutationFn: async ({ schedule }: ScheduleMutationProps) => {
@@ -287,7 +287,7 @@ export function useCreateSchedule(timetableId?: number) {
       if (!targetTimetableId || targetTimetableId <= 0) {
         const timetable = await createTimetable({
           timeTableName: '새 시간표',
-          semester: semester,
+          semesterCode: semesterCode,
         });
         targetTimetableId = timetable.timeTableId;
 
@@ -300,7 +300,7 @@ export function useCreateSchedule(timetableId?: number) {
         queryClient.setQueryData(['timetableData', targetTimetableId], {
           timetableId: targetTimetableId,
           timetableName: timetable.timeTableName,
-          semester: timetable.semester,
+          semesterCode: timetable.semesterCode,
           schedules: [schedule],
         });
       }
