@@ -35,7 +35,7 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
   const closeModal = useSimulationModalStore(state => state.closeModal);
   const { data: lectures, isLoading: isLoadingLectures } = useLectures();
   const currentTimetable = useScheduleState(state => state.currentTimetable);
-  const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
+  const pickTimetable = useScheduleState(state => state.pickTimetable);
 
   const [simulationSubjects, setSimulationSubjects] = useState<Lecture[]>([]);
   const [department, setDepartment] = useState<Department>({ ...InitDepartment });
@@ -45,6 +45,7 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
       timeTableId: -1,
       timeTableName: '선택된 시간표 없음',
       semesterCode: SEMESTERS[SEMESTERS.length - 1].semesterCode,
+      semesterValue: SEMESTERS[SEMESTERS.length - 1].semesterValue,
     },
   );
 
@@ -104,6 +105,7 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
       timeTableId: -1,
       timeTableName: '선택된 시간표 없음',
       semesterCode: SEMESTERS[SEMESTERS.length - 1].semesterCode,
+      semesterValue: SEMESTERS[SEMESTERS.length - 1].semesterValue,
     };
 
     if (!timetable) {
@@ -112,7 +114,7 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
     }
 
     setSelectedTimetable(timetable);
-    setCurrentTimetable(timetable);
+    pickTimetable(timetable);
   };
 
   /**
