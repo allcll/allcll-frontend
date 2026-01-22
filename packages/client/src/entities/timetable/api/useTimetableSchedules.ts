@@ -93,9 +93,12 @@ const InitTimetableSchedules = {
 };
 
 export const getTimetables = async (semesterCode: string): Promise<TimetableListResponse> => {
-  return await fetchJsonOnAPI<TimetableListResponse>(`/api/timetables?semester=${encodeURIComponent(semesterCode)}`, {
-    method: 'GET',
-  });
+  return await fetchJsonOnAPI<TimetableListResponse>(
+    `/api/timetables?semesterCode=${encodeURIComponent(semesterCode)}`,
+    {
+      method: 'GET',
+    },
+  );
 };
 
 /**

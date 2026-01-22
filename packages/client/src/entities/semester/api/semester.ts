@@ -57,8 +57,8 @@ export const SEMESTERS = [
     semesterValue: '2025-겨울',
   },
   {
-    semesterCode: 'SPRING_25',
-    semesterValue: '2025-1',
+    semesterCode: 'FALL_25',
+    semesterValue: '2025-2',
   },
 ];
 
