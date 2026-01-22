@@ -6,8 +6,7 @@ import DayTimeFilter from '../../../features/filtering/ui/DayTimeFilter.tsx';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { Button, Card, Chip, Dialog, Flex, Label } from '@allcll/allcll-ui';
 import { getAllSelectedLabels } from '@/features/filtering/lib/filterUtils.ts';
-import { useSearchParams } from 'react-router-dom';
-import { SEMESTERS } from '@/entities/semester/api/semester.ts';
+import { useSemesterParam } from '@/entities/semester/model/useSemesterParam.ts';
 
 interface IModalProps {
   filterStore: FilterStore;
@@ -17,8 +16,7 @@ interface IModalProps {
 type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer U)[] ? U : Filters[K];
 
 function DetailFilterModal({ filterStore, onClose }: Readonly<IModalProps>) {
-  const [searchParams] = useSearchParams();
-  const semester = searchParams.get('semester') ?? SEMESTERS[SEMESTERS.length - 1];
+  const semester = useSemesterParam();
 
   const { classroom, note, categories, time } = filterStore(state => state.filters);
   const departments = useDepartments();

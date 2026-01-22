@@ -11,8 +11,7 @@ import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { Button, Chip, Flex } from '@allcll/allcll-ui';
 import { getAllSelectedLabels } from '@/features/filtering/lib/filterUtils.ts';
 import { FilterValueType } from '@/features/filtering/model/types.ts';
-import { useSearchParams } from 'react-router-dom';
-import { SEMESTERS } from '@/entities/semester/api/semester.ts';
+import { useSemesterParam } from '@/entities/semester/model/useSemesterParam.ts';
 
 interface FilterBottomSheetProps {
   onCloseFiltering: () => void;
@@ -26,8 +25,7 @@ function FilterBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }
     onCloseFiltering();
   };
 
-  const [searchParams] = useSearchParams();
-  const semester = searchParams.get('semester') ?? SEMESTERS[SEMESTERS.length - 1];
+  const semester = useSemesterParam();
 
   const { data: subjects } = useSubject(semester);
   const departments = useDepartments();

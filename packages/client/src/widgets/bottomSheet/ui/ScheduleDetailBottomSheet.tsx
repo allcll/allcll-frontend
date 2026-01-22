@@ -6,12 +6,10 @@ import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib
 import { Button, Flex, Heading } from '@allcll/allcll-ui';
 import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
 import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader';
-import { useSearchParams } from 'react-router-dom';
-import { SEMESTERS } from '@/entities/semester/api/semester';
+import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
 
 function ScheduleInfoBottomSheet() {
-  const [searchParams] = useSearchParams();
-  const semester = searchParams.get('semester') ?? SEMESTERS[SEMESTERS.length - 1];
+  const semester = useSemesterParam();
 
   const { schedule } = useScheduleModalData();
   const { deleteSchedule, cancelSchedule } = useScheduleModal();

@@ -9,15 +9,13 @@ import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import ScheduleFilter from '../../../widgets/filtering/ui/ScheduleFilter.tsx';
 import { Button, Card, Flex } from '@allcll/allcll-ui';
 import TimetableSubjectCards from '@/features/timetable/ui/subject/TimetableSubjectCards.tsx';
-import { useSearchParams } from 'react-router-dom';
-import { SEMESTERS } from '@/entities/semester/api/semester.ts';
+import { useSemesterParam } from '@/entities/semester/model/useSemesterParam.ts';
 
 const initSchedule = new ScheduleAdapter().toUiData();
 
 // Fixme: div depth 최적화 필요
 function ScheduleContentPanel() {
-  const [searchParams] = useSearchParams();
-  const semester = searchParams.get('semester') ?? SEMESTERS[SEMESTERS.length - 1];
+  const semester = useSemesterParam();
   const { openScheduleModal } = useScheduleModal();
   // Todo:  학기에 맞는 시간표 data가져오기
   const { data, isPending } = useWishes(semester);

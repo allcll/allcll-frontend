@@ -5,16 +5,14 @@ import { IScheduleProps } from '@/widgets/timetable/Schedule.tsx';
 import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 
 import { Day } from '@/entities/timetable/model/types.ts';
-import { useSearchParams } from 'react-router-dom';
-import { SEMESTERS } from '@/entities/semester/api/semester';
+import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
 
 interface IWireSchedulesProps extends HTMLAttributes<HTMLDivElement> {
   dayOfWeeks: Day;
 }
 
 function WireSchedules({ dayOfWeeks }: Readonly<IWireSchedulesProps>) {
-  const [searchParams] = useSearchParams();
-  const semester = searchParams.get('semester') ?? SEMESTERS[SEMESTERS.length - 1];
+  const semester = useSemesterParam();
 
   const schedule = useScheduleState(state => state.schedule);
   const options = useScheduleState(state => state.options);

@@ -9,10 +9,9 @@ import { useScheduleSearchStore } from '@/features/filtering/model/useFilterStor
 import { ScheduleAdapter } from '@/entities/timetable/model/adapter.ts';
 import FilterSvg from '@/assets/filter.svg?react';
 import { Flex, IconButton } from '@allcll/allcll-ui';
-import { useSearchParams } from 'react-router-dom';
-import { SEMESTERS } from '@/entities/semester/api/semester.ts';
 import useWishes from '@/entities/wishes/model/useWishes.ts';
 import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
+import { useSemesterParam } from '@/entities/semester/model/useSemesterParam.ts';
 
 interface ISearchBottomSheet {
   onCloseSearch: () => void;
@@ -20,8 +19,8 @@ interface ISearchBottomSheet {
 }
 
 function ScheduleSearchBottomSheet({ onCloseSearch, onOpenFiltering }: ISearchBottomSheet) {
-  const [searchParams] = useSearchParams();
-  const semester = searchParams.get('semester') ?? SEMESTERS[SEMESTERS.length - 1];
+  const semester = useSemesterParam();
+
   const { openScheduleModal } = useScheduleModal();
 
   // Todo:  학기에 맞는 시간표 data가져오기

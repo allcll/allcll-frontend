@@ -7,7 +7,7 @@ import { Subject } from '@/shared/model/types.ts';
 import { timeSleep } from '@/shared/lib/time.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
 import { SEMESTERS } from '@/entities/semester/api/semester';
-import { useSearchParams } from 'react-router-dom';
+import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
 
 export interface Timetable {
   timetableId: number;
@@ -270,8 +270,7 @@ interface ScheduleMutationProps {
  * @param timetableId
  */
 export function useCreateSchedule(timetableId?: number) {
-  const [searchParams] = useSearchParams();
-  const semester = searchParams.get('semester') ?? SEMESTERS[SEMESTERS.length - 1];
+  const semester = useSemesterParam();
 
   const queryClient = useQueryClient();
   const setSelectedSchedule = useScheduleState(state => state.changeScheduleData);
