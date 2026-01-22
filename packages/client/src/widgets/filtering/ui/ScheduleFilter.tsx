@@ -9,14 +9,19 @@ import FilterDelete from '../../../features/filtering/ui/FilterDelete.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import { Flex } from '@allcll/allcll-ui';
 import DetailFilterModal from '@/features/filtering/ui/DetailFilterModal.tsx';
+import { useSearchParams } from 'react-router-dom';
+import { SEMESTERS } from '@/entities/semester/api/semester.ts';
 
 function ScheduleFilter() {
+  const [searchParams] = useSearchParams();
+  const semester = searchParams.get('semester') ?? SEMESTERS[SEMESTERS.length - 1];
+
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const filters = useScheduleSearchStore(state => state.filters);
   const setFilters = useScheduleSearchStore(state => state.setFilter);
   const resetFilter = useScheduleSearchStore(state => state.resetFilters);
 
-  const { data: subjects } = useSubject();
+  const { data: subjects } = useSubject(semester);
   const categoryOptions = getCategories(subjects ?? [])
     .sort((a, b) => a.localeCompare(b))
     .map(cat => cat);
