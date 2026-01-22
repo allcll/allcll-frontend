@@ -10,7 +10,7 @@ interface TimetableSelectProps {
 }
 
 const TimetableSelect = ({ setIsOpenModal, openCreateModal, timetables, currentTimetable }: TimetableSelectProps) => {
-  const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
+  const pickTimetable = useScheduleState(state => state.pickTimetable);
 
   const { mutate: deleteTimetable } = useDeleteTimetable();
 
@@ -20,7 +20,7 @@ const TimetableSelect = ({ setIsOpenModal, openCreateModal, timetables, currentT
     );
 
     if (selectedTimetable) {
-      setCurrentTimetable(selectedTimetable);
+      pickTimetable(selectedTimetable);
     }
   };
 

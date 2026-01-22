@@ -8,6 +8,7 @@ import { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts
  * - currentTimetable
  * - Timetables
  * -과목 데이터
+ * - TODO: 향후 과목 데이터도 동기화 필요
  */
 const useSemesterTimetableSync = (currentSemester: string, timetables: TimetableType[]) => {
   const currentTimetable = useScheduleState(state => state.currentTimetable);

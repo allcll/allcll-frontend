@@ -7,17 +7,17 @@ function TimetableSemesterTabs({ currentSemester }: { currentSemester?: string }
   const activeClassName = 'border-b-2 border-primary text-primary pb-2';
 
   return (
-    <Flex gap="gap-4" className="border-b text-sm md:text-base border-gray-200">
+    <Flex gap="gap-4" className="border-b text-sm border-gray-200">
       {SEMESTERS.map(semester => {
-        const isActive = currentSemester === semester;
+        const isActive = currentSemester === semester.semesterCode;
 
         return (
           <Link
-            key={semester}
-            to={`/timetable?semester=${semester}`}
+            key={semester.semesterCode}
+            to={`/timetable?semester=${semester.semesterCode}`}
             className={isActive ? activeClassName : 'text-gray-500 pb-2'}
           >
-            {semester}학기
+            {semester.semesterValue}학기
           </Link>
         );
       })}

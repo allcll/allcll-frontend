@@ -1,18 +1,13 @@
 import { Helmet } from 'react-helmet';
 import ContentPanel from '@/features/timetable/ui/ScheduleContentPanel.tsx';
-import {  Flex, Heading } from '@allcll/allcll-ui';
+import { Flex, Heading } from '@allcll/allcll-ui';
 import TimetableSemesterTabs from '@/features/timetable/ui/TimetableSemesterTabs.tsx';
-import { useSearchParams } from 'react-router-dom';
-import useServiceSemester from '@/entities/semester/model/useServiceSemester.ts';
-import { SEMESTERS } from '@/entities/semester/api/semester.ts';
 import TimetableBody from '@/features/timetable/ui/TimetableBody.tsx';
 import TimetableOverlay from '@/widgets/timetable/TimetableOverlay';
+import { useTimetableSemester } from '@/features/timetable/lib/useTimetableSemester';
 
 function Timetable() {
-  const { data } = useServiceSemester('timetable');
-
-  const [searchParams] = useSearchParams();
-  const currentSemester = searchParams.get('semester') ?? data?.semester ?? SEMESTERS[0];
+  const {currentSemester} = useTimetableSemester();
 
   return (
     <div className="px-4 py-2">

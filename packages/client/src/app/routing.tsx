@@ -1,4 +1,4 @@
-import { createBrowserRouter, redirect } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from '@/app/layouts/MainLayout.tsx';
 import ServiceLayout from '@/app/layouts/ServiceLayout.tsx';
 import SimulationLayout from '@/app/layouts/SimulationLayout.tsx';
@@ -17,7 +17,6 @@ import SimulationDashboardDetail from '@/pages/simulation/DashboardDetail.tsx';
 import NotFound from '@/pages/notfound/NotFound';
 
 import Timetable from '@/pages/timetable/Timetable.tsx';
-import { SERVICE_SEMESTER_DUMMY } from '@/entities/semester/api/semester';
 
 const router = createBrowserRouter([
   {
@@ -89,26 +88,16 @@ const router = createBrowserRouter([
       },
     ],
   },
-
   {
     path: 'timetable',
     element: <MainLayout />,
-    errorElement: <ErrorPage />,
-    loader: ({ request }) => {
-      const url = new URL(request.url);
-
-      if (!url.searchParams.get('semester')) {
-        throw redirect(`/timetable?semester=${SERVICE_SEMESTER_DUMMY.semester}`);
-      }
-
-      return null;
-    },
     children: [
       {
-        path: '',
+        index: true,
         element: <Timetable />,
       },
     ],
+    errorElement: <ErrorPage />,
   },
 
   {
