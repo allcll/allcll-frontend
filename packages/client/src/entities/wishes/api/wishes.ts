@@ -6,8 +6,8 @@ export interface WishesApiResponse {
   baskets: { subjectId: number; totalCount: number }[];
 }
 
-export const fetchWishesData = async () => {
-  return await fetchJsonOnPublic<WishesApiResponse>('/baskets.json');
+export const fetchWishesDataBySemester = async (semester: string) => {
+  return await fetchJsonOnPublic<WishesApiResponse>(`/${semester}/baskets.json`);
 };
 
 interface DetailRegistersResponse {

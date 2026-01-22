@@ -2,7 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import { Subject, Wishes } from '@/shared/model/types.ts';
 import useSubject, { InitSubject } from '@/entities/subjects/model/useSubject.ts';
 import { joinData } from '@/entities/subjectAggregate/lib/joinSubjects.ts';
-import { fetchWishesData, WishesApiResponse } from '@/entities/wishes/api/wishes.ts';
+import { fetchWishesDataBySemester, WishesApiResponse } from '@/entities/wishes/api/wishes.ts';
+import { SEMESTERS } from '@/entities/semester/api/semester';
 
 export const InitWishes = {
   ...InitSubject,
@@ -11,12 +12,13 @@ export const InitWishes = {
   totalCount: -1,
 };
 
-function useWishes() {
-  const { data: subjects, isPending, isLoading } = useSubject();
+function useWishes(semester?: string) {
+  semester = semester ?? SEMESTERS[SEMESTERS.length - 1];
+  const { data: subjects, isPending, isLoading } = useSubject(semester);
 
   const query = useQuery({
-    queryKey: ['wishlist'],
-    queryFn: fetchWishesData,
+    queryKey: ['wishlist', semester],
+    queryFn: () => fetchWishesDataBySemester(semester),
     staleTime: Infinity,
     select: data => joinSubjects(data, subjects),
   });
@@ -30,7 +32,7 @@ function useWishes() {
 
 const joinSubjects = (wishes?: WishesApiResponse, subject?: Subject[]): Wishes[] => {
   if (!subject) return [];
-  if (!wishes || wishes.baskets?.length) return subject;
+  if (!wishes || wishes.baskets?.length === 0) return subject;
 
   type preWishes = Subject & WishesApiResponse['baskets'][number];
   const data = joinData(subject, wishes.baskets, InitSubject, InitWishes) as preWishes[];
