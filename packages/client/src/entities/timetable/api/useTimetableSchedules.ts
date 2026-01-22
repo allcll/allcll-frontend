@@ -7,6 +7,7 @@ import { Subject } from '@/shared/model/types.ts';
 import { timeSleep } from '@/shared/lib/time.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
 import { SEMESTERS } from '@/entities/semester/api/semester';
+import { useSearchParams } from 'react-router-dom';
 
 export interface Timetable {
   timetableId: number;
@@ -112,8 +113,9 @@ export const useTimetables = (semester: string) => {
 /** timetableId에 대한 Timetable 데이터를 가져옵니다.
  * @param timetableId
  */
-export function useGetTimetableSchedules(timetableId?: number) {
-  const { data: subjects } = useSubject();
+export function useGetTimetableSchedules(timetableId?: number, semester?: string) {
+  semester = semester ?? SEMESTERS[SEMESTERS.length - 1];
+  const { data: subjects } = useSubject(semester);
 
   const queryFn = async () => {
     if (!timetableId || timetableId <= 0) {
@@ -268,6 +270,9 @@ interface ScheduleMutationProps {
  * @param timetableId
  */
 export function useCreateSchedule(timetableId?: number) {
+  const [searchParams] = useSearchParams();
+  const semester = searchParams.get('semester') ?? SEMESTERS[SEMESTERS.length - 1];
+
   const queryClient = useQueryClient();
   const setSelectedSchedule = useScheduleState(state => state.changeScheduleData);
   const { mutateAsync: createTimetable } = useCreateTimetable();
@@ -279,7 +284,7 @@ export function useCreateSchedule(timetableId?: number) {
       if (!targetTimetableId || targetTimetableId <= 0) {
         const timetable = await createTimetable({
           timeTableName: '새 시간표',
-          semester: SEMESTERS[0],
+          semester: semester,
         });
         targetTimetableId = timetable.timeTableId;
 
