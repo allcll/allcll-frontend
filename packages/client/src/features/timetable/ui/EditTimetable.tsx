@@ -15,11 +15,14 @@ interface IEditTimetable {
 }
 
 function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
-  const { data: semester } = useServiceSemester();
-
   const [timeTableName, setTimeTableName] = useState('');
-  const [selectedSemester, setSelectedSemester] = useState(semester?.semesterCode || SEMESTERS[SEMESTERS.length - 1].semesterCode);
+
   const timeTable = useScheduleState(state => state.currentTimetable);
+  const currentSemester = useServiceSemester();
+
+  const [selectedSemester, setSelectedSemester] = useState(
+    timeTable?.semesterCode ?? currentSemester.data?.semesterCode ?? '',
+  );
 
   const { mutate: updateTimetable } = useUpdateTimetable();
   const { mutate: deleteTimetable } = useDeleteTimetable();
