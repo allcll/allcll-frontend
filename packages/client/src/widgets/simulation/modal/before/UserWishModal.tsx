@@ -19,7 +19,7 @@ import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts
 import SubjectTable from './SubjectTable.tsx';
 import ActionButtons from './ActionButton.tsx';
 import { Chip, Dialog, Label } from '@allcll/allcll-ui';
-import { SEMESTERS } from '@/entities/semester/api/semester.ts';
+import { RECENT_SEMESTERS } from '@/entities/semester/api/semester.ts';
 
 interface UserWishModalIProps {
   timetables: TimetableType[];
@@ -44,7 +44,7 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
     currentTimetable ?? {
       timeTableId: -1,
       timeTableName: '선택된 시간표 없음',
-      semesterCode: SEMESTERS[SEMESTERS.length - 1].semesterCode,
+      semesterCode: RECENT_SEMESTERS.semesterCode,
     },
   );
 
@@ -103,7 +103,7 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
     const timetable = timetables.find(timetable => timetable.timeTableId === optionId) ?? {
       timeTableId: -1,
       timeTableName: '선택된 시간표 없음',
-      semesterCode: SEMESTERS[SEMESTERS.length - 1].semesterCode,
+      semesterCode: RECENT_SEMESTERS.semesterCode,
     };
 
     if (!timetable) {

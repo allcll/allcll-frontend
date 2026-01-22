@@ -44,7 +44,7 @@ export const fetchServiceSemester = async () => {
 const isDevServer = import.meta.env.VITE_DEV_SERVER === 'true';
 
 /**
- * 학기 목록 -> length-1 이 가장 최신 학기
+ * 학기 목록 -> 0번째 인덱스가 최신 학기
  * @description
  */
 export const SEMESTERS = [
@@ -61,6 +61,8 @@ export const SEMESTERS = [
     semesterValue: '2025-1',
   },
 ];
+
+export const RECENT_SEMESTERS = SEMESTERS[0];
 
 /** @description 서비스 학기 더미 데이터
  * 서비스 API연결하기 전까지 해당 데이터 사용하기

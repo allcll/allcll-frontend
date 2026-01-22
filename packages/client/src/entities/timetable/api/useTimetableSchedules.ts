@@ -6,7 +6,7 @@ import { fetchDeleteJsonOnAPI, fetchJsonOnAPI, fetchOnAPI } from '@/shared/api/a
 import { Subject } from '@/shared/model/types.ts';
 import { timeSleep } from '@/shared/lib/time.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
-import { SEMESTERS } from '@/entities/semester/api/semester';
+import { RECENT_SEMESTERS } from '@/entities/semester/api/semester';
 import { useSearchParams } from 'react-router-dom';
 
 export interface Timetable {
@@ -278,7 +278,7 @@ export function useCreateSchedule(timetableId?: number) {
   const [searchParams] = useSearchParams();
 
   // semester가 없으면 최신 학기로 간주합니다.
-  const semesterCode = searchParams.get('semester') ?? SEMESTERS[SEMESTERS.length - 1].semesterCode;
+  const semesterCode = searchParams.get('semester') ?? RECENT_SEMESTERS.semesterCode;
 
   return useMutation({
     mutationFn: async ({ schedule }: ScheduleMutationProps) => {

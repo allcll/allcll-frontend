@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
+import { RECENT_SEMESTERS } from '@/entities/semester/api/semester';
 
 export function useTimetableSemester() {
   const { data } = useServiceSemester('timetable');
@@ -16,7 +17,7 @@ export function useTimetableSemester() {
   }, [searchParams, defaultSemester, setSearchParams]);
 
   return {
-    currentSemester,
+    currentSemester: currentSemester ?? RECENT_SEMESTERS.semesterCode,
     defaultSemester,
     isLoading: !data,
   };
