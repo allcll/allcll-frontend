@@ -1,6 +1,7 @@
 import { Subject } from '@/shared/model/types.ts';
 import { QueryClient, useQuery } from '@tanstack/react-query';
-import { fetchSubjects, SubjectResponse } from '@/entities/subjects/api/subjects.ts';
+import { fetchSubjects, fetchSubjectsBySemester, SubjectResponse } from '@/entities/subjects/api/subjects.ts';
+import { SEMESTERS } from '@/entities/semester/api/semester';
 
 export const InitSubject: Subject = {
   subjectId: -1,
@@ -20,17 +21,26 @@ export const InitSubject: Subject = {
   isDeleted: true, // 삭제 여부
 };
 
-function useSubject() {
+function useSubject(semester?: string) {
+  const latestSemester = SEMESTERS[SEMESTERS.length - 1];
+  semester = semester ?? latestSemester;
+  const isLatest = semester === latestSemester;
+
   return useQuery({
-    queryKey: ['subjects'],
-    queryFn: fetchSubjects,
+    queryKey: ['subjects', semester],
+
+    queryFn: () => (isLatest ? fetchSubjects() : fetchSubjectsBySemester(semester!)),
+
     staleTime: Infinity,
+
     select: data => data.subjectResponses,
   });
 }
 
 export function getSubjects(queryClient: QueryClient) {
-  return queryClient.getQueryData<SubjectResponse>(['subjects'])?.subjectResponses ?? [];
+  return (
+    queryClient.getQueryData<SubjectResponse>(['subjects', SEMESTERS[SEMESTERS.length - 1]])?.subjectResponses ?? []
+  );
 }
 
 export default useSubject;
