@@ -3,13 +3,16 @@ import BottomSheet from '../../../../shared/ui/bottomsheet/BottomSheet.tsx';
 import BottomSheetHeader from '../../../../shared/ui/bottomsheet/BottomSheetHeader.tsx';
 import TimetableSubjectCards from '@/features/timetable/ui/subject/TimetableSubjectCards.tsx';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
-import useSubject from '@/entities/subjects/model/useSubject.ts';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
 import { useScheduleSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import { ScheduleAdapter } from '@/entities/timetable/model/adapter.ts';
 import FilterSvg from '@/assets/filter.svg?react';
 import { Flex, IconButton } from '@allcll/allcll-ui';
+import { useSearchParams } from 'react-router-dom';
+import { SEMESTERS } from '@/entities/semester/api/semester.ts';
+import useWishes from '@/entities/wishes/model/useWishes.ts';
+import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
 
 interface ISearchBottomSheet {
   onCloseSearch: () => void;
@@ -17,15 +20,18 @@ interface ISearchBottomSheet {
 }
 
 function ScheduleSearchBottomSheet({ onCloseSearch, onOpenFiltering }: ISearchBottomSheet) {
-  const { data: subjects = [], isPending } = useSubject();
+  const [searchParams] = useSearchParams();
+  const semester = searchParams.get('semester') ?? SEMESTERS[SEMESTERS.length - 1];
   const { openScheduleModal } = useScheduleModal();
+
+  // Todo:  학기에 맞는 시간표 data가져오기
+  const { data, isPending } = useWishes(semester);
+  const subjects = useSearchRank(data) ?? [];
   const filters = useScheduleSearchStore(state => state.filters);
   const setFilter = useScheduleSearchStore(state => state.setFilter);
-  const { keywords } = filters;
-
   const filteredData = useDeferredValue(useFilteringSubjects(subjects, filters));
-
   const initSchedule = new ScheduleAdapter().toUiData();
+  const { keywords } = filters;
 
   return (
     <BottomSheet>
