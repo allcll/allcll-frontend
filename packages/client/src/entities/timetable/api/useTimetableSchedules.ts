@@ -12,7 +12,7 @@ import { useSearchParams } from 'react-router-dom';
 export interface Timetable {
   timetableId: number;
   timetableName: string;
-  semester: string; // e.g., "2025-1"
+  semesterCode: string; // e.g., "2025-1"
   schedules: ScheduleApiResponse[];
 }
 
@@ -73,7 +73,8 @@ export interface ScheduleSlot {
 export interface TimetableType {
   timeTableId: number;
   timeTableName: string;
-  semesterCode: string; // ex: "2025-2"
+  semesterCode: string; // ex: "SPRING_2025"
+  semesterValue: string; // ex: "2026-1"
 }
 
 export interface TimetableListResponse {
@@ -123,7 +124,7 @@ export function useGetTimetableSchedules(timetableId?: number) {
       return {
         timetableId: -1,
         timetableName: '새 시간표',
-        semester: '',
+        semesterCode: '',
         schedules: [],
       };
     }
@@ -169,6 +170,7 @@ export function useUpdateTimetable() {
           timeTableId: updated.timeTableId,
           timeTableName: updated.timeTableName,
           semesterCode: updated.semesterCode,
+          semesterValue: updated.semesterValue,
         });
       }
 
@@ -244,6 +246,7 @@ export function useCreateTimetable() {
         timeTableId: data.timeTableId,
         timeTableName: data.timeTableName,
         semesterCode: data.semesterCode,
+        semesterValue: data.semesterValue,
       });
 
       await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
