@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet';
 import ContentPanel from '@/features/timetable/ui/ScheduleContentPanel.tsx';
-import {  Flex, Heading } from '@allcll/allcll-ui';
+import { Flex, Heading } from '@allcll/allcll-ui';
 import TimetableSemesterTabs from '@/features/timetable/ui/TimetableSemesterTabs.tsx';
 import { useSearchParams } from 'react-router-dom';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester.ts';
@@ -12,7 +12,7 @@ function Timetable() {
   const { data } = useServiceSemester('timetable');
 
   const [searchParams] = useSearchParams();
-  const currentSemester = searchParams.get('semester') ?? data?.semester ?? SEMESTERS[0];
+  const currentSemester = searchParams.get('semester') ?? data?.semester ?? SEMESTERS[SEMESTERS.length - 1];
 
   return (
     <div className="px-4 py-2">

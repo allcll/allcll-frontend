@@ -15,7 +15,7 @@ function TimetableBody({ currentSemester }: { currentSemester: string }) {
 
   const { currentTimetable } = useSemesterTimetableSync(currentSemester, timetables ?? []);
   const pickTimetable = useScheduleState(state => state.pickTimetable);
-  const { data: schedules } = useGetTimetableSchedules(currentTimetable?.timeTableId);
+  const { data: schedules } = useGetTimetableSchedules(currentTimetable?.timeTableId, currentSemester);
 
   const [isOpenModal, setIsOpenModal] = useState<modalType>(null);
 
