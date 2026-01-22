@@ -49,15 +49,15 @@ const isDevServer = import.meta.env.VITE_DEV_SERVER === 'true';
  */
 export const SEMESTERS = [
   {
-    semesterCode: 'SPRING_2026',
+    semesterCode: 'SPRING_26',
     semesterValue: '2026-1',
   },
   {
-    semesterCode: 'WINTER_2025',
+    semesterCode: 'WINTER_25',
     semesterValue: '2025-겨울',
   },
   {
-    semesterCode: 'SPRING_2025',
+    semesterCode: 'SPRING_25',
     semesterValue: '2025-1',
   },
 ];
@@ -68,7 +68,7 @@ export const SEMESTERS = [
  * Fixme: semester, code 내부 조작용, 외부 노출용 구분 필요
  * todo: export 제거하기 */
 export const SERVICE_SEMESTER_DUMMY: ServiceSemesterApiResponse = {
-  semesterCode: 'SPRING_2026',
+  semesterCode: 'SPRING_26',
   semesterValue: '2026-1',
   services: [
     {
