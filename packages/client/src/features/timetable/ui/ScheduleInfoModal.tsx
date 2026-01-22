@@ -5,12 +5,17 @@ import useSubject from '@/entities/subjects/model/useSubject.ts';
 import React from 'react';
 import { Button, Dialog, Flex } from '@allcll/allcll-ui';
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
+import { useSearchParams } from 'react-router-dom';
+import { SEMESTERS } from '@/entities/semester/api/semester';
 
 function ScheduleInfoModal() {
+  const [searchParams] = useSearchParams();
+  const semester = searchParams.get('semester') ?? SEMESTERS[SEMESTERS.length - 1];
+
   const { schedule } = useScheduleModalData();
   const { deleteSchedule } = useScheduleModal();
   const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
-  const { data: subjects } = useSubject();
+  const { data: subjects } = useSubject(semester);
 
   const handleDeleteOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
     const confirmed = confirm('해당 과목을 삭제하시겠습니까?');

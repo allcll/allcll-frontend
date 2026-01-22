@@ -6,11 +6,16 @@ import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib
 import { Button, Flex, Heading } from '@allcll/allcll-ui';
 import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
 import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader';
+import { useSearchParams } from 'react-router-dom';
+import { SEMESTERS } from '@/entities/semester/api/semester';
 
 function ScheduleInfoBottomSheet() {
+  const [searchParams] = useSearchParams();
+  const semester = searchParams.get('semester') ?? SEMESTERS[SEMESTERS.length - 1];
+
   const { schedule } = useScheduleModalData();
   const { deleteSchedule, cancelSchedule } = useScheduleModal();
-  const { data: subjects } = useSubject();
+  const { data: subjects } = useSubject(semester);
 
   const handleDeleteOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
     const confirmed = confirm('해당 과목을 삭제하시겠습니까?');
