@@ -6,7 +6,8 @@ import {
 } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { Button, Chip, Dialog, Grid, Label, TextField } from '@allcll/allcll-ui';
-import { SEMESTERS, SERVICE_SEMESTER_DUMMY } from '@/entities/semester/api/semester.ts';
+import { SEMESTERS } from '@/entities/semester/api/semester.ts';
+import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 
 interface IEditTimetable {
   onClose: () => void;
@@ -14,8 +15,10 @@ interface IEditTimetable {
 }
 
 function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
+  const { data: semester } = useServiceSemester();
+
   const [timeTableName, setTimeTableName] = useState('');
-  const [selectedSemester, setSelectedSemester] = useState(SERVICE_SEMESTER_DUMMY.semesterCode);
+  const [selectedSemester, setSelectedSemester] = useState(semester?.semesterCode || SEMESTERS[SEMESTERS.length - 1].semesterCode);
   const timeTable = useScheduleState(state => state.currentTimetable);
 
   const { mutate: updateTimetable } = useUpdateTimetable();

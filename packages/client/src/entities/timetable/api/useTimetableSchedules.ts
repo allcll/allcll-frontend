@@ -74,7 +74,6 @@ export interface TimetableType {
   timeTableId: number;
   timeTableName: string;
   semesterCode: string; // ex: "SPRING_2025"
-  semesterValue: string; // ex: "2026-1"
 }
 
 export interface TimetableListResponse {
@@ -170,7 +169,6 @@ export function useUpdateTimetable() {
           timeTableId: updated.timeTableId,
           timeTableName: updated.timeTableName,
           semesterCode: updated.semesterCode,
-          semesterValue: updated.semesterValue,
         });
       }
 
@@ -246,7 +244,6 @@ export function useCreateTimetable() {
         timeTableId: data.timeTableId,
         timeTableName: data.timeTableName,
         semesterCode: data.semesterCode,
-        semesterValue: data.semesterValue,
       });
 
       await queryClient.invalidateQueries({ queryKey: ['timetableList'] });

@@ -45,7 +45,6 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
       timeTableId: -1,
       timeTableName: '선택된 시간표 없음',
       semesterCode: SEMESTERS[SEMESTERS.length - 1].semesterCode,
-      semesterValue: SEMESTERS[SEMESTERS.length - 1].semesterValue,
     },
   );
 
@@ -105,7 +104,6 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
       timeTableId: -1,
       timeTableName: '선택된 시간표 없음',
       semesterCode: SEMESTERS[SEMESTERS.length - 1].semesterCode,
-      semesterValue: SEMESTERS[SEMESTERS.length - 1].semesterValue,
     };
 
     if (!timetable) {
