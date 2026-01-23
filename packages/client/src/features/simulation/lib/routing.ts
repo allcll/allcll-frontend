@@ -13,7 +13,6 @@ export const ASIDE_MENU: IMenu[] = [
         children: [
           { name: '수강신청', path: '/simulation' },
           { name: '수강신청 결과', path: '/simulation/logs' },
-          { name: '수강신청 관리', path: '/simulation/admin' },
           { name: '관심과목 담기', path: '#' },
           { name: '강의시간표/수업계획서 조회', path: '#' },
           { name: '등록이력조회/고지서출력', path: '#' },
