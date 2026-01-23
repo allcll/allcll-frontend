@@ -8,6 +8,7 @@ import CheckSvg from '@/assets/checkbox-blue.svg?react';
 import { ZeroContent } from '@/shared/ui/ZeroContent';
 import Filtering from '@common/components/filtering/Filtering';
 import { DepartmentType } from '@/features/filtering/model/types.ts';
+import Loading from '@/shared/ui/Loading';
 
 interface IDepartmentFilter {
   setFilter: (key: keyof Filters, value: string | null) => void;
@@ -15,7 +16,7 @@ interface IDepartmentFilter {
 }
 
 function DepartmentFilter({ setFilter, selectedValue }: IDepartmentFilter) {
-  const { data: departments } = useDepartments();
+  const { data: departments, isLoading } = useDepartments();
   const [searchKeywords, setSearchKeywords] = useState('');
   const [category, setCategory] = useState<'전체' | '전공' | '교양'>('전공');
 
@@ -26,6 +27,10 @@ function DepartmentFilter({ setFilter, selectedValue }: IDepartmentFilter) {
     setSearchKeywords,
     departments,
   });
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <Filtering label={pickCollegeOrMajor(selectedValue, departmentsList)} selected={!!selectedValue}>
@@ -89,13 +94,13 @@ interface ISelectSubject {
 }
 
 function SelectSubject({ departments, setFilter, selectedValue }: ISelectSubject) {
-  const handleChangeDepartment = (department: string) => {
-    setFilter('department', department || '');
-  };
-
   if (!departments) {
     return <ZeroContent title="학과 리스트들이 없습니다." />;
   }
+
+  const handleChangeDepartment = (department: string) => {
+    setFilter('department', department || '');
+  };
 
   const filteredDepartments = departments.filter(
     department => pickCollegeOrMajor(selectedValue, departments) === department.departmentName,
@@ -114,7 +119,7 @@ function SelectSubject({ departments, setFilter, selectedValue }: ISelectSubject
           <ListboxOption
             key={department.departmentCode}
             selected={isSelected}
-            left={department.departmentName.split(' ').slice(-1)[0]}
+            left={department.departmentName ? department.departmentName.split(' ').slice(-1)[0] : ''}
             right={isSelected ? <CheckSvg className="w-4 h-4 shrink-0" /> : null}
             onSelect={() => handleChangeDepartment(department.departmentCode)}
           />
