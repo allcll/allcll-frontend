@@ -70,105 +70,107 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
   return !modifiedResult || !simulationAllResult ? (
     <ProcessingModal />
   ) : (
-    <Dialog title="수강신청 결과" onClose={closeModal} isOpen={isOpen}>
+    <Dialog title="알림설정" onClose={closeModal} isOpen={isOpen}>
       <Dialog.Content>
-        {isSuccessSimulation && (
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="animate-float1 absolute top-6 left-6 w-3 h-3 bg-red-400 rounded-full" />
-            <div className="animate-float2 absolute top-16 right-10 w-2 h-2 bg-yellow-400 rounded-full" />
-            <div className="animate-float3 absolute bottom-20 left-12 w-2.5 h-2.5 bg-blue-400 rounded-full" />
-            <div className="animate-float4 absolute bottom-10 right-6 w-3 h-3 bg-pink-400 rounded-full" />
-            <div className="animate-float5 absolute top-1/2 left-1/2 w-2 h-2 bg-purple-400 rounded-full" />
-          </div>
-        )}
-        <div className="relative z-10 text-center">
-          <h2 className="text-xl font-bold text-gray-900">
-            수강 신청
-            <span className={isSuccessSimulation ? `text-blue-600` : `text-red-500`}>
-              {isSuccessSimulation ? ' 성공!' : ' 실패'}
+        <div className="w-full max-w-md bg-white rounded-xl shadow-xl p-6 relative overflow-hidden">
+          {isSuccessSimulation && (
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="animate-float1 absolute top-6 left-6 w-3 h-3 bg-red-400 rounded-full" />
+              <div className="animate-float2 absolute top-16 right-10 w-2 h-2 bg-yellow-400 rounded-full" />
+              <div className="animate-float3 absolute bottom-20 left-12 w-2.5 h-2.5 bg-blue-400 rounded-full" />
+              <div className="animate-float4 absolute bottom-10 right-6 w-3 h-3 bg-pink-400 rounded-full" />
+              <div className="animate-float5 absolute top-1/2 left-1/2 w-2 h-2 bg-purple-400 rounded-full" />
+            </div>
+          )}
+          <div className="relative z-10 text-center">
+            <h2 className="text-xl font-bold text-gray-900">
+              수강 신청
+              <span className={isSuccessSimulation ? `text-blue-600` : `text-red-500`}>
+                {isSuccessSimulation ? ' 성공!' : ' 실패'}
+              </span>
+            </h2>
+            <span className="text-sm text-gray-700 mt-1">
+              수강신청에 {isSuccessSimulation ? ' 성공' : ' 실패'}하셨어요
             </span>
-          </h2>
-          <span className="text-sm text-gray-700 mt-1">
-            수강신청에 {isSuccessSimulation ? ' 성공' : ' 실패'}하셨어요
-          </span>
 
-          <div className="flex flex-col justify-center items-center">
-            <div className="m-2 flex justify-center">
-              {isSuccessSimulation ? (
-                <img src="/ci.svg" alt="축하 아이콘" className="w-20 h-20" />
-              ) : (
-                <span className="text-[50px]">💥</span>
-              )}
-            </div>
-
-            <div className="flex flex-row justify-center gap-6 mt-6">
-              <div className="flex flex-col items-center">
-                <p className="text-sm text-gray-800 mb-1">점수</p>
-                <p className="text-xl text-blue-500 font-bold whitespace-nowrap">
-                  {score.toFixed(1)}
-                  <span className="text-gray-600">점</span>
-                </p>
+            <div className="flex flex-col justify-center items-center">
+              <div className="m-2 flex justify-center">
+                {isSuccessSimulation ? (
+                  <img src="/ci.svg" alt="축하 아이콘" className="w-20 h-20" />
+                ) : (
+                  <span className="text-[50px]">💥</span>
+                )}
               </div>
 
-              <div className="flex flex-col items-center">
-                <p className="text-sm text-gray-800 mb-1">소요 시간</p>
-                <p className="text-xl text-gray-600 font-bold whitespace-nowrap">
-                  {(total_elapsed / 1000).toFixed(0)}초
-                </p>
+              <div className="flex flex-row justify-center gap-6 mt-6">
+                <div className="flex flex-col items-center">
+                  <p className="text-sm text-gray-800 mb-1">점수</p>
+                  <p className="text-xl text-blue-500 font-bold whitespace-nowrap">
+                    {score.toFixed(1)}
+                    <span className="text-gray-600">점</span>
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-center">
+                  <p className="text-sm text-gray-800 mb-1">소요 시간</p>
+                  <p className="text-xl text-gray-600 font-bold whitespace-nowrap">
+                    {(total_elapsed / 1000).toFixed(0)}초
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-row justify-center gap-6 mt-6">
+                <div className="flex flex-col items-center">
+                  <p className="text-sm text-gray-800 mb-1">평균 매크로 방지 입력 속도</p>
+                  <p className="text-xl text-blue-500 font-bold whitespace-nowrap">
+                    {modifiedResult?.user_ability.captchaSpeed.toFixed(2)}
+                    <span className="text-gray-600">초</span>
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-center">
+                  <p className="text-sm text-gray-800 mb-1">평균 신청 버튼 클릭 속도</p>
+                  <p className="text-xl text-blue-500 font-bold whitespace-nowrap">
+                    {speed <= 0 ? 0 : speed.toFixed(2)}
+                    <span className="text-gray-600">초</span>
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="flex flex-row justify-center gap-6 mt-6">
-              <div className="flex flex-col items-center">
-                <p className="text-sm text-gray-800 mb-1">평균 매크로 방지 입력 속도</p>
-                <p className="text-xl text-blue-500 font-bold whitespace-nowrap">
-                  {modifiedResult?.user_ability.captchaSpeed.toFixed(2)}
-                  <span className="text-gray-600">초</span>
-                </p>
+            <div className="text-left text-sm text-gray-800 mt-4 mb-1">정확도</div>
+            <div className="flex items-center gap-2">
+              <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+                <div
+                  className="h-3 bg-indigo-400 rounded-full transition-all duration-300"
+                  style={{ width: `${accuracy}%` }}
+                />
               </div>
-
-              <div className="flex flex-col items-center">
-                <p className="text-sm text-gray-800 mb-1">평균 신청 버튼 클릭 속도</p>
-                <p className="text-xl text-blue-500 font-bold whitespace-nowrap">
-                  {speed <= 0 ? 0 : speed.toFixed(2)}
-                  <span className="text-gray-600">초</span>
-                </p>
-              </div>
+              <p className="text-xl text-gray-600 font-bold whitespace-nowrap">{accuracy}%</p>
             </div>
-          </div>
 
-          <div className="text-left text-sm text-gray-800 mt-4 mb-1">정확도</div>
-          <div className="flex items-center gap-2">
-            <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
-              <div
-                className="h-3 bg-indigo-400 rounded-full transition-all duration-300"
-                style={{ width: `${accuracy}%` }}
-              />
+            <div className="flex justify-center gap-3 mt-6">
+              <button
+                className="px-4 py-2 border border-gray-400 text-gray-800 rounded-md hover:bg-gray-100 text-sm"
+                onClick={() => {
+                  closeModal();
+                  openModal('wish');
+                }}
+              >
+                다시 하기
+              </button>
+
+              <NavLink
+                to={`/simulation/logs/${logParam}`}
+                end={false}
+                className="px-4 py-2  bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm"
+                onClick={() => {
+                  closeModal();
+                }}
+              >
+                내 능력 자세히 보기
+              </NavLink>
             </div>
-            <p className="text-xl text-gray-600 font-bold whitespace-nowrap">{accuracy}%</p>
-          </div>
-
-          <div className="flex justify-center gap-3 mt-6">
-            <button
-              className="px-4 py-2 border border-gray-400 text-gray-800 rounded-md hover:bg-gray-100 text-sm"
-              onClick={() => {
-                closeModal();
-                openModal('wish');
-              }}
-            >
-              다시 하기
-            </button>
-
-            <NavLink
-              to={`/simulation/logs/${logParam}`}
-              end={false}
-              className="px-4 py-2  bg-blue-500 text-white rounded-md hover:bg-blue-600 text-sm"
-              onClick={() => {
-                closeModal();
-              }}
-            >
-              내 능력 자세히 보기
-            </NavLink>
           </div>
         </div>
 

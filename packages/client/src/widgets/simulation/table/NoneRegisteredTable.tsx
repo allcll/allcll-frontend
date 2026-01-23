@@ -35,11 +35,9 @@ const columns: ColumnDefinition<SimulationSubject>[] = [
   {
     header: '수업계획서',
     cell: () => (
-      <div className="flex justify-center">
-        <SejongUI.Button size="sm" variant="dark">
-          수업계획서
-        </SejongUI.Button>
-      </div>
+      <SejongUI.Button size="sm" variant="dark">
+        수업계획서
+      </SejongUI.Button>
     ),
   },
   {
@@ -65,11 +63,9 @@ const columns: ColumnDefinition<SimulationSubject>[] = [
   {
     header: '인원보기',
     cell: () => (
-      <div className="flex justify-center">
-        <SejongUI.Button size="sm" variant="dark">
-          수강인원
-        </SejongUI.Button>
-      </div>
+      <SejongUI.Button size="sm" variant="dark">
+        수강인원
+      </SejongUI.Button>
     ),
   },
 ];
@@ -108,11 +104,9 @@ const SubmitButton = ({ subjectId }: { subjectId: number }) => {
   };
 
   return (
-    <div className="flex justify-center">
-      <SejongUI.Button size="sm" onClick={() => handleClickSubject(subjectId)}>
-        신청
-      </SejongUI.Button>
-    </div>
+    <SejongUI.Button size="sm" onClick={() => handleClickSubject(subjectId)}>
+      신청
+    </SejongUI.Button>
   );
 };
 
