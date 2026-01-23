@@ -32,6 +32,7 @@ function useWishes(semester?: string) {
 
 const joinSubjects = (wishes?: WishesApiResponse, subject?: Subject[]): Wishes[] => {
   if (!subject) return [];
+  // fixme: 성능 이슈 해결
   const baskets = wishes?.baskets ?? [];
 
   type preWishes = Subject & WishesApiResponse['baskets'][number];
