@@ -19,7 +19,7 @@ import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts
 import SubjectTable from './SubjectTable.tsx';
 import ActionButtons from './ActionButton.tsx';
 import { Chip, Dialog, Label } from '@allcll/allcll-ui';
-import { SEMESTERS } from '@/entities/semester/api/semester.ts';
+import { RECENT_SEMESTERS } from '@/entities/semester/api/semester.ts';
 
 interface UserWishModalIProps {
   timetables: TimetableType[];
@@ -35,7 +35,7 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
   const closeModal = useSimulationModalStore(state => state.closeModal);
   const { data: lectures, isLoading: isLoadingLectures } = useLectures();
   const currentTimetable = useScheduleState(state => state.currentTimetable);
-  const setCurrentTimetable = useScheduleState(state => state.pickTimetable);
+  const pickTimetable = useScheduleState(state => state.pickTimetable);
 
   const [simulationSubjects, setSimulationSubjects] = useState<Lecture[]>([]);
   const [department, setDepartment] = useState<Department>({ ...InitDepartment });
@@ -44,9 +44,10 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
     currentTimetable ?? {
       timeTableId: -1,
       timeTableName: '선택된 시간표 없음',
-      semester: SEMESTERS[0],
+      semesterCode: RECENT_SEMESTERS.semesterCode,
     },
   );
+
   const [subjectMode, setSubjectMode] = useState<ModeType>('timetable');
   const [toggleTip, setToggleTip] = useState(false);
 
@@ -102,7 +103,7 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
     const timetable = timetables.find(timetable => timetable.timeTableId === optionId) ?? {
       timeTableId: -1,
       timeTableName: '선택된 시간표 없음',
-      semester: SEMESTERS[0],
+      semesterCode: RECENT_SEMESTERS.semesterCode,
     };
 
     if (!timetable) {
@@ -111,7 +112,7 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
     }
 
     setSelectedTimetable(timetable);
-    setCurrentTimetable(timetable);
+    pickTimetable(timetable);
   };
 
   /**

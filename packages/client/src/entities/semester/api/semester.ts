@@ -11,14 +11,14 @@ export interface ServicePeriod {
 }
 
 export interface ServiceSemesters {
-  code: string;
-  semester: string;
+  semesterCode: string;
+  semesterValue: string;
   services: ServicePeriod[];
 }
 
 export interface ServiceSemester {
-  code: string;
-  semester: string;
+  semesterCode: string;
+  semesterValue: string;
   service: ServicePeriod | undefined;
 }
 
@@ -30,8 +30,8 @@ export interface ServicePeriodApiResponse {
 }
 
 export interface ServiceSemesterApiResponse {
-  code: string;
-  semester: string;
+  semesterCode: string;
+  semesterValue: string;
   services: ServicePeriodApiResponse[];
 }
 
@@ -44,10 +44,25 @@ export const fetchServiceSemester = async () => {
 const isDevServer = import.meta.env.VITE_DEV_SERVER === 'true';
 
 /**
- * 학기 목록 -> length-1 이 가장 최신 학기
+ * 학기 목록 -> 0번째 인덱스가 최신 학기
  * @description
  */
-export const SEMESTERS = ['2025-2', '2025-WINTER', '2026-1'];
+export const SEMESTERS = [
+  {
+    semesterCode: 'SPRING_26',
+    semesterValue: '2026-1',
+  },
+  {
+    semesterCode: 'WINTER_25',
+    semesterValue: '2025-겨울',
+  },
+  {
+    semesterCode: 'FALL_25',
+    semesterValue: '2025-2',
+  },
+];
+
+export const RECENT_SEMESTERS = SEMESTERS[0];
 
 /** @description 서비스 학기 더미 데이터
  * 서비스 API연결하기 전까지 해당 데이터 사용하기
@@ -55,8 +70,8 @@ export const SEMESTERS = ['2025-2', '2025-WINTER', '2026-1'];
  * Fixme: semester, code 내부 조작용, 외부 노출용 구분 필요
  * todo: export 제거하기 */
 export const SERVICE_SEMESTER_DUMMY: ServiceSemesterApiResponse = {
-  code: SEMESTERS[SEMESTERS.length - 1],
-  semester: SEMESTERS[SEMESTERS.length - 1],
+  semesterCode: 'SPRING_26',
+  semesterValue: '2026-1',
   services: [
     {
       id: 'timetable',
