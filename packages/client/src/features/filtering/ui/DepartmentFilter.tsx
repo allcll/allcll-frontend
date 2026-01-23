@@ -114,12 +114,15 @@ function SelectSubject({ departments, setFilter, selectedValue }: ISelectSubject
     <>
       {departments.map(department => {
         const isSelected = pickCollegeOrMajor(selectedValue, departments) === department.departmentName;
+        const departmentName = department.departmentName
+          ? department.departmentName.split(' ').slice(-1)[0]
+          : '학과 정보 없음';
 
         return (
           <ListboxOption
             key={department.departmentCode}
             selected={isSelected}
-            left={department.departmentName ? department.departmentName.split(' ').slice(-1)[0] : ''}
+            left={departmentName}
             right={isSelected ? <CheckSvg className="w-4 h-4 shrink-0" /> : null}
             onSelect={() => handleChangeDepartment(department.departmentCode)}
           />

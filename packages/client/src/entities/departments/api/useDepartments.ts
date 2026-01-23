@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchJsonOnAPI } from '@/shared/api/api.ts';
 
 export interface Department {
-  departmentName: string;
+  departmentName: string; // Todo: nullable ->
   departmentCode: string;
 }
 
@@ -18,7 +18,7 @@ function useDepartments() {
     select: (data: DepartmentsAPIResponse) => {
       const departments = data?.departments ?? [];
 
-      return [...departments].sort((a, b) => (a.departmentName ?? '').localeCompare(b.departmentName ?? ''));
+      return departments.sort((a, b) => (a.departmentName ?? '').localeCompare(b.departmentName ?? ''));
     },
   });
 }
