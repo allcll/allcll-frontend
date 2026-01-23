@@ -32,10 +32,10 @@ function useWishes(semester?: string) {
 
 const joinSubjects = (wishes?: WishesApiResponse, subject?: Subject[]): Wishes[] => {
   if (!subject) return [];
-  if (!wishes || wishes.baskets?.length === 0) return subject;
+  const baskets = wishes?.baskets ?? [];
 
   type preWishes = Subject & WishesApiResponse['baskets'][number];
-  const data = joinData(subject, wishes.baskets, InitSubject, InitWishes) as preWishes[];
+  const data = joinData(subject, baskets, InitSubject, InitWishes) as preWishes[];
 
   return data.map((pw: preWishes) => {
     return { ...pw, departmentCode: pw.deptCd, departmentName: pw.manageDeptNm };
