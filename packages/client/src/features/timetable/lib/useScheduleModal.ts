@@ -13,6 +13,7 @@ import {
 import { ScheduleMutateType, useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
+import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
 
 const getInitCustomSchedule = () => new ScheduleAdapter().toUiData();
 let globalPrevTimetable: Timetable | undefined = undefined;
@@ -22,6 +23,7 @@ function useScheduleModal() {
   const queryClient = useQueryClient();
 
   const changeScheduleData = useScheduleState(state => state.changeScheduleData);
+  const currentSemester = useSemesterParam();
   const currentTimetable = useScheduleState(state => state.currentTimetable);
   const timetableId = currentTimetable?.timeTableId ?? -1;
 
@@ -29,7 +31,7 @@ function useScheduleModal() {
   const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
   const [, startTransition] = useTransition();
 
-  const { mutate: createScheduleData } = useCreateSchedule(timetableId);
+  const { mutate: createScheduleData } = useCreateSchedule(timetableId, currentSemester);
   const { mutate: updateScheduleData } = useUpdateSchedule(timetableId);
   const { mutate: deleteScheduleData } = useDeleteSchedule(timetableId);
 

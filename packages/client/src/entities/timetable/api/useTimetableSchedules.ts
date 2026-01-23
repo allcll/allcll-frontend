@@ -7,7 +7,6 @@ import { Subject } from '@/shared/model/types.ts';
 import { timeSleep } from '@/shared/lib/time.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
 import { RECENT_SEMESTERS } from '@/entities/semester/api/semester';
-import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
 
 export interface Timetable {
   timetableId: number;
@@ -274,8 +273,8 @@ interface ScheduleMutationProps {
  * onSuccess: 성공 시 캐싱된 데이터를 업데이트합니다.
  * @param timetableId
  */
-export function useCreateSchedule(timetableId?: number) {
-  const semesterCode = useSemesterParam();
+export function useCreateSchedule(timetableId?: number, semesterCode?: string) {
+  semesterCode = semesterCode ?? RECENT_SEMESTERS.semesterCode;
 
   const queryClient = useQueryClient();
   const setSelectedSchedule = useScheduleState(state => state.changeScheduleData);
