@@ -8,7 +8,6 @@ import CheckSvg from '@/assets/checkbox-blue.svg?react';
 import { ZeroContent } from '@/shared/ui/ZeroContent';
 import Filtering from '@common/components/filtering/Filtering';
 import { DepartmentType } from '@/features/filtering/model/types.ts';
-import Loading from '@/shared/ui/Loading';
 
 interface IDepartmentFilter {
   setFilter: (key: keyof Filters, value: string | null) => void;
@@ -16,7 +15,7 @@ interface IDepartmentFilter {
 }
 
 function DepartmentFilter({ setFilter, selectedValue }: IDepartmentFilter) {
-  const { data: departments, isLoading } = useDepartments();
+  const { data: departments } = useDepartments();
   const [searchKeywords, setSearchKeywords] = useState('');
   const [category, setCategory] = useState<'전체' | '전공' | '교양'>('전공');
 
@@ -27,10 +26,6 @@ function DepartmentFilter({ setFilter, selectedValue }: IDepartmentFilter) {
     setSearchKeywords,
     departments,
   });
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   return (
     <Filtering label={pickCollegeOrMajor(selectedValue, departmentsList)} selected={!!selectedValue}>
