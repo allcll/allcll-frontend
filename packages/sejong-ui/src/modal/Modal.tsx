@@ -30,7 +30,7 @@ function Modal({ children, onBackdropClick, preventAutoFocus, noBorder }: Readon
 
   // Todo: aria-labelledby, aria-describedby 추가
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center" onClick={handleBackdropClick}>
+    <div className="fixed inset-0 z-100 flex items-center justify-center" onClick={handleBackdropClick} tabIndex={-1}>
       <div className="fixed inset-x-0 top-16 bottom-0 flex items-center justify-center">
         <div
           ref={containerRef}
