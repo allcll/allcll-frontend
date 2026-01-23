@@ -3,7 +3,7 @@ import { Subject, Wishes } from '@/shared/model/types.ts';
 import useSubject, { InitSubject } from '@/entities/subjects/model/useSubject.ts';
 import { joinData } from '@/entities/subjectAggregate/lib/joinSubjects.ts';
 import { fetchWishesDataBySemester, WishesApiResponse } from '@/entities/wishes/api/wishes.ts';
-import { SEMESTERS } from '@/entities/semester/api/semester';
+import { RECENT_SEMESTERS } from '@/entities/semester/api/semester';
 
 export const InitWishes = {
   ...InitSubject,
@@ -13,7 +13,7 @@ export const InitWishes = {
 };
 
 function useWishes(semester?: string) {
-  semester = semester ?? SEMESTERS[SEMESTERS.length - 1];
+  semester = semester ?? RECENT_SEMESTERS.semesterCode;
   const { data: subjects, isPending, isLoading } = useSubject(semester);
 
   const query = useQuery({

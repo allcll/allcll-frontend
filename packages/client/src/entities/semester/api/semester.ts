@@ -60,6 +60,14 @@ export const SEMESTERS = [
     semesterCode: 'FALL_25',
     semesterValue: '2025-2',
   },
+  {
+    semesterCode: 'SUMMER_25',
+    semesterValue: '2025-여름',
+  },
+  {
+    semesterCode: 'SPRING_25',
+    semesterValue: '2025-1',
+  },
 ];
 
 export const RECENT_SEMESTERS = SEMESTERS[0];
