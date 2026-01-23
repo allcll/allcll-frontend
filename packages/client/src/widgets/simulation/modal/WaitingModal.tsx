@@ -114,7 +114,7 @@ function WaitingModal() {
 
   return (
     <SejongUI.Modal noBorder>
-      <div className="sm:w-full max-w-md bg-white p-6 text-center space-y-6">
+      <div className="bg-white p-6 text-center space-y-6">
         <h2 className="text-lg md:text-xl font-semibold text-gray-800">
           서비스 <span className="text-blue-600 font-bold">접속대기 중</span>입니다.
         </h2>
