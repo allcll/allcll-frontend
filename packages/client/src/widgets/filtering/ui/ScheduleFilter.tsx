@@ -9,14 +9,17 @@ import FilterDelete from '../../../features/filtering/ui/FilterDelete.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import { Flex } from '@allcll/allcll-ui';
 import DetailFilterModal from '@/features/filtering/ui/DetailFilterModal.tsx';
+import { useSemesterParam } from '@/entities/semester/model/useSemesterParam.ts';
 
 function ScheduleFilter() {
+  const semester = useSemesterParam();
+
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const filters = useScheduleSearchStore(state => state.filters);
   const setFilters = useScheduleSearchStore(state => state.setFilter);
   const resetFilter = useScheduleSearchStore(state => state.resetFilters);
 
-  const { data: subjects } = useSubject();
+  const { data: subjects } = useSubject(semester);
   const categoryOptions = getCategories(subjects ?? [])
     .sort((a, b) => a.localeCompare(b))
     .map(cat => cat);

@@ -6,6 +6,7 @@ import DayTimeFilter from '../../../features/filtering/ui/DayTimeFilter.tsx';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { Button, Card, Chip, Dialog, Flex, Label } from '@allcll/allcll-ui';
 import { getAllSelectedLabels } from '@/features/filtering/lib/filterUtils.ts';
+import { useSemesterParam } from '@/entities/semester/model/useSemesterParam.ts';
 
 interface IModalProps {
   filterStore: FilterStore;
@@ -15,6 +16,8 @@ interface IModalProps {
 type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer U)[] ? U : Filters[K];
 
 function DetailFilterModal({ filterStore, onClose }: Readonly<IModalProps>) {
+  const semester = useSemesterParam();
+
   const { classroom, note, categories, time } = filterStore(state => state.filters);
   const departments = useDepartments();
   const filters = filterStore(state => state.filters);
@@ -22,7 +25,7 @@ function DetailFilterModal({ filterStore, onClose }: Readonly<IModalProps>) {
   const resetFilters = filterStore(state => state.resetFilters);
   const allSelectedFilters = getAllSelectedLabels(filters, departments.data);
 
-  const { data: subjects } = useSubject();
+  const { data: subjects } = useSubject(semester);
   const categoryOptions = getCategories(subjects ?? [])
     .sort((a, b) => a.localeCompare(b))
     .map(cat => cat);

@@ -1,5 +1,5 @@
 import { Subject } from '@/shared/model/types.ts';
-import { fetchJsonOnAPI } from '@/shared/api/api.ts';
+import { fetchJsonOnAPI, fetchJsonOnPublic } from '@/shared/api/api.ts';
 
 export type SubjectResponse = {
   subjectResponses: Subject[];
@@ -7,4 +7,8 @@ export type SubjectResponse = {
 
 export const fetchSubjects = async () => {
   return await fetchJsonOnAPI<SubjectResponse>('/api/subjects');
+};
+
+export const fetchSubjectsBySemester = async (semester: string) => {
+  return await fetchJsonOnPublic<SubjectResponse>(`/${semester}/subjects.json`);
 };
