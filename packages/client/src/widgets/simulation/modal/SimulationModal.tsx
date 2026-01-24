@@ -267,6 +267,6 @@ const getMinHeightClass = (modalStatus: APPLY_STATUS): string => {
   if (modalStatus === APPLY_STATUS.FAILED || modalStatus === APPLY_STATUS.DOUBLED) {
     return 'sm:min-h-[200px] min-h-[80vh]';
   }
-  ``;
+
   return 'sm:min-h-[230px] min-h-[80vh]';
 };
