@@ -12,13 +12,13 @@ function ServiceClosed({ data }: IServiceClosed) {
   const isSemesterExpired = data.service?.endDate && data.service.endDate < new Date();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
+    <div className="flex flex-col items-center justify-center min-h-screen min-w-[250px] bg-gray-100 px-4">
       <main className="text-center">
         <Heading level={1}>{isSemesterExpired ? '수강신청 고생 많으셨습니다.' : '서비스 준비중입니다.'}</Heading>
         <SupportingText>
-          현재는 서비스를 이용할 수 없습니다.
+          현재는 서비스 기간이 아닙니다.
           <br />
-          다음 수강신청 기간에 더 나은 서비스로 찾아뵙겠습니다.
+          수강 신청 기간에 더 좋은 서비스로 찾아뵙겠습니다 :)
         </SupportingText>
 
         <Card className="mt-2">
@@ -34,7 +34,7 @@ function ServiceClosed({ data }: IServiceClosed) {
           ) : (
             <>
               <Heading level={2}>다음 서비스 기간 안내</Heading>
-              <SupportingText>수강신청</SupportingText>
+              <SupportingText>{data.semesterValue}학기 수강신청</SupportingText>
               <SupportingText>
                 {data.service?.startDateStr} ~ {data.service?.endDateStr}
               </SupportingText>

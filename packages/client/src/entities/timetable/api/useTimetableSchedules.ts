@@ -7,7 +7,6 @@ import { Subject } from '@/shared/model/types.ts';
 import { timeSleep } from '@/shared/lib/time.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
 import { RECENT_SEMESTERS } from '@/entities/semester/api/semester';
-import { useSearchParams } from 'react-router-dom';
 
 export interface Timetable {
   timetableId: number;
@@ -118,8 +117,9 @@ export const useTimetables = (semesterCode: string) => {
 /** timetableId에 대한 Timetable 데이터를 가져옵니다.
  * @param timetableId
  */
-export function useGetTimetableSchedules(timetableId?: number) {
-  const { data: subjects } = useSubject();
+export function useGetTimetableSchedules(timetableId?: number, semester?: string) {
+  semester = semester ?? RECENT_SEMESTERS.semesterCode;
+  const { data: subjects } = useSubject(semester);
 
   const queryFn = async () => {
     if (!timetableId || timetableId <= 0) {
@@ -273,15 +273,12 @@ interface ScheduleMutationProps {
  * onSuccess: 성공 시 캐싱된 데이터를 업데이트합니다.
  * @param timetableId
  */
-export function useCreateSchedule(timetableId?: number) {
+export function useCreateSchedule(timetableId?: number, semesterCode?: string) {
+  semesterCode = semesterCode ?? RECENT_SEMESTERS.semesterCode;
+
   const queryClient = useQueryClient();
   const setSelectedSchedule = useScheduleState(state => state.changeScheduleData);
   const { mutateAsync: createTimetable } = useCreateTimetable();
-
-  const [searchParams] = useSearchParams();
-
-  // semester가 없으면 최신 학기로 간주합니다.
-  const semesterCode = searchParams.get('semester') ?? RECENT_SEMESTERS.semesterCode;
 
   return useMutation({
     mutationFn: async ({ schedule }: ScheduleMutationProps) => {

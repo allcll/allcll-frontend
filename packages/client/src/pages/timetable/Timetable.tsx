@@ -7,7 +7,7 @@ import TimetableOverlay from '@/widgets/timetable/TimetableOverlay';
 import { useTimetableSemester } from '@/features/timetable/lib/useTimetableSemester';
 
 function Timetable() {
-  const {currentSemester} = useTimetableSemester();
+  const { currentSemester } = useTimetableSemester();
 
   return (
     <div className="px-4 py-2">

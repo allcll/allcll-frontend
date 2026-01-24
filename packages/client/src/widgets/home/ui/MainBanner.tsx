@@ -4,8 +4,8 @@ import Section from '@/widgets/home/ui/Section.tsx';
 import { Button, SupportingText } from '@allcll/allcll-ui';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 
-const START_DATE = '02월 10일(월)';
-const END_DATE = '02월 13일(목)';
+const START_DATE = '02월 10일(화)';
+const END_DATE = '02월 13일(금)';
 
 function MainBanner() {
   const { data } = useServiceSemester();
@@ -32,7 +32,7 @@ function MainBanner() {
 
         <div className="flex flex-col md:flex-row gap-4 mt-4">
           <Button variant="primary" size="medium" asChild>
-            <Link to="/live">실시간 여석 확인하기</Link>
+            <Link to="/timetable">시간표 만들기</Link>
           </Button>
           <Button variant="outlined" size="medium" asChild>
             <Link to="/simulation">수강 신청 연습하기</Link>
