@@ -5,6 +5,7 @@ interface IModalProps {
   onBackdropClick?: () => void;
   preventAutoFocus?: boolean;
   noBorder?: boolean;
+  modalCassName?: string;
 }
 
 function Modal({ children, onBackdropClick, preventAutoFocus, noBorder }: Readonly<IModalProps>) {
@@ -46,9 +47,8 @@ function Modal({ children, onBackdropClick, preventAutoFocus, noBorder }: Readon
           aria-describedby="modal-desc"
           className={`
           relative
-          w-[90%]
           max-h-[100vh]
-          max-w-[500px]
+          min-w-[390px]
           bg-white
           overflow-y-auto
           ${modalClassName}

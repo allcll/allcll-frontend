@@ -85,11 +85,11 @@ function CaptchaInput() {
 
   return (
     <SejongUI.Modal preventAutoFocus>
-      <div className="sm:w-[500px]">
+      <div className="sm:w-[460px]">
         <SejongUI.Modal.Header title="매크로방지 코드입력 (Arti-marco code input)" onClose={closeCaptcha} />
 
-        <div className="grid grid-cols-2 gap-4 mt-4 p-4">
-          <div className="flex flex-col">
+        <div className="grid grid-cols-2 gap-4 mt-4">
+          <div className="flex flex-col px-1">
             <div className="text-sm font-semibold flex flex-row items-center">
               <span className="inline-block w-1.5 h-5 bg-blue-500 mr-2 "></span>생성된 코드
               <button
@@ -107,7 +107,7 @@ function CaptchaInput() {
 
           <div>
             <div className="text-sm font-semibold flex flex-row items-center">
-              <span className="inline-block w-1.5 h-5 bg-blue-500 mr-2 "></span>생성된 코드 입력
+              <span className="inline-block w-1.5 h-5 bg-blue-500"></span>생성된 코드 입력
             </div>
             <SejongUI.Input
               value={captchaInput}
@@ -120,7 +120,7 @@ function CaptchaInput() {
           </div>
         </div>
 
-        <p className="text-sm text-gray-800 mt-10 p-4">
+        <p className="text-sm text-gray-800 mt-10">
           ※ 코드가 표시되지 않는 경우 잠시 기다리거나 매크로 방지 코드 입력 창을 닫고 새로 열어 주세요.
         </p>
 
