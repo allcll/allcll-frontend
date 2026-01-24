@@ -81,32 +81,32 @@ const SERVICE_SEMESTER_DUMMY: ServiceSemesterApiResponse = {
   services: [
     {
       id: 'timetable',
-      startDate: '2025-07-18',
+      startDate: '2026-01-23',
       endDate: '2099-12-31',
       message: null,
     },
     {
       id: 'baskets',
-      startDate: '2025-07-18',
+      startDate: '2026-01-23',
       endDate: '2099-12-31',
       message: null,
     },
     {
       id: 'simulation',
-      startDate: '2025-07-18',
+      startDate: '2026-01-23',
       endDate: '2099-12-31',
       message: null,
     },
     {
       id: 'live',
-      startDate: isDevServer ? '2025-11-29' : '2025-12-01', //dev서버에서 먼저 확인 하기 위해
-      endDate: '2025-12-31',
+      startDate: isDevServer ? '2026-01-23' : '2026-02-09', //dev서버에서 먼저 확인 하기 위해
+      endDate: '2026-03-09',
       message: null,
     },
     {
       id: 'preSeat',
-      startDate: '2025-08-16',
-      endDate: '2025-09-30',
+      startDate: '2026-02-10',
+      endDate: '2026-03-09',
       message: null,
     },
   ],

@@ -34,7 +34,7 @@ function ServiceClosed({ data }: IServiceClosed) {
           ) : (
             <>
               <Heading level={2}>다음 서비스 기간 안내</Heading>
-              <SupportingText>수강신청</SupportingText>
+              <SupportingText>{data.semesterValue}학기 수강신청</SupportingText>
               <SupportingText>
                 {data.service?.startDateStr} ~ {data.service?.endDateStr}
               </SupportingText>
