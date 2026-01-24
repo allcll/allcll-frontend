@@ -70,7 +70,7 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
   return !modifiedResult || !simulationAllResult ? (
     <ProcessingModal />
   ) : (
-    <Dialog title="수강신청 결과" onClose={closeModal} isOpen={isOpen}>
+    <Dialog title="수강신청 결과" onClose={() => closeModal('result')} isOpen={isOpen}>
       <Dialog.Content>
         {isSuccessSimulation && (
           <div className="absolute inset-0 pointer-events-none">
