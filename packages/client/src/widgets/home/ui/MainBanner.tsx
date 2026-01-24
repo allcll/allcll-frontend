@@ -32,7 +32,7 @@ function MainBanner() {
 
         <div className="flex flex-col md:flex-row gap-4 mt-4">
           <Button variant="primary" size="medium" asChild>
-            <Link to="/live">실시간 여석 확인하기</Link>
+            <Link to="/timetable">시간표 만들기</Link>
           </Button>
           <Button variant="outlined" size="medium" asChild>
             <Link to="/simulation">수강 신청 연습하기</Link>
