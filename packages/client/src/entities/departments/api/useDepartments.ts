@@ -2,9 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchJsonOnAPI } from '@/shared/api/api.ts';
 
 export interface Department {
-  departmentName: string;
+  departmentName: string; // null을 세종국제대학로 대체
   departmentCode: string;
 }
+
+const SEJONG_INTERNATIONAL_UNIVERSITY = '세종국제대학';
 
 interface DepartmentsAPIResponse {
   departments: Department[];
@@ -16,7 +18,13 @@ function useDepartments() {
     queryFn: fetchDepartments,
     staleTime: Infinity,
     select: (data: DepartmentsAPIResponse) => {
-      return data.departments.sort((a, b) => a.departmentName.localeCompare(b.departmentName));
+      const departments =
+        data?.departments.map(dept => ({
+          ...dept,
+          departmentName: dept.departmentName ?? SEJONG_INTERNATIONAL_UNIVERSITY,
+        })) ?? [];
+
+      return departments.sort((a, b) => a.departmentName.localeCompare(b.departmentName));
     },
   });
 }

@@ -6,7 +6,8 @@ import {
 } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { Button, Chip, Dialog, Grid, Label, TextField } from '@allcll/allcll-ui';
-import { SEMESTERS, SERVICE_SEMESTER_DUMMY } from '@/entities/semester/api/semester.ts';
+import { SEMESTERS } from '@/entities/semester/api/semester.ts';
+import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 
 interface IEditTimetable {
   onClose: () => void;
@@ -15,8 +16,13 @@ interface IEditTimetable {
 
 function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
   const [timeTableName, setTimeTableName] = useState('');
-  const [selectedSemester, setSelectedSemester] = useState(SERVICE_SEMESTER_DUMMY.semester);
+
   const timeTable = useScheduleState(state => state.currentTimetable);
+  const currentSemester = useServiceSemester();
+
+  const [selectedSemester, setSelectedSemester] = useState(
+    timeTable?.semesterCode ?? currentSemester.data?.semesterCode ?? '',
+  );
 
   const { mutate: updateTimetable } = useUpdateTimetable();
   const { mutate: deleteTimetable } = useDeleteTimetable();
@@ -40,7 +46,7 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
     if (type === 'create') {
       createTimetable({
         timeTableName: timeTableName,
-        semester: selectedSemester,
+        semesterCode: selectedSemester,
       });
       onClose();
     }
@@ -57,13 +63,13 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
     };
   }, []);
 
-  const handleTimetableSemester = (semester: string) => {
+  const handleTimetableSemester = (semesterCode: string) => {
     if (type === 'edit') {
       alert('학기는 수정할 수 없습니다.');
       return;
     }
 
-    setSelectedSemester(semester);
+    setSelectedSemester(semesterCode);
   };
 
   return (
@@ -74,10 +80,10 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
           <Grid columns={{ base: 2 }} gap="gap-2">
             {SEMESTERS.map(semester => (
               <Chip
-                key={semester}
-                label={semester}
-                selected={semester === selectedSemester}
-                onClick={() => handleTimetableSemester(semester)}
+                key={semester.semesterCode}
+                label={semester.semesterValue}
+                selected={semester.semesterCode === selectedSemester}
+                onClick={() => handleTimetableSemester(semester.semesterCode)}
               />
             ))}
           </Grid>

@@ -5,16 +5,19 @@ import { IScheduleProps } from '@/widgets/timetable/Schedule.tsx';
 import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 
 import { Day } from '@/entities/timetable/model/types.ts';
+import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
 
 interface IWireSchedulesProps extends HTMLAttributes<HTMLDivElement> {
   dayOfWeeks: Day;
 }
 
 function WireSchedules({ dayOfWeeks }: Readonly<IWireSchedulesProps>) {
+  const semester = useSemesterParam();
+
   const schedule = useScheduleState(state => state.schedule);
   const options = useScheduleState(state => state.options);
 
-  const { data: subjects } = useSubject();
+  const { data: subjects } = useSubject(semester);
 
   if (!subjects || schedule.scheduleId > 0 || !schedule.timeSlots || schedule.timeSlots.length <= 0) return null;
 

@@ -2,7 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import { Subject, Wishes } from '@/shared/model/types.ts';
 import useSubject, { InitSubject } from '@/entities/subjects/model/useSubject.ts';
 import { joinData } from '@/entities/subjectAggregate/lib/joinSubjects.ts';
-import { fetchWishesData, WishesApiResponse } from '@/entities/wishes/api/wishes.ts';
+import { fetchWishesDataBySemester, WishesApiResponse } from '@/entities/wishes/api/wishes.ts';
+import { RECENT_SEMESTERS } from '@/entities/semester/api/semester';
 
 export const InitWishes = {
   ...InitSubject,
@@ -11,12 +12,13 @@ export const InitWishes = {
   totalCount: -1,
 };
 
-function useWishes() {
-  const { data: subjects, isPending, isLoading } = useSubject();
+function useWishes(semester?: string) {
+  semester = semester ?? RECENT_SEMESTERS.semesterCode;
+  const { data: subjects, isPending, isLoading } = useSubject(semester);
 
   const query = useQuery({
-    queryKey: ['wishlist'],
-    queryFn: fetchWishesData,
+    queryKey: ['wishlist', semester],
+    queryFn: () => fetchWishesDataBySemester(semester),
     staleTime: Infinity,
     select: data => joinSubjects(data, subjects),
   });
@@ -30,10 +32,11 @@ function useWishes() {
 
 const joinSubjects = (wishes?: WishesApiResponse, subject?: Subject[]): Wishes[] => {
   if (!subject) return [];
-  if (!wishes || wishes.baskets?.length) return subject;
+  // fixme: 성능 이슈 해결
+  const baskets = wishes?.baskets ?? [];
 
   type preWishes = Subject & WishesApiResponse['baskets'][number];
-  const data = joinData(subject, wishes.baskets, InitSubject, InitWishes) as preWishes[];
+  const data = joinData(subject, baskets, InitSubject, InitWishes) as preWishes[];
 
   return data.map((pw: preWishes) => {
     return { ...pw, departmentCode: pw.deptCd, departmentName: pw.manageDeptNm };

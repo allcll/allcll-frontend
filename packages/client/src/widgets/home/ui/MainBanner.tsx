@@ -2,24 +2,25 @@ import { Link } from 'react-router-dom';
 import Section from '@/widgets/home/ui/Section.tsx';
 
 import { Button, SupportingText } from '@allcll/allcll-ui';
+import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 
-const SEMESTER = '동계';
-const YEAR = '2025';
-const START_DATE = '12월 1일(월)';
-const END_DATE = '12월 3일(수)';
+const START_DATE = '02월 10일(월)';
+const END_DATE = '02월 13일(목)';
 
 function MainBanner() {
+  const { data } = useServiceSemester();
+
   return (
     <Section className="flex flex-col md:flex-row items-center justify-between" bgColor="bg-banner-skysoft">
       <div className="max-w-xl">
         <div className="flex flex-row gap-2 items-center">
           <img src="/calendar.png" alt="calendar" className="w-10 h-10" />
           <span className="italic text-xs text-stone-500 ">
-            {YEAR}학년도 {SEMESTER}학기 수강 신청 기간 <br /> {START_DATE} ~ {END_DATE}
+            {data?.semesterValue}학기 수강 신청 기간 <br /> {START_DATE} ~ {END_DATE}
           </span>
         </div>
         <h2 className="text-xl mt-10 sm:text-2xl md:text-4xl leading-snug font-bold mb-3 ">
-          {YEAR}학년도 {SEMESTER}학기 수강신청,
+          {data?.semesterValue}학기 수강신청,
         </h2>
         <div className="flex flex-row justify-start items-center text-xl sm:text-2xl md:text-4xl leading-snug font-bold mb-3">
           <img src="/logo-name.svg" alt="logo-name" className="w-20 sm:w-32 md:w-40 lg:w-48 mr-2 animate-updown" />이
@@ -31,7 +32,7 @@ function MainBanner() {
 
         <div className="flex flex-col md:flex-row gap-4 mt-4">
           <Button variant="primary" size="medium" asChild>
-            <Link to="/live">실시간 여석 확인하기</Link>
+            <Link to="/timetable">시간표 만들기</Link>
           </Button>
           <Button variant="outlined" size="medium" asChild>
             <Link to="/simulation">수강 신청 연습하기</Link>

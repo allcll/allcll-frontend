@@ -11,6 +11,7 @@ import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { Button, Chip, Flex } from '@allcll/allcll-ui';
 import { getAllSelectedLabels } from '@/features/filtering/lib/filterUtils.ts';
 import { FilterValueType } from '@/features/filtering/model/types.ts';
+import { useSemesterParam } from '@/entities/semester/model/useSemesterParam.ts';
 
 interface FilterBottomSheetProps {
   onCloseFiltering: () => void;
@@ -24,7 +25,9 @@ function FilterBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }
     onCloseFiltering();
   };
 
-  const { data: subjects } = useSubject();
+  const semester = useSemesterParam();
+
+  const { data: subjects } = useSubject(semester);
   const departments = useDepartments();
   const categoryOptions = getCategories(subjects ?? [])
     .sort((a, b) => a.localeCompare(b))

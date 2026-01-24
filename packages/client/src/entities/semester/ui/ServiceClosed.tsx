@@ -24,7 +24,7 @@ function ServiceClosed({ data }: IServiceClosed) {
         <Card className="mt-2">
           {isSemesterExpired ? (
             <>
-              <Heading level={2}>{data.semester} 수강신청이 종료되었습니다.</Heading>
+              <Heading level={2}>{data.semesterValue} 수강신청이 종료되었습니다.</Heading>
               <SupportingText>
                 수강 신청 기간 동안 고생 많으셨습니다.
                 <br />
