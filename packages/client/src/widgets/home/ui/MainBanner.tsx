@@ -5,7 +5,7 @@ import { Button, SupportingText } from '@allcll/allcll-ui';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 
 const START_DATE = '02월 10일(화)';
-const END_DATE = '02월 13일(목)';
+const END_DATE = '02월 13일(금)';
 
 function MainBanner() {
   const { data } = useServiceSemester();
