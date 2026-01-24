@@ -4,7 +4,7 @@ import Section from '@/widgets/home/ui/Section.tsx';
 import { Button, SupportingText } from '@allcll/allcll-ui';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 
-const START_DATE = '02월 09일(월)';
+const START_DATE = '02월 10일(화)';
 const END_DATE = '02월 13일(목)';
 
 function MainBanner() {
