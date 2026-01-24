@@ -21,7 +21,7 @@ function Modal({ children, onBackdropClick, preventAutoFocus, noBorder }: Readon
     };
   }, [preventAutoFocus]);
 
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleBackdropClick = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     if (onBackdropClick) {
       onBackdropClick();
@@ -29,7 +29,14 @@ function Modal({ children, onBackdropClick, preventAutoFocus, noBorder }: Readon
   };
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center" onClick={handleBackdropClick}>
+    <div className="fixed inset-0 z-100 flex items-center justify-center">
+      <button
+        type="button"
+        aria-label="Close dialog"
+        className="absolute inset-0 bg-black/5 cursor-default"
+        onClick={handleBackdropClick}
+      />
+
       <div className="fixed inset-x-0 top-0 bottom-0 flex items-center justify-center bg-black/5">
         <div
           ref={containerRef}
