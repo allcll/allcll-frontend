@@ -234,7 +234,14 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
 
         <p className="text-gray-700 text-base mb-4">{modalData.topMessage}</p>
 
-        {modalData.description && <p className="text-sm text-gray-700 whitespace-pre-line">{modalData.description}</p>}
+        {modalData.description && (
+          <p className="text-sm text-gray-700 whitespace-pre-line">
+            {modalData.description}{' '}
+            {modalData.status === APPLY_STATUS.PROGRESS && (
+              <span>{lectures?.find(lecture => lecture.subjectId === currentSubjectId)?.subjectName}</span>
+            )}
+          </p>
+        )}
       </div>
 
       <SejongUI.Modal.ButtonContainer className="px-6 py-2 bg-gray-100">
