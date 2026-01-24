@@ -28,15 +28,15 @@ function Modal({ children, onBackdropClick, preventAutoFocus, noBorder }: Readon
     }
   };
 
-  // Todo: aria-labelledby, aria-describedby 추가
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center" onClick={handleBackdropClick} tabIndex={-1}>
-      <div className="fixed inset-x-0 top-16 bottom-0 flex items-center justify-center">
+    <div className="fixed inset-0 z-100 flex items-center justify-center" onClick={handleBackdropClick}>
+      <div className="fixed inset-x-0 top-0 bottom-0 flex items-center justify-center bg-black/5">
         <div
           ref={containerRef}
           role="dialog"
           tabIndex={-1}
-          aria-modal="true"
+          aria-labelledby="modal-title"
+          aria-describedby="modal-desc"
           className={`
           relative
           w-[90%]
