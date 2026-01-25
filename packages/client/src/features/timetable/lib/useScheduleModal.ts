@@ -127,6 +127,7 @@ function useScheduleModal() {
     // 모달 state 초기화
     changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);
     closeBottomSheet('edit');
+    closeBottomSheet('info');
   };
 
   const cancelSchedule = (
