@@ -97,11 +97,7 @@ function SelectSubject({ departments, setFilter, selectedValue }: ISelectSubject
     setFilter('department', department || '');
   };
 
-  const filteredDepartments = departments.filter(
-    department => pickCollegeOrMajor(selectedValue, departments) === department.departmentName,
-  );
-
-  if (filteredDepartments.length === 0) {
+  if (departments.length === 0) {
     return <ZeroContent title="검색 결과가 없습니다." description="다른 학과 이름으로 검색해주세요." />;
   }
 
