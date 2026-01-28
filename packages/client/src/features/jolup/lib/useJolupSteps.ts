@@ -1,0 +1,45 @@
+import { useEffect, useState } from 'react';
+
+export enum JolupSteps {
+  LOGIN = 'LOGIN',
+  FILE_UPLOAD = 'FILE_UPLOAD',
+  UPLOADING = 'UPLOADING',
+}
+
+/**
+ * 스텝의 side effect를 관리하는 훅
+ * ex) 로그인 정보가 있으면, 어디 스탭으로 이동하고 등등
+ */
+function useJolupSteps() {
+  const [step, setStep] = useState<JolupSteps>(JolupSteps.LOGIN);
+
+  useEffect(() => {
+    setStep(step => {
+      // 여기에 side effect 로직을 추가하세요.
+      return step;
+    });
+  }, []);
+
+  /**
+   * 검사 스텝을 다음 단계로 이동합니다.
+   * */
+  function nextStep() {
+    switch (step) {
+      case JolupSteps.LOGIN:
+        setStep(JolupSteps.FILE_UPLOAD);
+        break;
+      case JolupSteps.FILE_UPLOAD:
+        setStep(JolupSteps.UPLOADING);
+        break;
+      case JolupSteps.UPLOADING:
+        // Final step, do nothing or reset
+        break;
+      default:
+        console.error(`Unknown step ${step}`);
+        break;
+    }
+  }
+
+  return { step, nextStep };
+}
+export default useJolupSteps;
