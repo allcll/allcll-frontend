@@ -27,7 +27,7 @@ function Header() {
       <div className="container flex items-center justify-between mx-auto max-w-7xl px-4 md:px-16">
         <div className="flex items-center space-x-4 py-4">
           <Link to="/" className="flex items-center gap-1 space-x-2" aria-label="메인 페이지">
-            <h1 className="hidden">ALLCLL</h1>
+            <h2 className="hidden">ALLCLL</h2>
             <LogoSvg className="w-6 h-6 m-0" />
             <LogoName className="h-5 hidden sm:inline-block" />
           </Link>
