@@ -82,6 +82,7 @@ function Simulation() {
     <>
       <Helmet>
         <title>ALLCLL | 올클연습 - 세종대 수강신청 연습</title>
+        <meta name="description" content="세종대학교 수강신청 연습을 통해 원하는 강의를 미리 신청해보세요!" />
       </Helmet>
 
       <RenderModal />

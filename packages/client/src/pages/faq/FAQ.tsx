@@ -64,6 +64,7 @@ function FAQ() {
     <>
       <Helmet>
         <title>ALLCLL | 자주 묻는 질문</title>
+        <meta name="description" content="자주 묻는 질문과 답변을 확인해보세요." />
       </Helmet>
 
       <div className="mx-auto max-w-7xl px-4 md:px-16 py-24">

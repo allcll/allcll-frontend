@@ -27,6 +27,7 @@ function WishesDetail() {
       <>
         <Helmet>
           <title>ALLCLL | 관심과목 분석 상세</title>
+          <meta name="description" content="세종대학교 관심과목의 상세 정보를 확인해보세요." />
         </Helmet>
 
         <div className="min-h-screen bg-gray-50 flex justify-center items-center">

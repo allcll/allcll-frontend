@@ -8,6 +8,7 @@ function CustomerService() {
     <>
       <Helmet>
         <title>ALLCLL | 오류 및 제보</title>
+        <meta name="description" content="서비스 이용 중 발생한 오류를 제보하거나, 건의사항을 남겨주세요." />
       </Helmet>
 
       <div className="mx-auto flex justify-center bg-blue-100 pt-4">
