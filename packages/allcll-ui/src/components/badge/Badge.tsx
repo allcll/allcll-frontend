@@ -8,7 +8,7 @@ interface IBadge {
 function Badge({ variant, children }: IBadge) {
   const variantClass = getVariantClass(variant);
 
-  return <div className={`${variantClass} px-2 py-1 text-xs rounded-full inline-flex`}>{children}</div>;
+  return <div className={`${variantClass} px-2 py-1 font-semibold text-xs rounded-full inline-flex`}>{children}</div>;
 }
 
 export default Badge;
