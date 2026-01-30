@@ -6,8 +6,10 @@ export interface WishesApiResponse {
   baskets: { subjectId: number; totalCount: number }[];
 }
 
+const CACHE_VERSION = 'SPRING_26_20260130';
+
 export const fetchWishesDataBySemester = async (semester: string) => {
-  return await fetchJsonOnPublic<WishesApiResponse>(`/${semester}/baskets.json`);
+  return await fetchJsonOnPublic<WishesApiResponse>(`/${semester}/baskets.json?v=${CACHE_VERSION}`);
 };
 
 interface DetailRegistersResponse {
