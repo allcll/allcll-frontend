@@ -3,11 +3,12 @@ import { Button, Badge, Flex, Heading } from '@allcll/allcll-ui';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import useSearchLogging from '@/features/filtering/lib/useSearchLogging.ts';
 import { loggingDepartment } from '@/features/filtering/lib/useSearchRank.ts';
-import { Subject } from '@/shared/model/types.ts';
+import { Wishes } from '@/shared/model/types.ts';
+import BasketBadge from '@/entities/wishes/ui/BasketBadge';
 
 interface ISubjectCard {
   isActive?: boolean;
-  subject: Subject;
+  subject: Wishes;
   onClick: () => void;
   forwardedRef?: React.Ref<HTMLButtonElement>;
 }
@@ -46,8 +47,9 @@ function TimetableSubjectCard({ isActive, subject, onClick, forwardedRef }: Read
 
         <Flex justify="justify-between" align="items-center">
           <Badge variant="default">{subject.tmNum[0]}학점</Badge>
-
-          {isActive && (
+          {!isActive ? <p className="text-xs sm:text-sm text-gray-500 text-center justify-center items-center">
+            관심: <BasketBadge wishCount={subject.totalCount ?? -1} />
+          </p> : (
             <Button variant="primary" size="medium" onClick={handleAddOfficialSchedule}>
               추가하기
             </Button>
