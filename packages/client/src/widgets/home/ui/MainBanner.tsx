@@ -20,9 +20,9 @@ function MainBanner() {
             {START_DATE} ~ {END_DATE}
           </span>
         </div>
-        <h1 className="text-xl mt-10 sm:text-2xl md:text-4xl leading-snug font-bold mb-3 ">
-          세종대 수강신청 연습과 <br />
-          수강여석 확인을 한 번에
+
+        <h1 className="text-lg mt-10 sm:text-xl md:text-2xl leading-snug font-bold mb-3 ">
+          세종대 수강신청 연습과 수강여석 확인을 한번에
         </h1>
         <div className="flex flex-row justify-start items-center text-xl sm:text-2xl md:text-4xl leading-snug font-bold mb-3">
           <img
