@@ -38,7 +38,7 @@ function MainBanner() {
 
         <div className="flex flex-col md:flex-row gap-4 mt-4">
           <Button variant="primary" size="medium" asChild>
-            <Link to="/timetable">시간표 만들기</Link>
+            <Link to="/wishes">관심과목 분석 보러가기</Link>
           </Button>
           <Button variant="outlined" size="medium" asChild>
             <Link to="/simulation">수강 신청 연습하기</Link>
