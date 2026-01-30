@@ -21,6 +21,7 @@ function DashboardDetail() {
     <>
       <Helmet>
         <title>ALLCLL | 올클연습 - 결과 분석 상세</title>
+        <meta name="description" content="수강연습 결과를 분석하고, 부족한 부분을 알려 드려요." />
       </Helmet>
 
       <h1 className="text-2xl font-bold mb-6">모의 수강 신청 로그</h1>

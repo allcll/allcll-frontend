@@ -17,6 +17,7 @@ function WishTable() {
     <>
       <Helmet>
         <title>ALLCLL | 관심과목 분석</title>
+        <meta name="description" content="세종대학교 관심과목의 실제 데이터를 분석해보세요." />
       </Helmet>
 
       <div className="mx-auto max-w-7xl px-4 md:px-16 mb-8 min-h-screen">
