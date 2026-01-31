@@ -13,6 +13,7 @@ function Timetable() {
     <div className="px-4 py-2">
       <Helmet>
         <title>ALLCLL | 시간표</title>
+        <meta name="description" content="나만의 시간표를 만들고, 관리해보세요!" />
       </Helmet>
 
       <div className="grid md:grid-cols-5 gap-4 mb-4">
