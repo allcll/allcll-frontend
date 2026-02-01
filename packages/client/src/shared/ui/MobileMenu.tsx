@@ -4,7 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import LogoSvg from '@public/ci.svg?react';
 import LogoName from '@public/logo-name.svg?react';
 import CloseSvg from '@/assets/x.svg?react';
-import { IconButton } from '@allcll/allcll-ui';
+import { Flex, IconButton } from '@allcll/allcll-ui';
 import { useBodyScrollLock } from '../lib/useBodyScrollLock';
 import { HeaderContents, ButtonContents } from './Header';
 
@@ -50,7 +50,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
             모바일 메뉴
           </h2>
 
-          <div className="flex items-center justify-between p-4">
+          <Flex justify="justify-between" align="items-center" gap="gap-0" className="p-4">
             <Link to="/" onClick={onClose} className="flex items-center gap-2" aria-label="메인 페이지">
               <LogoSvg className="w-6 h-6" />
               <LogoName className="h-5" />
@@ -63,11 +63,11 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
               label="메뉴 닫기"
               onClick={onClose}
             />
-          </div>
+          </Flex>
 
           <hr className="mx-4 border-gray-300" />
 
-          <ul className="flex-1 p-4 space-y-1">
+          <Flex as="ul" direction="flex-col" gap="gap-1" className="flex-1 p-4">
             {HeaderContents.map(({ title, path, end }) => (
               <li key={path}>
                 <NavLink
@@ -84,11 +84,11 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
                 </NavLink>
               </li>
             ))}
-          </ul>
+          </Flex>
 
           <hr className="mx-4 border-gray-300" />
 
-          <div className="p-4 space-y-1">
+          <Flex direction="flex-col" gap="gap-1" className="p-4">
             {ButtonContents.map(({ icon, title, path }) => (
               <a
                 key={path}
@@ -101,7 +101,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
                 <span className="text-sm">{title}</span>
               </a>
             ))}
-          </div>
+          </Flex>
         </nav>
       </CSSTransition>
     </>
