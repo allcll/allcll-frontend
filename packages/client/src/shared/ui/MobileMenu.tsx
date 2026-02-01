@@ -39,7 +39,7 @@ function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
       </CSSTransition>
 
       <CSSTransition in={isOpen} timeout={300} classNames="mobile-menu" unmountOnExit nodeRef={menuRef}>
-        <nav ref={menuRef} className="fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-50 md:hidden flex flex-col">
+        <nav ref={menuRef} className="fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50 md:hidden flex flex-col">
           <div className="flex items-center justify-between p-4">
             <Link to="/" onClick={onClose} className="flex items-center gap-2" aria-label="메인 페이지">
               <LogoSvg className="w-6 h-6" />
