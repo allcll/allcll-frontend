@@ -5,6 +5,7 @@ import LogoSvg from '@public/ci.svg?react';
 import LogoName from '@public/logo-name.svg?react';
 import CloseSvg from '@/assets/x.svg?react';
 import { IconButton } from '@allcll/allcll-ui';
+import { useBodyScrollLock } from '../lib/useBodyScrollLock';
 import { HeaderContents, ButtonContents } from './Header';
 
 interface MobileMenuProps {
@@ -22,16 +23,7 @@ function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
     onClose();
   }, [location.pathname, onClose]);
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-
-    return () => {
-      document.body.style.overflow = originalOverflow;
-    };
-  }, [isOpen]);
+  useBodyScrollLock(isOpen);
 
   return (
     <>
