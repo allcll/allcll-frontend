@@ -75,7 +75,7 @@ function Header() {
           ))}
         </div>
         <IconButton
-          className="md:hidden p-2 hover:bg-gray-100"
+          className="md:hidden p-2 hover:bg-gray-100 active:bg-gray-100"
           variant="plain"
           icon={<MenuSvg className="w-6 h-6" />}
           label="메뉴 열기"

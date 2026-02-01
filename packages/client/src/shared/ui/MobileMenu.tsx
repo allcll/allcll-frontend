@@ -13,11 +13,11 @@ interface MobileMenuProps {
   onClose: () => void;
 }
 
-function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
+function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
   const location = useLocation();
 
-  const menuRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLElement>(null);
+  const overlayRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     onClose();
@@ -28,11 +28,28 @@ function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   return (
     <>
       <CSSTransition in={isOpen} timeout={300} classNames="mobile-menu-overlay" unmountOnExit nodeRef={overlayRef}>
-        <div ref={overlayRef} className="fixed inset-0 bg-black/30 z-40 md:hidden" onClick={onClose} />
+        <button
+          ref={overlayRef}
+          type="button"
+          aria-label="메뉴 닫기"
+          onClick={onClose}
+          className="fixed inset-0 z-40 md:hidden bg-black/30 border-0 cursor-default focus:outline-none"
+        />
       </CSSTransition>
 
       <CSSTransition in={isOpen} timeout={300} classNames="mobile-menu" unmountOnExit nodeRef={menuRef}>
-        <nav ref={menuRef} className="fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50 md:hidden flex flex-col">
+        <nav
+          ref={menuRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="mobile-menu-title"
+          tabIndex={-1}
+          className="fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50 md:hidden flex flex-col"
+        >
+          <h2 id="mobile-menu-title" className="sr-only">
+            모바일 메뉴
+          </h2>
+
           <div className="flex items-center justify-between p-4">
             <Link to="/" onClick={onClose} className="flex items-center gap-2" aria-label="메인 페이지">
               <LogoSvg className="w-6 h-6" />
@@ -40,7 +57,7 @@ function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             </Link>
 
             <IconButton
-              className="p-2 hover:bg-gray-100"
+              className="p-2 hover:bg-gray-100 active:bg-gray-100"
               variant="plain"
               icon={<CloseSvg className="w-6 h-6" />}
               label="메뉴 닫기"
@@ -59,7 +76,7 @@ function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                   onClick={onClose}
                   className={({ isActive }) =>
                     `block py-3 px-4 rounded-lg text-base font-medium transition-colors ${
-                      isActive ? 'bg-blue-50 text-blue-500' : 'text-gray-700 hover:bg-gray-100'
+                      isActive ? 'bg-blue-50 text-blue-500' : 'text-gray-700 active:bg-gray-100'
                     }`
                   }
                 >
@@ -78,7 +95,7 @@ function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 href={path}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 py-3 px-4 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+                className="flex items-center gap-3 py-3 px-4 rounded-lg text-gray-600 active:bg-gray-100 transition-colors"
               >
                 {icon}
                 <span className="text-sm">{title}</span>
