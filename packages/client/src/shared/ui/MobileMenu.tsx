@@ -4,6 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import LogoSvg from '@public/ci.svg?react';
 import LogoName from '@public/logo-name.svg?react';
 import CloseSvg from '@/assets/x.svg?react';
+import { IconButton } from '@allcll/allcll-ui';
 import { HeaderContents, ButtonContents } from './Header';
 
 interface MobileMenuProps {
@@ -46,9 +47,13 @@ function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
               <LogoName className="h-5" />
             </Link>
 
-            <button onClick={onClose} className="p-2 rounded-md hover:bg-gray-100 text-gray-600" aria-label="메뉴 닫기">
-              <CloseSvg className="w-5 h-5" />
-            </button>
+            <IconButton
+              className="p-2 hover:bg-gray-100"
+              variant="plain"
+              icon={<CloseSvg className="w-6 h-6" />}
+              label="메뉴 닫기"
+              onClick={onClose}
+            />
           </div>
 
           <hr className="mx-4 border-gray-300" />

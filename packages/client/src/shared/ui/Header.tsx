@@ -5,6 +5,7 @@ import LogoName from '@public/logo-name.svg?react';
 import HelpDeskSvg from '@/assets/help-desk.svg?react';
 import HelpChatSvg from '@/assets/chat-help.svg?react';
 import MenuSvg from '@/assets/menu.svg?react';
+import { IconButton } from '@allcll/allcll-ui';
 import MobileMenu from './MobileMenu';
 
 export const HeaderContents = [
@@ -73,15 +74,14 @@ function Header() {
             </a>
           ))}
         </div>
-
-        <button
-          className="md:hidden p-2 rounded-md hover:bg-gray-100 text-gray-600"
+        <IconButton
+          className="md:hidden p-2 hover:bg-gray-100"
+          variant="plain"
+          icon={<MenuSvg className="w-6 h-6" />}
+          label="메뉴 열기"
           onClick={openMenu}
-          aria-label="메뉴 열기"
           aria-expanded={isOpen}
-        >
-          <MenuSvg className="w-6 h-6" />
-        </button>
+        />
       </div>
 
       <MobileMenu isOpen={isOpen} onClose={closeMenu} />
