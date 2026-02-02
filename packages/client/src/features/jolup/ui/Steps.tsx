@@ -1,7 +1,8 @@
 import useJolupSteps, { JolupSteps } from '@/features/jolup/lib/useJolupSteps.ts';
 import FileUpload from '@/features/jolup/ui/FileUpload.tsx';
-import { Button } from '@allcll/allcll-ui';
+import { Button, Flex } from '@allcll/allcll-ui';
 import FileUploadGuide from '@/features/jolup/ui/FileUploadGuide.tsx';
+import StepIndicator from './StepIndicator';
 
 /**
  * 각 기능은 이 인터페이스를 참조하면 좋겠습니다. */
@@ -12,16 +13,25 @@ export interface JolupStepsProps {
 function Steps() {
   const { step, nextStep } = useJolupSteps();
 
-  // 각각 맞는 헨더링을 넣어주시면 됩니다.
+  return (
+    <Flex direction="flex-col" gap="gap-8" className="w-full max-w-4xl mx-auto px-4">
+      <StepIndicator currentStep={step} />
+
+      {renderStepContent(step, nextStep)}
+    </Flex>
+  );
+}
+
+function renderStepContent(step: JolupSteps, nextStep: () => void) {
   switch (step) {
     case JolupSteps.LOGIN:
       return <DefaultStep nextStep={nextStep}>Login Step</DefaultStep>;
     case JolupSteps.FILE_UPLOAD:
       return (
-        <>
+        <Flex direction="flex-col">
           <FileUpload nextStep={nextStep} />
           <FileUploadGuide />
-        </>
+        </Flex>
       );
     case JolupSteps.UPLOADING:
       return <DefaultStep nextStep={nextStep}>Uploading Step</DefaultStep>;
