@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function useUploading() {
+function useUploading(nextStep: () => void) {
   const [progress, setProgress] = useState(0);
   const message = getMessageForProgress(progress);
 
@@ -22,7 +22,10 @@ function useUploading() {
       });
     }, 500);
 
-    return () => clearInterval(interval);
+    return () => {
+      nextStep();
+      clearInterval(interval);
+    };
   }, []);
 
   return { progress, message };

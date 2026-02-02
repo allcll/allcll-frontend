@@ -1,20 +1,37 @@
-import useUploading from '@/features/jolup/lib/useUploading.ts';
+import useUploading from '@/features/jolup/lib/useUploading';
+import { Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import { JolupStepsProps } from '@/features/jolup/ui/Steps.tsx';
 
-function Uploading() {
-  const { progress, message } = useUploading();
+function Uploading({ nextStep }: JolupStepsProps) {
+  const { progress, message } = useUploading(nextStep);
 
   return (
-    <div className="w-full max-w-md mx-auto mt-10">
-      <h2 className="text-2xl font-bold mb-4">업로드 진행 중...</h2>
-      <div className="w-full bg-gray-200 rounded-full h-6 mb-4">
-        <div
-          className="bg-blue-600 h-6 rounded-full transition-all duration-500"
-          style={{ width: `${progress}%` }}
-        ></div>
-      </div>
-      <p className="text-center">{progress}% 완료</p>
-      <p className="text-center mt-2">{message}</p>
-    </div>
+    <Card variant="outlined" className="w-full max-w-2xl mx-auto">
+      <Flex direction="flex-col" align="items-center" justify="justify-center" className="py-8 px-4">
+        <div className="text-center space-y-2">
+          <Heading level={2} size="lg" className="text-gray-900">
+            졸업 요건 검사 중
+          </Heading>
+          <SupportingText className="text-gray-500">
+            업로드한 파일을 바탕으로 졸업 요건을 분석하고 있습니다.
+          </SupportingText>
+        </div>
+
+        <div className="space-y-3">
+          <div className="flex justify-between items-end">
+            <span className="text-sm font-medium text-gray-700">{message}</span>
+            <span className="text-sm font-bold text-primary-600">{progress}%</span>
+          </div>
+
+          <div className="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
+            <div
+              className="bg-primary-600 h-full rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </div>
+      </Flex>
+    </Card>
   );
 }
 
