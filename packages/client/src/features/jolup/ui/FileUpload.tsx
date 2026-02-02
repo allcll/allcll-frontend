@@ -1,38 +1,51 @@
 import { JolupStepsProps } from '@/features/jolup/ui/Steps.tsx';
-import { useRef, useState } from 'react';
-import { Button } from '@allcll/allcll-ui';
+import { useState } from 'react';
+import { Button, Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import FileDropZone from './FileDropZone';
 
 function FileUpload({ nextStep }: JolupStepsProps) {
-  const ref = useRef<HTMLInputElement>(null);
-  const [fileName, setFileName] = useState<string>('');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setFileName(file.name);
-      // 파일 업로드 로직 추가
-      // nextStep();
-    }
+  const handleFileSelect = (file: File) => {
+    setSelectedFile(file);
+    // Todo: 파일 업로드 로직 추가
+  };
+
+  const handleDeleteFile = () => {
+    setSelectedFile(null);
+  };
+
+  const handleCancel = () => {
+    setSelectedFile(null);
   };
 
   return (
-    <>
-      <input type="file" accept=".csv, .xls, .xlsx" ref={ref} className="hidden" onChange={handleFileChange} />
-      <Button
-        variant="outlined"
-        size="small"
-        onClick={() => {
-          ref.current?.click();
-        }}
-        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
-      >
-        파일 업로드
-      </Button>
-      {fileName && <p className="mt-2">업로드된 파일: {fileName}</p>}
-      <Button onClick={nextStep} variant="text" size="small">
-        다음 단계로
-      </Button>
-    </>
+    <Card variant="outlined" className="w-full max-w-2xl mx-auto p-8">
+      <Flex direction="flex-col" gap="gap-6" align="items-center">
+        <Flex direction="flex-col" gap="gap-2" align="items-center">
+          <Heading level={2} size="xl">
+            파일 업로드
+          </Heading>
+          <SupportingText>졸업 요건을 확인하기 위해 성적표 파일을 업로드해주세요.</SupportingText>
+        </Flex>
+
+        <FileDropZone
+          onFileSelect={handleFileSelect}
+          selectedFile={selectedFile}
+          onDeleteFile={handleDeleteFile}
+          accept=".csv, .xls, .xlsx"
+        />
+
+        <Flex justify="justify-end" gap="gap-3" className="w-full mt-2">
+          <Button variant="secondary" size="medium" onClick={handleCancel}>
+            취소
+          </Button>
+          <Button variant="primary" size="medium" onClick={nextStep} disabled={!selectedFile}>
+            다음 단계
+          </Button>
+        </Flex>
+      </Flex>
+    </Card>
   );
 }
 
