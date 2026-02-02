@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 export enum JolupSteps {
   LOGIN = 'LOGIN',
+  BASIC_INFO = 'BASIC_INFO',
   FILE_UPLOAD = 'FILE_UPLOAD',
   UPLOADING = 'UPLOADING',
 }
@@ -26,6 +27,9 @@ function useJolupSteps() {
   function nextStep() {
     switch (step) {
       case JolupSteps.LOGIN:
+        setStep(JolupSteps.BASIC_INFO);
+        break;
+      case JolupSteps.BASIC_INFO:
         setStep(JolupSteps.FILE_UPLOAD);
         break;
       case JolupSteps.FILE_UPLOAD:
