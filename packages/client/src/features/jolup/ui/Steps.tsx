@@ -1,22 +1,24 @@
+import React from 'react';
 import useJolupSteps, { JolupSteps } from '@/features/jolup/lib/useJolupSteps.ts';
-import FileUpload from '@/features/jolup/ui/FileUpload.tsx';
 import { Button, Flex } from '@allcll/allcll-ui';
+import FileUpload from '@/features/jolup/ui/FileUpload.tsx';
+import Uploading from '@/features/jolup/ui/Uploading.tsx';
 import FileUploadGuide from '@/features/jolup/ui/FileUploadGuide.tsx';
 import StepIndicator from './StepIndicator';
 import BasicInfoForm from './BasicInfoForm';
-import Uploading from '@/features/jolup/ui/Uploading.tsx';
 
 /**
  * 각 기능은 이 인터페이스를 참조하면 좋겠습니다. */
 export interface JolupStepsProps {
   nextStep: () => void;
+  backStep?: () => void;
 }
 
 function Steps() {
   const { step, nextStep } = useJolupSteps();
 
   return (
-    <Flex direction="flex-col" gap="gap-8" className="w-full max-w-4xl mx-auto px-4">
+    <Flex direction="flex-col" gap="gap-8" className="w-full max-w-4xl mx-auto p-4">
       <StepIndicator currentStep={step} />
 
       {renderStepContent(step, nextStep)}

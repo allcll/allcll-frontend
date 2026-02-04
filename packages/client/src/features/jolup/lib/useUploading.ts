@@ -9,6 +9,8 @@ function useUploading(nextStep: () => void) {
       setProgress(prev => {
         if (prev >= 100) {
           clearInterval(interval);
+          nextStep();
+
           return 100;
         }
         return prev + 10;
@@ -16,7 +18,6 @@ function useUploading(nextStep: () => void) {
     }, 500);
 
     return () => {
-      nextStep();
       clearInterval(interval);
     };
   }, []);

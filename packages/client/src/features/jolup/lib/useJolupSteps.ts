@@ -44,6 +44,26 @@ function useJolupSteps() {
     }
   }
 
-  return { step, nextStep };
+  function prevStep() {
+    switch (step) {
+      case JolupSteps.BASIC_INFO:
+        setStep(JolupSteps.LOGIN);
+        break;
+      case JolupSteps.FILE_UPLOAD:
+        setStep(JolupSteps.BASIC_INFO);
+        break;
+      case JolupSteps.UPLOADING:
+        setStep(JolupSteps.FILE_UPLOAD);
+        break;
+      case JolupSteps.LOGIN:
+        // First step, do nothing
+        break;
+      default:
+        console.error(`Unknown step ${step}`);
+        break;
+    }
+  }
+
+  return { step, nextStep, prevStep };
 }
 export default useJolupSteps;

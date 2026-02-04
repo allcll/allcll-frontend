@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import XIcon from '@/assets/x.svg?react';
 import { IconButton, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import useToastNotification from '../../notification/model/useToastNotification';
 
 interface FileDropZoneProps {
   onFileSelect: (file: File) => void;
@@ -10,8 +11,26 @@ interface FileDropZoneProps {
 }
 
 const FileDropZone: React.FC<FileDropZoneProps> = ({ onFileSelect, selectedFile, onDeleteFile, accept }) => {
+  const addToast = useToastNotification(state => state.addToast);
+
   const ref = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
+
+  const onSelectFile = (file?: File) => {
+    if (!file) {
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      addToast('파일 크기는 1MB를 초과할 수 없습니다.');
+      if (ref.current) {
+        ref.current.value = '';
+      }
+      return;
+    }
+    onFileSelect(file);
+  };
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -25,17 +44,12 @@ const FileDropZone: React.FC<FileDropZoneProps> = ({ onFileSelect, selectedFile,
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    const file = e.dataTransfer.files?.[0];
-    if (file) {
-      onFileSelect(file);
-    }
+
+    onSelectFile(e.dataTransfer.files?.[0]);
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      onFileSelect(file);
-    }
+    onSelectFile(event.target.files?.[0]);
 
     if (ref.current) {
       ref.current.value = '';
@@ -73,7 +87,7 @@ const FileDropZone: React.FC<FileDropZoneProps> = ({ onFileSelect, selectedFile,
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
-      aria-label={selectedFile ? "파일 변경" : "파일 업로드"}
+      aria-label={selectedFile ? '파일 변경' : '파일 업로드'}
     >
       <input type="file" accept={accept} ref={ref} className="hidden" onChange={handleFileChange} />
 
@@ -102,7 +116,7 @@ const EmptyState = () => {
         <p className="text-sm font-medium text-gray-700">
           <span className="text-primary-600">클릭하여 업로드</span> 또는 파일을 여기로 드래그하세요
         </p>
-        <SupportingText className="mt-1 text-xs">XLS, XLSX, CSV (최대 10MB)</SupportingText>
+        <SupportingText className="mt-1 text-xs">XLSX (최대 1MB)</SupportingText>
       </div>
     </Flex>
   );

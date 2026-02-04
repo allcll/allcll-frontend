@@ -2,13 +2,14 @@ import { JolupStepsProps } from '@/features/jolup/ui/Steps.tsx';
 import { useState } from 'react';
 import { Button, Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import FileDropZone from './FileDropZone';
+import { useGraduationCheckMutation } from '@/features/jolup/lib/useGraduationCheckMutation.ts';
 
 function FileUpload({ nextStep }: JolupStepsProps) {
+  const { mutate: uploadFile } = useGraduationCheckMutation();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const handleFileSelect = (file: File) => {
     setSelectedFile(file);
-    // Todo: 파일 업로드 로직 추가
   };
 
   const handleDeleteFile = () => {
@@ -17,6 +18,13 @@ function FileUpload({ nextStep }: JolupStepsProps) {
 
   const handleCancel = () => {
     setSelectedFile(null);
+  };
+
+  const handleNextStep = () => {
+    if (selectedFile) {
+      uploadFile(selectedFile);
+      nextStep();
+    }
   };
 
   return (
@@ -33,14 +41,14 @@ function FileUpload({ nextStep }: JolupStepsProps) {
           onFileSelect={handleFileSelect}
           selectedFile={selectedFile}
           onDeleteFile={handleDeleteFile}
-          accept=".csv, .xls, .xlsx"
+          accept=".xlsx"
         />
 
         <Flex justify="justify-end" gap="gap-3" className="w-full mt-2">
           <Button variant="secondary" size="medium" onClick={handleCancel}>
             취소
           </Button>
-          <Button variant="primary" size="medium" onClick={nextStep} disabled={!selectedFile}>
+          <Button variant="primary" size="medium" onClick={handleNextStep} disabled={!selectedFile}>
             다음 단계
           </Button>
         </Flex>

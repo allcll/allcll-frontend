@@ -17,6 +17,7 @@ import SimulationDashboardDetail from '@/pages/simulation/DashboardDetail.tsx';
 import NotFound from '@/pages/notfound/NotFound';
 
 import Timetable from '@/pages/timetable/Timetable.tsx';
+import Steps from '@/features/jolup/ui/Steps.tsx';
 
 const router = createBrowserRouter([
   {
@@ -98,6 +99,11 @@ const router = createBrowserRouter([
       },
     ],
     errorElement: <ErrorPage />,
+  },
+
+  {
+    path: 'jolup',
+    element: <Steps />,
   },
 
   {
