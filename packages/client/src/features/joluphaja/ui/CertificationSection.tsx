@@ -93,9 +93,9 @@ function CertificationSection({ certifications, policyYear }: CertificationSecti
 
   // 정책 설명 텍스트
   const policyDescription =
-    policyYear === 'before22'
-      ? '영어 인증과 고전 독서 인증을 모두 이수해야 졸업 인증이 완료됩니다.'
-      : '영어 인증, 고전 독서 인증, 소프트웨어 코딩 인증 중 2가지 이상을 이수하면 졸업 인증이 완료됩니다.';
+    policyYear === 'from23'
+      ? '영어 인증, 소프트웨어 코딩 인증, 고전 독서 인증 중 2가지 이상을 이수하면 졸업 인증이 완료됩니다.'
+      : '영어 인증과 고전독서 인증을 모두 이수해야 졸업 인증이 완료됩니다.';
 
   // 고전독서 전체 권수 계산
   const classicTotal = {
