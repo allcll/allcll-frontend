@@ -1,10 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
+import { fetchOnAPI } from '@/shared/api/api';
 
 const checkGraduation = async (file: File) => {
   const formData = new FormData();
   formData.append('file', file);
 
-  const response = await fetch('/api/graduation/check', {
+  const response = await fetchOnAPI('/api/graduation/check', {
     method: 'POST',
     body: formData,
   });
