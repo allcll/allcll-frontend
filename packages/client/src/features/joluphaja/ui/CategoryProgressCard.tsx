@@ -1,4 +1,4 @@
-import { Card, Flex, Badge, Button } from '@allcll/allcll-ui';
+import { Card, Flex, Button } from '@allcll/allcll-ui';
 import ProgressDoughnut from './ProgressDoughnut';
 import type { CategoryProgress, CategoryType, MissingCourse } from '@/entities/joluphaja/api/graduation';
 import { CATEGORY_TYPE_LABELS, getStatusLabel } from '../lib/mappers';
@@ -24,11 +24,6 @@ function CategoryProgressCard({ category, missingCourses: _missingCourses, onVie
         {/* 카테고리 제목 */}
         <div className="text-center">
           <span className="text-lg font-bold">{label}</span>
-          {!category.satisfied && (
-            <span className="ml-2">
-              <Badge variant="danger">미이수</Badge>
-            </span>
-          )}
         </div>
 
         {/* 도넛 차트 */}
