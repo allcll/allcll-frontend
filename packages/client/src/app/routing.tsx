@@ -14,10 +14,8 @@ import ErrorPageWith404 from '@/pages/ErrorPageWith404.tsx';
 import Simulation from '@/pages/simulation/Simulation.tsx';
 import SimulationDashboard from '@/pages/simulation/Dashboard.tsx';
 import SimulationDashboardDetail from '@/pages/simulation/DashboardDetail.tsx';
-import NotFound from '@/pages/notfound/NotFound';
-
 import Timetable from '@/pages/timetable/Timetable.tsx';
-import Steps from '@/features/jolup/ui/Steps.tsx';
+import NotFound from '@/pages/notfound/NotFound';
 
 const router = createBrowserRouter([
   {
@@ -99,11 +97,6 @@ const router = createBrowserRouter([
       },
     ],
     errorElement: <ErrorPage />,
-  },
-
-  {
-    path: 'jolup',
-    element: <Steps />,
   },
 
   {

@@ -11,38 +11,46 @@ import BasicInfoForm from './BasicInfoForm';
  * 각 기능은 이 인터페이스를 참조하면 좋겠습니다. */
 export interface JolupStepsProps {
   nextStep: () => void;
-  backStep?: () => void;
+  prevStep: () => void;
 }
 
 function Steps() {
-  const { step, nextStep } = useJolupSteps();
+  const { step, nextStep, prevStep } = useJolupSteps();
 
   return (
     <Flex direction="flex-col" gap="gap-8" className="w-full max-w-4xl mx-auto p-4">
       <StepIndicator currentStep={step} />
 
-      {renderStepContent(step, nextStep)}
+      {renderStepContent(step, nextStep, prevStep)}
     </Flex>
   );
 }
 
-function renderStepContent(step: JolupSteps, nextStep: () => void) {
+function renderStepContent(step: JolupSteps, nextStep: () => void, prevStep: () => void) {
   switch (step) {
     case JolupSteps.LOGIN:
-      return <DefaultStep nextStep={nextStep}>Login Step</DefaultStep>;
+      return (
+        <DefaultStep nextStep={nextStep} prevStep={prevStep}>
+          Login Step
+        </DefaultStep>
+      );
     case JolupSteps.BASIC_INFO:
-      return <BasicInfoForm nextStep={nextStep} />;
+      return <BasicInfoForm nextStep={nextStep} prevStep={prevStep} />;
     case JolupSteps.FILE_UPLOAD:
       return (
         <Flex direction="flex-col" gap="gap-6">
-          <FileUpload nextStep={nextStep} />
+          <FileUpload nextStep={nextStep} prevStep={prevStep} />
           <FileUploadGuide />
         </Flex>
       );
     case JolupSteps.UPLOADING:
-      return <Uploading nextStep={nextStep} />;
+      return <Uploading nextStep={nextStep} prevStep={prevStep} />;
     default:
-      return <DefaultStep nextStep={nextStep}>Unknown Step</DefaultStep>;
+      return (
+        <DefaultStep nextStep={nextStep} prevStep={prevStep}>
+          Unknown Step
+        </DefaultStep>
+      );
   }
 }
 

@@ -36,7 +36,7 @@ function useJolupSteps() {
         setStep(JolupSteps.UPLOADING);
         break;
       case JolupSteps.UPLOADING:
-        // Final step, do nothing or reset
+        // Todo: 마지막 단계 처리 (예: 결과 페이지로 이동)
         break;
       default:
         console.error(`Unknown step ${step}`);
