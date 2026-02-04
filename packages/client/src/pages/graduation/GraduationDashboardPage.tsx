@@ -8,6 +8,9 @@ import {
   getGeneralCategoryTypes,
   filterCategories,
   MAJOR_CATEGORY_TYPES,
+  getScopeTypes,
+  filterCategoriesByScope,
+  SCOPE_TYPE_LABELS,
 } from '@/features/joluphaja/lib/mappers';
 import type { CategoryType } from '@/entities/joluphaja/api/graduation';
 import OverallSummaryCard from '@/features/joluphaja/ui/OverallSummaryCard';
@@ -80,6 +83,10 @@ function GraduationDashboardPage() {
   const majorCategories = filterCategories(graduationData.categories, MAJOR_CATEGORY_TYPES);
   const generalCategories = filterCategories(graduationData.categories, generalCategoryTypes);
 
+  // 전공 타입에 따른 스코프 목록
+  const scopeTypes = getScopeTypes(userInfo.majorType);
+  const isSingleMajor = userInfo.majorType === 'SINGLE';
+
   // 추천 과목 매핑 (categoryType별 미이수 과목)
   const getMissingCourses = (categoryType: CategoryType) => {
     const recommendation = graduationData.recommendations.requiredCourses.find(r => r.categoryType === categoryType);
@@ -90,7 +97,8 @@ function GraduationDashboardPage() {
   const renderMobileContent = () => {
     switch (activeTab) {
       case 'major':
-        return (
+        return isSingleMajor ? (
+          // 단일 전공
           <section>
             <h2 className="text-xl font-bold mb-4">전공 이수 현황</h2>
             <Flex direction="flex-col" gap="gap-4">
@@ -104,6 +112,30 @@ function GraduationDashboardPage() {
               ))}
             </Flex>
           </section>
+        ) : (
+          // 복수전공/부전공
+          <Flex direction="flex-col" gap="gap-6">
+            {scopeTypes.map(scope => {
+              const scopeCategories = filterCategoriesByScope(graduationData.categories, scope, MAJOR_CATEGORY_TYPES);
+              const scopeLabel = SCOPE_TYPE_LABELS[scope];
+
+              return (
+                <section key={scope}>
+                  <h2 className="text-xl font-bold mb-4">{scopeLabel} 이수 현황</h2>
+                  <Flex direction="flex-col" gap="gap-4">
+                    {scopeCategories.map(category => (
+                      <CategoryProgressCard
+                        key={`${category.scope}-${category.categoryType}`}
+                        category={category}
+                        missingCourses={getMissingCourses(category.categoryType)}
+                        onViewCourses={handleViewCourses}
+                      />
+                    ))}
+                  </Flex>
+                </section>
+              );
+            })}
+          </Flex>
         );
       case 'general':
         return (
@@ -170,19 +202,50 @@ function GraduationDashboardPage() {
         ) : (
           <>
             {/* 웹: 전공 이수 현황 */}
-            <section className="mb-10">
-              <h2 className="text-xl font-bold mb-4">전공 이수 현황</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {majorCategories.map(category => (
-                  <CategoryProgressCard
-                    key={category.categoryType}
-                    category={category}
-                    missingCourses={getMissingCourses(category.categoryType)}
-                    onViewCourses={handleViewCourses}
-                  />
-                ))}
-              </div>
-            </section>
+            {isSingleMajor ? (
+              // 단일 전공
+              <section className="mb-10">
+                <h2 className="text-xl font-bold mb-4">전공 이수 현황</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {majorCategories.map(category => (
+                    <CategoryProgressCard
+                      key={category.categoryType}
+                      category={category}
+                      missingCourses={getMissingCourses(category.categoryType)}
+                      onViewCourses={handleViewCourses}
+                    />
+                  ))}
+                </div>
+              </section>
+            ) : (
+              // 복수전공/부전공
+              <>
+                {scopeTypes.map(scope => {
+                  const scopeCategories = filterCategoriesByScope(
+                    graduationData.categories,
+                    scope,
+                    MAJOR_CATEGORY_TYPES,
+                  );
+                  const scopeLabel = SCOPE_TYPE_LABELS[scope];
+
+                  return (
+                    <section key={scope} className="mb-10">
+                      <h2 className="text-xl font-bold mb-4">{scopeLabel} 이수 현황</h2>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {scopeCategories.map(category => (
+                          <CategoryProgressCard
+                            key={`${category.scope}-${category.categoryType}`}
+                            category={category}
+                            missingCourses={getMissingCourses(category.categoryType)}
+                            onViewCourses={handleViewCourses}
+                          />
+                        ))}
+                      </div>
+                    </section>
+                  );
+                })}
+              </>
+            )}
 
             {/* 웹: 교양 이수 현황 */}
             <section className="mb-10">

@@ -28,7 +28,7 @@ export type CategoryType =
   | 'MAJOR_TOTAL';
 
 /** 스코프 타입 */
-export type ScopeType = 'PRIMARY' | 'SECONDARY';
+export type ScopeType = 'PRIMARY' | 'DOUBLE' | 'MINOR';
 
 /** 카테고리별 이수 현황 */
 export interface CategoryProgress {

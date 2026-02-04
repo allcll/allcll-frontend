@@ -4,6 +4,8 @@ import type {
   ClassicDomainType,
   PolicyYear,
   GraduationCheckData,
+  ScopeType,
+  UserInfo,
 } from '@/entities/joluphaja/api/graduation';
 
 /** 카테고리 타입 → 한글 라벨 매핑 */
@@ -97,4 +99,34 @@ export function getStatusLabel(satisfied: boolean): string {
 /** 이수 상태 뱃지 variant */
 export function getStatusBadgeVariant(satisfied: boolean): 'success' | 'danger' {
   return satisfied ? 'success' : 'danger';
+}
+
+/** 스코프 타입 → 한글 라벨 매핑 */
+export const SCOPE_TYPE_LABELS: Record<ScopeType, string> = {
+  PRIMARY: '주전공',
+  DOUBLE: '복수전공',
+  MINOR: '부전공',
+};
+
+/** 전공 타입에 따른 스코프 목록 반환 */
+export function getScopeTypes(majorType: UserInfo['majorType']): ScopeType[] {
+  switch (majorType) {
+    case 'SINGLE':
+      return ['PRIMARY'];
+    case 'DOUBLE':
+      return ['PRIMARY', 'DOUBLE'];
+    case 'MINOR':
+      return ['PRIMARY', 'MINOR'];
+    default:
+      return ['PRIMARY'];
+  }
+}
+
+/** 특정 스코프와 카테고리 타입에 해당하는 카테고리 필터링 */
+export function filterCategoriesByScope(
+  categories: CategoryProgress[],
+  scope: ScopeType,
+  categoryTypes: CategoryType[],
+): CategoryProgress[] {
+  return categories.filter(cat => cat.scope === scope && categoryTypes.includes(cat.categoryType));
 }
