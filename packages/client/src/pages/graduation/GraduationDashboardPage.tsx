@@ -20,6 +20,7 @@ import MobileTabs, { useMobileTabs } from '@/features/joluphaja/ui/MobileTabs';
 
 function LoadingState() {
   return (
+    // TODO: 로딩 스피너 추가
     <Flex justify="justify-center" align="items-center" className="min-h-[400px]">
       <div className="text-gray-500">졸업요건을 분석하고 있습니다...</div>
     </Flex>
