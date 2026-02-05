@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import loginValidator from './loginValidate';
 import useInputs from '@/shared/lib/useInput';
 
@@ -19,7 +19,8 @@ const useLoginForm = () => {
   type LoginErrors = Partial<Record<loginKeys, string>>;
 
   const [errors, setErrors] = useState<LoginErrors>({});
-  const [touched, setTouched] = useState<Record<loginKeys, boolean>>({
+
+  const touchedRef = useRef({
     studentId: false,
     password: false,
     agreeToTerms: false,
@@ -31,12 +32,10 @@ const useLoginForm = () => {
 
     handleInputChange(e);
 
-    if (touched[key]) {
-      setErrors(prev => ({
-        ...prev,
-        [key]: loginValidator(key, inputValue),
-      }));
-    }
+    setErrors(prev => ({
+      ...prev,
+      [key]: loginValidator(key, inputValue),
+    }));
   };
 
   /**`
@@ -44,7 +43,8 @@ const useLoginForm = () => {
    * @param key - 블러된 입력 필드의 이름입니다.
    */
   const onBlur = (key: loginKeys) => {
-    setTouched(prev => ({ ...prev, [key]: true }));
+    touchedRef.current[key] = true;
+
     setErrors(prev => ({ ...prev, [key]: loginValidator(key, loginValues[key]) }));
   };
 
@@ -59,12 +59,6 @@ const useLoginForm = () => {
 
     setErrors(nextInputErrors);
 
-    setTouched({
-      studentId: true,
-      password: true,
-      agreeToTerms: true,
-    });
-
     if (!Object.values(nextInputErrors).some(Boolean)) {
       onSubmit(loginValues);
     }
@@ -78,7 +72,7 @@ const useLoginForm = () => {
   return {
     values: loginValues,
     errors,
-    touched,
+    touched: touchedRef.current,
     onChange,
     onBlur,
     submit,
