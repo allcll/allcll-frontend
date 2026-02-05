@@ -1,17 +1,36 @@
 import { Link } from 'react-router-dom';
-
+import useToastNotification from '@/features/notification/model/useToastNotification';
 import { Button, Checkbox, Flex, TextField } from '@allcll/allcll-ui';
 import useLoginForm from '../lib/useLoginForm';
+import { useLogin } from '@/entities/user/model/useAuth';
 
 interface LoginFormProps {
-  onSubmit: (data: { studentId: string; password: string; agreeToTerms: boolean }) => void;
+  onSuccess?: () => void;
 }
 
-function LoginForm({ onSubmit }: LoginFormProps) {
+function LoginForm({ onSuccess }: LoginFormProps) {
   const { values, errors, touched, onChange, onBlur, submit, isValid } = useLoginForm();
+  const { mutate: login, isPending } = useLogin();
+  const showToast = useToastNotification.getState().addToast;
+
+  const handleSubmit = (data: { studentId: string; password: string }) => {
+    login(
+      { studentId: data.studentId, password: data.password },
+      {
+        onSuccess: () => {
+          onSuccess?.();
+          showToast('로그인에 성공했습니다. 졸업 요건 검사를 시작합니다.');
+        },
+        onError: () => {
+          // 로그인 실패 시 처리 (예: 에러 메시지 표시)
+          showToast('로그인에 실패했습니다. 학번과 비밀번호를 확인해주세요.');
+        },
+      },
+    );
+  };
 
   return (
-    <form onSubmit={submit(onSubmit)} className="flex flex-col gap-6">
+    <form onSubmit={submit(handleSubmit)} className="flex flex-col gap-6">
       <TextField
         label="학번"
         name="studentId"
@@ -57,8 +76,8 @@ function LoginForm({ onSubmit }: LoginFormProps) {
         </Flex>
       </Flex>
 
-      <Button type="submit" variant="primary" size="medium" disabled={!isValid}>
-        로그인
+      <Button type="submit" variant="primary" size="medium" disabled={!isValid || isPending}>
+        {isPending ? '로그인 중...' : '로그인'}
       </Button>
     </form>
   );
