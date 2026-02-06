@@ -12,11 +12,12 @@ import {
   filterCategoriesByScope,
   SCOPE_TYPE_LABELS,
 } from '@/features/joluphaja/lib/mappers';
-import type { CategoryType } from '@/entities/joluphaja/api/graduation';
+import type { CategoryType, MissingCourse } from '@/entities/joluphaja/api/graduation';
 import OverallSummaryCard from '@/features/joluphaja/ui/OverallSummaryCard';
 import CategoryProgressCard from '@/features/joluphaja/ui/CategoryProgressCard';
 import CertificationSection from '@/features/joluphaja/ui/CertificationSection';
 import MobileTabs, { useMobileTabs } from '@/features/joluphaja/ui/MobileTabs';
+import RecommendedCoursesModal from '@/features/joluphaja/ui/RecommendedCoursesModal';
 
 function LoadingState() {
   return (
@@ -41,6 +42,10 @@ function ErrorState({ message }: { message: string }) {
 function GraduationDashboardPage() {
   const isMobile = useMobile();
   const [showBanner, setShowBanner] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<{
+    categoryType: CategoryType;
+    missingCourses: MissingCourse[];
+  } | null>(null);
   const { activeTab, setActiveTab } = useMobileTabs('major');
   const { userInfo, graduationData, isPending, isError, error, refetch } = useGraduationDashboard();
 
@@ -52,9 +57,12 @@ function GraduationDashboardPage() {
     setShowBanner(false);
   };
 
-  const handleViewCourses = (categoryType: CategoryType) => {
-    // TODO: 미이수 과목 추천 모달 열기
-    console.log('과목 확인 클릭:', categoryType);
+  const handleViewCourses = (categoryType: CategoryType, missingCourses: MissingCourse[]) => {
+    setSelectedCategory({ categoryType, missingCourses });
+  };
+
+  const handleCloseModal = () => {
+    setSelectedCategory(null);
   };
 
   if (isPending) {
@@ -268,6 +276,16 @@ function GraduationDashboardPage() {
           </>
         )}
       </div>
+
+      {/* 추천 과목 모달 */}
+      {selectedCategory && (
+        <RecommendedCoursesModal
+          isOpen
+          onClose={handleCloseModal}
+          categoryType={selectedCategory.categoryType}
+          missingCourses={selectedCategory.missingCourses}
+        />
+      )}
     </>
   );
 }

@@ -5,17 +5,16 @@ import { CATEGORY_TYPE_LABELS, getStatusLabel } from '../lib/mappers';
 
 interface CategoryProgressCardProps {
   category: CategoryProgress;
-  /** 미이수 과목 목록 (TODO: 과목 확인 모달에서 사용 예정) */
   missingCourses?: MissingCourse[];
-  onViewCourses?: (categoryType: CategoryType) => void;
+  onViewCourses?: (categoryType: CategoryType, missingCourses: MissingCourse[]) => void;
 }
 
-function CategoryProgressCard({ category, missingCourses: _missingCourses, onViewCourses }: CategoryProgressCardProps) {
+function CategoryProgressCard({ category, missingCourses, onViewCourses }: CategoryProgressCardProps) {
   const label = CATEGORY_TYPE_LABELS[category.categoryType];
   const statusLabel = getStatusLabel(category.satisfied);
 
   const handleViewCourses = () => {
-    onViewCourses?.(category.categoryType);
+    onViewCourses?.(category.categoryType, missingCourses ?? []);
   };
 
   return (
