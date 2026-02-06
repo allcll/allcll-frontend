@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteMe, getMe, patchMe, postLogin, postLogout } from '@/entities/user/api/user.ts';
-import useAuthStore from './useAuthStore';
 import { LoginRequest, PatchMeRequest } from './types';
 
 const AUTH_QUERY_KEY = ['auth', 'me'];
@@ -11,16 +10,10 @@ const AUTH_QUERY_KEY = ['auth', 'me'];
  * @returns
  */
 export function useMe() {
-  const { setUser } = useAuthStore();
-
   return useQuery({
     queryKey: AUTH_QUERY_KEY,
     queryFn: getMe,
     retry: false,
-    select: data => {
-      setUser(data);
-      return data;
-    },
   });
 }
 
@@ -48,12 +41,10 @@ export function useLogin() {
  */
 export function useLogout() {
   const queryClient = useQueryClient();
-  const { clearUser } = useAuthStore();
 
   return useMutation({
     mutationFn: postLogout,
     onSuccess: () => {
-      clearUser();
       queryClient.removeQueries({ queryKey: AUTH_QUERY_KEY });
     },
   });
@@ -84,12 +75,10 @@ export function usePatchMe() {
  */
 export function useDeleteMe() {
   const queryClient = useQueryClient();
-  const { clearUser } = useAuthStore();
 
   return useMutation({
     mutationFn: deleteMe,
     onSuccess: () => {
-      clearUser();
       queryClient.removeQueries({ queryKey: AUTH_QUERY_KEY });
     },
   });
