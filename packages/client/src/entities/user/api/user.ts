@@ -1,5 +1,5 @@
 import { fetchJsonOnAPI, fetchOnAPI, fetchDeleteJsonOnAPI } from '@/shared/api/api.ts';
-import { LoginRequest, PatchMeRequest, UserResponse } from '@/entities/user/model/types.ts';
+import { LoginRequest, UpdateMeRequest, UserResponse } from '@/entities/user/model/types.ts';
 
 //TODO: features로 폴더 이동 고려
 export const postLogin = async ({ studentId, password }: LoginRequest): Promise<void> => {
@@ -28,7 +28,7 @@ export const getMe = async (): Promise<UserResponse> => {
   return fetchJsonOnAPI<UserResponse>('/api/auth/me');
 };
 
-export const patchMe = async (body: PatchMeRequest): Promise<void> => {
+export const updateMe = async (body: UpdateMeRequest): Promise<void> => {
   const response = await fetchOnAPI('/api/auth/me', {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },

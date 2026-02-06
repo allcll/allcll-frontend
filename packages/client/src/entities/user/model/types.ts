@@ -21,7 +21,7 @@ export interface LoginRequest {
  * 전과일 경우: deptNm: 전과 학과명, majorType: 'SINGLE', doubleDeptNm: null
  * 전과도 하고 복수전공일경우: deptNm: 전과 학과명, majorType: 'DOUBLE', doubleDeptNm: 복수전공학과명
  */
-export interface PatchMeRequest {
+export interface UpdateMeRequest {
   deptNm: string | null;
   majorType: majorType;
   doubleDeptNm: string | null;

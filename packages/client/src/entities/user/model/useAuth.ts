@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { deleteMe, getMe, patchMe, postLogin, postLogout } from '@/entities/user/api/user.ts';
-import { LoginRequest, PatchMeRequest } from './types';
+import { deleteMe, getMe, updateMe, postLogin, postLogout } from '@/entities/user/api/user.ts';
+import { LoginRequest, UpdateMeRequest } from './types';
 
 const AUTH_QUERY_KEY = ['auth', 'me'];
 
@@ -57,11 +57,11 @@ export function useLogout() {
   * @param data
  * @returns
  */
-export function usePatchMe() {
+export function useUpdateMe() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: PatchMeRequest) => patchMe(data),
+    mutationFn: (data: UpdateMeRequest) => updateMe(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: AUTH_QUERY_KEY });
     },
