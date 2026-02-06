@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Flex, Banner, Button } from '@allcll/allcll-ui';
+import { Flex, Banner, Button, Heading, SupportingText } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile';
 import { useGraduationDashboard } from '@/entities/joluphaja/model/useGraduation';
 import {
@@ -109,7 +109,9 @@ function GraduationDashboardPage() {
         return isSingleMajor ? (
           // 단일 전공
           <section>
-            <h2 className="text-xl font-bold mb-4">전공 이수 현황</h2>
+            <Heading level={2} className="mb-4">
+              전공 이수 현황
+            </Heading>
             <Flex direction="flex-col" gap="gap-4">
               {majorCategories.map(category => (
                 <CategoryProgressCard
@@ -130,7 +132,9 @@ function GraduationDashboardPage() {
 
               return (
                 <section key={scope}>
-                  <h2 className="text-xl font-bold mb-4">{scopeLabel} 이수 현황</h2>
+                  <Heading level={2} className="mb-4">
+                    {scopeLabel} 이수 현황
+                  </Heading>
                   <Flex direction="flex-col" gap="gap-4">
                     {scopeCategories.map(category => (
                       <CategoryProgressCard
@@ -149,7 +153,9 @@ function GraduationDashboardPage() {
       case 'general':
         return (
           <section>
-            <h2 className="text-xl font-bold mb-4">교양 이수 현황</h2>
+            <Heading level={2} className="mb-4">
+              교양 이수 현황
+            </Heading>
             <Flex direction="flex-col" gap="gap-4">
               {generalCategories.map(category => (
                 <CategoryProgressCard
@@ -179,16 +185,14 @@ function GraduationDashboardPage() {
       <div className="max-w-screen-xl mx-auto px-4 py-6">
         {/* 안내 배너 */}
         {showBanner && (
-          <div className="mb-6">
-            <Banner deleteBanner={handleDeleteBanner}>
-              본 결과는 공식적인 효력을 갖지 않습니다. 최종 졸업 확정 여부는 학과 사무실을 통해 확인하시기 바랍니다.
-            </Banner>
-          </div>
+          <Banner deleteBanner={handleDeleteBanner}>
+            본 결과는 공식적인 효력을 갖지 않습니다. 최종 졸업 확정 여부는 학과 사무실을 통해 확인하시기 바랍니다.
+          </Banner>
         )}
 
         {/* 페이지 제목 */}
-        <h1 className="text-2xl font-bold mb-2">졸업요건 분석</h1>
-        <p className="text-gray-500 mb-6">{userInfo.studentName}님의 졸업요건 분석 결과입니다.</p>
+        <Heading level={1}>졸업요건 분석</Heading>
+        <SupportingText className="mb-6">{userInfo.studentName}님의 졸업요건 분석 결과입니다.</SupportingText>
 
         {/* 전체 진행률 카드 */}
         <OverallSummaryCard userInfo={userInfo} graduationData={graduationData} />
@@ -214,7 +218,9 @@ function GraduationDashboardPage() {
             {isSingleMajor ? (
               // 단일 전공
               <section className="mb-10">
-                <h2 className="text-xl font-bold mb-4">전공 이수 현황</h2>
+                <Heading level={2} className="mb-4">
+                  전공 이수 현황
+                </Heading>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {majorCategories.map(category => (
                     <CategoryProgressCard
@@ -239,7 +245,9 @@ function GraduationDashboardPage() {
 
                   return (
                     <section key={scope} className="mb-10">
-                      <h2 className="text-xl font-bold mb-4">{scopeLabel} 이수 현황</h2>
+                      <Heading level={2} className="mb-4">
+                        {scopeLabel} 이수 현황
+                      </Heading>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {scopeCategories.map(category => (
                           <CategoryProgressCard
@@ -258,7 +266,9 @@ function GraduationDashboardPage() {
 
             {/* 웹: 교양 이수 현황 */}
             <section className="mb-10">
-              <h2 className="text-xl font-bold mb-4">교양 이수 현황</h2>
+              <Heading level={2} className="mb-4">
+                교양 이수 현황
+              </Heading>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {generalCategories.map(category => (
                   <CategoryProgressCard

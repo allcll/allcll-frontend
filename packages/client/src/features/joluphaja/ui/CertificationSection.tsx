@@ -1,4 +1,4 @@
-import { Card, Flex, Badge, Button } from '@allcll/allcll-ui';
+import { Card, Flex, Grid, Badge, Button, Heading, SupportingText } from '@allcll/allcll-ui';
 import type { Certifications, PolicyYear, ClassicDomain } from '@/entities/joluphaja/api/graduation';
 import { CLASSIC_DOMAIN_LABELS } from '../lib/mappers';
 
@@ -106,15 +106,15 @@ function CertificationSection({ certifications, policyYear }: CertificationSecti
   return (
     <section>
       <Flex align="items-center" gap="gap-3" className="mb-4">
-        <h2 className="text-xl font-bold">졸업인증</h2>
+        <Heading level={2}>졸업인증</Heading>
         <Badge variant={certifications.isSatisfied ? 'success' : 'danger'}>
           {passedCount}/{requiredPassCount}
         </Badge>
       </Flex>
 
-      <p className="text-sm text-gray-600 mb-6">{policyDescription}</p>
+      <SupportingText className="mb-6">{policyDescription}</SupportingText>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <Grid columns={{ base: 1, md: 3 }} gap="gap-4">
         {/* 영어인증 */}
         <CertificationCard
           title="영어인증"
@@ -159,7 +159,7 @@ function CertificationSection({ certifications, policyYear }: CertificationSecti
             </Flex>
           </CertificationCard>
         )}
-      </div>
+      </Grid>
     </section>
   );
 }
