@@ -73,12 +73,14 @@ export type CertificationTargetType = 'MAJOR' | 'NON_MAJOR';
 /** 영어 인증 */
 export interface EnglishCertification {
   passed: boolean;
+  required: boolean;
   targetType: CertificationTargetType;
 }
 
 /** 코딩 인증 */
 export interface CodingCertification {
   passed: boolean;
+  required: boolean;
   targetType: CertificationTargetType;
 }
 
@@ -100,6 +102,7 @@ export interface ClassicDomain {
 /** 고전독서 인증 */
 export interface ClassicCertification {
   passed: boolean;
+  required: boolean;
   total: {
     requiredCount: number;
     myCount: number;

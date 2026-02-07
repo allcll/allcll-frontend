@@ -1,12 +1,11 @@
 import { Card, Flex, Grid, Badge, Button, Heading, SupportingText } from '@allcll/allcll-ui';
-import type { Certifications, PolicyYear, ClassicDomain } from '@/entities/joluphaja/api/graduation';
+import type { Certifications, ClassicDomain } from '@/entities/joluphaja/api/graduation';
 import { CLASSIC_DOMAIN_LABELS } from '../lib/mappers';
 
 type CertificationType = 'english' | 'classic' | 'coding';
 
 interface CertificationSectionProps {
   certifications: Certifications;
-  policyYear: PolicyYear;
 }
 
 interface CertificationCardProps {
@@ -83,7 +82,7 @@ function ClassicReadingTable({ domains }: ClassicReadingTableProps) {
   );
 }
 
-function CertificationSection({ certifications, policyYear }: CertificationSectionProps) {
+function CertificationSection({ certifications }: CertificationSectionProps) {
   const { english, coding, classic, passedCount, requiredPassCount } = certifications;
 
   const handleViewStandards = (type: CertificationType) => {
@@ -92,10 +91,19 @@ function CertificationSection({ certifications, policyYear }: CertificationSecti
   };
 
   // 정책 설명 텍스트
+  const CERT_NAMES: Record<CertificationType, string> = {
+    english: '영어 인증',
+    coding: '소프트웨어 코딩 인증',
+    classic: '고전 독서 인증',
+  };
+  const requiredNames = (Object.keys(CERT_NAMES) as CertificationType[])
+    .filter(key => certifications[key].required)
+    .map(key => CERT_NAMES[key]);
+
   const policyDescription =
-    policyYear === 'from23'
-      ? '영어 인증, 소프트웨어 코딩 인증, 고전 독서 인증 중 2가지 이상을 이수하면 졸업 인증이 완료됩니다.'
-      : '영어 인증과 고전독서 인증을 모두 이수해야 졸업 인증이 완료됩니다.';
+    requiredPassCount >= requiredNames.length
+      ? `${requiredNames.join('과 ')}을 모두 이수해야 졸업 인증이 완료됩니다.`
+      : `${requiredNames.join(', ')} 중 ${requiredPassCount}가지 이상을 이수하면 졸업 인증이 완료됩니다.`;
 
   // 고전독서 전체 권수 계산
   const classicTotal = {
@@ -116,34 +124,38 @@ function CertificationSection({ certifications, policyYear }: CertificationSecti
 
       <Grid columns={{ base: 1, md: 3 }} gap="gap-4">
         {/* 영어인증 */}
-        <CertificationCard
-          title="영어인증"
-          passed={english.passed}
-          onViewStandards={handleViewStandards}
-          certificationType="english"
-        >
-          <Flex justify="justify-center" align="items-center" className="h-full">
-            {english.passed ? (
-              <span className="text-primary-600">인증 완료</span>
-            ) : (
-              <span className="text-gray-500">이수 내역 없음</span>
-            )}
-          </Flex>
-        </CertificationCard>
+        {english.required && (
+          <CertificationCard
+            title="영어인증"
+            passed={english.passed}
+            onViewStandards={handleViewStandards}
+            certificationType="english"
+          >
+            <Flex justify="justify-center" align="items-center" className="h-full">
+              {english.passed ? (
+                <span className="text-primary-600">인증 완료</span>
+              ) : (
+                <span className="text-gray-500">이수 내역 없음</span>
+              )}
+            </Flex>
+          </CertificationCard>
+        )}
 
         {/* 고전독서인증 */}
-        <CertificationCard
-          title="고전독서인증"
-          passed={classic.passed}
-          customStatus={`${classicTotal.myCount}/${classicTotal.requiredCount}`}
-          onViewStandards={handleViewStandards}
-          certificationType="classic"
-        >
-          <ClassicReadingTable domains={classic.domains} />
-        </CertificationCard>
+        {classic.required && (
+          <CertificationCard
+            title="고전독서인증"
+            passed={classic.passed}
+            customStatus={`${classicTotal.myCount}/${classicTotal.requiredCount}`}
+            onViewStandards={handleViewStandards}
+            certificationType="classic"
+          >
+            <ClassicReadingTable domains={classic.domains} />
+          </CertificationCard>
+        )}
 
-        {/* SW코딩졸업인증 (23학번 이후에만 표시) */}
-        {policyYear === 'from23' && (
+        {/* SW코딩졸업인증 */}
+        {coding.required && (
           <CertificationCard
             title="SW코딩졸업인증"
             passed={coding.passed}
