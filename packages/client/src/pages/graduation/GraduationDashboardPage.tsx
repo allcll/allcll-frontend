@@ -18,6 +18,7 @@ import CategoryProgressCard from '@/features/joluphaja/ui/CategoryProgressCard';
 import CertificationSection from '@/features/joluphaja/ui/CertificationSection';
 import MobileTabs, { useMobileTabs } from '@/features/joluphaja/ui/MobileTabs';
 import RecommendedCoursesModal from '@/features/joluphaja/ui/RecommendedCoursesModal';
+import EditProfileModal from '@/features/joluphaja/ui/EditProfileModal';
 
 function LoadingState() {
   return (
@@ -42,6 +43,7 @@ function ErrorState({ message }: { message: string }) {
 function GraduationDashboardPage() {
   const isMobile = useMobile();
   const [showBanner, setShowBanner] = useState(true);
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<{
     categoryType: CategoryType;
     missingCourses: MissingCourse[];
@@ -54,7 +56,7 @@ function GraduationDashboardPage() {
   };
 
   const handleEditProfile = () => {
-    // todo 회원 정보 수정 페이지로 이동하는 로직 추가
+    setIsEditProfileOpen(true);
   };
   const handleDeleteBanner = () => {
     setShowBanner(false);
@@ -302,6 +304,15 @@ function GraduationDashboardPage() {
           onClose={handleCloseModal}
           categoryType={selectedCategory.categoryType}
           missingCourses={selectedCategory.missingCourses}
+        />
+      )}
+
+      {/* 회원 정보 수정 모달 */}
+      {userInfo && (
+        <EditProfileModal
+          isOpen={isEditProfileOpen}
+          onClose={() => setIsEditProfileOpen(false)}
+          userInfo={userInfo}
         />
       )}
     </>
