@@ -150,3 +150,83 @@ export async function fetchUserInfo(): Promise<UserInfo> {
 export async function fetchGraduationCheck(): Promise<GraduationCheckResponse> {
   return await fetchJsonOnAPI<GraduationCheckResponse>('/api/graduation/check');
 }
+
+// ---- 졸업인증 기준 조회 API ----
+
+/** 졸업인증 기준 - 학생 컨텍스트 */
+export interface CertificationCriteriaContext {
+  admissionYear: number;
+  deptName: string;
+  deptGroup: string;
+  englishTargetType: CertificationTargetType;
+  codingTargetType: CertificationTargetType;
+  collegeName: string;
+  deptCd: string;
+}
+
+/** 졸업인증 기준 - 정책 */
+export interface CertificationCriteriaPolicy {
+  ruleType: CertificationRuleType;
+  requiredPassCount: number;
+  enableEnglish: boolean;
+  enableClassic: boolean;
+  enableCoding: boolean;
+}
+
+/** 대체 과목 정보 */
+export interface AltCourse {
+  name?: string;
+  curiNo?: number;
+  credit?: number;
+  minGrade?: string;
+}
+
+/** 영어 인증 기준 */
+export interface EnglishCriteria {
+  targetType: CertificationTargetType;
+  toeicMinScore: number;
+  toeflIbtMinScore: number;
+  tepsMinScore: number;
+  newTepsMinScore: number;
+  opicMinLevel: string;
+  toeicSpeakingMinLevel: string;
+  gtelpLevel: number;
+  gtelpMinScore: number;
+  gtelpSpeakingLevel: number;
+  altCourse: AltCourse;
+}
+
+/** 고전독서 인증 기준 */
+export interface ClassicCriteria {
+  totalRequiredCount: number;
+  requiredCountWestern: number;
+  requiredCountEastern: number;
+  requiredCountEasternAndWestern: number;
+  requiredCountScience: number;
+}
+
+/** 코딩 인증 기준 */
+export interface CodingCriteria {
+  targetType: CertificationTargetType;
+  toscMinLevel: number;
+  alt1: AltCourse;
+  alt2: AltCourse;
+}
+
+/** 졸업인증 기준 전체 데이터 */
+export interface CertificationCriteriaData {
+  context: CertificationCriteriaContext;
+  policy: CertificationCriteriaPolicy;
+  englishCriteria: EnglishCriteria;
+  classicCriteria: ClassicCriteria;
+  codingCriteria: CodingCriteria;
+}
+
+/** 졸업인증 기준 API 응답 */
+export interface CertificationCriteriaResponse {
+  data: CertificationCriteriaData;
+}
+
+export async function fetchCertificationCriteria(): Promise<CertificationCriteriaResponse> {
+  return await fetchJsonOnAPI<CertificationCriteriaResponse>('/api/graduation/certifications/criteria');
+}

@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { Card, Flex, Grid, Badge, Button, Heading, SupportingText } from '@allcll/allcll-ui';
 import type { Certifications, ClassicDomain } from '@/entities/joluphaja/api/graduation';
 import { CLASSIC_DOMAIN_LABELS } from '../lib/mappers';
+import CertificationCriteriaModal from './CertificationCriteriaModal';
 
-type CertificationType = 'english' | 'classic' | 'coding';
+export type CertificationType = 'english' | 'classic' | 'coding';
 
 interface CertificationSectionProps {
   certifications: Certifications;
@@ -84,10 +86,10 @@ function ClassicReadingTable({ domains }: ClassicReadingTableProps) {
 
 function CertificationSection({ certifications }: CertificationSectionProps) {
   const { english, coding, classic, passedCount, requiredPassCount } = certifications;
+  const [activeCriteriaType, setActiveCriteriaType] = useState<CertificationType | null>(null);
 
   const handleViewStandards = (type: CertificationType) => {
-    // TODO: 기준 확인 모달 열기
-    console.log('기준 확인 클릭:', type);
+    setActiveCriteriaType(type);
   };
 
   // 정책 설명 텍스트
@@ -172,6 +174,14 @@ function CertificationSection({ certifications }: CertificationSectionProps) {
           </CertificationCard>
         )}
       </Grid>
+
+      {activeCriteriaType && (
+        <CertificationCriteriaModal
+          isOpen
+          onClose={() => setActiveCriteriaType(null)}
+          criteriaType={activeCriteriaType}
+        />
+      )}
     </section>
   );
 }

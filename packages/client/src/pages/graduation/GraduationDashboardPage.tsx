@@ -47,12 +47,15 @@ function GraduationDashboardPage() {
     missingCourses: MissingCourse[];
   } | null>(null);
   const { activeTab, setActiveTab } = useMobileTabs('major');
-  const { userInfo, graduationData, isPending, isError, error, refetch } = useGraduationDashboard();
+  const { userInfo, graduationData, isPending, isError, error } = useGraduationDashboard();
 
-  const handleRefresh = () => {
-    refetch();
+  const handleStartOverGraduationCheck = () => {
+    // todo 추후에 파일 추가 단계로 넘어가는 로직 추가
   };
 
+  const handleEditProfile = () => {
+    // todo 회원 정보 수정 페이지로 이동하는 로직 추가
+  };
   const handleDeleteBanner = () => {
     setShowBanner(false);
   };
@@ -169,7 +172,7 @@ function GraduationDashboardPage() {
           </section>
         );
       case 'certification':
-        return <CertificationSection certifications={graduationData.certifications} policyYear={policyYear} />;
+        return <CertificationSection certifications={graduationData.certifications} />;
       default:
         return null;
     }
@@ -191,7 +194,12 @@ function GraduationDashboardPage() {
         )}
 
         {/* 페이지 제목 */}
-        <Heading level={1}>졸업요건 분석</Heading>
+        <Flex justify="justify-between" align="items-center">
+          <Heading level={1}>졸업요건 분석</Heading>
+          <Button variant="text" size="small" onClick={handleEditProfile}>
+            회원 정보 수정
+          </Button>
+        </Flex>
         <SupportingText className="mb-6">{userInfo.studentName}님의 졸업요건 분석 결과입니다.</SupportingText>
 
         {/* 전체 진행률 카드 */}
@@ -200,7 +208,7 @@ function GraduationDashboardPage() {
         {/* 다시 검사하기 버튼 */}
         <Flex justify="justify-end" className="mt-4 mb-8">
           <div className="bg-white rounded-md">
-            <Button variant="outlined" size="medium" onClick={handleRefresh}>
+            <Button variant="outlined" size="medium" onClick={handleStartOverGraduationCheck}>
               다시 검사하기
             </Button>
           </div>
@@ -282,7 +290,7 @@ function GraduationDashboardPage() {
             </section>
 
             {/* 웹: 졸업인증 */}
-            <CertificationSection certifications={graduationData.certifications} policyYear={policyYear} />
+            <CertificationSection certifications={graduationData.certifications} />
           </>
         )}
       </div>
