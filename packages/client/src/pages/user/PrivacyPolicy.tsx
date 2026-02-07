@@ -3,7 +3,7 @@ import remarkGfm from 'remark-gfm';
 import { Helmet } from 'react-helmet';
 import markdownComponents from '@/shared/config/markdownComponents';
 import usePrivacyPolicy from '@/entities/privacyPolicy/model/usePrivacyPolicy';
-import PrivacyLabelGrid from './PrivacyLabelGrid';
+import PrivacyLabelGrid from '../../widgets/user/ui/PrivacyLabelGrid';
 import { Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 
 function PrivacyPolicy() {
