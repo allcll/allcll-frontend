@@ -6,7 +6,7 @@ import Uploading from '@/features/jolup/ui/Uploading.tsx';
 import FileUploadGuide from '@/features/jolup/ui/FileUploadGuide.tsx';
 import StepIndicator from './StepIndicator';
 import BasicInfoForm from './BasicInfoForm';
-import LoginForm from '@/features/joluphaja/ui/LoginForm';
+import LoginForm from '@/features/user/ui/LoginForm';
 
 /**
  * 각 기능은 이 인터페이스를 참조하면 좋겠습니다. */
