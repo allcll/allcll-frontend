@@ -27,13 +27,13 @@ function MainBanner() {
         <div className="flex flex-row justify-start items-center text-xl sm:text-2xl md:text-4xl leading-snug font-bold mb-3">
           <img
             src="/logo-name.svg"
-            alt="ALLCLL 세종대 수강신청 도우미 서비스"
+            alt="올클(ALLCLL) 세종대 수강신청 도우미 서비스"
             className="w-20 sm:w-32 md:w-40 lg:w-48 mr-2 animate-updown"
           />
           이 도와드립니다!
         </div>
         <SupportingText>
-          시간표 만들기부터 수강 신청 연습, 실시간 여석 확인까지 ALLCLL이 여러분과 함께합니다.
+          시간표 만들기부터 수강 신청 연습, 실시간 여석 확인까지 올클(ALLCLL)이 여러분과 함께합니다.
         </SupportingText>
 
         <div className="flex flex-col md:flex-row gap-4 mt-4">
