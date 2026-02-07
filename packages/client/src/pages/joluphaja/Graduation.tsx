@@ -1,5 +1,7 @@
+import Steps from '@/features/jolup/ui/Steps';
+
 function Graduation() {
-  return <></>;
+  return <Steps />;
 }
 
 export default Graduation;

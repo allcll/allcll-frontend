@@ -10,7 +10,7 @@ function MainLayout() {
   useGlobalEffect();
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Helmet>
         <title>ALLCLL</title>
       </Helmet>
@@ -20,7 +20,7 @@ function MainLayout() {
       <BannerNotification />
       <Outlet />
       <Footer />
-    </>
+    </div>
   );
 }
 

@@ -6,6 +6,7 @@ import Uploading from '@/features/jolup/ui/Uploading.tsx';
 import FileUploadGuide from '@/features/jolup/ui/FileUploadGuide.tsx';
 import StepIndicator from './StepIndicator';
 import BasicInfoForm from './BasicInfoForm';
+import LoginForm from '@/features/joluphaja/ui/LoginForm';
 
 /**
  * 각 기능은 이 인터페이스를 참조하면 좋겠습니다. */
@@ -18,7 +19,7 @@ function Steps() {
   const { step, nextStep, prevStep } = useJolupSteps();
 
   return (
-    <Flex direction="flex-col" gap="gap-8" className="w-full max-w-4xl mx-auto p-4">
+    <Flex direction="flex-col" gap="gap-4" className="w-full max-w-4xl mx-auto p-4">
       <StepIndicator currentStep={step} />
 
       {renderStepContent(step, nextStep, prevStep)}
@@ -29,11 +30,7 @@ function Steps() {
 function renderStepContent(step: JolupSteps, nextStep: () => void, prevStep: () => void) {
   switch (step) {
     case JolupSteps.LOGIN:
-      return (
-        <DefaultStep nextStep={nextStep} prevStep={prevStep}>
-          Login Step
-        </DefaultStep>
-      );
+      return <LoginForm onSuccess={nextStep} />;
     case JolupSteps.BASIC_INFO:
       return <BasicInfoForm nextStep={nextStep} prevStep={prevStep} />;
     case JolupSteps.FILE_UPLOAD:
@@ -58,6 +55,7 @@ function DefaultStep({ nextStep, children }: { children: React.ReactNode } & Jol
   return (
     <div>
       <h1>{children}</h1>
+
       <Button onClick={nextStep} variant="primary" size="small">
         다음
       </Button>

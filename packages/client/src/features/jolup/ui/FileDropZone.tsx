@@ -114,7 +114,7 @@ const EmptyState = () => {
 
       <div className="text-center">
         <p className="text-sm font-medium text-gray-700">
-          <span className="text-primary-600">클릭하여 업로드</span> 또는 파일을 여기로 드래그하세요
+          <span className="text-primary-500">클릭하여 업로드</span> 또는 파일을 여기로 드래그하세요
         </p>
         <SupportingText className="mt-1 text-xs">XLSX (최대 1MB)</SupportingText>
       </div>
