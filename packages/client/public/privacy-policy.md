@@ -105,10 +105,10 @@ ALLCLL은 이용자의 개인정보를 보호하기 위하여 다음과 같은 �
 
 | 기관 | 전화 | 홈페이지 |
 | --- | --- | --- |
-| 개인정보침해신고센터 | (국번없이) 118 | [https://privacy.kisa.or.kr](https://privacy.kisa.or.kr) |
-| 개인정보분쟁조정위원회 | 1833-6972 | [https://www.kopico.go.kr](https://www.kopico.go.kr) |
-| 경찰청 사이버안전국 | (국번없이) 182 | [https://cyberbureau.police.go.kr](https://cyberbureau.police.go.kr) |
-| 대검찰청 사이버수사과 | (국번없이) 1301 | [https://www.spo.go.kr](https://www.spo.go.kr) |
+| 개인정보침해신고센터 | (국번없이) 118 | [바로가기](https://privacy.kisa.or.kr) |
+| 개인정보분쟁조정위원회 | 1833-6972 | [바로가기](https://www.kopico.go.kr) |
+| 경찰청 사이버안전국 | (국번없이) 182 | [바로가기](https://cyberbureau.police.go.kr) |
+| 대검찰청 사이버수사과 | (국번없이) 1301 | [바로가기](https://www.spo.go.kr) |
 
 ## 제11조 [개인정보처리방침의 개정과 그 공지]
 
