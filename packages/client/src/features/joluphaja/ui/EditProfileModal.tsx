@@ -190,14 +190,9 @@ function EditProfileModal({ isOpen, onClose, userInfo }: EditProfileModalProps) 
 
       <Dialog.Footer>
         <Flex justify="justify-between" className="w-full">
-          <button
-            type="button"
-            onClick={handleDelete}
-            disabled={isDeleting}
-            className="text-sm text-red-500 hover:text-red-600 disabled:text-gray-400 cursor-pointer disabled:cursor-not-allowed"
-          >
+          <Button variant="secondary" size="small" onClick={handleDelete} disabled={isDeleting}>
             {isDeleting ? '처리 중...' : '회원 탈퇴'}
-          </button>
+          </Button>
           <Button variant="primary" size="small" onClick={handleSave} disabled={isSaving}>
             {isSaving ? '저장 중...' : '저장'}
           </Button>
