@@ -15,6 +15,7 @@ import Simulation from '@/pages/simulation/Simulation.tsx';
 import SimulationDashboard from '@/pages/simulation/Dashboard.tsx';
 import SimulationDashboardDetail from '@/pages/simulation/DashboardDetail.tsx';
 import Timetable from '@/pages/timetable/Timetable.tsx';
+import Graduation from '@/pages/joluphaja/Graduation';
 import NotFound from '@/pages/notfound/NotFound';
 
 const router = createBrowserRouter([
@@ -94,6 +95,17 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Timetable />,
+      },
+    ],
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: 'graduation',
+    element: <MainLayout />,
+    children: [
+      {
+        index: true,
+        element: <Graduation />,
       },
     ],
     errorElement: <ErrorPage />,
