@@ -1,5 +1,6 @@
-import { useEffect, type ComponentType } from 'react';
+import type { ComponentType } from 'react';
 import { Dialog, Flex, Button } from '@allcll/allcll-ui';
+import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
 import type { CertificationCriteriaData, CertificationTargetType } from '@/entities/joluphaja/api/graduation';
 import { useCertificationCriteria } from '@/entities/joluphaja/model/useGraduation';
 import type { CertificationType } from './CertificationSection';
@@ -197,13 +198,7 @@ interface CertificationCriteriaModalProps {
 
 function CertificationCriteriaModal({ isOpen, onClose, criteriaType }: CertificationCriteriaModalProps) {
   const { data, isPending, isError } = useCertificationCriteria(isOpen);
-
-  useEffect(() => {
-    if (isOpen) document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
+  useBodyScrollLock(isOpen);
 
   const title = CRITERIA_TYPE_TITLES[criteriaType];
   const ContentRenderer = criteriaContentRegistry[criteriaType];
