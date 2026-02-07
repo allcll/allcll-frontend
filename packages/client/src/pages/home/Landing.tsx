@@ -5,6 +5,7 @@ import WishesSection from '@/widgets/home/ui/WishesSection.tsx';
 import LiveSection from '@/widgets/home/ui/LiveSection.tsx';
 import PainPointSection from '@/widgets/home/ui/PainPointSection.tsx';
 import FeedbacksSection from '@/widgets/home/ui/FeedbacksSection.tsx';
+import JouluphajaSection from '@/widgets/home/ui/JoluphajaSection';
 
 function Landing() {
   return (
@@ -12,6 +13,7 @@ function Landing() {
       <MainBanner />
 
       {/* 서비스 소개 */}
+      <JouluphajaSection />
       <TimetableSection />
       <WishesSection />
       <SimulationSection />
