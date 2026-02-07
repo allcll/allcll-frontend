@@ -29,10 +29,13 @@ const FileUploadGuide = () => {
               우측 상단의 <strong>[성적 엑셀 다운로드]</strong> 버튼을 클릭하여 파일을 저장하세요.
             </span>
           </li>
-          <li className="text-sm">
-            <span className="text-xs sm:text-sm">다운로드 받은 엑셀 파일을 수정하지 않고 그대로 업로드해주세요.</span>
-          </li>
         </ul>
+
+        <div className="space-y-1 ml-1 text-secondary-500 text-xs sm:text-sm">
+          <p>※ 다운로드한 파일은 수정 없이 그대로 업로드해 주세요.</p>
+          <p>※ 학점이 F 또는 NP인 과목은 저장 시 자동으로 제외됩니다.</p>
+          <p>※ 업로드한 엑셀 파일은 서버에 별도로 저장되지 않습니다.</p>
+        </div>
       </Flex>
     </Card>
   );
