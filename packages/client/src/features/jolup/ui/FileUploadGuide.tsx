@@ -5,7 +5,7 @@ const FileUploadGuide = () => {
     <Card variant="outlined" className="w-full max-w-2xl mx-auto p-8 mt-2">
       <Flex direction="flex-col" gap="gap-3">
         <Flex align="items-center" gap="gap-2">
-          <div className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold shrink-0">
+          <div className="w-5 h-5 rounded-full bg-blue-100 text-primary flex items-center justify-center text-xs font-bold shrink-0">
             !
           </div>
           <Heading level={5} size="sm" className="text-gray-800">

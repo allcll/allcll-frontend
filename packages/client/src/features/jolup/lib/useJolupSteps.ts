@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export enum JolupSteps {
   LOGIN = 'LOGIN',
@@ -14,12 +14,12 @@ export enum JolupSteps {
 function useJolupSteps() {
   const [step, setStep] = useState<JolupSteps>(JolupSteps.LOGIN);
 
-  useEffect(() => {
-    setStep(step => {
-      // 여기에 side effect 로직을 추가하세요.
-      return step;
-    });
-  }, []);
+  // useEffect(() => {
+  //   setStep(step => {
+  //     // 여기에 side effect 로직을 추가하세요.
+  //     return step;
+  //   });
+  // }, []);
 
   /**
    * 검사 스텝을 다음 단계로 이동합니다.

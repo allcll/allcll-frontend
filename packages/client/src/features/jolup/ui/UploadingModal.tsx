@@ -1,6 +1,6 @@
 import useUploading from '@/features/jolup/lib/useUploading';
 import { Dialog, Flex, SupportingText } from '@allcll/allcll-ui';
-import { JolupStepsProps } from '@/features/jolup/ui/Steps.tsx';
+import type { JolupStepsProps } from '@/features/jolup/ui/Steps.tsx';
 
 interface UploadingModalProps extends JolupStepsProps {
   isOpen: boolean;
@@ -25,12 +25,12 @@ function UploadingModal({ nextStep, isOpen, onClose }: UploadingModalProps) {
           <div className="space-y-3">
             <div className="flex justify-between items-end">
               <span className="text-sm font-medium text-gray-700">{message}</span>
-              <span className="text-sm font-bold text-primary-600">{progress}%</span>
+              <span className="text-sm font-bold text-primary">{progress}%</span>
             </div>
 
             <div className="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
               <div
-                className="bg-primary-600 h-full rounded-full transition-all duration-500 ease-out"
+                className="bg-primary h-full rounded-full transition-all duration-500 ease-out"
                 style={{ width: `${progress}%` }}
               />
             </div>

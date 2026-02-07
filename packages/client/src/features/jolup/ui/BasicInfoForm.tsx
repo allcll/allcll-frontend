@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { JolupStepsProps } from '@/features/jolup/ui/Steps.tsx';
 import { Card, Flex, Heading, SupportingText, Label, Chip, Button, ListboxOption, Grid } from '@allcll/allcll-ui';
 import Select from './Select';
@@ -10,7 +10,7 @@ import { ZeroContent } from '@/shared/ui/ZeroContent';
 
 type MajorType = 'INTENSIVE' | 'DOUBLE'; // 심화전공 | 복수전공
 
-const BasicInfoForm: React.FC<JolupStepsProps> = ({ nextStep }) => {
+const BasicInfoForm = ({ nextStep }: JolupStepsProps) => {
   const [admissionYear, setAdmissionYear] = useState<string>('');
   const [majorType, setMajorType] = useState<MajorType>('INTENSIVE');
   const [doubleMajorCode, setDoubleMajorCode] = useState<string>('');
@@ -44,7 +44,8 @@ const BasicInfoForm: React.FC<JolupStepsProps> = ({ nextStep }) => {
     setIsSearchOpen(false);
   };
 
-  const isFormValid = admissionYear !== '' && (majorType === 'INTENSIVE' || (majorType === 'DOUBLE' && doubleMajorCode !== ''));
+  const isFormValid =
+    admissionYear !== '' && (majorType === 'INTENSIVE' || (majorType === 'DOUBLE' && doubleMajorCode !== ''));
 
   const yearOptions = Array.from({ length: 10 }, (_, i) => {
     const year = new Date().getFullYear() - i;
@@ -55,16 +56,18 @@ const BasicInfoForm: React.FC<JolupStepsProps> = ({ nextStep }) => {
     <Card variant="outlined" className="w-full max-w-2xl mx-auto p-8">
       <Flex direction="flex-col" gap="gap-8">
         <div className="text-center space-y-2">
-          <Heading level={2} size="xl">기본 정보 입력</Heading>
-          <SupportingText>
-            정확한 졸업 요건 검사를 위해 학적 정보를 입력해주세요.
-          </SupportingText>
+          <Heading level={2} size="xl">
+            기본 정보 입력
+          </Heading>
+          <SupportingText>정확한 졸업 요건 검사를 위해 학적 정보를 입력해주세요.</SupportingText>
         </div>
 
         <Flex direction="flex-col" gap="gap-6">
           {/* 입학년도 선택 */}
           <Flex direction="flex-col" gap="gap-2">
-            <Label htmlFor="admission-year" required>입학년도</Label>
+            <Label htmlFor="admission-year" required>
+              입학년도
+            </Label>
             <Select
               options={yearOptions}
               value={admissionYear}
@@ -98,11 +101,11 @@ const BasicInfoForm: React.FC<JolupStepsProps> = ({ nextStep }) => {
                 <SearchBox
                   placeholder="학과명을 검색하세요"
                   value={searchKeywords}
-                  onChange={(e) => {
+                  onChange={e => {
                     setSearchKeywords(e.target.value);
                     setIsSearchOpen(true);
                     if (doubleMajorCode) {
-                        setDoubleMajorCode(''); // 검색어 변경 시 선택 초기화
+                      setDoubleMajorCode(''); // 검색어 변경 시 선택 초기화
                     }
                   }}
                   onFocus={() => setIsSearchOpen(true)}
@@ -113,25 +116,25 @@ const BasicInfoForm: React.FC<JolupStepsProps> = ({ nextStep }) => {
                     setIsSearchOpen(false);
                   }}
                 />
-                
+
                 {isSearchOpen && (
                   <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
                     {filteredDepartments && filteredDepartments.length > 0 ? (
-                      filteredDepartments.map((department) => {
-                          const departmentName = department.departmentName
-                            ? department.departmentName.split(' ').slice(-1)[0]
-                            : '학과 정보 없음';
-                          const isSelected = doubleMajorCode === department.departmentCode;
+                      filteredDepartments.map(department => {
+                        const departmentName = department.departmentName
+                          ? department.departmentName.split(' ').slice(-1)[0]
+                          : '학과 정보 없음';
+                        const isSelected = doubleMajorCode === department.departmentCode;
 
-                          return (
-                            <ListboxOption
-                                key={department.departmentCode}
-                                selected={isSelected}
-                                left={<span>{departmentName}</span>}
-                                right={isSelected ? <CheckSvg className="w-4 h-4 shrink-0" /> : null}
-                                onSelect={() => handleDoubleMajorSelect(department.departmentCode, departmentName)}
-                            />
-                          );
+                        return (
+                          <ListboxOption
+                            key={department.departmentCode}
+                            selected={isSelected}
+                            left={<span>{departmentName}</span>}
+                            right={isSelected ? <CheckSvg className="w-4 h-4 shrink-0" /> : null}
+                            onSelect={() => handleDoubleMajorSelect(department.departmentCode, departmentName)}
+                          />
+                        );
                       })
                     ) : (
                       <div className="p-4">
@@ -146,12 +149,7 @@ const BasicInfoForm: React.FC<JolupStepsProps> = ({ nextStep }) => {
         </Flex>
 
         <Flex justify="justify-end" className="mt-4">
-          <Button 
-            variant="primary" 
-            size="medium" 
-            onClick={nextStep} 
-            disabled={!isFormValid}
-          >
+          <Button variant="primary" size="medium" onClick={nextStep} disabled={!isFormValid}>
             다음 단계
           </Button>
         </Flex>

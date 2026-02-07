@@ -1,7 +1,7 @@
-import { JolupStepsProps } from '@/features/jolup/ui/Steps.tsx';
 import { useState } from 'react';
 import { Button, Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import FileDropZone from './FileDropZone';
+import type { JolupStepsProps } from '@/features/jolup/ui/Steps.tsx';
 import { useGraduationCheckMutation } from '@/features/jolup/lib/useGraduationCheckMutation.ts';
 
 function FileUpload({ nextStep }: JolupStepsProps) {

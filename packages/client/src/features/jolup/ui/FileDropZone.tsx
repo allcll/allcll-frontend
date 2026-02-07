@@ -10,7 +10,7 @@ interface FileDropZoneProps {
   accept?: string;
 }
 
-const FileDropZone: React.FC<FileDropZoneProps> = ({ onFileSelect, selectedFile, onDeleteFile, accept }) => {
+const FileDropZone = ({ onFileSelect, selectedFile, onDeleteFile, accept }: FileDropZoneProps) => {
   const addToast = useToastNotification(state => state.addToast);
 
   const ref = useRef<HTMLInputElement>(null);
