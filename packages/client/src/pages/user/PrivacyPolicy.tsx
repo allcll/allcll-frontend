@@ -17,7 +17,7 @@ function PrivacyPolicy() {
         <title>ALLCLL | 개인정보 처리방침</title>
         <meta name="description" content="ALLCLL 개인정보 처리방침" />
       </Helmet>
-      <div className="max-w-5xl mx-auto px-4 py-4 md:py-12">
+      <div className="max-w-5xl mx-auto md:px-4 md:py-4 px-2 py-1 md:py-12">
         <Flex gap="gap-2" direction="flex-col" className="mb-6">
           <Heading level={1} size="xxl">
             ALLCLL 개인정보 처리방침
