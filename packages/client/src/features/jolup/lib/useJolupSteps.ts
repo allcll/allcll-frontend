@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export enum JolupSteps {
   LOGIN = 'LOGIN',
@@ -13,6 +14,7 @@ export enum JolupSteps {
  */
 function useJolupSteps() {
   const [step, setStep] = useState<JolupSteps>(JolupSteps.LOGIN);
+  const navigate = useNavigate();
 
   // useEffect(() => {
   //   setStep(step => {
@@ -36,7 +38,7 @@ function useJolupSteps() {
         setStep(JolupSteps.UPLOADING);
         break;
       case JolupSteps.UPLOADING:
-        // Todo: 마지막 단계 처리 (예: 결과 페이지로 이동)
+        navigate('/graduation/result');
         break;
       default:
         console.error(`Unknown step ${step}`);
