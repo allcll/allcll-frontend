@@ -101,7 +101,7 @@ const router = createBrowserRouter([
   },
   {
     path: 'graduation',
-    element: <MainLayout />,
+    element: <ServiceLayout serviceId="graduation" />,
     children: [
       {
         index: true,
