@@ -14,6 +14,7 @@ export const HeaderContents = [
   { title: '관심과목', path: '/wishes', end: true },
   { title: '올클연습', path: '/simulation', end: false },
   { title: '실시간여석', path: '/live', end: false },
+  { title: '졸업요건검사', path: '/graduation', end: false },
 ];
 
 export const ButtonContents = [
