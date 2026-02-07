@@ -8,7 +8,7 @@ function TargetTypeBadge({ targetType }: { targetType: CertificationTargetType }
   return (
     <div className="inline-flex">
       <span className="bg-primary-100 text-primary-600 text-xs font-medium px-2 py-1 rounded">
-        {targetType === 'MAJOR' ? '전공자 기준' : '비전공자 기준'}
+        {targetType === 'MAJOR' ? '전공자' : '비전공자'}
       </span>
     </div>
   );

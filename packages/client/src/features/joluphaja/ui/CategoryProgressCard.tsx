@@ -1,5 +1,5 @@
 import { Card, Flex, Button } from '@allcll/allcll-ui';
-import ProgressDoughnut from './ProgressDoughnut';
+import ProgressDoughnut from '@/entities/joluphaja/ui/ProgressDoughnut';
 import type { CategoryProgress, CategoryType, MissingCourse } from '@/entities/joluphaja/api/graduation';
 import { CATEGORY_TYPE_LABELS, getStatusLabel } from '../lib/mappers';
 

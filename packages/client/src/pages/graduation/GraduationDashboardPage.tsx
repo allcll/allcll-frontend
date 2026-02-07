@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Flex, Banner, Button, Heading, SupportingText } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile';
-import { useGraduationDashboard } from '@/entities/joluphaja/model/useGraduation';
+import { useGraduationDashboard } from '@/features/joluphaja/model/useGraduationDashboard';
 import {
   getPolicyYear,
   getGeneralCategoryTypes,
@@ -10,10 +10,10 @@ import {
   MAJOR_CATEGORY_TYPES,
   getScopeTypes,
   filterCategoriesByScope,
-  SCOPE_TYPE_LABELS,
-} from '@/features/joluphaja/lib/mappers';
+} from '@/entities/joluphaja/lib/rules';
+import { SCOPE_TYPE_LABELS } from '@/features/joluphaja/lib/mappers';
 import type { CategoryType, MissingCourse } from '@/entities/joluphaja/api/graduation';
-import OverallSummaryCard from '@/features/joluphaja/ui/OverallSummaryCard';
+import OverallSummaryCard from '@/entities/joluphaja/ui/OverallSummaryCard';
 import CategoryProgressCard from '@/features/joluphaja/ui/CategoryProgressCard';
 import CertificationSection from '@/features/joluphaja/ui/CertificationSection';
 import MobileTabs, { useMobileTabs } from '@/features/joluphaja/ui/MobileTabs';

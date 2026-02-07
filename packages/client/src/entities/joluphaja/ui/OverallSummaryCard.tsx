@@ -3,7 +3,7 @@ import CircleCheckIcon from '@/assets/circle-check.svg?react';
 import CircleXIcon from '@/assets/circle-x.svg?react';
 import ProgressDoughnut from './ProgressDoughnut';
 import type { UserInfo, GraduationCheckData } from '@/entities/joluphaja/api/graduation';
-import { isMajorSatisfied, isGeneralSatisfied } from '../lib/mappers';
+import { isMajorSatisfied, isGeneralSatisfied } from '@/entities/joluphaja/lib/rules';
 
 interface OverallSummaryCardProps {
   userInfo: UserInfo;
