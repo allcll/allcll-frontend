@@ -1,6 +1,7 @@
 import useUploading from '@/features/jolup/lib/useUploading';
 import { Card, Flex, Heading } from '@allcll/allcll-ui';
-import type { JolupStepsProps } from '@/features/jolup/ui/Steps.tsx';
+
+import { JolupStepsProps } from '@/features/jolup/model/types.ts';
 
 function Uploading({ nextStep }: JolupStepsProps) {
   const { progress, message } = useUploading(nextStep);

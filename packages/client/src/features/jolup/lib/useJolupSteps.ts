@@ -4,7 +4,7 @@ import { useInitialGraduationCheck } from './useInitialCheck';
 
 export enum JolupSteps {
   LOGIN = 'LOGIN',
-  BASIC_INFO = 'BASIC_INFO',
+  DEPARTMENT_INFO = 'DEPARTMENT_INFO',
   FILE_UPLOAD = 'FILE_UPLOAD',
   UPLOADING = 'UPLOADING',
   RESULT = 'RESULT',
@@ -39,9 +39,9 @@ function useJolupSteps() {
   function nextStep() {
     switch (step) {
       case JolupSteps.LOGIN:
-        setStep(JolupSteps.BASIC_INFO);
+        setStep(JolupSteps.DEPARTMENT_INFO);
         break;
-      case JolupSteps.BASIC_INFO:
+      case JolupSteps.DEPARTMENT_INFO:
         setStep(JolupSteps.FILE_UPLOAD);
         break;
       case JolupSteps.FILE_UPLOAD:
@@ -58,11 +58,11 @@ function useJolupSteps() {
 
   function prevStep() {
     switch (step) {
-      case JolupSteps.BASIC_INFO:
+      case JolupSteps.DEPARTMENT_INFO:
         setStep(JolupSteps.LOGIN);
         break;
       case JolupSteps.FILE_UPLOAD:
-        setStep(JolupSteps.BASIC_INFO);
+        setStep(JolupSteps.DEPARTMENT_INFO);
         break;
       case JolupSteps.UPLOADING:
         setStep(JolupSteps.FILE_UPLOAD);

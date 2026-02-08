@@ -38,7 +38,7 @@ function determineStep(isError: boolean, error: Error | null, hasData: boolean, 
       return JolupSteps.LOGIN;
     }
     if (message.includes('학과') || message.includes('Major') || message.includes('기본 정보')) {
-      return JolupSteps.BASIC_INFO;
+      return JolupSteps.DEPARTMENT_INFO;
     }
 
     if (message.includes('파일')) {
@@ -49,7 +49,7 @@ function determineStep(isError: boolean, error: Error | null, hasData: boolean, 
   }
 
   if (hasData) {
-    return isRetry ? JolupSteps.BASIC_INFO : JolupSteps.RESULT;
+    return isRetry ? JolupSteps.DEPARTMENT_INFO : JolupSteps.RESULT;
   }
 
   return null;

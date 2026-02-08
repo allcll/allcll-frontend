@@ -1,21 +1,15 @@
 import React from 'react';
-import useJolupSteps, { JolupSteps } from '@/features/jolup/lib/useJolupSteps.ts';
 import { Button, Flex } from '@allcll/allcll-ui';
+import useJolupSteps, { JolupSteps } from '@/features/jolup/lib/useJolupSteps.ts';
+import FileUploadGuide from '@/features/jolup/ui/FileUploadGuide.tsx';
+import { JolupStepsProps } from '@/features/jolup/model/types.ts';
 import FileUpload from '@/features/jolup/ui/FileUpload.tsx';
 import Uploading from '@/features/jolup/ui/Uploading.tsx';
-import FileUploadGuide from '@/features/jolup/ui/FileUploadGuide.tsx';
+import LoginForm from '@/features/user/ui/LoginForm';
 import StepIndicator from './StepIndicator';
 import BasicInfoForm from './BasicInfoForm';
-import LoginForm from '@/features/user/ui/LoginForm';
 
-/**
- * 각 기능은 이 인터페이스를 참조하면 좋겠습니다. */
-export interface JolupStepsProps {
-  nextStep: () => void;
-  prevStep: () => void;
-}
-
-function Steps() {
+function GraduationSettingSteps() {
   const { step, nextStep, prevStep } = useJolupSteps();
 
   return (
@@ -31,7 +25,7 @@ function renderStepContent(step: JolupSteps, nextStep: () => void, prevStep: () 
   switch (step) {
     case JolupSteps.LOGIN:
       return <LoginForm onSuccess={nextStep} />;
-    case JolupSteps.BASIC_INFO:
+    case JolupSteps.DEPARTMENT_INFO:
       return <BasicInfoForm nextStep={nextStep} prevStep={prevStep} />;
     case JolupSteps.FILE_UPLOAD:
       return (
@@ -63,4 +57,4 @@ function DefaultStep({ nextStep, children }: { children: React.ReactNode } & Jol
   );
 }
 
-export default Steps;
+export default GraduationSettingSteps;
