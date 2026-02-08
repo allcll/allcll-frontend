@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useInitialGraduationCheck } from './useInitialCheck';
 
@@ -7,6 +7,7 @@ export enum JolupSteps {
   BASIC_INFO = 'BASIC_INFO',
   FILE_UPLOAD = 'FILE_UPLOAD',
   UPLOADING = 'UPLOADING',
+  RESULT = 'RESULT',
 }
 
 /**
@@ -18,49 +19,19 @@ function useJolupSteps() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const isRetry = searchParams.get('retry') === 'true';
-  const isRouteDefined = useRef(false);
 
-  // 초기 진입 판단용 훅 사용 (retry: false)
-  const graduationCheckQuery = useInitialGraduationCheck();
+  const { initialStep, isLoading } = useInitialGraduationCheck(isRetry);
 
+  // 초기 스텝 설정
   useEffect(() => {
-    if (graduationCheckQuery.isLoading || !isRouteDefined.current) return;
-    isRouteDefined.current = true;
+    if (isLoading || !initialStep) return;
 
-    // 2. 졸업 요건 검사 데이터 체크 (에러 분기 처리)
-    if (graduationCheckQuery.isError) {
-      const error = graduationCheckQuery.error as Error;
-      const message = error.message;
-
-      // TODO: 서버 에러 메시지에 맞춰 조건문 수정 필요
-      if (message.includes('401') || message.includes('Unauthorized')) {
-        // 로그인이 안 된 경우
-        setStep(JolupSteps.LOGIN);
-      } else if (message.includes('학과') || message.includes('Major') || message.includes('기본 정보')) {
-        // 학과 선택 등 기본 정보가 없는 경우
-        setStep(JolupSteps.BASIC_INFO);
-      } else {
-        // 그 외 에러 (예: 404 Not Found - 결과 없음) -> 파일 업로드 필요
-        setStep(JolupSteps.FILE_UPLOAD);
-      }
-      return;
+    if (initialStep === JolupSteps.RESULT) {
+      navigate('/graduation/result');
+    } else {
+      setStep(initialStep);
     }
-
-    // 성공 시 처리
-    if (graduationCheckQuery.data?.data) {
-      if (isRetry) {
-        setStep(JolupSteps.BASIC_INFO);
-      } else {
-        navigate('/graduation/result');
-      }
-    }
-  }, [
-    graduationCheckQuery.isLoading,
-    graduationCheckQuery.isError,
-    graduationCheckQuery.error,
-    graduationCheckQuery.data,
-    isRetry,
-  ]);
+  }, [initialStep, isLoading, navigate]);
 
   /**
    * 검사 스텝을 다음 단계로 이동합니다.
@@ -105,6 +76,6 @@ function useJolupSteps() {
     }
   }
 
-  return { step, nextStep, prevStep };
+  return { step, nextStep, prevStep, isLoading };
 }
 export default useJolupSteps;
