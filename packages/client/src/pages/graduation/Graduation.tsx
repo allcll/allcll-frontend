@@ -1,4 +1,4 @@
-import Steps from '@/features/jolup/ui/Steps';
+import Steps from '@/features/jolup/ui/Steps.tsx';
 import { Helmet } from 'react-helmet';
 
 function Graduation() {
