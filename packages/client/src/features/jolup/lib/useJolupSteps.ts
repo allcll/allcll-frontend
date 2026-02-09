@@ -76,6 +76,6 @@ function useJolupSteps() {
     }
   }
 
-  return { step, nextStep, prevStep, isLoading };
+  return { step, nextStep, prevStep, setStep, isLoading };
 }
 export default useJolupSteps;
