@@ -12,7 +12,7 @@ function MainLayout() {
   return (
     <>
       <Helmet>
-        <title>ALLCLL</title>
+        <title>올클(ALLCLL) | 세종대 수강신청 도우미</title>
       </Helmet>
 
       <ToastNotification />
