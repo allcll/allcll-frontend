@@ -3,9 +3,8 @@ import { Helmet } from 'react-helmet';
 import { useQueryClient } from '@tanstack/react-query';
 import { Flex, Banner, Button, Heading, SupportingText } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile';
-import { useLogout } from '@/entities/user/model/useAuth';
 import { graduationQueryKeys } from '@/entities/joluphaja/model/useGraduation';
-import useToastNotification from '@/features/notification/model/useToastNotification';
+import LogoutButton from '@/features/user/ui/LogoutButton';
 import { useGraduationDashboard } from '@/features/joluphaja/model/useGraduationDashboard';
 import {
   getPolicyYear,
@@ -47,8 +46,6 @@ function ErrorState({ message }: { message: string }) {
 function GraduationDashboardPage() {
   const isMobile = useMobile();
   const queryClient = useQueryClient();
-  const { mutate: logout, isPending: isLoggingOut } = useLogout();
-  const showToast = useToastNotification.getState().addToast;
   const [showBanner, setShowBanner] = useState(true);
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<{
@@ -64,20 +61,6 @@ function GraduationDashboardPage() {
 
   const handleEditProfile = () => {
     setIsEditProfileOpen(true);
-  };
-
-  const handleLogout = () => {
-    if (!window.confirm('로그아웃하시겠습니까?')) return;
-
-    logout(undefined, {
-      onSuccess: () => {
-        queryClient.removeQueries({ queryKey: graduationQueryKeys.all });
-        showToast('성공적으로 로그아웃되었습니다.');
-      },
-      onError: () => {
-        showToast('로그아웃에 실패했습니다. 다시 시도해주세요.', 'error');
-      },
-    });
   };
 
   const handleDeleteBanner = () => {
@@ -209,7 +192,7 @@ function GraduationDashboardPage() {
         <meta name="description" content="졸업요건 분석 결과를 확인하세요." />
       </Helmet>
 
-      <div className="max-w-screen-xl mx-auto px-4 py-6">
+      <div className="max-w-7xl mx-auto px-4 py-6">
         {/* 안내 배너 */}
         {showBanner && (
           <Banner deleteBanner={handleDeleteBanner}>
@@ -224,9 +207,11 @@ function GraduationDashboardPage() {
             <Button variant="text" size="small" onClick={handleEditProfile}>
               회원 정보 수정
             </Button>
-            <Button variant="text" size="small" onClick={handleLogout} disabled={isLoggingOut}>
-              {isLoggingOut ? '로그아웃 중...' : '로그아웃'}
-            </Button>
+            <LogoutButton
+              variant="text"
+              size="small"
+              onSuccess={() => queryClient.removeQueries({ queryKey: graduationQueryKeys.all })}
+            />
           </Flex>
         </Flex>
         <SupportingText className="mb-6">{userInfo.studentName}님의 졸업요건 분석 결과입니다.</SupportingText>
