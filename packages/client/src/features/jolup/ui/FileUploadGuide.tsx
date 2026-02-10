@@ -31,10 +31,17 @@ const FileUploadGuide = () => {
           </li>
         </ul>
 
-        <div className="space-y-1 ml-1 text-secondary-500 text-xs sm:text-sm">
-          <p>※ 다운로드한 파일은 수정 없이 그대로 업로드해 주세요.</p>
-          <p>※ 학점이 F 또는 NP인 과목은 저장 시 자동으로 제외됩니다.</p>
-          <p>※ 업로드한 엑셀 파일은 서버에 별도로 저장되지 않습니다.</p>
+        <div className="space-y-1 ml-1 text-gray-600 text-xs sm:text-sm">
+          <p>
+            ※ 다운로드한 파일은 <span className="text-primary font-medium">수정 없이 그대로</span> 업로드해 주세요.
+          </p>
+          <p>
+            ※ 학점이 <span className="text-primary font-medium">F 또는 NP</span>인 과목은 저장 시{' '}
+            <span className="text-primary font-medium">자동으로 제외</span>됩니다.
+          </p>
+          <p>
+            ※ 업로드한 엑셀 파일은 <span className="text-primary font-medium">서버에 별도로 저장되지 않습니다.</span>
+          </p>
         </div>
       </Flex>
     </Card>
