@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
+import SejongUI from '@allcll/sejong-ui';
 import CaptchaInput from '@/widgets/simulation/modal/CaptchaInput.tsx';
 import SimulationModal from '@/widgets/simulation/modal/SimulationModal.tsx';
 import SimulationResultModal from '@/widgets/simulation/modal/SimulationResultModal.tsx';
@@ -10,6 +11,7 @@ import NoneRegisteredTable from '@/widgets/simulation/table/NoneRegisteredTable.
 import RegisteredTable from '@/widgets/simulation/table/RegisteredTable.tsx';
 import SimulationSearchForm from '@/widgets/simulation/SimulationSearchForm.tsx';
 import Stopwatch from '@/widgets/simulation/Stopwatch.tsx';
+import VisitTutorialButton from '@/features/simulation/ui/VisitTutorialButton.tsx';
 import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
 import useSimulationProcessStore from '@/features/simulation/model/useSimulationProcess.ts';
 import { useReloadSimulation } from '@/features/simulation/lib/useReloadSimulation.ts';
@@ -19,8 +21,6 @@ import {
   forceStopSimulation,
   SIMULATION_TIME_LIMIT,
 } from '@/features/simulation/lib/simulation.ts';
-import { visitTutorial } from '@/features/simulation/lib/visitTutorial.ts';
-import SejongUI from '@allcll/sejong-ui';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 import { RECENT_SEMESTERS } from '@/entities/semester/api/semester';
 
@@ -29,7 +29,6 @@ function Simulation() {
   const currentSimulation = useSimulationProcessStore(state => state.currentSimulation);
   const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
   const { reloadSimulationStatus } = useReloadSimulation();
-  const isExpiredTutorial = visitTutorial.get();
 
   const forceSimulation = async () => {
     try {
@@ -92,11 +91,7 @@ function Simulation() {
           <Stopwatch />
         </div>
 
-        {!isExpiredTutorial && (
-          <button className="text-gray-600 hover:text-blue-500 cursor-pointer" onClick={visitTutorial.reset}>
-            튜토리얼 활성화
-          </button>
-        )}
+        <VisitTutorialButton/>
       </div>
       <SimulationSearchForm />
 
