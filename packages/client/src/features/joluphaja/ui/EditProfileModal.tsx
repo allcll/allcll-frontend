@@ -1,16 +1,9 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { Dialog, Flex, Button, Label } from '@allcll/allcll-ui';
 import CustomSelect from '@/shared/ui/CustomSelect';
 import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
-import useDepartments from '@/entities/departments/api/useDepartments';
-import { useUpdateMe, useDeleteMe } from '@/entities/user/model/useAuth';
-import { graduationQueryKeys } from '@/entities/joluphaja/model/useGraduation';
+import { useEditProfileForm } from '@/features/joluphaja/lib/useEditProfileForm';
 import type { UserInfo } from '@/entities/joluphaja/api/graduation';
-import type { UpdateMeRequest } from '@/entities/user/model/types';
-
-type MajorType = 'SINGLE' | 'DOUBLE';
 
 interface EditProfileModalProps {
   isOpen: boolean;
@@ -24,65 +17,23 @@ const MAJOR_TYPE_OPTIONS = [
 ];
 
 function EditProfileModal({ isOpen, onClose, userInfo }: EditProfileModalProps) {
-  const queryClient = useQueryClient();
-  const updateMeMutation = useUpdateMe();
-  const deleteMeMutation = useDeleteMe();
-  const navigate = useNavigate();
-  const { data: departments } = useDepartments();
+  const {
+    majorType,
+    setMajorType,
+    deptNm,
+    setDeptNm,
+    doubleDeptNm,
+    setDoubleDeptNm,
+    deptOptions,
+    handleSave,
+    handleDelete,
+    isSaving,
+    isDeleting,
+  } = useEditProfileForm(userInfo, isOpen, onClose);
+
   useBodyScrollLock(isOpen);
 
-  const currentMajorType: MajorType = userInfo.majorType === 'MINOR' ? 'SINGLE' : userInfo.majorType;
-  const deptNames =
-    departments
-      ?.filter(d => d.departmentCode !== '9005')
-      .map(d => (d.departmentName ? d.departmentName.split(' ').slice(-1)[0] : '학과 정보 없음')) ?? [];
-  const deptOptions = deptNames.map(name => ({ value: name, label: name }));
-
-  const [majorType, setMajorType] = useState<MajorType>(currentMajorType);
-  const [deptNm, setDeptNm] = useState(userInfo.deptName);
-  const [doubleDeptNm, setDoubleDeptNm] = useState(deptNames[0] ?? '');
   const [openDropdown, setOpenDropdown] = useState<'majorType' | 'dept' | 'doubleDept' | null>(null);
-
-  useEffect(() => {
-    if (isOpen) {
-      setMajorType(currentMajorType);
-      setDeptNm(userInfo.deptName);
-      setDoubleDeptNm(deptNames[0] ?? '');
-      setOpenDropdown(null);
-    }
-  }, [isOpen]);
-
-  const handleSave = () => {
-    const changedDept = deptNm !== userInfo.deptName ? deptNm : null;
-
-    const request: UpdateMeRequest = {
-      deptNm: changedDept,
-      majorType,
-      doubleDeptNm: majorType === 'DOUBLE' ? doubleDeptNm : null,
-    };
-
-    updateMeMutation.mutate(request, {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: graduationQueryKeys.all });
-        onClose();
-      },
-    });
-  };
-
-  const handleDelete = () => {
-    if (!window.confirm('정말로 회원 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) return;
-
-    deleteMeMutation.mutate(undefined, {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: graduationQueryKeys.all });
-        onClose();
-        navigate('/');
-      },
-    });
-  };
-
-  const isSaving = updateMeMutation.isPending;
-  const isDeleting = deleteMeMutation.isPending;
 
   return (
     <Dialog title="회원 정보 수정" onClose={onClose} isOpen={isOpen}>
@@ -96,7 +47,7 @@ function EditProfileModal({ isOpen, onClose, userInfo }: EditProfileModalProps) 
               isOpen={openDropdown === 'majorType'}
               onToggle={() => setOpenDropdown(openDropdown === 'majorType' ? null : 'majorType')}
               onSelect={value => {
-                setMajorType(value as MajorType);
+                setMajorType(value as 'SINGLE' | 'DOUBLE');
                 if (value === 'SINGLE') setDoubleDeptNm('');
                 setOpenDropdown(null);
               }}
