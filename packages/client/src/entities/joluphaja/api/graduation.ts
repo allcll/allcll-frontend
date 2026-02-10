@@ -153,37 +153,40 @@ export async function fetchGraduationCheck(): Promise<GraduationCheckResponse> {
 
 // ---- 졸업인증 기준 조회 API ----
 
-/** 졸업인증 기준 - 학생 컨텍스트 */
-export interface CertificationCriteriaContext {
-  admissionYear: number;
-  deptName: string;
-  deptGroup: string;
-  englishTargetType: CertificationTargetType;
-  codingTargetType: CertificationTargetType;
-  collegeName: string;
-  deptCd: string;
+/** 영어 인증 대상 타입 */
+export type EnglishTargetType = 'ENGLISH_MAJOR' | 'NON_MAJOR' | 'EXEMPT';
+
+/** 코딩 인증 대상 타입 */
+export type CodingTargetType = 'CODING_MAJOR' | 'NON_MAJOR' | 'EXEMPT';
+
+/** 졸업인증 기준 - 대상 정보 */
+export interface CriteriaTarget {
+  englishTargetType: EnglishTargetType;
+  codingTargetType: CodingTargetType;
 }
 
+/** 졸업인증 기준 - 정책 규칙 타입 */
+export type GraduationCertRuleType = 'BOTH_REQUIRED' | 'TWO_OF_THREE';
+
 /** 졸업인증 기준 - 정책 */
-export interface CertificationCriteriaPolicy {
-  ruleType: CertificationRuleType;
+export interface CertPolicy {
+  graduationCertRuleType: GraduationCertRuleType;
   requiredPassCount: number;
   enableEnglish: boolean;
   enableClassic: boolean;
   enableCoding: boolean;
 }
 
-/** 대체 과목 정보 */
-export interface AltCourse {
-  name?: string;
-  curiNo?: number;
-  credit?: number;
-  minGrade?: string;
+/** 영어 인증 대체 과목 */
+export interface EnglishAltCourse {
+  altCuriNo: string;
+  altCurieNm: string;
+  altCuricredit: number;
 }
 
 /** 영어 인증 기준 */
-export interface EnglishCriteria {
-  targetType: CertificationTargetType;
+export interface EnglishCertCriteria {
+  englishTargetType: EnglishTargetType;
   toeicMinScore: number;
   toeflIbtMinScore: number;
   tepsMinScore: number;
@@ -193,11 +196,11 @@ export interface EnglishCriteria {
   gtelpLevel: number;
   gtelpMinScore: number;
   gtelpSpeakingLevel: number;
-  altCourse: AltCourse;
+  altCourse: EnglishAltCourse;
 }
 
 /** 고전독서 인증 기준 */
-export interface ClassicCriteria {
+export interface ClassicCertCriteria {
   totalRequiredCount: number;
   requiredCountWestern: number;
   requiredCountEastern: number;
@@ -205,21 +208,30 @@ export interface ClassicCriteria {
   requiredCountScience: number;
 }
 
+/** 코딩 인증 대체 과목 */
+export interface CodingAltCourse {
+  alt1CuriNo: string;
+  alt1CurieNm: string;
+  alt1minGrade: string;
+  alt2CuriNo: string | null;
+  alt2CurieNm: string | null;
+  alt2minGrade: string | null;
+}
+
 /** 코딩 인증 기준 */
-export interface CodingCriteria {
-  targetType: CertificationTargetType;
+export interface CodingCertCriteria {
+  codingTargetType: CodingTargetType;
   toscMinLevel: number;
-  alt1: AltCourse;
-  alt2: AltCourse;
+  altCourse: CodingAltCourse;
 }
 
 /** 졸업인증 기준 전체 데이터 */
 export interface CertificationCriteriaData {
-  context: CertificationCriteriaContext;
-  policy: CertificationCriteriaPolicy;
-  englishCriteria: EnglishCriteria;
-  classicCriteria: ClassicCriteria;
-  codingCriteria: CodingCriteria;
+  criteriaTarget: CriteriaTarget;
+  certPolicy: CertPolicy;
+  englishCertCriteria: EnglishCertCriteria | null;
+  classicCertCriteria: ClassicCertCriteria;
+  codingCertCriteria: CodingCertCriteria | null;
 }
 
 /** 졸업인증 기준 API 응답 */
