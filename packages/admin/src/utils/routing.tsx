@@ -28,6 +28,16 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: '/graduation',
+    element: <MainLayout />,
+    children: [
+      {
+        path: '/graduation',
+        element: <Graduation />,
+      },
+    ],
+  },
+  {
     path: '/service',
     element: <MainLayout />,
     children: [
@@ -44,16 +54,6 @@ const router = createBrowserRouter([
       {
         path: '/logs',
         element: <Logs />,
-      },
-    ],
-  },
-  {
-    path: '/graduation',
-    element: <MainLayout />,
-    children: [
-      {
-        path: '/graduation',
-        element: <Graduation />,
       },
     ],
   },
