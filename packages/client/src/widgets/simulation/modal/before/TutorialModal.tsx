@@ -42,8 +42,7 @@ function TutorialModal() {
   const shouldSkipTutorial = useTutorialStore(state => state.shouldSkipTutorial);
   const setTutorialSkip = useTutorialStore(state => state.setVisited);
 
-
-  if (!shouldSkipTutorial) {
+  if (shouldSkipTutorial) {
     openModal('wish');
   }
 
@@ -77,7 +76,7 @@ function TutorialModal() {
   };
 
   return (
-    <Dialog title="올클연습 소개" onClose={handleCloseModal} isOpen={shouldSkipTutorial}>
+    <Dialog title="올클연습 소개" onClose={handleCloseModal} isOpen={!shouldSkipTutorial}>
       <Dialog.Content>
         <Flex className="w-full" direction="flex-col">
           <SupportingText>올클연습은 실제 수강신청과 유사한 환경에서 연습할 수 있는 기능입니다.</SupportingText>

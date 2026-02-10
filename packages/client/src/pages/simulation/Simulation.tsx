@@ -91,7 +91,7 @@ function Simulation() {
           <Stopwatch />
         </div>
 
-        <VisitTutorialButton/>
+        <VisitTutorialButton onClick={() => openModal('tutorial')} />
       </div>
       <SimulationSearchForm />
 
