@@ -25,6 +25,7 @@ function EditProfileModal({ isOpen, onClose, userInfo }: EditProfileModalProps) 
     doubleDeptNm,
     setDoubleDeptNm,
     deptOptions,
+    canSave,
     handleSave,
     handleDelete,
     isSaving,
@@ -48,7 +49,7 @@ function EditProfileModal({ isOpen, onClose, userInfo }: EditProfileModalProps) 
               onToggle={() => setOpenDropdown(openDropdown === 'majorType' ? null : 'majorType')}
               onSelect={value => {
                 setMajorType(value as 'SINGLE' | 'DOUBLE');
-                if (value === 'SINGLE') setDoubleDeptNm('');
+                if (value === 'SINGLE') setDoubleDeptNm(null);
                 setOpenDropdown(null);
               }}
             />
@@ -92,7 +93,7 @@ function EditProfileModal({ isOpen, onClose, userInfo }: EditProfileModalProps) 
           <Button variant="secondary" size="small" onClick={handleDelete} disabled={isDeleting}>
             {isDeleting ? '처리 중...' : '회원 탈퇴'}
           </Button>
-          <Button variant="primary" size="small" onClick={handleSave} disabled={isSaving}>
+          <Button variant="primary" size="small" onClick={handleSave} disabled={!canSave || isSaving}>
             {isSaving ? '저장 중...' : '저장'}
           </Button>
         </Flex>

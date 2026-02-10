@@ -25,17 +25,21 @@ export function useEditProfileForm(userInfo: UserInfo, isOpen: boolean, onClose:
 
   const [majorType, setMajorType] = useState<MajorType>(currentMajorType);
   const [deptNm, setDeptNm] = useState(userInfo.deptName);
-  const [doubleDeptNm, setDoubleDeptNm] = useState(deptNames[0] ?? '');
+  const [doubleDeptNm, setDoubleDeptNm] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen) {
       setMajorType(currentMajorType);
       setDeptNm(userInfo.deptName);
-      setDoubleDeptNm(deptNames[0] ?? '');
+      setDoubleDeptNm(null);
     }
   }, [isOpen]);
 
+  const canSave = majorType === 'SINGLE' || doubleDeptNm !== null;
+
   const handleSave = () => {
+    if (!canSave) return;
+
     const changedDept = deptNm !== userInfo.deptName ? deptNm : null;
 
     const request: UpdateMeRequest = {
@@ -72,6 +76,7 @@ export function useEditProfileForm(userInfo: UserInfo, isOpen: boolean, onClose:
     doubleDeptNm,
     setDoubleDeptNm,
     deptOptions,
+    canSave,
     handleSave,
     handleDelete,
     isSaving: updateMeMutation.isPending,

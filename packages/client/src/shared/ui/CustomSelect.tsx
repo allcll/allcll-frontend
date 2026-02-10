@@ -6,7 +6,7 @@ interface SelectOption {
 }
 
 interface CustomSelectProps {
-  value: string;
+  value: string | null;
   placeholder?: string;
   options: SelectOption[];
   isOpen: boolean;
@@ -15,7 +15,7 @@ interface CustomSelectProps {
 }
 
 function CustomSelect({ value, placeholder, options, isOpen, onToggle, onSelect }: CustomSelectProps) {
-  const label = (value ? options.find(option => option.value === value)?.label : null) ?? placeholder ?? value;
+  const label = (value ? options.find(option => option.value === value)?.label : null) ?? placeholder ?? '';
 
   return (
     <div>
