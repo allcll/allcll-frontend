@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { Dialog, Flex, Button, ListboxOption } from '@allcll/allcll-ui';
+import { Dialog, Flex, Button, Label } from '@allcll/allcll-ui';
+import CustomSelect from '@/shared/ui/CustomSelect';
 import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
 import useDepartments from '@/entities/departments/api/useDepartments';
 import { useUpdateMe, useDeleteMe } from '@/entities/user/model/useAuth';
@@ -21,56 +22,6 @@ const MAJOR_TYPE_OPTIONS = [
   { value: 'SINGLE', label: '단일전공' },
   { value: 'DOUBLE', label: '복수전공' },
 ];
-
-const selectClassName =
-  'w-full border border-gray-200 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-primary-500';
-
-// 커스텀 드롭다운
-
-function CustomSelect({
-  value,
-  displayValue,
-  options,
-  isOpen,
-  onToggle,
-  onSelect,
-}: {
-  value: string;
-  displayValue?: string;
-  options: { value: string; label: string }[];
-  isOpen: boolean;
-  onToggle: () => void;
-  onSelect: (value: string) => void;
-}) {
-  const label = displayValue ?? options.find(o => o.value === value)?.label ?? value;
-
-  return (
-    <div>
-      <button
-        type="button"
-        onClick={onToggle}
-        className={`${selectClassName} text-left flex justify-between items-center`}
-      >
-        <span>{label}</span>
-        <span className="text-gray-400 text-xs">{isOpen ? '▲' : '▼'}</span>
-      </button>
-      {isOpen && (
-        <div className="mt-1 max-h-48 overflow-auto border border-gray-200 rounded-md">
-          {options.map(option => (
-            <ListboxOption
-              key={option.value}
-              selected={option.value === value}
-              left={<span>{option.label}</span>}
-              onSelect={() => onSelect(option.value)}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-// 메인 모달
 
 function EditProfileModal({ isOpen, onClose, userInfo }: EditProfileModalProps) {
   const queryClient = useQueryClient();
@@ -137,49 +88,46 @@ function EditProfileModal({ isOpen, onClose, userInfo }: EditProfileModalProps) 
     <Dialog title="회원 정보 수정" onClose={onClose} isOpen={isOpen}>
       <Dialog.Content>
         <Flex direction="flex-col" gap="gap-4" className="min-w-64 md:min-w-80">
-          {/* 이수 유형 */}
           <Flex direction="flex-col" gap="gap-1.5">
-            <label className="text-sm text-gray-500">이수 유형</label>
+            <Label>이수 유형</Label>
             <CustomSelect
               value={majorType}
               options={MAJOR_TYPE_OPTIONS}
               isOpen={openDropdown === 'majorType'}
               onToggle={() => setOpenDropdown(openDropdown === 'majorType' ? null : 'majorType')}
-              onSelect={val => {
-                setMajorType(val as MajorType);
-                if (val === 'SINGLE') setDoubleDeptNm('');
+              onSelect={value => {
+                setMajorType(value as MajorType);
+                if (value === 'SINGLE') setDoubleDeptNm('');
                 setOpenDropdown(null);
               }}
             />
           </Flex>
 
-          {/* 학과 */}
           <Flex direction="flex-col" gap="gap-1.5">
-            <label className="text-sm text-gray-500">학과</label>
+            <Label>학과</Label>
             <CustomSelect
               value={deptNm}
               options={deptOptions}
               isOpen={openDropdown === 'dept'}
               onToggle={() => setOpenDropdown(openDropdown === 'dept' ? null : 'dept')}
-              onSelect={val => {
-                setDeptNm(val);
+              onSelect={value => {
+                setDeptNm(value);
                 setOpenDropdown(null);
               }}
             />
           </Flex>
 
-          {/* 복수전공 학과 */}
           {majorType === 'DOUBLE' && (
             <Flex direction="flex-col" gap="gap-1.5">
-              <label className="text-sm text-gray-500">복수전공 학과</label>
+              <Label>복수전공 학과</Label>
               <CustomSelect
                 value={doubleDeptNm}
-                displayValue={doubleDeptNm || '학과를 선택하세요'}
+                placeholder="학과를 선택하세요"
                 options={deptOptions}
                 isOpen={openDropdown === 'doubleDept'}
                 onToggle={() => setOpenDropdown(openDropdown === 'doubleDept' ? null : 'doubleDept')}
-                onSelect={val => {
-                  setDoubleDeptNm(val);
+                onSelect={value => {
+                  setDoubleDeptNm(value);
                   setOpenDropdown(null);
                 }}
               />
