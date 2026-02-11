@@ -5,10 +5,9 @@ import useMobile from '@/shared/lib/useMobile';
 import { useGraduationDashboard } from '@/features/joluphaja/model/useGraduationDashboard';
 import { useCriteriaCategories } from '@/entities/joluphaja/model/useGraduation';
 import {
-  getPolicyYear,
-  getGeneralCategoryTypes,
   filterCategories,
   MAJOR_CATEGORY_TYPES,
+  GENERAL_CATEGORY_TYPES,
   getScopeTypes,
   filterCategoriesByScope,
 } from '@/entities/joluphaja/lib/rules';
@@ -92,10 +91,8 @@ function GraduationDashboardPage() {
     );
   }
 
-  const policyYear = getPolicyYear(user.studentId);
-  const generalCategoryTypes = getGeneralCategoryTypes(policyYear);
   const majorCategories = filterCategories(graduationData.categories, MAJOR_CATEGORY_TYPES);
-  const generalCategories = filterCategories(graduationData.categories, generalCategoryTypes);
+  const generalCategories = filterCategories(graduationData.categories, GENERAL_CATEGORY_TYPES);
 
   // 전공 타입에 따른 스코프 목록
   const scopeTypes = getScopeTypes(user.majorType);
@@ -187,14 +184,14 @@ function GraduationDashboardPage() {
         <meta name="description" content="졸업요건 분석 결과를 확인하세요." />
       </Helmet>
 
-      <div className="max-w-screen-xl mx-auto px-4 py-6">
-        {/* 안내 배너 */}
-        {showBanner && (
-          <Banner deleteBanner={handleDeleteBanner}>
-            본 결과는 공식적인 효력을 갖지 않습니다. 최종 졸업 확정 여부는 학과 사무실을 통해 확인하시기 바랍니다.
-          </Banner>
-        )}
+      {/* 안내 배너 */}
+      {showBanner && (
+        <Banner deleteBanner={handleDeleteBanner}>
+          본 결과는 공식적인 효력을 갖지 않습니다. 최종 졸업 확정 여부는 학과 사무실을 통해 확인하시기 바랍니다.
+        </Banner>
+      )}
 
+      <div className="max-w-7xl mx-auto px-4 py-6">
         {/* 페이지 제목 */}
         <Flex justify="justify-between" align="items-center">
           <Heading level={1}>졸업요건 분석</Heading>
@@ -231,14 +228,15 @@ function GraduationDashboardPage() {
                 <Heading level={2} className="mb-4">
                   전공 이수 현황
                 </Heading>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex flex-col md:flex-row gap-4">
                   {majorCategories.map(category => (
-                    <CategoryProgressCard
-                      key={category.categoryType}
-                      category={category}
-                      missingCourses={getMissingCourses(category.categoryType)}
-                      onViewCourses={handleViewCourses}
-                    />
+                    <div className="flex-1" key={category.categoryType}>
+                      <CategoryProgressCard
+                        category={category}
+                        missingCourses={getMissingCourses(category.categoryType)}
+                        onViewCourses={handleViewCourses}
+                      />
+                    </div>
                   ))}
                 </div>
               </section>
@@ -258,14 +256,15 @@ function GraduationDashboardPage() {
                       <Heading level={2} className="mb-4">
                         {scopeLabel} 이수 현황
                       </Heading>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="flex flex-col md:flex-row gap-4">
                         {scopeCategories.map(category => (
-                          <CategoryProgressCard
-                            key={`${category.majorScope}-${category.categoryType}`}
-                            category={category}
-                            missingCourses={getMissingCourses(category.categoryType)}
-                            onViewCourses={handleViewCourses}
-                          />
+                          <div className="flex-1" key={`${category.majorScope}-${category.categoryType}`}>
+                            <CategoryProgressCard
+                              category={category}
+                              missingCourses={getMissingCourses(category.categoryType)}
+                              onViewCourses={handleViewCourses}
+                            />
+                          </div>
                         ))}
                       </div>
                     </section>
@@ -279,14 +278,15 @@ function GraduationDashboardPage() {
               <Heading level={2} className="mb-4">
                 교양 이수 현황
               </Heading>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="flex flex-col md:flex-row gap-4">
                 {generalCategories.map(category => (
-                  <CategoryProgressCard
-                    key={category.categoryType}
-                    category={category}
-                    missingCourses={getMissingCourses(category.categoryType)}
-                    onViewCourses={handleViewCourses}
-                  />
+                  <div className="flex-1" key={category.categoryType}>
+                    <CategoryProgressCard
+                      category={category}
+                      missingCourses={getMissingCourses(category.categoryType)}
+                      onViewCourses={handleViewCourses}
+                    />
+                  </div>
                 ))}
               </div>
             </section>
