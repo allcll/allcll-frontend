@@ -1,15 +1,16 @@
-import { useUserInfo, useGraduationCheck } from '@/entities/joluphaja/model/useGraduation';
+import { useMe } from '@/entities/user/model/useAuth';
+import { useGraduationCheck } from '@/entities/joluphaja/model/useGraduation';
 
 export function useGraduationDashboard() {
-  const userInfoQuery = useUserInfo();
+  const userQuery = useMe();
   const graduationCheckQuery = useGraduationCheck();
 
   return {
-    userInfo: userInfoQuery.data,
+    user: userQuery.data,
     graduationData: graduationCheckQuery.data,
-    isPending: userInfoQuery.isPending || graduationCheckQuery.isPending,
-    isLoading: userInfoQuery.isLoading || graduationCheckQuery.isLoading,
-    isError: userInfoQuery.isError || graduationCheckQuery.isError,
-    error: userInfoQuery.error || graduationCheckQuery.error,
+    isPending: userQuery.isPending || graduationCheckQuery.isPending,
+    isLoading: userQuery.isLoading || graduationCheckQuery.isLoading,
+    isError: userQuery.isError || graduationCheckQuery.isError,
+    error: userQuery.error || graduationCheckQuery.error,
   };
 }

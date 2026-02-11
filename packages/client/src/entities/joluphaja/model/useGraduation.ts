@@ -1,21 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchUserInfo, fetchGraduationCheck, fetchCertificationCriteria, fetchCriteriaCategories } from '../api/graduation';
+import { fetchGraduationCheck, fetchCertificationCriteria, fetchCriteriaCategories } from '../api/graduation';
 
 export const graduationQueryKeys = {
   all: ['graduation'] as const,
-  userInfo: () => [...graduationQueryKeys.all, 'userInfo'] as const,
   check: () => [...graduationQueryKeys.all, 'check'] as const,
   certificationCriteria: () => [...graduationQueryKeys.all, 'certificationCriteria'] as const,
   criteriaCategories: () => [...graduationQueryKeys.all, 'criteriaCategories'] as const,
 };
-
-export function useUserInfo() {
-  return useQuery({
-    queryKey: graduationQueryKeys.userInfo(),
-    queryFn: fetchUserInfo,
-    staleTime: Infinity,
-  });
-}
 
 export function useGraduationCheck() {
   return useQuery({

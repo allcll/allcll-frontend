@@ -1,4 +1,4 @@
-import type { CategoryType, CategoryProgress, PolicyYear, GraduationCheckData, ScopeType, UserInfo } from '../api/graduation';
+import type { CategoryType, CategoryProgress, PolicyYear, GraduationCheckData, ScopeType } from '../api/graduation';
 
 /** 학번으로 정책 연도 판별 */
 export function getPolicyYear(studentId: string): PolicyYear {
@@ -65,7 +65,7 @@ export function calculateOverallProgress(data: GraduationCheckData): number {
 }
 
 /** 전공 타입에 따른 스코프 목록 반환 */
-export function getScopeTypes(majorType: UserInfo['majorType']): ScopeType[] {
+export function getScopeTypes(majorType: 'SINGLE' | 'DOUBLE' | 'MINOR'): ScopeType[] {
   switch (majorType) {
     case 'SINGLE':
       return ['PRIMARY'];
