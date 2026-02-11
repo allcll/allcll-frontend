@@ -2,11 +2,12 @@ import { Card, Flex, Badge } from '@allcll/allcll-ui';
 import CircleCheckIcon from '@/assets/circle-check.svg?react';
 import CircleXIcon from '@/assets/circle-x.svg?react';
 import ProgressDoughnut from './ProgressDoughnut';
-import type { UserInfo, GraduationCheckData } from '@/entities/joluphaja/api/graduation';
+import type { GraduationCheckData } from '@/entities/joluphaja/api/graduation';
+import type { UserResponse } from '@/entities/user/model/types';
 import { isMajorSatisfied, isGeneralSatisfied } from '@/entities/joluphaja/lib/rules';
 
 interface OverallSummaryCardProps {
-  userInfo: UserInfo;
+  user: UserResponse;
   graduationData: GraduationCheckData;
 }
 
@@ -26,11 +27,11 @@ function StatusIcon({ passed, label }: StatusIconProps) {
   );
 }
 
-function OverallSummaryCard({ userInfo, graduationData }: OverallSummaryCardProps) {
+function OverallSummaryCard({ user, graduationData }: OverallSummaryCardProps) {
   const { summary, categories, certifications } = graduationData;
 
   const majorPassed = isMajorSatisfied(categories);
-  const generalPassed = isGeneralSatisfied(categories, userInfo.studentId);
+  const generalPassed = isGeneralSatisfied(categories, user.studentId);
   const certificationPassed = certifications.isSatisfied;
 
   return (
@@ -67,16 +68,26 @@ function OverallSummaryCard({ userInfo, graduationData }: OverallSummaryCardProp
           <Flex direction="flex-col" gap="gap-1" className="text-sm text-gray-600 md:mt-2">
             <Flex gap="gap-2">
               <span className="text-gray-500 w-12">이름</span>
-              <span>{userInfo.studentName}</span>
+              <span>{user.name}</span>
             </Flex>
             <Flex gap="gap-2">
               <span className="text-gray-500 w-12">학번</span>
-              <span>{userInfo.studentId}</span>
+              <span>{user.studentId}</span>
             </Flex>
             <Flex gap="gap-2">
               <span className="text-gray-500 w-12">학과</span>
-              <span>{userInfo.deptName}</span>
+              <span>
+                {user.deptName}({user.collegeName})
+              </span>
             </Flex>
+            {user.doubleDeptName && (
+              <Flex gap="gap-2">
+                <span className="text-gray-500 w-12">복수 전공</span>
+                <span>
+                  {user.doubleDeptName}({user.doubleCollegeName})
+                </span>
+              </Flex>
+            )}
           </Flex>
         </Flex>
 
