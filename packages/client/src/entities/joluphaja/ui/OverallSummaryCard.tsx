@@ -55,7 +55,7 @@ function OverallSummaryCard({ userInfo, graduationData }: OverallSummaryCardProp
                 <p className="text-xl md:text-2xl font-bold">
                   현재{' '}
                   <span className="text-primary-500">
-                    {summary.totalCredits}/{summary.requiredTotalCredits}학점
+                    {summary.totalMyCredits}/{summary.requiredTotalCredits}학점
                   </span>{' '}
                   이수 완료
                 </p>
@@ -89,7 +89,7 @@ function OverallSummaryCard({ userInfo, graduationData }: OverallSummaryCardProp
           </Flex>
 
           <Flex justify="justify-center" className="py-4 md:py-0">
-            <ProgressDoughnut earned={summary.totalCredits} required={summary.requiredTotalCredits} size="large" />
+            <ProgressDoughnut earned={summary.totalMyCredits} required={summary.requiredTotalCredits} size="large" />
           </Flex>
         </Flex>
       </Flex>

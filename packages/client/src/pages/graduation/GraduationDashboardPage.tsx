@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet';
 import { Flex, Banner, Button, Heading, SupportingText } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile';
 import { useGraduationDashboard } from '@/features/joluphaja/model/useGraduationDashboard';
+import { useCriteriaCategories } from '@/entities/joluphaja/model/useGraduation';
 import {
   getPolicyYear,
   getGeneralCategoryTypes,
@@ -48,6 +49,7 @@ function GraduationDashboardPage() {
   } | null>(null);
   const { activeTab, setActiveTab } = useMobileTabs('major');
   const { userInfo, graduationData, isPending, isError, error } = useGraduationDashboard();
+  const { data: criteriaCategories } = useCriteriaCategories();
 
   const handleStartOverGraduationCheck = () => {
     // todo 추후에 파일 추가 단계로 넘어가는 로직 추가
@@ -99,10 +101,10 @@ function GraduationDashboardPage() {
   const scopeTypes = getScopeTypes(userInfo.majorType);
   const isSingleMajor = userInfo.majorType === 'SINGLE';
 
-  // 추천 과목 매핑 (categoryType별 미이수 과목)
+  // 추천 과목 매핑 (categoryType별 필수 과목)
   const getMissingCourses = (categoryType: CategoryType) => {
-    const recommendation = graduationData.recommendations.requiredCourses.find(r => r.categoryType === categoryType);
-    return recommendation?.missingCourses;
+    const category = criteriaCategories?.categories.find(c => c.categoryType === categoryType);
+    return category?.requiredCourses;
   };
 
   // 모바일 탭별 컨텐츠 렌더링
@@ -141,7 +143,7 @@ function GraduationDashboardPage() {
                   <Flex direction="flex-col" gap="gap-4">
                     {scopeCategories.map(category => (
                       <CategoryProgressCard
-                        key={`${category.scope}-${category.categoryType}`}
+                        key={`${category.majorScope}-${category.categoryType}`}
                         category={category}
                         missingCourses={getMissingCourses(category.categoryType)}
                         onViewCourses={handleViewCourses}
@@ -259,7 +261,7 @@ function GraduationDashboardPage() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {scopeCategories.map(category => (
                           <CategoryProgressCard
-                            key={`${category.scope}-${category.categoryType}`}
+                            key={`${category.majorScope}-${category.categoryType}`}
                             category={category}
                             missingCourses={getMissingCourses(category.categoryType)}
                             onViewCourses={handleViewCourses}
