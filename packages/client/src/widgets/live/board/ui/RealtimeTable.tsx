@@ -150,6 +150,7 @@ function SubjectRow({ subject, HeadTitles }: Readonly<{ subject: SseSubject; Hea
   const isDeleted = subject.isDeleted;
   const isEng = subject.curiLangNm === '영어';
   const bgColor = seatChanged ? 'bg-blue-50' : isDeleted ? 'bg-gray-100' : isEng ? 'bg-green-50' : '';
+  const crawledAt = new Date(subject.queryTime ?? 0).getTime();
 
   useEffect(() => {
     if (prevSeat.current !== subject.seat) {
@@ -161,7 +162,10 @@ function SubjectRow({ subject, HeadTitles }: Readonly<{ subject: SseSubject; Hea
   }, [subject.seat]);
 
   return (
-    <tr className={`border-t border-gray-200 text-black transition-colors duration-500 text-nowrap ${bgColor}`}>
+    <tr
+      className={`border-t border-gray-200 text-black transition-colors duration-500 text-nowrap ${bgColor}`}
+      data-testid="crawl-row"
+      data-crawled-at={crawledAt}>
       {HeadTitles.map(({ key }) => {
         switch (key) {
           case 'seat':
