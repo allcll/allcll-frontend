@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import { Dialog, Flex, Button } from '@allcll/allcll-ui';
+import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
 import type { CategoryType, MissingCourse } from '@/entities/joluphaja/api/graduation';
 import { CATEGORY_TYPE_LABELS } from '../lib/mappers';
 
@@ -13,15 +13,7 @@ interface RecommendedCoursesModalProps {
 function RecommendedCoursesModal({ isOpen, onClose, categoryType, missingCourses }: RecommendedCoursesModalProps) {
   const categoryLabel = CATEGORY_TYPE_LABELS[categoryType];
 
-  // TODO: 스크롤 락 공통 유틸로 교체
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
+  useBodyScrollLock(isOpen);
 
   return (
     <Dialog title={`${categoryLabel} 추천 과목`} onClose={onClose} isOpen={isOpen}>
