@@ -20,6 +20,7 @@ import SubjectTable from './SubjectTable.tsx';
 import ActionButtons from './ActionButton.tsx';
 import { Chip, Dialog, Label } from '@allcll/allcll-ui';
 import { RECENT_SEMESTERS } from '@/entities/semester/api/semester.ts';
+import { getInitSimulationMode } from '@/features/simulation/lib/getSimulationMode.ts';
 
 interface UserWishModalIProps {
   timetables: TimetableType[];
@@ -47,12 +48,12 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
       semesterCode: RECENT_SEMESTERS.semesterCode,
     },
   );
+  const prevSnapshot = useLiveQuery(getRecentInterestedSnapshot);
 
-  const [subjectMode, setSubjectMode] = useState<ModeType>('timetable');
+  const [subjectMode, setSubjectMode] = useState<ModeType>(getInitSimulationMode(!!prevSnapshot, timetables));
   const [toggleTip, setToggleTip] = useState(false);
 
   const { data: schedules, isLoading: isSchedulesLoading } = useGetTimetableSchedules(selectedTimetable?.timeTableId);
-  const prevSnapshot = useLiveQuery(getRecentInterestedSnapshot);
 
   const handleRemakeSubjects = () => {
     setSimulationSubjects(pickRandomsubjects(lectures, department.departmentName));
@@ -159,21 +160,10 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
     setSimulationSubjects(subjects);
   }, [subjectMode, prevSnapshot, isLoadingLectures]);
 
-  // 처음 입장 시 어떤 항목으로 갈지 결정
-  useEffect(() => {
-    if (prevSnapshot && prevSnapshot.snapshot_id >= 0) {
-      setSubjectMode('previous');
-    } else if (timetables.length > 0) {
-      setSubjectMode('timetable');
-    } else {
-      setSubjectMode('random');
-    }
-  }, [prevSnapshot, timetables]);
-
   return (
     <Dialog title="수강 신청 연습 시작" onClose={() => setIsModalOpen(false)}>
-      <div className="flex flex-col w-full overflow-y-auto max-h-[90vh] max-w-[900px] sm:min-w-[600px]">
-        <div className="flex flex-col gap-2 p-2 sm:p-6">
+      <div className="flex flex-col overflow-y-auto max-h-[90vh] w-[600px] max-w-[90vw]">
+        <div className="flex flex-col gap-2 p-2 sm:p-4">
           <Label>어떤 과목으로 진행하시겠습니까?</Label>
           <div className="flex gap-2 py-2">
             {prevSnapshot && (
