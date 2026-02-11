@@ -26,7 +26,7 @@ export function getGeneralCategoryTypes(policyYear: PolicyYear): CategoryType[] 
 }
 
 /** 전공 카테고리 타입 목록 */
-export const MAJOR_CATEGORY_TYPES: CategoryType[] = ['MAJOR_REQUIRED', 'MAJOR_ELECTIVE'];
+export const MAJOR_CATEGORY_TYPES: CategoryType[] = ['MAJOR_REQUIRED', 'MAJOR_ELECTIVE', 'MAJOR_BASIC'];
 
 /** 카테고리 목록에서 특정 타입 찾기 */
 export function findCategory(categories: CategoryProgress[], categoryType: CategoryType): CategoryProgress | undefined {
@@ -60,8 +60,8 @@ export function calculateProgress(earned: number, required: number): number {
 
 /** 전체 진행률 계산 */
 export function calculateOverallProgress(data: GraduationCheckData): number {
-  const { totalCredits, requiredTotalCredits } = data.summary;
-  return calculateProgress(totalCredits, requiredTotalCredits);
+  const { totalMyCredits, requiredTotalCredits } = data.summary;
+  return calculateProgress(totalMyCredits, requiredTotalCredits);
 }
 
 /** 전공 타입에 따른 스코프 목록 반환 */
@@ -70,7 +70,7 @@ export function getScopeTypes(majorType: UserInfo['majorType']): ScopeType[] {
     case 'SINGLE':
       return ['PRIMARY'];
     case 'DOUBLE':
-      return ['PRIMARY', 'DOUBLE'];
+      return ['PRIMARY', 'SECONDARY'];
     case 'MINOR':
       return ['PRIMARY', 'MINOR'];
     default:
@@ -84,5 +84,5 @@ export function filterCategoriesByScope(
   scope: ScopeType,
   categoryTypes: CategoryType[],
 ): CategoryProgress[] {
-  return categories.filter(cat => cat.scope === scope && categoryTypes.includes(cat.categoryType));
+  return categories.filter(cat => cat.majorScope === scope && categoryTypes.includes(cat.categoryType));
 }
