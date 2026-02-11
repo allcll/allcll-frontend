@@ -7,7 +7,6 @@ import SkeletonRows from '@/shared/ui/SkeletonRows.tsx';
 import { getTimeDiffString } from '@/shared/lib/stringFormats.ts';
 import { getSeatColor } from '@/shared/config/colors.ts';
 import TableColorInfo from '@/shared/ui/TableColorInfo.tsx';
-import { getDateLocale } from '@/shared/lib/time.ts';
 import LiveTableTitleModal from '@/shared/ui/TableTitleSettingModal.tsx';
 import { HeadTitle } from '@/shared/model/createColumnStore.ts';
 
@@ -22,6 +21,7 @@ import ZeroListError from '../../_errors/ui/ZeroListError.tsx';
 import PreSeatWillAvailable from '../../_errors/ui/PreSeatWillAvailable.tsx';
 import SystemChecking from '../../_errors/ui/SystemChecking';
 import { useLiveTableStore } from '../model/useLiveTableColumnStore.ts';
+import useServiceSemester from '@/entities/semester/model/useServiceSemester.ts';
 
 interface IRealtimeTable {
   title: string;
@@ -83,9 +83,9 @@ const MAINTENANCE = false;
 function SubjectBody({ tableTitles }: Readonly<{ tableTitles: HeadTitle<SseSubject>[] }>) {
   const { data: tableData, isError, isPending, refetch } = useSSESeats(SSEType.NON_MAJOR);
   const HeadTitles = tableTitles.filter(t => t.visible);
+  const { data } = useServiceSemester('live');
 
-  // Todo: 추후 변수처리 할 것
-  const isFinishLive = new Date() > getDateLocale('2025-12-09T17:00:00');
+  const isFinishLive = data && 'service' in data && data.service && !data.service.withinPeriod ? data.service : null;
   const sseState = useSSEState(state => state.sseState);
 
   if (MAINTENANCE) {

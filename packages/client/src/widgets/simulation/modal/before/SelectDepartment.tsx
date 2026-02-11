@@ -37,10 +37,10 @@ function SelectDepartment({ department, setDepartment }: ISelectDepartment) {
 
   return (
     <div className="flex flex-col gap-2">
-      <Label>학과를 선택해주세요.</Label>
+      <Label>학과 선택</Label>
 
       <DepartmentSelect
-        className="cursor-pointer rounded-sm px-2 py-1 w-50 sm:w-120 bg-white mb-4"
+        className="cursor-pointer rounded-sm px-2 py-1 w-50 sm:w-120 bg-white"
         value={department.departmentCode}
         onChange={onSelectDepartment}
       />
