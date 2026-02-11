@@ -116,9 +116,6 @@ export interface GraduationCheckResponse {
 /** 카테고리 그룹 (전공/교양 구분용) */
 export type CategoryGroup = 'major' | 'general';
 
-/** 학번 기반 정책 연도 */
-export type PolicyYear = 'before22' | 'from22' | 'from23';
-
 export async function fetchGraduationCheck(): Promise<GraduationCheckResponse> {
   return await fetchJsonOnAPI<GraduationCheckResponse>('/api/graduation/check');
 }
