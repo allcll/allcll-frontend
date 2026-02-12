@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { JolupStepsProps } from '@/features/jolup/ui/Steps.tsx';
 import { Card, Flex, Heading, SupportingText, Label, Chip, Button, ListboxOption, Grid } from '@allcll/allcll-ui';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
-import useDepartments from '@/entities/departments/api/useDepartments.ts';
+import { useAdmissionYearDepartments } from '@/entities/joluphaja/model/useGraduation';
 import { useFilteringDepartment } from '@/features/filtering/lib/useFilteringDepartment.ts';
 import CheckSvg from '@/assets/checkbox-blue.svg?react';
 import { ZeroContent } from '@/shared/ui/ZeroContent';
@@ -16,7 +16,7 @@ const BasicInfoForm = ({ nextStep, prevStep }: JolupStepsProps) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchKeywords, setSearchKeywords] = useState('');
 
-  const { data: departments } = useDepartments();
+  const { data: departments } = useAdmissionYearDepartments();
   const { filteredDepartments } = useFilteringDepartment({
     category: '전공',
     searchKeywords,
@@ -97,9 +97,7 @@ const BasicInfoForm = ({ nextStep, prevStep }: JolupStepsProps) => {
                   <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
                     {filteredDepartments && filteredDepartments.length > 0 ? (
                       filteredDepartments.map(department => {
-                        const departmentName = department.departmentName
-                          ? department.departmentName.split(' ').slice(-1)[0]
-                          : '학과 정보 없음';
+                        const departmentName = department.departmentName || '학과 정보 없음';
                         const isSelected = doubleMajorCode === department.departmentCode;
 
                         return (

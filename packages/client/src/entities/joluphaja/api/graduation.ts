@@ -230,3 +230,25 @@ export interface CertificationCriteriaResponse {
 export async function fetchCertificationCriteria(): Promise<CertificationCriteriaResponse> {
   return await fetchJsonOnAPI<CertificationCriteriaResponse>('/api/graduation/certifications/criteria');
 }
+
+// ---- 입학년도 기준 학과 조회 API ----
+
+/** 입학년도 기준 학과 정보 */
+export interface AdmissionYearDepartment {
+  deptCd: string;
+  deptNm: string;
+  collegeNm: string;
+  deptGroup: string;
+  englishTargetType: string;
+  codingTargetType: string;
+}
+
+/** 입학년도 기준 학과 조회 API 응답 */
+export interface AdmissionYearDepartmentsResponse {
+  admissionYear: number;
+  departments: AdmissionYearDepartment[];
+}
+
+export async function fetchAdmissionYearDepartments(): Promise<AdmissionYearDepartmentsResponse> {
+  return await fetchJsonOnAPI<AdmissionYearDepartmentsResponse>('/api/graduation/departments');
+}

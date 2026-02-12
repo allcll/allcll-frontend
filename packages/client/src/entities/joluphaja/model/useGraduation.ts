@@ -1,11 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchUserInfo, fetchGraduationCheck, fetchCertificationCriteria } from '../api/graduation';
+import {
+  fetchUserInfo,
+  fetchGraduationCheck,
+  fetchCertificationCriteria,
+  fetchAdmissionYearDepartments,
+} from '../api/graduation';
 
 export const graduationQueryKeys = {
   all: ['graduation'] as const,
   userInfo: () => [...graduationQueryKeys.all, 'userInfo'] as const,
   check: () => [...graduationQueryKeys.all, 'check'] as const,
   certificationCriteria: () => [...graduationQueryKeys.all, 'certificationCriteria'] as const,
+  departments: () => [...graduationQueryKeys.all, 'departments'] as const,
 };
 
 export function useUserInfo() {
@@ -35,3 +41,15 @@ export function useCertificationCriteria(enabled: boolean) {
   });
 }
 
+export function useAdmissionYearDepartments() {
+  return useQuery({
+    queryKey: graduationQueryKeys.departments(),
+    queryFn: fetchAdmissionYearDepartments,
+    staleTime: Infinity,
+    select: response =>
+      response.departments.map(dept => ({
+        departmentCode: dept.deptCd,
+        departmentName: dept.deptNm,
+      })),
+  });
+}

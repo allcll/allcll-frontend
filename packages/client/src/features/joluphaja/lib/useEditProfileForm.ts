@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import useDepartments from '@/entities/departments/api/useDepartments';
+import { useAdmissionYearDepartments, graduationQueryKeys } from '@/entities/joluphaja/model/useGraduation';
 import { useUpdateMe, useDeleteMe } from '@/entities/user/model/useAuth';
-import { graduationQueryKeys } from '@/entities/joluphaja/model/useGraduation';
 import type { UserInfo } from '@/entities/joluphaja/api/graduation';
 import type { UpdateMeRequest } from '@/entities/user/model/types';
 
@@ -14,13 +13,13 @@ export function useEditProfileForm(userInfo: UserInfo, isOpen: boolean, onClose:
   const updateMeMutation = useUpdateMe();
   const deleteMeMutation = useDeleteMe();
   const navigate = useNavigate();
-  const { data: departments } = useDepartments();
+  const { data: departments } = useAdmissionYearDepartments();
 
   const currentMajorType: MajorType = userInfo.majorType === 'MINOR' ? 'SINGLE' : userInfo.majorType;
   const deptNames =
     departments
-      ?.filter(d => d.departmentCode !== '9005')
-      .map(d => (d.departmentName ? d.departmentName.split(' ').slice(-1)[0] : '학과 정보 없음')) ?? [];
+      ?.filter(dept => dept.departmentCode !== '9005')
+      .map(dept => dept.departmentName || '학과 정보 없음') ?? [];
   const deptOptions = deptNames.map(name => ({ value: name, label: name }));
 
   const [majorType, setMajorType] = useState<MajorType>(currentMajorType);
