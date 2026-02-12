@@ -12,7 +12,7 @@ import {
   filterCategoriesByScope,
 } from '@/entities/joluphaja/lib/rules';
 import { SCOPE_TYPE_LABELS } from '@/features/joluphaja/lib/mappers';
-import type { CategoryType, MissingCourse } from '@/entities/joluphaja/api/graduation';
+import type { CategoryType, MissingCourse, ScopeType } from '@/entities/joluphaja/api/graduation';
 import OverallSummaryCard from '@/entities/joluphaja/ui/OverallSummaryCard';
 import CategoryProgressCard from '@/features/joluphaja/ui/CategoryProgressCard';
 import CertificationSection from '@/features/joluphaja/ui/CertificationSection';
@@ -99,8 +99,10 @@ function GraduationDashboardPage() {
   const isSingleMajor = user.majorType === 'SINGLE';
 
   // 추천 과목 매핑 (categoryType별 필수 과목)
-  const getMissingCourses = (categoryType: CategoryType) => {
-    const category = criteriaCategories?.categories.find(c => c.categoryType === categoryType);
+  const getMissingCourses = (categoryType: CategoryType, majorScope: ScopeType) => {
+    const category = criteriaCategories?.categories.find(
+      c => c.categoryType === categoryType && c.majorScope === majorScope,
+    );
     return category?.requiredCourses;
   };
 
@@ -119,7 +121,7 @@ function GraduationDashboardPage() {
                 <CategoryProgressCard
                   key={category.categoryType}
                   category={category}
-                  missingCourses={getMissingCourses(category.categoryType)}
+                  missingCourses={getMissingCourses(category.categoryType, category.majorScope)}
                   onViewCourses={handleViewCourses}
                 />
               ))}
@@ -142,7 +144,7 @@ function GraduationDashboardPage() {
                       <CategoryProgressCard
                         key={`${category.majorScope}-${category.categoryType}`}
                         category={category}
-                        missingCourses={getMissingCourses(category.categoryType)}
+                        missingCourses={getMissingCourses(category.categoryType, category.majorScope)}
                         onViewCourses={handleViewCourses}
                       />
                     ))}
@@ -163,7 +165,7 @@ function GraduationDashboardPage() {
                 <CategoryProgressCard
                   key={category.categoryType}
                   category={category}
-                  missingCourses={getMissingCourses(category.categoryType)}
+                  missingCourses={getMissingCourses(category.categoryType, category.majorScope)}
                   onViewCourses={handleViewCourses}
                 />
               ))}
@@ -233,7 +235,7 @@ function GraduationDashboardPage() {
                     <div className="flex-1" key={category.categoryType}>
                       <CategoryProgressCard
                         category={category}
-                        missingCourses={getMissingCourses(category.categoryType)}
+                        missingCourses={getMissingCourses(category.categoryType, category.majorScope)}
                         onViewCourses={handleViewCourses}
                       />
                     </div>
@@ -261,7 +263,7 @@ function GraduationDashboardPage() {
                           <div className="flex-1" key={`${category.majorScope}-${category.categoryType}`}>
                             <CategoryProgressCard
                               category={category}
-                              missingCourses={getMissingCourses(category.categoryType)}
+                              missingCourses={getMissingCourses(category.categoryType, category.majorScope)}
                               onViewCourses={handleViewCourses}
                             />
                           </div>
@@ -283,7 +285,7 @@ function GraduationDashboardPage() {
                   <div className="flex-1" key={category.categoryType}>
                     <CategoryProgressCard
                       category={category}
-                      missingCourses={getMissingCourses(category.categoryType)}
+                      missingCourses={getMissingCourses(category.categoryType, category.majorScope)}
                       onViewCourses={handleViewCourses}
                     />
                   </div>
