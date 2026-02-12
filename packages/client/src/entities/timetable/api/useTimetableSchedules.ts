@@ -102,7 +102,7 @@ export const getTimetables = async (semesterCode: string): Promise<TimetableList
 
 /**
  * TODO: select -> API 연결 후 백엔드에서 필터링 되도록 수정
- * @param semester
+ * @param semesterCode
  * @returns
  */
 export const useTimetables = (semesterCode: string) => {
@@ -116,6 +116,7 @@ export const useTimetables = (semesterCode: string) => {
 
 /** timetableId에 대한 Timetable 데이터를 가져옵니다.
  * @param timetableId
+ * @param semester
  */
 export function useGetTimetableSchedules(timetableId?: number, semester?: string) {
   semester = semester ?? RECENT_SEMESTERS.semesterCode;
@@ -272,6 +273,7 @@ interface ScheduleMutationProps {
  * onError: 에러 발생 시 캐싱된 데이터를 롤백합니다.
  * onSuccess: 성공 시 캐싱된 데이터를 업데이트합니다.
  * @param timetableId
+ * @param semesterCode
  */
 export function useCreateSchedule(timetableId?: number, semesterCode?: string) {
   semesterCode = semesterCode ?? RECENT_SEMESTERS.semesterCode;
@@ -346,7 +348,7 @@ export function useCreateSchedule(timetableId?: number, semesterCode?: string) {
       queryClient.setQueryData(['timetableData', targetTimetableId], {
         ...timetable,
         schedules: timetable?.schedules.map(sch => {
-          if (sch.scheduleId === context.schedule.scheduleId) return schedule; // Update the specific schedule
+          if (sch.scheduleId === context?.schedule.scheduleId) return schedule; // Update the specific schedule
           return sch; // Return unchanged schedules
         }),
       });
