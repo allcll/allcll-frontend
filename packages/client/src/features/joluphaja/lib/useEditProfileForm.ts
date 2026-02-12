@@ -3,34 +3,30 @@ import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAdmissionYearDepartments, graduationQueryKeys } from '@/entities/joluphaja/model/useGraduation';
 import { useUpdateMe, useDeleteMe } from '@/entities/user/model/useAuth';
-import type { UserInfo } from '@/entities/joluphaja/api/graduation';
-import type { UpdateMeRequest } from '@/entities/user/model/types';
+import type { MajorType, UpdateMeRequest, UserResponse } from '@/entities/user/model/types';
 
-type MajorType = 'SINGLE' | 'DOUBLE';
-
-export function useEditProfileForm(userInfo: UserInfo, isOpen: boolean, onClose: () => void) {
+export function useEditProfileForm(user: UserResponse, isOpen: boolean, onClose: () => void) {
   const queryClient = useQueryClient();
   const updateMeMutation = useUpdateMe();
   const deleteMeMutation = useDeleteMe();
   const navigate = useNavigate();
   const { data: departments } = useAdmissionYearDepartments();
 
-  const currentMajorType: MajorType = userInfo.majorType === 'MINOR' ? 'SINGLE' : userInfo.majorType;
   const deptNames =
     departments
       ?.filter(dept => dept.departmentCode !== '9005')
       .map(dept => dept.departmentName || '학과 정보 없음') ?? [];
   const deptOptions = deptNames.map(name => ({ value: name, label: name }));
 
-  const [majorType, setMajorType] = useState<MajorType>(currentMajorType);
-  const [deptNm, setDeptNm] = useState(userInfo.deptName);
-  const [doubleDeptNm, setDoubleDeptNm] = useState<string | null>(null);
+  const [majorType, setMajorType] = useState<MajorType>(user.majorType);
+  const [deptNm, setDeptNm] = useState(user.deptName);
+  const [doubleDeptNm, setDoubleDeptNm] = useState<string | null>(user.doubleDeptName);
 
   useEffect(() => {
     if (isOpen) {
-      setMajorType(currentMajorType);
-      setDeptNm(userInfo.deptName);
-      setDoubleDeptNm(null);
+      setMajorType(user.majorType);
+      setDeptNm(user.deptName);
+      setDoubleDeptNm(user.doubleDeptName);
     }
   }, [isOpen]);
 
@@ -39,7 +35,7 @@ export function useEditProfileForm(userInfo: UserInfo, isOpen: boolean, onClose:
   const handleSave = () => {
     if (!canSave) return;
 
-    const changedDept = deptNm !== userInfo.deptName ? deptNm : null;
+    const changedDept = deptNm !== user.deptName ? deptNm : null;
 
     const request: UpdateMeRequest = {
       deptNm: changedDept,

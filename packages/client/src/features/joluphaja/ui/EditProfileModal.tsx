@@ -3,12 +3,12 @@ import { Dialog, Flex, Button, Label } from '@allcll/allcll-ui';
 import CustomSelect from '@/shared/ui/CustomSelect';
 import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
 import { useEditProfileForm } from '@/features/joluphaja/lib/useEditProfileForm';
-import type { UserInfo } from '@/entities/joluphaja/api/graduation';
+import type { UserResponse } from '@/entities/user/model/types';
 
 interface EditProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
-  userInfo: UserInfo;
+  user: UserResponse;
 }
 
 const MAJOR_TYPE_OPTIONS = [
@@ -16,7 +16,7 @@ const MAJOR_TYPE_OPTIONS = [
   { value: 'DOUBLE', label: '복수전공' },
 ];
 
-function EditProfileModal({ isOpen, onClose, userInfo }: EditProfileModalProps) {
+function EditProfileModal({ isOpen, onClose, user }: EditProfileModalProps) {
   const {
     majorType,
     setMajorType,
@@ -30,7 +30,7 @@ function EditProfileModal({ isOpen, onClose, userInfo }: EditProfileModalProps) 
     handleDelete,
     isSaving,
     isDeleting,
-  } = useEditProfileForm(userInfo, isOpen, onClose);
+  } = useEditProfileForm(user, isOpen, onClose);
 
   useBodyScrollLock(isOpen);
 

@@ -53,7 +53,7 @@ function GraduationDashboardPage() {
     missingCourses: MissingCourse[];
   } | null>(null);
   const { activeTab, setActiveTab } = useMobileTabs('major');
-  const { userInfo, graduationData, isPending, isError, error } = useGraduationDashboard();
+  const { user, graduationData, isPending, isError, error } = useGraduationDashboard();
 
   const handleStartOverGraduationCheck = () => {
     // todo 추후에 파일 추가 단계로 넘어가는 로직 추가
@@ -86,7 +86,7 @@ function GraduationDashboardPage() {
     );
   }
 
-  if (isError || !userInfo || !graduationData) {
+  if (isError || !user || !graduationData) {
     return (
       <>
         <Helmet>
@@ -97,14 +97,14 @@ function GraduationDashboardPage() {
     );
   }
 
-  const policyYear = getPolicyYear(userInfo.studentId);
+  const policyYear = getPolicyYear(user.studentId);
   const generalCategoryTypes = getGeneralCategoryTypes(policyYear);
   const majorCategories = filterCategories(graduationData.categories, MAJOR_CATEGORY_TYPES);
   const generalCategories = filterCategories(graduationData.categories, generalCategoryTypes);
 
   // 전공 타입에 따른 스코프 목록
-  const scopeTypes = getScopeTypes(userInfo.majorType);
-  const isSingleMajor = userInfo.majorType === 'SINGLE';
+  const scopeTypes = getScopeTypes(user.majorType);
+  const isSingleMajor = user.majorType === 'SINGLE';
 
   // 추천 과목 매핑 (categoryType별 미이수 과목)
   const getMissingCourses = (categoryType: CategoryType) => {
@@ -214,10 +214,10 @@ function GraduationDashboardPage() {
             />
           </Flex>
         </Flex>
-        <SupportingText className="mb-6">{userInfo.studentName}님의 졸업요건 분석 결과입니다.</SupportingText>
+        <SupportingText className="mb-6">{user.name}님의 졸업요건 분석 결과입니다.</SupportingText>
 
         {/* 전체 진행률 카드 */}
-        <OverallSummaryCard userInfo={userInfo} graduationData={graduationData} />
+        <OverallSummaryCard user={user} graduationData={graduationData} />
 
         {/* 다시 검사하기 버튼 */}
         <Flex justify="justify-end" className="mt-4 mb-8">
@@ -320,11 +320,11 @@ function GraduationDashboardPage() {
       )}
 
       {/* 회원 정보 수정 모달 */}
-      {userInfo && (
+      {user && (
         <EditProfileModal
           isOpen={isEditProfileOpen}
           onClose={() => setIsEditProfileOpen(false)}
-          userInfo={userInfo}
+          user={user}
         />
       )}
     </>

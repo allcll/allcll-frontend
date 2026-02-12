@@ -1,15 +1,5 @@
 import { fetchJsonOnAPI } from '@/shared/api/api';
 
-/** 사용자 정보 응답 */
-export interface UserInfo {
-  userId: number;
-  studentId: string;
-  studentName: string;
-  deptName: string;
-  deptCd: string;
-  majorType: 'SINGLE' | 'DOUBLE' | 'MINOR';
-}
-
 /** 학점 요약 정보 */
 export interface CreditSummary {
   totalCredits: number;
@@ -142,10 +132,6 @@ export type CategoryGroup = 'major' | 'general';
 
 /** 학번 기반 정책 연도 */
 export type PolicyYear = 'before22' | 'from22' | 'from23';
-
-export async function fetchUserInfo(): Promise<UserInfo> {
-  return await fetchJsonOnAPI<UserInfo>('/api/auth/me');
-}
 
 export async function fetchGraduationCheck(): Promise<GraduationCheckResponse> {
   return await fetchJsonOnAPI<GraduationCheckResponse>('/api/graduation/check');

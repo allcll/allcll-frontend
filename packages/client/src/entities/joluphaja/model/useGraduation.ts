@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import {
-  fetchUserInfo,
   fetchGraduationCheck,
   fetchCertificationCriteria,
   fetchAdmissionYearDepartments,
@@ -8,19 +7,10 @@ import {
 
 export const graduationQueryKeys = {
   all: ['graduation'] as const,
-  userInfo: () => [...graduationQueryKeys.all, 'userInfo'] as const,
   check: () => [...graduationQueryKeys.all, 'check'] as const,
   certificationCriteria: () => [...graduationQueryKeys.all, 'certificationCriteria'] as const,
   departments: () => [...graduationQueryKeys.all, 'departments'] as const,
 };
-
-export function useUserInfo() {
-  return useQuery({
-    queryKey: graduationQueryKeys.userInfo(),
-    queryFn: fetchUserInfo,
-    staleTime: 1000 * 60 * 5,
-  });
-}
 
 export function useGraduationCheck() {
   return useQuery({
