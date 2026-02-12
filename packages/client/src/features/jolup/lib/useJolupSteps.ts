@@ -13,6 +13,7 @@ export enum JolupSteps {
  */
 function useJolupSteps() {
   const [step, setStep] = useState<JolupSteps>(JolupSteps.LOGIN);
+  const [isDepartmentNotFound, setIsDepartmentNotFound] = useState(false);
 
   // useEffect(() => {
   //   setStep(step => {
@@ -64,6 +65,6 @@ function useJolupSteps() {
     }
   }
 
-  return { step, nextStep, prevStep };
+  return { step, nextStep, prevStep, isDepartmentNotFound, setIsDepartmentNotFound };
 }
 export default useJolupSteps;
