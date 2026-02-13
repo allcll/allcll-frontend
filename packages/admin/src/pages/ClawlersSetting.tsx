@@ -1,7 +1,7 @@
 import SessionAdmin from '@/components/clawlers/AuthTokenViewer';
 import Control from '@/components/clawlers/Control';
 import TostNotification from '@allcll/common/components/toast/ToastNotification';
-import DepartmentControl from '@/components/clawlers/SubjectAndDepartmentControl';
+import CrawlingCrontrol from '@/components/clawlers/CrawlerControlComponent';
 import { SetupStep } from '@/utils/type';
 import SetupProgress from '../components/clawlers/SetupProgress';
 import TokenSetting from '@/components/clawlers/AuthTokenSetting';
@@ -38,7 +38,7 @@ function CrawlerSettings() {
             <>
               <SessionAdmin />
               <Control />
-              <DepartmentControl />
+              <CrawlingCrontrol />
               <UpdateData />
             </>
           )}
