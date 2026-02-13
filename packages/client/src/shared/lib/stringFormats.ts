@@ -13,12 +13,12 @@ export function getTimeDiffString(time?: string) {
   const month = Math.floor(day / 30);
   const year = Math.floor(month / 12);
 
-  if (year > 0) return `${year}년 전 기준`;
-  if (month > 0) return `${month}개월 전 기준`;
-  if (day > 0) return `${day}일 전 기준`;
-  if (hour > 0) return `${hour}시간 전 기준`;
-  if (min > 0) return `${min}분 전 기준`;
-  if (sec > 0) return `${sec}초 전 기준`;
+  if (year > 0) return `${year}년 전`;
+  if (month > 0) return `${month}개월 전`;
+  if (day > 0) return `${day}일 전`;
+  if (hour > 0) return `${hour}시간 전`;
+  if (min > 0) return `${min}분 전`;
+  if (sec > 0) return `${sec}초 전`;
 
   return '방금 전';
 }
