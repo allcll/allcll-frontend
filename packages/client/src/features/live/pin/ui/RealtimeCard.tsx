@@ -50,7 +50,9 @@ function RealtimeCard({ subject, seats, queryTime, disableSeat = false }: Readon
 function QueryTimeComponent({ queryTime }: Readonly<{ queryTime?: string }>) {
   useTick();
 
-  return <p className={`text-xs text-gray-500`}>{getTimeDiffString(queryTime)} 기준</p>;
+  const queryTimeText = getTimeDiffString(queryTime);
+
+  return <p className="text-xs text-gray-500">{queryTime ? `${queryTimeText} 기준` : queryTimeText}</p>;
 }
 
 function SeatBadge({ seats }: Readonly<{ seats: number }>) {
