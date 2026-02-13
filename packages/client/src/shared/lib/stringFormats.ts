@@ -1,6 +1,6 @@
 // Todo: 초당 갱신되는 컴포넌트 만들기
 export function getTimeDiffString(time?: string) {
-  if (!time) return '검색 중';
+  if (!time) return '여석 확인 중';
 
   const now = new Date();
   const date = new Date(time);
