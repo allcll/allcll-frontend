@@ -1,6 +1,6 @@
 // Todo: 초당 갱신되는 컴포넌트 만들기
 export function getTimeDiffString(time?: string) {
-  if (!time) return '검색 중';
+  if (!time) return '여석 확인 중';
 
   const now = new Date();
   const date = new Date(time);
@@ -13,12 +13,12 @@ export function getTimeDiffString(time?: string) {
   const month = Math.floor(day / 30);
   const year = Math.floor(month / 12);
 
-  if (year > 0) return `${year}년 전`;
-  if (month > 0) return `${month}개월 전`;
-  if (day > 0) return `${day}일 전`;
-  if (hour > 0) return `${hour}시간 전`;
-  if (min > 0) return `${min}분 전`;
-  if (sec > 0) return `${sec}초 전`;
+  if (year > 0) return `${year}년 전 기준`;
+  if (month > 0) return `${month}개월 전 기준`;
+  if (day > 0) return `${day}일 전 기준`;
+  if (hour > 0) return `${hour}시간 전 기준`;
+  if (min > 0) return `${min}분 전 기준`;
+  if (sec > 0) return `${sec}초 전 기준`;
 
   return '방금 전';
 }
