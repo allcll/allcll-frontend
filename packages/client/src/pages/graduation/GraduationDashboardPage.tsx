@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useQueryClient } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Flex, Banner, Button, Heading, SupportingText } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile';
 import { graduationQueryKeys } from '@/entities/joluphaja/model/useGraduation';
@@ -47,6 +47,7 @@ function ErrorState({ message }: { message: string }) {
 function GraduationDashboardPage() {
   const isMobile = useMobile();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [showBanner, setShowBanner] = useState(true);
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<{
@@ -212,7 +213,10 @@ function GraduationDashboardPage() {
             <LogoutButton
               variant="text"
               size="small"
-              onSuccess={() => queryClient.removeQueries({ queryKey: graduationQueryKeys.all })}
+              onSuccess={() => {
+                queryClient.removeQueries({ queryKey: graduationQueryKeys.all });
+                navigate('/graduation?retry=true');
+              }}
             />
           </Flex>
         </Flex>
