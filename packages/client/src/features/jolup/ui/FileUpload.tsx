@@ -1,30 +1,17 @@
-import { useState } from 'react';
 import { Button, Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import FileDropZone from './FileDropZone';
-import { useGraduationCheckMutation } from '@/features/jolup/lib/useGraduationCheckMutation.ts';
 import { JolupStepsProps } from '@/features/jolup/model/types.ts';
 
-function FileUpload({ nextStep }: JolupStepsProps) {
-  const { mutate: uploadFile } = useGraduationCheckMutation();
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+interface FileUploadProps extends JolupStepsProps {
+  file: File | null;
+  onFileSelected: (file: File | null) => void;
+}
 
-  const handleFileSelect = (file: File) => {
-    setSelectedFile(file);
-  };
-
-  const handleDeleteFile = () => {
-    setSelectedFile(null);
-  };
-
-  const handleCancel = () => {
-    setSelectedFile(null);
-  };
-
+function FileUpload({ nextStep, file, onFileSelected }: FileUploadProps) {
   const handleNextStep = () => {
-    if (selectedFile) {
-      uploadFile(selectedFile);
-      nextStep();
-    }
+    if (!file) return;
+    // 파일 업로드는 useUploading에서 처리
+    nextStep();
   };
 
   return (
@@ -38,17 +25,17 @@ function FileUpload({ nextStep }: JolupStepsProps) {
         </Flex>
 
         <FileDropZone
-          onFileSelect={handleFileSelect}
-          selectedFile={selectedFile}
-          onDeleteFile={handleDeleteFile}
+          onFileSelect={onFileSelected}
+          selectedFile={file}
+          onDeleteFile={() => onFileSelected(null)}
           accept=".xlsx"
         />
 
         <Flex justify="justify-end" gap="gap-3" className="w-full mt-2">
-          <Button variant="secondary" size="medium" onClick={handleCancel}>
+          <Button variant="secondary" size="medium" onClick={() => onFileSelected(null)}>
             취소
           </Button>
-          <Button variant="primary" size="medium" onClick={handleNextStep} disabled={!selectedFile}>
+          <Button variant="primary" size="medium" onClick={handleNextStep} disabled={!file}>
             다음 단계
           </Button>
         </Flex>

@@ -3,8 +3,12 @@ import { Card, Flex, Heading } from '@allcll/allcll-ui';
 
 import { JolupStepsProps } from '@/features/jolup/model/types.ts';
 
-function Uploading({ nextStep }: JolupStepsProps) {
-  const { progress, message } = useUploading(nextStep);
+interface UploadingProps extends JolupStepsProps {
+  file: File | null;
+}
+
+function Uploading({ nextStep, prevStep, file }: UploadingProps) {
+  const { progress, message } = useUploading(nextStep, prevStep, file);
 
   return (
     <Card variant="outlined" className="w-full mx-auto p-8">

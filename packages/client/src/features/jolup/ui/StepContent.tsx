@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Flex } from '@allcll/allcll-ui';
 import { JolupSteps } from '@/features/jolup/lib/useJolupSteps.ts';
 import FileUploadGuide from '@/features/jolup/ui/FileUploadGuide.tsx';
@@ -17,6 +17,7 @@ interface StepContentProps {
 }
 
 const StepContent: React.FC<StepContentProps> = ({ step, nextStep, prevStep, isDepartmentNotFound, setIsDepartmentNotFound }) => {
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   switch (step) {
     case JolupSteps.LOGIN:
       return <LoginForm onSuccess={nextStep} onDepartmentNotFound={() => setIsDepartmentNotFound?.(true)} />;
@@ -25,12 +26,12 @@ const StepContent: React.FC<StepContentProps> = ({ step, nextStep, prevStep, isD
     case JolupSteps.FILE_UPLOAD:
       return (
         <Flex direction="flex-col" gap="gap-6">
-          <FileUpload nextStep={nextStep} prevStep={prevStep} />
+          <FileUpload nextStep={nextStep} prevStep={prevStep} file={uploadedFile} onFileSelected={setUploadedFile} />
           <FileUploadGuide />
         </Flex>
       );
     case JolupSteps.UPLOADING:
-      return <Uploading nextStep={nextStep} prevStep={prevStep} />;
+      return <Uploading nextStep={nextStep} prevStep={prevStep} file={uploadedFile} />;
     default:
       return (
         <DefaultStep nextStep={nextStep} prevStep={prevStep}>
