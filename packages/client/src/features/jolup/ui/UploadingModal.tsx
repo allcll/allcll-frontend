@@ -1,6 +1,7 @@
 import useUploading from '@/features/jolup/lib/useUploading';
 import { Dialog, Flex, SupportingText } from '@allcll/allcll-ui';
-import type { JolupStepsProps } from '@/features/jolup/ui/Steps.tsx';
+
+import { JolupStepsProps } from '@/features/jolup/model/types.ts';
 
 interface UploadingModalProps extends JolupStepsProps {
   isOpen: boolean;

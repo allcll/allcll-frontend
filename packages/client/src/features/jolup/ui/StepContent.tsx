@@ -1,37 +1,24 @@
 import React from 'react';
-import useJolupSteps, { JolupSteps } from '@/features/jolup/lib/useJolupSteps.ts';
 import { Button, Flex } from '@allcll/allcll-ui';
+import { JolupSteps } from '@/features/jolup/lib/useJolupSteps.ts';
+import FileUploadGuide from '@/features/jolup/ui/FileUploadGuide.tsx';
+import { JolupStepsProps } from '@/features/jolup/model/types.ts';
 import FileUpload from '@/features/jolup/ui/FileUpload.tsx';
 import Uploading from '@/features/jolup/ui/Uploading.tsx';
-import FileUploadGuide from '@/features/jolup/ui/FileUploadGuide.tsx';
-import StepIndicator from './StepIndicator';
-import BasicInfoForm from './BasicInfoForm';
 import LoginForm from '@/features/user/ui/LoginForm';
+import BasicInfoForm from './BasicInfoForm';
 
-/**
- * 각 기능은 이 인터페이스를 참조하면 좋겠습니다. */
-export interface JolupStepsProps {
+interface StepContentProps {
+  step: JolupSteps;
   nextStep: () => void;
   prevStep: () => void;
 }
 
-function Steps() {
-  const { step, nextStep, prevStep } = useJolupSteps();
-
-  return (
-    <Flex direction="flex-col" gap="gap-4" className="w-full max-w-4xl mx-auto p-4">
-      <StepIndicator currentStep={step} />
-
-      {renderStepContent(step, nextStep, prevStep)}
-    </Flex>
-  );
-}
-
-function renderStepContent(step: JolupSteps, nextStep: () => void, prevStep: () => void) {
+const StepContent: React.FC<StepContentProps> = ({ step, nextStep, prevStep }) => {
   switch (step) {
     case JolupSteps.LOGIN:
       return <LoginForm onSuccess={nextStep} />;
-    case JolupSteps.BASIC_INFO:
+    case JolupSteps.DEPARTMENT_INFO:
       return <BasicInfoForm nextStep={nextStep} prevStep={prevStep} />;
     case JolupSteps.FILE_UPLOAD:
       return (
@@ -49,7 +36,7 @@ function renderStepContent(step: JolupSteps, nextStep: () => void, prevStep: () 
         </DefaultStep>
       );
   }
-}
+};
 
 function DefaultStep({ nextStep, children }: { children: React.ReactNode } & JolupStepsProps) {
   return (
@@ -63,4 +50,4 @@ function DefaultStep({ nextStep, children }: { children: React.ReactNode } & Jol
   );
 }
 
-export default Steps;
+export default StepContent;

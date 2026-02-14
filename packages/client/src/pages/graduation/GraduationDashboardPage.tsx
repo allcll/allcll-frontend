@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
+import { Link } from 'react-router-dom';
 import { Flex, Banner, Button, Heading, SupportingText } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile';
 import { useGraduationDashboard } from '@/features/joluphaja/model/useGraduationDashboard';
@@ -208,8 +209,8 @@ function GraduationDashboardPage() {
         {/* 다시 검사하기 버튼 */}
         <Flex justify="justify-end" className="mt-4 mb-8">
           <div className="bg-white rounded-md">
-            <Button variant="outlined" size="medium" onClick={handleStartOverGraduationCheck}>
-              다시 검사하기
+            <Button variant="outlined" size="medium" onClick={handleStartOverGraduationCheck} asChild>
+              <Link to="/graduation?retry=true">다시 검사하기</Link>
             </Button>
           </div>
         </Flex>
