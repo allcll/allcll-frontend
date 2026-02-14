@@ -19,26 +19,26 @@ function CategoryProgressCard({ category, missingCourses, onViewCourses }: Categ
 
   return (
     <Card variant="outlined" className="h-full">
-      <Flex direction="flex-col" gap="gap-4" className="h-full">
+      <Flex direction="flex-col" gap="gap-2" className="h-full">
         {/* 카테고리 제목 */}
         <div className="text-center">
           <span className="text-lg font-bold">{label}</span>
         </div>
 
         {/* 도넛 차트 */}
-        <Flex justify="justify-center" className="py-2">
+        <Flex justify="justify-center">
           <ProgressDoughnut earned={category.earnedCredits} required={category.requiredCredits} size="medium" />
         </Flex>
 
         {/* 학점 정보 */}
         <Flex direction="flex-col" gap="gap-1" className="text-sm">
-          <Flex justify="justify-between">
-            <span className="text-gray-500">이수학점</span>
-            <span className="text-primary-500 font-semibold">{category.earnedCredits}</span>
+          <Flex justify="justify-end" align="items-center" gap="gap-6">
+            <span className="text-gray-500">이수 학점</span>
+            <span className="text-primary-500 text-xl font-semibold">{category.earnedCredits}</span>
           </Flex>
-          <Flex justify="justify-between">
+          <Flex justify="justify-end" align="items-center" gap="gap-6">
             <span className="text-gray-500">총 학점</span>
-            <span className="font-semibold">{category.requiredCredits}</span>
+            <span className="text-lg font-semibold text-gray-600">{category.requiredCredits}</span>
           </Flex>
         </Flex>
 
@@ -46,7 +46,7 @@ function CategoryProgressCard({ category, missingCourses, onViewCourses }: Categ
         <div className="w-full">
           <div
             className={`w-full py-2 text-center rounded-md text-sm font-semibold ${
-              category.satisfied ? 'bg-primary-100 text-primary-600' : 'bg-secondary-100 text-secondary-600'
+              category.satisfied ? 'bg-primary-50 text-primary' : 'bg-secondary-50 text-secondary-500'
             }`}
           >
             {statusLabel}
@@ -56,7 +56,7 @@ function CategoryProgressCard({ category, missingCourses, onViewCourses }: Categ
         {/* 과목 확인 버튼 */}
         <div className="w-full mt-auto [&>button]:w-full">
           <Button variant="outlined" size="small" onClick={handleViewCourses} disabled={category.satisfied}>
-            과목 확인
+            추천 과목
           </Button>
         </div>
       </Flex>

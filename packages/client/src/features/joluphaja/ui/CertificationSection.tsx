@@ -43,7 +43,7 @@ function CertificationCard({
         {/* 인증 상태 */}
         <div
           className={`w-full py-2 text-center rounded-md text-sm font-semibold ${
-            passed ? 'bg-primary-100 text-primary-600' : 'bg-secondary-100 text-secondary-600'
+            passed ? 'bg-primary-50 text-primary' : 'bg-secondary-50 text-secondary'
           }`}
         >
           {statusText}
@@ -72,7 +72,7 @@ function ClassicReadingTable({ domains }: ClassicReadingTableProps) {
             <tr key={domain.domainType}>
               <td className="py-1 text-gray-600">{CLASSIC_DOMAIN_LABELS[domain.domainType]}</td>
               <td className="py-1 text-right">
-                <span className={domain.isSatisfied ? 'text-primary-600' : 'text-gray-900'}>
+                <span className={domain.isSatisfied ? 'text-primary' : 'text-gray-900'}>
                   {domain.myCount}/{domain.requiredCount}권
                 </span>
               </td>
@@ -114,7 +114,7 @@ function CertificationSection({ certifications }: CertificationSectionProps) {
 
   return (
     <section>
-      <Flex align="items-center" gap="gap-3" className="mb-4">
+      <Flex align="items-center" gap="gap-3">
         <Heading level={2}>졸업인증</Heading>
         <Badge variant={certifications.isSatisfied ? 'success' : 'danger'}>
           {passedCount}/{requiredPassCount}
@@ -134,7 +134,7 @@ function CertificationSection({ certifications }: CertificationSectionProps) {
           >
             <Flex justify="justify-center" align="items-center" className="h-full">
               {english.isPassed ? (
-                <span className="text-primary-600">인증 완료</span>
+                <span className="text-primary">인증 완료</span>
               ) : (
                 <span className="text-gray-500">이수 내역 없음</span>
               )}
@@ -165,7 +165,7 @@ function CertificationSection({ certifications }: CertificationSectionProps) {
           >
             <Flex justify="justify-center" align="items-center" className="h-full">
               {coding.isPassed ? (
-                <span className="text-primary-600">인증 완료</span>
+                <span className="text-primary">인증 완료</span>
               ) : (
                 <span className="text-gray-500">이수 내역 없음</span>
               )}

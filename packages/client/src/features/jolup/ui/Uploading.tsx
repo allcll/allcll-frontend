@@ -15,18 +15,21 @@ function Uploading({ nextStep }: JolupStepsProps) {
           </Heading>
         </div>
 
-        <div className="space-y-3">
-          <Flex direction="flex-col" justify="justify-between" align="items-end">
+        <div className="space-y-3 w-full">
+          {/* <Flex direction="flex-col" justify="justify-between" align="items-center">
+            <span className="text-sm font-medium text-gray-500">{message}</span>
+          </Flex> */}
+
+          <Flex direction="flex-col" align="items-center" gap="gap-2" className="w-full">
+            <p>
+              <span className="text-lg font-bold">{progress}</span>%
+            </p>
             <span className="text-sm font-medium text-gray-500">{message}</span>
           </Flex>
 
-          <Flex justify="justify-center" gap="gap-4">
-            <span className="text-xl font-bold text-primary">{progress}%</span>
-          </Flex>
-
-          <div className="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
+          <div className="w-full bg-gray-100 rounded-sm h-3 overflow-hidden">
             <div
-              className="bg-primary h-full rounded-full transition-all duration-500 ease-out"
+              className="bg-primary h-full rounded-sm transition-all duration-500 ease-out"
               style={{ width: `${progress}%` }}
             />
           </div>

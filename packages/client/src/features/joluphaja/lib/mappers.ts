@@ -29,7 +29,7 @@ export const SCOPE_TYPE_LABELS: Record<ScopeType, string> = {
 
 /** 이수 상태 라벨 */
 export function getStatusLabel(satisfied: boolean): string {
-  return satisfied ? '이수완료' : '미이수';
+  return satisfied ? '이수 완료' : '미이수';
 }
 
 /** 이수 상태 뱃지 variant */

@@ -114,7 +114,7 @@ const EmptyState = () => {
 
       <div className="text-center">
         <p className="text-sm font-medium text-gray-700">
-          <span className="text-primary-500">클릭하여 업로드</span> 또는 파일을 여기로 드래그하세요
+          <span className="text-primary-500 font-semibold">클릭하여 업로드</span> 또는 파일을 여기로 드래그하세요
         </p>
         <SupportingText className="mt-1 text-xs">XLSX (최대 1MB)</SupportingText>
       </div>
@@ -136,7 +136,7 @@ const SelectedState = ({ file, onDelete }: { file: File; onDelete: (e: React.Mou
       </div>
 
       <Flex direction="flex-col" align="items-center" justify="justify-center" gap="gap-4">
-        <div className="w-12 h-12 rounded-full flex items-center justify-center bg-blue-100 text-blue-600">
+        <div className="w-12 h-12 rounded-full flex items-center justify-center text-primary">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
