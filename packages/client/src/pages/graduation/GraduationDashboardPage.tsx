@@ -23,23 +23,12 @@ import CertificationSection from '@/features/joluphaja/ui/CertificationSection';
 import MobileTabs, { useMobileTabs } from '@/features/joluphaja/ui/MobileTabs';
 import RecommendedCoursesModal from '@/features/joluphaja/ui/RecommendedCoursesModal';
 import EditProfileModal from '@/features/joluphaja/ui/EditProfileModal';
+import Loading from '@/shared/ui/Loading';
 
 function LoadingState() {
   return (
-    // TODO: 로딩 스피너 추가
-    <Flex justify="justify-center" align="items-center" className="min-h-[400px]">
-      <div className="text-gray-500">졸업요건을 분석하고 있습니다...</div>
-    </Flex>
-  );
-}
-
-function ErrorState({ message }: { message: string }) {
-  return (
-    <Flex justify="justify-center" align="items-center" className="min-h-[400px]">
-      <div className="text-center">
-        <p className="text-secondary-500 font-semibold mb-2">오류가 발생했습니다</p>
-        <p className="text-sm text-gray-500">{message}</p>
-      </div>
+    <Flex justify="justify-center" align="items-center" className="min-h-[50vh]">
+      <Loading message="졸업 요건을 분석하고 있습니다" />
     </Flex>
   );
 }
@@ -90,14 +79,7 @@ function GraduationDashboardPage() {
   }
 
   if (isError || !user || !graduationData) {
-    return (
-      <>
-        <Helmet>
-          <title>ALLCLL | 졸업요건 분석</title>
-        </Helmet>
-        <ErrorState message={error?.message || '데이터를 불러올 수 없습니다.'} />
-      </>
-    );
+    throw error || new Error('졸업 요건 데이터를 불러올 수 없습니다.');
   }
 
   const majorCategories = filterCategories(graduationData.categories, MAJOR_CATEGORY_TYPES);
