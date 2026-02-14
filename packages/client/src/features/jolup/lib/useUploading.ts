@@ -1,27 +1,30 @@
 import { useEffect, useState } from 'react';
-import { useGraduationCheck } from '@/entities/joluphaja/model/useGraduation';
+import { useQueryClient } from '@tanstack/react-query';
+import { useGraduationCheck, graduationQueryKeys } from '@/entities/joluphaja/model/useGraduation';
 import { useGraduationCheckMutation } from './useGraduationCheckMutation';
 import useToastNotification from '@/features/notification/model/useToastNotification';
 
 function useUploading(nextStep: () => void, prevStep: () => void, file: File | null) {
+  const queryClient = useQueryClient();
   const { mutate: uploadFile, isPending: isUploading } = useGraduationCheckMutation();
   const { data, isLoading: isFetching, isError } = useGraduationCheck();
   const [progress, setProgress] = useState(0);
   const [uploadStarted, setUploadStarted] = useState(false);
-  const showToast = useToastNotification.getState().addToast;
+  const addToast = useToastNotification(state => state.addToast);
 
-  // 파일 업로드
   useEffect(() => {
     if (!file || uploadStarted) return;
 
     setUploadStarted(true);
+    queryClient.removeQueries({ queryKey: graduationQueryKeys.check() });
+
     uploadFile(file, {
       onError: () => {
-        showToast('파일 업로드에 실패했습니다. 다시 시도해주세요.');
+        addToast('파일 업로드에 실패했습니다. 다시 시도해주세요.');
         prevStep();
       },
     });
-  }, [file, uploadStarted, uploadFile, showToast, prevStep]);
+  }, [file, uploadStarted, uploadFile, queryClient, addToast, prevStep]);
 
   // 프로그레스 바: 업로드 중 (0~60%)
   useEffect(() => {
@@ -62,7 +65,6 @@ function useUploading(nextStep: () => void, prevStep: () => void, file: File | n
     return () => clearInterval(interval);
   }, [data]);
 
-  // 완료 후 다음 단계로 이동
   useEffect(() => {
     if (progress === 100 && data) {
       const timeout = setTimeout(nextStep, 300);
@@ -73,10 +75,10 @@ function useUploading(nextStep: () => void, prevStep: () => void, file: File | n
   // 에러 처리
   useEffect(() => {
     if (isError) {
-      showToast('졸업 요건 검사 결과를 불러오는데 실패했습니다.');
+      addToast('졸업 요건 검사 결과를 불러오는데 실패했습니다.');
       prevStep();
     }
-  }, [isError, showToast, prevStep]);
+  }, [isError, addToast, prevStep]);
 
   const message = isUploading
     ? '파일을 업로드하는 중입니다...'
