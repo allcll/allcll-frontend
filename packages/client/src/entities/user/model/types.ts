@@ -5,10 +5,13 @@ export interface UserResponse {
   studentId: string;
   name: string;
   admissionYear: number;
+
   majorType: MajorType;
+
   collegeName: string;
   deptName: string;
   deptCode: string;
+
   doubleCollegeName: string | null;
   doubleDeptName: string | null;
   doubleDeptCode: string | null;

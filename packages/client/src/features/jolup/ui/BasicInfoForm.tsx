@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { JolupStepsProps } from '@/features/jolup/ui/Steps.tsx';
 import { Card, Flex, Heading, SupportingText, Label, Chip, Button, ListboxOption, Grid } from '@allcll/allcll-ui';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import { useAdmissionYearDepartments } from '@/entities/joluphaja/model/useGraduation';
 import { useFilteringDepartment } from '@/features/filtering/lib/useFilteringDepartment.ts';
 import CheckSvg from '@/assets/checkbox-blue.svg?react';
 import { ZeroContent } from '@/shared/ui/ZeroContent';
+import { JolupStepsProps } from '@/features/jolup/model/types.ts';
 
 type MajorType = 'INTENSIVE' | 'DOUBLE'; // 심화전공 | 복수전공
 

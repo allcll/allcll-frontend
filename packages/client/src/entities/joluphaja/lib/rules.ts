@@ -1,33 +1,15 @@
-import type { CategoryType, CategoryProgress, PolicyYear, GraduationCheckData, ScopeType } from '../api/graduation';
-import type { MajorType } from '@/entities/user/model/types';
-
-/** 학번으로 정책 연도 판별 */
-export function getPolicyYear(studentId: string): PolicyYear {
-  const yearPrefix = parseInt(studentId.substring(0, 2), 10);
-
-  if (yearPrefix >= 23) {
-    return 'from23';
-  } else if (yearPrefix >= 22) {
-    return 'from22';
-  }
-  return 'before22';
-}
-
-/** 학번 정책에 따른 교양 카테고리 타입 목록 */
-export function getGeneralCategoryTypes(policyYear: PolicyYear): CategoryType[] {
-  switch (policyYear) {
-    case 'before22':
-      return ['GENERAL_ELECTIVE', 'BALANCE_REQUIRED', 'ACADEMIC_BASIC'];
-    case 'from22':
-    case 'from23':
-      return ['COMMON_REQUIRED', 'ACADEMIC_BASIC', 'BALANCE_REQUIRED'];
-    default:
-      return ['COMMON_REQUIRED', 'ACADEMIC_BASIC', 'BALANCE_REQUIRED'];
-  }
-}
+import type { CategoryType, CategoryProgress, GraduationCheckData, ScopeType } from '../api/graduation';
 
 /** 전공 카테고리 타입 목록 */
-export const MAJOR_CATEGORY_TYPES: CategoryType[] = ['MAJOR_REQUIRED', 'MAJOR_ELECTIVE'];
+export const MAJOR_CATEGORY_TYPES: CategoryType[] = ['MAJOR_REQUIRED', 'MAJOR_ELECTIVE', 'MAJOR_BASIC'];
+
+/** 교양 카테고리 타입 목록 */
+export const GENERAL_CATEGORY_TYPES: CategoryType[] = [
+  'COMMON_REQUIRED',
+  'BALANCE_REQUIRED',
+  'ACADEMIC_BASIC',
+  'GENERAL_ELECTIVE',
+];
 
 /** 카테고리 목록에서 특정 타입 찾기 */
 export function findCategory(categories: CategoryProgress[], categoryType: CategoryType): CategoryProgress | undefined {
@@ -45,11 +27,9 @@ export function isMajorSatisfied(categories: CategoryProgress[]): boolean {
   return majorCategories.every(cat => cat.satisfied);
 }
 
-/** 교양 이수 통과 여부 계산 (학번 정책 반영) */
-export function isGeneralSatisfied(categories: CategoryProgress[], studentId: string): boolean {
-  const policyYear = getPolicyYear(studentId);
-  const generalCategoryTypes = getGeneralCategoryTypes(policyYear);
-  const generalCategories = filterCategories(categories, generalCategoryTypes);
+/** 교양 이수 통과 여부 계산 */
+export function isGeneralSatisfied(categories: CategoryProgress[]): boolean {
+  const generalCategories = filterCategories(categories, GENERAL_CATEGORY_TYPES);
   return generalCategories.every(cat => cat.satisfied);
 }
 
@@ -61,17 +41,19 @@ export function calculateProgress(earned: number, required: number): number {
 
 /** 전체 진행률 계산 */
 export function calculateOverallProgress(data: GraduationCheckData): number {
-  const { totalCredits, requiredTotalCredits } = data.summary;
-  return calculateProgress(totalCredits, requiredTotalCredits);
+  const { totalMyCredits, requiredTotalCredits } = data.summary;
+  return calculateProgress(totalMyCredits, requiredTotalCredits);
 }
 
 /** 전공 타입에 따른 스코프 목록 반환 */
-export function getScopeTypes(majorType: MajorType): ScopeType[] {
+export function getScopeTypes(majorType: 'SINGLE' | 'DOUBLE' | 'MINOR'): ScopeType[] {
   switch (majorType) {
     case 'SINGLE':
       return ['PRIMARY'];
     case 'DOUBLE':
-      return ['PRIMARY', 'DOUBLE'];
+      return ['PRIMARY', 'SECONDARY'];
+    case 'MINOR':
+      return ['PRIMARY', 'MINOR'];
     default:
       return ['PRIMARY'];
   }
@@ -83,5 +65,5 @@ export function filterCategoriesByScope(
   scope: ScopeType,
   categoryTypes: CategoryType[],
 ): CategoryProgress[] {
-  return categories.filter(cat => cat.scope === scope && categoryTypes.includes(cat.categoryType));
+  return categories.filter(cat => cat.majorScope === scope && categoryTypes.includes(cat.categoryType));
 }

@@ -31,12 +31,12 @@ function OverallSummaryCard({ user, graduationData }: OverallSummaryCardProps) {
   const { summary, categories, certifications } = graduationData;
 
   const majorPassed = isMajorSatisfied(categories);
-  const generalPassed = isGeneralSatisfied(categories, user.studentId);
+  const generalPassed = isGeneralSatisfied(categories);
   const certificationPassed = certifications.isSatisfied;
 
   return (
     <Card variant="outlined" className="p-6 md:p-10 mb-6 md:mb-8">
-      <Flex direction="flex-col" gap="gap-4" className="md:flex-row md:justify-between md:items-start">
+      <Flex direction="flex-col" gap="gap-4" className="md:flex-row md:justify-between md:items-center">
         {/* 왼쪽: 텍스트 정보 */}
         <Flex direction="flex-col" gap="gap-3" className="md:flex-1">
           <Flex align="items-center" gap="gap-3">
@@ -56,7 +56,7 @@ function OverallSummaryCard({ user, graduationData }: OverallSummaryCardProps) {
                 <p className="text-xl md:text-2xl font-bold">
                   현재{' '}
                   <span className="text-primary-500">
-                    {summary.totalCredits}/{summary.requiredTotalCredits}학점
+                    {summary.totalMyCredits}/{summary.requiredTotalCredits}학점
                   </span>{' '}
                   이수 완료
                 </p>
@@ -67,17 +67,27 @@ function OverallSummaryCard({ user, graduationData }: OverallSummaryCardProps) {
 
           <Flex direction="flex-col" gap="gap-1" className="text-sm text-gray-600 md:mt-2">
             <Flex gap="gap-2">
-              <span className="text-gray-500 w-12">이름</span>
+              <span className="text-gray-500 w-16 shrink-0">이름</span>
               <span>{user.name}</span>
             </Flex>
             <Flex gap="gap-2">
-              <span className="text-gray-500 w-12">학번</span>
+              <span className="text-gray-500 w-16 shrink-0">학번</span>
               <span>{user.studentId}</span>
             </Flex>
             <Flex gap="gap-2">
-              <span className="text-gray-500 w-12">학과</span>
-              <span>{user.deptName}</span>
+              <span className="text-gray-500 w-16 shrink-0">학과</span>
+              <span>
+                {user.deptName}({user.collegeName})
+              </span>
             </Flex>
+            {user.doubleDeptName && (
+              <Flex gap="gap-2">
+                <span className="text-gray-500 w-16 shrink-0">복수전공</span>
+                <span>
+                  {user.doubleDeptName}({user.doubleCollegeName})
+                </span>
+              </Flex>
+            )}
           </Flex>
         </Flex>
 
@@ -90,7 +100,7 @@ function OverallSummaryCard({ user, graduationData }: OverallSummaryCardProps) {
           </Flex>
 
           <Flex justify="justify-center" className="py-4 md:py-0">
-            <ProgressDoughnut earned={summary.totalCredits} required={summary.requiredTotalCredits} size="large" />
+            <ProgressDoughnut earned={summary.totalMyCredits} required={summary.requiredTotalCredits} size="large" />
           </Flex>
         </Flex>
       </Flex>

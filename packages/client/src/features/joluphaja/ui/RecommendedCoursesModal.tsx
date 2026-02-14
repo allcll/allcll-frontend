@@ -12,6 +12,7 @@ interface RecommendedCoursesModalProps {
 
 function RecommendedCoursesModal({ isOpen, onClose, categoryType, missingCourses }: RecommendedCoursesModalProps) {
   const categoryLabel = CATEGORY_TYPE_LABELS[categoryType];
+
   useBodyScrollLock(isOpen);
 
   return (

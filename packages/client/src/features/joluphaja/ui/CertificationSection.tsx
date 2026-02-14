@@ -72,7 +72,7 @@ function ClassicReadingTable({ domains }: ClassicReadingTableProps) {
             <tr key={domain.domainType}>
               <td className="py-1 text-gray-600">{CLASSIC_DOMAIN_LABELS[domain.domainType]}</td>
               <td className="py-1 text-right">
-                <span className={domain.satisfied ? 'text-primary-600' : 'text-gray-900'}>
+                <span className={domain.isSatisfied ? 'text-primary-600' : 'text-gray-900'}>
                   {domain.myCount}/{domain.requiredCount}권
                 </span>
               </td>
@@ -99,7 +99,7 @@ function CertificationSection({ certifications }: CertificationSectionProps) {
     classic: '고전 독서 인증',
   };
   const requiredNames = (Object.keys(CERT_NAMES) as CertificationType[])
-    .filter(key => certifications[key].required)
+    .filter(key => certifications[key].isRequired)
     .map(key => CERT_NAMES[key]);
 
   const policyDescription =
@@ -107,10 +107,9 @@ function CertificationSection({ certifications }: CertificationSectionProps) {
       ? `${requiredNames.join('과 ')}을 모두 이수해야 졸업 인증이 완료됩니다.`
       : `${requiredNames.join(', ')} 중 ${requiredPassCount}가지 이상을 이수하면 졸업 인증이 완료됩니다.`;
 
-  // 고전독서 전체 권수 계산
   const classicTotal = {
-    requiredCount: classic.domains.reduce((sum, d) => sum + d.requiredCount, 0),
-    myCount: classic.domains.reduce((sum, d) => sum + d.myCount, 0),
+    requiredCount: classic.totalRequiredCount,
+    myCount: classic.totalMyCount,
   };
 
   return (
@@ -126,15 +125,15 @@ function CertificationSection({ certifications }: CertificationSectionProps) {
 
       <Grid columns={{ base: 1, md: 3 }} gap="gap-4">
         {/* 영어인증 */}
-        {english.required && (
+        {english.isRequired && (
           <CertificationCard
             title="영어인증"
-            passed={english.passed}
+            passed={english.isPassed}
             onViewStandards={handleViewStandards}
             certificationType="english"
           >
             <Flex justify="justify-center" align="items-center" className="h-full">
-              {english.passed ? (
+              {english.isPassed ? (
                 <span className="text-primary-600">인증 완료</span>
               ) : (
                 <span className="text-gray-500">이수 내역 없음</span>
@@ -144,10 +143,10 @@ function CertificationSection({ certifications }: CertificationSectionProps) {
         )}
 
         {/* 고전독서인증 */}
-        {classic.required && (
+        {classic.isRequired && (
           <CertificationCard
             title="고전독서인증"
-            passed={classic.passed}
+            passed={classic.isPassed}
             customStatus={`${classicTotal.myCount}/${classicTotal.requiredCount}`}
             onViewStandards={handleViewStandards}
             certificationType="classic"
@@ -157,15 +156,15 @@ function CertificationSection({ certifications }: CertificationSectionProps) {
         )}
 
         {/* SW코딩졸업인증 */}
-        {coding.required && (
+        {coding.isRequired && (
           <CertificationCard
             title="SW코딩졸업인증"
-            passed={coding.passed}
+            passed={coding.isPassed}
             onViewStandards={handleViewStandards}
             certificationType="coding"
           >
             <Flex justify="justify-center" align="items-center" className="h-full">
-              {coding.passed ? (
+              {coding.isPassed ? (
                 <span className="text-primary-600">인증 완료</span>
               ) : (
                 <span className="text-gray-500">이수 내역 없음</span>

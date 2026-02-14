@@ -70,3 +70,13 @@ export async function fetchJsonOnPublic<T>(url: string, options?: RequestInit): 
 
   return await response.json();
 }
+
+export async function fetchTextOnPublic(url: string, options?: RequestInit): Promise<string> {
+  const response = await fetch(url, options);
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+
+  return await response.text();
+}

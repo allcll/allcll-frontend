@@ -15,8 +15,10 @@ import Simulation from '@/pages/simulation/Simulation.tsx';
 import SimulationDashboard from '@/pages/simulation/Dashboard.tsx';
 import SimulationDashboardDetail from '@/pages/simulation/DashboardDetail.tsx';
 import Timetable from '@/pages/timetable/Timetable.tsx';
-import Graduation from '@/pages/joluphaja/Graduation';
+import GraduationSettingSteps from '@/pages/graduation/SettingSteps.tsx';
+import GraduationDashboard from '@/pages/graduation/Dashboard.tsx';
 import NotFound from '@/pages/notfound/NotFound';
+import PrivacyPolicy from '@/pages/user/PrivacyPolicy';
 
 const router = createBrowserRouter([
   {
@@ -91,21 +93,36 @@ const router = createBrowserRouter([
   {
     path: 'timetable',
     element: <MainLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
         element: <Timetable />,
       },
     ],
-    errorElement: <ErrorPage />,
   },
   {
     path: 'graduation',
     element: <ServiceLayout serviceId="graduation" />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: '',
+        element: <GraduationSettingSteps />,
+      },
+      {
+        path: 'result',
+        element: <GraduationDashboard />,
+      },
+    ],
+  },
+  {
+    path: 'privacy-policy',
+    element: <MainLayout />,
     children: [
       {
         index: true,
-        element: <Graduation />,
+        element: <PrivacyPolicy />,
       },
     ],
     errorElement: <ErrorPage />,

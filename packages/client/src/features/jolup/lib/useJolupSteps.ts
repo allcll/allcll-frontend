@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useInitialGraduationCheck } from './useInitialCheck';
 
 export enum JolupSteps {
   LOGIN = 'LOGIN',
-  BASIC_INFO = 'BASIC_INFO',
+  DEPARTMENT_INFO = 'DEPARTMENT_INFO',
   FILE_UPLOAD = 'FILE_UPLOAD',
   UPLOADING = 'UPLOADING',
+  RESULT = 'RESULT',
 }
 
 /**
@@ -14,13 +17,22 @@ export enum JolupSteps {
 function useJolupSteps() {
   const [step, setStep] = useState<JolupSteps>(JolupSteps.LOGIN);
   const [isDepartmentNotFound, setIsDepartmentNotFound] = useState(false);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const isRetry = searchParams.get('retry') === 'true';
 
-  // useEffect(() => {
-  //   setStep(step => {
-  //     // 여기에 side effect 로직을 추가하세요.
-  //     return step;
-  //   });
-  // }, []);
+  const { initialStep, isLoading } = useInitialGraduationCheck(isRetry);
+
+  // 초기 스텝 설정
+  useEffect(() => {
+    if (isLoading || !initialStep) return;
+
+    if (initialStep === JolupSteps.RESULT) {
+      navigate('/graduation/result');
+    } else {
+      setStep(initialStep);
+    }
+  }, [initialStep, isLoading, navigate]);
 
   /**
    * 검사 스텝을 다음 단계로 이동합니다.
@@ -28,16 +40,16 @@ function useJolupSteps() {
   function nextStep() {
     switch (step) {
       case JolupSteps.LOGIN:
-        setStep(JolupSteps.BASIC_INFO);
+        setStep(JolupSteps.DEPARTMENT_INFO);
         break;
-      case JolupSteps.BASIC_INFO:
+      case JolupSteps.DEPARTMENT_INFO:
         setStep(JolupSteps.FILE_UPLOAD);
         break;
       case JolupSteps.FILE_UPLOAD:
         setStep(JolupSteps.UPLOADING);
         break;
       case JolupSteps.UPLOADING:
-        // Todo: 마지막 단계 처리 (예: 결과 페이지로 이동)
+        navigate('/graduation/result');
         break;
       default:
         console.error(`Unknown step ${step}`);
@@ -47,11 +59,11 @@ function useJolupSteps() {
 
   function prevStep() {
     switch (step) {
-      case JolupSteps.BASIC_INFO:
+      case JolupSteps.DEPARTMENT_INFO:
         setStep(JolupSteps.LOGIN);
         break;
       case JolupSteps.FILE_UPLOAD:
-        setStep(JolupSteps.BASIC_INFO);
+        setStep(JolupSteps.DEPARTMENT_INFO);
         break;
       case JolupSteps.UPLOADING:
         setStep(JolupSteps.FILE_UPLOAD);
@@ -65,6 +77,6 @@ function useJolupSteps() {
     }
   }
 
-  return { step, nextStep, prevStep, isDepartmentNotFound, setIsDepartmentNotFound };
+  return { step, nextStep, prevStep, setStep, isLoading, isDepartmentNotFound, setIsDepartmentNotFound };
 }
 export default useJolupSteps;

@@ -3,6 +3,7 @@ import {
   fetchGraduationCheck,
   fetchCertificationCriteria,
   fetchAdmissionYearDepartments,
+  fetchCriteriaCategories,
 } from '../api/graduation';
 
 export const graduationQueryKeys = {
@@ -10,13 +11,14 @@ export const graduationQueryKeys = {
   check: () => [...graduationQueryKeys.all, 'check'] as const,
   certificationCriteria: () => [...graduationQueryKeys.all, 'certificationCriteria'] as const,
   departments: () => [...graduationQueryKeys.all, 'departments'] as const,
+  criteriaCategories: () => [...graduationQueryKeys.all, 'criteriaCategories'] as const,
 };
 
 export function useGraduationCheck() {
   return useQuery({
     queryKey: graduationQueryKeys.check(),
     queryFn: fetchGraduationCheck,
-    staleTime: 1000 * 60 * 5,
+    staleTime: Infinity,
     select: response => response.data,
   });
 }
@@ -25,7 +27,7 @@ export function useCertificationCriteria(enabled: boolean) {
   return useQuery({
     queryKey: graduationQueryKeys.certificationCriteria(),
     queryFn: fetchCertificationCriteria,
-    staleTime: 1000 * 60 * 10,
+    staleTime: Infinity,
     select: response => response.data,
     enabled,
   });
@@ -41,5 +43,13 @@ export function useAdmissionYearDepartments() {
         departmentCode: dept.deptCd,
         departmentName: dept.deptNm,
       })),
+  });
+}
+
+export function useCriteriaCategories() {
+  return useQuery({
+    queryKey: graduationQueryKeys.criteriaCategories(),
+    queryFn: fetchCriteriaCategories,
+    staleTime: Infinity,
   });
 }
