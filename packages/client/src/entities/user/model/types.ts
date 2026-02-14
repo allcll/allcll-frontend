@@ -1,12 +1,20 @@
-type majorType = 'SINGLE' | 'DOUBLE'; //이외 타입 추가시 => 'MINOR', 'INTERDISCIPLINARY' 추가
+type MajorType = 'SINGLE' | 'DOUBLE'; //이외 타입 추가시 => 'MINOR', 'INTERDISCIPLINARY' 추가
 
 export interface UserResponse {
-  userId: number;
+  id: number;
   studentId: string;
-  studentName: string;
+  name: string;
+  admissionYear: number;
+
+  majorType: MajorType;
+
+  collegeName: string;
   deptName: string;
-  deptCd: string;
-  majorType: majorType;
+  deptCode: string;
+
+  doubleCollegeName: string | null;
+  doubleDeptName: string | null;
+  doubleDeptCode: string | null;
 }
 
 export interface LoginRequest {
@@ -23,6 +31,6 @@ export interface LoginRequest {
  */
 export interface UpdateMeRequest {
   deptNm: string | null;
-  majorType: majorType;
+  majorType: MajorType;
   doubleDeptNm: string | null;
 }

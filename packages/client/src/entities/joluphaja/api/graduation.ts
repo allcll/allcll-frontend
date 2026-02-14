@@ -1,18 +1,8 @@
 import { fetchJsonOnAPI } from '@/shared/api/api';
 
-/** 사용자 정보 응답 */
-export interface UserInfo {
-  userId: number;
-  studentId: string;
-  studentName: string;
-  deptName: string;
-  deptCd: string;
-  majorType: 'SINGLE' | 'DOUBLE' | 'MINOR';
-}
-
 /** 학점 요약 정보 */
 export interface CreditSummary {
-  totalCredits: number;
+  totalMyCredits: number;
   requiredTotalCredits: number;
   remainingCredits: number;
 }
@@ -25,14 +15,15 @@ export type CategoryType =
   | 'GENERAL_ELECTIVE'
   | 'MAJOR_REQUIRED'
   | 'MAJOR_ELECTIVE'
-  | 'MAJOR_TOTAL';
+  | 'MAJOR_BASIC'
+  | 'TOTAL_COMPLETION';
 
 /** 스코프 타입 */
-export type ScopeType = 'PRIMARY' | 'DOUBLE' | 'MINOR';
+export type ScopeType = 'PRIMARY' | 'SECONDARY' | 'MINOR';
 
 /** 카테고리별 이수 현황 */
 export interface CategoryProgress {
-  scope: ScopeType;
+  majorScope: ScopeType;
   categoryType: CategoryType;
   earnedCredits: number;
   requiredCredits: number;
@@ -46,20 +37,8 @@ export interface MissingCourse {
   curiNm: string;
 }
 
-/** 필수 과목 추천 */
-export interface RequiredCourseRecommendation {
-  scope: ScopeType;
-  categoryType: CategoryType;
-  missingCourses: MissingCourse[];
-}
-
-/** 추천 정보 */
-export interface Recommendations {
-  requiredCourses: RequiredCourseRecommendation[];
-}
-
 /** 졸업인증 정책 타입 */
-export type CertificationRuleType = 'LEGACY_ALL' | 'ANY_TWO_OF_THREE';
+export type CertificationRuleType = 'BOTH_REQUIRED' | 'TWO_OF_THREE';
 
 /** 졸업인증 정책 */
 export interface CertificationPolicy {
@@ -68,19 +47,19 @@ export interface CertificationPolicy {
 }
 
 /** 인증 대상 타입 */
-export type CertificationTargetType = 'MAJOR' | 'NON_MAJOR';
+export type CertificationTargetType = 'MAJOR' | 'NON_MAJOR' | 'CODING_MAJOR';
 
 /** 영어 인증 */
 export interface EnglishCertification {
-  passed: boolean;
-  required: boolean;
+  isPassed: boolean;
+  isRequired: boolean;
   targetType: CertificationTargetType;
 }
 
 /** 코딩 인증 */
 export interface CodingCertification {
-  passed: boolean;
-  required: boolean;
+  isPassed: boolean;
+  isRequired: boolean;
   targetType: CertificationTargetType;
 }
 
@@ -96,17 +75,15 @@ export interface ClassicDomain {
   domainType: ClassicDomainType;
   requiredCount: number;
   myCount: number;
-  satisfied: boolean;
+  isSatisfied: boolean;
 }
 
 /** 고전독서 인증 */
 export interface ClassicCertification {
-  passed: boolean;
-  required: boolean;
-  total: {
-    requiredCount: number;
-    myCount: number;
-  };
+  isPassed: boolean;
+  isRequired: boolean;
+  totalRequiredCount: number;
+  totalMyCount: number;
   domains: ClassicDomain[];
 }
 
@@ -128,7 +105,6 @@ export interface GraduationCheckData {
   isGraduatable: boolean;
   summary: CreditSummary;
   categories: CategoryProgress[];
-  recommendations: Recommendations;
   certifications: Certifications;
 }
 
@@ -139,13 +115,6 @@ export interface GraduationCheckResponse {
 
 /** 카테고리 그룹 (전공/교양 구분용) */
 export type CategoryGroup = 'major' | 'general';
-
-/** 학번 기반 정책 연도 */
-export type PolicyYear = 'before22' | 'from22' | 'from23';
-
-export async function fetchUserInfo(): Promise<UserInfo> {
-  return await fetchJsonOnAPI<UserInfo>('/api/auth/me');
-}
 
 export async function fetchGraduationCheck(): Promise<GraduationCheckResponse> {
   return await fetchJsonOnAPI<GraduationCheckResponse>('/api/graduation/check');
@@ -241,4 +210,47 @@ export interface CertificationCriteriaResponse {
 
 export async function fetchCertificationCriteria(): Promise<CertificationCriteriaResponse> {
   return await fetchJsonOnAPI<CertificationCriteriaResponse>('/api/graduation/certifications/criteria');
+}
+
+// ---- 카테고리별 기준 조회 API ----
+
+/** 균형교양 영역 타입 */
+export type BalanceRequiredArea = 'HISTORY_THOUGHT' | 'CULTURE_ARTS' | 'ECONOMY_SOCIETY' | 'NATURE_SCIENCE';
+
+/** 균형교양 영역별 과목 */
+export interface BalanceAreaCourses {
+  balanceRequiredArea: BalanceRequiredArea;
+  requiredCourses: MissingCourse[];
+}
+
+/** 카테고리별 기준 정보 */
+export interface CriteriaCategory {
+  majorScope: ScopeType;
+  categoryType: CategoryType;
+  isEnabled: boolean;
+  requiredCredits: number;
+  requiredCourses: MissingCourse[];
+  requiredAreasCnt: number | null;
+  balanceAreaCourses: BalanceAreaCourses[] | null;
+  excludedArea: BalanceRequiredArea | null;
+}
+
+/** 카테고리 기준 컨텍스트 */
+export interface CriteriaCategoriesContext {
+  admissionYear: number;
+  majorType: 'SINGLE' | 'DOUBLE';
+  primaryDeptCd: string;
+  primaryDeptNm: string;
+  doubleDeptCd: string;
+  doubleDeptNm: string;
+}
+
+/** 카테고리 기준 API 응답 */
+export interface CriteriaCategoriesResponse {
+  context: CriteriaCategoriesContext;
+  categories: CriteriaCategory[];
+}
+
+export async function fetchCriteriaCategories(): Promise<CriteriaCategoriesResponse> {
+  return await fetchJsonOnAPI<CriteriaCategoriesResponse>('/api/graduation/criteria/categories');
 }

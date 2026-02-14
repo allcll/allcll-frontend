@@ -8,7 +8,8 @@ export const CATEGORY_TYPE_LABELS: Record<CategoryType, string> = {
   GENERAL_ELECTIVE: '교양선택',
   MAJOR_REQUIRED: '전공필수',
   MAJOR_ELECTIVE: '전공선택',
-  MAJOR_TOTAL: '전공학점',
+  MAJOR_BASIC: '전공기초',
+  TOTAL_COMPLETION: '총이수학점',
 };
 
 /** 고전독서 도메인 → 한글 라벨 매핑 */
@@ -22,7 +23,7 @@ export const CLASSIC_DOMAIN_LABELS: Record<ClassicDomainType, string> = {
 /** 스코프 타입 → 한글 라벨 매핑 */
 export const SCOPE_TYPE_LABELS: Record<ScopeType, string> = {
   PRIMARY: '주전공',
-  DOUBLE: '복수전공',
+  SECONDARY: '복수전공',
   MINOR: '부전공',
 };
 
