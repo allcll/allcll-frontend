@@ -28,14 +28,14 @@ function LoginForm({ onSuccess, onDepartmentNotFound }: LoginFormProps) {
             const { message } = JSON.parse(error.message);
             isDeptNotFound = message === 'DEPARTMENT_NOT_FOUND';
           } catch {}
-          if (isDeptNotFound) onDepartmentNotFound?.();
-          // todo: 학과 코드가 아닌 경우에 대한 처리 필요
-          onSuccess?.();
-          showToast(
-            isDeptNotFound
-              ? '학과 정보를 찾을 수 없습니다. 다음 단계에서 직접 선택해주세요.'
-              : '로그인에 실패했습니다. 학번과 비밀번호를 확인해주세요.',
-          );
+
+          if (isDeptNotFound) {
+            onDepartmentNotFound?.();
+            onSuccess?.();
+            showToast('학과 정보를 찾을 수 없습니다. 다음 단계에서 직접 선택해주세요.');
+          } else {
+            showToast('로그인에 실패했습니다. 학번과 비밀번호를 확인해주세요.', 'error');
+          }
         },
       },
     );
