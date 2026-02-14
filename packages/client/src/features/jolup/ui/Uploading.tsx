@@ -19,10 +19,10 @@ function Uploading({ nextStep, prevStep, file }: UploadingProps) {
           </Heading>
         </div>
 
-        <div className="space-y-3">
-          <Flex direction="flex-col" justify="justify-between" align="items-end">
+        <div className="space-y-3 w-full">
+          <div className="text-center min-h-[20px]">
             <span className="text-sm font-medium text-gray-500">{message}</span>
-          </Flex>
+          </div>
 
           <Flex justify="justify-center" gap="gap-4">
             <span className="text-xl font-bold text-primary">{progress}%</span>
