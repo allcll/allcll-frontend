@@ -15,7 +15,7 @@ export enum JolupSteps {
  * ex) 로그인 정보가 있으면, 어디 스탭으로 이동하고 등등
  */
 function useJolupSteps() {
-  const [step, setStep] = useState<JolupSteps>(JolupSteps.LOGIN);
+  const [step, setStep] = useState<JolupSteps | null>(null);
   const [isDepartmentNotFound, setIsDepartmentNotFound] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
