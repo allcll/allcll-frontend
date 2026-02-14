@@ -2,134 +2,150 @@ import { UserType } from '../../utils/graduation-state';
 
 export const criteriaData: Record<UserType, any> = {
   SINGLE: {
-    context: {
-      admissionYear: 2023,
-      deptName: "콘텐츠소프트웨어학과",
-      deptGroup: "NATURAL_SCI",
-      englishTargetType: "NON_MAJOR",
-      codingTargetType: "MAJOR",
-      collegeName: "인공지능융합대학",
-      deptCd: "3523"
+    criteriaTarget: {
+      englishTargetType: 'NON_MAJOR',
+      codingTargetType: 'CODING_MAJOR',
     },
-    policy: {
-      ruleType: "ANY_TWO_OF_THREE",
+    certPolicy: {
+      graduationCertRuleType: 'TWO_OF_THREE',
       requiredPassCount: 2,
       enableEnglish: true,
       enableClassic: true,
-      enableCoding: true
+      enableCoding: true,
     },
-    englishCriteria: {
-      targetType: "NON_MAJOR",
+    englishCertCriteria: {
+      englishTargetType: 'NON_MAJOR',
       toeicMinScore: 800,
       toeflIbtMinScore: 80,
       tepsMinScore: 637,
       newTepsMinScore: 348,
-      opicMinLevel: "IM1",
-      toeicSpeakingMinLevel: "IM1",
+      opicMinLevel: 'IM1',
+      toeicSpeakingMinLevel: 'IM1',
       gtelpLevel: 2,
       gtelpMinScore: 77,
       gtelpSpeakingLevel: 4,
       altCourse: {
-        altCuriNo: 1111,
-        altCuriNm: "Intensive English",
-        altCuriCredit: 3
-      }
+        altCuriNo: '1111',
+        altCurieNm: 'Intensive English',
+        altCuricredit: 3,
+      },
     },
-    classicCriteria: {
+    classicCertCriteria: {
       totalRequiredCount: 10,
       requiredCountWestern: 4,
       requiredCountEastern: 2,
       requiredCountEasternAndWestern: 3,
-      requiredCountScience: 1
+      requiredCountScience: 1,
     },
-    codingCriteria: {
-      targetType: "MAJOR",
+    codingCertCriteria: {
+      codingTargetType: 'CODING_MAJOR',
       toscMinLevel: 3,
       altCourse: {
-        alt1CuriNo: 1111,
-        alt1CuriNm: "고급C프로그래밍실습",
-        alt1MinGrade: "B0"
-      }
-    }
+        alt1CuriNo: '1111',
+        alt1CurieNm: '고급C프로그래밍실습',
+        alt1minGrade: 'B0',
+        alt2CuriNo: null,
+        alt2CurieNm: null,
+        alt2minGrade: null,
+      },
+    },
   },
   DOUBLE: {
-    // 복수전공자 기준 데이터 (예시)
-    context: {
-      admissionYear: 2023,
-      deptName: "데이터사이언스학과",
-      deptGroup: "NATURAL_SCI",
-      englishTargetType: "NON_MAJOR",
-      codingTargetType: "MAJOR",
-      collegeName: "인공지능융합대학",
-      deptCd: "38191"
+    criteriaTarget: {
+      englishTargetType: 'NON_MAJOR',
+      codingTargetType: 'CODING_MAJOR',
     },
-    policy: {
-      ruleType: "ANY_TWO_OF_THREE",
+    certPolicy: {
+      graduationCertRuleType: 'TWO_OF_THREE',
       requiredPassCount: 2,
       enableEnglish: true,
       enableClassic: true,
-      enableCoding: true
+      enableCoding: true,
     },
-    englishCriteria: {
-      targetType: "NON_MAJOR",
+    englishCertCriteria: {
+      englishTargetType: 'NON_MAJOR',
       toeicMinScore: 800,
-      // ... (생략)
+      toeflIbtMinScore: 80,
+      tepsMinScore: 637,
+      newTepsMinScore: 348,
+      opicMinLevel: 'IM1',
+      toeicSpeakingMinLevel: 'IM1',
+      gtelpLevel: 2,
+      gtelpMinScore: 77,
+      gtelpSpeakingLevel: 4,
+      altCourse: {
+        altCuriNo: '1111',
+        altCurieNm: 'Intensive English',
+        altCuricredit: 3,
+      },
     },
-    classicCriteria: {
+    classicCertCriteria: {
       totalRequiredCount: 10,
       requiredCountWestern: 4,
       requiredCountEastern: 2,
       requiredCountEasternAndWestern: 3,
-      requiredCountScience: 1
+      requiredCountScience: 1,
     },
-    codingCriteria: {
-      targetType: "MAJOR",
+    codingCertCriteria: {
+      codingTargetType: 'CODING_MAJOR',
       toscMinLevel: 3,
       altCourse: {
-        alt1CuriNo: 1111,
-        alt1CuriNm: "고급C프로그래밍실습",
-        alt1MinGrade: "B0"
-      }
-    }
+        alt1CuriNo: '1111',
+        alt1CurieNm: '고급C프로그래밍실습',
+        alt1minGrade: 'B0',
+        alt2CuriNo: null,
+        alt2CurieNm: null,
+        alt2minGrade: null,
+      },
+    },
   },
   TRANSFER: {
-    // 전과생 기준 데이터 (예시)
-    context: {
-      admissionYear: 2023,
-      deptName: "콘텐츠소프트웨어학과",
-      deptGroup: "NATURAL_SCI",
-      englishTargetType: "NON_MAJOR",
-      codingTargetType: "MAJOR",
-      collegeName: "인공지능융합대학",
-      deptCd: "3523"
+    criteriaTarget: {
+      englishTargetType: 'NON_MAJOR',
+      codingTargetType: 'CODING_MAJOR',
     },
-    policy: {
-      ruleType: "ANY_TWO_OF_THREE",
+    certPolicy: {
+      graduationCertRuleType: 'TWO_OF_THREE',
       requiredPassCount: 2,
       enableEnglish: true,
       enableClassic: true,
-      enableCoding: true
+      enableCoding: true,
     },
-    englishCriteria: {
-      targetType: "NON_MAJOR",
+    englishCertCriteria: {
+      englishTargetType: 'NON_MAJOR',
       toeicMinScore: 800,
-      // ... (생략)
+      toeflIbtMinScore: 80,
+      tepsMinScore: 637,
+      newTepsMinScore: 348,
+      opicMinLevel: 'IM1',
+      toeicSpeakingMinLevel: 'IM1',
+      gtelpLevel: 2,
+      gtelpMinScore: 77,
+      gtelpSpeakingLevel: 4,
+      altCourse: {
+        altCuriNo: '1111',
+        altCurieNm: 'Intensive English',
+        altCuricredit: 3,
+      },
     },
-    classicCriteria: {
+    classicCertCriteria: {
       totalRequiredCount: 10,
       requiredCountWestern: 4,
       requiredCountEastern: 2,
       requiredCountEasternAndWestern: 3,
-      requiredCountScience: 1
+      requiredCountScience: 1,
     },
-    codingCriteria: {
-      targetType: "MAJOR",
+    codingCertCriteria: {
+      codingTargetType: 'CODING_MAJOR',
       toscMinLevel: 3,
       altCourse: {
-        alt1CuriNo: 1111,
-        alt1CuriNm: "고급C프로그래밍실습",
-        alt1MinGrade: "B0"
-      }
-    }
-  }
+        alt1CuriNo: '1111',
+        alt1CurieNm: '고급C프로그래밍실습',
+        alt1minGrade: 'B0',
+        alt2CuriNo: null,
+        alt2CurieNm: null,
+        alt2minGrade: null,
+      },
+    },
+  },
 };

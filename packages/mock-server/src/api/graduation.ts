@@ -2,7 +2,8 @@ import { http, HttpResponse } from 'msw';
 import { getGraduationState, setGraduationState, resetGraduationState } from '../utils/graduation-state';
 import { userProfiles } from '../data/graduation/profiles';
 import { criteriaData } from '../data/graduation/criteria';
-import { checkResults } from '../data/graduation/results';
+import { checkResultsByUserType } from '../data/graduation/results';
+import { categoriesData } from '../data/graduation/categories';
 
 export const handlers = [
   // 1-1. POST /api/auth/login
@@ -60,42 +61,7 @@ export const handlers = [
     if (!state.isAuthenticated) {
       return new HttpResponse(null, { status: 401 });
     }
-    // 카테고리 데이터는 현재 정적 데이터 하나만 사용 (필요 시 분리 가능)
-    return HttpResponse.json({
-      data: {
-        context: {
-          admissionYear: 2025,
-          deptName: '컴퓨터공학과',
-          majorType: 'SINGLE',
-        },
-        categories: [
-          {
-            scope: 'PRIMARY',
-            categoryType: 'COMMON_REQUIRED',
-            enabled: true,
-            requiredCredits: 13,
-            requiredCourses: [
-              { curiNo: '11111', curiNm: '신입생세미나A' },
-              { curiNo: '22222', curiNm: '대학영어' },
-            ],
-          },
-          {
-            scope: 'PRIMARY',
-            categoryType: 'GENERAL_ELECTIVE',
-            enabled: true,
-            requiredCredits: 21,
-            requiredCourses: [],
-          },
-          {
-            scope: 'PRIMARY',
-            categoryType: 'MAJOR_REQUIRED',
-            enabled: true,
-            requiredCredits: 15,
-            requiredCourses: [],
-          },
-        ],
-      },
-    });
+    return HttpResponse.json(categoriesData[state.userType]);
   }),
 
   // 3-7. GET /api/graduation/certifications/overview
@@ -131,27 +97,33 @@ export const handlers = [
   http.get('/api/graduation/departments', async () => {
     // 로그인 여부와 상관없이 조회 가능하다고 가정 (또는 필요 시 체크)
     return HttpResponse.json({
-      data: {
-        admissionYear: 2023,
-        departments: [
-          {
-            deptCd: '3523',
-            deptName: '콘텐츠소프트웨어학과',
-            collegeName: '인공지능융합대학',
-            deptGroup: 'NATURAL_SCI',
-            englishTargetType: 'NON_MAJOR',
-            codingTargetType: 'MAJOR',
-          },
-          {
-            deptCd: '9999',
-            deptName: '영어영문학과',
-            collegeName: '인문과학대학',
-            deptGroup: 'HUMANITIES',
-            englishTargetType: 'ENGLISH_MAJOR',
-            codingTargetType: 'NON_MAJOR',
-          },
-        ],
-      },
+      admissionYear: 2023,
+      departments: [
+        {
+          deptCd: '3523',
+          deptNm: '콘텐츠소프트웨어학과',
+          collegeNm: '인공지능융합대학',
+          deptGroup: 'NATURAL_SCI',
+          englishTargetType: 'NON_MAJOR',
+          codingTargetType: 'CODING_MAJOR',
+        },
+        {
+          deptCd: '9999',
+          deptNm: '영어영문학과',
+          collegeNm: '인문과학대학',
+          deptGroup: 'HUMANITIES',
+          englishTargetType: 'ENGLISH_MAJOR',
+          codingTargetType: 'NON_MAJOR',
+        },
+        {
+          deptCd: '1001',
+          deptNm: '컴퓨터공학과',
+          collegeNm: '공과대학',
+          deptGroup: 'NATURAL_SCI',
+          englishTargetType: 'NON_MAJOR',
+          codingTargetType: 'CODING_MAJOR',
+        },
+      ],
     });
   }),
 
@@ -173,12 +145,15 @@ export const handlers = [
       return new HttpResponse(null, { status: 401 });
     }
 
-    const result = checkResults[state.graduationStep];
-
-    if (state.graduationStep === 'NO_FILE' || !result) {
-      // 파일이 없는 경우 404 반환 (프론트 요청사항)
+    if (state.graduationStep === 'NO_FILE') {
       return new HttpResponse(null, { status: 404 });
     }
+
+    if (state.graduationStep === 'PROCESSING') {
+      return new HttpResponse(null, { status: 404 });
+    }
+
+    const result = checkResultsByUserType[state.userType];
 
     return HttpResponse.json({
       data: result,

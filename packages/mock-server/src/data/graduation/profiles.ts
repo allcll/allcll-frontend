@@ -2,29 +2,42 @@ import { UserType } from '../../utils/graduation-state';
 
 export const userProfiles: Record<UserType, any> = {
   SINGLE: {
-    userId: 123,
-    studentId: "21011841",
-    studentName: "남해윤",
-    deptName: "데이터사이언스학과",
-    deptCd: "38191",
-    majorType: "SINGLE"
+    id: 123,
+    studentId: '21011841',
+    name: '남해윤',
+    admissionYear: 2021,
+    majorType: 'SINGLE',
+    collegeName: '인공지능융합대학',
+    deptName: '데이터사이언스학과',
+    deptCode: '38191',
+    doubleCollegeName: null,
+    doubleDeptName: null,
+    doubleDeptCode: null,
   },
   DOUBLE: {
-    userId: 124,
-    studentId: "20011842",
-    studentName: "김복수",
-    deptName: "데이터사이언스학과",
-    deptCd: "38191",
-    majorType: "DOUBLE",
-    doubleDeptNm: "컴퓨터공학과"
+    id: 124,
+    studentId: '20011842',
+    name: '김복수',
+    admissionYear: 2020,
+    majorType: 'DOUBLE',
+    collegeName: '인공지능융합대학',
+    deptName: '데이터사이언스학과',
+    deptCode: '38191',
+    doubleCollegeName: '공과대학',
+    doubleDeptName: '컴퓨터공학과',
+    doubleDeptCode: '1001',
   },
   TRANSFER: {
-    userId: 125,
-    studentId: "19011843",
-    studentName: "이전과",
-    deptName: "콘텐츠소프트웨어학과",
-    deptCd: "3523",
-    majorType: "SINGLE", // 전과 후 단일전공 가정
-    doubleDeptNm: null
-  }
+    id: 125,
+    studentId: '19011843',
+    name: '이전과',
+    admissionYear: 2019,
+    majorType: 'SINGLE',
+    collegeName: '인공지능융합대학',
+    deptName: '콘텐츠소프트웨어학과',
+    deptCode: '3523',
+    doubleCollegeName: null,
+    doubleDeptName: null,
+    doubleDeptCode: null,
+  },
 };
