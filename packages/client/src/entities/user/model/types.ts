@@ -1,4 +1,4 @@
-type MajorType = 'SINGLE' | 'DOUBLE'; //이외 타입 추가시 => 'MINOR', 'INTERDISCIPLINARY' 추가
+export type MajorType = 'SINGLE' | 'DOUBLE'; //이외 타입 추가시 => 'MINOR', 'INTERDISCIPLINARY' 추가
 
 export interface UserResponse {
   id: number;

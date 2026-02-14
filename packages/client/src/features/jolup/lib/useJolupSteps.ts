@@ -16,6 +16,7 @@ export enum JolupSteps {
  */
 function useJolupSteps() {
   const [step, setStep] = useState<JolupSteps>(JolupSteps.LOGIN);
+  const [isDepartmentNotFound, setIsDepartmentNotFound] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const isRetry = searchParams.get('retry') === 'true';
@@ -76,6 +77,6 @@ function useJolupSteps() {
     }
   }
 
-  return { step, nextStep, prevStep, setStep, isLoading };
+  return { step, nextStep, prevStep, setStep, isLoading, isDepartmentNotFound, setIsDepartmentNotFound };
 }
 export default useJolupSteps;

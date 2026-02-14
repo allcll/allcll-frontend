@@ -12,14 +12,16 @@ interface StepContentProps {
   step: JolupSteps;
   nextStep: () => void;
   prevStep: () => void;
+  isDepartmentNotFound?: boolean;
+  setIsDepartmentNotFound?: (value: boolean) => void;
 }
 
-const StepContent: React.FC<StepContentProps> = ({ step, nextStep, prevStep }) => {
+const StepContent: React.FC<StepContentProps> = ({ step, nextStep, prevStep, isDepartmentNotFound, setIsDepartmentNotFound }) => {
   switch (step) {
     case JolupSteps.LOGIN:
-      return <LoginForm onSuccess={nextStep} />;
+      return <LoginForm onSuccess={nextStep} onDepartmentNotFound={() => setIsDepartmentNotFound?.(true)} />;
     case JolupSteps.DEPARTMENT_INFO:
-      return <BasicInfoForm nextStep={nextStep} prevStep={prevStep} />;
+      return <BasicInfoForm nextStep={nextStep} prevStep={prevStep} isDepartmentNotFound={isDepartmentNotFound} />;
     case JolupSteps.FILE_UPLOAD:
       return (
         <Flex direction="flex-col" gap="gap-6">

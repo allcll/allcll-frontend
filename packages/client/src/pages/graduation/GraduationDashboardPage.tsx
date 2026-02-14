@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
+import { useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { Flex, Banner, Button, Heading, SupportingText } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile';
+import { graduationQueryKeys } from '@/entities/joluphaja/model/useGraduation';
+import LogoutButton from '@/features/user/ui/LogoutButton';
 import { useGraduationDashboard } from '@/features/joluphaja/model/useGraduationDashboard';
 import { useCriteriaCategories } from '@/entities/joluphaja/model/useGraduation';
 import {
@@ -19,6 +22,7 @@ import CategoryProgressCard from '@/features/joluphaja/ui/CategoryProgressCard';
 import CertificationSection from '@/features/joluphaja/ui/CertificationSection';
 import MobileTabs, { useMobileTabs } from '@/features/joluphaja/ui/MobileTabs';
 import RecommendedCoursesModal from '@/features/joluphaja/ui/RecommendedCoursesModal';
+import EditProfileModal from '@/features/joluphaja/ui/EditProfileModal';
 
 function LoadingState() {
   return (
@@ -42,7 +46,9 @@ function ErrorState({ message }: { message: string }) {
 
 function GraduationDashboardPage() {
   const isMobile = useMobile();
+  const queryClient = useQueryClient();
   const [showBanner, setShowBanner] = useState(true);
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<{
     categoryType: CategoryType;
     missingCourses: MissingCourse[];
@@ -56,8 +62,9 @@ function GraduationDashboardPage() {
   };
 
   const handleEditProfile = () => {
-    // todo 회원 정보 수정 페이지로 이동하는 로직 추가
+    setIsEditProfileOpen(true);
   };
+
   const handleDeleteBanner = () => {
     setShowBanner(false);
   };
@@ -198,9 +205,16 @@ function GraduationDashboardPage() {
         {/* 페이지 제목 */}
         <Flex justify="justify-between" align="items-center">
           <Heading level={1}>졸업요건 분석</Heading>
-          <Button variant="text" size="small" onClick={handleEditProfile}>
-            회원 정보 수정
-          </Button>
+          <Flex gap="gap-2">
+            <Button variant="text" size="small" onClick={handleEditProfile}>
+              회원 정보 수정
+            </Button>
+            <LogoutButton
+              variant="text"
+              size="small"
+              onSuccess={() => queryClient.removeQueries({ queryKey: graduationQueryKeys.all })}
+            />
+          </Flex>
         </Flex>
         <SupportingText className="mb-6">{user.name}님의 졸업요건 분석 결과입니다.</SupportingText>
 
@@ -307,6 +321,15 @@ function GraduationDashboardPage() {
           onClose={handleCloseModal}
           categoryType={selectedCategory.categoryType}
           missingCourses={selectedCategory.missingCourses}
+        />
+      )}
+
+      {/* 회원 정보 수정 모달 */}
+      {user && (
+        <EditProfileModal
+          isOpen={isEditProfileOpen}
+          onClose={() => setIsEditProfileOpen(false)}
+          user={user}
         />
       )}
     </>

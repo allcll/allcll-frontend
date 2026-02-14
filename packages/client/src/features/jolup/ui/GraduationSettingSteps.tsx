@@ -5,7 +5,7 @@ import StepIndicator from './StepIndicator';
 import StepContent from './StepContent';
 
 function GraduationSettingSteps() {
-  const { step, nextStep, prevStep, setStep } = useJolupSteps();
+  const { step, nextStep, prevStep, setStep, isDepartmentNotFound, setIsDepartmentNotFound } = useJolupSteps();
 
   // Step 에러 핸들러
   const handleError = (error: Error) => {
@@ -25,7 +25,13 @@ function GraduationSettingSteps() {
       <StepIndicator currentStep={step} />
 
       <StepErrorBoundary onError={handleError} resetKey={step}>
-        <StepContent step={step} nextStep={nextStep} prevStep={prevStep} />
+        <StepContent
+          step={step}
+          nextStep={nextStep}
+          prevStep={prevStep}
+          isDepartmentNotFound={isDepartmentNotFound}
+          setIsDepartmentNotFound={setIsDepartmentNotFound}
+        />
       </StepErrorBoundary>
     </Flex>
   );

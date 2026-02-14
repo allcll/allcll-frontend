@@ -6,9 +6,10 @@ import { useLogin } from '@/entities/user/model/useAuth';
 
 interface LoginFormProps {
   onSuccess?: () => void;
+  onDepartmentNotFound?: () => void;
 }
 
-function LoginForm({ onSuccess }: LoginFormProps) {
+function LoginForm({ onSuccess, onDepartmentNotFound }: LoginFormProps) {
   const { values, errors, touched, onChange, onBlur, submit, isValid } = useLoginForm();
   const { mutate: login, isPending } = useLogin();
   const showToast = useToastNotification.getState().addToast;
@@ -21,12 +22,20 @@ function LoginForm({ onSuccess }: LoginFormProps) {
           onSuccess?.();
           showToast('로그인에 성공했습니다. 졸업 요건 검사를 시작합니다.');
         },
-        onError: () => {
-          //nextStep으로 넘어가기 위해서 임의로 추가
+        onError: error => {
+          let isDeptNotFound = false;
+          try {
+            const { message } = JSON.parse(error.message);
+            isDeptNotFound = message === 'DEPARTMENT_NOT_FOUND';
+          } catch {}
+          if (isDeptNotFound) onDepartmentNotFound?.();
+          // todo: 학과 코드가 아닌 경우에 대한 처리 필요
           onSuccess?.();
-
-          // 로그인 실패 시 처리 (예: 에러 메시지 표시)
-          showToast('로그인에 실패했습니다. 학번과 비밀번호를 확인해주세요.');
+          showToast(
+            isDeptNotFound
+              ? '학과 정보를 찾을 수 없습니다. 다음 단계에서 직접 선택해주세요.'
+              : '로그인에 실패했습니다. 학번과 비밀번호를 확인해주세요.',
+          );
         },
       },
     );
