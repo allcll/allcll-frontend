@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, delay } from 'msw';
 import { getGraduationState, setGraduationState, resetGraduationState } from '../utils/graduation-state';
 import { userProfiles } from '../data/graduation/profiles';
 import { criteriaData } from '../data/graduation/criteria';
@@ -8,6 +8,7 @@ import { categoriesData } from '../data/graduation/categories';
 export const handlers = [
   // 1-1. POST /api/auth/login
   http.post('/api/auth/login', async () => {
+    await delay(1000);
     setGraduationState({ isAuthenticated: true });
     return HttpResponse.json({}, { status: 200 });
   }),
@@ -29,6 +30,7 @@ export const handlers = [
 
   // 1-4. PATCH /api/auth/me
   http.patch('/api/auth/me', async () => {
+    await delay(800);
     const state = getGraduationState();
     if (!state.isAuthenticated) {
       return new HttpResponse(null, { status: 401 });
@@ -129,6 +131,7 @@ export const handlers = [
 
   // 5-1. POST /api/graduation/check
   http.post('/api/graduation/check', async () => {
+    await delay(2000);
     const state = getGraduationState();
     if (!state.isAuthenticated) {
       return new HttpResponse(null, { status: 401 });
@@ -140,6 +143,7 @@ export const handlers = [
 
   // 5-2. GET /api/graduation/check
   http.get('/api/graduation/check', async () => {
+    await delay(1500);
     const state = getGraduationState();
     if (!state.isAuthenticated) {
       return new HttpResponse(null, { status: 401 });
