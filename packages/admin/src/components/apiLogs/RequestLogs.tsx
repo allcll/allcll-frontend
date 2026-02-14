@@ -2,8 +2,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Dispatch, SetStateAction } from 'react';
 import MultiSelectFilterOption, { OptionType } from '../common/MultiSelectFilterOption';
 import { Card, Flex, Heading, Label, SupportingText, TextField } from '@allcll/allcll-ui';
-import Filtering from '@allcll/common/components/filtering/Filtering';
-import CheckboxAdapter from '@allcll/common/components/checkbox/CheckboxAdapter';
+import { Filtering, CheckboxAdapter } from '@allcll/common';
 
 const StatusCodes: OptionType<number>[] = [
   { value: 0, label: 'ALL' },

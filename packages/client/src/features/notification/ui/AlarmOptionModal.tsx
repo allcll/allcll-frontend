@@ -1,6 +1,6 @@
 import React from 'react';
 // Todo: Toggle 컴포넌트 - onChange state 반환 필요
-import Toggle from '@common/components/Toggle.tsx';
+import { Toggle } from '@allcll/common';
 import useBackSignal from '@/shared/lib/useBackSignal.ts';
 import BrowserNotification from '../lib/browserNotification';
 import useNotificationInstruction from '../model/useNotificationInstruction';
