@@ -23,7 +23,7 @@ function SubjectTable({ subjects, handleRemakeSubjects, isLoadingLectures }: Rea
     <>
       <Flex direction="flex-row" justify="justify-between" align="items-center">
         <Flex align="items-center">
-          <Label>과목 리스트</Label>
+          <Label>수강신청 연습 과목 리스트</Label>
 
           {handleRemakeSubjects && (
             <Button onClick={handleRemakeSubjects} size="small" variant="text">
@@ -37,7 +37,7 @@ function SubjectTable({ subjects, handleRemakeSubjects, isLoadingLectures }: Rea
       </Flex>
 
       <div className="overflow-x-auto overflow-y-auto sm:max-w-full">
-        <table className="min-w-full sm:text-sm text-xs text-left whitespace-nowrap border-t border-b border-gray-200">
+        <table className="min-w-full table-fixed sm:text-sm text-xs text-left whitespace-nowrap border-t border-b border-gray-200">
           <thead className="bg-gray-100 text-gray-700">
             <tr>
               <th className="px-4 py-2">학수번호</th>
@@ -47,7 +47,9 @@ function SubjectTable({ subjects, handleRemakeSubjects, isLoadingLectures }: Rea
               <th className="px-4 py-2">교수명</th>
             </tr>
           </thead>
-          <SubjectTableBody subjects={subjects} isLoadingLectures={isLoadingLectures} />
+          <tbody className="h-[250px]">
+            <SubjectTableBody subjects={subjects} isLoadingLectures={isLoadingLectures} />
+          </tbody>
         </table>
       </div>
     </>
@@ -70,21 +72,17 @@ function SubjectTableBody({ subjects, isLoadingLectures }: { subjects: Lecture[]
   }
 
   return (
-    <tbody>
-      {!isLoadingLectures ? (
-        subjects.map((subject, index) => (
-          <tr key={subject.subjectId ?? index} className="border border-gray-200">
-            <td className="px-4 py-2">{subject.subjectCode}</td>
-            <td className="px-4 py-2">{subject.classCode}</td>
-            <td className="px-4 py-2">{subject.departmentName}</td>
-            <td className="px-4 py-2">{subject.subjectName}</td>
-            <td className="px-4 py-2">{subject.professorName}</td>
-          </tr>
-        ))
-      ) : (
-        <SkeletonRows col={5} row={8} />
-      )}
-    </tbody>
+    <>
+      {subjects.map((subject, index) => (
+        <tr key={subject.subjectId ?? index} className="border border-gray-200 h-[40px]">
+          <td className="px-4 py-2 w-[30px] truncate">{subject.subjectCode}</td>
+          <td className="px-4 py-2 w-[30px] truncate">{subject.classCode}</td>
+          <td className="px-4 py-2 w-[100px] truncate">{subject.departmentName}</td>
+          <td className="px-4 py-2  w-[150px] truncate">{subject.subjectName}</td>
+          <td className="px-4 py-2">{subject.professorName}</td>
+        </tr>
+      ))}
+    </>
   );
 }
 

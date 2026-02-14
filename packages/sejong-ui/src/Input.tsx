@@ -7,7 +7,7 @@ interface InputProps extends ComponentPropsWithRef<'input'> {
 
 function Input({ type = 'text', className = '', essential = false, disabled = false, ...rest }: InputProps) {
   const fixedClassName =
-    'relative border-1 border-gray-300 px-2 text-xs w-max h-6 ' +
+    'relative border-1 border-gray-300 px-2 text-xs w-full h-6 ' +
     'focus:outline-none focus:rounded focus:ring focus:border-gray-800 ' +
     'disabled:bg-gray-100 disabled:cursor-not-allowed ';
 

@@ -16,8 +16,9 @@ interface ProgressDoughnutProps {
 }
 
 function ProgressDoughnut({ earned, required, size = 'medium', showPercentage = true }: ProgressDoughnutProps) {
-  const percentage = required === 0 ? 100 : Math.round((earned / required) * 100);
+  const percentage = required === 0 ? 100 : Math.min(100, Math.round((earned / required) * 100));
   const remaining = Math.max(0, required - earned);
+  const earnedForChart = Math.min(earned, required);
 
   const sizeConfig = {
     small: { width: 100, height: 100, fontSize: 'text-lg' },
@@ -30,7 +31,7 @@ function ProgressDoughnut({ earned, required, size = 'medium', showPercentage = 
   const data = {
     datasets: [
       {
-        data: [earned, remaining],
+        data: [earnedForChart, remaining],
         backgroundColor: [colors.primary[500], '#E5E7EB'],
         borderWidth: 0,
         cutout: '75%',
