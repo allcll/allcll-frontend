@@ -1,15 +1,20 @@
-import { useEffect, type ComponentType } from 'react';
-import { Dialog, Flex, Button } from '@allcll/allcll-ui';
-import type { CertificationCriteriaData, CertificationTargetType } from '@/entities/joluphaja/api/graduation';
+import type { ComponentType } from 'react';
+import { Dialog, Flex, Button, Badge } from '@allcll/allcll-ui';
+import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
+import type {
+  CertificationCriteriaData,
+  EnglishTargetType,
+  CodingTargetType,
+} from '@/entities/joluphaja/api/graduation';
 import { useCertificationCriteria } from '@/entities/joluphaja/model/useGraduation';
 import type { CertificationType } from './CertificationSection';
 
-function TargetTypeBadge({ targetType }: { targetType: CertificationTargetType }) {
+function TargetTypeBadge({ targetType }: { targetType: EnglishTargetType | CodingTargetType }) {
+  const isMajor = targetType !== 'NON_MAJOR';
+
   return (
-    <div className="inline-flex">
-      <span className="bg-primary-100 text-primary-600 text-xs font-medium px-2 py-1 rounded">
-        {targetType === 'MAJOR' ? '전공자' : '비전공자'}
-      </span>
+    <div>
+      <Badge variant={isMajor ? 'success' : 'default'}>{isMajor ? '전공자' : '비전공자'}</Badge>
     </div>
   );
 }
@@ -52,8 +57,6 @@ function InfoCard({ label, value }: { label: string; value: string }) {
   );
 }
 
-// 각 기준 항목 별 컨텐츠
-
 interface CriteriaContentProps {
   data: CertificationCriteriaData;
 }
@@ -68,11 +71,15 @@ const ENGLISH_EXAM_ROWS = [
 ] as const;
 
 function EnglishCriteriaContent({ data }: CriteriaContentProps) {
-  const { englishCriteria } = data;
+  const { englishCertCriteria } = data;
+
+  if (!englishCertCriteria) {
+    return <p className="text-sm text-gray-500 text-center py-8">영어 인증 대상이 아닙니다.</p>;
+  }
 
   return (
     <>
-      <TargetTypeBadge targetType={englishCriteria.targetType} />
+      <TargetTypeBadge targetType={englishCertCriteria.englishTargetType} />
 
       <p className="text-sm text-gray-600">
         아래 시험 중 <span className="font-semibold text-primary-500">1가지</span> 기준을 충족하면 인증됩니다.
@@ -84,27 +91,26 @@ function EnglishCriteriaContent({ data }: CriteriaContentProps) {
           ...ENGLISH_EXAM_ROWS.map(row => ({
             key: row.key,
             label: row.label,
-            value: `${englishCriteria[row.field]}${row.unit} 이상`,
+            value: `${englishCertCriteria[row.field]}${row.unit} 이상`,
           })),
           {
             key: 'gtelp',
-            label: `G-TELP Level ${englishCriteria.gtelpLevel}`,
-            value: `${englishCriteria.gtelpMinScore}점 이상`,
+            label: `G-TELP Level ${englishCertCriteria.gtelpLevel}`,
+            value: `${englishCertCriteria.gtelpMinScore}점 이상`,
           },
           {
             key: 'gtelpSpeaking',
-            label: `G-TELP Speaking Level ${englishCriteria.gtelpSpeakingLevel}`,
+            label: `G-TELP Speaking Level ${englishCertCriteria.gtelpSpeakingLevel}`,
             value: '',
           },
         ]}
       />
 
-      {englishCriteria.altCourse && (
-        <InfoCard
-          label="대체 과목"
-          value={`${englishCriteria.altCourse.name} (${englishCriteria.altCourse.credit}학점)`}
-        />
-      )}
+      <p className="text-xs text-gray-500 font-medium">대체 과목</p>
+      <InfoCard
+        label={englishCertCriteria.altCourse.altCurieNm}
+        value={`${englishCertCriteria.altCourse.altCuricredit}학점`}
+      />
     </>
   );
 }
@@ -117,12 +123,12 @@ const CLASSIC_DOMAIN_ROWS = [
 ] as const;
 
 function ClassicCriteriaContent({ data }: CriteriaContentProps) {
-  const { classicCriteria } = data;
+  const { classicCertCriteria } = data;
 
   return (
     <>
       <p className="text-sm text-gray-600">
-        총 <span className="font-semibold text-primary-500">{classicCriteria.totalRequiredCount}권</span>을 읽어야
+        총 <span className="font-semibold text-primary-500">{classicCertCriteria.totalRequiredCount}권</span>을 읽어야
         합니다. 각 영역별 최소 권수는 아래와 같습니다.
       </p>
 
@@ -131,49 +137,43 @@ function ClassicCriteriaContent({ data }: CriteriaContentProps) {
         rows={CLASSIC_DOMAIN_ROWS.map(row => ({
           key: row.key,
           label: row.label,
-          value: `${classicCriteria[row.field]}권`,
+          value: `${classicCertCriteria[row.field]}권`,
         }))}
       />
 
       <div className="flex justify-between items-center bg-gray-50 rounded-md px-3 py-2">
         <span className="text-sm text-gray-600 font-medium">합계</span>
-        <span className="text-sm font-bold text-primary-600">{classicCriteria.totalRequiredCount}권</span>
+        <span className="text-sm font-bold text-primary-600">{classicCertCriteria.totalRequiredCount}권</span>
       </div>
     </>
   );
 }
 
 function CodingCriteriaContent({ data }: CriteriaContentProps) {
-  const { codingCriteria } = data;
+  const { codingCertCriteria } = data;
+
+  if (!codingCertCriteria) {
+    return <p className="text-sm text-gray-500 text-center py-8">코딩 인증 대상이 아닙니다.</p>;
+  }
+
+  const { altCourse } = codingCertCriteria;
 
   return (
     <>
-      <TargetTypeBadge targetType={codingCriteria.targetType} />
+      <TargetTypeBadge targetType={codingCertCriteria.codingTargetType} />
 
       <p className="text-sm text-gray-600">
         아래 기준 중 <span className="font-semibold text-primary-500">1가지</span>를 충족하면 인증됩니다.
       </p>
 
-      <InfoCard label="TOSC (SW역량테스트)" value={`Level ${codingCriteria.toscMinLevel} 이상`} />
+      <InfoCard label="TOSC (SW역량테스트)" value={`Level ${codingCertCriteria.toscMinLevel} 이상`} />
 
-      {codingCriteria.alt1 && (
-        <InfoCard
-          label="대체 과목 1"
-          value={`학수번호 ${codingCriteria.alt1.curiNo} · ${codingCriteria.alt1.minGrade} 이상 취득`}
-        />
-      )}
-
-      {codingCriteria.alt2 && (
-        <InfoCard
-          label="대체 과목 2"
-          value={`학수번호 ${codingCriteria.alt2.curiNo} · ${codingCriteria.alt2.minGrade} 이상 취득`}
-        />
-      )}
+      <p className="text-xs text-gray-500 font-medium">대체 과목</p>
+      <InfoCard label={altCourse.alt1CurieNm} value={`${altCourse.alt1minGrade} 이상`} />
+      {altCourse.alt2CuriNo && <InfoCard label={altCourse.alt2CurieNm!} value={`${altCourse.alt2minGrade} 이상`} />}
     </>
   );
 }
-
-// 모달 레이아웃
 
 const CRITERIA_TYPE_TITLES: Record<CertificationType, string> = {
   english: '영어 인증 기준',
@@ -187,8 +187,6 @@ const criteriaContentRegistry: Record<CertificationType, ComponentType<CriteriaC
   coding: CodingCriteriaContent,
 };
 
-// ---- 모달 셸 ----
-
 interface CertificationCriteriaModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -197,13 +195,7 @@ interface CertificationCriteriaModalProps {
 
 function CertificationCriteriaModal({ isOpen, onClose, criteriaType }: CertificationCriteriaModalProps) {
   const { data, isPending, isError } = useCertificationCriteria(isOpen);
-
-  useEffect(() => {
-    if (isOpen) document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
+  useBodyScrollLock(isOpen);
 
   const title = CRITERIA_TYPE_TITLES[criteriaType];
   const ContentRenderer = criteriaContentRegistry[criteriaType];
