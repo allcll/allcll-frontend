@@ -1,5 +1,4 @@
 import React from 'react';
-import { Flex } from '@allcll/allcll-ui';
 import { Step, Line } from '@allcll/common';
 import { JolupSteps } from '@/features/jolup/lib/useJolupSteps.ts';
 
@@ -18,20 +17,20 @@ const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
   const currentStepIndex = steps.findIndex(step => step.id === currentStep);
 
   return (
-    <Flex align="items-center" className="w-full py-4 px-2">
+    <div className="flex items-start md:items-center w-full py-4 px-2 gap-2">
       {steps.map((step, index) => {
         const isCompleted = index < currentStepIndex;
-        const isActive = index <= currentStepIndex;
+        const isCurrent = index <= currentStepIndex;
         const isLast = index === steps.length - 1;
 
         return (
           <React.Fragment key={step.id}>
-            <Step number={index + 1} finish={isCompleted} active={isActive} label={step.label} />
+            <Step number={index + 1} finish={isCompleted} active={isCurrent} label={step.label} />
             {!isLast && <Line active={index + 1 <= currentStepIndex} />}
           </React.Fragment>
         );
       })}
-    </Flex>
+    </div>
   );
 };
 
