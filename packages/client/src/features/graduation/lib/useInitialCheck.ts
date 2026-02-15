@@ -45,6 +45,10 @@ function determineStep(isError: boolean, error: Error | null, hasData: boolean, 
       return JolupSteps.FILE_UPLOAD;
     }
 
+    if (message.includes('GRADUATION_CHECK_NOT_FOUND') || message.includes('검사 결과를 찾을 수 없습니다')) {
+      return JolupSteps.DEPARTMENT_INFO;
+    }
+
     return null;
   }
 
