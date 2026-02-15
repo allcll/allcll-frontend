@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useGraduationCheck } from '@/entities/graduation/model/useGraduation';
+import { useQueryClient } from '@tanstack/react-query';
+import { graduationQueryKeys, useGraduationCheck } from '@/entities/graduation/model/useGraduation';
 import { useGraduationCheckMutation } from './useGraduationCheckMutation';
 import useToastNotification from '@/features/notification/model/useToastNotification';
 
 function useUploading(nextStep: () => void, prevStep: () => void, file: File | null) {
+  const queryClient = useQueryClient();
   const { mutate: uploadFile, isPending: isUploading, isSuccess: isUploadDone } = useGraduationCheckMutation();
   const { data, isLoading: isFetching, isError } = useGraduationCheck(isUploadDone);
   const [progress, setProgress] = useState(0);
@@ -14,6 +16,7 @@ function useUploading(nextStep: () => void, prevStep: () => void, file: File | n
     if (!file || uploadStarted) return;
 
     setUploadStarted(true);
+    queryClient.removeQueries({ queryKey: graduationQueryKeys.check() });
 
     uploadFile(file, {
       onError: () => {
