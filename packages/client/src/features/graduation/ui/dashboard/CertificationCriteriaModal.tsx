@@ -108,8 +108,8 @@ function EnglishCriteriaContent({ data }: CriteriaContentProps) {
 
       <p className="text-xs text-gray-500 font-medium">대체 과목</p>
       <InfoCard
-        label={englishCertCriteria.altCourse.altCurieNm}
-        value={`${englishCertCriteria.altCourse.altCuricredit}학점`}
+        label={englishCertCriteria.altCourse.altCuriNm}
+        value={`${englishCertCriteria.altCourse.altCuriCredit}학점`}
       />
     </>
   );
@@ -169,8 +169,8 @@ function CodingCriteriaContent({ data }: CriteriaContentProps) {
       <InfoCard label="TOSC (SW역량테스트)" value={`Level ${codingCertCriteria.toscMinLevel} 이상`} />
 
       <p className="text-xs text-gray-500 font-medium">대체 과목</p>
-      <InfoCard label={altCourse.alt1CurieNm} value={`${altCourse.alt1minGrade} 이상`} />
-      {altCourse.alt2CuriNo && <InfoCard label={altCourse.alt2CurieNm!} value={`${altCourse.alt2minGrade} 이상`} />}
+      <InfoCard label={altCourse.alt1CuriNm} value={`${altCourse.alt1MinGrade} 이상`} />
+      {altCourse.alt2CuriNo && <InfoCard label={altCourse.alt2CuriNm!} value={`${altCourse.alt2MinGrade} 이상`} />}
     </>
   );
 }

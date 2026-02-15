@@ -149,8 +149,8 @@ export interface CertPolicy {
 /** 영어 인증 대체 과목 */
 export interface EnglishAltCourse {
   altCuriNo: string;
-  altCurieNm: string;
-  altCuricredit: number;
+  altCuriNm: string;
+  altCuriCredit: number;
 }
 
 /** 영어 인증 기준 */
@@ -180,11 +180,11 @@ export interface ClassicCertCriteria {
 /** 코딩 인증 대체 과목 */
 export interface CodingAltCourse {
   alt1CuriNo: string;
-  alt1CurieNm: string;
-  alt1minGrade: string;
+  alt1CuriNm: string;
+  alt1MinGrade: string;
   alt2CuriNo: string | null;
-  alt2CurieNm: string | null;
-  alt2minGrade: string | null;
+  alt2CuriNm: string | null;
+  alt2MinGrade: string | null;
 }
 
 /** 코딩 인증 기준 */
