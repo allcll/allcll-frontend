@@ -1,11 +1,11 @@
 import PageHeader from '@/components/common/PageHeader';
 import GraduationSync from '@/components/graduation/GraduationSync';
-import TostNotification from '@allcll/common/components/toast/ToastNotification';
+import { ToastNotification } from '@allcll/common';
 
 function Graduation() {
   return (
     <>
-      <TostNotification />
+      <ToastNotification />
 
       <PageHeader title="졸업요건 설정" description="졸업요건 관련 설정을 변경합니다." />
 
