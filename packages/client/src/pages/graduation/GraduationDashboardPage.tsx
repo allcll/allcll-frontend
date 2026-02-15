@@ -184,7 +184,7 @@ function GraduationDashboardPage() {
         </Banner>
       )}
 
-      <div className="max-w-5xl mx-auto mt-2">
+      <div className="max-w-5xl mx-auto mt-2 px-4">
         {/* 페이지 제목 */}
         <Flex justify="justify-between" align="items-center">
           <Heading level={1}>졸업요건 분석</Heading>
