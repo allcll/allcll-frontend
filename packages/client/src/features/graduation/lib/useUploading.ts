@@ -67,13 +67,13 @@ function useUploading(nextStep: () => void, prevStep: () => void, file: File | n
     }
   }, [progress, phase, nextStep]);
 
-  // 에러 처리
+  // 에러 처리: fetching phase에서만 동작 (캐시된 이전 에러 무시)
   useEffect(() => {
-    if (isError) {
+    if (isError && phase === 'fetching') {
       addToast('졸업 요건 검사 결과를 불러오는데 실패했습니다.');
       prevStep();
     }
-  }, [isError, addToast, prevStep]);
+  }, [isError, phase, addToast, prevStep]);
 
   const message = {
     uploading: '파일을 업로드하는 중입니다...',
