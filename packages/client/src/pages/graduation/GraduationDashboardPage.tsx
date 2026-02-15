@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useQueryClient } from '@tanstack/react-query';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Flex, Banner, Button, Heading, SupportingText } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile';
 import { graduationQueryKeys } from '@/entities/graduation/model/useGraduation';
@@ -48,7 +48,8 @@ function GraduationDashboardPage() {
   const { data: criteriaCategories } = useCriteriaCategories();
 
   const handleStartOverGraduationCheck = () => {
-    // todo 추후에 파일 추가 단계로 넘어가는 로직 추가
+    if (!window.confirm('졸업 요건을 다시 검사하시겠습니까?')) return;
+    navigate('/graduation?retry=true');
   };
 
   const handleEditProfile = () => {
@@ -210,8 +211,8 @@ function GraduationDashboardPage() {
           {/* 다시 검사하기 버튼 */}
           <Flex justify="justify-end">
             <div className="bg-white rounded-md">
-              <Button variant="outlined" size="medium" onClick={handleStartOverGraduationCheck} asChild>
-                <Link to="/graduation?retry=true">다시 검사하기</Link>
+              <Button variant="outlined" size="medium" onClick={handleStartOverGraduationCheck}>
+                다시 검사하기
               </Button>
             </div>
           </Flex>
