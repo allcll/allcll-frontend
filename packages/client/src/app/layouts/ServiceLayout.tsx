@@ -14,15 +14,17 @@ function ServiceLayout({ serviceId }: IServiceLayoutProps) {
   useGlobalEffect();
 
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <ToastNotification />
       <Header />
       <ServiceEnabled serviceId={serviceId}>
         <BannerNotification />
-        <Outlet />
+        <div className="flex-1">
+          <Outlet />
+        </div>
       </ServiceEnabled>
       <Footer />
-    </>
+    </div>
   );
 }
 
