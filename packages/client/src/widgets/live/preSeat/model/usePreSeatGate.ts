@@ -2,7 +2,7 @@ import { getDateLocale } from '@/shared/lib/time.ts';
 
 export type PreSeatMode = 'force-open' | 'auto' | 'force-close';
 export const PRESEAT_MODE: PreSeatMode = 'force-open';
-export const PRESEAT_CLOSE_DATE = '2026-02-13';
+export const PRESEAT_CLOSE_DATE = '2026-03-04';
 export const PRESEAT_START_TIME = '10:00';
 
 /**
