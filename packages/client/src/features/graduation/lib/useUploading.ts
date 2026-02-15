@@ -4,14 +4,18 @@ import { graduationQueryKeys, useGraduationCheck } from '@/entities/graduation/m
 import { useGraduationCheckMutation } from './useGraduationCheckMutation';
 import useToastNotification from '@/features/notification/model/useToastNotification';
 
+type Phase = 'uploading' | 'fetching' | 'done';
+
 function useUploading(nextStep: () => void, prevStep: () => void, file: File | null) {
   const queryClient = useQueryClient();
-  const { mutate: uploadFile, isPending: isUploading, isSuccess: isUploadDone } = useGraduationCheckMutation();
-  const { data, isLoading: isFetching, isError } = useGraduationCheck(isUploadDone);
+  const { mutate: uploadFile } = useGraduationCheckMutation();
+  const [phase, setPhase] = useState<Phase>('uploading');
+  const { data, isError } = useGraduationCheck(phase === 'fetching' || phase === 'done');
   const [progress, setProgress] = useState(0);
   const [uploadStarted, setUploadStarted] = useState(false);
   const addToast = useToastNotification(state => state.addToast);
 
+  // 파일 업로드 시작
   useEffect(() => {
     if (!file || uploadStarted) return;
 
@@ -19,58 +23,47 @@ function useUploading(nextStep: () => void, prevStep: () => void, file: File | n
     queryClient.removeQueries({ queryKey: graduationQueryKeys.check() });
 
     uploadFile(file, {
+      onSuccess: () => setPhase('fetching'),
       onError: () => {
         addToast('파일 업로드에 실패했습니다. 다시 시도해주세요.');
         prevStep();
       },
     });
-  }, [file, uploadStarted, uploadFile, addToast, prevStep]);
+  }, [file, uploadStarted, uploadFile, queryClient, addToast, prevStep]);
 
-  // 프로그레스 바: 업로드 중 (0~60%)
+  // data가 도착하면 done으로 전환
   useEffect(() => {
-    if (!isUploading) return;
+    if (data && phase === 'fetching') {
+      setPhase('done');
+    }
+  }, [data, phase]);
 
-    const interval = setInterval(() => {
-      setProgress(prev => Math.min(prev + 3, 60));
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, [isUploading]);
-
-  // 프로그레스 바: 분석 중 (60~90%)
+  // 프로그레스 바: phase 기반 단일 인터벌
   useEffect(() => {
-    if (!isFetching || isUploading) return;
-
-    const interval = setInterval(() => {
-      setProgress(prev => Math.min(prev + 2, 90));
-    }, 200);
-
-    return () => clearInterval(interval);
-  }, [isFetching, isUploading]);
-
-  // 프로그레스 바: 완료 (90~100%)
-  useEffect(() => {
-    if (!data) return;
+    const config = {
+      uploading: { max: 60, step: 3, interval: 100 },
+      fetching: { max: 90, step: 2, interval: 200 },
+      done: { max: 100, step: 2, interval: 50 },
+    }[phase];
 
     const interval = setInterval(() => {
       setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        return Math.min(prev + 2, 100);
+        const next = Math.min(prev + config.step, config.max);
+        if (next >= 100) clearInterval(interval);
+        return next;
       });
-    }, 50);
+    }, config.interval);
 
     return () => clearInterval(interval);
-  }, [data]);
+  }, [phase]);
 
+  // 완료 처리
   useEffect(() => {
-    if (progress === 100 && data) {
+    if (progress === 100 && phase === 'done') {
       const timeout = setTimeout(nextStep, 300);
       return () => clearTimeout(timeout);
     }
-  }, [progress, data, nextStep]);
+  }, [progress, phase, nextStep]);
 
   // 에러 처리
   useEffect(() => {
@@ -80,13 +73,11 @@ function useUploading(nextStep: () => void, prevStep: () => void, file: File | n
     }
   }, [isError, addToast, prevStep]);
 
-  const message = isUploading
-    ? '파일을 업로드하는 중입니다...'
-    : isFetching
-      ? '업로드된 파일을 분석하고 있습니다...'
-      : data
-        ? '분석이 완료되었습니다!'
-        : '결과를 불러오는 중입니다...';
+  const message = {
+    uploading: '파일을 업로드하는 중입니다...',
+    fetching: '업로드된 파일을 분석하고 있습니다...',
+    done: '분석이 완료되었습니다!',
+  }[phase];
 
   return { progress, message };
 }
