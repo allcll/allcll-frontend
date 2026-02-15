@@ -16,9 +16,11 @@ function useUploading(nextStep: () => void, prevStep: () => void, file: File | n
     if (!file || uploadStarted) return;
 
     setUploadStarted(true);
-    queryClient.removeQueries({ queryKey: graduationQueryKeys.check() });
 
     uploadFile(file, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: graduationQueryKeys.check() });
+      },
       onError: () => {
         addToast('파일 업로드에 실패했습니다. 다시 시도해주세요.');
         prevStep();
