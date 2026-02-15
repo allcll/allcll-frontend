@@ -1,5 +1,5 @@
 import { Label } from '@allcll/allcll-ui';
-import ResetSvg from '@allcll/common/assets/reset-blue.svg?react';
+import ResetSvg from '@/assets/reset-blue.svg?react';
 
 export interface OptionType<VALUE extends string | number> {
   value: VALUE;
@@ -16,7 +16,7 @@ interface FilterItemProps<VALUE extends string | number> {
 interface IMultiSelectFilter<VALUE extends string | number> {
   labelPrefix?: string;
   selectedValues: VALUE[];
-  setFilter: ( value: VALUE[]) => void;
+  setFilter: (value: VALUE[]) => void;
   options: OptionType<VALUE>[];
   className?: string;
   ItemComponent: React.ComponentType<FilterItemProps<VALUE>>;
