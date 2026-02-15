@@ -1,5 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+import { fetchGraduationCheck } from '@/entities/graduation/api/graduation';
+import { graduationQueryKeys } from '@/entities/graduation/model/useGraduation';
 import { useInitialGraduationCheck } from './useInitialCheck';
 
 export enum JolupSteps {
@@ -18,6 +21,7 @@ function useJolupSteps() {
   const [step, setStep] = useState<JolupSteps>(JolupSteps.LOGIN);
   const [isDepartmentNotFound, setIsDepartmentNotFound] = useState(false);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
   const isRetry = searchParams.get('retry') === 'true';
 
@@ -34,13 +38,28 @@ function useJolupSteps() {
     }
   }, [initialStep, isLoading, navigate]);
 
+  // 로그인 후 이전 결과 확인
+  const checkAfterLogin = useCallback(async () => {
+    try {
+      const data = await fetchGraduationCheck();
+      if (data && !isRetry) {
+        queryClient.setQueryData(graduationQueryKeys.check(), data);
+        navigate('/graduation/result');
+        return;
+      }
+    } catch {
+      // 결과 없음 — 정상적으로 다음 스텝 진행
+    }
+    setStep(JolupSteps.DEPARTMENT_INFO);
+  }, [isRetry, navigate, queryClient]);
+
   /**
    * 검사 스텝을 다음 단계로 이동합니다.
    * */
   function nextStep() {
     switch (step) {
       case JolupSteps.LOGIN:
-        setStep(JolupSteps.DEPARTMENT_INFO);
+        checkAfterLogin();
         break;
       case JolupSteps.DEPARTMENT_INFO:
         setStep(JolupSteps.FILE_UPLOAD);

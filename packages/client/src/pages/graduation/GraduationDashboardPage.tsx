@@ -198,7 +198,7 @@ function GraduationDashboardPage() {
               size="small"
               onSuccess={() => {
                 queryClient.removeQueries({ queryKey: graduationQueryKeys.all });
-                navigate('/graduation?retry=true');
+                navigate('/graduation');
               }}
             />
           </Flex>
