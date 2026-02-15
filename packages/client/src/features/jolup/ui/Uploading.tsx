@@ -20,17 +20,16 @@ function Uploading({ nextStep, prevStep, file }: UploadingProps) {
         </div>
 
         <div className="space-y-3 w-full">
-          <div className="text-center min-h-[20px]">
-            <span className="text-sm font-medium text-gray-500">{message}</span>
-          </div>
-
-          <Flex justify="justify-center" gap="gap-4">
-            <span className="text-xl font-bold text-primary">{progress}%</span>
+          <Flex direction="flex-col" align="items-center" gap="gap-4" className="w-full">
+            <p className='text-primary'>
+              <span className="text-2xl font-bold">{progress}</span>%
+            </p>
+            <span className="text-sm font-medium text-gray-500 min-h-[20px]">{message}</span>
           </Flex>
 
-          <div className="w-full bg-gray-100 rounded-full h-3 overflow-hidden">
+          <div className="w-full bg-gray-100 rounded-sm h-3 overflow-hidden">
             <div
-              className="bg-primary h-full rounded-full transition-all duration-500 ease-out"
+              className="bg-primary h-full rounded-sm transition-all duration-500 ease-out"
               style={{ width: `${progress}%` }}
             />
           </div>

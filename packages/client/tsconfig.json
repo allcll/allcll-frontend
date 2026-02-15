@@ -26,7 +26,8 @@
     "paths": {
       "@/*": ["src/*"],
       "@public/*": ["public/*"],
-      "@common/*": ["../common/src/*"]
+      "@allcll/common": ["../common/index.ts"],
+      "@allcll/common/*": ["../common/src/*"]
     }
   },
   "include": [
@@ -34,8 +35,7 @@
     "vite.config.ts",
     "svg.d.ts",
     "tailwind.config.js",
-    "../common/src/components/checkbox/CheckboxAdapter.tsx",
-    "../common/src/components/filtering/Filtering.tsx",
-    "../common/src/components/filtering/FilterOption.tsx"
+    "../common/index.ts",
+    "../common/src"
   ]
 }

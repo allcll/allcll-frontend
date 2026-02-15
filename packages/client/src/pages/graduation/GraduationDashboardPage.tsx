@@ -184,7 +184,7 @@ function GraduationDashboardPage() {
         </Banner>
       )}
 
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="max-w-5xl mx-auto mt-2">
         {/* 페이지 제목 */}
         <Flex justify="justify-between" align="items-center">
           <Heading level={1}>졸업요건 분석</Heading>
@@ -193,7 +193,6 @@ function GraduationDashboardPage() {
               회원 정보 수정
             </Button>
             <LogoutButton
-              variant="text"
               size="small"
               onSuccess={() => {
                 queryClient.removeQueries({ queryKey: graduationQueryKeys.all });
@@ -202,37 +201,88 @@ function GraduationDashboardPage() {
             />
           </Flex>
         </Flex>
-        <SupportingText className="mb-6">{user.name}님의 졸업요건 분석 결과입니다.</SupportingText>
+        <SupportingText>{user.name}님의 졸업요건 분석 결과입니다.</SupportingText>
 
-        {/* 전체 진행률 카드 */}
-        <OverallSummaryCard user={user} graduationData={graduationData} />
+        <Flex direction="flex-col" gap="gap-2" className="mb-4 mt-2">
+          {/* 전체 진행률 카드 */}
+          <OverallSummaryCard user={user} graduationData={graduationData} />
 
-        {/* 다시 검사하기 버튼 */}
-        <Flex justify="justify-end" className="mt-4 mb-8">
-          <div className="bg-white rounded-md">
-            <Button variant="outlined" size="medium" onClick={handleStartOverGraduationCheck} asChild>
-              <Link to="/graduation?retry=true">다시 검사하기</Link>
-            </Button>
-          </div>
-        </Flex>
+          {/* 다시 검사하기 버튼 */}
+          <Flex justify="justify-end">
+            <div className="bg-white rounded-md">
+              <Button variant="outlined" size="medium" onClick={handleStartOverGraduationCheck} asChild>
+                <Link to="/graduation?retry=true">다시 검사하기</Link>
+              </Button>
+            </div>
+          </Flex>
 
-        {/* 모바일: 탭 UI */}
-        {isMobile ? (
-          <>
-            <MobileTabs activeTab={activeTab} onTabChange={setActiveTab} />
-            {renderMobileContent()}
-          </>
-        ) : (
-          <>
-            {/* 웹: 전공 이수 현황 */}
-            {isSingleMajor ? (
-              // 단일 전공
-              <section className="mb-10">
-                <Heading level={2} className="mb-4">
-                  전공 이수 현황
+          {/* 모바일: 탭 UI */}
+          {isMobile ? (
+            <>
+              <MobileTabs activeTab={activeTab} onTabChange={setActiveTab} />
+              {renderMobileContent()}
+            </>
+          ) : (
+            <Flex direction="flex-col" gap="gap-4">
+              {/* 웹: 전공 이수 현황 */}
+              {isSingleMajor ? (
+                // 단일 전공
+                <section>
+                  <Heading level={2} className="mb-2">
+                    전공 이수 현황
+                  </Heading>
+                  <div className="flex flex-col md:flex-row gap-4">
+                    {majorCategories.map(category => (
+                      <div className="flex-1" key={category.categoryType}>
+                        <CategoryProgressCard
+                          category={category}
+                          missingCourses={getMissingCourses(category.categoryType, category.majorScope)}
+                          onViewCourses={handleViewCourses}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              ) : (
+                // 복수전공/부전공
+                <>
+                  {scopeTypes.map(scope => {
+                    const scopeCategories = filterCategoriesByScope(
+                      graduationData.categories,
+                      scope,
+                      MAJOR_CATEGORY_TYPES,
+                    );
+                    const scopeLabel = SCOPE_TYPE_LABELS[scope];
+
+                    return (
+                      <section key={scope}>
+                        <Heading level={2} className="mb-2">
+                          {scopeLabel} 이수 현황
+                        </Heading>
+                        <div className="flex flex-col md:flex-row gap-4">
+                          {scopeCategories.map(category => (
+                            <div className="flex-1" key={`${category.majorScope}-${category.categoryType}`}>
+                              <CategoryProgressCard
+                                category={category}
+                                missingCourses={getMissingCourses(category.categoryType, category.majorScope)}
+                                onViewCourses={handleViewCourses}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    );
+                  })}
+                </>
+              )}
+
+              {/* 웹: 교양 이수 현황 */}
+              <section>
+                <Heading level={2} className="mb-2">
+                  교양 이수 현황
                 </Heading>
                 <div className="flex flex-col md:flex-row gap-4">
-                  {majorCategories.map(category => (
+                  {generalCategories.map(category => (
                     <div className="flex-1" key={category.categoryType}>
                       <CategoryProgressCard
                         category={category}
@@ -243,61 +293,12 @@ function GraduationDashboardPage() {
                   ))}
                 </div>
               </section>
-            ) : (
-              // 복수전공/부전공
-              <>
-                {scopeTypes.map(scope => {
-                  const scopeCategories = filterCategoriesByScope(
-                    graduationData.categories,
-                    scope,
-                    MAJOR_CATEGORY_TYPES,
-                  );
-                  const scopeLabel = SCOPE_TYPE_LABELS[scope];
 
-                  return (
-                    <section key={scope} className="mb-10">
-                      <Heading level={2} className="mb-4">
-                        {scopeLabel} 이수 현황
-                      </Heading>
-                      <div className="flex flex-col md:flex-row gap-4">
-                        {scopeCategories.map(category => (
-                          <div className="flex-1" key={`${category.majorScope}-${category.categoryType}`}>
-                            <CategoryProgressCard
-                              category={category}
-                              missingCourses={getMissingCourses(category.categoryType, category.majorScope)}
-                              onViewCourses={handleViewCourses}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    </section>
-                  );
-                })}
-              </>
-            )}
-
-            {/* 웹: 교양 이수 현황 */}
-            <section className="mb-10">
-              <Heading level={2} className="mb-4">
-                교양 이수 현황
-              </Heading>
-              <div className="flex flex-col md:flex-row gap-4">
-                {generalCategories.map(category => (
-                  <div className="flex-1" key={category.categoryType}>
-                    <CategoryProgressCard
-                      category={category}
-                      missingCourses={getMissingCourses(category.categoryType, category.majorScope)}
-                      onViewCourses={handleViewCourses}
-                    />
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* 웹: 졸업인증 */}
-            <CertificationSection certifications={graduationData.certifications} />
-          </>
-        )}
+              {/* 웹: 졸업인증 */}
+              <CertificationSection certifications={graduationData.certifications} />
+            </Flex>
+          )}
+        </Flex>
       </div>
 
       {/* 추천 과목 모달 */}
@@ -311,13 +312,7 @@ function GraduationDashboardPage() {
       )}
 
       {/* 회원 정보 수정 모달 */}
-      {user && (
-        <EditProfileModal
-          isOpen={isEditProfileOpen}
-          onClose={() => setIsEditProfileOpen(false)}
-          user={user}
-        />
-      )}
+      {user && <EditProfileModal isOpen={isEditProfileOpen} onClose={() => setIsEditProfileOpen(false)} user={user} />}
     </>
   );
 }

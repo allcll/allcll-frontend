@@ -1,4 +1,4 @@
-import { Card, Flex, Badge } from '@allcll/allcll-ui';
+import { Card, Flex, Badge, SupportingText } from '@allcll/allcll-ui';
 import CircleCheckIcon from '@/assets/circle-check.svg?react';
 import CircleXIcon from '@/assets/circle-x.svg?react';
 import ProgressDoughnut from './ProgressDoughnut';
@@ -35,12 +35,12 @@ function OverallSummaryCard({ user, graduationData }: OverallSummaryCardProps) {
   const certificationPassed = certifications.isSatisfied;
 
   return (
-    <Card variant="outlined" className="p-6 md:p-10 mb-6 md:mb-8">
+    <Card variant="outlined" className="p-6 md:p-10">
       <Flex direction="flex-col" gap="gap-4" className="md:flex-row md:justify-between md:items-center">
         {/* 왼쪽: 텍스트 정보 */}
         <Flex direction="flex-col" gap="gap-3" className="md:flex-1">
           <Flex align="items-center" gap="gap-3">
-            <span className="text-lg md:text-xl font-bold">전체 진행률</span>
+            <SupportingText>전체 진행률</SupportingText>
             <Badge variant={graduationData.isGraduatable ? 'success' : 'warning'}>
               {graduationData.isGraduatable ? '졸업 가능' : '진행 중'}
             </Badge>
@@ -60,7 +60,7 @@ function OverallSummaryCard({ user, graduationData }: OverallSummaryCardProps) {
                   </span>{' '}
                   이수 완료
                 </p>
-                <p className="text-sm text-gray-500 mt-1">졸업까지 {summary.remainingCredits}학점</p>
+                <p className="text-sm text-gray-600 mt-1">졸업까지 {summary.remainingCredits}학점 남았습니다.</p>
               </>
             )}
           </div>
