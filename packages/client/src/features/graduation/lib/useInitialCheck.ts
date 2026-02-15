@@ -41,7 +41,7 @@ function determineStep(isError: boolean, error: Error | null, hasData: boolean, 
       return JolupSteps.DEPARTMENT_INFO;
     }
 
-    if (message.includes('파일')) {
+    if (message.includes('결과')) {
       return JolupSteps.FILE_UPLOAD;
     }
 
