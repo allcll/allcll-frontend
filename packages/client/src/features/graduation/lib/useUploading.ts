@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
-import { useGraduationCheck, graduationQueryKeys } from '@/entities/graduation/model/useGraduation';
+import { useGraduationCheck } from '@/entities/graduation/model/useGraduation';
 import { useGraduationCheckMutation } from './useGraduationCheckMutation';
 import useToastNotification from '@/features/notification/model/useToastNotification';
 
 function useUploading(nextStep: () => void, prevStep: () => void, file: File | null) {
-  const queryClient = useQueryClient();
-  const { mutate: uploadFile, isPending: isUploading } = useGraduationCheckMutation();
-  const { data, isLoading: isFetching, isError } = useGraduationCheck();
+  const { mutate: uploadFile, isPending: isUploading, isSuccess: isUploadDone } = useGraduationCheckMutation();
+  const { data, isLoading: isFetching, isError } = useGraduationCheck(isUploadDone);
   const [progress, setProgress] = useState(0);
   const [uploadStarted, setUploadStarted] = useState(false);
   const addToast = useToastNotification(state => state.addToast);
@@ -18,15 +16,12 @@ function useUploading(nextStep: () => void, prevStep: () => void, file: File | n
     setUploadStarted(true);
 
     uploadFile(file, {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: graduationQueryKeys.check() });
-      },
       onError: () => {
         addToast('파일 업로드에 실패했습니다. 다시 시도해주세요.');
         prevStep();
       },
     });
-  }, [file, uploadStarted, uploadFile, queryClient, addToast, prevStep]);
+  }, [file, uploadStarted, uploadFile, addToast, prevStep]);
 
   // 프로그레스 바: 업로드 중 (0~60%)
   useEffect(() => {
