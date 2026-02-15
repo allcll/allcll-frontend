@@ -1,7 +1,8 @@
 import { fetchOnAPI } from '@/utils/api';
 import { useMutation } from '@tanstack/react-query';
-import useToastNotification from '@allcll/common/store/useToastNotification';
+
 import { addRequestLog } from '@/utils/log/adminApiLogs';
+import { useToastNotification } from '@allcll/common';
 
 const syncGraduation = async () => {
   const response = await fetchOnAPI('/api/admin/graduation/sync', {
