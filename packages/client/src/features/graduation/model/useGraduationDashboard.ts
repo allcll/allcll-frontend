@@ -1,5 +1,5 @@
 import { useMe } from '@/entities/user/model/useAuth';
-import { useGraduationCheck } from '@/entities/joluphaja/model/useGraduation';
+import { useGraduationCheck } from '@/entities/graduation/model/useGraduation';
 
 export function useGraduationDashboard() {
   const userQuery = useMe();

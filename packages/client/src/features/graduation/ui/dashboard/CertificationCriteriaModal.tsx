@@ -5,8 +5,8 @@ import type {
   CertificationCriteriaData,
   EnglishTargetType,
   CodingTargetType,
-} from '@/entities/joluphaja/api/graduation';
-import { useCertificationCriteria } from '@/entities/joluphaja/model/useGraduation';
+} from '@/entities/graduation/api/graduation';
+import { useCertificationCriteria } from '@/entities/graduation/model/useGraduation';
 import type { CertificationType } from './CertificationSection';
 
 function TargetTypeBadge({ targetType }: { targetType: EnglishTargetType | CodingTargetType }) {

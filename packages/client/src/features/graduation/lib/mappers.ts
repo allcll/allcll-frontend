@@ -1,4 +1,4 @@
-import type { CategoryType, ClassicDomainType, ScopeType } from '@/entities/joluphaja/api/graduation';
+import type { CategoryType, ClassicDomainType, ScopeType } from '@/entities/graduation/api/graduation';
 
 /** 카테고리 타입 → 한글 라벨 매핑 */
 export const CATEGORY_TYPE_LABELS: Record<CategoryType, string> = {

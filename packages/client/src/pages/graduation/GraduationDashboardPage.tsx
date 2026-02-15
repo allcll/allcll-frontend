@@ -4,25 +4,25 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { Flex, Banner, Button, Heading, SupportingText } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile';
-import { graduationQueryKeys } from '@/entities/joluphaja/model/useGraduation';
+import { graduationQueryKeys } from '@/entities/graduation/model/useGraduation';
 import LogoutButton from '@/features/user/ui/LogoutButton';
-import { useGraduationDashboard } from '@/features/joluphaja/model/useGraduationDashboard';
-import { useCriteriaCategories } from '@/entities/joluphaja/model/useGraduation';
+import { useGraduationDashboard } from '@/features/graduation/model/useGraduationDashboard';
+import { useCriteriaCategories } from '@/entities/graduation/model/useGraduation';
 import {
   filterCategories,
   MAJOR_CATEGORY_TYPES,
   GENERAL_CATEGORY_TYPES,
   getScopeTypes,
   filterCategoriesByScope,
-} from '@/entities/joluphaja/lib/rules';
-import { SCOPE_TYPE_LABELS } from '@/features/joluphaja/lib/mappers';
-import type { CategoryType, MissingCourse, ScopeType } from '@/entities/joluphaja/api/graduation';
-import OverallSummaryCard from '@/entities/joluphaja/ui/OverallSummaryCard';
-import CategoryProgressCard from '@/features/joluphaja/ui/CategoryProgressCard';
-import CertificationSection from '@/features/joluphaja/ui/CertificationSection';
-import MobileTabs, { useMobileTabs } from '@/features/joluphaja/ui/MobileTabs';
-import RecommendedCoursesModal from '@/features/joluphaja/ui/RecommendedCoursesModal';
-import EditProfileModal from '@/features/joluphaja/ui/EditProfileModal';
+} from '@/entities/graduation/lib/rules';
+import { SCOPE_TYPE_LABELS } from '@/features/graduation/lib/mappers';
+import type { CategoryType, MissingCourse, ScopeType } from '@/entities/graduation/api/graduation';
+import OverallSummaryCard from '@/entities/graduation/ui/OverallSummaryCard';
+import CategoryProgressCard from '@/features/graduation/ui/dashboard/CategoryProgressCard';
+import CertificationSection from '@/features/graduation/ui/dashboard/CertificationSection';
+import MobileTabs, { useMobileTabs } from '@/features/graduation/ui/dashboard/MobileTabs';
+import RecommendedCoursesModal from '@/features/graduation/ui/dashboard/RecommendedCoursesModal';
+import EditProfileModal from '@/features/graduation/ui/dashboard/EditProfileModal';
 import Loading from '@/shared/ui/Loading';
 
 function LoadingState() {

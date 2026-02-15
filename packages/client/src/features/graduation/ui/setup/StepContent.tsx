@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Flex } from '@allcll/allcll-ui';
-import { JolupSteps } from '@/features/jolup/lib/useJolupSteps.ts';
-import FileUploadGuide from '@/features/jolup/ui/FileUploadGuide.tsx';
-import { JolupStepsProps } from '@/features/jolup/model/types.ts';
-import FileUpload from '@/features/jolup/ui/FileUpload.tsx';
-import Uploading from '@/features/jolup/ui/Uploading.tsx';
+import { JolupSteps } from '@/features/graduation/lib/useJolupSteps.ts';
+import FileUploadGuide from '@/features/graduation/ui/setup/FileUploadGuide.tsx';
+import { JolupStepsProps } from '@/features/graduation/model/types.ts';
+import FileUpload from '@/features/graduation/ui/setup/FileUpload.tsx';
+import Uploading from '@/features/graduation/ui/setup/Uploading.tsx';
 import LoginForm from '@/features/user/ui/LoginForm';
 import BasicInfoForm from './BasicInfoForm';
 

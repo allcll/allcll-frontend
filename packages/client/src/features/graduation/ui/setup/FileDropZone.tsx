@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import XIcon from '@/assets/x.svg?react';
 import { IconButton, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
-import useToastNotification from '../../notification/model/useToastNotification';
+import useToastNotification from '../../../notification/model/useToastNotification';
 
 interface FileDropZoneProps {
   onFileSelect: (file: File) => void;

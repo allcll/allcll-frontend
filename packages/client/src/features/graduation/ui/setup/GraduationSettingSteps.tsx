@@ -1,5 +1,5 @@
 import { Flex } from '@allcll/allcll-ui';
-import useJolupSteps, { JolupSteps } from '@/features/jolup/lib/useJolupSteps.ts';
+import useJolupSteps, { JolupSteps } from '@/features/graduation/lib/useJolupSteps.ts';
 import StepErrorBoundary from './StepErrorBoundary';
 import StepIndicator from './StepIndicator';
 import StepContent from './StepContent';

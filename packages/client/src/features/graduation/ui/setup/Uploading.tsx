@@ -1,7 +1,7 @@
-import useUploading from '@/features/jolup/lib/useUploading';
+import useUploading from '@/features/graduation/lib/useUploading';
 import { Card, Flex, Heading } from '@allcll/allcll-ui';
 
-import { JolupStepsProps } from '@/features/jolup/model/types.ts';
+import { JolupStepsProps } from '@/features/graduation/model/types.ts';
 
 interface UploadingProps extends JolupStepsProps {
   file: File | null;

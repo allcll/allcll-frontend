@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Card, Flex, Heading, SupportingText, Label, Chip, Button, ListboxOption, Grid } from '@allcll/allcll-ui';
 import { useMutation } from '@tanstack/react-query';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
-import { useAdmissionYearDepartments } from '@/entities/joluphaja/model/useGraduation';
+import { useAdmissionYearDepartments } from '@/entities/graduation/model/useGraduation';
 import { useFilteringDepartment } from '@/features/filtering/lib/useFilteringDepartment.ts';
 import CheckSvg from '@/assets/checkbox-blue.svg?react';
 import { ZeroContent } from '@/shared/ui/ZeroContent';
-import { JolupStepsProps } from '@/features/jolup/model/types.ts';
+import { JolupStepsProps } from '@/features/graduation/model/types.ts';
 import { updateMe } from '@/entities/user/api/user';
 import useToastNotification from '@/features/notification/model/useToastNotification';
 

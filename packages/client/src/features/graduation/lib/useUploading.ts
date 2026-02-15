@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useGraduationCheck, graduationQueryKeys } from '@/entities/joluphaja/model/useGraduation';
+import { useGraduationCheck, graduationQueryKeys } from '@/entities/graduation/model/useGraduation';
 import { useGraduationCheckMutation } from './useGraduationCheckMutation';
 import useToastNotification from '@/features/notification/model/useToastNotification';
 

@@ -1,6 +1,6 @@
 import { Button, Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import FileDropZone from './FileDropZone';
-import { JolupStepsProps } from '@/features/jolup/model/types.ts';
+import { JolupStepsProps } from '@/features/graduation/model/types.ts';
 
 interface FileUploadProps extends JolupStepsProps {
   file: File | null;

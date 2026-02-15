@@ -2,9 +2,9 @@ import { Card, Flex, Badge, SupportingText } from '@allcll/allcll-ui';
 import CircleCheckIcon from '@/assets/circle-check.svg?react';
 import CircleXIcon from '@/assets/circle-x.svg?react';
 import ProgressDoughnut from './ProgressDoughnut';
-import type { GraduationCheckData } from '@/entities/joluphaja/api/graduation';
+import type { GraduationCheckData } from '@/entities/graduation/api/graduation';
 import type { UserResponse } from '@/entities/user/model/types';
-import { isMajorSatisfied, isGeneralSatisfied } from '@/entities/joluphaja/lib/rules';
+import { isMajorSatisfied, isGeneralSatisfied } from '@/entities/graduation/lib/rules';
 
 interface OverallSummaryCardProps {
   user: UserResponse;

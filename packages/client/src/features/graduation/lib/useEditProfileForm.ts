@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { useAdmissionYearDepartments, graduationQueryKeys } from '@/entities/joluphaja/model/useGraduation';
+import { useAdmissionYearDepartments, graduationQueryKeys } from '@/entities/graduation/model/useGraduation';
 import { useUpdateMe, useDeleteMe } from '@/entities/user/model/useAuth';
 import type { MajorType, UpdateMeRequest, UserResponse } from '@/entities/user/model/types';
 
