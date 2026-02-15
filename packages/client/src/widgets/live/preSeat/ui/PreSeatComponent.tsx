@@ -43,7 +43,7 @@ function PreSeatComponent() {
         <Heading level={2}>전체학년 여석</Heading>
 
         <SupportingText>
-          전체 학년 수강신청 전, 전체 학년의 여석을 보여줍니다.
+          변경기간 수강신청 전, 전체 학년의 여석을 보여줍니다.
           <br />
           실시간 기능은 {PRESEAT_CLOSE_DATE}, {PRESEAT_START_TIME}에 시작될 예정입니다.
         </SupportingText>
