@@ -22,7 +22,7 @@ function GraduationSettingSteps() {
     }
   };
 
-  if (isLoading || step === null) {
+  if (isLoading) {
     return (
       <Flex direction="flex-col" justify="justify-center" align="items-center" className="min-h-[50vh]">
         <Loading />
