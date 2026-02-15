@@ -23,12 +23,13 @@ import CertificationSection from '@/features/graduation/ui/dashboard/Certificati
 import MobileTabs, { useMobileTabs } from '@/features/graduation/ui/dashboard/MobileTabs';
 import RecommendedCoursesModal from '@/features/graduation/ui/dashboard/RecommendedCoursesModal';
 import EditProfileModal from '@/features/graduation/ui/dashboard/EditProfileModal';
-import Loading from '@/shared/ui/Loading';
+import LoadingWithMessage from '@/shared/ui/Loading';
 
+//TODO: API 연동 시간 측정 후, spinner로 변경 혹은 네트워크 지연 시간에 따른 스피너 타입 결정 훅 구현
 function LoadingState() {
   return (
     <Flex justify="justify-center" align="items-center" className="min-h-[50vh]">
-      <Loading message="졸업 요건을 분석하고 있습니다" />
+      <LoadingWithMessage message="졸업 요건을 분석하고 있습니다." />
     </Flex>
   );
 }

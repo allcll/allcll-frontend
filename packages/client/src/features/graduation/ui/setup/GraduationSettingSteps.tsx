@@ -3,7 +3,7 @@ import useJolupSteps, { JolupSteps } from '@/features/graduation/lib/useJolupSte
 import StepErrorBoundary from './StepErrorBoundary';
 import StepIndicator from './StepIndicator';
 import StepContent from './StepContent';
-import Loading from '@/shared/ui/Loading';
+import LoadingSpinner from '@/shared/ui/LoadingSpinner';
 
 function GraduationSettingSteps() {
   const { step, nextStep, prevStep, setStep, isLoading, isDepartmentNotFound, setIsDepartmentNotFound } =
@@ -25,7 +25,7 @@ function GraduationSettingSteps() {
   if (isLoading) {
     return (
       <Flex direction="flex-col" justify="justify-center" align="items-center" className="min-h-[50vh]">
-        <Loading />
+        <LoadingSpinner />
       </Flex>
     );
   }
