@@ -1,34 +1,37 @@
 import { useState } from 'react';
 import { Card, Flex, Heading, SupportingText, Label, Chip, Button, ListboxOption, Grid } from '@allcll/allcll-ui';
+import { useMutation } from '@tanstack/react-query';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
-import { useAdmissionYearDepartments } from '@/entities/joluphaja/model/useGraduation';
+import { useAdmissionYearDepartments } from '@/entities/graduation/model/useGraduation';
 import { useFilteringDepartment } from '@/features/filtering/lib/useFilteringDepartment.ts';
 import CheckSvg from '@/assets/checkbox-blue.svg?react';
 import { ZeroContent } from '@/shared/ui/ZeroContent';
-import { JolupStepsProps } from '@/features/jolup/model/types.ts';
+import { JolupStepsProps } from '@/features/graduation/model/types.ts';
+import { updateMe } from '@/entities/user/api/user';
+import useToastNotification from '@/features/notification/model/useToastNotification';
 
-type MajorType = 'INTENSIVE' | 'DOUBLE'; // 심화전공 | 복수전공
+type MajorType = 'SINGLE' | 'DOUBLE'; // 단일전공 | 복수전공
 
 interface BasicInfoFormProps extends JolupStepsProps {
   isDepartmentNotFound?: boolean;
 }
 
 const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFormProps) => {
-  const [majorType, setMajorType] = useState<MajorType>('INTENSIVE');
+  const [majorType, setMajorType] = useState<MajorType>('SINGLE');
   const [doubleMajorCode, setDoubleMajorCode] = useState<string>('');
-  // todo: _doubleMajorName은 추후 폼 데이터 전송 시 사용 예정
-  const [_doubleMajorName, setDoubleMajorName] = useState<string>('');
+  const [doubleMajorName, setDoubleMajorName] = useState<string>('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchKeywords, setSearchKeywords] = useState('');
 
   // 주전공 학과 (DEPARTMENT_NOT_FOUND 시)
   const [primaryDeptCode, setPrimaryDeptCode] = useState<string>('');
-  // todo: _primaryDeptName은 추후 폼 데이터 전송 시 사용 예정
-  const [_primaryDeptName, setPrimaryDeptName] = useState<string>('');
+  const [primaryDeptName, setPrimaryDeptName] = useState<string>('');
   const [isPrimarySearchOpen, setIsPrimarySearchOpen] = useState(false);
   const [primarySearchKeywords, setPrimarySearchKeywords] = useState('');
 
   const { data: departments } = useAdmissionYearDepartments();
+  const { mutate: saveBasicInfo, isPending } = useMutation({ mutationFn: updateMe });
+  const showToast = useToastNotification.getState().addToast;
 
   const { filteredDepartments: filteredDoubleDepartments } = useFilteringDepartment({
     category: '전공',
@@ -44,7 +47,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
 
   const handleMajorTypeChange = (type: MajorType) => {
     setMajorType(type);
-    if (type === 'INTENSIVE') {
+    if (type === 'SINGLE') {
       setDoubleMajorCode('');
       setDoubleMajorName('');
     }
@@ -65,8 +68,25 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
   };
 
   const isFormValid =
-    (majorType === 'INTENSIVE' || (majorType === 'DOUBLE' && doubleMajorCode !== '')) &&
+    (majorType === 'SINGLE' || (majorType === 'DOUBLE' && doubleMajorCode !== '')) &&
     (!isDepartmentNotFound || primaryDeptCode !== '');
+
+  const handleNextStep = () => {
+    const requestData = {
+      deptNm: isDepartmentNotFound ? primaryDeptName : null,
+      majorType,
+      doubleDeptNm: majorType === 'DOUBLE' ? doubleMajorName : null,
+    };
+
+    saveBasicInfo(requestData, {
+      onSuccess: () => {
+        nextStep();
+      },
+      onError: () => {
+        showToast('학과 정보 저장에 실패했습니다. 다시 시도해주세요.');
+      },
+    });
+  };
 
   return (
     <Card variant="outlined" className="w-full mx-auto p-8">
@@ -85,8 +105,8 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
             <Grid columns={{ base: 2 }} gap="gap-2">
               <Chip
                 label="단일전공"
-                selected={majorType === 'INTENSIVE'}
-                onClick={() => handleMajorTypeChange('INTENSIVE')}
+                selected={majorType === 'SINGLE'}
+                onClick={() => handleMajorTypeChange('SINGLE')}
               />
               <Chip
                 label="복수전공"
@@ -207,8 +227,8 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
           <Button onClick={prevStep} variant="secondary" size="small">
             이전 단계
           </Button>
-          <Button variant="primary" size="medium" onClick={nextStep} disabled={!isFormValid}>
-            다음 단계
+          <Button variant="primary" size="medium" onClick={handleNextStep} disabled={!isFormValid || isPending}>
+            {isPending ? '저장 중...' : '다음 단계'}
           </Button>
         </Flex>
       </Flex>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Step, Line } from '@allcll/common';
-import { JolupSteps } from '@/features/jolup/lib/useJolupSteps.ts';
+import { JolupSteps } from '@/features/graduation/lib/useJolupSteps.ts';
 
 interface StepIndicatorProps {
   currentStep: JolupSteps;

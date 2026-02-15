@@ -1,4 +1,4 @@
-import GraduationSettingSteps from '@/features/jolup/ui/GraduationSettingSteps.tsx';
+import GraduationSettingSteps from '@/features/graduation/ui/setup/GraduationSettingSteps.tsx';
 import { Helmet } from 'react-helmet';
 
 function SettingSteps() {

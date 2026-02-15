@@ -1,5 +1,5 @@
 import React, { Component, ErrorInfo } from 'react';
-import { JolupSteps } from '../lib/useJolupSteps';
+import { JolupSteps } from '../../lib/useJolupSteps';
 
 interface Props {
   children: React.ReactNode;

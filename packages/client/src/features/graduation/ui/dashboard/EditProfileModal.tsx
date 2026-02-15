@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Dialog, Flex, Button, Label } from '@allcll/allcll-ui';
 import CustomSelect from '@/shared/ui/CustomSelect';
 import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
-import { useEditProfileForm } from '@/features/joluphaja/lib/useEditProfileForm';
+import { useEditProfileForm } from '@/features/graduation/lib/useEditProfileForm';
 import type { UserResponse } from '@/entities/user/model/types';
 
 interface EditProfileModalProps {

@@ -1,10 +1,14 @@
-import useUploading from '@/features/jolup/lib/useUploading';
+import useUploading from '@/features/graduation/lib/useUploading';
 import { Card, Flex, Heading } from '@allcll/allcll-ui';
 
-import { JolupStepsProps } from '@/features/jolup/model/types.ts';
+import { JolupStepsProps } from '@/features/graduation/model/types.ts';
 
-function Uploading({ nextStep }: JolupStepsProps) {
-  const { progress, message } = useUploading(nextStep);
+interface UploadingProps extends JolupStepsProps {
+  file: File | null;
+}
+
+function Uploading({ nextStep, prevStep, file }: UploadingProps) {
+  const { progress, message } = useUploading(nextStep, prevStep, file);
 
   return (
     <Card variant="outlined" className="w-full mx-auto p-8">
@@ -20,7 +24,7 @@ function Uploading({ nextStep }: JolupStepsProps) {
             <p className='text-primary'>
               <span className="text-2xl font-bold">{progress}</span>%
             </p>
-            <span className="text-sm font-medium text-gray-500">{message}</span>
+            <span className="text-sm font-medium text-gray-500 min-h-[20px]">{message}</span>
           </Flex>
 
           <div className="w-full bg-gray-100 rounded-sm h-3 overflow-hidden">

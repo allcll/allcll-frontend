@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Card, Flex, Grid, Badge, Button, Heading, SupportingText } from '@allcll/allcll-ui';
-import type { Certifications, ClassicDomain } from '@/entities/joluphaja/api/graduation';
-import { CLASSIC_DOMAIN_LABELS } from '../lib/mappers';
+import type { Certifications, ClassicDomain } from '@/entities/graduation/api/graduation';
+import { CLASSIC_DOMAIN_LABELS } from '../../lib/mappers';
 import CertificationCriteriaModal from './CertificationCriteriaModal';
 
 export type CertificationType = 'english' | 'classic' | 'coding';

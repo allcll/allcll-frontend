@@ -1,7 +1,7 @@
 import { Dialog, Flex, Button } from '@allcll/allcll-ui';
 import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
-import type { CategoryType, MissingCourse } from '@/entities/joluphaja/api/graduation';
-import { CATEGORY_TYPE_LABELS } from '../lib/mappers';
+import type { CategoryType, MissingCourse } from '@/entities/graduation/api/graduation';
+import { CATEGORY_TYPE_LABELS } from '../../lib/mappers';
 
 interface RecommendedCoursesModalProps {
   isOpen: boolean;

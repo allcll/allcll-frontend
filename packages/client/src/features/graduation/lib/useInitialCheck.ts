@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { fetchGraduationCheck } from '@/entities/joluphaja/api/graduation';
-import { graduationQueryKeys } from '@/entities/joluphaja/model/useGraduation';
+import { fetchGraduationCheck } from '@/entities/graduation/api/graduation';
+import { graduationQueryKeys } from '@/entities/graduation/model/useGraduation';
 import { JolupSteps } from './useJolupSteps';
 
 export function useInitialGraduationCheck(isRetry: boolean = false) {
