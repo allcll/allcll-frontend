@@ -19,7 +19,6 @@ export function useGraduationCheck(enabled = true) {
     queryKey: graduationQueryKeys.check(),
     queryFn: fetchGraduationCheck,
     staleTime: Infinity,
-    select: response => response.data,
     enabled,
   });
 }
@@ -29,7 +28,6 @@ export function useCertificationCriteria(enabled: boolean) {
     queryKey: graduationQueryKeys.certificationCriteria(),
     queryFn: fetchCertificationCriteria,
     staleTime: Infinity,
-    select: response => response.data,
     enabled,
   });
 }

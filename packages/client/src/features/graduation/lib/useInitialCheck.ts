@@ -23,7 +23,7 @@ export function useInitialGraduationCheck(isRetry: boolean = false) {
   const initialStep = useMemo(() => {
     if (query.isLoading) return null;
 
-    return determineStep(query.isError, query.error, !!query.data?.data, isRetry);
+    return determineStep(query.isError, query.error, !!query.data, isRetry);
   }, [query.isLoading, query.isError, query.error, query.data, isRetry]);
 
   return { ...query, initialStep };

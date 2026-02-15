@@ -52,9 +52,7 @@ export const handlers = [
     if (!state.isAuthenticated) {
       return new HttpResponse(null, { status: 401 });
     }
-    return HttpResponse.json({
-      data: criteriaData[state.userType],
-    });
+    return HttpResponse.json(criteriaData[state.userType]);
   }),
 
   // 3-6. GET /api/graduation/criteria/categories
@@ -167,9 +165,7 @@ export const handlers = [
 
     const result = checkResultsByUserType[state.userType];
 
-    return HttpResponse.json({
-      data: result,
-    });
+    return HttpResponse.json(result);
   }),
 
   // Debug API: 상태 강제 변경

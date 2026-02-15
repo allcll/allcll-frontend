@@ -108,16 +108,11 @@ export interface GraduationCheckData {
   certifications: Certifications;
 }
 
-/** 졸업요건 검사 API 응답 */
-export interface GraduationCheckResponse {
-  data: GraduationCheckData;
-}
-
 /** 카테고리 그룹 (전공/교양 구분용) */
 export type CategoryGroup = 'major' | 'general';
 
-export async function fetchGraduationCheck(): Promise<GraduationCheckResponse> {
-  return await fetchJsonOnAPI<GraduationCheckResponse>('/api/graduation/check');
+export async function fetchGraduationCheck(): Promise<GraduationCheckData> {
+  return await fetchJsonOnAPI<GraduationCheckData>('/api/graduation/check');
 }
 
 // ---- 졸업인증 기준 조회 API ----
@@ -203,13 +198,8 @@ export interface CertificationCriteriaData {
   codingCertCriteria: CodingCertCriteria | null;
 }
 
-/** 졸업인증 기준 API 응답 */
-export interface CertificationCriteriaResponse {
-  data: CertificationCriteriaData;
-}
-
-export async function fetchCertificationCriteria(): Promise<CertificationCriteriaResponse> {
-  return await fetchJsonOnAPI<CertificationCriteriaResponse>('/api/graduation/certifications/criteria');
+export async function fetchCertificationCriteria(): Promise<CertificationCriteriaData> {
+  return await fetchJsonOnAPI<CertificationCriteriaData>('/api/graduation/certifications/criteria');
 }
 
 // ---- 입학년도 기준 학과 조회 API ----
