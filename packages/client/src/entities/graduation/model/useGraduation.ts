@@ -14,12 +14,13 @@ export const graduationQueryKeys = {
   criteriaCategories: () => [...graduationQueryKeys.all, 'criteriaCategories'] as const,
 };
 
-export function useGraduationCheck() {
+export function useGraduationCheck(enabled = true) {
   return useQuery({
     queryKey: graduationQueryKeys.check(),
     queryFn: fetchGraduationCheck,
     staleTime: Infinity,
     select: response => response.data,
+    enabled,
   });
 }
 
