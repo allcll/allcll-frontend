@@ -71,7 +71,14 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
     (majorType === 'SINGLE' || (majorType === 'DOUBLE' && doubleMajorCode !== '')) &&
     (!isDepartmentNotFound || primaryDeptCode !== '');
 
+  const needsPatch = majorType === 'DOUBLE' || isDepartmentNotFound;
+
   const handleNextStep = () => {
+    if (!needsPatch) {
+      nextStep();
+      return;
+    }
+
     const requestData = {
       deptNm: isDepartmentNotFound ? primaryDeptName : null,
       majorType,
