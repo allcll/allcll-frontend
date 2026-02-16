@@ -10,8 +10,7 @@ function useUploading(nextStep: () => void, prevStep: () => void, file: File | n
   const queryClient = useQueryClient();
   const { mutate: uploadFile } = useGraduationCheckMutation();
   const [phase, setPhase] = useState<Phase>('uploading');
-  const { data, isError } = useGraduationCheck(phase === 'fetching' || phase === 'done');
-  const [progress, setProgress] = useState(0);
+  const { data, isError } = useGraduationCheck(phase === 'fetching');
   const [uploadStarted, setUploadStarted] = useState(false);
   const addToast = useToastNotification(state => state.addToast);
 
@@ -33,39 +32,13 @@ function useUploading(nextStep: () => void, prevStep: () => void, file: File | n
     });
   }, [file, uploadStarted, uploadFile, queryClient, addToast, prevStep]);
 
-  // data가 도착하면 done으로 전환
+  // data가 도착하면 done으로 전환 후 결과 페이지로 이동
   useEffect(() => {
     if (data && phase === 'fetching') {
       setPhase('done');
+      nextStep();
     }
-  }, [data, phase]);
-
-  // 프로그레스 바: phase 기반 단일 인터벌
-  useEffect(() => {
-    const config = {
-      uploading: { max: 60, step: 3, interval: 100 },
-      fetching: { max: 90, step: 2, interval: 200 },
-      done: { max: 100, step: 2, interval: 50 },
-    }[phase];
-
-    const interval = setInterval(() => {
-      setProgress(prev => {
-        const next = Math.min(prev + config.step, config.max);
-        if (next >= 100) clearInterval(interval);
-        return next;
-      });
-    }, config.interval);
-
-    return () => clearInterval(interval);
-  }, [phase]);
-
-  // 완료 처리
-  useEffect(() => {
-    if (progress === 100 && phase === 'done') {
-      const timeout = setTimeout(nextStep, 300);
-      return () => clearTimeout(timeout);
-    }
-  }, [progress, phase, nextStep]);
+  }, [data, phase, nextStep]);
 
   // 에러 처리: fetching phase에서만 동작 (캐시된 이전 에러 무시)
   useEffect(() => {
@@ -78,10 +51,10 @@ function useUploading(nextStep: () => void, prevStep: () => void, file: File | n
   const message = {
     uploading: '파일을 업로드하는 중입니다...',
     fetching: '업로드된 파일을 분석하고 있습니다...',
-    done: '분석이 완료되었습니다!',
+    done: '분석이 완료되었습니다. 검사 결과를 가져옵니다.',
   }[phase];
 
-  return { progress, message };
+  return { message };
 }
 
 export default useUploading;
