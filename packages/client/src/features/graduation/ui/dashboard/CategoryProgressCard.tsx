@@ -1,20 +1,20 @@
 import { Card, Flex, Button } from '@allcll/allcll-ui';
 import ProgressDoughnut from '@/entities/graduation/ui/ProgressDoughnut';
-import type { CategoryProgress, CategoryType, MissingCourse } from '@/entities/graduation/api/graduation';
+import type { CategoryProgress, CategoryType, CriteriaCategory } from '@/entities/graduation/api/graduation';
 import { CATEGORY_TYPE_LABELS, getStatusLabel } from '../../lib/mappers';
 
 interface CategoryProgressCardProps {
   category: CategoryProgress;
-  missingCourses?: MissingCourse[];
-  onViewCourses?: (categoryType: CategoryType, missingCourses: MissingCourse[]) => void;
+  criteriaCategory?: CriteriaCategory;
+  onViewCourses?: (categoryType: CategoryType, criteriaCategory?: CriteriaCategory) => void;
 }
 
-function CategoryProgressCard({ category, missingCourses, onViewCourses }: CategoryProgressCardProps) {
+function CategoryProgressCard({ category, criteriaCategory, onViewCourses }: CategoryProgressCardProps) {
   const label = CATEGORY_TYPE_LABELS[category.categoryType];
   const statusLabel = getStatusLabel(category.satisfied);
 
   const handleViewCourses = () => {
-    onViewCourses?.(category.categoryType, missingCourses ?? []);
+    onViewCourses?.(category.categoryType, criteriaCategory);
   };
 
   return (
@@ -55,7 +55,7 @@ function CategoryProgressCard({ category, missingCourses, onViewCourses }: Categ
 
         {/* 과목 확인 버튼 */}
         <div className="w-full mt-auto [&>button]:w-full">
-          <Button variant="outlined" size="small" onClick={handleViewCourses}>
+          <Button variant="outlined" size="small" onClick={handleViewCourses} disabled={category.satisfied}>
             추천 과목
           </Button>
         </div>

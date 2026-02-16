@@ -1,4 +1,4 @@
-import type { CategoryType, ClassicDomainType, ScopeType } from '@/entities/graduation/api/graduation';
+import type { BalanceRequiredArea, CategoryType, ClassicDomainType, ScopeType } from '@/entities/graduation/api/graduation';
 
 /** 카테고리 타입 → 한글 라벨 매핑 */
 export const CATEGORY_TYPE_LABELS: Record<CategoryType, string> = {
@@ -25,6 +25,14 @@ export const SCOPE_TYPE_LABELS: Record<ScopeType, string> = {
   PRIMARY: '주전공',
   SECONDARY: '복수전공',
   MINOR: '부전공',
+};
+
+/** 균형교양 영역 → 한글 라벨 매핑 */
+export const BALANCE_AREA_LABELS: Record<BalanceRequiredArea, string> = {
+  HISTORY_THOUGHT: '역사와 사상',
+  CULTURE_ARTS: '문화와 예술',
+  ECONOMY_SOCIETY: '경제와 사회',
+  NATURE_SCIENCE: '자연과 과학',
 };
 
 /** 이수 상태 라벨 */
