@@ -34,7 +34,7 @@ function determineStep(isError: boolean, error: Error | null, hasData: boolean, 
   if (isError && error) {
     const message = error.message;
 
-    if (message.includes('401') || message.includes('Unauthorized')) {
+    if (message.includes('401') || message.includes('Unauthorized') || message.includes('접근 권한')) {
       return JolupSteps.LOGIN;
     }
     if (message.includes('학과') || message.includes('Major') || message.includes('기본 정보')) {
