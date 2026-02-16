@@ -16,7 +16,7 @@ import {
   filterCategoriesByScope,
 } from '@/entities/graduation/lib/rules';
 import { SCOPE_TYPE_LABELS } from '@/features/graduation/lib/mappers';
-import type { CategoryType, CriteriaCategory, ScopeType } from '@/entities/graduation/api/graduation';
+import type { CategoryType, CriteriaCategory, BalanceRequiredArea, ScopeType } from '@/entities/graduation/api/graduation';
 import OverallSummaryCard from '@/entities/graduation/ui/OverallSummaryCard';
 import CategoryProgressCard from '@/features/graduation/ui/dashboard/CategoryProgressCard';
 import CertificationSection from '@/features/graduation/ui/dashboard/CertificationSection';
@@ -43,6 +43,7 @@ function GraduationDashboardPage() {
   const [selectedCategory, setSelectedCategory] = useState<{
     categoryType: CategoryType;
     criteriaCategory?: CriteriaCategory;
+    earnedAreas?: BalanceRequiredArea[];
   } | null>(null);
   const { activeTab, setActiveTab } = useMobileTabs('major');
   const { user, graduationData, isPending, isError, error } = useGraduationDashboard();
@@ -61,8 +62,8 @@ function GraduationDashboardPage() {
     setShowBanner(false);
   };
 
-  const handleViewCourses = (categoryType: CategoryType, criteriaCategory?: CriteriaCategory) => {
-    setSelectedCategory({ categoryType, criteriaCategory });
+  const handleViewCourses = (categoryType: CategoryType, criteriaCategory?: CriteriaCategory, earnedAreas?: BalanceRequiredArea[]) => {
+    setSelectedCategory({ categoryType, criteriaCategory, earnedAreas });
   };
 
   const handleCloseModal = () => {
@@ -307,6 +308,7 @@ function GraduationDashboardPage() {
           onClose={handleCloseModal}
           categoryType={selectedCategory.categoryType}
           criteriaCategory={selectedCategory.criteriaCategory}
+          earnedAreas={selectedCategory.earnedAreas}
         />
       )}
 

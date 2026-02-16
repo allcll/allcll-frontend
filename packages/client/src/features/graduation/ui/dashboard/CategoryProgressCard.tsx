@@ -1,20 +1,68 @@
 import { Card, Flex, Button } from '@allcll/allcll-ui';
 import ProgressDoughnut from '@/entities/graduation/ui/ProgressDoughnut';
-import type { CategoryProgress, CategoryType, CriteriaCategory } from '@/entities/graduation/api/graduation';
+import type {
+  BalanceRequiredArea,
+  CategoryProgress,
+  CategoryType,
+  CriteriaCategory,
+} from '@/entities/graduation/api/graduation';
 import { CATEGORY_TYPE_LABELS, getStatusLabel } from '../../lib/mappers';
 
 interface CategoryProgressCardProps {
   category: CategoryProgress;
   criteriaCategory?: CriteriaCategory;
-  onViewCourses?: (categoryType: CategoryType, criteriaCategory?: CriteriaCategory) => void;
+  onViewCourses?: (
+    categoryType: CategoryType,
+    criteriaCategory?: CriteriaCategory,
+    earnedAreas?: BalanceRequiredArea[],
+  ) => void;
+}
+
+function BalanceInfo({ category }: { category: CategoryProgress }) {
+  return (
+    <Flex direction="flex-col" gap="gap-1" className="text-sm">
+      <Flex justify="justify-end" align="items-center" gap="gap-6">
+        <span className="text-gray-500">이수 영역</span>
+        <span>
+          <span className="text-primary-500 text-xl font-semibold">{category.earnedAreasCnt ?? 0}</span>
+          <span className="text-gray-400 mx-1">/</span>
+          <span className="text-lg font-semibold text-gray-600">{category.requiredAreasCnt ?? 0}</span>
+        </span>
+      </Flex>
+      <Flex justify="justify-end" align="items-center" gap="gap-6">
+        <span className="text-gray-500">이수 학점</span>
+        <span>
+          <span className="text-primary-500 text-xl font-semibold">{category.earnedCredits}</span>
+          <span className="text-gray-400 mx-1">/</span>
+          <span className="text-lg font-semibold text-gray-600">{category.requiredCredits}</span>
+        </span>
+      </Flex>
+    </Flex>
+  );
+}
+
+function CreditInfo({ category }: { category: CategoryProgress }) {
+  return (
+    <Flex direction="flex-col" gap="gap-1" className="text-sm">
+      <Flex justify="justify-end" align="items-center" gap="gap-6">
+        <span className="text-gray-500">이수 학점</span>
+        <span className="text-primary-500 text-xl font-semibold">{category.earnedCredits}</span>
+      </Flex>
+      <Flex justify="justify-end" align="items-center" gap="gap-6">
+        <span className="text-gray-500">필요 학점</span>
+        <span className="text-lg font-semibold text-gray-600">{category.requiredCredits}</span>
+      </Flex>
+    </Flex>
+  );
 }
 
 function CategoryProgressCard({ category, criteriaCategory, onViewCourses }: CategoryProgressCardProps) {
   const label = CATEGORY_TYPE_LABELS[category.categoryType];
   const statusLabel = getStatusLabel(category.satisfied);
+  const isBalance = category.categoryType === 'BALANCE_REQUIRED' && category.requiredAreasCnt != null;
 
   const handleViewCourses = () => {
-    onViewCourses?.(category.categoryType, criteriaCategory);
+    onViewCourses?.(category.categoryType, criteriaCategory, category.earnedAreas ?? undefined);
   };
 
   return (
@@ -25,22 +73,17 @@ function CategoryProgressCard({ category, criteriaCategory, onViewCourses }: Cat
           <span className="text-lg font-bold">{label}</span>
         </div>
 
-        {/* 도넛 차트 */}
+        {/* 도넛 차트 - 균형교양은 영역 수 기준 */}
         <Flex justify="justify-center">
-          <ProgressDoughnut earned={category.earnedCredits} required={category.requiredCredits} size="medium" />
+          <ProgressDoughnut
+            earned={isBalance ? (category.earnedAreasCnt ?? 0) : category.earnedCredits}
+            required={isBalance ? (category.requiredAreasCnt ?? 0) : category.requiredCredits}
+            size="medium"
+          />
         </Flex>
 
-        {/* 학점 정보 */}
-        <Flex direction="flex-col" gap="gap-1" className="text-sm">
-          <Flex justify="justify-end" align="items-center" gap="gap-6">
-            <span className="text-gray-500">이수 학점</span>
-            <span className="text-primary-500 text-xl font-semibold">{category.earnedCredits}</span>
-          </Flex>
-          <Flex justify="justify-end" align="items-center" gap="gap-6">
-            <span className="text-gray-500">총 학점</span>
-            <span className="text-lg font-semibold text-gray-600">{category.requiredCredits}</span>
-          </Flex>
-        </Flex>
+        {/* 정보 영역 */}
+        {isBalance ? <BalanceInfo category={category} /> : <CreditInfo category={category} />}
 
         {/* 이수 상태 뱃지 */}
         <div className="w-full">
