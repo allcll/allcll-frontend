@@ -120,53 +120,61 @@ const doubleNotGraduatable = {
   },
 };
 
-const singleGraduatable = {
+const singleNotGraduatable = {
   checkId: 2,
   createdAt: '2026-02-14T10:00:00+09:00',
-  isGraduatable: true,
+  isGraduatable: false,
   summary: {
-    totalMyCredits: 132,
+    totalMyCredits: 112,
     requiredTotalCredits: 130,
-    remainingCredits: 0,
+    remainingCredits: 18,
   },
   categories: [
     {
       majorScope: 'PRIMARY',
       categoryType: 'COMMON_REQUIRED',
-      earnedCredits: 13,
+      earnedCredits: 14,
       requiredCredits: 13,
       remainingCredits: 0,
       satisfied: true,
     },
     {
       majorScope: 'PRIMARY',
-      categoryType: 'ACADEMIC_BASIC',
-      earnedCredits: 12,
-      requiredCredits: 12,
-      remainingCredits: 0,
-      satisfied: true,
+      categoryType: 'BALANCE_REQUIRED',
+      earnedCredits: 3,
+      requiredCredits: 6,
+      remainingCredits: 3,
+      satisfied: false,
     },
     {
       majorScope: 'PRIMARY',
-      categoryType: 'GENERAL_ELECTIVE',
-      earnedCredits: 21,
-      requiredCredits: 21,
-      remainingCredits: 0,
-      satisfied: true,
+      categoryType: 'ACADEMIC_BASIC',
+      earnedCredits: 9,
+      requiredCredits: 15,
+      remainingCredits: 6,
+      satisfied: false,
+    },
+    {
+      majorScope: 'PRIMARY',
+      categoryType: 'TOTAL_COMPLETION',
+      earnedCredits: 112,
+      requiredCredits: 130,
+      remainingCredits: 18,
+      satisfied: false,
     },
     {
       majorScope: 'PRIMARY',
       categoryType: 'MAJOR_REQUIRED',
       earnedCredits: 15,
-      requiredCredits: 15,
-      remainingCredits: 0,
-      satisfied: true,
+      requiredCredits: 36,
+      remainingCredits: 21,
+      satisfied: false,
     },
     {
       majorScope: 'PRIMARY',
       categoryType: 'MAJOR_ELECTIVE',
-      earnedCredits: 53,
-      requiredCredits: 21,
+      earnedCredits: 43,
+      requiredCredits: 36,
       remainingCredits: 0,
       satisfied: true,
     },
@@ -331,13 +339,13 @@ const transferNotGraduatable = {
 export const checkResults: Record<GraduationStep, any> = {
   NO_FILE: null,
   PROCESSING: null,
-  DONE: singleGraduatable,
+  DONE: singleNotGraduatable,
 };
 
 export const checkResultsByUserType = {
-  SINGLE: singleGraduatable,
+  SINGLE: singleNotGraduatable,
   DOUBLE: doubleNotGraduatable,
   TRANSFER: transferNotGraduatable,
 };
 
-export { doubleNotGraduatable, singleGraduatable, transferNotGraduatable };
+export { doubleNotGraduatable, singleNotGraduatable, transferNotGraduatable };
