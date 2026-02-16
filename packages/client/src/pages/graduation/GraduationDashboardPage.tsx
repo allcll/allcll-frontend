@@ -29,7 +29,7 @@ import LoadingWithMessage from '@/shared/ui/Loading';
 function LoadingState() {
   return (
     <Flex justify="justify-center" align="items-center" className="min-h-[50vh]">
-      <LoadingWithMessage message="졸업 요건을 분석하고 있습니다." />
+      <LoadingWithMessage message="졸업 요건 분석결과를 가져오는 중입니다." />
     </Flex>
   );
 }
@@ -93,9 +93,7 @@ function GraduationDashboardPage() {
 
   // 카테고리 기준 정보 조회
   const getCriteriaCategory = (categoryType: CategoryType, majorScope: ScopeType) => {
-    return criteriaCategories?.categories.find(
-      c => c.categoryType === categoryType && c.majorScope === majorScope,
-    );
+    return criteriaCategories?.categories.find(c => c.categoryType === categoryType && c.majorScope === majorScope);
   };
 
   // 모바일 탭별 컨텐츠 렌더링
