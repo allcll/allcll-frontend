@@ -43,7 +43,7 @@ function CertificationCard({
         {/* 인증 상태 */}
         <div
           className={`w-full py-2 text-center rounded-md text-sm font-semibold ${
-            passed ? 'bg-primary-50 text-primary' : 'bg-secondary-50 text-secondary'
+            passed ? 'bg-primary-50 text-primary' : 'bg-secondary-50 text-secondary-500'
           }`}
         >
           {statusText}
