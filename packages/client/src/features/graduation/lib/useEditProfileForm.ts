@@ -44,6 +44,8 @@ export function useEditProfileForm(user: UserResponse, isOpen: boolean, onClose:
       return;
     }
 
+    if (!window.confirm('학과 정보가 변경되면 기이수 성적 파일을 다시 업로드해야 합니다. 계속하시겠습니까?')) return;
+
     const isChangingToSingle = majorType === 'SINGLE' && user.majorType !== 'SINGLE';
 
     const request: UpdateMeRequest = {
