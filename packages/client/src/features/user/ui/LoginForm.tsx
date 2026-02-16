@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { Button, Card, Checkbox, Flex, Heading, SupportingText, TextField } from '@allcll/allcll-ui';
 import useLoginForm from '../lib/useLoginForm';
 import { useLogin } from '@/entities/user/model/useAuth';
@@ -96,7 +95,9 @@ function LoginForm({ onSuccess, onDepartmentNotFound }: LoginFormProps) {
             />
 
             <Button asChild variant="text" textColor="primary" size="small">
-              <Link to="/privacy-policy">자세히 보기</Link>
+              <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">
+                자세히 보기
+              </a>
             </Button>
           </Flex>
         </Flex>
