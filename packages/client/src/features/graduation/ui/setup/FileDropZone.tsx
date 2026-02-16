@@ -89,7 +89,14 @@ const FileDropZone = ({ onFileSelect, selectedFile, onDeleteFile, accept }: File
       tabIndex={0}
       aria-label={selectedFile ? '파일 변경' : '파일 업로드'}
     >
-      <input type="file" accept={accept} ref={ref} className="hidden" onChange={handleFileChange} />
+      <input
+        type="file"
+        accept={accept}
+        ref={ref}
+        className="absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0 opacity-0"
+        onChange={handleFileChange}
+        onClick={(e) => e.stopPropagation()}
+      />
 
       {selectedFile ? <SelectedState file={selectedFile} onDelete={handleDeleteClick} /> : <EmptyState />}
     </div>

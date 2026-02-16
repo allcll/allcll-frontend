@@ -9,6 +9,7 @@ export function useInitialGraduationCheck(isRetry: boolean = false) {
   const query = useQuery({
     queryKey: ['initial', 'graduationCheck'],
     queryFn: fetchGraduationCheck,
+    refetchOnWindowFocus: false,
     retry: false,
     staleTime: 0,
     gcTime: 0,
