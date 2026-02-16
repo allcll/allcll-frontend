@@ -26,7 +26,7 @@ function useUploading(nextStep: () => void, prevStep: () => void, file: File | n
         setPhase('fetching');
       },
       onError: () => {
-        addToast('파일 업로드에 실패했습니다. 다시 시도해주세요.');
+        addToast('파일 업로드에 실패했습니다. 다시 시도해주세요.', 'file-upload-error');
         prevStep();
       },
     });
@@ -43,7 +43,7 @@ function useUploading(nextStep: () => void, prevStep: () => void, file: File | n
   // 에러 처리: fetching phase에서만 동작 (캐시된 이전 에러 무시)
   useEffect(() => {
     if (isError && phase === 'fetching') {
-      addToast('졸업 요건 검사 결과를 불러오는데 실패했습니다.');
+      addToast('졸업 요건 검사 결과를 불러오는데 실패했습니다.', 'fetching-graduation-result-error');
       prevStep();
     }
   }, [isError, phase, addToast, prevStep]);

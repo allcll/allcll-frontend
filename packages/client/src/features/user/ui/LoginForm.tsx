@@ -1,43 +1,47 @@
 import { Link } from 'react-router-dom';
-import useToastNotification from '@/features/notification/model/useToastNotification';
 import { Button, Card, Checkbox, Flex, Heading, SupportingText, TextField } from '@allcll/allcll-ui';
 import useLoginForm from '../lib/useLoginForm';
 import { useLogin } from '@/entities/user/model/useAuth';
+import useToastNotification from '@/features/notification/model/useToastNotification';
 
 interface LoginFormProps {
   onSuccess?: () => void;
   onDepartmentNotFound?: () => void;
 }
 
+function isDepartmentNotFoundError(error: Error): boolean {
+  try {
+    const { message } = JSON.parse(error.message);
+    return message === 'DEPARTMENT_NOT_FOUND';
+  } catch {
+    return false;
+  }
+}
+
 function LoginForm({ onSuccess, onDepartmentNotFound }: LoginFormProps) {
   const { values, errors, touched, onChange, onBlur, submit, isValid } = useLoginForm();
   const { mutate: login, isPending } = useLogin();
-  const showToast = useToastNotification.getState().addToast;
+  const addToast = useToastNotification(state => state.addToast);
+
+  const handleLoginSuccess = () => {
+    onSuccess?.();
+    addToast('로그인에 성공하셨습니다.', 'login-success');
+  };
+
+  const handleLoginError = (error: Error) => {
+    if (isDepartmentNotFoundError(error)) {
+      onDepartmentNotFound?.();
+      onSuccess?.();
+      addToast('학과 정보를 찾을 수 없습니다. 다음 단계에서 직접 선택해주세요.', 'login-dept-not-found');
+    } else {
+      addToast('로그인에 실패했습니다. 학번과 비밀번호를 확인해주세요.', 'login-error');
+    }
+  };
 
   const handleSubmit = (data: { studentId: string; password: string }) => {
     login(
       { studentId: data.studentId, password: data.password },
-      {
-        onSuccess: () => {
-          onSuccess?.();
-          showToast('로그인에 성공했습니다. 졸업 요건 검사를 시작합니다.');
-        },
-        onError: error => {
-          let isDeptNotFound = false;
-          try {
-            const { message } = JSON.parse(error.message);
-            isDeptNotFound = message === 'DEPARTMENT_NOT_FOUND';
-          } catch {}
-
-          if (isDeptNotFound) {
-            onDepartmentNotFound?.();
-            onSuccess?.();
-            showToast('학과 정보를 찾을 수 없습니다. 다음 단계에서 직접 선택해주세요.');
-          } else {
-            showToast('로그인에 실패했습니다. 학번과 비밀번호를 확인해주세요.', 'error');
-          }
-        },
-      },
+      { onSuccess: handleLoginSuccess, onError: handleLoginError },
     );
   };
 

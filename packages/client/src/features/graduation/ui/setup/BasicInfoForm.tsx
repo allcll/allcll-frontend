@@ -90,7 +90,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
         nextStep();
       },
       onError: () => {
-        showToast('학과 정보 저장에 실패했습니다. 다시 시도해주세요.');
+        showToast('학과 정보 저장에 실패했습니다. 다시 시도해주세요.', 'department-set-errror');
       },
     });
   };
