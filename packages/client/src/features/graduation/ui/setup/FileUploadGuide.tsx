@@ -1,4 +1,5 @@
 import { Card, Heading, Flex } from '@allcll/allcll-ui';
+import { NavLink } from 'react-router-dom';
 import ImportantSVG from '@/assets/important.svg?react';
 
 const FileUploadGuide = () => {
@@ -16,7 +17,15 @@ const FileUploadGuide = () => {
         <ul className="list-disc list-inside space-y-1 ml-1 text-gray-600">
           <li className="text-sm">
             <span className="text-xs sm:text-sm">
-              학사 정보 시스템에 로그인 후 <strong>[학부생 학사정보]</strong> 탭에 접속합니다.
+              <NavLink
+                to="https://sjpt.sejong.ac.kr/main/view/Login/doSsoLogin.do?p="
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary underline font-semibold"
+              >
+                학사 정보 시스템
+              </NavLink>
+              에 로그인 후 <strong>[학부생 학사정보]</strong> 탭에 접속합니다.
             </span>
           </li>
           <li className="text-sm">
@@ -26,7 +35,7 @@ const FileUploadGuide = () => {
           </li>
           <li className="text-sm">
             <span className="text-xs sm:text-sm">
-              우측 상단의 <strong>[성적 엑셀 다운로드]</strong> 버튼을 클릭하여 파일을 저장하세요.
+              페이지 중앙 상단의 <strong>[성적 엑셀 다운로드]</strong> 버튼을 클릭하여 파일을 저장하세요.
             </span>
           </li>
         </ul>
