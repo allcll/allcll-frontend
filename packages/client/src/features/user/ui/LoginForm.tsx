@@ -44,11 +44,12 @@ function LoginForm({ onSuccess, onDepartmentNotFound }: LoginFormProps) {
   return (
     <Card variant="outlined" className="w-full  mx-auto p-8">
       <Heading level={2} size="xxl" className="mb-6 text-center">
-        학사 정보 로그인
+        학사 정보 시스템 로그인
       </Heading>
       <SupportingText className="mb-6 text-center">
-        졸업 인증 정보를 불러오기 위해, 학사 정보 시스템의 로그인이 필요합니다. <br /> 비밀번호는 즉시 폐기하며,
-        저장되지 않습니다.
+        졸업 인증 정보를 불러오기 위해, 학사 정보 시스템의 로그인이 필요합니다. <br />{' '}
+        <span className="font-semibold text-primary">비밀번호는 즉시 폐기</span>
+        하며, 저장되지 않습니다.
       </SupportingText>
       <form onSubmit={submit(handleSubmit)} className="flex flex-col gap-6">
         <TextField
@@ -77,7 +78,7 @@ function LoginForm({ onSuccess, onDepartmentNotFound }: LoginFormProps) {
           isError={touched.password && !!errors.password}
           errorMessage={errors.password}
           required
-          placeholder="비밀번호를 입력하세요"
+          placeholder="학사 정보 시스템 비밀번호를 입력하세요."
         />
 
         <Flex direction="flex-col" gap="gap-2">
