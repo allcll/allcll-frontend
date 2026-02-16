@@ -24,8 +24,9 @@ function useJolupSteps() {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
   const isRetry = searchParams.get('retry') === 'true';
+  const skipInfo = searchParams.get('skipInfo') === 'true';
 
-  const { initialStep, isLoading } = useInitialGraduationCheck(isRetry);
+  const { initialStep, isLoading } = useInitialGraduationCheck(isRetry, skipInfo);
 
   // 초기 스텝 설정
   useEffect(() => {

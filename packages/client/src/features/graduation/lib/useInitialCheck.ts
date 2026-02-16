@@ -4,7 +4,7 @@ import { fetchGraduationCheck } from '@/entities/graduation/api/graduation';
 import { graduationQueryKeys } from '@/entities/graduation/model/useGraduation';
 import { JolupSteps } from './useJolupSteps';
 
-export function useInitialGraduationCheck(isRetry: boolean = false) {
+export function useInitialGraduationCheck(isRetry: boolean = false, skipInfo: boolean = false) {
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['initial', 'graduationCheck'],
@@ -23,14 +23,14 @@ export function useInitialGraduationCheck(isRetry: boolean = false) {
   const initialStep = useMemo(() => {
     if (query.isLoading) return null;
 
-    return determineStep(query.isError, query.error, !!query.data, isRetry);
-  }, [query.isLoading, query.isError, query.error, query.data, isRetry]);
+    return determineStep(query.isError, query.error, !!query.data, isRetry, skipInfo);
+  }, [query.isLoading, query.isError, query.error, query.data, isRetry, skipInfo]);
 
   return { ...query, initialStep };
 }
 
 // 초기 진입 판단 로직
-function determineStep(isError: boolean, error: Error | null, hasData: boolean, isRetry: boolean): JolupSteps | null {
+function determineStep(isError: boolean, error: Error | null, hasData: boolean, isRetry: boolean, skipInfo: boolean): JolupSteps | null {
   if (isError && error) {
     const message = error.message;
 
@@ -53,7 +53,8 @@ function determineStep(isError: boolean, error: Error | null, hasData: boolean, 
   }
 
   if (hasData) {
-    return isRetry ? JolupSteps.DEPARTMENT_INFO : JolupSteps.RESULT;
+    if (!isRetry) return JolupSteps.RESULT;
+    return skipInfo ? JolupSteps.FILE_UPLOAD : JolupSteps.DEPARTMENT_INFO;
   }
 
   return null;

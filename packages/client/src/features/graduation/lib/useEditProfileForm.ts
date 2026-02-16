@@ -38,7 +38,11 @@ export function useEditProfileForm(user: UserResponse, isOpen: boolean, onClose:
   const hasChanges = isDeptChanged || isMajorTypeChanged || isDoubleDeptChanged;
 
   const handleSave = () => {
-    if (!canSave || !hasChanges) return;
+    if (!canSave) return;
+    if (!hasChanges) {
+      onClose();
+      return;
+    }
 
     const isChangingToSingle = majorType === 'SINGLE' && user.majorType !== 'SINGLE';
 
@@ -50,8 +54,9 @@ export function useEditProfileForm(user: UserResponse, isOpen: boolean, onClose:
 
     updateMeMutation.mutate(request, {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: graduationQueryKeys.all });
+        queryClient.removeQueries({ queryKey: graduationQueryKeys.all });
         onClose();
+        navigate('/graduation?retry=true&skipInfo=true');
       },
     });
   };
