@@ -1,10 +1,9 @@
 import React, { Component, ErrorInfo } from 'react';
-import { JolupSteps } from '../../lib/useJolupSteps';
+import { JolupSteps, useJolupStore } from '../../model/useJolupStore';
 
 interface Props {
   children: React.ReactNode;
-  onError: (error: Error, errorInfo: ErrorInfo) => void;
-  resetKey: JolupSteps;
+  resetKey?: JolupSteps;
 }
 
 interface State {
@@ -21,8 +20,17 @@ class StepErrorBoundary extends Component<Props, State> {
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    this.props.onError(error, errorInfo);
+  componentDidCatch(error: Error, _errorInfo: ErrorInfo) {
+    const { setStep } = useJolupStore.getState();
+    const message = error.message;
+
+    if (message.includes('401') || message.includes('Unauthorized')) {
+      setStep(JolupSteps.LOGIN);
+    } else if (message.includes('학과') || message.includes('Major') || message.includes('기본 정보')) {
+      setStep(JolupSteps.DEPARTMENT_INFO);
+    } else {
+      setStep(JolupSteps.FILE_UPLOAD);
+    }
   }
 
   componentDidUpdate(prevProps: Props) {
