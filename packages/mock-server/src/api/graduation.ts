@@ -100,6 +100,14 @@ export const handlers = [
       admissionYear: 2023,
       departments: [
         {
+          deptCd: '3220',
+          deptNm: '소프트웨어학과',
+          collegeNm: '소프트웨어융합대학',
+          deptGroup: 'NATURAL_SCI',
+          englishTargetType: 'NON_MAJOR',
+          codingTargetType: 'CODING_MAJOR',
+        },
+        {
           deptCd: '38191',
           deptNm: '데이터사이언스학과',
           collegeNm: '인공지능융합대학',

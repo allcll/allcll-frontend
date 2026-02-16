@@ -32,13 +32,18 @@ export function useEditProfileForm(user: UserResponse, isOpen: boolean, onClose:
 
   const canSave = majorType === 'SINGLE' || doubleDeptNm !== null;
 
-  const handleSave = () => {
-    if (!canSave) return;
+  const isDeptChanged = deptNm !== user.deptName;
+  const isMajorTypeChanged = majorType !== user.majorType;
+  const isDoubleDeptChanged = doubleDeptNm !== user.doubleDeptName;
+  const hasChanges = isDeptChanged || isMajorTypeChanged || isDoubleDeptChanged;
 
-    const changedDept = deptNm !== user.deptName ? deptNm : null;
+  const handleSave = () => {
+    if (!canSave || !hasChanges) return;
+
+    const isChangingToSingle = majorType === 'SINGLE' && user.majorType !== 'SINGLE';
 
     const request: UpdateMeRequest = {
-      deptNm: changedDept,
+      deptNm: isDeptChanged || isChangingToSingle ? deptNm : null,
       majorType,
       doubleDeptNm: majorType === 'DOUBLE' ? doubleDeptNm : null,
     };
