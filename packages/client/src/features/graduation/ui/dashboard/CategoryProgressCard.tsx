@@ -55,7 +55,7 @@ function CategoryProgressCard({ category, missingCourses, onViewCourses }: Categ
 
         {/* 과목 확인 버튼 */}
         <div className="w-full mt-auto [&>button]:w-full">
-          <Button variant="outlined" size="small" onClick={handleViewCourses} disabled={category.satisfied}>
+          <Button variant="outlined" size="small" onClick={handleViewCourses}>
             추천 과목
           </Button>
         </div>
