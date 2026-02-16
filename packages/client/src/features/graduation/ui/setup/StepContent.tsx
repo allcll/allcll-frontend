@@ -16,7 +16,7 @@ interface StepContentProps {
   setIsDepartmentNotFound?: (value: boolean) => void;
 }
 
-const StepContent: React.FC<StepContentProps> = ({ step, nextStep, prevStep, isDepartmentNotFound, setIsDepartmentNotFound }) => {
+const StepContent = ({ step, nextStep, prevStep, isDepartmentNotFound, setIsDepartmentNotFound }: StepContentProps) => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   switch (step) {
     case JolupSteps.LOGIN:

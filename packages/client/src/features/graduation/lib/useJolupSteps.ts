@@ -1,25 +1,19 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { fetchGraduationCheck } from '@/entities/graduation/api/graduation';
 import { graduationQueryKeys } from '@/entities/graduation/model/useGraduation';
 import { useInitialGraduationCheck } from './useInitialCheck';
+import { JolupSteps, useJolupStore } from '../model/useJolupStore';
 
-export enum JolupSteps {
-  LOGIN = 'LOGIN',
-  DEPARTMENT_INFO = 'DEPARTMENT_INFO',
-  FILE_UPLOAD = 'FILE_UPLOAD',
-  UPLOADING = 'UPLOADING',
-  RESULT = 'RESULT',
-}
+export { JolupSteps };
 
 /**
  * 스텝의 side effect를 관리하는 훅
  * ex) 로그인 정보가 있으면, 어디 스탭으로 이동하고 등등
  */
 function useJolupSteps() {
-  const [step, setStep] = useState<JolupSteps>(JolupSteps.LOGIN);
-  const [isDepartmentNotFound, setIsDepartmentNotFound] = useState(false);
+  const { step, setStep, isDepartmentNotFound, setIsDepartmentNotFound } = useJolupStore();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
@@ -33,11 +27,12 @@ function useJolupSteps() {
     if (isLoading || !initialStep) return;
 
     if (initialStep === JolupSteps.RESULT) {
+      setStep(JolupSteps.RESULT);
       navigate('/graduation/result');
     } else {
       setStep(initialStep);
     }
-  }, [initialStep, isLoading, navigate]);
+  }, [initialStep, isLoading, navigate, setStep]);
 
   // 로그인 후 이전 결과 확인
   const checkAfterLogin = useCallback(async () => {
@@ -45,6 +40,7 @@ function useJolupSteps() {
       const data = await fetchGraduationCheck();
       if (data && !isRetry) {
         queryClient.setQueryData(graduationQueryKeys.check(), data);
+        setStep(JolupSteps.RESULT);
         navigate('/graduation/result');
         return;
       }
@@ -52,7 +48,7 @@ function useJolupSteps() {
       // 결과 없음 — 정상적으로 다음 스텝 진행
     }
     setStep(JolupSteps.DEPARTMENT_INFO);
-  }, [isRetry, navigate, queryClient]);
+  }, [isRetry, navigate, queryClient, setStep]);
 
   /**
    * 검사 스텝을 다음 단계로 이동합니다.
@@ -60,7 +56,7 @@ function useJolupSteps() {
   function nextStep() {
     switch (step) {
       case JolupSteps.LOGIN:
-        checkAfterLogin();
+        checkAfterLogin().then();
         break;
       case JolupSteps.DEPARTMENT_INFO:
         setStep(JolupSteps.FILE_UPLOAD);
@@ -69,6 +65,7 @@ function useJolupSteps() {
         setStep(JolupSteps.UPLOADING);
         break;
       case JolupSteps.UPLOADING:
+        setStep(JolupSteps.RESULT);
         navigate('/graduation/result');
         break;
       default:
