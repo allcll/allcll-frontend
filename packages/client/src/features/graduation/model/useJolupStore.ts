@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 export enum JolupSteps {
   LOGIN = 'LOGIN',
@@ -16,12 +17,21 @@ interface JolupState {
   reset: () => void;
 }
 
-export const useJolupStore = create<JolupState>(set => ({
-  step: JolupSteps.LOGIN,
-  isDepartmentNotFound: false,
-  setStep: step => {
-    set({ step });
-  },
-  setIsDepartmentNotFound: isDepartmentNotFound => set({ isDepartmentNotFound }),
-  reset: () => set({ step: JolupSteps.LOGIN, isDepartmentNotFound: false }),
-}));
+export const useJolupStore = create<JolupState>()(
+  persist(
+    set => ({
+      step: JolupSteps.LOGIN,
+      isDepartmentNotFound: false,
+      setStep: step => {
+        set({ step });
+      },
+      setIsDepartmentNotFound: isDepartmentNotFound => set({ isDepartmentNotFound }),
+      reset: () => set({ step: JolupSteps.LOGIN, isDepartmentNotFound: false }),
+    }),
+    {
+      name: 'jolup-step',
+      storage: createJSONStorage(() => sessionStorage),
+      partialize: state => ({ step: state.step }),
+    },
+  ),
+);
