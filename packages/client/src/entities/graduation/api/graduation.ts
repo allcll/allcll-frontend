@@ -81,7 +81,7 @@ export interface ClassicDomain {
   domainType: ClassicDomainType;
   requiredCount: number;
   myCount: number;
-  isSatisfied: boolean;
+  satisfied: boolean;
 }
 
 /** 고전독서 인증 */
