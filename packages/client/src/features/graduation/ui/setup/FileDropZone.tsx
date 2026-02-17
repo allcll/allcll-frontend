@@ -77,9 +77,10 @@ const FileDropZone = ({ onFileSelect, selectedFile, onDeleteFile, accept }: File
   return (
     <div
       className={`
-        relative w-full border-2 border-dashed rounded-lg p-10
+        relative w-full border-2 rounded-lg p-10
         transition-colors duration-200 cursor-pointer outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
-        ${isDragging ? 'border-primary-500 bg-primary-50' : selectedFile ? 'bg-green-50 border-green-400 hover:bg-green-100 hover:border-green-500' : 'border-gray-300 hover:border-primary-400 hover:bg-gray-50'}
+        ${selectedFile ? 'border-solid bg-green-50 border-green-400 hover:bg-green-100 hover:border-green-500' : 'border-dashed'}
+        ${isDragging ? 'border-primary-500 bg-primary-50' : !selectedFile ? 'border-gray-300 hover:border-primary-400 hover:bg-gray-50' : ''}
       `}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}

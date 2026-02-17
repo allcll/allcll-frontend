@@ -22,6 +22,7 @@ function FileUpload({ nextStep, file, onFileSelected }: FileUploadProps) {
             파일 업로드
           </Heading>
           <SupportingText>졸업 요건을 확인하기 위해 성적표 파일을 업로드해주세요.</SupportingText>
+          <p className="text-xs text-gray-400">※ 업로드한 엑셀 파일은 서버에 별도로 저장되지 않습니다.</p>
         </Flex>
 
         <FileDropZone
