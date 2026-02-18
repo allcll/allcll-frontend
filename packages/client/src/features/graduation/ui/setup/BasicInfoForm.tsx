@@ -90,7 +90,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
         nextStep();
       },
       onError: () => {
-        showToast('학과 정보 저장에 실패했습니다. 다시 시도해주세요.');
+        showToast('학과 정보 저장에 실패했습니다. 다시 시도해주세요.', 'department-set-errror');
       },
     });
   };
@@ -126,6 +126,10 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
           {/* 주전공 학과 검색 (DEPARTMENT_NOT_FOUND 시) */}
           {isDepartmentNotFound && (
             <Flex direction="flex-col" gap="gap-2">
+              <SupportingText>
+                <span className="text-primary">26학번의 계열 단위</span>는 특정한 졸업요건이 존재하지 않아, 학과를
+                선택해주셔야합니다.
+              </SupportingText>
               <Label required>주전공 학과</Label>
               <div className="relative">
                 <SearchBox

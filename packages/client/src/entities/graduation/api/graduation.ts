@@ -28,6 +28,12 @@ export interface CategoryProgress {
   earnedCredits: number;
   requiredCredits: number;
   remainingCredits: number;
+  /** 균형교양: 이수한 영역 수 */
+  earnedAreasCnt: number | null;
+  /** 균형교양: 필요한 영역 수 */
+  requiredAreasCnt: number | null;
+  /** 균형교양: 이수 완료 영역 목록 */
+  earnedAreas: BalanceRequiredArea[] | null;
   satisfied: boolean;
 }
 
@@ -75,7 +81,7 @@ export interface ClassicDomain {
   domainType: ClassicDomainType;
   requiredCount: number;
   myCount: number;
-  isSatisfied: boolean;
+  satisfied: boolean;
 }
 
 /** 고전독서 인증 */

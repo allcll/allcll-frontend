@@ -43,7 +43,7 @@ function CertificationCard({
         {/* 인증 상태 */}
         <div
           className={`w-full py-2 text-center rounded-md text-sm font-semibold ${
-            passed ? 'bg-primary-50 text-primary' : 'bg-secondary-50 text-secondary'
+            passed ? 'bg-primary-50 text-primary' : 'bg-secondary-50 text-secondary-500'
           }`}
         >
           {statusText}
@@ -72,7 +72,7 @@ function ClassicReadingTable({ domains }: ClassicReadingTableProps) {
             <tr key={domain.domainType}>
               <td className="py-1 text-gray-600">{CLASSIC_DOMAIN_LABELS[domain.domainType]}</td>
               <td className="py-1 text-right">
-                <span className={domain.isSatisfied ? 'text-primary' : 'text-gray-900'}>
+                <span className={domain.satisfied ? 'text-primary-500' : 'text-gray-900'}>
                   {domain.myCount}/{domain.requiredCount}권
                 </span>
               </td>

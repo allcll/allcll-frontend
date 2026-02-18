@@ -32,21 +32,33 @@ export function useEditProfileForm(user: UserResponse, isOpen: boolean, onClose:
 
   const canSave = majorType === 'SINGLE' || doubleDeptNm !== null;
 
+  const isDeptChanged = deptNm !== user.deptName;
+  const isMajorTypeChanged = majorType !== user.majorType;
+  const isDoubleDeptChanged = doubleDeptNm !== user.doubleDeptName;
+  const hasChanges = isDeptChanged || isMajorTypeChanged || isDoubleDeptChanged;
+
   const handleSave = () => {
     if (!canSave) return;
+    if (!hasChanges) {
+      onClose();
+      return;
+    }
 
-    const changedDept = deptNm !== user.deptName ? deptNm : null;
+    if (!window.confirm('학과 정보가 변경되어 졸업 요건 분석을 위해 기이수 성적 파일을 다시 업로드해야 합니다. 계속하시겠습니까?')) return;
+
+    const isChangingToSingle = majorType === 'SINGLE' && user.majorType !== 'SINGLE';
 
     const request: UpdateMeRequest = {
-      deptNm: changedDept,
+      deptNm: isDeptChanged || isChangingToSingle ? deptNm : null,
       majorType,
       doubleDeptNm: majorType === 'DOUBLE' ? doubleDeptNm : null,
     };
 
     updateMeMutation.mutate(request, {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: graduationQueryKeys.all });
+        queryClient.removeQueries({ queryKey: graduationQueryKeys.all });
         onClose();
+        navigate('/graduation?retry=true&skipInfo=true');
       },
     });
   };

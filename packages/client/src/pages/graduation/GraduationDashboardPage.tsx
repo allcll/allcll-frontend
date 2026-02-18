@@ -16,7 +16,7 @@ import {
   filterCategoriesByScope,
 } from '@/entities/graduation/lib/rules';
 import { SCOPE_TYPE_LABELS } from '@/features/graduation/lib/mappers';
-import type { CategoryType, MissingCourse, ScopeType } from '@/entities/graduation/api/graduation';
+import type { CategoryType, CriteriaCategory, BalanceRequiredArea, ScopeType } from '@/entities/graduation/api/graduation';
 import OverallSummaryCard from '@/entities/graduation/ui/OverallSummaryCard';
 import CategoryProgressCard from '@/features/graduation/ui/dashboard/CategoryProgressCard';
 import CertificationSection from '@/features/graduation/ui/dashboard/CertificationSection';
@@ -29,7 +29,7 @@ import LoadingWithMessage from '@/shared/ui/Loading';
 function LoadingState() {
   return (
     <Flex justify="justify-center" align="items-center" className="min-h-[50vh]">
-      <LoadingWithMessage message="졸업 요건을 분석하고 있습니다." />
+      <LoadingWithMessage message="졸업 요건 분석결과를 가져오는 중입니다." />
     </Flex>
   );
 }
@@ -42,7 +42,8 @@ function GraduationDashboardPage() {
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<{
     categoryType: CategoryType;
-    missingCourses: MissingCourse[];
+    criteriaCategory?: CriteriaCategory;
+    earnedAreas?: BalanceRequiredArea[];
   } | null>(null);
   const { activeTab, setActiveTab } = useMobileTabs('major');
   const { user, graduationData, isPending, isError, error } = useGraduationDashboard();
@@ -61,8 +62,8 @@ function GraduationDashboardPage() {
     setShowBanner(false);
   };
 
-  const handleViewCourses = (categoryType: CategoryType, missingCourses: MissingCourse[]) => {
-    setSelectedCategory({ categoryType, missingCourses });
+  const handleViewCourses = (categoryType: CategoryType, criteriaCategory?: CriteriaCategory, earnedAreas?: BalanceRequiredArea[]) => {
+    setSelectedCategory({ categoryType, criteriaCategory, earnedAreas });
   };
 
   const handleCloseModal = () => {
@@ -91,12 +92,9 @@ function GraduationDashboardPage() {
   const scopeTypes = getScopeTypes(user.majorType);
   const isSingleMajor = user.majorType === 'SINGLE';
 
-  // 추천 과목 매핑 (categoryType별 필수 과목)
-  const getMissingCourses = (categoryType: CategoryType, majorScope: ScopeType) => {
-    const category = criteriaCategories?.categories.find(
-      c => c.categoryType === categoryType && c.majorScope === majorScope,
-    );
-    return category?.requiredCourses;
+  // 카테고리 기준 정보 조회
+  const getCriteriaCategory = (categoryType: CategoryType, majorScope: ScopeType) => {
+    return criteriaCategories?.categories.find(c => c.categoryType === categoryType && c.majorScope === majorScope);
   };
 
   // 모바일 탭별 컨텐츠 렌더링
@@ -114,7 +112,7 @@ function GraduationDashboardPage() {
                 <CategoryProgressCard
                   key={category.categoryType}
                   category={category}
-                  missingCourses={getMissingCourses(category.categoryType, category.majorScope)}
+                  criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
                   onViewCourses={handleViewCourses}
                 />
               ))}
@@ -137,7 +135,7 @@ function GraduationDashboardPage() {
                       <CategoryProgressCard
                         key={`${category.majorScope}-${category.categoryType}`}
                         category={category}
-                        missingCourses={getMissingCourses(category.categoryType, category.majorScope)}
+                        criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
                         onViewCourses={handleViewCourses}
                       />
                     ))}
@@ -158,7 +156,7 @@ function GraduationDashboardPage() {
                 <CategoryProgressCard
                   key={category.categoryType}
                   category={category}
-                  missingCourses={getMissingCourses(category.categoryType, category.majorScope)}
+                  criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
                   onViewCourses={handleViewCourses}
                 />
               ))}
@@ -238,7 +236,7 @@ function GraduationDashboardPage() {
                       <div className="flex-1" key={category.categoryType}>
                         <CategoryProgressCard
                           category={category}
-                          missingCourses={getMissingCourses(category.categoryType, category.majorScope)}
+                          criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
                           onViewCourses={handleViewCourses}
                         />
                       </div>
@@ -266,7 +264,7 @@ function GraduationDashboardPage() {
                             <div className="flex-1" key={`${category.majorScope}-${category.categoryType}`}>
                               <CategoryProgressCard
                                 category={category}
-                                missingCourses={getMissingCourses(category.categoryType, category.majorScope)}
+                                criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
                                 onViewCourses={handleViewCourses}
                               />
                             </div>
@@ -288,7 +286,7 @@ function GraduationDashboardPage() {
                     <div className="flex-1" key={category.categoryType}>
                       <CategoryProgressCard
                         category={category}
-                        missingCourses={getMissingCourses(category.categoryType, category.majorScope)}
+                        criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
                         onViewCourses={handleViewCourses}
                       />
                     </div>
@@ -309,7 +307,8 @@ function GraduationDashboardPage() {
           isOpen
           onClose={handleCloseModal}
           categoryType={selectedCategory.categoryType}
-          missingCourses={selectedCategory.missingCourses}
+          criteriaCategory={selectedCategory.criteriaCategory}
+          earnedAreas={selectedCategory.earnedAreas}
         />
       )}
 

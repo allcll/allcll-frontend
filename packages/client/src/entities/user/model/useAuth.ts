@@ -14,6 +14,7 @@ export function useMe() {
     queryKey: AUTH_QUERY_KEY,
     queryFn: getMe,
     retry: false,
+    staleTime: Infinity,
   });
 }
 
