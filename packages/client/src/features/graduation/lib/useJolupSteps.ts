@@ -6,7 +6,7 @@ import { graduationQueryKeys } from '@/entities/graduation/model/useGraduation';
 import { useInitialGraduationCheck } from './useInitialCheck';
 import { JolupSteps, useJolupStore } from '../model/useJolupStore';
 
-export { JolupSteps };
+export { JolupSteps } from '../model/useJolupStore';
 
 /**
  * 스텝의 side effect를 관리하는 훅

@@ -18,7 +18,7 @@ interface CategoryProgressCardProps {
   ) => void;
 }
 
-function BalanceInfo({ category }: { category: CategoryProgress }) {
+function BalanceInfo({ category }: Readonly<{ category: CategoryProgress }>) {
   return (
     <Flex direction="flex-col" gap="gap-1" className="text-sm">
       <Flex justify="justify-end" align="items-center" gap="gap-6">
@@ -41,7 +41,7 @@ function BalanceInfo({ category }: { category: CategoryProgress }) {
   );
 }
 
-function CreditInfo({ category }: { category: CategoryProgress }) {
+function CreditInfo({ category }: Readonly<{ category: CategoryProgress }>) {
   return (
     <Flex direction="flex-col" gap="gap-1" className="text-sm">
       <Flex justify="justify-end" align="items-center" gap="gap-6">
@@ -56,7 +56,7 @@ function CreditInfo({ category }: { category: CategoryProgress }) {
   );
 }
 
-function CategoryProgressCard({ category, criteriaCategory, onViewCourses }: CategoryProgressCardProps) {
+function CategoryProgressCard({ category, criteriaCategory, onViewCourses }: Readonly<CategoryProgressCardProps>) {
   const label = CATEGORY_TYPE_LABELS[category.categoryType];
   const statusLabel = getStatusLabel(category.satisfied);
   const isBalance = category.categoryType === 'BALANCE_REQUIRED' && category.requiredAreasCnt != null;

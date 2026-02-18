@@ -16,7 +16,7 @@ interface RecommendedCoursesModalProps {
   earnedAreas?: BalanceRequiredArea[];
 }
 
-function CourseList({ courses }: { courses: MissingCourse[] }) {
+function CourseList({ courses }: Readonly<{ courses: MissingCourse[] }>) {
   return (
     <div className="flex flex-col gap-2">
       {courses.map((course, index) => (
@@ -35,10 +35,10 @@ function CourseList({ courses }: { courses: MissingCourse[] }) {
 function BalanceAreaContent({
   criteriaCategory,
   earnedAreas = [],
-}: {
+}: Readonly<{
   criteriaCategory: CriteriaCategory;
   earnedAreas?: BalanceRequiredArea[];
-}) {
+}>) {
   const { balanceAreaCourses, requiredAreasCnt, excludedArea } = criteriaCategory;
 
   return (
@@ -83,7 +83,7 @@ function BalanceAreaContent({
   );
 }
 
-function DefaultContent({ categoryLabel, courses }: { categoryLabel: string; courses: MissingCourse[] }) {
+function DefaultContent({ categoryLabel, courses }: Readonly<{ categoryLabel: string; courses: MissingCourse[] }>) {
   return courses.length > 0 ? (
     <Flex direction="flex-col" gap="gap-2" className="min-w-64 md:min-w-96">
       <p className="text-sm text-gray-600">
@@ -108,9 +108,10 @@ function RecommendedCoursesModal({
   categoryType,
   criteriaCategory,
   earnedAreas,
-}: RecommendedCoursesModalProps) {
+}: Readonly<RecommendedCoursesModalProps>) {
   const categoryLabel = CATEGORY_TYPE_LABELS[categoryType];
-  const isBalanceRequired = categoryType === 'BALANCE_REQUIRED' && criteriaCategory?.balanceAreaCourses;
+  const isBalanceRequired =
+    categoryType === 'BALANCE_REQUIRED' && criteriaCategory != null && criteriaCategory.balanceAreaCourses != null;
 
   useBodyScrollLock(isOpen);
 
@@ -118,7 +119,7 @@ function RecommendedCoursesModal({
     <Dialog title={`${categoryLabel} 추천 과목`} onClose={onClose} isOpen={isOpen}>
       <Dialog.Content>
         {isBalanceRequired ? (
-          <BalanceAreaContent criteriaCategory={criteriaCategory!} earnedAreas={earnedAreas} />
+          <BalanceAreaContent criteriaCategory={criteriaCategory} earnedAreas={earnedAreas} />
         ) : (
           <DefaultContent categoryLabel={categoryLabel} courses={criteriaCategory?.requiredCourses ?? []} />
         )}
