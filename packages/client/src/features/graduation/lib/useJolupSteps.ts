@@ -47,8 +47,8 @@ function useJolupSteps() {
     } catch {
       // 결과 없음 — 정상적으로 다음 스텝 진행
     }
-    setStep(JolupSteps.DEPARTMENT_INFO);
-  }, [isRetry, navigate, queryClient, setStep]);
+    setStep(skipInfo ? JolupSteps.FILE_UPLOAD : JolupSteps.DEPARTMENT_INFO);
+  }, [isRetry, skipInfo, navigate, queryClient, setStep]);
 
   /**
    * 검사 스텝을 다음 단계로 이동합니다.

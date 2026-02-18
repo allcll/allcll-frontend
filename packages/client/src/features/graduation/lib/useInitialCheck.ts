@@ -31,7 +31,13 @@ export function useInitialGraduationCheck(isRetry: boolean = false, skipInfo: bo
 }
 
 // 초기 진입 판단 로직
-function determineStep(isError: boolean, error: Error | null, hasData: boolean, isRetry: boolean, skipInfo: boolean): JolupSteps | null {
+function determineStep(
+  isError: boolean,
+  error: Error | null,
+  hasData: boolean,
+  isRetry: boolean,
+  skipInfo: boolean,
+): JolupSteps {
   if (isError && error) {
     const message = error.message;
 
@@ -50,7 +56,7 @@ function determineStep(isError: boolean, error: Error | null, hasData: boolean, 
       return JolupSteps.DEPARTMENT_INFO;
     }
 
-    return null;
+    return JolupSteps.LOGIN;
   }
 
   if (hasData) {
@@ -58,5 +64,5 @@ function determineStep(isError: boolean, error: Error | null, hasData: boolean, 
     return skipInfo ? JolupSteps.FILE_UPLOAD : JolupSteps.DEPARTMENT_INFO;
   }
 
-  return null;
+  return JolupSteps.LOGIN;
 }
