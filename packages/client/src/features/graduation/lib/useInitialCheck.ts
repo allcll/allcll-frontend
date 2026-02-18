@@ -13,7 +13,6 @@ export function useInitialGraduationCheck(isRetry: boolean = false, skipInfo: bo
     retry: false,
     staleTime: 0,
     gcTime: 0,
-    refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
