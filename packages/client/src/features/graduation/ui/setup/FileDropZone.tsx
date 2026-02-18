@@ -67,34 +67,25 @@ const FileDropZone = ({ onFileSelect, selectedFile, onDeleteFile, accept }: File
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      ref.current?.click();
-    }
-  };
-
   return (
-    <div
+    <button
+      type="button"
       className={`
-        relative w-full border-2 rounded-lg p-10
+        relative w-full border-2 rounded-lg p-10 text-left
         transition-colors duration-200 cursor-pointer outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
         ${selectedFile ? 'border-solid bg-green-50 border-green-400 hover:bg-green-100 hover:border-green-500' : 'border-dashed'}
-        ${isDragging ? 'border-primary-500 bg-primary-50' : !selectedFile ? 'border-gray-300 hover:border-primary-400 hover:bg-gray-50' : ''}
+        ${isDragging ? 'border-primary-500 bg-primary-50' : selectedFile ? '' : 'border-gray-300 hover:border-primary-400 hover:bg-gray-50'}
       `}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       onClick={() => ref.current?.click()}
-      onKeyDown={handleKeyDown}
-      role="button"
-      tabIndex={0}
       aria-label={selectedFile ? '파일 변경' : '파일 업로드'}
     >
       <input type="file" accept={accept} ref={ref} className="hidden" onChange={handleFileChange} />
 
       {selectedFile ? <SelectedState file={selectedFile} onDelete={handleDeleteClick} /> : <EmptyState />}
-    </div>
+    </button>
   );
 };
 
