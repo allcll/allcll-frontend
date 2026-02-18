@@ -110,8 +110,7 @@ function RecommendedCoursesModal({
   earnedAreas,
 }: Readonly<RecommendedCoursesModalProps>) {
   const categoryLabel = CATEGORY_TYPE_LABELS[categoryType];
-  const isBalanceRequired =
-    categoryType === 'BALANCE_REQUIRED' && criteriaCategory != null && criteriaCategory.balanceAreaCourses != null;
+  const isBalanceRequired = categoryType === 'BALANCE_REQUIRED' && criteriaCategory?.balanceAreaCourses != null;
 
   useBodyScrollLock(isOpen);
 
