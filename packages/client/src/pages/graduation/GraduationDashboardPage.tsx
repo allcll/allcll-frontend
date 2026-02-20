@@ -16,7 +16,12 @@ import {
   filterCategoriesByScope,
 } from '@/entities/graduation/lib/rules';
 import { SCOPE_TYPE_LABELS } from '@/features/graduation/lib/mappers';
-import type { CategoryType, CriteriaCategory, BalanceRequiredArea, ScopeType } from '@/entities/graduation/api/graduation';
+import type {
+  CategoryType,
+  CriteriaCategory,
+  BalanceRequiredArea,
+  ScopeType,
+} from '@/entities/graduation/api/graduation';
 import OverallSummaryCard from '@/entities/graduation/ui/OverallSummaryCard';
 import CategoryProgressCard from '@/features/graduation/ui/dashboard/CategoryProgressCard';
 import CertificationSection from '@/features/graduation/ui/dashboard/CertificationSection';
@@ -51,7 +56,7 @@ function GraduationDashboardPage() {
 
   const handleStartOverGraduationCheck = () => {
     if (!window.confirm('졸업 요건을 다시 검사하시겠습니까?')) return;
-    navigate('/graduation?retry=true');
+    navigate('/graduation?retry=true&skipInfo=true');
   };
 
   const handleEditProfile = () => {
@@ -62,7 +67,11 @@ function GraduationDashboardPage() {
     setShowBanner(false);
   };
 
-  const handleViewCourses = (categoryType: CategoryType, criteriaCategory?: CriteriaCategory, earnedAreas?: BalanceRequiredArea[]) => {
+  const handleViewCourses = (
+    categoryType: CategoryType,
+    criteriaCategory?: CriteriaCategory,
+    earnedAreas?: BalanceRequiredArea[],
+  ) => {
     setSelectedCategory({ categoryType, criteriaCategory, earnedAreas });
   };
 
