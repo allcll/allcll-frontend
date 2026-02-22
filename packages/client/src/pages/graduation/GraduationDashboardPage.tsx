@@ -217,7 +217,14 @@ function GraduationDashboardPage() {
           <OverallSummaryCard user={user} graduationData={graduationData} />
 
           {/* 다시 검사하기 버튼 */}
-          <Flex justify="justify-end">
+          <Flex justify="justify-end" align="items-center" gap="gap-3">
+            <span className="text-sm text-gray-400">
+              {new Date(graduationData.createdAt).toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })} 분석
+            </span>
             <div className="bg-white rounded-md">
               <Button variant="outlined" size="medium" onClick={handleStartOverGraduationCheck}>
                 다시 검사하기
