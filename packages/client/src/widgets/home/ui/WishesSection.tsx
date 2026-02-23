@@ -28,8 +28,10 @@ function WishesSection() {
         <div className="bg-white p-6 rounded-lg shadow-md">
           <Heading level={3}>학과별 관심도</Heading>
 
-          <div className="flex align-center justify-center max-h-96">
-            <Doughnut data={doughnut} />
+          <div className="flex justify-center mt-4">
+            <div className="w-full max-w-xs">
+              <Doughnut data={doughnut} />
+            </div>
           </div>
         </div>
 
