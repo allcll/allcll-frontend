@@ -189,7 +189,16 @@ function GraduationDashboardPage() {
       {/* 안내 배너 */}
       {showBanner && (
         <Banner deleteBanner={handleDeleteBanner}>
-          본 결과는 공식적인 효력을 갖지 않습니다. 최종 졸업 확정 여부는 학과 사무실을 통해 확인하시기 바랍니다.
+          본 서비스는 베타 버전으로, 분석 결과는 공식적인 효력을 갖지 않습니다. 오류 또는 개선 사항이 있으시면
+          알려주시면 서비스 개선에 도움이 됩니다.{' '}
+          <a
+            href="https://forms.gle/bCDTVujEHunnvHe88"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-700 font-semibold underline"
+          >
+            오류 제보하기
+          </a>
         </Banner>
       )}
 
@@ -223,7 +232,8 @@ function GraduationDashboardPage() {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
-              })} 분석
+              })}{' '}
+              분석
             </span>
             <div className="bg-white rounded-md">
               <Button variant="outlined" size="medium" onClick={handleStartOverGraduationCheck}>
