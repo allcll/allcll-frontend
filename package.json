@@ -17,7 +17,8 @@
     "test:ui": "pnpm -F @allcll/e2e run test:ui",
     "test:gen": "pnpm -F @allcll/e2e run test:gen",
     "sejongui": "pnpm -F @allcll/sejong-ui run storybook",
-    "allcllui": "pnpm -F @allcll/allcll-ui run storybook"
+    "allcllui": "pnpm -F @allcll/allcll-ui run storybook",
+    "prepare": "husky"
   },
   "packageManager": "pnpm@9.15.4",
   "dependencies": {
@@ -39,6 +40,8 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.6.2",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.38.0",
@@ -47,6 +50,15 @@
   },
   "resolutions": {
     "@types/react": "^19.1.6"
+  },
+  "lint-staged": {
+    "packages/**/*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "packages/**/*.{js,jsx,json,css,md}": [
+      "prettier --write"
+    ]
   },
   "msw": {
     "workerDirectory": [
