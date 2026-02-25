@@ -6,45 +6,8 @@ on:
     types: [opened, synchronize, reopened, closed]
 
 jobs:
-  build-and-lint:
-    if: github.event.action != 'closed'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    env:
-      working-directory: ./
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-
-      - name: Install pnpm
-        run: npm install -g pnpm
-
-      - name: Install dependencies
-        run: pnpm i --frozen-lockfile
-        working-directory: ${{ env.working-directory }}
-
-      # - name: Lint
-      #   run: pnpm --filter @allcll/client lint && pnpm --filter @allcll/admin lint
-      #   working-directory: ${{ env.working-directory }}
-
-      - name: Build Client
-        run: pnpm run build-client
-        working-directory: ${{ env.working-directory }}
-
-      - name: Build Admin
-        run: pnpm run build-admin
-        working-directory: ${{ env.working-directory }}
-
   deploy-preview:
     if: github.event.action != 'closed'
-    needs: build-and-lint
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -75,6 +38,15 @@ jobs:
           VITE_SUPABASE_TABLE_NAME: ${{ secrets.DEV_SUPABASE_TABLE_NAME }}
           VITE_API_BASE_URL: ${{ secrets.DEV_API_BASE_URL }}
           VITE_DEV_SERVER: true
+
+      - name: Create preview directory
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEV_SERVER_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          port: 22
+          script: mkdir -p ${{ secrets.PWD }}/pr-${{ github.event.pull_request.number }}
 
       - name: Deploy preview to server
         uses: appleboy/scp-action@v1
