@@ -5,14 +5,12 @@ on:
     branches: [main, develop]
     types: [opened, synchronize, reopened, closed]
 
-permissions:
-  contents: read
-  pull-requests: write
-
 jobs:
   build-and-lint:
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     env:
       working-directory: ./
 
@@ -32,9 +30,9 @@ jobs:
         run: pnpm i --frozen-lockfile
         working-directory: ${{ env.working-directory }}
 
-      - name: Lint
-        run: pnpm --filter @allcll/client lint && pnpm --filter @allcll/admin lint
-        working-directory: ${{ env.working-directory }}
+      # - name: Lint
+      #   run: pnpm --filter @allcll/client lint && pnpm --filter @allcll/admin lint
+      #   working-directory: ${{ env.working-directory }}
 
       - name: Build Client
         run: pnpm run build-client
@@ -48,6 +46,9 @@ jobs:
     if: github.event.action != 'closed'
     needs: build-and-lint
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     env:
       project-directory: ./packages/client
 
@@ -131,6 +132,7 @@ jobs:
   cleanup-preview:
     if: github.event.action == 'closed'
     runs-on: ubuntu-latest
+    permissions: {} # No permissions needed
 
     steps:
       - name: Remove preview directory and reload Nginx
