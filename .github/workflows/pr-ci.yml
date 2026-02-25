@@ -6,15 +6,11 @@ on:
     types: [opened, synchronize, reopened, closed]
 
 jobs:
-  deploy-preview:
+  build-client:
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write
-    env:
-      project-directory: ./packages/client
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -31,7 +27,42 @@ jobs:
         run: pnpm i --frozen-lockfile
 
       - name: Build Client for Preview
-        run: pnpm -F @allcll/client run build -- --base=/pr-${{ github.event.pull_request.number }}/
+        run: pnpm -F @allcll/client run build -- --base=/clients/pr-${{ github.event.pull_request.number }}/
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.DEV_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.DEV_SUPABASE_ANON_KEY }}
+          VITE_SUPABASE_TABLE_NAME: ${{ secrets.DEV_SUPABASE_TABLE_NAME }}
+          VITE_API_BASE_URL: ${{ secrets.DEV_API_BASE_URL }}
+          VITE_DEV_SERVER: true
+      
+      - name: Upload Client Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-dist
+          path: packages/client/dist
+
+  build-admin:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
+
+      - name: Build Admin for Preview
+        run: pnpm -F @allcll/admin run build -- --base=/admins/pr-${{ github.event.pull_request.number }}/
         env:
           VITE_SUPABASE_URL: ${{ secrets.DEV_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.DEV_SUPABASE_ANON_KEY }}
@@ -39,25 +70,52 @@ jobs:
           VITE_API_BASE_URL: ${{ secrets.DEV_API_BASE_URL }}
           VITE_DEV_SERVER: true
 
-      - name: Create preview directory
-        uses: appleboy/ssh-action@master
+      - name: Upload Admin Artifact
+        uses: actions/upload-artifact@v4
         with:
-          host: ${{ secrets.DEV_SERVER_HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
-          port: 22
-          script: mkdir -p ${{ secrets.PWD }}/pr-${{ github.event.pull_request.number }}
+          name: admin-dist
+          path: packages/admin/dist
 
-      - name: Deploy preview to server
+  deploy-preview:
+    if: github.event.action != 'closed'
+    needs: [build-client, build-admin]
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Download Client Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: client-dist
+          path: client-dist
+
+      - name: Download Admin Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: admin-dist
+          path: admin-dist
+
+      - name: Deploy Client preview to server
         uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.DEV_SERVER_HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.DEV_SERVER_SSH_KEY }}
           port: 22
-          source: packages/client/dist/*
-          target: ${{ secrets.PWD }}/pr-${{ github.event.pull_request.number }}
-          strip_components: 3
+          source: client-dist/*
+          target: ${{ secrets.PWD }}/clients/pr-${{ github.event.pull_request.number }}
+          strip_components: 1
+
+      - name: Deploy Admin preview to server
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.DEV_SERVER_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          port: 22
+          source: admin-dist/*
+          target: ${{ secrets.PWD }}/admins/pr-${{ github.event.pull_request.number }}
+          strip_components: 1
 
       - name: Reload Nginx
         uses: appleboy/ssh-action@master
@@ -76,8 +134,12 @@ jobs:
           script: |
             const pr_number = context.payload.pull_request.number;
             const base_url = process.env.PREVIEW_BASE_URL || 'http://dev.allcll.kr';
-            const preview_url = `${base_url}/pr-${pr_number}/`;
-            const body = `## 🚀 Preview Deployment\n\nPreview URL: ${preview_url}\n\n> This preview is automatically updated on each push.`;
+            const client_preview_url = `${base_url}/pr-${pr_number}/`;
+            const admin_preview_url = `${base_url}/pr-${pr_number}/`;
+            const body = `## 🚀 Preview Deployment
+            - **Client:** ${client_preview_url}
+            - **Admin:** ${admin_preview_url}
+            > This preview is automatically updated on each push.`;
 
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
@@ -107,7 +169,7 @@ jobs:
     permissions: {} # No permissions needed
 
     steps:
-      - name: Remove preview directory and reload Nginx
+      - name: Remove preview directories and reload Nginx
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DEV_SERVER_HOST }}
@@ -117,6 +179,7 @@ jobs:
           script: |
             PR_NUMBER="${{ github.event.pull_request.number }}"
             if [[ "$PR_NUMBER" =~ ^[0-9]+$ ]]; then
-              rm -rf "${{ secrets.PWD }}/pr-${PR_NUMBER}"
+              sudo rm -rf "${{ secrets.PWD }}/clients/pr-${PR_NUMBER}"
+              sudo rm -rf "${{ secrets.PWD }}/admins/pr-${PR_NUMBER}"
               sudo systemctl reload nginx
             fi
