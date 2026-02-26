@@ -27,8 +27,9 @@ jobs:
         run: pnpm i --frozen-lockfile
 
       - name: Build Client for Preview
-        run: pnpm -F @allcll/client run build -- --base=/clients/pr-${{ github.event.pull_request.number }}/
+        run: pnpm -F @allcll/client run build
         env:
+          VITE_BASE: /pr-${{ github.event.pull_request.number }}/
           VITE_SUPABASE_URL: ${{ secrets.DEV_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.DEV_SUPABASE_ANON_KEY }}
           VITE_SUPABASE_TABLE_NAME: ${{ secrets.DEV_SUPABASE_TABLE_NAME }}
@@ -62,8 +63,9 @@ jobs:
         run: pnpm i --frozen-lockfile
 
       - name: Build Admin for Preview
-        run: pnpm -F @allcll/admin run build -- --base=/admins/pr-${{ github.event.pull_request.number }}/
+        run: pnpm -F @allcll/admin run build
         env:
+          VITE_BASE: /pr-${{ github.event.pull_request.number }}/
           VITE_SUPABASE_URL: ${{ secrets.DEV_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.DEV_SUPABASE_ANON_KEY }}
           VITE_SUPABASE_TABLE_NAME: ${{ secrets.DEV_SUPABASE_TABLE_NAME }}
