@@ -3,6 +3,7 @@ import Section from '@/widgets/home/ui/Section.tsx';
 
 import { Button, SupportingText } from '@allcll/allcll-ui';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
+import Image from '@/shared/ui/Image.tsx';
 
 const START_DATE = '02월 10일(화)';
 const END_DATE = '02월 13일(금)';
@@ -14,7 +15,7 @@ function MainBanner() {
     <Section className="flex flex-col md:flex-row items-center justify-between" bgColor="bg-banner-skysoft">
       <div className="max-w-xl">
         <div className="flex flex-row gap-2 items-center">
-          <img src="/calendar.png" alt="2026-1학기 세종대 수강신청 일정 아이콘" className="w-10 h-10" />
+          <Image src="/calendar.png" alt="2026-1학기 세종대 수강신청 일정 아이콘" className="w-10 h-10" />
           <span className="italic text-xs text-stone-500 ">
             {data?.semesterValue}학기 수강 신청 기간 <br />
             {START_DATE} ~ {END_DATE}
@@ -25,7 +26,7 @@ function MainBanner() {
           세종대 수강신청 연습과 수강여석 확인을 한 번에
         </h1>
         <div className="flex flex-row justify-start items-center text-xl sm:text-2xl md:text-4xl leading-snug font-bold mb-3">
-          <img
+          <Image
             src="/logo-name.svg"
             alt="올클(ALLCLL) 세종대 수강신청 도우미 서비스"
             className="w-20 sm:w-32 md:w-40 lg:w-48 mr-2 animate-updown"
@@ -45,7 +46,7 @@ function MainBanner() {
           </Button>
         </div>
       </div>
-      <img src="/summer-banner.png" alt="" aria-hidden="true" className="w-90 hidden sm:block  mt-8 md:mt-4" />
+      <Image src="/summer-banner.png" alt="" aria-hidden="true" className="w-90 hidden sm:block  mt-8 md:mt-4" />
     </Section>
   );
 }
