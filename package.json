@@ -7,6 +7,7 @@
     "url": "https://github.com/allcll/frontend.git"
   },
   "private": true,
+  "type": "module",
   "scripts": {
     "client": "pnpm -F @allcll/client run dev",
     "admin": "pnpm -F @allcll/admin run dev",
