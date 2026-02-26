@@ -1,9 +1,10 @@
 const BaseUrl = import.meta.env.VITE_API_BASE_URL ?? '';
+const Base = (import.meta.env.VITE_BASE ?? '').replace(/\/$/, '');
 
 export async function fetchOnAPI(url: string, options?: RequestInit): Promise<Response> {
   const AdminToken = localStorage.getItem('session');
 
-  return await fetch(BaseUrl + url, {
+  return await fetch(BaseUrl + Base + url, {
     credentials: 'include',
     ...options,
     headers: {
@@ -17,7 +18,7 @@ export async function fetchOnAPI(url: string, options?: RequestInit): Promise<Re
 export async function fetchJsonOnAPI<T>(url: string, options?: RequestInit): Promise<T> {
   const AdminToken = localStorage.getItem('session');
 
-  const response = await fetch(BaseUrl + url, {
+  const response = await fetch(BaseUrl + Base + url, {
     credentials: 'include',
     ...options,
     headers: {
@@ -40,7 +41,7 @@ export async function fetchDeleteJsonOnAPI<T>(
   options?: Omit<RequestInit, 'method' | 'body'>,
 ): Promise<T | null> {
   const AdminToken = localStorage.getItem('session');
-  const response = await fetch(BaseUrl + url, {
+  const response = await fetch(BaseUrl + Base + url, {
     method: 'DELETE',
     credentials: 'include',
     headers: {
@@ -64,7 +65,7 @@ export async function fetchDeleteJsonOnAPI<T>(
 }
 
 export async function fetchJsonOnPublic<T>(url: string, options?: RequestInit): Promise<T> {
-  const response = await fetch(url, {
+  const response = await fetch(Base + url, {
     credentials: 'include',
     ...options,
   });
