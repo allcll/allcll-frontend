@@ -131,13 +131,15 @@ jobs:
       - name: Comment preview URL on PR
         uses: actions/github-script@v7
         env:
-          PREVIEW_BASE_URL: ${{ secrets.DEV_PREVIEW_BASE_URL }}
+          CLIENT_PREVIEW_BASE_URL: ${{ secrets.DEV_CLIENT_PREVIEW_BASE_URL }}
+          ADMIN_PREVIEW_BASE_URL: ${{ secrets.DEV_ADMIN_PREVIEW_BASE_URL }}
         with:
           script: |
             const pr_number = context.payload.pull_request.number;
-            const base_url = process.env.PREVIEW_BASE_URL || 'http://dev.allcll.kr';
-            const client_preview_url = `${base_url}/pr-${pr_number}/`;
-            const admin_preview_url = `${base_url}/pr-${pr_number}/`;
+            const client_base_url = process.env.CLIENT_PREVIEW_BASE_URL || 'https://dev.allcll.kr';
+            const admin_base_url = process.env.ADMIN_PREVIEW_BASE_URL || 'https://dev-admin.allcll.kr';
+            const client_preview_url = `${client_base_url}/pr-${pr_number}/`;
+            const admin_preview_url = `${admin_base_url}/pr-${pr_number}/`;
             const body = `## 🚀 Preview Deployment
             - **Client:** ${client_preview_url}
             - **Admin:** ${admin_preview_url}
