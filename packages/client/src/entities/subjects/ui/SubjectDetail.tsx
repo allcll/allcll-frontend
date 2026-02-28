@@ -1,7 +1,7 @@
 import React from 'react';
 import { InitWishes } from '@/entities/wishes/model/useWishes.ts';
 import { WishesWithSeat } from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
-import usePreSeatGate from '@/widgets/live/preSeat/model/usePreSeatGate';
+import { useAcademicPeriod } from '@/entities/schedule/lib/useManagePeriod';
 import { getSeatColor } from '@/shared/config/colors.ts';
 import { Flex } from '@allcll/allcll-ui';
 
@@ -13,7 +13,8 @@ interface ISubjectDetailProps {
 function SubjectDetail({ wishes }: ISubjectDetailProps) {
   const data = wishes ?? InitWishes;
   const hasPreSeats = wishes && 'seat' in wishes;
-  const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
+  const { preSeat } = useAcademicPeriod();
+  const isPreSeatAvailable = preSeat.shouldPreparePreSeat && Boolean(hasPreSeats);
 
   const seats = hasPreSeats ? wishes.seat : -1;
 

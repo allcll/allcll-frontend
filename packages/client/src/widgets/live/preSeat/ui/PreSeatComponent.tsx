@@ -8,7 +8,7 @@ import useWishesPreSeats from '@/entities/subjectAggregate/model/useWishesPreSea
 
 import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
 import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
-import { PRESEAT_CLOSE_DATE, PRESEAT_START_TIME } from '@/widgets/live/preSeat/model/usePreSeatGate.ts';
+import { useAcademicPeriod } from '@/entities/schedule/lib/useManagePeriod';
 
 import { Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import PreseatSubjectTable from './PreseatSubjectTable.tsx';
@@ -32,6 +32,9 @@ export interface ISubjectSearch {
 
 function PreSeatComponent() {
   const filters = useAlarmSearchStore(state => state.filters);
+  const { preSeat } = useAcademicPeriod();
+  const preSeatCloseDate = preSeat.preSeatCloseDate;
+  const liveStartTime = preSeat.liveStartTime;
 
   return (
     <>
@@ -43,9 +46,9 @@ function PreSeatComponent() {
         <Heading level={2}>전체학년 여석</Heading>
 
         <SupportingText>
-          변경기간 수강신청 전, 전체 학년의 여석을 보여줍니다.
+          수강신청 기간 전, 전체 학년의 여석을 보여줍니다.
           <br />
-          실시간 기능은 {PRESEAT_CLOSE_DATE}, {PRESEAT_START_TIME}에 시작될 예정입니다.
+          실시간 기능은 {preSeatCloseDate}, {liveStartTime}에 시작될 예정입니다.
         </SupportingText>
 
         <Card>

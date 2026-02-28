@@ -3,12 +3,11 @@ import Section from '@/widgets/home/ui/Section.tsx';
 
 import { Button, SupportingText } from '@allcll/allcll-ui';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
-
-const START_DATE = '02월 10일(화)';
-const END_DATE = '02월 13일(금)';
+import { useAcademicPeriod } from '@/entities/schedule/lib/useManagePeriod';
 
 function MainBanner() {
   const { data } = useServiceSemester();
+  const { mainRouter, period } = useAcademicPeriod();
 
   return (
     <Section className="flex flex-col md:flex-row items-center justify-between" bgColor="bg-banner-skysoft">
@@ -17,7 +16,7 @@ function MainBanner() {
           <img src="/calendar.png" alt="2026-1학기 세종대 수강신청 일정 아이콘" className="w-10 h-10" />
           <span className="italic text-xs text-stone-500 ">
             {data?.semesterValue}학기 수강 신청 기간 <br />
-            {START_DATE} ~ {END_DATE}
+            {period.displayPeriod.start} ~ {period.displayPeriod.end}
           </span>
         </div>
 
@@ -38,10 +37,10 @@ function MainBanner() {
 
         <div className="flex flex-col md:flex-row gap-4 mt-4">
           <Button variant="primary" size="medium" asChild>
-            <Link to="/live">전체 학년 여석 확인하기</Link>
+            <Link to={mainRouter.mainActions[0].link}>{mainRouter.mainActions[0].label}</Link>
           </Button>
           <Button variant="outlined" size="medium" asChild>
-            <Link to="/simulation">수강 신청 연습하기</Link>
+            <Link to={mainRouter.mainActions[1].link}>{mainRouter.mainActions[1].label}</Link>
           </Button>
         </div>
       </div>
