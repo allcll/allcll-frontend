@@ -3,11 +3,11 @@ import Section from '@/widgets/home/ui/Section.tsx';
 
 import { Button, SupportingText } from '@allcll/allcll-ui';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
-import { useAcademicPeriod } from '@/entities/schedule/lib/useManagePeriod';
+import { useManagePeriod } from '@/entities/schedule/lib/useManagePeriod';
 
 function MainBanner() {
   const { data } = useServiceSemester();
-  const { mainRouter, period } = useAcademicPeriod();
+  const { mainPageRouter: {mainPageActions}, period :{displayPeriod} } = useManagePeriod();
 
   return (
     <Section className="flex flex-col md:flex-row items-center justify-between" bgColor="bg-banner-skysoft">
@@ -16,7 +16,7 @@ function MainBanner() {
           <img src="/calendar.png" alt="2026-1학기 세종대 수강신청 일정 아이콘" className="w-10 h-10" />
           <span className="italic text-xs text-stone-500 ">
             {data?.semesterValue}학기 수강 신청 기간 <br />
-            {period.displayPeriod.start} ~ {period.displayPeriod.end}
+            {displayPeriod.start} ~ {displayPeriod.end}
           </span>
         </div>
 
@@ -37,10 +37,10 @@ function MainBanner() {
 
         <div className="flex flex-col md:flex-row gap-4 mt-4">
           <Button variant="primary" size="medium" asChild>
-            <Link to={mainRouter.mainActions[0].link}>{mainRouter.mainActions[0].label}</Link>
+            <Link to={mainPageActions[0].link}>{mainPageActions[0].label}</Link>
           </Button>
           <Button variant="outlined" size="medium" asChild>
-            <Link to={mainRouter.mainActions[1].link}>{mainRouter.mainActions[1].label}</Link>
+            <Link to={mainPageActions[1].link}>{mainPageActions[1].label}</Link>
           </Button>
         </div>
       </div>

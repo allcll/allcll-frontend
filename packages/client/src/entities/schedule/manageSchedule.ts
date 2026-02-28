@@ -66,5 +66,8 @@ export const CURRENT_PERIOD: AcademicSchedule = {
   },
 };
 
-//preSeat오픈 날짜 => 해당 데이터는 수동으로 업데이트 필요
+//preSeat 데이터 업데이트 시 preSeatOpenDate를 변경해주어야합니다.
 export const PRESEAT_OPEN_DATE = new Date('2026-02-29T00:00:00');
+
+// baskets.json 파일 업데이트 시 반드시 `BASKET_OPEN_DATE` 값을 함께 변경해주세요.
+export const BASKET_OPEN_DATE = new Date('2026-01-31T00:00:00');

@@ -8,7 +8,7 @@ import useWishesPreSeats from '@/entities/subjectAggregate/model/useWishesPreSea
 
 import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
 import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
-import { useAcademicPeriod } from '@/entities/schedule/lib/useManagePeriod';
+import { useManagePeriod } from '@/entities/schedule/lib/useManagePeriod';
 
 import { Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import PreseatSubjectTable from './PreseatSubjectTable.tsx';
@@ -32,7 +32,7 @@ export interface ISubjectSearch {
 
 function PreSeatComponent() {
   const filters = useAlarmSearchStore(state => state.filters);
-  const { preSeat } = useAcademicPeriod();
+  const { preSeat } = useManagePeriod();
   const preSeatCloseDate = preSeat.preSeatCloseDate;
   const liveStartTime = preSeat.liveStartTime;
 

@@ -1,4 +1,4 @@
-import { CURRENT_PERIOD, PRESEAT_OPEN_DATE, ServiceMode, ServicePeriod } from '../manageSchedule';
+import { BASKET_OPEN_DATE, CURRENT_PERIOD, PRESEAT_OPEN_DATE, ServiceMode, ServicePeriod } from '../manageSchedule';
 
 interface MainAction {
   label: string;
@@ -9,8 +9,8 @@ function getMainActions(mode: ServicePeriod['mode']): MainAction[] {
   switch (mode) {
     case ServiceMode.WISHLIST:
       return [
-        { label: '관심과목 담기', link: '/wishlist'  },
-        { label: '수강 신청 연습하기', link: '/simulation'},
+        { label: '관심과목 담기', link: '/wishlist' },
+        { label: '수강 신청 연습하기', link: '/simulation' },
       ];
 
     case ServiceMode.REGISTRATION_SENIOR:
@@ -25,12 +25,12 @@ function getMainActions(mode: ServicePeriod['mode']): MainAction[] {
     default:
       return [
         { label: '전체 학년 여석 확인하기', link: '/live' },
-        { label: '수강 신청 연습하기', link:  '/simulation'},
+        { label: '수강 신청 연습하기', link: '/simulation' },
       ];
   }
 }
 
-export function useAcademicPeriod() {
+export function useManagePeriod() {
   const now = new Date();
 
   const currentPeriod =
@@ -79,14 +79,17 @@ export function useAcademicPeriod() {
       period: currentPeriod,
       displayPeriod: CURRENT_PERIOD.displayPeriod,
     },
-    mainRouter: {
-      mainActions,
+    mainPageRouter: {
+      mainPageActions: mainActions,
     },
     preSeat: {
       shouldPreparePreSeat,
       preSeatCloseDate,
       liveStartTime,
       preSeatOpenDate: PRESEAT_OPEN_DATE,
+    },
+    basket: {
+      basketOpenDate: BASKET_OPEN_DATE,
     },
   };
 }
