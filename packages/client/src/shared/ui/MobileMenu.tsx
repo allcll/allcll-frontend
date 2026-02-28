@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import LogoSvg from '@public/ci.svg?react';
-import LogoName from '@public/logo-name.svg?react';
+import LogoSvg from '@public/ci-spring.svg?react';
+import LogoName from '@public/logo-name-spring.svg?react';
 import CloseSvg from '@/assets/x.svg?react';
 import { Flex, IconButton, Badge } from '@allcll/allcll-ui';
 import { useBodyScrollLock } from '../lib/useBodyScrollLock';
