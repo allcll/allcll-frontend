@@ -1,25 +1,35 @@
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Section from '@/widgets/home/ui/Section.tsx';
 
 import { Button, SupportingText } from '@allcll/allcll-ui';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
+import { useSpringConfetti } from '@/widgets/home/lib/useMainBannerSeasonConfetti';
 
 const START_DATE = '02월 10일(화)';
 const END_DATE = '02월 13일(금)';
 
 function MainBanner() {
   const { data } = useServiceSemester();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useSpringConfetti(canvasRef);
 
   return (
-    <Section className="flex flex-col md:flex-row items-center justify-between" bgColor="bg-banner-skysoft">
-      <div className="max-w-xl">
-        <div className="flex flex-row gap-2 items-center">
-          <img src="/calendar.png" alt="2026-1학기 세종대 수강신청 일정 아이콘" className="w-10 h-10" />
-          <span className="italic text-xs text-stone-500 ">
-            {data?.semesterValue}학기 수강 신청 기간 <br />
-            {START_DATE} ~ {END_DATE}
-          </span>
-        </div>
+    <div className="relative overflow-hidden">
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-10" />
+      <Section
+        className="relative z-20 flex flex-col md:flex-row items-center justify-between pb-20 pt-15"
+        bgColor="bg-banner-skysoft"
+      >
+        <div className="max-w-xl">
+          <div className="flex flex-row gap-2 items-center">
+            <img src="/calendar.png" alt="2026-1학기 세종대 수강신청 일정 아이콘" className="w-10 h-10" />
+            <span className="italic text-xs text-stone-500 ">
+              {data?.semesterValue}학기 수강 신청 기간 <br />
+              {START_DATE} ~ {END_DATE}
+            </span>
+          </div>
 
           <h1 className="text-lg mt-10 sm:text-xl md:text-2xl leading-snug font-bold mb-3 ">
             세종대 수강신청 연습과 수강여석 확인을 한 번에
