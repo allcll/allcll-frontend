@@ -7,6 +7,7 @@ import useMobile from '@/shared/lib/useMobile';
 import { graduationQueryKeys } from '@/entities/graduation/model/useGraduation';
 import LogoutButton from '@/features/user/ui/LogoutButton';
 import { useGraduationDashboard } from '@/features/graduation/model/useGraduationDashboard';
+import { useGraduationConfetti } from '@/features/graduation/lib/useGraduationConfetti';
 import { useCriteriaCategories } from '@/entities/graduation/model/useGraduation';
 import {
   filterCategories,
@@ -53,6 +54,7 @@ function GraduationDashboardPage() {
   const { activeTab, setActiveTab } = useMobileTabs('major');
   const { user, graduationData, isPending, isError, error } = useGraduationDashboard();
   const { data: criteriaCategories } = useCriteriaCategories();
+  useGraduationConfetti(graduationData?.isGraduatable ?? false);
 
   const handleStartOverGraduationCheck = () => {
     if (!window.confirm('졸업 요건을 다시 검사하시겠습니까?')) return;
