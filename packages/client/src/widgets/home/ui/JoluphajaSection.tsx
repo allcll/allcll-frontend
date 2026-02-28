@@ -16,8 +16,8 @@ function JoluphajaSection() {
         <Badge variant="primary" appearance="filled">
           새로운 서비스
         </Badge>
-        <Badge variant="primary" appearance="outline" size="small">
-          베타
+        <Badge variant="beta" appearance="outline" size="small">
+          Beta
         </Badge>
       </div>
       <SectionHeader

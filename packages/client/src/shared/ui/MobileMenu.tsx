@@ -98,8 +98,8 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
                 >
                   {title}
                   {beta && (
-                    <Badge variant="primary" appearance="outline" size="small">
-                      베타
+                    <Badge variant="beta" appearance="outline" size="small">
+                      Beta
                     </Badge>
                   )}
                 </NavLink>

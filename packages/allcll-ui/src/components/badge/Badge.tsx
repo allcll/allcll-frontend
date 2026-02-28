@@ -1,4 +1,4 @@
-type BadgeVariants = 'success' | 'warning' | 'danger' | 'default' | 'primary';
+type BadgeVariants = 'success' | 'warning' | 'danger' | 'default' | 'primary' | 'beta';
 type BadgeAppearance = 'filled' | 'outline';
 type BadgeSize = 'default' | 'small';
 
@@ -30,6 +30,8 @@ function getFilledClass(variant: BadgeVariants) {
       return 'bg-primary-100 text-primary-700';
     case 'default':
       return 'bg-gray-100 text-gray-700';
+    case 'beta':
+      return 'bg-rose-100 text-rose-600';
     default:
       return '';
   }
@@ -47,6 +49,8 @@ function getOutlineClass(variant: BadgeVariants) {
       return 'border border-primary-300 text-primary-400';
     case 'default':
       return 'border border-gray-300 text-gray-500';
+    case 'beta':
+      return 'border border-rose-300 text-rose-400';
     default:
       return '';
   }
