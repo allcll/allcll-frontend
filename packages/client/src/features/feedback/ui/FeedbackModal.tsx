@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import FeedbackFace from './FeedbackFace';
+import FeedbackFace from '@/assets/ci-icon.svg?react';
 import useFeedbackStore from '@/features/feedback/model/useFeedbackStore';
 import useFeedbackMutation from '@/features/feedback/api/useFeedbackMutation';
 import { Button, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
@@ -10,7 +10,7 @@ type Props = {
 };
 
 export const FeedbackModal = ({ isOpen, onClose }: Props) => {
-  const [rate, setRate] = useState<1 | 2 | 3>(3);
+  const [rate, setRate] = useState<0 | 1 | 2 | 3>(0);
   const [detail, setDetail] = useState('');
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -21,7 +21,7 @@ export const FeedbackModal = ({ isOpen, onClose }: Props) => {
 
   useEffect(() => {
     if (!isOpen) {
-      setRate(3);
+      setRate(0);
       setDetail('');
       setSuccess(false);
       setError(null);
@@ -31,6 +31,12 @@ export const FeedbackModal = ({ isOpen, onClose }: Props) => {
   if (!isOpen || dontShowAgain) return null;
 
   async function handleSubmit() {
+    if (rate === 0) {
+      setError('평점을 선택해주세요');
+      setTimeout(() => setError(null), 3000);
+      return;
+    }
+
     mutate(
       { rate, detail: detail ?? '', operationType: 'GRADUATION' },
       {
@@ -59,42 +65,19 @@ export const FeedbackModal = ({ isOpen, onClose }: Props) => {
       <div className="w-80 bg-white rounded-2xl shadow-lg p-4">
         {!success ? (
           <div>
-            <Heading level={3}>서비스 만족도 평가</Heading>
+            <Heading level={3} size='xl' className='font-bold'>졸업요건 검사 피드백</Heading>
 
-            <Heading level={4} className="mt-1">얼마나 만족하시나요?</Heading>
+            <Heading level={4} className="mt-4">결과가 정확했나요?</Heading>
             <Flex justify="justify-center" className="gap-3 mb-3">
-              <button
-                aria-label="하"
-                className={`flex flex-col items-center gap-2 p-2 rounded-xl ${rate === 1 ? 'ring-2 ring-blue-300' : ''}`}
-                onClick={() => setRate(1)}
-              >
-                <FeedbackFace variant="sad" size={48} />
-                <span className="text-sm">하</span>
-              </button>
-
-              <button
-                aria-label="중"
-                className={`flex flex-col items-center gap-2 p-2 rounded-xl ${rate === 2 ? 'ring-2 ring-blue-300' : ''}`}
-                onClick={() => setRate(2)}
-              >
-                <FeedbackFace variant="neutral" size={48} />
-                <span className="text-sm">중</span>
-              </button>
-
-              <button
-                aria-label="상"
-                className={`flex flex-col items-center gap-2 p-2 rounded-xl ${rate === 3 ? 'ring-2 ring-blue-300' : ''}`}
-                onClick={() => setRate(3)}
-              >
-                <FeedbackFace variant="happy" size={48} />
-                <span className="text-sm">상</span>
-              </button>
+              <RateInputs rate={1} currentRate={rate} onClick={() => setRate(1)} />
+              <RateInputs rate={2} currentRate={rate} onClick={() => setRate(2)} />
+              <RateInputs rate={3} currentRate={rate} onClick={() => setRate(3)} />
             </Flex>
 
-            <Heading level={4} className="block text-sm text-gray-600 mb-2">자세한 의견 (선택)</Heading>
+            <Heading level={4} className="block text-sm text-gray-600 mb-2">추가 의견을 남겨주세요 (선택)</Heading>
             <textarea
-              className="w-full border rounded-md p-2 min-h-[72px] mb-3 resize-y"
-              placeholder="왜 그렇게 생각하셨나요? (선택)"
+              className="w-full min-h-[80px] resize-y text-sm border rounded-md border-gray-400 py-2 px-3 focus:outline-none focus:ring-0 focus:border-primary-500"
+              placeholder="복수전공, 교환학생, 재수강, 인정과목 등 특수한 케이스에서 오류가 있었다면 꼭 알려주세요."
               name="detail"
               value={detail}
               onChange={e => setDetail(e.target.value)}
@@ -102,12 +85,12 @@ export const FeedbackModal = ({ isOpen, onClose }: Props) => {
 
             {error && <p className="text-red-600 text-sm mb-3">{error}</p>}
 
-            <Flex className="gap-3">
+            <Flex className="gap-3 mt-4" justify="justify-start">
               <Button variant="primary" size="medium" onClick={handleSubmit} disabled={isPending}>
-                {isPending ? '제출중...' : '제출'}
+                {isPending ? '제출중...' : '제출하기'}
               </Button>
-              <Button variant="contain" textColor="secondary" size="medium" onClick={handleDontShowAgain} disabled={isPending}>
-                다신 보지 않기
+              <Button variant="text" textColor="primary" size="medium" onClick={handleDontShowAgain} disabled={isPending}>
+                다시 보지 않기
               </Button>
             </Flex>
           </div>
@@ -119,7 +102,7 @@ export const FeedbackModal = ({ isOpen, onClose }: Props) => {
               </svg>
             </Flex>
             <div className="text-center">
-              <SupportingText className="text-primary">의견 주셔서 감사합니다</SupportingText>
+              <SupportingText className="text-primary">좋은 의견 주셔서 감사합니다</SupportingText>
             </div>
           </Flex>
         )}
@@ -127,5 +110,34 @@ export const FeedbackModal = ({ isOpen, onClose }: Props) => {
     </div>
   );
 };
+
+interface RateButtonProps {
+  rate: 1 | 2 | 3;
+  currentRate: number;
+  onClick: () => void;
+}
+
+function RateInputs({ rate, currentRate, onClick }: RateButtonProps) {
+  const faces = {
+    1: <FeedbackFace className="w-16 h-16 mood-sad" />,
+    2: <FeedbackFace className="w-16 h-16 mood-normal" />,
+    3: <FeedbackFace className="w-16 h-16 mood-smile" />,
+  };
+
+  const LabelText = ['많이 달라요', '조금 달라요', '정확해요'][rate - 1];
+
+  return ( 
+    <button
+      role="radio"
+      aria-label={LabelText}
+      className={`flex flex-col items-center gap-2 p-2 rounded-xl transition-colors duration-200 font-bold
+        ${currentRate === rate ? 'text-primary' : 'text-gray-300 hover:text-blue-300'}`}
+      onClick={onClick}
+    >
+      {faces[rate]}
+      <span className="text-sm">{LabelText}</span>
+    </button>
+  );
+}
 
 export default FeedbackModal;
