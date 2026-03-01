@@ -4,6 +4,7 @@ import { userProfiles } from '../data/graduation/profiles';
 import { criteriaData } from '../data/graduation/criteria';
 import { checkResultsByUserType } from '../data/graduation/results';
 import { categoriesData } from '../data/graduation/categories';
+import { coursesDataByUserType } from '../data/graduation/courses';
 
 export const handlers = [
   // 1-1. POST /api/auth/login
@@ -99,46 +100,48 @@ export const handlers = [
     return HttpResponse.json({
       admissionYear: 2023,
       departments: [
-        {
-          deptCd: '3220',
-          deptNm: '소프트웨어학과',
-          collegeNm: '소프트웨어융합대학',
-          deptGroup: 'NATURAL_SCI',
-          englishTargetType: 'NON_MAJOR',
-          codingTargetType: 'CODING_MAJOR',
-        },
-        {
-          deptCd: '38191',
-          deptNm: '데이터사이언스학과',
-          collegeNm: '인공지능융합대학',
-          deptGroup: 'NATURAL_SCI',
-          englishTargetType: 'NON_MAJOR',
-          codingTargetType: 'CODING_MAJOR',
-        },
-        {
-          deptCd: '3523',
-          deptNm: '콘텐츠소프트웨어학과',
-          collegeNm: '인공지능융합대학',
-          deptGroup: 'NATURAL_SCI',
-          englishTargetType: 'NON_MAJOR',
-          codingTargetType: 'CODING_MAJOR',
-        },
-        {
-          deptCd: '9999',
-          deptNm: '영어영문학과',
-          collegeNm: '인문과학대학',
-          deptGroup: 'HUMANITIES',
-          englishTargetType: 'ENGLISH_MAJOR',
-          codingTargetType: 'NON_MAJOR',
-        },
-        {
-          deptCd: '1001',
-          deptNm: '컴퓨터공학과',
-          collegeNm: '공과대학',
-          deptGroup: 'NATURAL_SCI',
-          englishTargetType: 'NON_MAJOR',
-          codingTargetType: 'CODING_MAJOR',
-        },
+        // 소프트웨어융합대학
+        { deptCd: '3220', deptNm: '소프트웨어학과', collegeNm: '소프트웨어융합대학', deptGroup: 'NATURAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'CODING_MAJOR' },
+        { deptCd: '3221', deptNm: '컴퓨터공학과', collegeNm: '소프트웨어융합대학', deptGroup: 'NATURAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'CODING_MAJOR' },
+        { deptCd: '3222', deptNm: '정보보호학과', collegeNm: '소프트웨어융합대학', deptGroup: 'NATURAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'CODING_MAJOR' },
+        // 인공지능융합대학
+        { deptCd: '38191', deptNm: '데이터사이언스학과', collegeNm: '인공지능융합대학', deptGroup: 'NATURAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'CODING_MAJOR' },
+        { deptCd: '3523', deptNm: '콘텐츠소프트웨어학과', collegeNm: '인공지능융합대학', deptGroup: 'NATURAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'CODING_MAJOR' },
+        { deptCd: '3524', deptNm: '인공지능학과', collegeNm: '인공지능융합대학', deptGroup: 'NATURAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'CODING_MAJOR' },
+        // 공과대학
+        { deptCd: '1001', deptNm: '기계항공우주공학부', collegeNm: '공과대학', deptGroup: 'NATURAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '1002', deptNm: '전자정보통신공학부', collegeNm: '공과대학', deptGroup: 'NATURAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '1003', deptNm: '건설환경공학부', collegeNm: '공과대학', deptGroup: 'NATURAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '1004', deptNm: '건축학부', collegeNm: '공과대학', deptGroup: 'NATURAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '1005', deptNm: '나노신소재공학부', collegeNm: '공과대학', deptGroup: 'NATURAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        // 자연과학대학
+        { deptCd: '2001', deptNm: '수학통계학부', collegeNm: '자연과학대학', deptGroup: 'NATURAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '2002', deptNm: '물리천문학과', collegeNm: '자연과학대학', deptGroup: 'NATURAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '2003', deptNm: '화학과', collegeNm: '자연과학대학', deptGroup: 'NATURAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '2004', deptNm: '생명시스템학부', collegeNm: '자연과학대학', deptGroup: 'NATURAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        // 경영경제대학
+        { deptCd: '4001', deptNm: '경영학부', collegeNm: '경영경제대학', deptGroup: 'SOCIAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '4002', deptNm: '경제학과', collegeNm: '경영경제대학', deptGroup: 'SOCIAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '4003', deptNm: '무역학부', collegeNm: '경영경제대학', deptGroup: 'SOCIAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '4004', deptNm: '호텔관광외식경영학부', collegeNm: '경영경제대학', deptGroup: 'SOCIAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        // 인문과학대학
+        { deptCd: '9999', deptNm: '영어영문학과', collegeNm: '인문과학대학', deptGroup: 'HUMANITIES', englishTargetType: 'ENGLISH_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '5002', deptNm: '국어국문학과', collegeNm: '인문과학대학', deptGroup: 'HUMANITIES', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '5003', deptNm: '역사학과', collegeNm: '인문과학대학', deptGroup: 'HUMANITIES', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '5004', deptNm: '중어중문학과', collegeNm: '인문과학대학', deptGroup: 'HUMANITIES', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '5005', deptNm: '일어일문학과', collegeNm: '인문과학대학', deptGroup: 'HUMANITIES', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        // 사회과학대학
+        { deptCd: '6001', deptNm: '행정학과', collegeNm: '사회과학대학', deptGroup: 'SOCIAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '6002', deptNm: '미디어커뮤니케이션학과', collegeNm: '사회과학대학', deptGroup: 'SOCIAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '6003', deptNm: '도시부동산학과', collegeNm: '사회과학대학', deptGroup: 'SOCIAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        // 예체능대학
+        { deptCd: '7001', deptNm: '체육학과', collegeNm: '예체능대학', deptGroup: 'ARTS', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '7002', deptNm: '회화과', collegeNm: '예체능대학', deptGroup: 'ARTS', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '7003', deptNm: '만화애니메이션텍학과', collegeNm: '예체능대학', deptGroup: 'ARTS', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '7004', deptNm: '패션디자인학과', collegeNm: '예체능대학', deptGroup: 'ARTS', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        // 의약학대학
+        { deptCd: '8001', deptNm: '간호학과', collegeNm: '의약학대학', deptGroup: 'NATURAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
+        { deptCd: '8002', deptNm: '바이오융합공학부', collegeNm: '의약학대학', deptGroup: 'NATURAL_SCI', englishTargetType: 'NON_MAJOR', codingTargetType: 'NON_MAJOR' },
       ],
     });
   }),
@@ -174,6 +177,19 @@ export const handlers = [
     const result = checkResultsByUserType[state.userType];
 
     return HttpResponse.json(result);
+  }),
+
+  // 6-1. GET /api/graduation/courses
+  http.get('/api/graduation/courses', async () => {
+    await delay(1000);
+    const state = getGraduationState();
+    if (!state.isAuthenticated) {
+      return new HttpResponse(null, { status: 401 });
+    }
+    if (state.graduationStep !== 'DONE') {
+      return new HttpResponse(null, { status: 404 });
+    }
+    return HttpResponse.json(coursesDataByUserType[state.userType]);
   }),
 
   // Debug API: 상태 강제 변경

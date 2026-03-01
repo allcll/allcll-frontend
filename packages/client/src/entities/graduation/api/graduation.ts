@@ -272,3 +272,24 @@ export interface CriteriaCategoriesResponse {
 export async function fetchCriteriaCategories(): Promise<CriteriaCategoriesResponse> {
   return await fetchJsonOnAPI<CriteriaCategoriesResponse>('/api/graduation/criteria/categories');
 }
+
+/** 이수 과목 개별 항목 */
+export interface GraduationCourse {
+  id: number;
+  curiNo: string;
+  curiNm: string;
+  categoryType: CategoryType;
+  selectedArea: string;
+  credits: number;
+  majorScope: ScopeType;
+  isEarned: boolean;
+}
+
+/** 이수 과목 조회 API 응답 */
+export interface GraduationCoursesResponse {
+  courses: GraduationCourse[];
+}
+
+export async function fetchGraduationCourses(): Promise<GraduationCoursesResponse> {
+  return await fetchJsonOnAPI<GraduationCoursesResponse>('/api/graduation/courses');
+}

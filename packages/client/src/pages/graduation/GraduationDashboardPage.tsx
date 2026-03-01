@@ -29,6 +29,8 @@ import CertificationSection from '@/features/graduation/ui/dashboard/Certificati
 import MobileTabs, { useMobileTabs } from '@/features/graduation/ui/dashboard/MobileTabs';
 import RecommendedCoursesModal from '@/features/graduation/ui/dashboard/RecommendedCoursesModal';
 import EditProfileModal from '@/features/graduation/ui/dashboard/EditProfileModal';
+import EarnedCoursesSection from '@/features/graduation/ui/dashboard/EarnedCoursesSection';
+import CategoryEarnedCoursesModal from '@/features/graduation/ui/dashboard/CategoryEarnedCoursesModal';
 import LoadingWithMessage from '@/shared/ui/Loading';
 
 //TODO: API 연동 시간 측정 후, spinner로 변경 혹은 네트워크 지연 시간에 따른 스피너 타입 결정 훅 구현
@@ -50,6 +52,10 @@ function GraduationDashboardPage() {
     categoryType: CategoryType;
     criteriaCategory?: CriteriaCategory;
     earnedAreas?: BalanceRequiredArea[];
+  } | null>(null);
+  const [selectedEarnedCategory, setSelectedEarnedCategory] = useState<{
+    categoryType: CategoryType;
+    majorScope: ScopeType;
   } | null>(null);
   const { activeTab, setActiveTab } = useMobileTabs('major');
   const { user, graduationData, isPending, isError, error } = useGraduationDashboard();
@@ -79,6 +85,10 @@ function GraduationDashboardPage() {
 
   const handleCloseModal = () => {
     setSelectedCategory(null);
+  };
+
+  const handleViewEarnedCourses = (categoryType: CategoryType, majorScope: ScopeType) => {
+    setSelectedEarnedCategory({ categoryType, majorScope });
   };
 
   if (isPending) {
@@ -125,6 +135,7 @@ function GraduationDashboardPage() {
                   category={category}
                   criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
                   onViewCourses={handleViewCourses}
+                  onViewEarnedCourses={handleViewEarnedCourses}
                 />
               ))}
             </Flex>
@@ -148,6 +159,7 @@ function GraduationDashboardPage() {
                         category={category}
                         criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
                         onViewCourses={handleViewCourses}
+                        onViewEarnedCourses={handleViewEarnedCourses}
                       />
                     ))}
                   </Flex>
@@ -169,6 +181,7 @@ function GraduationDashboardPage() {
                   category={category}
                   criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
                   onViewCourses={handleViewCourses}
+                  onViewEarnedCourses={handleViewEarnedCourses}
                 />
               ))}
             </Flex>
@@ -227,8 +240,11 @@ function GraduationDashboardPage() {
           {/* 전체 진행률 카드 */}
           <OverallSummaryCard user={user} graduationData={graduationData} />
 
+          {/* 이수 과목 섹션 */}
+          <EarnedCoursesSection />
+
           {/* 다시 검사하기 버튼 */}
-          <Flex justify="justify-end" align="items-center" gap="gap-3">
+          <Flex justify="justify-end" align="items-center" gap="gap-2">
             <span className="text-sm text-gray-400">
               {new Date(graduationData.createdAt).toLocaleDateString('ko-KR', {
                 year: 'numeric',
@@ -266,6 +282,7 @@ function GraduationDashboardPage() {
                           category={category}
                           criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
                           onViewCourses={handleViewCourses}
+                          onViewEarnedCourses={handleViewEarnedCourses}
                         />
                       </div>
                     ))}
@@ -294,6 +311,7 @@ function GraduationDashboardPage() {
                                 category={category}
                                 criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
                                 onViewCourses={handleViewCourses}
+                                onViewEarnedCourses={handleViewEarnedCourses}
                               />
                             </div>
                           ))}
@@ -316,6 +334,7 @@ function GraduationDashboardPage() {
                         category={category}
                         criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
                         onViewCourses={handleViewCourses}
+                        onViewEarnedCourses={handleViewEarnedCourses}
                       />
                     </div>
                   ))}
@@ -337,6 +356,16 @@ function GraduationDashboardPage() {
           categoryType={selectedCategory.categoryType}
           criteriaCategory={selectedCategory.criteriaCategory}
           earnedAreas={selectedCategory.earnedAreas}
+        />
+      )}
+
+      {/* 카테고리별 이수 과목 모달 */}
+      {selectedEarnedCategory && (
+        <CategoryEarnedCoursesModal
+          isOpen
+          onClose={() => setSelectedEarnedCategory(null)}
+          categoryType={selectedEarnedCategory.categoryType}
+          majorScope={selectedEarnedCategory.majorScope}
         />
       )}
 
