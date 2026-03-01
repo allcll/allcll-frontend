@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import FeedbackFace from '@/assets/ci-icon.svg?react';
+import CloseIcon from '@/assets/x-gray.svg?react';
 import useFeedbackStore from '@/features/feedback/model/useFeedbackStore';
 import useFeedbackMutation from '@/features/feedback/api/useFeedbackMutation';
-import { Button, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import { Button, Flex, Heading, IconButton, SupportingText } from '@allcll/allcll-ui';
 
 type Props = {
   isOpen: boolean;
@@ -65,8 +66,11 @@ export const FeedbackModal = ({ isOpen, onClose }: Props) => {
       <div className="w-80 bg-white rounded-2xl shadow-lg p-4">
         {!success ? (
           <div>
-            <Heading level={3} size='xl' className='font-bold'>졸업요건 검사 피드백</Heading>
-
+            <Flex justify="justify-between" className="mb-2">
+              <Heading level={3} size='xl' className='font-bold'>졸업요건 검사 피드백</Heading>
+              <IconButton label='창 닫기' onClick={onClose} icon={<CloseIcon className='text-gray-500 hover:text-gray-600'/>} />
+            </Flex>
+            
             <Heading level={4} className="mt-4">결과가 정확했나요?</Heading>
             <Flex justify="justify-center" className="gap-3 mb-3">
               <RateInputs rate={1} currentRate={rate} onClick={() => setRate(1)} />
@@ -129,6 +133,7 @@ function RateInputs({ rate, currentRate, onClick }: RateButtonProps) {
   return ( 
     <button
       role="radio"
+      aria-checked={currentRate === rate}
       aria-label={LabelText}
       className={`flex flex-col items-center gap-2 p-2 rounded-xl transition-colors duration-200 font-bold
         ${currentRate === rate ? 'text-primary' : 'text-gray-300 hover:text-blue-300'}`}
