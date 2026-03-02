@@ -1,7 +1,10 @@
-import { Button, Card, Checkbox, Flex, Heading, SupportingText, TextField } from '@allcll/allcll-ui';
+import { Button, Card, Checkbox, Flex, Heading, IconButton, SupportingText, TextField } from '@allcll/allcll-ui';
+import { useState } from 'react';
 import useLoginForm from '../lib/useLoginForm';
 import { useLogin } from '@/entities/user/model/useAuth';
 import useToastNotification from '@/features/notification/model/useToastNotification';
+import EyeOpenIcon from '@/assets/eye-gray.svg?react';
+import EyeClosedIcon from '@/assets/eye-delete-gray.svg?react';
 
 interface LoginFormProps {
   onSuccess?: () => void;
@@ -18,6 +21,7 @@ function isDepartmentNotFoundError(error: Error): boolean {
 }
 
 function LoginForm({ onSuccess, onDepartmentNotFound }: LoginFormProps) {
+  const [showPassword, setShowPassword] = useState(false);
   const { values, errors, touched, onChange, onBlur, submit, isValid } = useLoginForm();
   const { mutate: login, isPending } = useLogin();
   const addToast = useToastNotification(state => state.addToast);
@@ -69,20 +73,29 @@ function LoginForm({ onSuccess, onDepartmentNotFound }: LoginFormProps) {
           placeholder="학번을 입력하세요"
         />
 
-        <TextField
-          label="비밀번호"
-          name="password"
-          id="password"
-          type="password"
-          size="medium"
-          value={values.password}
-          onChange={e => onChange('password', e)}
-          onBlur={() => onBlur('password')}
-          isError={touched.password && !!errors.password}
-          errorMessage={errors.password}
-          required
-          placeholder="학사 정보 시스템 비밀번호를 입력하세요."
-        />
+        <div className="relative">
+          <TextField
+            label="비밀번호"
+            name="password"
+            id="password"
+            type={showPassword ? 'text' : 'password'}
+            size="medium"
+            value={values.password}
+            onChange={e => onChange('password', e)}
+            onBlur={() => onBlur('password')}
+            isError={touched.password && !!errors.password}
+            errorMessage={errors.password}
+            required
+            placeholder="학사 정보 시스템 비밀번호를 입력하세요."
+          />
+          <IconButton
+            type="button"
+            onClick={() => setShowPassword(value => !value)}
+            aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+            icon={showPassword ? <EyeClosedIcon className="w-4 h-4" /> : <EyeOpenIcon className="w-4 h-4" />}
+            className="absolute right-3 top-11"
+          />
+        </div>
 
         <Flex direction="flex-col" gap="gap-2">
           <Flex align="items-center" gap="gap-2">
