@@ -66,6 +66,8 @@ function EditProfileModal({ isOpen, onClose, user }: EditProfileModalProps) {
                 setDeptNm(value);
                 setOpenDropdown(null);
               }}
+              searchable
+              searchPlaceholder="학과 검색"
             />
           </Flex>
 
@@ -82,6 +84,8 @@ function EditProfileModal({ isOpen, onClose, user }: EditProfileModalProps) {
                   setDoubleDeptNm(value);
                   setOpenDropdown(null);
                 }}
+                searchable
+                searchPlaceholder="학과 검색"
               />
             </Flex>
           )}

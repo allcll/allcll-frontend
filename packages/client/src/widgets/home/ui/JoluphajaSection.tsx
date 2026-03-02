@@ -1,117 +1,58 @@
-import { Badge, Card, colors, Flex, Heading } from '@allcll/allcll-ui';
+import { Badge, Card, Heading, SupportingText } from '@allcll/allcll-ui';
 import Section from './Section';
 import SectionHeader from './SectionHeader';
-import { Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js/auto';
+import ProgressDoughnut from '@/entities/graduation/ui/ProgressDoughnut';
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+const MOCK_CATEGORIES = [
+  { label: '전공필수', earned: 18, required: 24 },
+  { label: '전공선택', earned: 20, required: 30 },
+  { label: '교양선택', earned: 15, required: 21 },
+];
 
 function JoluphajaSection() {
   return (
     <Section>
+      <div className="flex items-center gap-2 mb-2">
+        <Badge variant="primary" appearance="filled">
+          새로운 서비스
+        </Badge>
+        <Badge variant="beta" appearance="outline" size="small">
+          Beta
+        </Badge>
+      </div>
       <SectionHeader
         title="세종대 졸업 요건 검사"
-        subtitle="세종대 졸업 요건 검사부터 과목 추천까지 도와드려요. 서비스가 곧 오픈될 예정이니, 조금만 기다려주세요."
+        subtitle="졸업 요건 달성 현황을 한눈에 확인하세요."
+        href="/graduation"
       />
 
-      <Badge variant="danger">새로 나온 서비스</Badge>
+      <p className="mt-3 text-sm text-gray-400">
+        현재 베타 서비스입니다. 직접 사용해보시고 의견을 남겨주시면 더 좋은 서비스로 발전하는 데 큰 도움이 됩니다!
+      </p>
 
-      <Flex className="mt-6" direction="flex-col" gap="gap-2">
-        <Card>
-          <Flex direction="flex-row" gap="gap-4">
-            <Heading level={3}>졸업 요건 현황</Heading>
-            <Badge variant="default">진행 중</Badge>
-          </Flex>
+      <Card className="mt-4">
+        <Heading level={3}>카테고리별 이수 현황</Heading>
+        <SupportingText>전공필수·전공선택·교양 등 항목별로 졸업 요건 달성 현황을 분석해드려요.</SupportingText>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6 justify-items-center">
-            <ProgressDoughnut
-              earned={mockGraduationData.totalCredits.earned}
-              required={mockGraduationData.totalCredits.required}
-              label="전체 학점"
-            />
-            <ProgressDoughnut
-              earned={mockGraduationData.majorCredits.earned}
-              required={mockGraduationData.majorCredits.required}
-              label="전필 학점"
-            />
-            <div className="hidden md:block">
-              <ProgressDoughnut
-                earned={mockGraduationData.generalCredits.earned}
-                required={mockGraduationData.generalCredits.required}
-                label="전선 학점"
-              />
+        <div className="flex justify-around mt-6">
+          {MOCK_CATEGORIES.map(({ label, earned, required }) => (
+            <div key={label} className="flex flex-col items-center gap-1">
+              <span className="sm:hidden">
+                <ProgressDoughnut earned={earned} required={required} size="small" />
+              </span>
+              <span className="hidden sm:block">
+                <ProgressDoughnut earned={earned} required={required} size="medium" />
+              </span>
+              <span className="text-xs text-gray-600 font-medium mt-1">{label}</span>
+              <span className="text-xs text-gray-400">
+                {earned}/{required}학점
+              </span>
             </div>
-            <div className="hidden md:block">
-              <ProgressDoughnut
-                earned={mockGraduationData.liberalCredits.earned}
-                required={mockGraduationData.liberalCredits.required}
-                label="교양 학점"
-              />
-            </div>
-          </div>
-        </Card>
-      </Flex>
+          ))}
+        </div>
+      </Card>
     </Section>
   );
 }
 
 export default JoluphajaSection;
-
-interface ProgressDoughnutProps {
-  earned: number;
-  required: number;
-  label: string;
-}
-
-function ProgressDoughnut({ earned, required, label }: ProgressDoughnutProps) {
-  const percentage = required === 0 ? 100 : Math.round((earned / required) * 100);
-  const remaining = Math.max(0, required - earned);
-
-  const data = {
-    datasets: [
-      {
-        data: [earned, remaining],
-        backgroundColor: [colors.primary[500], '#E5E7EB'],
-        borderWidth: 0,
-        cutout: '75%',
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    maintainAspectRatio: true,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      tooltip: {
-        enabled: false,
-      },
-    },
-  };
-
-  return (
-    <div className="flex flex-col items-center">
-      <div className="relative flex items-center justify-center" style={{ width: 120, height: 120 }}>
-        <Doughnut data={data} options={options} />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-xl font-bold text-primary-500">{percentage}%</span>
-        </div>
-      </div>
-      <div className="mt-2 text-center">
-        <span className="text-sm font-medium text-gray-700">{label}</span>
-        <p className="text-xs text-gray-500">
-          {earned} / {required} 학점
-        </p>
-      </div>
-    </div>
-  );
-}
-
-const mockGraduationData = {
-  totalCredits: { earned: 98, required: 130 },
-  majorCredits: { earned: 18, required: 24 },
-  generalCredits: { earned: 20, required: 32 },
-  liberalCredits: { earned: 60, required: 74 },
-};

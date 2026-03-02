@@ -390,16 +390,146 @@ const transferNotGraduatable = {
   },
 };
 
+const singleGraduatable = {
+  checkId: 4,
+  createdAt: '2026-02-21T10:00:00+09:00',
+  isGraduatable: true,
+  summary: {
+    totalMyCredits: 135,
+    requiredTotalCredits: 130,
+    remainingCredits: 0,
+  },
+  categories: [
+    {
+      majorScope: 'PRIMARY',
+      categoryType: 'COMMON_REQUIRED',
+      earnedCredits: 14,
+      requiredCredits: 13,
+      remainingCredits: 0,
+      earnedAreasCnt: null,
+      requiredAreasCnt: null,
+      earnedAreas: null,
+      satisfied: true,
+    },
+    {
+      majorScope: 'PRIMARY',
+      categoryType: 'BALANCE_REQUIRED',
+      earnedCredits: 6,
+      requiredCredits: 6,
+      remainingCredits: 0,
+      earnedAreasCnt: 2,
+      requiredAreasCnt: 2,
+      earnedAreas: ['ECONOMY_SOCIETY', 'CULTURE_ARTS'],
+      satisfied: true,
+    },
+    {
+      majorScope: 'PRIMARY',
+      categoryType: 'ACADEMIC_BASIC',
+      earnedCredits: 15,
+      requiredCredits: 15,
+      remainingCredits: 0,
+      earnedAreasCnt: null,
+      requiredAreasCnt: null,
+      earnedAreas: null,
+      satisfied: true,
+    },
+    {
+      majorScope: 'PRIMARY',
+      categoryType: 'TOTAL_COMPLETION',
+      earnedCredits: 135,
+      requiredCredits: 130,
+      remainingCredits: 0,
+      earnedAreasCnt: null,
+      requiredAreasCnt: null,
+      earnedAreas: null,
+      satisfied: true,
+    },
+    {
+      majorScope: 'PRIMARY',
+      categoryType: 'MAJOR_REQUIRED',
+      earnedCredits: 36,
+      requiredCredits: 36,
+      remainingCredits: 0,
+      earnedAreasCnt: null,
+      requiredAreasCnt: null,
+      earnedAreas: null,
+      satisfied: true,
+    },
+    {
+      majorScope: 'PRIMARY',
+      categoryType: 'MAJOR_ELECTIVE',
+      earnedCredits: 39,
+      requiredCredits: 36,
+      remainingCredits: 0,
+      earnedAreasCnt: null,
+      requiredAreasCnt: null,
+      earnedAreas: null,
+      satisfied: true,
+    },
+  ],
+  certifications: {
+    policy: {
+      ruleType: 'TWO_OF_THREE',
+      requiredPassCount: 2,
+    },
+    passedCount: 2,
+    requiredPassCount: 2,
+    isSatisfied: true,
+    english: {
+      isPassed: true,
+      isRequired: true,
+      targetType: 'NON_MAJOR',
+    },
+    coding: {
+      isPassed: false,
+      isRequired: true,
+      targetType: 'CODING_MAJOR',
+    },
+    classic: {
+      isPassed: true,
+      isRequired: true,
+      totalRequiredCount: 10,
+      totalMyCount: 11,
+      domains: [
+        {
+          domainType: 'WESTERN_HISTORY_THOUGHT',
+          requiredCount: 4,
+          myCount: 4,
+          satisfied: true,
+        },
+        {
+          domainType: 'EASTERN_HISTORY_THOUGHT',
+          requiredCount: 2,
+          myCount: 3,
+          satisfied: true,
+        },
+        {
+          domainType: 'EAST_WEST_LITERATURE',
+          requiredCount: 3,
+          myCount: 3,
+          satisfied: true,
+        },
+        {
+          domainType: 'SCIENCE_THOUGHT',
+          requiredCount: 1,
+          myCount: 1,
+          satisfied: true,
+        },
+      ],
+    },
+  },
+};
+
 export const checkResults: Record<GraduationStep, any> = {
   NO_FILE: null,
   PROCESSING: null,
-  DONE: singleNotGraduatable,
+  DONE: singleGraduatable,
 };
 
 export const checkResultsByUserType = {
-  SINGLE: singleNotGraduatable,
+  SINGLE: singleGraduatable,
   DOUBLE: doubleNotGraduatable,
   TRANSFER: transferNotGraduatable,
 };
 
-export { doubleNotGraduatable, singleNotGraduatable, transferNotGraduatable };
+export { doubleNotGraduatable, singleNotGraduatable, transferNotGraduatable, singleGraduatable };
