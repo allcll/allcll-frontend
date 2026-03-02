@@ -1,5 +1,5 @@
-import { disassemble } from 'es-hangul';
 import { useMemo } from 'react';
+import { getNormalizedKeyword } from '@/shared/lib/search.ts';
 
 import { DepartmentType } from '@/features/filtering/model/types.ts';
 
@@ -35,13 +35,7 @@ export function useFilteringDepartment({
       .filter(department => {
         if (!searchKeywords) return true;
 
-        const cleanInput = searchKeywords.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-        const disassembledInput = disassemble(cleanInput).toLowerCase();
-
-        const cleanName = department.departmentName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-        const disassembledName = disassemble(cleanName).toLowerCase();
-
-        return disassembledName.includes(disassembledInput);
+        return getNormalizedKeyword(department.departmentName).includes(getNormalizedKeyword(searchKeywords));
       });
   }, [departmentsList, category, searchKeywords]);
 

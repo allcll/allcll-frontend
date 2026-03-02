@@ -23,6 +23,7 @@ function useUploading(nextStep: () => void, prevStep: () => void, file: File | n
     uploadFile(file, {
       onSuccess: () => {
         queryClient.removeQueries({ queryKey: graduationQueryKeys.check() });
+        queryClient.removeQueries({ queryKey: graduationQueryKeys.courses() });
         setPhase('fetching');
       },
       onError: () => {

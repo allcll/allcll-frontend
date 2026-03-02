@@ -13,11 +13,11 @@ interface CertificationSectionProps {
 interface CertificationCardProps {
   title: string;
   passed: boolean;
-  /** 커스텀 상태 텍스트 (예: 고전독서 "7/10") */
   customStatus?: string;
   children?: React.ReactNode;
   onViewStandards?: (type: CertificationType) => void;
   certificationType: CertificationType;
+  overallSatisfied?: boolean;
 }
 
 function CertificationCard({
@@ -27,27 +27,24 @@ function CertificationCard({
   children,
   onViewStandards,
   certificationType,
+  overallSatisfied,
 }: CertificationCardProps) {
-  // 상태 표시 텍스트: customStatus가 있으면 사용, 없으면 인증/미인증
   const statusText = passed ? '인증' : (customStatus ?? '미인증');
+  const badgeVariant = passed ? 'success' : overallSatisfied ? 'default' : 'danger';
 
   return (
-    <Card variant="outlined" className="h-full">
+    <Card variant="outlined" className="h-full relative">
+      {/* 인증 상태 배지 */}
+      <div className="absolute top-3 right-3">
+        <Badge variant={badgeVariant}>{statusText}</Badge>
+      </div>
+
       <Flex direction="flex-col" gap="gap-4" className="h-full">
         <div className="text-center">
           <span className="text-lg font-bold">{title}</span>
         </div>
 
         <div className="flex-1">{children}</div>
-
-        {/* 인증 상태 */}
-        <div
-          className={`w-full py-2 text-center rounded-md text-sm font-semibold ${
-            passed ? 'bg-primary-50 text-primary' : 'bg-secondary-50 text-secondary-500'
-          }`}
-        >
-          {statusText}
-        </div>
 
         <div className="w-full [&>button]:w-full">
           <Button variant="outlined" size="small" onClick={() => onViewStandards?.(certificationType)}>
@@ -92,7 +89,6 @@ function CertificationSection({ certifications }: CertificationSectionProps) {
     setActiveCriteriaType(type);
   };
 
-  // 정책 설명 텍스트
   const CERT_NAMES: Record<CertificationType, string> = {
     english: '영어 인증',
     coding: '소프트웨어 코딩 인증',
@@ -131,6 +127,7 @@ function CertificationSection({ certifications }: CertificationSectionProps) {
             passed={english.isPassed}
             onViewStandards={handleViewStandards}
             certificationType="english"
+            overallSatisfied={certifications.isSatisfied}
           >
             <Flex justify="justify-center" align="items-center" className="h-full">
               {english.isPassed ? (
@@ -150,6 +147,7 @@ function CertificationSection({ certifications }: CertificationSectionProps) {
             customStatus={`${classicTotal.myCount}/${classicTotal.requiredCount}`}
             onViewStandards={handleViewStandards}
             certificationType="classic"
+            overallSatisfied={certifications.isSatisfied}
           >
             <ClassicReadingTable domains={classic.domains} />
           </CertificationCard>
@@ -162,6 +160,7 @@ function CertificationSection({ certifications }: CertificationSectionProps) {
             passed={coding.isPassed}
             onViewStandards={handleViewStandards}
             certificationType="coding"
+            overallSatisfied={certifications.isSatisfied}
           >
             <Flex justify="justify-center" align="items-center" className="h-full">
               {coding.isPassed ? (
