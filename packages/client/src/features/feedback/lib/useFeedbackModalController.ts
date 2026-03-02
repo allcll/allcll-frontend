@@ -32,6 +32,7 @@ export function useFeedbackModalController({
 
   useEffect(() => {
     if (!isOpen) {
+      hasMountedFeedbackSheet.current = false;
       setRate(0);
       setDetail('');
       setSuccess(false);
@@ -68,6 +69,7 @@ export function useFeedbackModalController({
   }, [isMobile, isOpen, bottomSheetType.feedback.isOpen, onClose]);
 
   const closeFeedback = () => {
+    hasMountedFeedbackSheet.current = false;
     if (isMobile) closeBottomSheet('feedback');
     onClose();
   };
