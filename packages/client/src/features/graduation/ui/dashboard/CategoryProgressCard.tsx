@@ -5,8 +5,9 @@ import type {
   CategoryProgress,
   CategoryType,
   CriteriaCategory,
+  ScopeType,
 } from '@/entities/graduation/api/graduation';
-import { CATEGORY_TYPE_LABELS, getStatusLabel } from '../../lib/mappers';
+import { CATEGORY_TYPE_LABELS } from '../../lib/mappers';
 
 interface CategoryProgressCardProps {
   category: CategoryProgress;
@@ -16,6 +17,7 @@ interface CategoryProgressCardProps {
     criteriaCategory?: CriteriaCategory,
     earnedAreas?: BalanceRequiredArea[],
   ) => void;
+  onViewEarnedCourses?: (categoryType: CategoryType, majorScope: ScopeType) => void;
 }
 
 function BalanceInfo({ category }: Readonly<{ category: CategoryProgress }>) {
@@ -45,24 +47,27 @@ function CreditInfo({ category }: Readonly<{ category: CategoryProgress }>) {
   return (
     <Flex direction="flex-col" gap="gap-1" className="text-sm">
       <Flex justify="justify-end" align="items-center" gap="gap-6">
-        <span className="text-gray-500">이수 학점</span>
-        <span className="text-primary-500 text-xl font-semibold">{category.earnedCredits}</span>
-      </Flex>
-      <Flex justify="justify-end" align="items-center" gap="gap-6">
         <span className="text-gray-500">필요 학점</span>
         <span className="text-lg font-semibold text-gray-600">{category.requiredCredits}</span>
+      </Flex>
+      <Flex justify="justify-end" align="items-center" gap="gap-6">
+        <span className="text-gray-500">이수 학점</span>
+        <span className="text-primary-500 text-xl font-semibold">{category.earnedCredits}</span>
       </Flex>
     </Flex>
   );
 }
 
-function CategoryProgressCard({ category, criteriaCategory, onViewCourses }: Readonly<CategoryProgressCardProps>) {
+function CategoryProgressCard({ category, criteriaCategory, onViewCourses, onViewEarnedCourses }: Readonly<CategoryProgressCardProps>) {
   const label = CATEGORY_TYPE_LABELS[category.categoryType];
-  const statusLabel = getStatusLabel(category.satisfied);
   const isBalance = category.categoryType === 'BALANCE_REQUIRED' && category.requiredAreasCnt != null;
 
   const handleViewCourses = () => {
     onViewCourses?.(category.categoryType, criteriaCategory, category.earnedAreas ?? undefined);
+  };
+
+  const handleViewEarnedCourses = () => {
+    onViewEarnedCourses?.(category.categoryType, category.majorScope);
   };
 
   return (
@@ -85,22 +90,18 @@ function CategoryProgressCard({ category, criteriaCategory, onViewCourses }: Rea
         {/* 정보 영역 */}
         {isBalance ? <BalanceInfo category={category} /> : <CreditInfo category={category} />}
 
-        {/* 이수 상태 뱃지 */}
-        <div className="w-full">
-          <div
-            className={`w-full py-2 text-center rounded-md text-sm font-semibold ${
-              category.satisfied ? 'bg-primary-50 text-primary' : 'bg-secondary-50 text-secondary-500'
-            }`}
-          >
-            {statusLabel}
-          </div>
-        </div>
-
         {/* 과목 확인 버튼 */}
-        <div className="w-full mt-auto [&>button]:w-full">
-          <Button variant="outlined" size="small" onClick={handleViewCourses} disabled={category.satisfied}>
-            추천 과목
-          </Button>
+        <div className="w-full mt-auto flex gap-1">
+          <div className="flex-1 [&>button]:w-full">
+            <Button variant="outlined" size="small" onClick={handleViewEarnedCourses}>
+              이수 과목
+            </Button>
+          </div>
+          <div className="flex-1 [&>button]:w-full">
+            <Button variant="outlined" size="small" onClick={handleViewCourses} disabled={category.satisfied}>
+              추천 과목
+            </Button>
+          </div>
         </div>
       </Flex>
     </Card>

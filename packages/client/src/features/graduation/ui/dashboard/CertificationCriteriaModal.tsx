@@ -203,7 +203,7 @@ function CertificationCriteriaModal({ isOpen, onClose, criteriaType }: Certifica
   return (
     <Dialog title={title} onClose={onClose} isOpen={isOpen}>
       <Dialog.Content>
-        <Flex direction="flex-col" gap="gap-3" className="min-w-64 md:min-w-96 h-80 overflow-y-auto">
+        <Flex direction="flex-col" gap="gap-3" className="min-w-64 md:min-w-96 h-80 overflow-y-auto pr-3">
           {isPending && <p className="text-sm text-gray-400 text-center py-8">불러오는 중...</p>}
           {isError && <p className="text-sm text-secondary-500 text-center py-8">기준 정보를 불러올 수 없습니다.</p>}
           {data && <ContentRenderer data={data} />}
