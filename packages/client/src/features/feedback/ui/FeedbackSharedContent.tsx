@@ -16,7 +16,6 @@ type ActionProps = {
   isPending: boolean;
   onDontShowAgain: () => void;
   onSubmit: () => void;
-  align?: 'end' | 'between';
 };
 
 export function FeedbackFields({ titles, rate, setRate, detail, setDetail, error }: FeedbackFieldsProps) {
