@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import useBottomSheet from '@/shared/model/useBottomSheet.ts';
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import useCloseBottomSheetOnBackKey from '@/widgets/bottomSheet/lib/useCloseBottomSheetOnBackKey';
@@ -20,6 +20,16 @@ function BottomSheet({ children }: IBottomSheet) {
   const { sheet, content, expandToMax, collapseToMin } = useBottomSheet();
   const { type, resetBottomSheet } = useBottomSheetStore();
   const { cancelSchedule } = useScheduleModal();
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  
+  // 초기 렌더링 후 transition 활성화
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInitialized(true);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   function handleCloseBottomSheet() {
     cancelSchedule();
@@ -40,10 +50,12 @@ function BottomSheet({ children }: IBottomSheet) {
 
       <div
         ref={sheet}
-        className="fixed rounded-t-xl bottom-0 left-0 w-full transition-transform bg-white duration-300 z-200"
+        className={`fixed rounded-t-xl bottom-0 left-0 w-full bg-white z-200 ${
+          isInitialized ? 'transition-transform duration-300' : ''
+        }`}
         style={{
           height: `${BOTTOM_SHEET_HEIGHT}px`,
-          transform: `translateY(${MIN_Y}px)`,
+          transform: `translateY(${isInitialized ? MIN_Y : MAX_Y}px)`,
         }}
       >
         <div className="w-full flex justify-center py-2 h-7 shrink-0">
