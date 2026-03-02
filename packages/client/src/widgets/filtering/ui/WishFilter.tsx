@@ -12,7 +12,7 @@ import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDom
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
 import DepartmentFilter from '../../../features/filtering/ui/DepartmentFilter.tsx';
 import FilterDelete from '../../../features/filtering/ui/FilterDelete.tsx';
-import usePreSeatGate from '@/widgets/live/preSeat/model/usePreSeatGate.ts';
+import { useManagePeriod } from '@/entities/schedule/lib/useManagePeriod';
 import useWishesPreSeats from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
 import { IconButton, Flex, Chip } from '@allcll/allcll-ui';
 import { useWishesTableStore } from '@/features/wish/model/useWishTableColumnStore.ts';
@@ -50,7 +50,8 @@ function WishFilter() {
   const allSelectedFilters = getAllSelectedLabels(filters);
 
   const hasPreSeats = subjects && 'seat' in subjects;
-  const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
+  const { preSeat } = useManagePeriod();
+  const isPreSeatAvailable = preSeat.shouldPreparePreSeat && hasPreSeats;
   const isWishesAvailable = subjects && 'totalCount' in subjects;
 
   const setToggleFavorite = () => setFilter('favoriteOnly', !favoriteOnly);

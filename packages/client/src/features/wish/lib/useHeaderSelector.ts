@@ -1,14 +1,15 @@
 import { Wishes } from '@/shared/model/types.ts';
 import { useWishesTableStore } from '../model/useWishTableColumnStore';
 import { IPreRealSeat } from '@/entities/seat/api/usePreRealSeats';
-import usePreSeatGate from '@/widgets/live/preSeat/model/usePreSeatGate';
+import { useManagePeriod } from '@/entities/schedule/lib/useManagePeriod';
 
 /** 사용하는 헤더를 반환해줍니다. 기간에 따라, wishes, pre-seats 변경 가능 */
 function useHeaderSelector(data: Wishes[] | (Wishes & IPreRealSeat)[] | null | undefined) {
   const tableTitles = useWishesTableStore(state => state.tableTitles);
   const hasPreSeats = !!(data && data[0] && 'seat' in data[0]);
   const isWishesAvailable = data && data[0] && 'totalCount' in data[0];
-  const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
+  const { preSeat } = useManagePeriod();
+  const isPreSeatAvailable = preSeat.shouldPreparePreSeat && hasPreSeats;
 
   let visibleCols = [{ title: '', visible: true, key: '' }, ...tableTitles.filter(col => col.visible)];
   if (!isWishesAvailable) {
