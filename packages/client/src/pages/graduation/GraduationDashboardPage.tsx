@@ -62,12 +62,13 @@ function GraduationDashboardPage() {
   const { activeTab, setActiveTab } = useMobileTabs('major');
   const { user, graduationData, isPending, isError, error } = useGraduationDashboard();
   const { data: criteriaCategories } = useCriteriaCategories();
-
   const { isOpen: isFeedbackOpen, openMode: feedbackOpenMode, onClose: closeFeedback, open: openFeedback } = useFeedbackTrigger({
     enabled: !isPending && !isError,
     isMobile,
     activeTab,
   });
+  
+  useGraduationConfetti(graduationData?.isGraduatable ?? false);
 
   const handleStartOverGraduationCheck = () => {
     if (!window.confirm('졸업 요건을 다시 검사하시겠습니까?')) return;

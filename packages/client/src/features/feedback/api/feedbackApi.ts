@@ -7,7 +7,7 @@ export interface FeedbackPayload {
 }
 
 export async function submitFeedback(payload: FeedbackPayload): Promise<Response> {
-  return fetchOnAPI('/api/review', {
+  const response = await fetchOnAPI('/api/review', {
     method: 'POST',
     body: JSON.stringify(payload),
     headers: { 'Content-Type': 'application/json' },
@@ -17,5 +17,5 @@ export async function submitFeedback(payload: FeedbackPayload): Promise<Response
     throw new Error(await response.text());
   }
 
-  return { success: true };
+  return response;
 }
