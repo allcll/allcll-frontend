@@ -48,7 +48,7 @@ export const FeedbackModal = ({ isOpen, onClose }: Props) => {
             onClose();
           }, 2000);
         },
-        onError: (error) => {
+        onError: (_error) => {
           setError('응답을 제출할 수 없습니다');
           setTimeout(() => setError(null), 5000);
         },
