@@ -6,8 +6,8 @@ import { Button, SupportingText } from '@allcll/allcll-ui';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 import { useSpringConfetti } from '@/widgets/home/lib/useMainBannerSeasonConfetti';
 
-const START_DATE = '02월 10일(화)';
-const END_DATE = '02월 13일(금)';
+const START_DATE = '03/04(수)';
+const END_DATE = '03/09(월)';
 
 function MainBanner() {
   const { data } = useServiceSemester();

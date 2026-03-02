@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import confetti from 'canvas-confetti';
 
 const PETAL_PATH = [
@@ -15,6 +15,8 @@ const PETAL_PATH = [
 const SPRING_PETAL_COLORS = ['#F8B9C8', '#F9C0CC', '#FAC4D1', '#FCD2DE', '#FDE4EC', '#F6B3C2', '#F5ABBE', '#F39DB2'];
 
 export function useSpringConfetti(canvasRef: React.RefObject<HTMLCanvasElement | null>) {
+  const isVisible = useRef(true);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -29,7 +31,7 @@ export function useSpringConfetti(canvasRef: React.RefObject<HTMLCanvasElement |
     const petal = confetti.shapeFromPath({ path: PETAL_PATH });
 
     const interval = setInterval(() => {
-      if (document.hidden) return;
+      if (document.hidden || !isVisible.current) return;
 
       const count = !isMobile && !reducedMotion && Math.random() < 0.3 ? 2 : 1;
 
@@ -56,6 +58,7 @@ export function useSpringConfetti(canvasRef: React.RefObject<HTMLCanvasElement |
 
     const observer = new IntersectionObserver(
       ([entry]) => {
+        isVisible.current = entry.isIntersecting;
         if (!entry.isIntersecting) {
           myConfetti.reset();
         }
