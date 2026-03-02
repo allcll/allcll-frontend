@@ -50,7 +50,11 @@ function GraduationDashboardPage() {
   const { activeTab, setActiveTab } = useMobileTabs('major');
   const { user, graduationData, isPending, isError, error } = useGraduationDashboard();
   const { data: criteriaCategories } = useCriteriaCategories();
-  const { isOpen: isFeedbackOpen, onClose: closeFeedback } = useFeedbackTrigger(!isPending && !isError);
+  const { isOpen: isFeedbackOpen, openMode: feedbackOpenMode, onClose: closeFeedback, open: openFeedback } = useFeedbackTrigger({
+    enabled: !isPending && !isError,
+    isMobile,
+    activeTab,
+  });
 
   const handleStartOverGraduationCheck = () => {
     if (!window.confirm('졸업 요건을 다시 검사하시겠습니까?')) return;
@@ -211,7 +215,10 @@ function GraduationDashboardPage() {
           <OverallSummaryCard user={user} graduationData={graduationData} />
 
           {/* 다시 검사하기 버튼 */}
-          <Flex justify="justify-end">
+          <Flex justify="justify-between">
+            <Button variant="text" textColor="secondary" size="medium" onClick={() => openFeedback('manual')}>
+              오류 제보
+            </Button>
             <div className="bg-white rounded-md">
               <Button variant="outlined" size="medium" onClick={handleStartOverGraduationCheck}>
                 다시 검사하기
@@ -319,7 +326,7 @@ function GraduationDashboardPage() {
       {user && <EditProfileModal isOpen={isEditProfileOpen} onClose={() => setIsEditProfileOpen(false)} user={user} />}
 
       {/* 피드백 모달 */}
-      <FeedbackModal isOpen={isFeedbackOpen} onClose={closeFeedback} />
+      <FeedbackModal isOpen={isFeedbackOpen} onClose={closeFeedback} openMode={feedbackOpenMode} />
     </>
   );
 }

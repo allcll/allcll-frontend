@@ -1,9 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
 import { submitFeedback } from './feedbackApi';
-import type { FeedbackPayload, FeedbackResponse } from './feedbackApi';
+import type { FeedbackPayload } from './feedbackApi';
 
 export function useFeedbackMutation() {
-  return useMutation<FeedbackResponse, Error, FeedbackPayload>({
+  return useMutation<Response, Error, FeedbackPayload>({
     mutationFn: submitFeedback,
   });
 }
