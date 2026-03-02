@@ -5,10 +5,12 @@ import markdownComponents from '@/shared/config/markdownComponents';
 import usePrivacyPolicy from '@/entities/privacyPolicy/model/usePrivacyPolicy';
 import PrivacyLabelGrid from '../../widgets/user/ui/PrivacyLabelGrid';
 import { Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import LoadingSpinner from '@/shared/ui/LoadingSpinner';
 
 function PrivacyPolicy() {
-  const { data: markdown } = usePrivacyPolicy();
+  const { data: markdown, isLoading } = usePrivacyPolicy();
 
+  if (isLoading) return <LoadingSpinner />;
   if (!markdown) return null;
 
   return (
