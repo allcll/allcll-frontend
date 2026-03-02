@@ -26,7 +26,7 @@ function MainBanner() {
           <div className="flex flex-row gap-2 items-center">
             <img src="/calendar.png" alt="2026-1학기 세종대 수강신청 일정 아이콘" className="w-10 h-10" />
             <span className="italic text-xs text-stone-500 ">
-              {data?.semesterValue}학기 수강 신청 기간 <br />
+              {data?.semesterValue}학기 수강 정정 기간 <br />
               {START_DATE} ~ {END_DATE}
             </span>
           </div>
