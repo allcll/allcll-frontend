@@ -33,20 +33,20 @@ export function useSpringConfetti(canvasRef: React.RefObject<HTMLCanvasElement |
     const interval = setInterval(() => {
       if (document.hidden || !isVisible.current) return;
 
-      const count = !isMobile && !reducedMotion && Math.random() < 0.3 ? 2 : 1;
+      const count = !isMobile && !reducedMotion && Math.random() < 0.3 ? 2 : 1; // NOSONAR
 
       myConfetti({
         shapes: [petal],
         colors: SPRING_PETAL_COLORS,
         particleCount: count,
-        angle: 268 + Math.random() * 10,
-        spread: 12 + Math.random() * 18,
-        startVelocity: 2 + Math.random() * 1.5,
+        angle: 268 + Math.random() * 10, // NOSONAR
+        spread: 12 + Math.random() * 18, // NOSONAR
+        startVelocity: 2 + Math.random() * 1.5, // NOSONAR
         gravity: 0.18,
         decay: 0.993,
         ticks,
         scalar: 1.6,
-        origin: { x: Math.random(), y: 0 },
+        origin: { x: Math.random(), y: 0 }, // NOSONAR
       });
     }, intervalMs);
 
