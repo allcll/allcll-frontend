@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import useFeedbackStore from '@/features/feedback/model/useFeedbackStore';
 
 type FeedbackTab = 'major' | 'general' | 'certification';
-type FeedbackOpenMode = 'auto' | 'manual';
+export type FeedbackOpenMode = 'auto' | 'manual';
 
 type UseFeedbackTriggerOptions = {
   enabled?: boolean;

@@ -1,7 +1,8 @@
 import { Dialog, Heading } from '@allcll/allcll-ui';
 import { FeedbackActions, FeedbackFields, FeedbackSuccess } from './FeedbackSharedContent';
+import { FeedbackTitles } from '../lib/useFeedbackTitle';
 
-type Props = {
+type FeedbackDesktopModalProps = {
   success: boolean;
   rate: 0 | 1 | 2 | 3;
   setRate: (rate: 1 | 2 | 3) => void;
@@ -12,6 +13,7 @@ type Props = {
   onClose: () => void;
   onDontShowAgain: () => void;
   onSubmit: () => void;
+  titles: FeedbackTitles;
 };
 
 export default function FeedbackDesktopModal({
@@ -25,7 +27,8 @@ export default function FeedbackDesktopModal({
   onClose,
   onDontShowAgain,
   onSubmit,
-}: Props) {
+  titles,
+}: FeedbackDesktopModalProps) {
   return (
     <div className="fixed bottom-6 right-6 z-50">
       <div className="w-80 bg-white rounded-2xl shadow-lg">
@@ -33,12 +36,12 @@ export default function FeedbackDesktopModal({
           <>
             <Dialog.Header onClose={onClose}>
               <Heading level={3} size="xl" className="font-bold">
-                졸업요건 검사 피드백
+                {titles.title}
               </Heading>
             </Dialog.Header>
 
             <Dialog.Content>
-              <FeedbackFields rate={rate} setRate={setRate} detail={detail} setDetail={setDetail} error={error} />
+              <FeedbackFields titles={titles} rate={rate} setRate={setRate} detail={detail} setDetail={setDetail} error={error} />
             </Dialog.Content>
 
             <Dialog.Footer>

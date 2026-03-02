@@ -1,13 +1,15 @@
 import FeedbackFace from '@/assets/ci-icon.svg?react';
 import CheckIcon from '@/assets/check.svg?react';
 import { Button, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import { FeedbackTitles } from '../lib/useFeedbackTitle';
 
-type CommonProps = {
+type FeedbackFieldsProps = {
   rate: 0 | 1 | 2 | 3;
   setRate: (rate: 1 | 2 | 3) => void;
   detail: string;
   setDetail: (value: string) => void;
   error: string | null;
+  titles: FeedbackTitles;
 };
 
 type ActionProps = {
@@ -17,10 +19,10 @@ type ActionProps = {
   align?: 'end' | 'between';
 };
 
-export function FeedbackFields({ rate, setRate, detail, setDetail, error }: CommonProps) {
+export function FeedbackFields({ titles, rate, setRate, detail, setDetail, error }: FeedbackFieldsProps) {
   return (
     <>
-      <Heading level={4}>결과가 정확했나요?</Heading>
+      <Heading level={4}>{titles.radioTitle}</Heading>
       <Flex justify="justify-center" className="gap-3 mb-3">
         <RateInputs rate={1} currentRate={rate} onClick={() => setRate(1)} />
         <RateInputs rate={2} currentRate={rate} onClick={() => setRate(2)} />
@@ -28,11 +30,11 @@ export function FeedbackFields({ rate, setRate, detail, setDetail, error }: Comm
       </Flex>
 
       <Heading level={4} className="block text-sm text-gray-600 mb-2">
-        추가 의견을 남겨주세요 (선택)
+        {titles.textareaTitle}
       </Heading>
       <textarea
         className="w-full min-h-20 resize-y text-sm border rounded-md border-gray-400 py-2 px-3 focus:outline-none focus:ring-0 focus:border-primary-500"
-        placeholder="복수전공, 교환학생, 재수강, 인정과목 등에서 오류가 발생했을 시, 오류 내용을 작성해주시면 서비스에 큰 도움이 됩니다."
+        placeholder={titles.textareaPlaceholder}
         name="detail"
         value={detail}
         onChange={e => setDetail(e.target.value)}

@@ -2,17 +2,20 @@ import FeedbackDesktopModal from '@/features/feedback/ui/FeedbackDesktopModal';
 import FeedbackMobileSheet from '@/features/feedback/ui/FeedbackMobileSheet';
 import useFeedbackModalController from '@/features/feedback/lib/useFeedbackModalController';
 import FeedbackPeekBar from '@/features/feedback/ui/FeedbackPeekBar';
+import { FeedbackOpenMode } from '../lib/FeedbackTrigger';
+import useFeedbackTitle from '../lib/useFeedbackTitle';
 import useMobile from '@/shared/lib/useMobile';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  openMode?: 'auto' | 'manual';
+  openMode?: FeedbackOpenMode;
 };
 
 export const FeedbackModal = ({ isOpen, onClose, openMode = 'auto' }: Props) => {
   const isMobile = useMobile();
   const controller = useFeedbackModalController({ isOpen, onClose, isMobile, openMode });
+  const titles = useFeedbackTitle(openMode);
 
   if (!isOpen) return null;
 
@@ -32,6 +35,7 @@ export const FeedbackModal = ({ isOpen, onClose, openMode = 'auto' }: Props) => 
       onClose={controller.handleClose}
       onDontShowAgain={controller.handleDontShowAgain}
       onSubmit={controller.handleSubmit}
+      titles={titles}
     />
   ) : (
     <FeedbackDesktopModal
@@ -45,6 +49,7 @@ export const FeedbackModal = ({ isOpen, onClose, openMode = 'auto' }: Props) => 
       onClose={controller.handleClose}
       onDontShowAgain={controller.handleDontShowAgain}
       onSubmit={controller.handleSubmit}
+      titles={titles}
     />
   );
 };
