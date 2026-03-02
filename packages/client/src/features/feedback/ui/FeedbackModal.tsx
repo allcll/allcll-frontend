@@ -62,7 +62,7 @@ export const FeedbackModal = ({ isOpen, onClose }: Props) => {
   }
 
   return (
-    <div className="fixed bottom-6 left-6 right-6 z-50">
+    <div className="fixed bottom-6 right-6 z-50">
       <div className="w-80 bg-white rounded-2xl shadow-lg">
         {!success ? (
           <>
