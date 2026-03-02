@@ -427,8 +427,8 @@ const transferCourses: GraduationCourse[] = [
   },
 ];
 
-export const coursesDataByUserType: Record<UserType, { courses: GraduationCourse[] }> = {
-  SINGLE: { courses: singleCourses },
-  DOUBLE: { courses: doubleCourses },
-  TRANSFER: { courses: transferCourses },
+export const coursesDataByUserType: Record<UserType, { value: GraduationCourse[] }> = {
+  SINGLE: { value: singleCourses },
+  DOUBLE: { value: doubleCourses },
+  TRANSFER: { value: transferCourses },
 };
