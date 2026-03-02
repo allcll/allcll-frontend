@@ -1,5 +1,6 @@
 import { disassemble } from 'es-hangul';
 import { Subject, Wishes } from '@/shared/model/types.ts';
+import { getNormalizedKeyword } from '@/shared/lib/search.ts';
 import { IPreRealSeat } from '@/entities/seat/api/usePreRealSeats.ts';
 import { usePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
 import useFavorites from '@/features/filtering/model/useFavorites.ts';
@@ -70,10 +71,6 @@ function filterMatches<T>(value: T, matchList: T[]) {
   return !matchList.length || matchList.includes(value);
 }
 
-function getNormalizedKeyword(keyword: string) {
-  const cleanSearchInput = keyword.replace(/[^\wㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-  return disassemble(cleanSearchInput).toLowerCase();
-}
 
 export function filterDays(subject: Wishes | Subject, selectedDays: Day[]) {
   if (!subject.lesnTime || !selectedDays || selectedDays.length === 0) {

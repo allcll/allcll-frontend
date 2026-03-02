@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { disassemble } from 'es-hangul';
 import { Chip, ListboxOption, SupportingText } from '@allcll/allcll-ui';
 import SearchSvg from '@/assets/search.svg?react';
+import { getNormalizedKeyword } from '@/shared/lib/search';
 
 interface SelectOption {
   value: string;
@@ -17,11 +17,6 @@ interface CustomSelectProps {
   onSelect: (value: string) => void;
   searchable?: boolean;
   searchPlaceholder?: string;
-}
-
-function getNormalizedKeyword(keyword: string) {
-  const clean = keyword.replace(/[^\wㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-  return disassemble(clean).toLowerCase();
 }
 
 function CustomSelect({
