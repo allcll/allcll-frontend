@@ -151,9 +151,9 @@ export default function useBottomSheet() {
     }
   };
 
-  const collapseToMin = () => {
+  const collapseToMin = (height = MAX_Y) => {
     if (sheet.current) {
-      sheet.current.style.setProperty('transform', `translateY(${MAX_Y}px)`);
+      sheet.current.style.setProperty('transform', `translateY(${height}px)`);
     }
   };
 

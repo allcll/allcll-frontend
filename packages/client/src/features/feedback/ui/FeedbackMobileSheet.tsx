@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
 import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader';
 import { FeedbackActions, FeedbackFields, FeedbackSuccess } from './FeedbackSharedContent';
+import { Flex } from '@allcll/allcll-ui';
 
 type Props = {
   success: boolean;
@@ -50,7 +51,7 @@ export default function FeedbackMobileSheet({
 }
 
 type ContentProps = Props & {
-  collapseToMin: () => void;
+  collapseToMin: (height?: number) => void;
 };
 
 function Content({
@@ -67,7 +68,7 @@ function Content({
   collapseToMin,
 }: ContentProps) {
   useEffect(() => {
-    collapseToMin();
+    collapseToMin(window.innerHeight - 380);
   }, [collapseToMin]);
 
   return !success ? (
@@ -75,7 +76,9 @@ function Content({
       <BottomSheetHeader headerType="close" title="졸업요건 검사 피드백" onClose={onClose} />
       <div className="px-4 pb-4">
         <FeedbackFields rate={rate} setRate={setRate} detail={detail} setDetail={setDetail} error={error} />
-        <FeedbackActions isPending={isPending} onDontShowAgain={onDontShowAgain} onSubmit={onSubmit} align="end" />
+        <Flex justify="justify-end" className="gap-2 pt-3">
+          <FeedbackActions isPending={isPending} onDontShowAgain={onDontShowAgain} onSubmit={onSubmit} />
+        </Flex>
       </div>
     </>
   ) : (

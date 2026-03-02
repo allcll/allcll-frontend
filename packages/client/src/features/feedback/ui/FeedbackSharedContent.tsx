@@ -38,25 +38,12 @@ export function FeedbackFields({ rate, setRate, detail, setDetail, error }: Comm
         onChange={e => setDetail(e.target.value)}
       />
 
-      {error && <p className="text-red-600 text-sm mb-3">{error}</p>}
+      {error && <p className="text-red-600 text-sm mb-3" aria-live='assertive'>{error}</p>}
     </>
   );
 }
 
-export function FeedbackActions({ isPending, onDontShowAgain, onSubmit, align = 'between' }: ActionProps) {
-  if (align === 'end') {
-    return (
-      <Flex justify="justify-end" className="gap-2 pt-3">
-        <Button variant="text" textColor="primary" size="medium" onClick={onDontShowAgain} disabled={isPending}>
-          다시 보지 않기
-        </Button>
-        <Button variant="primary" size="medium" onClick={onSubmit} disabled={isPending}>
-          {isPending ? '제출중...' : '제출하기'}
-        </Button>
-      </Flex>
-    );
-  }
-
+export function FeedbackActions({ isPending, onDontShowAgain, onSubmit }: ActionProps) {
   return (
     <>
       <Button variant="text" textColor="primary" size="medium" onClick={onDontShowAgain} disabled={isPending}>

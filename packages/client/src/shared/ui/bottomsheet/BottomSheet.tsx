@@ -6,7 +6,7 @@ import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 
 type IBottomSheetChildren =
   | React.ReactNode
-  | ((methods: { expandToMax: () => void; collapseToMin: () => void }) => React.ReactNode);
+  | ((methods: { expandToMax: () => void; collapseToMin: (height?: number) => void }) => React.ReactNode);
 
 interface IBottomSheet {
   children: IBottomSheetChildren;
