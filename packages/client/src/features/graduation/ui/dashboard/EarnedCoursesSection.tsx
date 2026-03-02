@@ -3,11 +3,13 @@ import { Flex, Chip, ListboxOption } from '@allcll/allcll-ui';
 import { useGraduationCourses } from '@/entities/graduation/model/useGraduation';
 import type { CategoryType, GraduationCourse } from '@/entities/graduation/api/graduation';
 import { CATEGORY_TYPE_LABELS } from '../../lib/mappers';
+import { COURSE_CATEGORY_ORDER } from '@/entities/graduation/lib/rules';
 import CheckSvg from '@/assets/checkbox-blue.svg?react';
 import ArrowDownSvg from '@/assets/arrow-down-gray.svg?react';
 
 function getUniqueCategories(courses: GraduationCourse[]): CategoryType[] {
-  return Array.from(new Set(courses.map(course => course.categoryType)));
+  const existingCategories = new Set(courses.map(course => course.categoryType));
+  return COURSE_CATEGORY_ORDER.filter(cat => existingCategories.has(cat));
 }
 
 function filterCourses(courses: GraduationCourse[], category: CategoryType | '전체'): GraduationCourse[] {

@@ -16,7 +16,8 @@ export type CategoryType =
   | 'MAJOR_REQUIRED'
   | 'MAJOR_ELECTIVE'
   | 'MAJOR_BASIC'
-  | 'TOTAL_COMPLETION';
+  | 'TOTAL_COMPLETION'
+  | 'GENERAL';
 
 /** 스코프 타입 */
 export type ScopeType = 'PRIMARY' | 'SECONDARY' | 'MINOR';

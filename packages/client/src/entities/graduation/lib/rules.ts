@@ -11,6 +11,19 @@ export const GENERAL_CATEGORY_TYPES: CategoryType[] = [
   'GENERAL_ELECTIVE',
 ];
 
+/** 이수 과목 필터 순서 */
+export const COURSE_CATEGORY_ORDER: CategoryType[] = [
+  'MAJOR_REQUIRED',
+  'MAJOR_ELECTIVE',
+  'MAJOR_BASIC',
+  'COMMON_REQUIRED',
+  'BALANCE_REQUIRED',
+  'ACADEMIC_BASIC',
+  'GENERAL_ELECTIVE',
+  'GENERAL',
+  'TOTAL_COMPLETION',
+];
+
 /** 카테고리 목록에서 특정 타입 찾기 */
 export function findCategory(categories: CategoryProgress[], categoryType: CategoryType): CategoryProgress | undefined {
   return categories.find(cat => cat.categoryType === categoryType);

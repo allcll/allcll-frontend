@@ -10,6 +10,7 @@ export const CATEGORY_TYPE_LABELS: Record<CategoryType, string> = {
   MAJOR_ELECTIVE: '전공선택',
   MAJOR_BASIC: '전공기초',
   TOTAL_COMPLETION: '총이수학점',
+  GENERAL: '교양',
 };
 
 /** 고전독서 도메인 → 한글 라벨 매핑 */
