@@ -71,6 +71,7 @@ function LoginForm({ onSuccess, onDepartmentNotFound }: LoginFormProps) {
           errorMessage={errors.studentId}
           required
           placeholder="학번을 입력하세요"
+          autoComplete="username"
         />
 
         <div className="relative">
@@ -87,13 +88,14 @@ function LoginForm({ onSuccess, onDepartmentNotFound }: LoginFormProps) {
             errorMessage={errors.password}
             required
             placeholder="학사 정보 시스템 비밀번호를 입력하세요."
+            autoComplete="current-password"
           />
           {values.password && (
             <IconButton
               type="button"
               onClick={() => setShowPassword(value => !value)}
               aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
-              icon={showPassword ? <EyeClosedIcon className="w-4 h-4" /> : <EyeOpenIcon className="w-4 h-4" />}
+              icon={!showPassword ? <EyeClosedIcon className="w-4 h-4" /> : <EyeOpenIcon className="w-4 h-4" />}
               className="absolute right-3 top-11"
             />
           )}
