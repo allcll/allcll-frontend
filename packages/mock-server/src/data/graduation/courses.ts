@@ -1,3 +1,4 @@
+// NOSONAR
 import type { UserType } from '../../utils/graduation-state';
 
 interface GraduationCourse {
