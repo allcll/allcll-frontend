@@ -1,16 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { Flex, Chip, ListboxOption } from '@allcll/allcll-ui';
 import { useGraduationCourses } from '@/entities/graduation/model/useGraduation';
-import type { GraduationCourse } from '@/entities/graduation/api/graduation';
+import type { CategoryType, GraduationCourse } from '@/entities/graduation/api/graduation';
+import { CATEGORY_TYPE_LABELS } from '../../lib/mappers';
 import CheckSvg from '@/assets/checkbox-blue.svg?react';
 import ArrowDownSvg from '@/assets/arrow-down-gray.svg?react';
 
-function getUniqueAreas(courses: GraduationCourse[]): string[] {
-  return Array.from(new Set(courses.map(course => course.selectedArea)));
+function getUniqueCategories(courses: GraduationCourse[]): CategoryType[] {
+  return Array.from(new Set(courses.map(course => course.categoryType)));
 }
 
-function filterCourses(courses: GraduationCourse[], area: string): GraduationCourse[] {
-  const filtered = area === '전체' ? courses : courses.filter(course => course.selectedArea === area);
+function filterCourses(courses: GraduationCourse[], category: CategoryType | '전체'): GraduationCourse[] {
+  const filtered = category === '전체' ? courses : courses.filter(course => course.categoryType === category);
   return [...filtered.filter(course => course.isEarned), ...filtered.filter(course => !course.isEarned)];
 }
 
@@ -32,7 +33,7 @@ function CourseRow({ course }: Readonly<{ course: GraduationCourse }>) {
         <span className="text-xs text-gray-400">{course.curiNo}</span>
       </Flex>
       <Flex align="items-center" gap="gap-3" className="shrink-0">
-        <span className="text-xs text-gray-500 whitespace-nowrap">{course.selectedArea}</span>
+        <span className="text-xs text-gray-500 whitespace-nowrap">{CATEGORY_TYPE_LABELS[course.categoryType]}</span>
         <span className="text-xs text-gray-500 whitespace-nowrap">{course.credits}학점</span>
       </Flex>
     </Flex>
@@ -42,13 +43,13 @@ function CourseRow({ course }: Readonly<{ course: GraduationCourse }>) {
 function EarnedCoursesSection() {
   const [isOpen, setIsOpen] = useState(false);
   const { data, isPending, isError } = useGraduationCourses();
-  const [selectedArea, setSelectedArea] = useState<string>('전체');
+  const [selectedCategory, setSelectedCategory] = useState<CategoryType | '전체'>('전체');
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isOpen) {
-      setSelectedArea('전체');
+      setSelectedCategory('전체');
       setIsSelectOpen(false);
     }
   }, [isOpen]);
@@ -65,15 +66,15 @@ function EarnedCoursesSection() {
   }, [isSelectOpen]);
 
   const courses = data?.courses ?? [];
-  const areas = getUniqueAreas(courses);
-  const visibleCourses = filterCourses(courses, selectedArea);
+  const categories = getUniqueCategories(courses);
+  const visibleCourses = filterCourses(courses, selectedCategory);
   const earnedCourses = visibleCourses.filter(course => course.isEarned);
   const earnedCredits = earnedCourses.reduce((sum, course) => sum + course.credits, 0);
   const earnedCount = earnedCourses.length;
 
-  const areaOptions = [
-    { value: '전체', label: '전체' },
-    ...areas.map(area => ({ value: area, label: area })),
+  const categoryOptions = [
+    { value: '전체' as const, label: '전체' },
+    ...categories.map(category => ({ value: category, label: CATEGORY_TYPE_LABELS[category] })),
   ];
 
   return (
@@ -107,7 +108,7 @@ function EarnedCoursesSection() {
                 <Flex align="items-center" justify="justify-between" gap="gap-3">
                   <div ref={selectRef} className="relative">
                     <Chip
-                      label={selectedArea}
+                      label={selectedCategory === '전체' ? '전체' : CATEGORY_TYPE_LABELS[selectedCategory]}
                       selected={isSelectOpen}
                       variant="select"
                       isChipOpen={isSelectOpen}
@@ -115,14 +116,14 @@ function EarnedCoursesSection() {
                     />
                     {isSelectOpen && (
                       <div className="absolute z-10 mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto min-w-[120px]">
-                        {areaOptions.map(option => (
+                        {categoryOptions.map(option => (
                           <ListboxOption
                             key={option.value}
-                            selected={option.value === selectedArea}
+                            selected={option.value === selectedCategory}
                             left={option.label}
-                            right={option.value === selectedArea ? <CheckSvg className="w-4 h-4 shrink-0" /> : null}
+                            right={option.value === selectedCategory ? <CheckSvg className="w-4 h-4 shrink-0" /> : null}
                             onSelect={() => {
-                              setSelectedArea(option.value);
+                              setSelectedCategory(option.value);
                               setIsSelectOpen(false);
                             }}
                           />

@@ -291,5 +291,6 @@ export interface GraduationCoursesResponse {
 }
 
 export async function fetchGraduationCourses(): Promise<GraduationCoursesResponse> {
-  return await fetchJsonOnAPI<GraduationCoursesResponse>('/api/graduation/courses');
+  const { value: courses } = await fetchJsonOnAPI<{ value: GraduationCourse[] }>('/api/graduation/courses');
+  return { courses };
 }
