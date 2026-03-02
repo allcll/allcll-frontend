@@ -94,7 +94,7 @@ function LoginForm({ onSuccess, onDepartmentNotFound }: LoginFormProps) {
             <IconButton
               type="button"
               onClick={() => setShowPassword(value => !value)}
-              aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+              aria-label={showPassword ? '비밀번호 보기' : '비밀번호 숨기기'}
               icon={!showPassword ? <EyeClosedIcon className="w-4 h-4" /> : <EyeOpenIcon className="w-4 h-4" />}
               className="absolute right-3 top-11"
             />
