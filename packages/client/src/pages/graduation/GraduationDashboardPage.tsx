@@ -252,26 +252,28 @@ function GraduationDashboardPage() {
 
           {/* 다시 검사하기 버튼 */}
 
-          <Flex justify="justify-between">
-            <Button variant="text" textColor="secondary" size="medium" onClick={() => openFeedback('manual')}>
-              오류 제보
-            </Button>
-          </Flex>
-
-          <Flex justify="justify-end" align="items-center" gap="gap-2">
-            <span className="text-sm text-gray-400">
-              {new Date(graduationData.createdAt).toLocaleDateString('ko-KR', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}{' '}
-              분석
-            </span>
-            <div className="bg-white rounded-md">
-              <Button variant="outlined" size="medium" onClick={handleStartOverGraduationCheck}>
-                다시 검사하기
+          <Flex justify="justify-between" align="items-center">
+            <Flex justify="justify-between">
+              <Button variant="text" textColor="secondary" size="medium" onClick={() => openFeedback('manual')}>
+                오류 제보
               </Button>
-            </div>
+            </Flex>
+
+            <Flex justify="justify-end" align="items-center" gap="gap-2">
+              <span className="text-sm text-gray-400">
+                {new Date(graduationData.createdAt).toLocaleDateString('ko-KR', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}{' '}
+                분석
+              </span>
+              <div className="bg-white rounded-md">
+                <Button variant="outlined" size="medium" onClick={handleStartOverGraduationCheck}>
+                  다시 검사하기
+                </Button>
+              </div>
+            </Flex>
           </Flex>
 
           {/* 모바일: 탭 UI */}
