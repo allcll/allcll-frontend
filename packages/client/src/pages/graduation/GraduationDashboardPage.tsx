@@ -9,6 +9,8 @@ import LogoutButton from '@/features/user/ui/LogoutButton';
 import { useGraduationDashboard } from '@/features/graduation/model/useGraduationDashboard';
 import { useGraduationConfetti } from '@/features/graduation/lib/useGraduationConfetti';
 import { useCriteriaCategories } from '@/entities/graduation/model/useGraduation';
+import useFeedbackTrigger from '@/features/feedback/lib/FeedbackTrigger';
+import FeedbackModal from '@/features/feedback/ui/FeedbackModal';
 import {
   filterCategories,
   MAJOR_CATEGORY_TYPES,
@@ -60,6 +62,7 @@ function GraduationDashboardPage() {
   const { activeTab, setActiveTab } = useMobileTabs('major');
   const { user, graduationData, isPending, isError, error } = useGraduationDashboard();
   const { data: criteriaCategories } = useCriteriaCategories();
+  const { isOpen: isFeedbackOpen, onClose: closeFeedback } = useFeedbackTrigger(!isPending && !isError);
   useGraduationConfetti(graduationData?.isGraduatable ?? false);
 
   const handleStartOverGraduationCheck = () => {
@@ -371,6 +374,9 @@ function GraduationDashboardPage() {
 
       {/* 회원 정보 수정 모달 */}
       {user && <EditProfileModal isOpen={isEditProfileOpen} onClose={() => setIsEditProfileOpen(false)} user={user} />}
+
+      {/* 피드백 모달 */}
+      <FeedbackModal isOpen={isFeedbackOpen} onClose={closeFeedback} />
     </>
   );
 }
