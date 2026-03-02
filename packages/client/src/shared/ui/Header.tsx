@@ -1,11 +1,11 @@
 import { useCallback, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import LogoSvg from '@public/ci.svg?react';
-import LogoName from '@public/logo-name.svg?react';
+import LogoSvg from '@public/ci-spring.svg?react';
+import LogoName from '@public/logo-name-spring.svg?react';
 import HelpDeskSvg from '@/assets/help-desk.svg?react';
 import HelpChatSvg from '@/assets/chat-help.svg?react';
 import MenuSvg from '@/assets/menu.svg?react';
-import { IconButton } from '@allcll/allcll-ui';
+import { IconButton, Badge } from '@allcll/allcll-ui';
 import MobileMenu from './MobileMenu';
 
 export const HeaderContents = [
@@ -14,7 +14,7 @@ export const HeaderContents = [
   { title: '관심과목', path: '/wishes', end: true },
   { title: '올클연습', path: '/simulation', end: false },
   { title: '실시간여석', path: '/live', end: false },
-  { title: '졸업요건검사', path: '/graduation', end: false },
+  { title: '졸업요건검사', path: '/graduation', end: false, beta: true },
 ];
 
 export const ButtonContents = [
@@ -47,14 +47,21 @@ function Header() {
           </Link>
 
           <ul className="hidden md:flex space-x-4 text-sm sm:text-base">
-            {HeaderContents.map(({ title, path, end }) => (
+            {HeaderContents.map(({ title, path, end, beta }) => (
               <li key={path} className="font-bold">
                 <NavLink
                   to={path}
                   end={end}
-                  className={({ isActive }) => (isActive ? 'text-blue-500 font-semibold' : 'text-gray-500')}
+                  className={({ isActive }) =>
+                    `inline-flex items-center gap-1 ${isActive ? 'text-blue-500 font-semibold' : 'text-gray-500'}`
+                  }
                 >
                   {title}
+                  {beta && (
+                    <Badge variant="beta" appearance="outline" size="small">
+                      Beta
+                    </Badge>
+                  )}
                 </NavLink>
               </li>
             ))}
