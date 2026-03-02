@@ -7,13 +7,13 @@ export interface WishesApiResponse {
   baskets: { subjectId: number; totalCount: number }[];
 }
 
-// baskets.json 파일 업데이트 시 반드시 `CASH_VERSION` 값을 함께 변경해주세요.
+// baskets.json 파일 업데이트 시 반드시 `CACHE_VERSION` 값을 함께 변경해주세요.
 const {
-  basket: { basketOpenDate: CASH_VERSION },
+  basket: { basketOpenDate: CACHE_VERSION },
 } = useManagePeriod();
 
 export const fetchWishesDataBySemester = async (semester: string) => {
-  return await fetchJsonOnPublic<WishesApiResponse>(`/${semester}/baskets.json?v=${CASH_VERSION}`);
+  return await fetchJsonOnPublic<WishesApiResponse>(`/${semester}/baskets.json?v=${CACHE_VERSION}`);
 };
 
 interface DetailRegistersResponse {
