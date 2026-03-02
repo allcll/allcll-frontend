@@ -93,7 +93,7 @@ function Footer() {
         ))}
       </div>
 
-      <p className="pb-12">© 2025 ALLCLL. All rights reserved.</p>
+      <p className="pb-12">© 2026 ALLCLL. All rights reserved.</p>
     </footer>
   );
 }
