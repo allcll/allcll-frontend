@@ -67,7 +67,7 @@ function GraduationDashboardPage() {
     isMobile,
     activeTab,
   });
-  
+
   useGraduationConfetti(graduationData?.isGraduatable ?? false);
 
   const handleStartOverGraduationCheck = () => {
@@ -214,14 +214,10 @@ function GraduationDashboardPage() {
         <Banner deleteBanner={handleDeleteBanner}>
           본 서비스는 베타 버전으로, 분석 결과는 공식적인 효력을 갖지 않습니다. 오류 또는 개선 사항이 있으시면
           알려주시면 서비스 개선에 도움이 됩니다.{' '}
-          <a
-            href="https://forms.gle/bCDTVujEHunnvHe88"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-700 font-semibold underline"
-          >
-            오류 제보하기
-          </a>
+
+          <button className="text-blue-700 font-semibold underline" onClick={() => openFeedback('manual')}>
+            오류 제보
+          </button>
         </Banner>
       )}
 
@@ -254,12 +250,8 @@ function GraduationDashboardPage() {
           {/* 다시 검사하기 버튼 */}
 
           <Flex justify="justify-between" align="items-center">
-            <Flex justify="justify-between">
-              <Button variant="text" textColor="secondary" size="medium" onClick={() => openFeedback('manual')}>
-                오류 제보
-              </Button>
-            </Flex>
-
+            <div></div>
+            
             <Flex justify="justify-end" align="items-center" gap="gap-2">
               <span className="text-sm text-gray-400">
                 {new Date(graduationData.createdAt).toLocaleDateString('ko-KR', {
