@@ -1,4 +1,4 @@
-import { fetchJsonOnAPI } from '@/shared/api/api';
+import { fetchOnAPI } from '@/shared/api/api';
 
 export interface FeedbackPayload {
   rate: 1 | 2 | 3;
@@ -11,8 +11,15 @@ export interface FeedbackResponse {
 }
 
 export async function submitFeedback(payload: FeedbackPayload): Promise<FeedbackResponse> {
-  return fetchJsonOnAPI('/api/review', {
+  const response = await fetchOnAPI('/api/review', {
     method: 'POST',
     body: JSON.stringify(payload),
+    headers: { 'Content-Type': 'application/json' },
   });
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+
+  return { success: true };
 }
