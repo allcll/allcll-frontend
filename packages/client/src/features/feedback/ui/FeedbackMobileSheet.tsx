@@ -32,7 +32,7 @@ export default function FeedbackMobileSheet({
   return (
     <BottomSheet>
       {({ collapseToMin }) => (
-        <Content
+        <FeedbackContainer
           success={success}
           rate={rate}
           setRate={setRate}
@@ -54,7 +54,7 @@ type ContentProps = Props & {
   collapseToMin: (height?: number) => void;
 };
 
-function Content({
+function FeedbackContainer({
   success,
   rate,
   setRate,
@@ -68,7 +68,7 @@ function Content({
   collapseToMin,
 }: ContentProps) {
   useEffect(() => {
-    collapseToMin(window.innerHeight - 380);
+    collapseToMin(380);
   }, [collapseToMin]);
 
   return !success ? (
