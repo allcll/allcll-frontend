@@ -103,6 +103,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
             기본 정보 입력
           </Heading>
           <SupportingText>정확한 졸업 요건 검사를 위해 학적 정보를 입력해주세요.</SupportingText>
+          <SupportingText>부전공자의 경우, 졸업 요건 검사가 제공되지 않는 점 양해 부탁드립니다.</SupportingText>
         </div>
 
         <Flex direction="flex-col" gap="gap-6">
