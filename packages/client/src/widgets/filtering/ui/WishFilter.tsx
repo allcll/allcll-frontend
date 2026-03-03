@@ -155,7 +155,7 @@ function WishFilter() {
             setFilter={setFilter}
           />
 
-          {filters.classroom.length > 0 && (
+          {filters.classroom?.length > 0 && (
             <GenericMultiSelectFilter
               filterKey="classroom"
               options={FilterDomains.classRoom}
@@ -165,7 +165,7 @@ function WishFilter() {
             />
           )}
 
-          {filters.note.length > 0 && (
+          {filters.note?.length > 0 && (
             <GenericMultiSelectFilter
               filterKey="note"
               options={FilterDomains.remark}
@@ -174,7 +174,7 @@ function WishFilter() {
             />
           )}
 
-          {filters.categories.length > 0 && (
+          {filters.categories?.length > 0 && (
             <GenericMultiSelectFilter
               filterKey="categories"
               options={categoryOptions}
