@@ -26,7 +26,7 @@ function LoginConfirmationDialog({ isOpen, onClose, onConfirm, isPending }: ILog
           <ImportSvg className="w-12 h-12 mx-auto" />
           <p className="font-semibold text-gray-800 text-lg">학사정보시스템 로그아웃 안내</p>
           <SupportingText className="text-center">
-            ALLCLL 로그인 시 <span className="text-primary font-semibold">학사정보시스템에서 로그아웃</span>
+            ALLCLL 로그인 시 <span className="text-secondary-500 font-semibold">학사정보시스템에서 로그아웃</span>
             됩니다.
             <br />
             진행중인 작업이 있다면 완료 후 로그인해주시기 바랍니다.
