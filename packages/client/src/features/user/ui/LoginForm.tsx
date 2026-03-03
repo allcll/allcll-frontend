@@ -108,7 +108,12 @@ function LoginForm({ onSuccess, onDepartmentNotFound }: LoginFormProps) {
               <br />※ ALLCLL 로그인 시
               <span className="font-semibold text-primary">학사정보시스템(세종대 포털)에서 로그아웃</span>됩니다.
             </SupportingText>
-            <Flex direction="flex-col" align="items-start" gap="gap-2" className="sm:flex-row sm:items-center">
+            <Flex
+              direction="flex-col"
+              align="items-start"
+              justify="justify-between"
+              className="sm:flex-row sm:items-center"
+            >
               <Checkbox
                 label="개인정보 수집에 동의합니다."
                 name="agreeToTerms"
@@ -117,7 +122,7 @@ function LoginForm({ onSuccess, onDepartmentNotFound }: LoginFormProps) {
                 onBlur={() => onBlur('agreeToTerms')}
               />
 
-              <Button asChild variant="text" textColor="primary" size="small">
+              <Button asChild variant="text" textColor="gray" size="small">
                 <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">
                   자세히 보기
                 </a>
