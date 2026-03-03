@@ -2,7 +2,7 @@ name: PR Preview
 
 on:
   pull_request:
-    branches: [main, develop]
+    branches: [develop]
     types: [opened, synchronize, reopened, closed]
 
 jobs:
@@ -140,7 +140,7 @@ jobs:
             const admin_base_url = process.env.ADMIN_PREVIEW_BASE_URL || 'https://dev-admin.allcll.kr';
             const client_preview_url = `${client_base_url}/pr-${pr_number}/`;
             const admin_preview_url = `${admin_base_url}/pr-${pr_number}/`;
-const body = [
+            const body = [
               '## 🚀 Preview Deployment',
               `- **Client:** ${client_preview_url}`,
               `- **Admin:** ${admin_preview_url}`,
