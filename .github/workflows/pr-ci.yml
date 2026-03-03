@@ -140,10 +140,12 @@ jobs:
             const admin_base_url = process.env.ADMIN_PREVIEW_BASE_URL || 'https://dev-admin.allcll.kr';
             const client_preview_url = `${client_base_url}/pr-${pr_number}/`;
             const admin_preview_url = `${admin_base_url}/pr-${pr_number}/`;
-            const body = `## 🚀 Preview Deployment
-            - **Client:** ${client_preview_url}
-            - **Admin:** ${admin_preview_url}
-            > This preview is automatically updated on each push.`;
+const body = [
+              '## 🚀 Preview Deployment',
+              `- **Client:** ${client_preview_url}`,
+              `- **Admin:** ${admin_preview_url}`,
+              '> This preview is automatically updated on each push.',
+            ].join('\n');
 
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
