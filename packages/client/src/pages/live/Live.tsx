@@ -13,7 +13,7 @@ function Live() {
   const isSearchOpen = useAlarmModalStore(state => state.isSearchOpen);
   const setIsSearchOpen = useAlarmModalStore(state => state.setIsSearchOpen);
   const isMobile = useMobile();
-  const { shouldPreparePreSeat: isPreSeatAvailable } = useManagePeriod();
+  const { preSeat } = useManagePeriod();
 
   return (
     <>
@@ -41,7 +41,7 @@ function Live() {
           <LivePinnedCourses />
 
           <Grid columns={{ base: 1 }} gap="gap-4">
-            <LiveMainContent isPreSeatAvailable={isPreSeatAvailable} />
+            <LiveMainContent isPreSeatAvailable={preSeat.shouldPreparePreSeat} />
           </Grid>
         </Flex>
 

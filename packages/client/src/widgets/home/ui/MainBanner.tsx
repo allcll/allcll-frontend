@@ -7,7 +7,8 @@ import { useManagePeriod } from '@/entities/schedule/lib/useManagePeriod';
 
 function MainBanner() {
   const { data } = useServiceSemester();
-  const { mainPageRouter: {mainPageActions}, period :{displayPeriod} } = useManagePeriod();
+  const { mainPageRouter, period } = useManagePeriod();
+  const [mainAction, subAction] = mainPageRouter.mainPageActions;
 
   return (
     <Section className="flex flex-col md:flex-row items-center justify-between" bgColor="bg-banner-skysoft">
@@ -16,7 +17,7 @@ function MainBanner() {
           <img src="/calendar.png" alt="2026-1학기 세종대 수강신청 일정 아이콘" className="w-10 h-10" />
           <span className="italic text-xs text-stone-500 ">
             {data?.semesterValue}학기 수강 신청 기간 <br />
-            {displayPeriod.start} ~ {displayPeriod.end}
+            {period.displayPeriod.start} ~ {period.displayPeriod.end}
           </span>
         </div>
 
@@ -37,10 +38,10 @@ function MainBanner() {
 
         <div className="flex flex-col md:flex-row gap-4 mt-4">
           <Button variant="primary" size="medium" asChild>
-            <Link to={mainPageActions[0].link}>{mainPageActions[0].label}</Link>
+            <Link to={mainAction.link}>{mainAction.label}</Link>
           </Button>
           <Button variant="outlined" size="medium" asChild>
-            <Link to={mainPageActions[1].link}>{mainPageActions[1].label}</Link>
+            <Link to={subAction.link}>{subAction.label}</Link>
           </Button>
         </div>
       </div>
