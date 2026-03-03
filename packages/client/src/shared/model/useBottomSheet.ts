@@ -151,9 +151,11 @@ export default function useBottomSheet() {
     }
   };
 
-  const collapseToMin = () => {
+  const collapseToMin = (height?: number) => {
+    const fixedHeight = height ? window.innerHeight - height : MIN_Y;
+    
     if (sheet.current) {
-      sheet.current.style.setProperty('transform', `translateY(${MAX_Y}px)`);
+      sheet.current.style.setProperty('transform', `translateY(${fixedHeight}px)`);
     }
   };
 

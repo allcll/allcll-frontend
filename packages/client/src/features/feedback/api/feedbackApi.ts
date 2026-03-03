@@ -6,11 +6,7 @@ export interface FeedbackPayload {
   operationType: 'GRADUATION';
 }
 
-export interface FeedbackResponse {
-  success: boolean;
-}
-
-export async function submitFeedback(payload: FeedbackPayload): Promise<FeedbackResponse> {
+export async function submitFeedback(payload: FeedbackPayload): Promise<Response> {
   const response = await fetchOnAPI('/api/review', {
     method: 'POST',
     body: JSON.stringify(payload),
@@ -21,5 +17,5 @@ export async function submitFeedback(payload: FeedbackPayload): Promise<Feedback
     throw new Error(await response.text());
   }
 
-  return { success: true };
+  return response;
 }

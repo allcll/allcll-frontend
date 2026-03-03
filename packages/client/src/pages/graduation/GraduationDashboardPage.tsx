@@ -62,7 +62,12 @@ function GraduationDashboardPage() {
   const { activeTab, setActiveTab } = useMobileTabs('major');
   const { user, graduationData, isPending, isError, error } = useGraduationDashboard();
   const { data: criteriaCategories } = useCriteriaCategories();
-  const { isOpen: isFeedbackOpen, onClose: closeFeedback } = useFeedbackTrigger(!isPending && !isError);
+  const { isOpen: isFeedbackOpen, openMode: feedbackOpenMode, onClose: closeFeedback, open: openFeedback } = useFeedbackTrigger({
+    enabled: !isPending && !isError,
+    isMobile,
+    activeTab,
+  });
+
   useGraduationConfetti(graduationData?.isGraduatable ?? false);
 
   const handleStartOverGraduationCheck = () => {
@@ -209,14 +214,10 @@ function GraduationDashboardPage() {
         <Banner deleteBanner={handleDeleteBanner}>
           본 서비스는 베타 버전으로, 분석 결과는 공식적인 효력을 갖지 않습니다. 오류 또는 개선 사항이 있으시면
           알려주시면 서비스 개선에 도움이 됩니다.{' '}
-          <a
-            href="https://forms.gle/bCDTVujEHunnvHe88"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-700 font-semibold underline"
-          >
-            오류 제보하기
-          </a>
+
+          <button className="text-blue-700 font-semibold underline" onClick={() => openFeedback('manual')}>
+            오류 제보
+          </button>
         </Banner>
       )}
 
@@ -247,20 +248,25 @@ function GraduationDashboardPage() {
           <EarnedCoursesSection />
 
           {/* 다시 검사하기 버튼 */}
-          <Flex justify="justify-end" align="items-center" gap="gap-2">
-            <span className="text-sm text-gray-400">
-              {new Date(graduationData.createdAt).toLocaleDateString('ko-KR', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}{' '}
-              분석
-            </span>
-            <div className="bg-white rounded-md">
-              <Button variant="outlined" size="medium" onClick={handleStartOverGraduationCheck}>
-                다시 검사하기
-              </Button>
-            </div>
+
+          <Flex justify="justify-between" align="items-center">
+            <div></div>
+            
+            <Flex justify="justify-end" align="items-center" gap="gap-2">
+              <span className="text-sm text-gray-400">
+                {new Date(graduationData.createdAt).toLocaleDateString('ko-KR', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}{' '}
+                분석
+              </span>
+              <div className="bg-white rounded-md">
+                <Button variant="outlined" size="medium" onClick={handleStartOverGraduationCheck}>
+                  다시 검사하기
+                </Button>
+              </div>
+            </Flex>
           </Flex>
 
           {/* 모바일: 탭 UI */}
@@ -376,7 +382,7 @@ function GraduationDashboardPage() {
       {user && <EditProfileModal isOpen={isEditProfileOpen} onClose={() => setIsEditProfileOpen(false)} user={user} />}
 
       {/* 피드백 모달 */}
-      <FeedbackModal isOpen={isFeedbackOpen} onClose={closeFeedback} />
+      <FeedbackModal isOpen={isFeedbackOpen} onClose={closeFeedback} openMode={feedbackOpenMode} />
     </>
   );
 }
