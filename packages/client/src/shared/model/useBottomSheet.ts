@@ -1,5 +1,6 @@
 import { MIN_Y, MAX_Y } from '@/shared/ui/bottomsheet/BottomSheet.tsx';
 import { useRef, useEffect } from 'react';
+import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
 
 interface BottomSheetMetrics {
   touchStart: {
@@ -150,11 +151,15 @@ export default function useBottomSheet() {
     }
   };
 
-  const collapseToMin = () => {
+  const collapseToMin = (height?: number) => {
+    const fixedHeight = height ? window.innerHeight - height : MIN_Y;
+    
     if (sheet.current) {
-      sheet.current.style.setProperty('transform', `translateY(${MAX_Y}px)`);
+      sheet.current.style.setProperty('transform', `translateY(${fixedHeight}px)`);
     }
   };
+
+  useBodyScrollLock(true);
 
   useEffect(() => {
     const handleTouchStart = () => {
@@ -162,11 +167,8 @@ export default function useBottomSheet() {
     };
     content.current!.addEventListener('touchstart', handleTouchStart);
 
-    const originalStyle = window.getComputedStyle(document.body).overflow;
-    document.body.style.overflow = 'hidden';
-
     return () => {
-      document.body.style.overflow = originalStyle;
+      content.current?.removeEventListener('touchstart', handleTouchStart);
     };
   }, []);
 

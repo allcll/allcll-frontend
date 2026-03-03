@@ -11,9 +11,11 @@ export default ({ mode }: ConfigEnv) => {
 
   const TargetHost = env.VITE_TARGET_HOST;
   const TargetServer = `https://${TargetHost}`;
+  const base = env.VITE_BASE ?? '/';
   dotenv.config();
 
   return defineConfig({
+    base,
     plugins: [react(), tsconfigPaths(), tailwindcss(), svgr(), basicSsl()],
     server: {
       open: true,

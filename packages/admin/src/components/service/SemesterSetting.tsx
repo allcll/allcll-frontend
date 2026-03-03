@@ -1,5 +1,5 @@
 import { Card, Checkbox, Flex } from '@allcll/allcll-ui';
-import Filtering from '@allcll/common/components/filtering/Filtering';
+import { Filtering } from '@allcll/common';
 import { useState } from 'react';
 import SectionHeader from '../common/SectionHeader';
 

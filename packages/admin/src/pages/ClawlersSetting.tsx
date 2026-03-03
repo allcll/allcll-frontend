@@ -1,6 +1,6 @@
 import SessionAdmin from '@/components/clawlers/AuthTokenViewer';
 import Control from '@/components/clawlers/Control';
-import TostNotification from '@allcll/common/components/toast/ToastNotification';
+import { ToastNotification as TostNotification } from '@allcll/common';
 import DepartmentControl from '@/components/clawlers/SubjectAndDepartmentControl';
 import { SetupStep } from '@/utils/type';
 import SetupProgress from '../components/clawlers/SetupProgress';

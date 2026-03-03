@@ -6,7 +6,7 @@ import { Button, Flex, Label, ListboxOption } from '@allcll/allcll-ui';
 import { useFilteringDepartment } from '../lib/useFilteringDepartment';
 import CheckSvg from '@/assets/checkbox-blue.svg?react';
 import { ZeroContent } from '@/shared/ui/ZeroContent';
-import Filtering from '@common/components/filtering/Filtering';
+import { Filtering } from '@allcll/common';
 import { DepartmentType } from '@/features/filtering/model/types.ts';
 
 interface IDepartmentFilter {

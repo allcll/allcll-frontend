@@ -12,10 +12,15 @@ interface IUseToastNotification {
   clearToast: (filter: number | string) => void;
 }
 
-const useToastNotification = create<IUseToastNotification>(set => ({
+const useToastNotification = create<IUseToastNotification>((set, get) => ({
   isActivated: false,
   messages: [],
-  addToast: (message, tag) => set(state => ({ messages: [...state.messages, { message, tag }] })),
+  addToast: (message, tag) => {
+    set(state => ({ messages: [...state.messages, { message, tag }] }));
+    if (tag) {
+      setTimeout(() => get().clearToast(tag), 3000);
+    }
+  },
   clearToast: filter =>
     set(state => {
       if (typeof filter === 'number') {

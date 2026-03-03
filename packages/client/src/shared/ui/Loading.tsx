@@ -4,7 +4,7 @@ interface LoadingProps {
   message?: string;
 }
 
-const Loading = ({ message }: LoadingProps) => {
+const LoadingWithMessage = ({ message }: LoadingProps) => {
   return (
     <Flex
       flex-direction="column"
@@ -14,10 +14,35 @@ const Loading = ({ message }: LoadingProps) => {
         height: '100%',
       }}
     >
-      <SupportingText>{message || '로딩 중이에요'}</SupportingText>
-      <SupportingText>잠시만 기다려 주세요.</SupportingText>
+      <Flex direction="flex-col" align="items-center" justify="justify-center">
+        <LogoSpinner />
+        <p className="font-semibold text-lg">{message || '로딩 중이에요'}</p>
+        <SupportingText>잠시만 기다려 주세요.</SupportingText>
+      </Flex>
     </Flex>
   );
 };
 
-export default Loading;
+function LogoSpinner() {
+  return (
+    <>
+      <img
+        src="/ci.svg"
+        alt="Loading"
+        style={{
+          width: 80,
+          height: 80,
+          animation: 'spin 1.5s linear infinite',
+        }}
+      />
+      <style>{`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}</style>
+    </>
+  );
+}
+
+export default LoadingWithMessage;
