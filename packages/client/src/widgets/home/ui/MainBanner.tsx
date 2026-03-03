@@ -33,7 +33,7 @@ function MainBanner() {
           </div>
 
           <h1 className="text-lg mt-10 sm:text-xl md:text-2xl leading-snug font-bold mb-3 ">
-            세종대 수강신청 연습과 수강여석 확인을 한 번에
+            세종대 수강신청 연습 · 수강여석 확인 · 졸업요건까지
           </h1>
           <div className="flex flex-row justify-start items-center text-xl sm:text-2xl md:text-4xl leading-snug font-bold mb-3">
             <Image
@@ -44,7 +44,9 @@ function MainBanner() {
             이 도와드립니다!
           </div>
           <SupportingText>
-            시간표 만들기부터 수강 신청 연습, 실시간 여석 확인까지 올클(ALLCLL)이 여러분과 함께합니다.
+            수강 신청 연습, 실시간 여석 확인, 졸업요건 분석까지{' '}
+            <br className="md:hidden" />
+            올클이 여러분의 학교생활과 함께합니다.
           </SupportingText>
 
           <div className="flex flex-col md:flex-row gap-4 mt-4">
