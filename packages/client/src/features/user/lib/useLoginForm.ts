@@ -10,7 +10,11 @@ type loginKeys = 'studentId' | 'password' | 'agreeToTerms';
  * @returns
  */
 const useLoginForm = () => {
-  const { values: loginValues, onChange: handleInputChange } = useInputs({
+  const {
+    values: loginValues,
+    onChange: handleInputChange,
+    setValues,
+  } = useInputs({
     studentId: '',
     password: '',
     agreeToTerms: false,
@@ -69,6 +73,10 @@ const useLoginForm = () => {
     !loginValidator('password', loginValues.password) &&
     !loginValidator('agreeToTerms', loginValues.agreeToTerms);
 
+  const clearField = (key: loginKeys) => {
+    setValues(prev => ({ ...prev, [key]: '' }));
+  };
+
   return {
     values: loginValues,
     errors,
@@ -77,6 +85,7 @@ const useLoginForm = () => {
     onBlur,
     submit,
     isValid,
+    clearField,
   };
 };
 
