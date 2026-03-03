@@ -54,8 +54,8 @@ function getFilteringFunctions(
     classroom: filterClassroom,
     note: filterRemark,
     language: filterLanguage,
-    alarmOnly: (subject: Subject) => pickedFavorites(subject.subjectId),
-    favoriteOnly: (subject: Subject) => matchesPinned(subject.subjectId),
+    alarmOnly: (subject: Subject) => matchesPinned(subject.subjectId),
+    favoriteOnly: (subject: Subject) => pickedFavorites(subject.subjectId),
   };
 }
 
