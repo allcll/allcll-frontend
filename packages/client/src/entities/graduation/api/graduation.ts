@@ -288,10 +288,10 @@ export interface GraduationCourse {
 
 /** 이수 과목 조회 API 응답 */
 export interface GraduationCoursesResponse {
+  createdAt: string | null;
   courses: GraduationCourse[];
 }
 
 export async function fetchGraduationCourses(): Promise<GraduationCoursesResponse> {
-  const { value: courses } = await fetchJsonOnAPI<{ value: GraduationCourse[] }>('/api/graduation/courses');
-  return { courses };
+  return await fetchJsonOnAPI<GraduationCoursesResponse>('/api/graduation/courses');
 }

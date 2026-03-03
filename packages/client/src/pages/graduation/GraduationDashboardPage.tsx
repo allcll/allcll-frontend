@@ -60,9 +60,14 @@ function GraduationDashboardPage() {
     majorScope: ScopeType;
   } | null>(null);
   const { activeTab, setActiveTab } = useMobileTabs('major');
-  const { user, graduationData, isPending, isError, error } = useGraduationDashboard();
+  const { user, graduationData, analyzedAt, isPending, isError, error } = useGraduationDashboard();
   const { data: criteriaCategories } = useCriteriaCategories();
-  const { isOpen: isFeedbackOpen, openMode: feedbackOpenMode, onClose: closeFeedback, open: openFeedback } = useFeedbackTrigger({
+  const {
+    isOpen: isFeedbackOpen,
+    openMode: feedbackOpenMode,
+    onClose: closeFeedback,
+    open: openFeedback,
+  } = useFeedbackTrigger({
     enabled: !isPending && !isError,
     isMobile,
     activeTab,
@@ -214,7 +219,6 @@ function GraduationDashboardPage() {
         <Banner deleteBanner={handleDeleteBanner}>
           본 서비스는 베타 버전으로, 분석 결과는 공식적인 효력을 갖지 않습니다. 오류 또는 개선 사항이 있으시면
           알려주시면 서비스 개선에 도움이 됩니다.{' '}
-
           <button className="text-blue-700 font-semibold underline" onClick={() => openFeedback('manual')}>
             오류 제보
           </button>
@@ -251,16 +255,18 @@ function GraduationDashboardPage() {
 
           <Flex justify="justify-between" align="items-center">
             <div></div>
-            
+
             <Flex justify="justify-end" align="items-center" gap="gap-2">
-              <span className="text-sm text-gray-400">
-                {new Date(graduationData.createdAt).toLocaleDateString('ko-KR', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}{' '}
-                분석
-              </span>
+              {analyzedAt && (
+                <span className="text-sm text-gray-400">
+                  {new Date(analyzedAt).toLocaleDateString('ko-KR', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}{' '}
+                  분석
+                </span>
+              )}
               <div className="bg-white rounded-md">
                 <Button variant="outlined" size="medium" onClick={handleStartOverGraduationCheck}>
                   다시 검사하기
