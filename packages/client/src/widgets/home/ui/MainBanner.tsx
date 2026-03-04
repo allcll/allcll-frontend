@@ -20,7 +20,7 @@ function MainBanner() {
     <div className="relative overflow-hidden">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-10" />
       <Section
-        className="relative z-20 flex flex-col md:flex-row items-center justify-between pb-20 pt-15"
+        className="relative z-20 flex flex-col md:flex-row items-center justify-between !py-5"
         bgColor="bg-banner-skysoft"
       >
         <div className="max-w-xl">
@@ -32,7 +32,7 @@ function MainBanner() {
             </span>
           </div>
 
-          <h1 className="text-lg mt-10 sm:text-xl md:text-2xl leading-snug font-bold mb-3 ">
+          <h1 className="text-lg mt-10 sm:text-xl md:text-2xl leading-snug font-bold mb-3">
             세종대 수강신청 연습 · 수강여석 확인 · 졸업요건까지
           </h1>
           <div className="flex flex-row justify-start items-center text-xl sm:text-2xl md:text-4xl leading-snug font-bold mb-3">
@@ -44,8 +44,7 @@ function MainBanner() {
             이 도와드립니다!
           </div>
           <SupportingText>
-            수강 신청 연습, 실시간 여석 확인, 졸업요건 분석까지{' '}
-            <br className="md:hidden" />
+            수강 신청 연습, 실시간 여석 확인, 졸업요건 분석까지 <br className="md:hidden" />
             올클이 여러분의 학교생활과 함께합니다.
           </SupportingText>
 
@@ -62,7 +61,7 @@ function MainBanner() {
           src="/spring-banner.png"
           alt=""
           aria-hidden="true"
-          className="hidden md:block absolute bottom-0 right-5 w-[320px] lg:w-[370px]"
+          className="hidden md:block self-end shrink-0 w-[320px] lg:w-[370px]"
         />
       </Section>
     </div>
