@@ -58,6 +58,7 @@ function MainBanner() {
         </div>
         <Image
           src="/spring-banner-min.png"
+          fetchPriority="high"
           alt=""
           aria-hidden="true"
           className="hidden md:block absolute bottom-0 right-5 w-[320px] lg:w-[370px]"
