@@ -57,7 +57,7 @@ function MainBanner() {
           </div>
         </div>
         <Image
-          src="/spring-banner.png"
+          src="/spring-banner-min.png"
           alt=""
           aria-hidden="true"
           className="hidden md:block absolute bottom-0 right-5 w-[320px] lg:w-[370px]"
