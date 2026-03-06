@@ -1,6 +1,6 @@
 import { Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import { Review } from '@/hooks/server/useAdminReviews';
-import CiIcon from '@public/ci-icon.svg?react';
+import CiIcon from '@/assets/ci-icon.svg?react';
 
 function RatingIcon({ fill }: { fill: number }) {
   const clampedFill = Math.min(1, Math.max(0, fill));

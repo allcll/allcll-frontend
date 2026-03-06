@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Badge, Flex, IconButton, SupportingText } from '@allcll/allcll-ui';
 import { Review, OPERATION_TYPE_LABEL } from '@/hooks/server/useAdminReviews';
-import CiIcon from '@public/ci-icon.svg?react';
+import CiIcon from '@/assets/ci-icon.svg?react';
 import ArrowDownSvg from '@/assets/arrow-down.svg?react';
 
 const MAX_RATE = 3;
