@@ -25,6 +25,10 @@ const Menus = [
     title: '로그 설정',
     link: '/logs',
   },
+  {
+    title: '사용자 후기',
+    link: '/reviews',
+  },
 ];
 
 function SideNavBar() {

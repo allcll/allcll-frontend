@@ -5,6 +5,7 @@ import Clawlers from '@/pages/ClawlersSetting';
 import Service from '@/pages/Service';
 import Logs from '@/pages/Logs';
 import Graduation from '@/pages/Graduation';
+import Reviews from '@/pages/Reviews';
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,16 @@ const router = createBrowserRouter([
       {
         path: '/logs',
         element: <Logs />,
+      },
+    ],
+  },
+  {
+    path: '/reviews',
+    element: <MainLayout />,
+    children: [
+      {
+        path: '/reviews',
+        element: <Reviews />,
       },
     ],
   },
