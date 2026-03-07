@@ -1,11 +1,11 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import Section from '@/widgets/home/ui/Section.tsx';
-
 import { Button, SupportingText } from '@allcll/allcll-ui';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
-import Image from '@/shared/ui/Image.tsx';
 import { useSpringConfetti } from '@/widgets/home/lib/useMainBannerSeasonConfetti';
+import Section from '@/widgets/home/ui/Section.tsx';
+import Image from '@/shared/ui/Image.tsx';
+import LogoName from '@/assets/logo/logo-name-spring.svg?react';
 
 const START_DATE = '03/04(수)';
 const END_DATE = '03/09(월)';
@@ -36,9 +36,8 @@ function MainBanner() {
             세종대 수강신청 연습과 수강여석 확인을 한 번에
           </h1>
           <div className="flex flex-row justify-start items-center text-xl sm:text-2xl md:text-4xl leading-snug font-bold mb-3">
-            <Image
-              src="/logo-name-spring.svg"
-              alt="올클(ALLCLL) 세종대 수강신청 도우미 서비스"
+            <LogoName
+              aria-label="올클(ALLCLL) 세종대 수강신청 도우미 서비스"
               className="w-20 sm:w-32 md:w-40 lg:w-48 mr-2 animate-updown"
             />
             이 도와드립니다!

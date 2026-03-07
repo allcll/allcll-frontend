@@ -3,7 +3,8 @@ import { HeaderContents } from '@/shared/ui/Header.tsx';
 import GithubSvg from '@/assets/icon-github.svg?react';
 import InstagramSvg from '@/assets/icon-instagram.svg?react';
 import KakaoSvg from '@/assets/icon-kakao.svg?react';
-import Image from '@/shared/ui/Image.tsx';
+import LogoCI from '@/assets/logo/ci-spring.svg?react';
+import LogoName from '@/assets/logo/logo-name-spring.svg?react';
 
 interface IFooterItem {
   title: string;
@@ -38,8 +39,8 @@ function Footer() {
       <div className="mx-auto max-w-7xl px-4 md:px-16 py-12 grid md:grid-cols-3 gap-6 text-center md:text-left">
         <div className="mx-auto md:mx-0">
           <div className="flex items-center mb-2 h-fit justify-center md:justify-start">
-            <Image src="/ci-spring.svg" className="w-6 h-6 mr-2" alt="ci" />
-            <Image src="/logo-name-spring.svg" alt="logo" className="h-5" />
+            <LogoCI className="w-6 h-6 mr-2" />
+            <LogoName className="h-5" />
           </div>
 
           <ul className="flex items-center">
