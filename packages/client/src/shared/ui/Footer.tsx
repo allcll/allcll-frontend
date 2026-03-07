@@ -40,7 +40,7 @@ function Footer() {
         <div className="mx-auto md:mx-0">
           <div className="flex items-center mb-2 h-fit justify-center md:justify-start">
             <LogoCI className="w-6 h-6 mr-2" />
-            <LogoName className="h-5" />
+            <LogoName className="h-5 w-fit" />
           </div>
 
           <ul className="flex items-center">
