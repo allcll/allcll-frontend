@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import LogoSvg from '@public/ci-spring.svg?react';
-import LogoName from '@public/logo-name-spring.svg?react';
+import LogoCI from '@/assets/logo/ci-spring.svg?react';
+import LogoName from '@/assets/logo/logo-name-spring.svg?react';
 import CloseSvg from '@/assets/x.svg?react';
 import { Flex, IconButton, Badge } from '@allcll/allcll-ui';
 import { useBodyScrollLock } from '../lib/useBodyScrollLock';
@@ -68,7 +68,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
               className="flex items-center gap-2"
               aria-label="메인 페이지"
             >
-              <LogoSvg className="w-6 h-6" />
+              <LogoCI className="w-6 h-6" />
               <LogoName className="h-5" />
             </Link>
 
