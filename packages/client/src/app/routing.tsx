@@ -19,6 +19,7 @@ import GraduationSettingSteps from '@/pages/graduation/SettingSteps.tsx';
 import GraduationDashboard from '@/pages/graduation/Dashboard.tsx';
 import NotFound from '@/pages/notfound/NotFound';
 import PrivacyPolicy from '@/pages/user/PrivacyPolicy';
+import ErrorTest from '@/pages/ErrorTest';
 
 const router = createBrowserRouter([
   {
@@ -128,6 +129,12 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
 
+  {
+    path: 'error-test',
+    element: <MainLayout />,
+    errorElement: <ErrorPage />,
+    children: [{ index: true, element: <ErrorTest /> }],
+  },
   {
     path: '*',
     element: <NotFound />,
