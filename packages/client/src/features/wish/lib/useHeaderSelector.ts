@@ -1,7 +1,7 @@
 import { Wishes } from '@/shared/model/types.ts';
 import { useWishesTableStore } from '../model/useWishTableColumnStore';
 import { IPreRealSeat } from '@/entities/seat/api/usePreRealSeats';
-import { useManagePeriod } from '@/entities/schedule/lib/useManagePeriod';
+import { useManagePeriod } from '@/entities/schedule/model/useManagePeriod';
 
 /** 사용하는 헤더를 반환해줍니다. 기간에 따라, wishes, pre-seats 변경 가능 */
 function useHeaderSelector(data: Wishes[] | (Wishes & IPreRealSeat)[] | null | undefined) {

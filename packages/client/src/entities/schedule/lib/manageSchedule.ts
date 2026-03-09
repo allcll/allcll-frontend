@@ -13,19 +13,21 @@ export interface ServicePeriod {
   description: string;
 }
 
+/**
+ * periods: 수강 신청과 관련된 각 기간의 시작과 끝, 그리고 해당 기간의 모드와 설명
+ * displayPeriod: 메인 배너의 수강 신청 기간
+ * CURRENT_PERIOD의 start, end 필드는 매 학기  일정이 나오면 업데이트 되어야합니다.
+ */
 export interface AcademicSchedule {
-  // 서비스 전환 기준 날짜들입니다.
   periods: ServicePeriod[];
 
-  // 배너에 표시할 주요 수강신청 기간입니다.
   displayPeriod: {
+    displayPeriodName?: string; // '수강 신청 기간' or '수강 정정 기간''
     start: string; // '02월 10일(화)'
     end: string; // '02월 13일(금)'
   };
 }
 
-//TODO: 이것도 API 연결로 바꾸는게 좋을지, semster과 합치는 것도 고려
-//CURRENT_PERIOD의 start, end 필드는 매 학기  일정이 나오면 업데이트 되어야합니다.
 export const CURRENT_PERIOD: AcademicSchedule = {
   periods: [
     {
@@ -61,13 +63,27 @@ export const CURRENT_PERIOD: AcademicSchedule = {
   ],
 
   displayPeriod: {
-    start: '02월 10일(화)',
-    end: '02월 13일(금)',
+    displayPeriodName: '수강정정 기간',
+    start: '03월 04일(수)',
+    end: '03월 09일(월)',
   },
 };
 
 //preSeat 데이터 업데이트 시 preSeatOpenDate를 변경해주어야합니다.
-export const PRESEAT_OPEN_DATE = new Date('2026-02-29T00:00:00');
+export const PRESEAT_OPEN_DATE = new Date('2026-03-09T00:00:00');
 
-// baskets.json 파일 업데이트 시 반드시 `BASKET_OPEN_DATE` 값을 함께 변경해주세요.
+// basket 데이터 업데이트 시 basketOpenDate를 변경해주어야합니다.
 export const BASKET_OPEN_DATE = new Date('2026-01-31T00:00:00');
+
+// API 연결 확장성을 위해 fetchCurrentPeriod, fetchPreSeatOpenDate, fetchBasketOpenDate 함수를 만들어두었습니다.
+export const fetchCurrentPeriod = async (): Promise<AcademicSchedule> => {
+  return CURRENT_PERIOD;
+};
+
+export const fetchPreSeatOpenDate = async (): Promise<Date> => {
+  return PRESEAT_OPEN_DATE;
+};
+
+export const fetchBasketOpenDate = async (): Promise<Date> => {
+  return BASKET_OPEN_DATE;
+};

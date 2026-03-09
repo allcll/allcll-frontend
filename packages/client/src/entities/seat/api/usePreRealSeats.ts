@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchJsonOnPublic } from '@/shared/api/api.ts';
-import { useManagePeriod } from '@/entities/schedule/lib/useManagePeriod';
+import { useManagePeriod } from '@/entities/schedule/model/useManagePeriod';
 
 const SEC = 1000;
 const MIN = 60 * SEC;
@@ -20,18 +20,19 @@ export const InitPreRealSeat: IPreRealSeat = {
 };
 
 function usePreRealSeats() {
+  const { preSeat } = useManagePeriod();
+
   return useQuery({
     queryKey: ['preRealSeats'],
-    queryFn: fetchPreRealSeats,
+    queryFn: () => fetchPreRealSeats(preSeat.preSeatOpenDate),
     staleTime: 10 * MIN,
     select: data => data?.preSeats ?? null,
   });
 }
 
-async function fetchPreRealSeats(): Promise<IPreRealSeatsResponse> {
+async function fetchPreRealSeats(preSeatOpenDate: Date): Promise<IPreRealSeatsResponse> {
   //preSeat 데이터 업데이트 시 preSeatOpenDate를 변경해주어야합니다.
-  const { preSeat } = useManagePeriod();
-  return await fetchJsonOnPublic<IPreRealSeatsResponse>(`/pre-seats.json?date=${preSeat.preSeatOpenDate}`);
+  return await fetchJsonOnPublic<IPreRealSeatsResponse>(`/pre-seats.json?date=${preSeatOpenDate}`);
 }
 
 export default usePreRealSeats;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { InitWishes } from '@/entities/wishes/model/useWishes.ts';
 import { WishesWithSeat } from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
-import { useManagePeriod } from '@/entities/schedule/lib/useManagePeriod';
+import { useManagePeriod } from '@/entities/schedule/model/useManagePeriod';
 import { getSeatColor } from '@/shared/config/colors.ts';
 import { Flex } from '@allcll/allcll-ui';
 

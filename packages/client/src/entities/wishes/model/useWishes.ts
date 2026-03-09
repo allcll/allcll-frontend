@@ -4,6 +4,7 @@ import useSubject, { InitSubject } from '@/entities/subjects/model/useSubject.ts
 import { joinData } from '@/entities/subjectAggregate/lib/joinSubjects.ts';
 import { fetchWishesDataBySemester, WishesApiResponse } from '@/entities/wishes/api/wishes.ts';
 import { RECENT_SEMESTERS } from '@/entities/semester/api/semester';
+import { useManagePeriod } from '@/entities/schedule/model/useManagePeriod';
 
 export const InitWishes = {
   ...InitSubject,
@@ -15,10 +16,11 @@ export const InitWishes = {
 function useWishes(semester?: string) {
   semester = semester ?? RECENT_SEMESTERS.semesterCode;
   const { data: subjects, isPending, isLoading } = useSubject(semester);
+  const { basket } = useManagePeriod();
 
   const query = useQuery({
     queryKey: ['wishlist', semester],
-    queryFn: () => fetchWishesDataBySemester(semester),
+    queryFn: () => fetchWishesDataBySemester(semester, basket.basketOpenDate),
     staleTime: Infinity,
     select: data => joinSubjects(data, subjects),
   });

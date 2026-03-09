@@ -1,17 +1,14 @@
 import { fetchJsonOnPublic, fetchOnAPI } from '@/shared/api/api.ts';
 import { WishRegister } from '@/shared/model/types.ts';
 import { BadRequestError } from '@/shared/lib/errors.ts';
-import { useManagePeriod } from '@/entities/schedule/lib/useManagePeriod';
 
 export interface WishesApiResponse {
   baskets: { subjectId: number; totalCount: number }[];
 }
 
-// baskets.json 파일 업데이트 시 반드시 `CACHE_VERSION` 값을 함께 변경해주세요.
-const { basket } = useManagePeriod();
-
-export const fetchWishesDataBySemester = async (semester: string) => {
-  return await fetchJsonOnPublic<WishesApiResponse>(`/${semester}/baskets.json?v=${basket.basketOpenDate}`);
+// baskets.json 파일 업데이트 시 반드시 `BASKET_OPEN_DATE` 값을 함께 변경해주세요.
+export const fetchWishesDataBySemester = async (semester: string, basketOpenDate: Date) => {
+  return await fetchJsonOnPublic<WishesApiResponse>(`/${semester}/baskets.json?v=${basketOpenDate}`);
 };
 
 interface DetailRegistersResponse {

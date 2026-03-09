@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet';
 import PinSearchBottomSheet from '@/widgets/live/pin/ui/PinSearchBottomSheet';
 import RealtimeTable from '@/widgets/live/board/ui/RealtimeTable';
 import useAlarmModalStore from '@/features/live/pin/model/useAlarmModalStore';
-import { useManagePeriod } from '@/entities/schedule/lib/useManagePeriod';
+import { useManagePeriod } from '@/entities/schedule/model/useManagePeriod';
 
 function Live() {
   const isSearchOpen = useAlarmModalStore(state => state.isSearchOpen);

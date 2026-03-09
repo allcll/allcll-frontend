@@ -3,12 +3,15 @@ import Section from '@/widgets/home/ui/Section.tsx';
 
 import { Button, SupportingText } from '@allcll/allcll-ui';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
-import { useManagePeriod } from '@/entities/schedule/lib/useManagePeriod';
+import { useManagePeriod } from '@/entities/schedule/model/useManagePeriod';
 
 function MainBanner() {
   const { data } = useServiceSemester();
   const { mainPageRouter, period } = useManagePeriod();
-  const [mainAction, subAction] = mainPageRouter.mainPageActions;
+  const [mainActionMode, subActionMode] = mainPageRouter.mainPageActionsMode;
+
+  //수강 신청 기간 or 수강 정정 기간
+  const displayPeriod = period.registrationDisplayPeriod?.displayPeriodName;
 
   return (
     <Section className="flex flex-col md:flex-row items-center justify-between" bgColor="bg-banner-skysoft">
@@ -16,8 +19,8 @@ function MainBanner() {
         <div className="flex flex-row gap-2 items-center">
           <img src="/calendar.png" alt="2026-1학기 세종대 수강신청 일정 아이콘" className="w-10 h-10" />
           <span className="italic text-xs text-stone-500 ">
-            {data?.semesterValue}학기 수강 신청 기간 <br />
-            {period.displayPeriod.start} ~ {period.displayPeriod.end}
+            {data?.semesterValue}학기 {displayPeriod} <br />
+            {period.registrationDisplayPeriod?.start} ~ {period.registrationDisplayPeriod?.end}
           </span>
         </div>
 
@@ -38,10 +41,10 @@ function MainBanner() {
 
         <div className="flex flex-col md:flex-row gap-4 mt-4">
           <Button variant="primary" size="medium" asChild>
-            <Link to={mainAction.link}>{mainAction.label}</Link>
+            <Link to={mainActionMode.link}>{mainActionMode.label}</Link>
           </Button>
           <Button variant="outlined" size="medium" asChild>
-            <Link to={subAction.link}>{subAction.label}</Link>
+            <Link to={subActionMode.link}>{subActionMode.label}</Link>
           </Button>
         </div>
       </div>
