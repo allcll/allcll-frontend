@@ -8,7 +8,7 @@ import { useServiceMode } from './useServiceMode';
  * @returns
  * period: 메인 배너 수강 신청 기간
  * mainPageRouter: 메인 페이지 라우터 정보
- * preSeat: preSeat 오픈 날짜
+ * preSeat: 전체 여석 오픈, 클로즈 여부 및 시간
  * basket: 관심 과목 오픈 날짜
  */
 export function useManagePeriod() {
