@@ -29,27 +29,28 @@ function ReviewList({ reviews, isLoading, isError, filterBar }: ReviewListProps)
               </tr>
             </thead>
             <tbody>
-              {isLoading ? (
+              {isLoading && (
                 <tr>
                   <td colSpan={4} className="py-8 text-center">
                     <SupportingText>불러오는 중...</SupportingText>
                   </td>
                 </tr>
-              ) : isError ? (
+              )}
+              {!isLoading && isError && (
                 <tr>
                   <td colSpan={4} className="py-8 text-center text-sm text-red-500">
                     후기 데이터를 불러오는데 실패했습니다.
                   </td>
                 </tr>
-              ) : reviews.length === 0 ? (
+              )}
+              {!isLoading && !isError && reviews.length === 0 && (
                 <tr>
                   <td colSpan={4} className="py-8 text-center">
                     <SupportingText>등록된 후기가 없습니다.</SupportingText>
                   </td>
                 </tr>
-              ) : (
-                reviews.map(review => <ReviewItem key={review.id} review={review} />)
               )}
+              {!isLoading && !isError && reviews.map(review => <ReviewItem key={review.id} review={review} />)}
             </tbody>
           </table>
         </div>

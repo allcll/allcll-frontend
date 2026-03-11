@@ -43,7 +43,7 @@ function ReviewItem({ review }: ReviewItemProps) {
         <div className="flex items-start gap-2">
           <p
             ref={detailRef}
-            className={`text-sm text-gray-700 leading-relaxed flex-1 ${!isExpanded ? 'line-clamp-2' : ''}`}
+            className={`text-sm text-gray-700 leading-relaxed flex-1 ${isExpanded ? '' : 'line-clamp-2'}`}
           >
             {review.detail}
           </p>
