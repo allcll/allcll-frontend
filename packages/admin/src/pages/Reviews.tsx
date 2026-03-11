@@ -17,7 +17,7 @@ function Reviews() {
   const [selectedRatings, setSelectedRatings] = useState<string[]>([]);
 
   const yearOptions = useMemo(() => {
-    const years = [...new Set(reviews.map(r => r.studentId.substring(0, 2)))].sort();
+    const years = [...new Set(reviews.map(r => r.studentId.substring(0, 2)))].sort((a, b) => a.localeCompare(b));
     return years.map(y => ({ label: `${y}학번`, value: y }));
   }, [reviews]);
 
