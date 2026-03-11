@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchJsonOnAPI } from '@/utils/api.ts';
 
 export type OperationType = 'GRADUATION';
+export const MAX_RATE = 3;
 
 export const OPERATION_TYPE_LABEL: Record<OperationType, string> = {
   GRADUATION: '졸업요건',

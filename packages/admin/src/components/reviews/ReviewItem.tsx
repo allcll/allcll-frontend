@@ -1,10 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Badge, Flex, IconButton, SupportingText } from '@allcll/allcll-ui';
-import { Review, OPERATION_TYPE_LABEL } from '@/hooks/server/useAdminReviews';
+import { Review, OPERATION_TYPE_LABEL, MAX_RATE } from '@/hooks/server/useAdminReviews';
 import CiIcon from '@/assets/ci-icon.svg?react';
 import ArrowDownSvg from '@/assets/arrow-down.svg?react';
-
-const MAX_RATE = 3;
 
 interface ReviewItemProps {
   review: Review;
@@ -34,7 +32,7 @@ function ReviewItem({ review }: ReviewItemProps) {
       <td className="px-4 py-3 align-top w-24">
         <Flex align="items-center" gap="gap-0.5">
           {Array.from({ length: review.rate }).map((_, i) => (
-            <CiIcon key={i} className="h-4 w-4 mood-smile text-primary-500" />
+            <CiIcon key={`filled-${i}`} className="h-4 w-4 mood-smile text-primary-500" />
           ))}
           {Array.from({ length: MAX_RATE - review.rate }).map((_, i) => (
             <CiIcon key={`empty-${i}`} className="h-4 w-4 mood-smile text-gray-300" />

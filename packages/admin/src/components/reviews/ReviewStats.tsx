@@ -1,5 +1,5 @@
 import { Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
-import { Review } from '@/hooks/server/useAdminReviews';
+import { Review, MAX_RATE } from '@/hooks/server/useAdminReviews';
 import CiIcon from '@/assets/ci-icon.svg?react';
 
 function RatingIcon({ fill }: { fill: number }) {
@@ -25,7 +25,7 @@ function ReviewStats({ reviews }: ReviewStatsProps) {
 
   return (
     <Flex gap="gap-4">
-      <Card variant="outlined" className="flex-1">
+      <Card className="flex-1">
         <Flex direction="flex-col" gap="gap-1">
           <SupportingText>전체 후기</SupportingText>
           <Flex align="items-baseline" gap="gap-1">
@@ -35,13 +35,13 @@ function ReviewStats({ reviews }: ReviewStatsProps) {
         </Flex>
       </Card>
 
-      <Card variant="outlined" className="flex-1">
+      <Card className="flex-1">
         <Flex direction="flex-col" gap="gap-1">
           <SupportingText>평균 평점</SupportingText>
           <Heading level={2}>{roundedAvg}</Heading>
           <Flex gap="gap-1" className="mt-1">
-            {[1, 2, 3].map(i => (
-              <RatingIcon key={i} fill={avg - (i - 1)} />
+            {Array.from({ length: MAX_RATE }, (_, i) => (
+              <RatingIcon key={i} fill={avg - i} />
             ))}
           </Flex>
         </Flex>
