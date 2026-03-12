@@ -20,7 +20,7 @@ export const getGraduationState = (): GraduationState => {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     return stored ? JSON.parse(stored) : defaultState;
-  } catch (e) {
+  } catch {
     return defaultState;
   }
 };

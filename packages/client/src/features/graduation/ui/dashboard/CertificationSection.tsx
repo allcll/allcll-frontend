@@ -3,6 +3,7 @@ import { Card, Flex, Grid, Badge, Button, Heading, SupportingText } from '@allcl
 import type { Certifications, ClassicDomain } from '@/entities/graduation/api/graduation';
 import { CLASSIC_DOMAIN_LABELS } from '../../lib/mappers';
 import CertificationCriteriaModal from './CertificationCriteriaModal';
+import CertificationEditModal from './CertificationEditModal';
 
 export type CertificationType = 'english' | 'classic' | 'coding';
 
@@ -44,7 +45,7 @@ function CertificationCard({
           <span className="text-lg font-bold">{title}</span>
         </div>
 
-        <div className="flex-1">{children}</div>
+        <div className="flex-1 flex flex-col items-center justify-center">{children}</div>
 
         <div className="w-full [&>button]:w-full">
           <Button variant="outlined" size="small" onClick={() => onViewStandards?.(certificationType)}>
@@ -62,7 +63,7 @@ interface ClassicReadingTableProps {
 
 function ClassicReadingTable({ domains }: ClassicReadingTableProps) {
   return (
-    <div className="text-sm">
+    <div className="text-sm w-full">
       <table className="w-full">
         <tbody>
           {domains.map(domain => (
@@ -81,12 +82,39 @@ function ClassicReadingTable({ domains }: ClassicReadingTableProps) {
   );
 }
 
+interface CertNotPassedContentProps {
+  onEdit: () => void;
+}
+
+function CertNotPassedContent({ onEdit }: CertNotPassedContentProps) {
+  return (
+    <Flex direction="flex-col" align="items-center" gap="gap-1">
+      <span className="text-gray-500 text-sm">이수 내역 없음</span>
+      <Button
+        variant="text"
+        textColor="gray"
+        size="small"
+        onClick={onEdit}
+        className="underline underline-offset-2 !text-xs"
+      >
+        결과가 잘못되었나요?
+      </Button>
+    </Flex>
+  );
+}
+
 function CertificationSection({ certifications }: CertificationSectionProps) {
   const { english, coding, classic, passedCount, requiredPassCount } = certifications;
   const [activeCriteriaType, setActiveCriteriaType] = useState<CertificationType | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const handleViewStandards = (type: CertificationType) => {
     setActiveCriteriaType(type);
+  };
+
+  const handleConfirmEdit = () => {
+    // TODO: API 연동
+    setShowEditModal(false);
   };
 
   const CERT_NAMES: Record<CertificationType, string> = {
@@ -129,13 +157,13 @@ function CertificationSection({ certifications }: CertificationSectionProps) {
             certificationType="english"
             overallSatisfied={certifications.isSatisfied}
           >
-            <Flex justify="justify-center" align="items-center" className="h-full">
-              {english.isPassed ? (
+            {english.isPassed ? (
+              <Flex justify="justify-center" align="items-center" className="h-full">
                 <span className="text-primary">인증 완료</span>
-              ) : (
-                <span className="text-gray-500">이수 내역 없음</span>
-              )}
-            </Flex>
+              </Flex>
+            ) : (
+              <CertNotPassedContent onEdit={() => setShowEditModal(true)} />
+            )}
           </CertificationCard>
         )}
 
@@ -163,11 +191,9 @@ function CertificationSection({ certifications }: CertificationSectionProps) {
             overallSatisfied={certifications.isSatisfied}
           >
             <Flex justify="justify-center" align="items-center" className="h-full">
-              {coding.isPassed ? (
-                <span className="text-primary">인증 완료</span>
-              ) : (
-                <span className="text-gray-500">이수 내역 없음</span>
-              )}
+              <span className={coding.isPassed ? 'text-primary' : 'text-gray-500 text-sm'}>
+                {coding.isPassed ? '인증 완료' : '이수 내역 없음'}
+              </span>
             </Flex>
           </CertificationCard>
         )}
@@ -179,6 +205,10 @@ function CertificationSection({ certifications }: CertificationSectionProps) {
           onClose={() => setActiveCriteriaType(null)}
           criteriaType={activeCriteriaType}
         />
+      )}
+
+      {showEditModal && (
+        <CertificationEditModal isOpen onClose={() => setShowEditModal(false)} onConfirm={handleConfirmEdit} />
       )}
     </section>
   );
