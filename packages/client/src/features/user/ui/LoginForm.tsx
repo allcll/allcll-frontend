@@ -104,7 +104,9 @@ function LoginForm({ onSuccess, onDepartmentNotFound }: LoginFormProps) {
 
           <Flex direction="flex-col" gap="gap-2">
             <SupportingText>
-              ※ <span className="font-semibold text-primary">비밀번호는 즉시 폐기</span>하며, 저장되지 않습니다.
+              ※ <span className="font-semibold text-primary">전과생, 연계전공, 편입생</span>은 현재 졸업 요건 판단이
+              지원되지 않습니다.
+              <br />※ <span className="font-semibold text-primary">비밀번호는 즉시 폐기</span>하며, 저장되지 않습니다.
               <br />※ ALLCLL 로그인 시
               <span className="font-semibold text-primary">학사정보시스템(세종대 포털)에서 로그아웃</span>됩니다.
             </SupportingText>
