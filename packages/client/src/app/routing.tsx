@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from '@/app/layouts/MainLayout.tsx';
 import ServiceLayout from '@/app/layouts/ServiceLayout.tsx';
-import SimulationLayout from '@/app/layouts/SimulationLayout.tsx';
+const SimulationLayout = lazy(() => import('@/app/layouts/SimulationLayout.tsx'));
 import ErrorPage from '@/pages/ErrorPage.tsx';
 import ErrorPageWith404 from '@/pages/ErrorPageWith404.tsx';
 import PageLoader from '@/shared/ui/PageLoader.tsx';
@@ -85,7 +85,11 @@ const router = createBrowserRouter(
 
     {
       path: 'simulation',
-      element: <SimulationLayout />,
+      element: (
+        <Suspense fallback={<PageLoader />}>
+          <SimulationLayout />
+        </Suspense>
+      ),
       errorElement: <ErrorPage />,
       children: [
         {

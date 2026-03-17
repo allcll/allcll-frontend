@@ -1,6 +1,7 @@
+import { lazy, Suspense } from 'react';
 import MainBanner from '@/widgets/home/ui/MainBanner.tsx';
 import TimetableSection from '@/widgets/home/ui/TimetableSection.tsx';
-import SimulationSection from '@/widgets/home/ui/SimulationSection.tsx';
+const SimulationSection = lazy(() => import('@/widgets/home/ui/SimulationSection.tsx'));
 import WishesSection from '@/widgets/home/ui/WishesSection.tsx';
 import LiveSection from '@/widgets/home/ui/LiveSection.tsx';
 import PainPointSection from '@/widgets/home/ui/PainPointSection.tsx';
@@ -16,7 +17,9 @@ function Landing() {
       <JouluphajaSection />
       <TimetableSection />
       <WishesSection />
-      <SimulationSection />
+      <Suspense fallback={null}>
+        <SimulationSection />
+      </Suspense>
       <LiveSection />
 
       <PainPointSection />
