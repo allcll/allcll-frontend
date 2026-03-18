@@ -1,6 +1,6 @@
 import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
-import useToastNotification from '@allcll/common/store/useToastNotification';
+import { useToastNotification } from '@allcll/common';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export interface CralwersParams {
@@ -39,7 +39,7 @@ const getCrawleredBasket = async ({ userId }: CralwersParams) => {
  */
 export function useCrawlersBasket() {
   const queryClient = useQueryClient();
-  const toast = useToastNotification.getState().addToast;
+  const toast = useToastNotification().addToast;
 
   return useMutation({
     mutationFn: ({ userId }: CralwersParams) => crawlingBasket({ userId }),
