@@ -1,6 +1,38 @@
 @import 'tailwindcss';
 @config "../../tailwind.config.ts";
 
+@layer base {
+  @font-face {
+    font-family: 'Pretendard';
+    src: url('/font/woff2/Pretendard-Regular.subset.woff2') format('woff2'),
+        url('/font/woff/Pretendard-Regular.subset.woff') format('woff');
+
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    src: url('/font/woff2/Pretendard-SemiBold.subset.woff2') format('woff2'),
+        url('/font/woff/Pretendard-SemiBold.subset.woff') format('woff');
+
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Pretendard';
+    src: url('/font/woff2/Pretendard-Bold.subset.woff2') format('woff2'),
+        url('/font/woff/Pretendard-Bold.subset.woff') format('woff');
+
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+}
+
 /* SearchSideBar Transitions */
 .sidebar-transition-enter {
   transform: translateX(100%);
@@ -140,30 +172,4 @@ body {
   animation: gradientBlink 3s ease infinite;
   color: #ffffff;
   font-weight: 600;
-}
-
-@layer base {
-  @font-face {
-    font-family: 'Pretendard';
-    src: url('/font/Pretendard-Regular.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Pretendard';
-    src: url('/font/Pretendard-SemiBold.woff') format('woff');
-    font-weight: 600;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: 'Pretendard';
-    src: url('/font/Pretendard-Bold.woff') format('woff');
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-  }
 }
