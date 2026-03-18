@@ -15,8 +15,6 @@ function Live() {
   const isMobile = useMobile();
   const { isPreSeatAvailable } = usePreSeatGate();
 
-  const shouldShowPinnedCourses = !isPreSeatAvailable;
-
   return (
     <>
       <Helmet>
@@ -40,7 +38,7 @@ function Live() {
             </SupportingText>
           </Flex>
 
-          {shouldShowPinnedCourses && <LivePinnedCourses />}
+          <LivePinnedCourses />
 
           <Grid columns={{ base: 1 }} gap="gap-4">
             <LiveMainContent isPreSeatAvailable={isPreSeatAvailable} />

@@ -2,7 +2,7 @@ import useMobile from '@/shared/lib/useMobile.ts';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { getSingleSelectedLabel } from '@/features/filtering/lib/getFilteringFormatter.ts';
 import SingleSelectFilterOption from './SingleSelectFilter.tsx';
-import Filtering from '@common/components/filtering/Filtering.tsx';
+import { Filtering } from '@allcll/common';
 import { FilterItemProps, FilterValueType } from '@/features/filtering/model/types.ts';
 
 interface GenericSingleSelectFilterProps<K extends keyof Filters> {

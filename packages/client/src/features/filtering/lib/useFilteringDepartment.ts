@@ -1,5 +1,5 @@
-import { disassemble } from 'es-hangul';
 import { useMemo } from 'react';
+import { getNormalizedKeyword } from '@/shared/lib/search.ts';
 
 import { DepartmentType } from '@/features/filtering/model/types.ts';
 
@@ -21,7 +21,17 @@ export function useFilteringDepartment({
   setSearchKeywords,
 }: Partial<useFilteringDepartmentProps> = {}) {
   const departmentsList = useMemo<DepartmentType[]>(
-    () => [{ departmentName: '전체학과', departmentCode: '' }, ...(departments ?? [])],
+    () => {
+      const dprts = [{ departmentName: '전체학과', departmentCode: '' }, ...(departments ?? [])];
+
+      // 학과명 끝 단어 기준으로 정렬 (ex: 컴퓨터공학과, 소프트웨어학과)
+      return dprts.sort((a, b) => {
+        const aLast = a.departmentName.split(' ').slice(-1)[0];
+        const bLast = b.departmentName.split(' ').slice(-1)[0];
+
+        return aLast.localeCompare(bLast);
+      });
+    },
     [departments],
   );
 
@@ -35,13 +45,7 @@ export function useFilteringDepartment({
       .filter(department => {
         if (!searchKeywords) return true;
 
-        const cleanInput = searchKeywords.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-        const disassembledInput = disassemble(cleanInput).toLowerCase();
-
-        const cleanName = department.departmentName.replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-        const disassembledName = disassemble(cleanName).toLowerCase();
-
-        return disassembledName.includes(disassembledInput);
+        return getNormalizedKeyword(department.departmentName).includes(getNormalizedKeyword(searchKeywords));
       });
   }, [departmentsList, category, searchKeywords]);
 

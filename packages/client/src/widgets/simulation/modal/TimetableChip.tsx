@@ -41,9 +41,7 @@ interface ITimetableChipSelector {
 function TimetableChipSelector({ semesterValue, timetables, selectedTimetableId, onSelect }: ITimetableChipSelector) {
   return (
     <Flex direction="flex-col" gap="gap-2">
-      <Label>
-        <span className="font-semibold">{semesterValue}학기</span> 시간표를 선택해주세요.
-      </Label>
+      <Label>{semesterValue}학기 시간표</Label>
 
       <Flex gap="gap-2">
         <Grid columns={{ sm: 2, md: 3 }} gap="gap-2" className="flex-1">

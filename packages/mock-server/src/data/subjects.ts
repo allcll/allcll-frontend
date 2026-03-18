@@ -1,4 +1,4 @@
-import baskets from '../../../client/public/baskets.json';
+import baskets from '../../../client/public/SPRING_26/baskets.json';
 
 export interface ISubjects {
   baskets: basket[];

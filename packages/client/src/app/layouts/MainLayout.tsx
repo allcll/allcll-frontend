@@ -10,9 +10,9 @@ function MainLayout() {
   useGlobalEffect();
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Helmet>
-        <title>ALLCLL</title>
+        <title>올클(ALLCLL) | 세종대 수강신청 도우미</title>
       </Helmet>
 
       <ToastNotification />
@@ -20,7 +20,7 @@ function MainLayout() {
       <BannerNotification />
       <Outlet />
       <Footer />
-    </>
+    </div>
   );
 }
 

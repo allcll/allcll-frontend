@@ -1,7 +1,8 @@
 import SessionAdmin from '@/components/clawlers/AuthTokenViewer';
 import Control from '@/components/clawlers/Control';
-import TostNotification from '@allcll/common/components/toast/ToastNotification';
 import CrawlingCrontrol from '@/components/clawlers/CrawlerControlComponent';
+import { ToastNotification as TostNotification } from '@allcll/common';
+import DepartmentControl from '@/components/clawlers/SubjectAndDepartmentControl';
 import { SetupStep } from '@/utils/type';
 import SetupProgress from '../components/clawlers/SetupProgress';
 import TokenSetting from '@/components/clawlers/AuthTokenSetting';

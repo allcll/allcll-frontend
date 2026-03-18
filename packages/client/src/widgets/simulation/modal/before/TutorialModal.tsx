@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import YouTube from 'react-youtube';
-import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
-import { visitTutorial } from '@/features/simulation/lib/visitTutorial.ts';
-import ArrowdownSvg from '@/assets/arrow-down.svg?react';
-import useMobile from '@/shared/lib/useMobile.ts';
-import { Button, Checkbox, Dialog, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import SejongUI from '@allcll/sejong-ui';
+import { Button, Checkbox, Dialog, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import ArrowdownSvg from '@/assets/arrow-down.svg?react';
+import useTutorialStore from '@/features/simulation/model/useTutorialStore.ts';
+import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
+import useMobile from '@/shared/lib/useMobile.ts';
 
 const tutorialVideos = [
   {
@@ -38,9 +38,11 @@ function TutorialModal() {
   const closeModal = useSimulationModalStore(state => state.closeModal);
   const isMobile = useMobile();
   const youTubeSize = isMobile ? { width: '250', height: '141' } : { width: '600', height: '338' };
-  const showTutorial = visitTutorial.get();
 
-  if (!showTutorial) {
+  const shouldSkipTutorial = useTutorialStore(state => state.shouldSkipTutorial);
+  const setTutorialSkip = useTutorialStore(state => state.setVisited);
+
+  if (shouldSkipTutorial) {
     openModal('wish');
   }
 
@@ -57,7 +59,7 @@ function TutorialModal() {
       return;
     }
 
-    visitTutorial.set();
+    setTutorialSkip();
     setPopupChecked(true);
   };
 
@@ -74,7 +76,7 @@ function TutorialModal() {
   };
 
   return (
-    <Dialog title="올클연습 소개" onClose={handleCloseModal} isOpen={showTutorial}>
+    <Dialog title="올클연습 소개" onClose={handleCloseModal} isOpen={!shouldSkipTutorial}>
       <Dialog.Content>
         <Flex className="w-full" direction="flex-col">
           <SupportingText>올클연습은 실제 수강신청과 유사한 환경에서 연습할 수 있는 기능입니다.</SupportingText>
