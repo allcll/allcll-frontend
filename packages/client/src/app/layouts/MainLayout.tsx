@@ -18,7 +18,9 @@ function MainLayout() {
       <ToastNotification />
       <Header />
       <BannerNotification />
-      <Outlet />
+      <main>
+        <Outlet />
+      </main>
       <Footer />
     </div>
   );

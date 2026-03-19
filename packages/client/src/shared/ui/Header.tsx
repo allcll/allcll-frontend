@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import LogoSvg from '@public/ci-spring.svg?react';
-import LogoName from '@public/logo-name-spring.svg?react';
+import LogoCI from '@/assets/logo/ci-spring.svg?react';
+import LogoName from '@/assets/logo/logo-name-spring.svg?react';
 import HelpDeskSvg from '@/assets/help-desk.svg?react';
 import HelpChatSvg from '@/assets/chat-help.svg?react';
 import MenuSvg from '@/assets/menu.svg?react';
@@ -42,7 +42,7 @@ function Header() {
         <div className="flex items-center space-x-4 py-4">
           <Link to="/" className="flex items-center gap-1 space-x-2" aria-label="메인 페이지">
             <h2 className="hidden">ALLCLL</h2>
-            <LogoSvg className="w-6 h-6 m-0" />
+            <LogoCI className="w-6 h-6 m-0" />
             <LogoName className="h-5" />
           </Link>
 

@@ -19,9 +19,9 @@ function ServiceLayout({ serviceId }: IServiceLayoutProps) {
       <Header />
       <ServiceEnabled serviceId={serviceId}>
         <BannerNotification />
-        <div className="flex-1">
+        <main className="flex-1">
           <Outlet />
-        </div>
+        </main>
       </ServiceEnabled>
       <Footer />
     </div>
