@@ -4,6 +4,7 @@ import { Button, Card, Flex, Grid, TextField } from '@allcll/allcll-ui';
 import { useState } from 'react';
 import SectionHeader from '../common/SectionHeader';
 import { useCrawlersPreseat } from '@/hooks/server/clawlers/usePreseatCrawlers';
+import { useCrawlersBasket } from '@/hooks/server/clawlers/useBasketCrawlers';
 
 type crawlerType = 'department' | 'subject' | 'pre-seat' | 'basket';
 
@@ -11,7 +12,7 @@ function CrawlerControlComponent() {
   const { mutate: clawlersDepartments } = useClawlersDepartments();
   const { mutate: clawlersSubjects } = useSubjectsClawlers();
   const { mutate: crawlersPreseat } = useCrawlersPreseat();
-  const { mutate: crawlersBasket } = useCrawlersPreseat();
+  const { mutate: crawlersBasket } = useCrawlersBasket();
 
   const [clawlersParams, setClawlersParams] = useState<CralwersParams>({
     userId: '',
@@ -58,7 +59,10 @@ function CrawlerControlComponent() {
   return (
     <section>
       <Card>
-        <SectionHeader title="크롤링 제어" description="모든 크롤링을 실행합니다. 학과, 과목데이터: userId, year, semesterCode필수, PreSeat, Basket 데이터: userId 필수" />
+        <SectionHeader
+          title="크롤링 제어"
+          description="모든 크롤링을 실행합니다. 학과, 과목데이터: userId, year, semesterCode필수, PreSeat, Basket 데이터: userId 필수"
+        />
 
         <Flex direction="flex-col" gap="gap-4">
           {params.map(param => (
