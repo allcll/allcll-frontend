@@ -27,7 +27,8 @@
       "@/*": ["src/*"],
       "@public/*": ["public/*"],
       "@allcll/common": ["../common/index.ts"],
-      "@allcll/common/*": ["../common/src/*"]
+      "@allcll/common/*": ["../common/src/*"],
+      "@allcll/chart": ["../chart/index.ts"]
     }
   },
   "include": [
@@ -36,6 +37,8 @@
     "svg.d.ts",
     "tailwind.config.js",
     "../common/index.ts",
-    "../common/src"
+    "../common/src",
+    "../chart/index.ts",
+    "../chart/src"
   ]
 }

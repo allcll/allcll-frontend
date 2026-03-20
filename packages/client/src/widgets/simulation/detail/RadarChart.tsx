@@ -1,14 +1,5 @@
-// import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from 'recharts';
-import {
-  Chart as ChartJS,
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip as ChartTooltip,
-  Legend,
-} from 'chart.js/auto';
-import { Radar as RadarChartJS } from 'react-chartjs-2';
+import { RadarChart as Chart } from '@allcll/chart';
+import type { RadarChartOptions } from '@allcll/chart';
 import { ExtendedResultResponse } from '@/pages/simulation/DashboardDetail.tsx';
 import {
   getSearchBtnSpeedRank,
@@ -17,9 +8,7 @@ import {
   getCaptchaSpeedRank,
 } from '@/features/simulation/lib/score.ts';
 
-ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, ChartTooltip, Legend);
-
-const options = {
+const options: RadarChartOptions = {
   responsive: true,
   scales: {
     r: {
@@ -60,7 +49,7 @@ function getDataset(result: IRadarChart['result']) {
       {
         label: '평균',
         data: getRankArr([1.776296, 9.30268, 93.58, 3.843947]),
-        backgroundColor: 'rgba(5, 223, 114, 0.2)', // bg-blue-500 with opacity
+        backgroundColor: 'rgba(5, 223, 114, 0.2)',
         borderColor: 'rgba(5, 223, 114, 1)',
         borderWidth: 2,
         pointBackgroundColor: 'rgba(5, 223, 114, 1)',
@@ -68,7 +57,7 @@ function getDataset(result: IRadarChart['result']) {
       {
         label: '내 능력',
         data: getRankArr(myData),
-        backgroundColor: 'rgb(0, 122, 255, 0.2)', // bg-blue-500 with opacity
+        backgroundColor: 'rgb(0, 122, 255, 0.2)',
         borderColor: 'rgba(0, 122, 255, 1)',
         borderWidth: 2,
         pointBackgroundColor: 'rgba(0, 122, 255, 1)',
@@ -100,7 +89,7 @@ function RadarChart({ result }: Readonly<IRadarChart>) {
     <>
       {/* 레이더 차트 */}
       <div className="h-90">
-        <RadarChartJS data={datasets} className="mx-auto" options={options} />
+        <Chart data={datasets} className="mx-auto" options={options} />
       </div>
 
       {/* 능력 설명 박스 */}

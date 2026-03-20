@@ -1,8 +1,5 @@
 import BlurComponents from '@/shared/ui/BlurComponents.tsx';
-import { Bar } from 'react-chartjs-2';
-import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Tooltip } from 'chart.js/auto';
-
-ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+import { BarChart } from '@allcll/chart';
 
 // 학년별 관심도 (막대 그래프)
 const gradeData = {
@@ -20,7 +17,7 @@ function WishesBarChart() {
     <BlurComponents>
       <p className="text-sm text-gray-500">작년 대비 관심도 20% 증가 → 경쟁 치열할 가능성 높음</p>
       <div className="mt-4">
-        <Bar data={gradeData} />
+        <BarChart data={gradeData} />
       </div>
     </BlurComponents>
   );

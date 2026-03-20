@@ -1,23 +1,8 @@
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  ChartData,
-  ChartOptions,
-  TooltipCallbacks,
-} from 'chart.js/auto';
-import { Chart } from 'react-chartjs-2';
+import { MixedChart } from '@allcll/chart';
+import type { MixedChartData, MixedChartOptions } from '@allcll/chart';
 import { useState } from 'react';
 import { AggregatedResultResponse } from '@/features/simulation/lib/result.ts';
-import { isNumber } from 'chart.js/helpers';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend);
 type ChartType = 'bar' | 'line';
 
 // Fixme: type 정의 수정
@@ -39,12 +24,12 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
 
   const barThickness = simulations && simulations.length < 50 ? 16 : 8;
 
-  const data: ChartData<ChartType> = {
+  const data: MixedChartData = {
     labels,
     datasets: [
       // 누적 막대 차트 데이터셋
       {
-        type: 'bar',
+        type: 'bar' as ChartType,
         label: '검색 버튼 시간',
         data: searchBtnTimes,
         barThickness,
@@ -52,7 +37,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         stack: 'Stack 0',
       },
       {
-        type: 'bar',
+        type: 'bar' as ChartType,
         label: '매크로 방지 인증 속도',
         data: captchaTimes,
         barThickness,
@@ -60,7 +45,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         stack: 'Stack 0',
       },
       {
-        type: 'bar',
+        type: 'bar' as ChartType,
         label: '과목 신청 시간',
         data: subjectTimes,
         barThickness,
@@ -68,7 +53,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         stack: 'Stack 0',
       },
       {
-        type: 'bar',
+        type: 'bar' as ChartType,
         label: '나머지 시간',
         data: totalTimes,
         barThickness,
@@ -78,7 +63,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
 
       // 경계선 그래프
       {
-        type: 'line',
+        type: 'line' as ChartType,
         label: '검색 완료',
         data: searchBtnTimes,
         borderColor: 'rgba(75, 192, 192, 1)',
@@ -89,7 +74,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         tension: 0.1,
       },
       {
-        type: 'line',
+        type: 'line' as ChartType,
         label: '매크로 완료',
         data: captchaTimes,
         borderColor: 'rgba(255, 99, 132, 1)',
@@ -100,7 +85,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         tension: 0.1,
       },
       {
-        type: 'line',
+        type: 'line' as ChartType,
         label: '과목 신청 완료',
         data: subjectTimes,
         borderColor: 'rgba(54, 162, 235, 1)',
@@ -111,7 +96,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         tension: 0.1,
       },
       {
-        type: 'line',
+        type: 'line' as ChartType,
         label: '총 소요 시간',
         data: totalTimes,
         borderColor: 'rgba(153, 102, 255, 1)',
@@ -124,26 +109,21 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
     ],
   };
 
-  const options: ChartOptions<ChartType> = {
+  const options: MixedChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'top',
       },
-      // title: {
-      //   display: true,
-      //   text: '시뮬레이션별 시간 분포',
-      //   font: { size: 16 },
-      // },
       tooltip: {
         callbacks: {
-          label: function (context: { dataset: { label: string }; parsed: { y: any } }) {
+          label: function (context: { dataset: { label: string }; parsed: { y: number } }) {
             const label = context.dataset.label || '';
             const value = context.parsed.y;
             return `${label}: ${value.toFixed(2)}초`;
           },
-        } as Partial<TooltipCallbacks<ChartType>>,
+        },
       },
     },
     scales: {
@@ -161,7 +141,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         },
         ticks: {
           callback: function (value: number | string) {
-            return (isNumber(value) ? value.toFixed(1) : value) + '초';
+            return (typeof value === 'number' ? value.toFixed(1) : value) + '초';
           },
         },
       },
@@ -186,19 +166,10 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         </div>
       </div>
       <div className="h-full pb-6 overflow-x-auto">
-        <Chart type="bar" data={data} options={options} />
+        <MixedChart data={data} options={options} />
       </div>
     </div>
   );
 }
-
-// function getResultsData(result: AggregatedResultResponse) {
-//   return result.simulations.map(sim => ({
-//     captchaTime: sim.captchaTime || 0,
-//     subjectTime: sim.subjectTime || 0,
-//     searchBtnTime: sim.searchBtnTime || 0,
-//     otherTime: sim.otherTime || 0,
-//   }));
-// }
 
 export default StatisticsChart;

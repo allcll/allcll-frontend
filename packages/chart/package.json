@@ -1,0 +1,16 @@
+{
+  "name": "@allcll/chart",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.6"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1"
+  }
+}
