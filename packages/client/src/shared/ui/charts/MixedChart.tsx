@@ -1,4 +1,8 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useCallback } from 'react';
+import { Bar, LinePath } from '@visx/shape';
+import { Group } from '@visx/group';
+import { scaleBand, scaleLinear } from '@visx/scale';
+import { AxisBottom, AxisLeft } from '@visx/axis';
 
 type MixedDatasetType = 'bar' | 'line';
 
@@ -61,15 +65,15 @@ interface TooltipState {
   index: number;
 }
 
-function useTooltip() {
-  const [tooltip, setTooltip] = useState<TooltipState | null>(null);
-  const hide = useCallback(() => setTooltip(null), []);
-  return { tooltip, setTooltip, hide };
-}
+const PAD_TOP = 16;
+const PAD_BOTTOM = 56;
+const PAD_LEFT = 56;
+const PAD_RIGHT = 16;
+const CHART_HEIGHT = 320;
 
 export function MixedChart({ data, options }: MixedChartProps) {
-  const { tooltip, setTooltip, hide } = useTooltip();
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [tooltip, setTooltip] = useState<TooltipState | null>(null);
+  const hide = useCallback(() => setTooltip(null), []);
 
   const { labels, datasets } = data;
   const n = labels.length;
@@ -79,35 +83,34 @@ export function MixedChart({ data, options }: MixedChartProps) {
   const barDatasets = datasets.filter(d => d.type === 'bar');
   const lineDatasets = datasets.filter(d => d.type === 'line');
 
-  // Calculate stacked maximums per column
-  const stackedMax = Array.from({ length: n }, (_, col) =>
+  // Compute max y (stacked bar sum per column)
+  const stackedSums = Array.from({ length: n }, (_, col) =>
     barDatasets.reduce((sum, ds) => sum + (ds.data[col] ?? 0), 0),
   );
-  const yMax = Math.max(...stackedMax, ...lineDatasets.flatMap(d => d.data), 0);
+  const rawLineMax = lineDatasets.flatMap(d => d.data);
+  const yMax = Math.max(...stackedSums, ...rawLineMax, 0);
 
-  // Chart dimensions
-  const padTop = 16;
-  const padBottom = 56;
-  const padLeft = 56;
-  const padRight = 16;
-  const chartHeight = 320;
-
-  // Width per bar slot
   const barSlot = Math.max(barDatasets[0]?.barThickness ?? 16, 16) + 8;
-  const totalWidth = n * barSlot;
-  const viewWidth = totalWidth + padLeft + padRight;
-  const innerHeight = chartHeight - padTop - padBottom;
+  const innerWidth = n * barSlot;
+  const innerHeight = CHART_HEIGHT - PAD_TOP - PAD_BOTTOM;
+  const viewWidth = innerWidth + PAD_LEFT + PAD_RIGHT;
 
-  const yScale = (value: number) => innerHeight - (value / (yMax || 1)) * innerHeight;
+  const xScale = scaleBand<number>({
+    domain: Array.from({ length: n }, (_, i) => i),
+    range: [0, innerWidth],
+    padding: 0,
+  });
 
-  const yTickCount = 5;
-  const yTicks = Array.from({ length: yTickCount + 1 }, (_, i) => (yMax * i) / yTickCount);
+  const yScale = scaleLinear<number>({
+    domain: [0, yMax || 1],
+    range: [innerHeight, 0],
+    nice: true,
+  });
 
-  const xCenter = (col: number) => col * barSlot + barSlot / 2;
-
-  const formatYTick = (value: number) => {
+  const formatYTick = (value: number | { valueOf(): number }) => {
     const cb = options?.scales?.y?.ticks?.callback;
-    return cb ? cb(value) : String(Math.round(value));
+    const v = typeof value === 'number' ? value : value.valueOf();
+    return cb ? cb(v) : String(Math.round(v));
   };
 
   const formatTooltipLabel = (label: string, value: number) => {
@@ -119,21 +122,27 @@ export function MixedChart({ data, options }: MixedChartProps) {
   const xTitle = options?.scales?.x?.title?.display ? options.scales.x.title.text : null;
   const yTitle = options?.scales?.y?.title?.display ? options.scales.y.title.text : null;
 
-  const handleMouseEnter = (e: React.MouseEvent, colIndex: number) => {
-    const items = datasets.map(ds => ({
-      label: ds.label,
-      value: ds.data[colIndex] ?? 0,
-      color: ds.backgroundColor ?? ds.borderColor ?? '#888',
-    }));
-    setTooltip({ x: e.clientX, y: e.clientY, items, index: colIndex });
+  const xCenter = (col: number) => (xScale(col) ?? 0) + (xScale.bandwidth() ?? barSlot) / 2;
+  const bw = barDatasets[0]?.barThickness ?? 16;
+
+  const handleMouseEnter = (e: React.MouseEvent, col: number) => {
+    setTooltip({
+      x: e.clientX,
+      y: e.clientY,
+      items: datasets.map(ds => ({
+        label: ds.label,
+        value: ds.data[col] ?? 0,
+        color: ds.backgroundColor ?? ds.borderColor ?? '#888',
+      })),
+      index: col,
+    });
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = (e: React.MouseEvent) =>
     setTooltip(prev => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null));
-  };
 
   return (
-    <div ref={containerRef}>
+    <div>
       {/* Legend */}
       {showLegend && (
         <div className="flex flex-wrap justify-center gap-3 mb-2">
@@ -150,14 +159,14 @@ export function MixedChart({ data, options }: MixedChartProps) {
       )}
 
       <div style={{ overflowX: 'auto' }}>
-        <svg width={viewWidth} height={chartHeight} style={{ display: 'block' }} onMouseLeave={hide}>
-          <g transform={`translate(${padLeft}, ${padTop})`}>
+        <svg width={viewWidth} height={CHART_HEIGHT} style={{ display: 'block' }} onMouseLeave={hide}>
+          <Group left={PAD_LEFT} top={PAD_TOP}>
             {/* Y axis title */}
             {yTitle && (
               <text
                 x={-innerHeight / 2}
-                y={-padLeft + 14}
-                transform={`rotate(-90)`}
+                y={-PAD_LEFT + 14}
+                transform="rotate(-90)"
                 textAnchor="middle"
                 fontSize={11}
                 fill="#6b7280"
@@ -166,25 +175,25 @@ export function MixedChart({ data, options }: MixedChartProps) {
               </text>
             )}
 
-            {/* Y axis ticks and grid lines */}
-            {yTicks.map((tickVal, i) => {
-              const y = yScale(tickVal);
-              return (
-                <g key={i}>
-                  <line x1={0} y1={y} x2={totalWidth} y2={y} stroke="#e5e7eb" strokeWidth={1} />
-                  <text x={-6} y={y + 4} textAnchor="end" fontSize={10} fill="#9ca3af">
-                    {formatYTick(tickVal)}
-                  </text>
-                </g>
-              );
-            })}
+            {/* Y axis */}
+            <AxisLeft scale={yScale} numTicks={5} tickFormat={v => formatYTick(v)} />
 
             {/* X axis */}
-            <line x1={0} y1={innerHeight} x2={totalWidth} y2={innerHeight} stroke="#d1d5db" strokeWidth={1} />
+            <AxisBottom
+              top={innerHeight}
+              scale={xScale}
+              tickFormat={v => labels[v as number] ?? ''}
+              tickLabelProps={() => ({
+                fontSize: 9,
+                fill: '#6b7280',
+                textAnchor: 'middle',
+                ...(n > 20 ? { transform: `rotate(-45)`, textAnchor: 'end' } : {}),
+              })}
+            />
 
             {/* Stacked bars */}
             {Array.from({ length: n }, (_, col) => {
-              let stackBottom = innerHeight;
+              let stackY = yScale(0) ?? innerHeight;
               return (
                 <g
                   key={col}
@@ -195,71 +204,40 @@ export function MixedChart({ data, options }: MixedChartProps) {
                 >
                   {barDatasets.map((ds, di) => {
                     const value = ds.data[col] ?? 0;
-                    const barH = (value / (yMax || 1)) * innerHeight;
-                    const bw = ds.barThickness ?? 16;
-                    const bx = xCenter(col) - bw / 2;
-                    const by = stackBottom - barH;
-                    stackBottom -= barH;
+                    const barH = Math.max((yScale(0) ?? innerHeight) - (yScale(value) ?? 0), 0);
+                    const barY = stackY - barH;
+                    stackY = barY;
                     return (
-                      <rect
+                      <Bar
                         key={di}
-                        x={bx}
-                        y={by}
+                        x={xCenter(col) - bw / 2}
+                        y={barY}
                         width={bw}
-                        height={Math.max(barH, 0)}
+                        height={barH}
                         fill={ds.backgroundColor ?? '#888'}
                       />
                     );
                   })}
-                  {/* X label */}
-                  <text
-                    x={xCenter(col)}
-                    y={innerHeight + 16}
-                    textAnchor="middle"
-                    fontSize={9}
-                    fill="#6b7280"
-                    transform={n > 20 ? `rotate(-45, ${xCenter(col)}, ${innerHeight + 16})` : undefined}
-                  >
-                    {labels[col]}
-                  </text>
                 </g>
               );
             })}
 
             {/* Line overlays */}
             {lineDatasets.map((ds, li) => {
-              const points = ds.data.map((v, col) => ({ x: xCenter(col), y: yScale(v) }));
-              const pw = ds.borderWidth ?? 2;
+              const pts = ds.data.map((v, col) => ({ x: xCenter(col), y: yScale(v) ?? 0 }));
               const pr = ds.pointRadius ?? 4;
-
-              // Build SVG path with optional tension
-              let pathD = '';
-              if (points.length > 1) {
-                const t = ds.tension ?? 0;
-                if (t === 0) {
-                  pathD = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
-                } else {
-                  // Catmull-Rom to cubic bezier approximation
-                  pathD = points
-                    .map((p, i) => {
-                      if (i === 0) return `M ${p.x} ${p.y}`;
-                      const prev = points[i - 1]!;
-                      const next = points[i + 1] ?? p;
-                      const prevPrev = points[i - 2] ?? prev;
-                      const cp1x = prev.x + ((p.x - prevPrev.x) * t) / 2;
-                      const cp1y = prev.y + ((p.y - prevPrev.y) * t) / 2;
-                      const cp2x = p.x - ((next.x - prev.x) * t) / 2;
-                      const cp2y = p.y - ((next.y - prev.y) * t) / 2;
-                      return `C ${cp1x} ${cp1y} ${cp2x} ${cp2y} ${p.x} ${p.y}`;
-                    })
-                    .join(' ');
-                }
-              }
-
+              const pw = ds.borderWidth ?? 2;
               return (
                 <g key={li}>
-                  {pathD && <path d={pathD} fill="none" stroke={ds.borderColor ?? '#888'} strokeWidth={pw} />}
-                  {points.map((p, pi) => (
+                  <LinePath
+                    data={pts}
+                    x={p => p.x}
+                    y={p => p.y}
+                    stroke={ds.borderColor ?? '#888'}
+                    strokeWidth={pw}
+                    fill="none"
+                  />
+                  {pts.map((p, pi) => (
                     <circle
                       key={pi}
                       cx={p.x}
@@ -271,11 +249,11 @@ export function MixedChart({ data, options }: MixedChartProps) {
                 </g>
               );
             })}
-          </g>
+          </Group>
 
           {/* X axis title */}
           {xTitle && (
-            <text x={padLeft + totalWidth / 2} y={chartHeight - 6} textAnchor="middle" fontSize={11} fill="#6b7280">
+            <text x={PAD_LEFT + innerWidth / 2} y={CHART_HEIGHT - 6} textAnchor="middle" fontSize={11} fill="#6b7280">
               {xTitle}
             </text>
           )}

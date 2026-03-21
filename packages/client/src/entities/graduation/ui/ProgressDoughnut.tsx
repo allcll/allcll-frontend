@@ -1,4 +1,4 @@
-import { DoughnutChart } from '@allcll/chart';
+import { DoughnutChart } from '@/shared/ui/charts/DoughnutChart';
 import { colors } from '@allcll/allcll-ui';
 
 interface ProgressDoughnutProps {

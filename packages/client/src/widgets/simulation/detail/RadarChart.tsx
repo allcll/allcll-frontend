@@ -1,5 +1,5 @@
-import { RadarChart as Chart } from '@allcll/chart';
-import type { RadarChartOptions } from '@allcll/chart';
+import { RadarChart as Chart } from '@/shared/ui/charts/RadarChart';
+import type { RadarChartOptions } from '@/shared/ui/charts/RadarChart';
 import { ExtendedResultResponse } from '@/pages/simulation/DashboardDetail.tsx';
 import {
   getSearchBtnSpeedRank,

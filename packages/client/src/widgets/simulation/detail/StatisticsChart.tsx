@@ -1,5 +1,5 @@
-import { MixedChart } from '@allcll/chart';
-import type { MixedChartData, MixedChartOptions } from '@allcll/chart';
+import { MixedChart } from '@/shared/ui/charts/MixedChart';
+import type { MixedChartData, MixedChartOptions } from '@/shared/ui/charts/MixedChart';
 import { useState } from 'react';
 import { AggregatedResultResponse } from '@/features/simulation/lib/result.ts';
 

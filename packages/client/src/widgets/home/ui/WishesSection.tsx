@@ -1,4 +1,4 @@
-import { DoughnutChart } from '@allcll/chart';
+import { DoughnutChart } from '@/shared/ui/charts/DoughnutChart';
 import Section from '@/widgets/home/ui/Section.tsx';
 import { DoughnutColors } from '@/features/wish/lib/doughnut';
 import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
