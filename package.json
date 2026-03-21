@@ -11,10 +11,8 @@
   "scripts": {
     "client": "pnpm -F @allcll/client run dev",
     "admin": "pnpm -F @allcll/admin run dev",
-    "poc": "pnpm -F @allcll/poc run dev",
     "build-client": "pnpm -F @allcll/client run build",
     "build-admin": "pnpm -F @allcll/admin run build",
-    "build-poc": "pnpm -F @allcll/poc run build",
     "prettier": "npx prettier ./packages --write",
     "test": "pnpm -F @allcll/e2e run test",
     "test:ui": "pnpm -F @allcll/e2e run test:ui",
