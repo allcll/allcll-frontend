@@ -110,9 +110,9 @@ export function MixedChart({ data, options }: MixedChartProps) {
     return cb ? cb(value) : String(Math.round(value));
   };
 
-  const formatTooltipLabel = (label: string, value: number) => {
+  const formatTooltipLabel = (dataset: MixedDataset, value: number) => {
     const cb = options?.plugins?.tooltip?.callbacks?.label;
-    return cb ? cb({ dataset: { label }, parsed: { y: value } }) : `${label}: ${value}`;
+    return cb ? cb({ dataset: { label: dataset.label }, parsed: { y: value } }) : `${dataset.label}: ${value}`;
   };
 
   const showLegend = options?.plugins?.legend?.display !== false;
@@ -292,7 +292,7 @@ export function MixedChart({ data, options }: MixedChartProps) {
           {tooltip.items.map((item, i) => (
             <div key={i} className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-sm inline-block" style={{ backgroundColor: item.color }} />
-              <span>{formatTooltipLabel(item.label, item.value)}</span>
+              <span>{formatTooltipLabel(datasets[i]!, item.value)}</span>
             </div>
           ))}
         </div>

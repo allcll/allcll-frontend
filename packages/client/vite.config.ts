@@ -64,17 +64,6 @@ export default ({ mode }: ConfigEnv) => {
     },
     build: {
       sourcemap: isProduction, // Source map generation for Sentry
-      rollupOptions: {
-        output: {
-          manualChunks(id) {
-            // Isolate chart library chunks for bundle size comparison
-            const VISX_DEPS = ['@visx/', 'd3-', 'internmap'];
-            if (VISX_DEPS.some(dep => id.includes(`node_modules/${dep}`))) {
-              return 'chart-visx';
-            }
-          },
-        },
-      },
     },
   });
 };

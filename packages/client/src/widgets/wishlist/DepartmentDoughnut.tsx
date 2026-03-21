@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DoughnutChart } from '@/shared/ui/charts/DoughnutChart';
+import { DoughnutChart } from '@allcll/chart';
 import useDepartments, { DepartmentDict, useDepartmentDict } from '@/entities/departments/api/useDepartments.ts';
 import {
   getCollegeDoughnutData,
