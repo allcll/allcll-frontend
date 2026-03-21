@@ -64,6 +64,29 @@ export default ({ mode }: ConfigEnv) => {
     },
     build: {
       sourcemap: isProduction, // Source map generation for Sentry
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            // @allcll workspace packages (resolved as local paths in monorepo)
+            if (id.includes('/packages/allcll-ui/') || id.includes('@allcll/allcll-ui')) return 'vendor-allcll-ui';
+            if (id.includes('/packages/sejong-ui/') || id.includes('@allcll/sejong-ui')) return 'vendor-sejong-ui';
+
+            if (!id.includes('node_modules')) return undefined;
+
+            // react core & scheduler → vendor-react (exact package boundary to avoid matching react-router)
+            if (/node_modules\/(react|react-dom|scheduler)\//.test(id)) return 'vendor-react';
+
+            // react-router & remix router → vendor-router
+            if (id.includes('/react-router') || id.includes('/@remix-run/router')) return 'vendor-router';
+
+            // tanstack (react-query, etc.) → vendor-tanstack
+            if (id.includes('/@tanstack/')) return 'vendor-tanstack';
+
+            // all other node_modules → vendor
+            return 'vendor';
+          },
+        },
+      },
     },
   });
 };

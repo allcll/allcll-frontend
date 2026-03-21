@@ -14,16 +14,24 @@ const UsingMockServer = import.meta.env.VITE_USE_MOCK === 'true';
 const isProduction = process.env.NODE_ENV === 'production';
 const isDevServer = import.meta.env.VITE_DEV_SERVER === 'true';
 
-if (isProduction && !isDevServer) {
-  Clarity.init(import.meta.env.VITE_CLARITY_PROJECT_ID);
+function initAnalytics() {
+  if (isProduction && !isDevServer) {
+    Clarity.init(import.meta.env.VITE_CLARITY_PROJECT_ID);
 
-  // Todo: Sentry tree shaking
-  Sentry.initialize();
-  ReactGA.initialize(import.meta.env.VITE_GOOGLE_ANALYTICS_ID);
+    // Todo: Sentry tree shaking
+    Sentry.initialize();
+    ReactGA.initialize(import.meta.env.VITE_GOOGLE_ANALYTICS_ID);
+  }
+}
+
+if ('requestIdleCallback' in window) {
+  requestIdleCallback(initAnalytics);
+} else {
+  setTimeout(initAnalytics, 200);
 }
 
 if (!isProduction || !isDevServer) {
-  // @ts-ignore
+  // @ts-expect-error -- window is extended at runtime for dev tooling
   window.__TANSTACK_QUERY_CLIENT__ = queryClient;
 }
 

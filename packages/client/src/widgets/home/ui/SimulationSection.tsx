@@ -3,7 +3,6 @@ import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
 import RadarChart from '@/widgets/simulation/detail/RadarChart.tsx';
 import React, { ButtonHTMLAttributes, useEffect, useRef, useState } from 'react';
 import { drawCaptcha } from '@/features/simulation/lib/captcha.ts';
-import SejongUI from '@allcll/sejong-ui';
 import { Card, Heading, SupportingText } from '@allcll/allcll-ui';
 
 const InitRadarData = {
@@ -75,7 +74,7 @@ function CaptchaInput({
   }
 
   function handleChangeInput(event: React.ChangeEvent<HTMLInputElement>) {
-    let inputValue = event.target.value;
+    const inputValue = event.target.value;
 
     captchaResult.updateResult();
 
@@ -137,13 +136,18 @@ function CaptchaInput({
           <div className="text-sm font-semibold  flex flex-row items-center">
             <span className="inline-block w-1.5 h-5 bg-blue-500 mr-2 "></span>생성된 코드 입력
           </div>
-          <SejongUI.Input
-            value={captchaInput}
-            className="mt-2 w-full"
-            onChange={e => handleChangeInput(e)}
-            placeholder="코드를 입력하세요"
-            essential
-          />
+          <div
+            className="relative inline-block before:content-[''] before:absolute before:top-0 before:left-0 before:w-0 before:h-0 before:z-5 before:border-t-[8px] before:border-t-red-500 before:border-r-[8px] before:border-r-transparent mt-2 w-full"
+            aria-label="필수 입력"
+          >
+            <input
+              type="text"
+              value={captchaInput}
+              className="relative border border-gray-300 px-2 text-xs w-full h-6 focus:outline-none focus:rounded focus:ring focus:border-gray-800"
+              onChange={e => handleChangeInput(e)}
+              placeholder="코드를 입력하세요"
+            />
+          </div>
           <span className={'pl-1 text-xs ' + (infoMessage.color === 'green' ? 'text-green-500' : 'text-red-500')}>
             {infoMessage.message}
           </span>
