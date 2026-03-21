@@ -69,7 +69,8 @@ export function DoughnutChart({ data, options, className }: DoughnutChartProps) 
   const showTooltip = options?.plugins?.tooltip?.enabled !== false;
 
   const cutoutStr = dataset.cutout ?? '50%';
-  const cutoutPercent = parseFloat(cutoutStr) / 100;
+  // Support both percentage strings ('75%') and numeric values ('0.75')
+  const cutoutPercent = cutoutStr.includes('%') ? parseFloat(cutoutStr) / 100 : parseFloat(cutoutStr);
 
   const size = 200;
   const cx = size / 2;

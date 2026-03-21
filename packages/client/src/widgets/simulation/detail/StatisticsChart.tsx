@@ -3,8 +3,6 @@ import type { MixedChartData, MixedChartOptions } from '@allcll/chart';
 import { useState } from 'react';
 import { AggregatedResultResponse } from '@/features/simulation/lib/result.ts';
 
-type ChartType = 'bar' | 'line';
-
 // Fixme: type 정의 수정
 function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
   const [normalData, setNormalData] = useState(true);
@@ -29,7 +27,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
     datasets: [
       // 누적 막대 차트 데이터셋
       {
-        type: 'bar' as ChartType,
+        type: 'bar',
         label: '검색 버튼 시간',
         data: searchBtnTimes,
         barThickness,
@@ -37,7 +35,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         stack: 'Stack 0',
       },
       {
-        type: 'bar' as ChartType,
+        type: 'bar',
         label: '매크로 방지 인증 속도',
         data: captchaTimes,
         barThickness,
@@ -45,7 +43,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         stack: 'Stack 0',
       },
       {
-        type: 'bar' as ChartType,
+        type: 'bar',
         label: '과목 신청 시간',
         data: subjectTimes,
         barThickness,
@@ -53,7 +51,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         stack: 'Stack 0',
       },
       {
-        type: 'bar' as ChartType,
+        type: 'bar',
         label: '나머지 시간',
         data: totalTimes,
         barThickness,
@@ -63,7 +61,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
 
       // 경계선 그래프
       {
-        type: 'line' as ChartType,
+        type: 'line',
         label: '검색 완료',
         data: searchBtnTimes,
         borderColor: 'rgba(75, 192, 192, 1)',
@@ -74,7 +72,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         tension: 0.1,
       },
       {
-        type: 'line' as ChartType,
+        type: 'line',
         label: '매크로 완료',
         data: captchaTimes,
         borderColor: 'rgba(255, 99, 132, 1)',
@@ -85,7 +83,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         tension: 0.1,
       },
       {
-        type: 'line' as ChartType,
+        type: 'line',
         label: '과목 신청 완료',
         data: subjectTimes,
         borderColor: 'rgba(54, 162, 235, 1)',
@@ -96,7 +94,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         tension: 0.1,
       },
       {
-        type: 'line' as ChartType,
+        type: 'line',
         label: '총 소요 시간',
         data: totalTimes,
         borderColor: 'rgba(153, 102, 255, 1)',
