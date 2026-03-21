@@ -18,6 +18,10 @@ const PAD_LEFT = 30;
 const MAX_BAR_WIDTH = 40;
 /** Y축 격자선 개수 */
 const Y_TICK_COUNT = 4;
+/** 막대별 애니메이션 시작 간격 (초). 첫 번째 막대: 0s, 두 번째: 0.05s, ... */
+const ANIM_STAGGER_S = 0.05;
+/** 막대 성장 애니메이션 재생 시간 (초) */
+const ANIM_DUR_S = 0.5;
 
 // ---------------------------------------------------------------------------
 // 공개 타입
@@ -72,6 +76,8 @@ interface BarSlot {
  * 가장 자주 바꾸는 설정:
  * - 색상: `data.datasets[0].backgroundColor`
  * - 레이블: `data.labels`
+ *
+ * 마운트 시 각 막대가 아래에서 위로 자라나는 애니메이션이 재생됩니다.
  */
 export const BarChart = memo(function BarChart({ data, className }: BarChartProps) {
   const [tooltip, setTooltip] = useState<SimpleTooltipState | null>(null);
@@ -113,7 +119,12 @@ export const BarChart = memo(function BarChart({ data, className }: BarChartProp
 
   return (
     <div className={className}>
-      <svg viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`} width="100%" height="100%">
+      <svg
+        viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
+        style={{ width: '100%', height: 'auto' }}
+        role="img"
+        aria-label="막대 차트"
+      >
         <g transform={`translate(${PAD_LEFT}, ${PAD_TOP})`}>
           {/* Y축 격자선 + 눈금 레이블 */}
           {yTicks.map((tickVal, i) => {
@@ -134,6 +145,7 @@ export const BarChart = memo(function BarChart({ data, className }: BarChartProp
           {/* 막대 + x 레이블 */}
           {bars.map((bar, i) => (
             <g key={i}>
+              {/* 막대: 아래→위 성장 애니메이션 */}
               <rect
                 x={bar.x}
                 y={bar.y}
@@ -144,7 +156,25 @@ export const BarChart = memo(function BarChart({ data, className }: BarChartProp
                 onMouseEnter={e => setTooltip({ x: e.clientX, y: e.clientY, label: bar.label, value: bar.value })}
                 onMouseMove={e => setTooltip(prev => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null))}
                 onMouseLeave={hideTooltip}
-              />
+              >
+                {/* SVG 네이티브 애니메이션: 막대가 바닥에서 위로 자랍니다 */}
+                <animate
+                  attributeName="height"
+                  from="0"
+                  to={bar.height}
+                  dur={`${ANIM_DUR_S}s`}
+                  begin={`${i * ANIM_STAGGER_S}s`}
+                  fill="freeze"
+                />
+                <animate
+                  attributeName="y"
+                  from={chartHeight}
+                  to={bar.y}
+                  dur={`${ANIM_DUR_S}s`}
+                  begin={`${i * ANIM_STAGGER_S}s`}
+                  fill="freeze"
+                />
+              </rect>
               <text x={bar.x + bar.width / 2} y={chartHeight + 16} textAnchor="middle" fontSize={10} fill="#6b7280">
                 {bar.label}
               </text>

@@ -14,6 +14,8 @@ const RADAR_RADIUS = 140;
 const GRID_LEVELS = 5;
 /** 데이터 포인트 원의 반지름 (px) */
 const POINT_RADIUS = 4;
+/** 데이터셋 페이드인 재생 시간 (초) */
+const ANIM_DUR_S = 0.6;
 
 const CX = VIEWBOX_SIZE / 2;
 const CY = VIEWBOX_SIZE / 2;
@@ -60,8 +62,15 @@ export interface RadarChartOptions {
     };
   };
   plugins?: {
-    /** false 로 지정하면 하단 범례를 숨깁니다 */
-    legend?: { display?: boolean };
+    legend?: {
+      /** false 로 지정하면 하단 범례를 숨깁니다 */
+      display?: boolean;
+      /**
+       * true 이면 범례 항목 클릭 시 해당 데이터셋을 숨깁니다.
+       * 숨겨진 데이터셋은 취소선 범례 + 불투명도 0 으로 표시됩니다.
+       */
+      toggleable?: boolean;
+    };
     /** false 로 지정하면 마우스오버 툴팁을 비활성화합니다 */
     tooltip?: { enabled?: boolean };
   };
@@ -106,9 +115,16 @@ interface ComputedRadarData {
  * - 축 범위: `options.scales.r.suggestedMin` / `suggestedMax`
  * - 격자 색상: `options.scales.r.grid.color`
  * - 범례: `options.plugins.legend.display`
+ * - 범례 클릭 토글: `options.plugins.legend.toggleable`
+ *
+ * 크기: SVG 에 `style={{ width: '100%', height: 'auto' }}` 가 적용되어
+ *       부모 컨테이너 너비에 따라 비율을 유지하며 크기가 결정됩니다.
+ *       카드 크기를 넘지 않으려면 부모에 `max-width` 또는 `overflow: hidden` 을 설정하세요.
  */
 export const RadarChart = memo(function RadarChart({ data, options, className }: RadarChartProps) {
   const [tooltip, setTooltip] = useState<SimpleTooltipState | null>(null);
+  // 범례 토글: 숨겨진 데이터셋 인덱스 집합
+  const [hiddenIndices, setHiddenIndices] = useState<Set<number>>(new Set());
 
   const { labels, datasets } = data;
   const n = labels.length;
@@ -118,6 +134,7 @@ export const RadarChart = memo(function RadarChart({ data, options, className }:
   const range = suggestedMax - suggestedMin;
 
   const showLegend = options?.plugins?.legend?.display !== false;
+  const legendToggleable = options?.plugins?.legend?.toggleable ?? false;
   const showTooltip = options?.plugins?.tooltip?.enabled !== false;
   const pointLabelColor = options?.scales?.r?.pointLabels?.color ?? '#374151';
   const pointLabelFontSize = options?.scales?.r?.pointLabels?.font?.size ?? 12;
@@ -184,9 +201,27 @@ export const RadarChart = memo(function RadarChart({ data, options, className }:
 
   const hideTooltip = useCallback(() => setTooltip(null), []);
 
+  const handleLegendToggle = useCallback((index: number) => {
+    setHiddenIndices(prev => {
+      const next = new Set(prev);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+  }, []);
+
   return (
     <div className={className}>
-      <svg viewBox={`0 0 ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}`} width="100%" height="100%">
+      {/*
+       * height: 'auto' — viewBox 1:1 비율을 유지하며 너비에 맞게 높이를 자동 계산합니다.
+       * 이전의 height="100%" 는 부모에 명시적 높이가 없을 때 카드 크기를 넘어가는 문제를 일으켰습니다.
+       */}
+      <svg
+        viewBox={`0 0 ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}`}
+        style={{ width: '100%', height: 'auto', display: 'block' }}
+        role="img"
+        aria-label="레이더 차트"
+      >
         {/* 격자 다각형 */}
         {computed.gridPolygons.map((pts, level) => (
           <polygon key={level} points={pts} fill="none" stroke={gridColor} strokeWidth={1} />
@@ -198,38 +233,51 @@ export const RadarChart = memo(function RadarChart({ data, options, className }:
             <line key={i} x1={CX} y1={CY} x2={end.x} y2={end.y} stroke={gridColor} strokeWidth={1} />
           ))}
 
-        {/* 데이터셋별 다각형 + 포인트 */}
-        {datasets.map((ds, di) => (
-          <g key={di}>
-            <polygon
-              points={computed.polygons[di]}
-              fill={ds.backgroundColor}
-              stroke={ds.borderColor}
-              strokeWidth={ds.borderWidth}
-            />
-            {computed.pointCoords[di]?.map((pt, i) => (
-              <circle
-                key={i}
-                cx={pt.x}
-                cy={pt.y}
-                r={POINT_RADIUS}
-                fill={ds.pointBackgroundColor}
-                style={{ cursor: showTooltip ? 'pointer' : 'default' }}
-                onMouseEnter={e => {
-                  if (showTooltip)
-                    setTooltip({
-                      x: e.clientX,
-                      y: e.clientY,
-                      label: `${ds.label}: ${labels[i]}`,
-                      value: ds.data[i] ?? 0,
-                    });
-                }}
-                onMouseMove={e => setTooltip(prev => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null))}
-                onMouseLeave={hideTooltip}
+        {/* 데이터셋별 다각형 + 포인트 (숨겨진 데이터셋은 건너뜁니다) */}
+        {datasets.map((ds, di) => {
+          const hidden = hiddenIndices.has(di);
+          return (
+            <g key={di} opacity={hidden ? 0 : 1} style={{ transition: 'opacity 0.2s' }}>
+              {!hidden && (
+                <animate
+                  attributeName="opacity"
+                  from="0"
+                  to="1"
+                  dur={`${ANIM_DUR_S}s`}
+                  begin={`${di * 0.15}s`}
+                  fill="freeze"
+                />
+              )}
+              <polygon
+                points={computed.polygons[di]}
+                fill={ds.backgroundColor}
+                stroke={ds.borderColor}
+                strokeWidth={ds.borderWidth}
               />
-            ))}
-          </g>
-        ))}
+              {computed.pointCoords[di]?.map((pt, i) => (
+                <circle
+                  key={i}
+                  cx={pt.x}
+                  cy={pt.y}
+                  r={POINT_RADIUS}
+                  fill={ds.pointBackgroundColor}
+                  style={{ cursor: showTooltip ? 'pointer' : 'default' }}
+                  onMouseEnter={e => {
+                    if (showTooltip)
+                      setTooltip({
+                        x: e.clientX,
+                        y: e.clientY,
+                        label: `${ds.label}: ${labels[i]}`,
+                        value: ds.data[i] ?? 0,
+                      });
+                  }}
+                  onMouseMove={e => setTooltip(prev => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null))}
+                  onMouseLeave={hideTooltip}
+                />
+              ))}
+            </g>
+          );
+        })}
 
         {/* 축 레이블 */}
         {labels.map((label, i) => (
@@ -248,7 +296,14 @@ export const RadarChart = memo(function RadarChart({ data, options, className }:
       </svg>
 
       {showTooltip && tooltip && <ChartTooltip state={tooltip} />}
-      {showLegend && <ChartLegend items={legendItems} />}
+      {showLegend && (
+        <ChartLegend
+          items={legendItems}
+          toggleable={legendToggleable}
+          hiddenIndices={hiddenIndices}
+          onToggle={handleLegendToggle}
+        />
+      )}
     </div>
   );
 });

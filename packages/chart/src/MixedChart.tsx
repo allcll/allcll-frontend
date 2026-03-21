@@ -1,11 +1,11 @@
-import { memo, useMemo, useCallback, useState } from 'react';
+import { memo, useMemo, useCallback, useState, useRef, useEffect } from 'react';
 import { ChartLegend, LegendItem } from './internal/ChartLegend';
 import { MultiChartTooltip, MultiTooltipItem, MultiTooltipState } from './internal/ChartTooltip';
 
 // ---------------------------------------------------------------------------
 // 레이아웃 상수 — 수정하려면 이 값들을 조정하세요
 // ---------------------------------------------------------------------------
-/** SVG 전체 높이 (px). 너비는 데이터 개수에 따라 자동 조정됩니다. */
+/** SVG 전체 높이 (px). 너비는 데이터 개수 + 컨테이너 너비에 따라 자동 조정됩니다. */
 const CHART_HEIGHT = 320;
 const PAD_TOP = 16;
 const PAD_BOTTOM = 56;
@@ -13,6 +13,10 @@ const PAD_LEFT = 56;
 const PAD_RIGHT = 16;
 /** Y축 눈금 개수 */
 const Y_TICK_COUNT = 5;
+/** 막대 슬롯의 최소 너비(px). 데이터가 적어도 이 너비 이상은 확보됩니다. */
+const MIN_BAR_SLOT = 40;
+/** 요소 페이드인 재생 시간 (초) */
+const ANIM_DUR_S = 0.5;
 
 // ---------------------------------------------------------------------------
 // 공개 타입
@@ -55,7 +59,15 @@ export interface MixedChartOptions {
   responsive?: boolean;
   maintainAspectRatio?: boolean;
   plugins?: {
-    legend?: { position?: 'top' | 'bottom' | 'left' | 'right'; display?: boolean };
+    legend?: {
+      position?: 'top' | 'bottom' | 'left' | 'right';
+      display?: boolean;
+      /**
+       * true 이면 범례 항목 클릭 시 해당 데이터셋을 숨깁니다.
+       * 숨겨진 데이터셋은 취소선 범례 + 불투명도 0 으로 표시됩니다.
+       */
+      toggleable?: boolean;
+    };
     tooltip?: {
       callbacks?: {
         /** 툴팁 각 행의 텍스트를 커스터마이징합니다 */
@@ -105,6 +117,18 @@ interface LineOverlayPath {
   borderWidth: number;
   pointRadius: number;
   pointFill: string;
+}
+
+interface ChartLayout {
+  barDatasets: MixedDataset[];
+  yMax: number;
+  totalWidth: number;
+  innerHeight: number;
+  viewWidth: number;
+  yScale: (v: number) => number;
+  yTicks: number[];
+  columns: StackedBarColumn[];
+  lineOverlays: LineOverlayPath[];
 }
 
 // ---------------------------------------------------------------------------
@@ -162,7 +186,11 @@ function StackedBarGroup({
       style={{ cursor: 'pointer' }}
     >
       {col.segments.map((seg, di) => (
-        <rect key={di} x={seg.bx} y={seg.by} width={seg.thickness} height={Math.max(seg.height, 0)} fill={seg.color} />
+        <rect key={di} x={seg.bx} y={seg.by} width={seg.thickness} height={Math.max(seg.height, 0)} fill={seg.color}>
+          {/* 막대 성장 애니메이션 */}
+          <animate attributeName="height" from="0" to={Math.max(seg.height, 0)} dur={`${ANIM_DUR_S}s`} fill="freeze" />
+          <animate attributeName="y" from={innerHeight} to={seg.by} dur={`${ANIM_DUR_S}s`} fill="freeze" />
+        </rect>
       ))}
       <text x={col.labelX} y={innerHeight + 16} textAnchor="middle" fontSize={9} fill="#6b7280">
         {col.labelText}
@@ -176,10 +204,14 @@ function LineOverlay({ overlay }: { overlay: LineOverlayPath }) {
   return (
     <g>
       {overlay.pathD && (
-        <path d={overlay.pathD} fill="none" stroke={overlay.borderColor} strokeWidth={overlay.borderWidth} />
+        <path d={overlay.pathD} fill="none" stroke={overlay.borderColor} strokeWidth={overlay.borderWidth}>
+          <animate attributeName="opacity" from="0" to="1" dur={`${ANIM_DUR_S + 0.1}s`} fill="freeze" />
+        </path>
       )}
       {overlay.points.map((p, pi) => (
-        <circle key={pi} cx={p.x} cy={p.y} r={overlay.pointRadius} fill={overlay.pointFill} />
+        <circle key={pi} cx={p.x} cy={p.y} r={overlay.pointRadius} fill={overlay.pointFill}>
+          <animate attributeName="opacity" from="0" to="1" dur={`${ANIM_DUR_S + 0.1}s`} fill="freeze" />
+        </circle>
       ))}
     </g>
   );
@@ -222,9 +254,29 @@ function buildLinePath(points: { x: number; y: number }[], tension: number): str
  * - Y축 레이블 포맷: `options.scales.y.ticks.callback`
  * - 툴팁 레이블 포맷: `options.plugins.tooltip.callbacks.label`
  * - 축 제목: `options.scales.x.title.text` / `options.scales.y.title.text`
+ * - 범례 클릭 토글: `options.plugins.legend.toggleable`
+ *
+ * 레이아웃: 데이터가 적을 때는 컨테이너 너비를 가득 채우고,
+ *           데이터가 많아 너비가 초과하면 가로 스크롤이 생깁니다.
  */
 export const MixedChart = memo(function MixedChart({ data, options }: MixedChartProps) {
   const [tooltip, setTooltip] = useState<MultiTooltipState | null>(null);
+  const [hiddenIndices, setHiddenIndices] = useState<Set<number>>(new Set());
+  // 컨테이너 너비를 감지해 데이터가 적을 때 막대를 자동 확장합니다
+  const [containerWidth, setContainerWidth] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(entries => {
+      const w = entries[0]?.contentRect.width ?? 0;
+      setContainerWidth(w);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   const hideTooltip = useCallback(() => setTooltip(null), []);
 
   const { labels, datasets } = data;
@@ -232,6 +284,7 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
 
   // 옵션 파생값
   const showLegend = options?.plugins?.legend?.display !== false;
+  const legendToggleable = options?.plugins?.legend?.toggleable ?? false;
   const xTitle = options?.scales?.x?.title?.display ? options.scales.x.title.text : null;
   const yTitle = options?.scales?.y?.title?.display ? options.scales.y.title.text : null;
 
@@ -251,17 +304,25 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
     [options?.plugins?.tooltip?.callbacks?.label],
   );
 
-  // SVG 레이아웃 계산 (data 가 바뀔 때만)
-  const layout = useMemo(() => {
-    const barDatasets = datasets.filter(d => d.type === 'bar');
-    const lineDatasets = datasets.filter(d => d.type === 'line');
+  // SVG 레이아웃 계산 (data, hiddenIndices, containerWidth 가 바뀔 때만)
+  const layout = useMemo<ChartLayout>(() => {
+    // 숨겨진 데이터셋 제외
+    const visibleDatasets = datasets.filter((_, i) => !hiddenIndices.has(i));
+    const barDatasets = visibleDatasets.filter(d => d.type === 'bar');
+    const lineDatasets = visibleDatasets.filter(d => d.type === 'line');
 
     const stackedMax = Array.from({ length: n }, (_, col) =>
       barDatasets.reduce((sum, ds) => sum + (ds.data[col] ?? 0), 0),
     );
     const yMax = Math.max(...stackedMax, ...lineDatasets.flatMap(d => d.data), 0);
 
-    const barSlot = Math.max(barDatasets[0]?.barThickness ?? 16, 16) + 8;
+    // barSlot: 데이터가 적을 때는 컨테이너를 채우도록 확장
+    const baseBarSlot = Math.max(barDatasets[0]?.barThickness ?? 16, 16) + 8;
+    const minSlot = MIN_BAR_SLOT;
+    const innerAvailable = Math.max(containerWidth - PAD_LEFT - PAD_RIGHT, 0);
+    // 컨테이너를 채울 수 있는 슬롯 크기와 기본값 중 큰 값 사용
+    const barSlot = n > 0 ? Math.max(baseBarSlot, minSlot, Math.floor(innerAvailable / n)) : baseBarSlot;
+
     const totalWidth = n * barSlot;
     const innerHeight = CHART_HEIGHT - PAD_TOP - PAD_BOTTOM;
     const viewWidth = totalWidth + PAD_LEFT + PAD_RIGHT;
@@ -298,22 +359,10 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
       };
     });
 
-    return {
-      barDatasets,
-      lineDatasets,
-      yMax,
-      totalWidth,
-      innerHeight,
-      viewWidth,
-      yScale,
-      xCenter,
-      yTicks,
-      columns,
-      lineOverlays,
-    };
-  }, [datasets, labels, n]);
+    return { barDatasets, yMax, totalWidth, innerHeight, viewWidth, yScale, yTicks, columns, lineOverlays };
+  }, [datasets, labels, n, hiddenIndices, containerWidth]);
 
-  // 범례 항목
+  // 범례 항목 (전체 데이터셋, 숨겨진 것도 포함)
   const legendItems = useMemo<LegendItem[]>(
     () => datasets.map(ds => ({ label: ds.label, color: ds.backgroundColor ?? ds.borderColor ?? '#ccc' })),
     [datasets],
@@ -321,29 +370,57 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent, colIndex: number) => {
-      const items: MultiTooltipItem[] = datasets.map(ds => ({
+      const visibleDatasets = datasets.filter((_, i) => !hiddenIndices.has(i));
+      const items: MultiTooltipItem[] = visibleDatasets.map(ds => ({
         label: ds.label,
         value: ds.data[colIndex] ?? 0,
         color: ds.backgroundColor ?? ds.borderColor ?? '#888',
       }));
       setTooltip({ x: e.clientX, y: e.clientY, title: labels[colIndex] ?? '', items });
     },
-    [datasets, labels],
+    [datasets, labels, hiddenIndices],
   );
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     setTooltip(prev => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null));
   }, []);
 
+  const handleLegendToggle = useCallback((index: number) => {
+    setHiddenIndices(prev => {
+      const next = new Set(prev);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+  }, []);
+
   if (n === 0) return null;
 
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       {/* 범례 */}
-      {showLegend && <ChartLegend items={legendItems} />}
+      {showLegend && (
+        <ChartLegend
+          items={legendItems}
+          toggleable={legendToggleable}
+          hiddenIndices={hiddenIndices}
+          onToggle={handleLegendToggle}
+        />
+      )}
 
-      <div style={{ overflowX: 'auto' }}>
-        <svg width={layout.viewWidth} height={CHART_HEIGHT} style={{ display: 'block' }} onMouseLeave={hideTooltip}>
+      {/*
+       * ref로 컨테이너 너비를 감지합니다.
+       * overflow-x: auto 로 데이터가 많으면 가로 스크롤을 허용합니다.
+       */}
+      <div ref={containerRef} style={{ width: '100%', overflowX: 'auto' }}>
+        <svg
+          width={layout.viewWidth}
+          height={CHART_HEIGHT}
+          style={{ display: 'block', minWidth: '100%' }}
+          role="img"
+          aria-label="혼합 차트"
+          onMouseLeave={hideTooltip}
+        >
           <g transform={`translate(${PAD_LEFT}, ${PAD_TOP})`}>
             {/* Y축 제목 */}
             {yTitle && (
