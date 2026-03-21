@@ -1,13 +1,39 @@
-import { useState } from 'react';
+import { memo, useMemo, useCallback, useState } from 'react';
+import { getSliceColor } from './internal/color';
+import { arcPath } from './internal/geometry';
+import { ChartTooltip, SimpleTooltipState } from './internal/ChartTooltip';
+import { ChartLegend, LegendItem } from './internal/ChartLegend';
+
+// ---------------------------------------------------------------------------
+// 레이아웃 상수 — 수정하려면 이 값들을 조정하세요
+// ---------------------------------------------------------------------------
+/** SVG 뷰포트 크기 (px). 실제 렌더 크기는 부모의 CSS가 결정합니다. */
+const VIEWBOX_SIZE = 200;
+/** 차트 가장자리와 SVG 테두리 사이의 여백 (px) */
+const CHART_PADDING = 4;
+
+const CX = VIEWBOX_SIZE / 2;
+const CY = VIEWBOX_SIZE / 2;
+const OUTER_RADIUS = VIEWBOX_SIZE / 2 - CHART_PADDING;
+
+// ---------------------------------------------------------------------------
+// 공개 타입 (index.ts 에서 re-export)
+// ---------------------------------------------------------------------------
 
 export interface DoughnutDataset {
   data: number[];
   backgroundColor?: string | string[];
+  /** 슬라이스 경계선 두께 (기본값: 2) */
   borderWidth?: number;
+  /**
+   * 도넛 구멍 크기. '50%' 처럼 퍼센트 문자열로 지정합니다.
+   * '0%' 이면 파이 차트가 됩니다. (기본값: '50%')
+   */
   cutout?: string;
 }
 
 export interface DoughnutChartData {
+  /** x축 레이블 겸 범례에 표시되는 이름 */
   labels?: string[];
   datasets: DoughnutDataset[];
 }
@@ -16,7 +42,9 @@ export interface DoughnutChartOptions {
   responsive?: boolean;
   maintainAspectRatio?: boolean;
   plugins?: {
+    /** false 로 지정하면 하단 범례를 숨깁니다 */
     legend?: { display?: boolean };
+    /** false 로 지정하면 마우스오버 툴팁을 비활성화합니다 */
     tooltip?: { enabled?: boolean };
   };
 }
@@ -27,130 +55,117 @@ interface DoughnutChartProps {
   className?: string;
 }
 
-function polarToCartesian(cx: number, cy: number, r: number, angle: number) {
-  return {
-    x: cx + r * Math.cos(angle),
-    y: cy + r * Math.sin(angle),
-  };
+// ---------------------------------------------------------------------------
+// 내부 헬퍼 타입
+// ---------------------------------------------------------------------------
+
+interface ArcSlice {
+  path: string;
+  value: number;
+  i: number;
+  color: string;
 }
 
-function arcPath(cx: number, cy: number, r: number, innerR: number, startAngle: number, endAngle: number): string {
-  const outerStart = polarToCartesian(cx, cy, r, startAngle);
-  const outerEnd = polarToCartesian(cx, cy, r, endAngle);
-  const innerStart = polarToCartesian(cx, cy, innerR, startAngle);
-  const innerEnd = polarToCartesian(cx, cy, innerR, endAngle);
-  const largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
+// ---------------------------------------------------------------------------
+// 컴포넌트
+// ---------------------------------------------------------------------------
 
-  return [
-    `M ${outerStart.x} ${outerStart.y}`,
-    `A ${r} ${r} 0 ${largeArc} 1 ${outerEnd.x} ${outerEnd.y}`,
-    `L ${innerEnd.x} ${innerEnd.y}`,
-    `A ${innerR} ${innerR} 0 ${largeArc} 0 ${innerStart.x} ${innerStart.y}`,
-    'Z',
-  ].join(' ');
-}
-
-function getColor(backgroundColor: string | string[] | undefined, i: number): string {
-  if (!backgroundColor) return '#ccc';
-  return Array.isArray(backgroundColor) ? (backgroundColor[i % backgroundColor.length] ?? '#ccc') : backgroundColor;
-}
-
-export function DoughnutChart({ data, options, className }: DoughnutChartProps) {
-  const [tooltip, setTooltip] = useState<{ x: number; y: number; label: string; value: number } | null>(null);
+/**
+ * 도넛(또는 파이) 차트.
+ *
+ * 가장 자주 바꾸는 설정:
+ * - 색상: `data.datasets[0].backgroundColor` 배열
+ * - 구멍 크기: `data.datasets[0].cutout` (예: '75%')
+ * - 범례 표시: `options.plugins.legend.display`
+ */
+export const DoughnutChart = memo(function DoughnutChart({ data, options, className }: DoughnutChartProps) {
+  const [tooltip, setTooltip] = useState<SimpleTooltipState | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
-  const dataset = data.datasets[0];
-  if (!dataset) return null;
-
-  const values = dataset.data;
-  const total = values.reduce((sum, v) => sum + v, 0);
 
   const showLegend = options?.plugins?.legend?.display !== false;
   const showTooltip = options?.plugins?.tooltip?.enabled !== false;
 
-  const cutoutStr = dataset.cutout ?? '50%';
-  const cutoutPercent = parseFloat(cutoutStr) / 100;
+  // 슬라이스 arc path 는 data 가 바뀔 때만 재계산
+  const arcs = useMemo<ArcSlice[]>(() => {
+    const dataset = data.datasets[0];
+    if (!dataset) return [];
 
-  const size = 200;
-  const cx = size / 2;
-  const cy = size / 2;
-  const r = size / 2 - 4;
-  const innerR = r * cutoutPercent;
+    const cutoutPercent = parseFloat(dataset.cutout ?? '50') / 100;
+    const innerRadius = OUTER_RADIUS * cutoutPercent;
+    const values = dataset.data;
+    const total = values.reduce((sum, v) => sum + v, 0);
+    let currentAngle = -Math.PI / 2;
 
-  let currentAngle = -Math.PI / 2;
+    return values.map((value, i) => {
+      const sweepAngle = total > 0 ? (value / total) * 2 * Math.PI : 0;
+      const startAngle = currentAngle;
+      const endAngle = currentAngle + sweepAngle;
+      currentAngle = endAngle;
+      return {
+        path: arcPath(CX, CY, OUTER_RADIUS, innerRadius, startAngle, endAngle),
+        value,
+        i,
+        color: getSliceColor(dataset.backgroundColor, i),
+      };
+    });
+  }, [data.datasets]);
 
-  const arcs = values.map((value, i) => {
-    const sweepAngle = total > 0 ? (value / total) * 2 * Math.PI : 0;
-    const startAngle = currentAngle;
-    const endAngle = currentAngle + sweepAngle;
-    currentAngle = endAngle;
-    return { startAngle, endAngle, value, i };
-  });
+  // 범례 항목도 data 가 바뀔 때만 재계산
+  const legendItems = useMemo<LegendItem[]>(
+    () =>
+      (data.labels ?? []).map((label, i) => ({
+        label,
+        color: getSliceColor(data.datasets[0]?.backgroundColor, i),
+      })),
+    [data.labels, data.datasets],
+  );
+
+  const handleMouseLeave = useCallback(() => {
+    setHoveredIndex(null);
+    setTooltip(null);
+  }, []);
+
+  // 데이터가 없으면 렌더링하지 않음
+  if (!data.datasets[0]) return null;
 
   return (
     <div className={className}>
-      <div style={{ position: 'relative' }}>
-        <svg viewBox={`0 0 ${size} ${size}`} width="100%" height="100%">
-          {arcs.map(({ startAngle, endAngle, value, i }) => {
-            const sweep = endAngle - startAngle;
-            if (sweep <= 0) return null;
-            return (
-              <path
-                key={i}
-                d={arcPath(cx, cy, r, innerR, startAngle, endAngle)}
-                fill={getColor(dataset.backgroundColor, i)}
-                stroke="white"
-                strokeWidth={dataset.borderWidth ?? 2}
-                opacity={hoveredIndex !== null && hoveredIndex !== i ? 0.7 : 1}
-                style={{ cursor: showTooltip ? 'pointer' : 'default', transition: 'opacity 0.15s' }}
-                onMouseEnter={e => {
-                  setHoveredIndex(i);
-                  if (showTooltip) {
-                    setTooltip({
-                      x: e.clientX,
-                      y: e.clientY,
-                      label: data.labels?.[i] ?? `항목 ${i + 1}`,
-                      value,
-                    });
-                  }
-                }}
-                onMouseMove={e => {
-                  if (showTooltip && tooltip) {
-                    setTooltip(prev => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null));
-                  }
-                }}
-                onMouseLeave={() => {
-                  setHoveredIndex(null);
-                  setTooltip(null);
-                }}
-              />
-            );
-          })}
-        </svg>
-      </div>
+      <svg viewBox={`0 0 ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}`} width="100%" height="100%">
+        {arcs.map(arc => {
+          if (arc.path === '') return null;
+          return (
+            <path
+              key={arc.i}
+              d={arc.path}
+              fill={arc.color}
+              stroke="white"
+              strokeWidth={data.datasets[0]?.borderWidth ?? 2}
+              opacity={hoveredIndex !== null && hoveredIndex !== arc.i ? 0.7 : 1}
+              style={{ cursor: showTooltip ? 'pointer' : 'default', transition: 'opacity 0.15s' }}
+              onMouseEnter={e => {
+                setHoveredIndex(arc.i);
+                if (showTooltip) {
+                  setTooltip({
+                    x: e.clientX,
+                    y: e.clientY,
+                    label: data.labels?.[arc.i] ?? `항목 ${arc.i + 1}`,
+                    value: arc.value,
+                  });
+                }
+              }}
+              onMouseMove={e => {
+                if (showTooltip) {
+                  setTooltip(prev => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null));
+                }
+              }}
+              onMouseLeave={handleMouseLeave}
+            />
+          );
+        })}
+      </svg>
 
-      {showTooltip && tooltip && (
-        <div
-          style={{ position: 'fixed', left: tooltip.x + 12, top: tooltip.y - 28, zIndex: 1000, pointerEvents: 'none' }}
-          className="bg-gray-800 text-white text-xs px-2 py-1 rounded shadow"
-        >
-          {tooltip.label}: {tooltip.value}
-        </div>
-      )}
-
-      {showLegend && data.labels && (
-        <div className="flex flex-wrap justify-center gap-2 mt-2">
-          {data.labels.map((label, i) => (
-            <div key={i} className="flex items-center gap-1 text-xs">
-              <span
-                className="w-3 h-3 rounded-sm inline-block"
-                style={{ backgroundColor: getColor(dataset.backgroundColor, i) }}
-              />
-              <span>{label}</span>
-            </div>
-          ))}
-        </div>
-      )}
+      {showTooltip && tooltip && <ChartTooltip state={tooltip} />}
+      {showLegend && legendItems.length > 0 && <ChartLegend items={legendItems} />}
     </div>
   );
-}
+});
