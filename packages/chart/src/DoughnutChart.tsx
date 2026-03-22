@@ -1,6 +1,7 @@
 import { memo, useMemo, useCallback, useState } from 'react';
 import { getSliceColor } from './internal/color';
 import { arcPath } from './internal/geometry';
+import { useAnimatedValues } from './internal/useAnimatedValues';
 import { ChartTooltip, SimpleTooltipState } from './internal/ChartTooltip';
 import { ChartLegend, LegendItem } from './internal/ChartLegend';
 
@@ -11,10 +12,8 @@ import { ChartLegend, LegendItem } from './internal/ChartLegend';
 const VIEWBOX_SIZE = 200;
 /** 차트 가장자리와 SVG 테두리 사이의 여백 (px) */
 const CHART_PADDING = 4;
-/** 슬라이스별 페이드인 간격 (초) */
-const ANIM_STAGGER_S = 0.08;
-/** 페이드인 재생 시간 (초) */
-const ANIM_DUR_S = 0.4;
+/** 이 값보다 작은 sweepAngle 은 렌더링하지 않습니다 (SVG arcPath 오류 방지) */
+const MIN_RENDER_ANGLE = 0.001;
 
 const CX = VIEWBOX_SIZE / 2;
 const CY = VIEWBOX_SIZE / 2;
@@ -90,7 +89,9 @@ interface ArcSlice {
  * - 범례 표시: `options.plugins.legend.display`
  * - 범례 클릭 토글: `options.plugins.legend.toggleable`
  *
- * 마운트 시 각 슬라이스가 순서대로 페이드인합니다.
+ * 애니메이션:
+ * - 마운트 시: 각 슬라이스가 0에서 목표 각도까지 시계방향으로 채워집니다.
+ * - 값 변경 시: 이전 각도에서 새 각도로 끊김 없이 전환됩니다.
  */
 export const DoughnutChart = memo(function DoughnutChart({ data, options, className }: DoughnutChartProps) {
   const [tooltip, setTooltip] = useState<SimpleTooltipState | null>(null);
@@ -102,31 +103,45 @@ export const DoughnutChart = memo(function DoughnutChart({ data, options, classN
   const showTooltip = options?.plugins?.tooltip?.enabled !== false;
   const legendToggleable = options?.plugins?.legend?.toggleable ?? false;
 
-  // 슬라이스 arc path 는 data 가 바뀔 때만 재계산
-  // 숨겨진 슬라이스는 data를 0으로 처리해 공간을 제거합니다
-  const arcs = useMemo<ArcSlice[]>(() => {
-    const dataset = data.datasets[0];
-    if (!dataset) return [];
+  const dataset = data.datasets[0];
 
-    const cutoutPercent = parseFloat(dataset.cutout ?? '50') / 100;
-    const innerRadius = OUTER_RADIUS * cutoutPercent;
+  // -----------------------------------------------------------------------
+  // 목표 sweepAngle 계산 (숨겨진 슬라이스는 0)
+  // -----------------------------------------------------------------------
+  const targetSweepAngles = useMemo<number[]>(() => {
+    if (!dataset) return [];
     const values = dataset.data.map((v, i) => (hiddenIndices.has(i) ? 0 : v));
     const total = values.reduce((sum, v) => sum + v, 0);
+    return values.map(v => (total > 0 ? (v / total) * 2 * Math.PI : 0));
+  }, [dataset, hiddenIndices]);
+
+  // -----------------------------------------------------------------------
+  // sweepAngle 애니메이션: 0 → target (마운트), prev → new (업데이트)
+  // -----------------------------------------------------------------------
+  const animatedSweepAngles = useAnimatedValues(targetSweepAngles);
+
+  // -----------------------------------------------------------------------
+  // 애니메이션 값으로 arc path 계산
+  // -----------------------------------------------------------------------
+  const arcs = useMemo<ArcSlice[]>(() => {
+    if (!dataset) return [];
+    const cutoutPercent = parseFloat(dataset.cutout ?? '50') / 100;
+    const innerRadius = OUTER_RADIUS * cutoutPercent;
     let currentAngle = -Math.PI / 2;
 
-    return values.map((value, i) => {
-      const sweepAngle = total > 0 ? (value / total) * 2 * Math.PI : 0;
+    return animatedSweepAngles.map((sweepAngle, i) => {
       const startAngle = currentAngle;
       const endAngle = currentAngle + sweepAngle;
       currentAngle = endAngle;
       return {
-        path: sweepAngle > 0 ? arcPath(CX, CY, OUTER_RADIUS, innerRadius, startAngle, endAngle) : '',
+        // 매우 작은 각도는 렌더링하지 않음 (SVG path 오류 방지)
+        path: sweepAngle > MIN_RENDER_ANGLE ? arcPath(CX, CY, OUTER_RADIUS, innerRadius, startAngle, endAngle) : '',
         value: dataset.data[i] ?? 0,
         i,
         color: getSliceColor(dataset.backgroundColor, i),
       };
     });
-  }, [data.datasets, hiddenIndices]);
+  }, [dataset, animatedSweepAngles]);
 
   // 범례 항목도 data 가 바뀔 때만 재계산
   const legendItems = useMemo<LegendItem[]>(
@@ -153,7 +168,7 @@ export const DoughnutChart = memo(function DoughnutChart({ data, options, classN
   }, []);
 
   // 데이터가 없으면 렌더링하지 않음
-  if (!data.datasets[0]) return null;
+  if (!dataset) return null;
 
   return (
     <div className={className}>
@@ -172,7 +187,7 @@ export const DoughnutChart = memo(function DoughnutChart({ data, options, classN
               d={arc.path}
               fill={arc.color}
               stroke="white"
-              strokeWidth={data.datasets[0]?.borderWidth ?? 2}
+              strokeWidth={dataset.borderWidth ?? 2}
               opacity={dimmed ? 0.7 : 1}
               style={{ cursor: showTooltip ? 'pointer' : 'default', transition: 'opacity 0.15s' }}
               onMouseEnter={e => {
@@ -192,17 +207,7 @@ export const DoughnutChart = memo(function DoughnutChart({ data, options, classN
                 }
               }}
               onMouseLeave={handleMouseLeave}
-            >
-              {/* 슬라이스 페이드인 애니메이션 */}
-              <animate
-                attributeName="opacity"
-                from="0"
-                to={dimmed ? '0.7' : '1'}
-                dur={`${ANIM_DUR_S}s`}
-                begin={`${arc.i * ANIM_STAGGER_S}s`}
-                fill="freeze"
-              />
-            </path>
+            />
           );
         })}
       </svg>

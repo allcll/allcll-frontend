@@ -37,7 +37,11 @@ interface ChartTooltipProps {
 
 export function ChartTooltip({ state }: ChartTooltipProps) {
   return (
-    <div style={{ ...TOOLTIP_STYLE, left: state.x + 12, top: state.y - 28, padding: '2px 8px' }}>
+    <div
+      role="tooltip"
+      aria-live="polite"
+      style={{ ...TOOLTIP_STYLE, left: state.x + 12, top: state.y - 28, padding: '2px 8px' }}
+    >
       {state.label}: {state.value}
     </div>
   );
@@ -72,6 +76,8 @@ interface MultiChartTooltipProps {
 export function MultiChartTooltip({ state, formatLabel }: MultiChartTooltipProps) {
   return (
     <div
+      role="tooltip"
+      aria-live="polite"
       style={{ ...TOOLTIP_STYLE, left: state.x + 14, top: state.y - 10, padding: '6px 12px', minWidth: 'max-content' }}
     >
       <div style={{ fontWeight: 600, marginBottom: 4 }}>{state.title}</div>

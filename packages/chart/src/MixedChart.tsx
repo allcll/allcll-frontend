@@ -1,4 +1,5 @@
 import { memo, useMemo, useCallback, useState, useRef, useEffect } from 'react';
+import { useAnimatedValues } from './internal/useAnimatedValues';
 import { ChartLegend, LegendItem } from './internal/ChartLegend';
 import { MultiChartTooltip, MultiTooltipItem, MultiTooltipState } from './internal/ChartTooltip';
 
@@ -15,8 +16,6 @@ const PAD_RIGHT = 16;
 const Y_TICK_COUNT = 5;
 /** 막대 슬롯의 최소 너비(px). 데이터가 적어도 이 너비 이상은 확보됩니다. */
 const MIN_BAR_SLOT = 40;
-/** 요소 페이드인 재생 시간 (초) */
-const ANIM_DUR_S = 0.5;
 
 // ---------------------------------------------------------------------------
 // 공개 타입
@@ -100,13 +99,9 @@ interface MixedChartProps {
 // ---------------------------------------------------------------------------
 
 interface StackedBarColumn {
-  /** 각 barDataset 의 (x, y, height) 정보 */
   segments: { bx: number; by: number; height: number; color: string; thickness: number }[];
-  /** 툴팁 인덱스 참조용 */
   colIndex: number;
-  /** x 레이블 중심 좌표 */
   labelX: number;
-  /** x 레이블 텍스트 */
   labelText: string;
 }
 
@@ -119,23 +114,10 @@ interface LineOverlayPath {
   pointFill: string;
 }
 
-interface ChartLayout {
-  barDatasets: MixedDataset[];
-  yMax: number;
-  totalWidth: number;
-  innerHeight: number;
-  viewWidth: number;
-  yScale: (v: number) => number;
-  yTicks: number[];
-  columns: StackedBarColumn[];
-  lineOverlays: LineOverlayPath[];
-}
-
 // ---------------------------------------------------------------------------
 // 내부 SVG 서브 컴포넌트
 // ---------------------------------------------------------------------------
 
-/** Y축 눈금 + 격자선 */
 function YGridLines({
   yTicks,
   yScale,
@@ -164,7 +146,6 @@ function YGridLines({
   );
 }
 
-/** 쌓인 막대 단일 컬럼 */
 function StackedBarGroup({
   col,
   onMouseEnter,
@@ -186,11 +167,7 @@ function StackedBarGroup({
       style={{ cursor: 'pointer' }}
     >
       {col.segments.map((seg, di) => (
-        <rect key={di} x={seg.bx} y={seg.by} width={seg.thickness} height={Math.max(seg.height, 0)} fill={seg.color}>
-          {/* 막대 성장 애니메이션 */}
-          <animate attributeName="height" from="0" to={Math.max(seg.height, 0)} dur={`${ANIM_DUR_S}s`} fill="freeze" />
-          <animate attributeName="y" from={innerHeight} to={seg.by} dur={`${ANIM_DUR_S}s`} fill="freeze" />
-        </rect>
+        <rect key={di} x={seg.bx} y={seg.by} width={seg.thickness} height={Math.max(seg.height, 0)} fill={seg.color} />
       ))}
       <text x={col.labelX} y={innerHeight + 16} textAnchor="middle" fontSize={9} fill="#6b7280">
         {col.labelText}
@@ -199,19 +176,14 @@ function StackedBarGroup({
   );
 }
 
-/** 선 그래프 오버레이 */
 function LineOverlay({ overlay }: { overlay: LineOverlayPath }) {
   return (
     <g>
       {overlay.pathD && (
-        <path d={overlay.pathD} fill="none" stroke={overlay.borderColor} strokeWidth={overlay.borderWidth}>
-          <animate attributeName="opacity" from="0" to="1" dur={`${ANIM_DUR_S + 0.1}s`} fill="freeze" />
-        </path>
+        <path d={overlay.pathD} fill="none" stroke={overlay.borderColor} strokeWidth={overlay.borderWidth} />
       )}
       {overlay.points.map((p, pi) => (
-        <circle key={pi} cx={p.x} cy={p.y} r={overlay.pointRadius} fill={overlay.pointFill}>
-          <animate attributeName="opacity" from="0" to="1" dur={`${ANIM_DUR_S + 0.1}s`} fill="freeze" />
-        </circle>
+        <circle key={pi} cx={p.x} cy={p.y} r={overlay.pointRadius} fill={overlay.pointFill} />
       ))}
     </g>
   );
@@ -226,7 +198,6 @@ function buildLinePath(points: { x: number; y: number }[], tension: number): str
   if (tension === 0) {
     return points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
   }
-  // Catmull-Rom to cubic bezier approximation
   return points
     .map((p, i) => {
       if (i === 0) return `M ${p.x} ${p.y}`;
@@ -256,13 +227,17 @@ function buildLinePath(points: { x: number; y: number }[], tension: number): str
  * - 축 제목: `options.scales.x.title.text` / `options.scales.y.title.text`
  * - 범례 클릭 토글: `options.plugins.legend.toggleable`
  *
+ * 애니메이션:
+ * - 막대: 0에서 목표 높이까지 자랍니다.
+ * - 선: 0(차트 바닥)에서 실제 값까지 올라옵니다.
+ * - 값 변경 시: 이전 값에서 새 값으로 끊김 없이 전환됩니다.
+ *
  * 레이아웃: 데이터가 적을 때는 컨테이너 너비를 가득 채우고,
  *           데이터가 많아 너비가 초과하면 가로 스크롤이 생깁니다.
  */
 export const MixedChart = memo(function MixedChart({ data, options }: MixedChartProps) {
   const [tooltip, setTooltip] = useState<MultiTooltipState | null>(null);
   const [hiddenIndices, setHiddenIndices] = useState<Set<number>>(new Set());
-  // 컨테이너 너비를 감지해 데이터가 적을 때 막대를 자동 확장합니다
   const [containerWidth, setContainerWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -282,7 +257,6 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
   const { labels, datasets } = data;
   const n = labels.length;
 
-  // 옵션 파생값
   const showLegend = options?.plugins?.legend?.display !== false;
   const legendToggleable = options?.plugins?.legend?.toggleable ?? false;
   const xTitle = options?.scales?.x?.title?.display ? options.scales.x.title.text : null;
@@ -304,39 +278,68 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
     [options?.plugins?.tooltip?.callbacks?.label],
   );
 
-  // SVG 레이아웃 계산 (data, hiddenIndices, containerWidth 가 바뀔 때만)
-  const layout = useMemo<ChartLayout>(() => {
-    // 숨겨진 데이터셋 제외
-    const visibleDatasets = datasets.filter((_, i) => !hiddenIndices.has(i));
-    const barDatasets = visibleDatasets.filter(d => d.type === 'bar');
-    const lineDatasets = visibleDatasets.filter(d => d.type === 'line');
+  // -----------------------------------------------------------------------
+  // 가시 데이터셋 분리
+  // -----------------------------------------------------------------------
+  const visibleDatasets = useMemo(() => datasets.filter((_, i) => !hiddenIndices.has(i)), [datasets, hiddenIndices]);
+  const barDatasets = useMemo(() => visibleDatasets.filter(d => d.type === 'bar'), [visibleDatasets]);
+  const lineDatasets = useMemo(() => visibleDatasets.filter(d => d.type === 'line'), [visibleDatasets]);
 
+  // -----------------------------------------------------------------------
+  // yMax 및 레이아웃 상수 계산 (TARGET 기준, 스케일 안정성 유지)
+  // -----------------------------------------------------------------------
+  const { yMax, innerHeight, totalWidth, viewWidth, yTicks, yScale, xCenter } = useMemo(() => {
     const stackedMax = Array.from({ length: n }, (_, col) =>
       barDatasets.reduce((sum, ds) => sum + (ds.data[col] ?? 0), 0),
     );
-    const yMax = Math.max(...stackedMax, ...lineDatasets.flatMap(d => d.data), 0);
+    const maxVal = Math.max(...stackedMax, ...lineDatasets.flatMap(d => d.data), 0);
 
-    // barSlot: 데이터가 적을 때는 컨테이너를 채우도록 확장
     const baseBarSlot = Math.max(barDatasets[0]?.barThickness ?? 16, 16) + 8;
     const minSlot = MIN_BAR_SLOT;
-    const innerAvailable = Math.max(containerWidth - PAD_LEFT - PAD_RIGHT, 0);
-    // 컨테이너를 채울 수 있는 슬롯 크기와 기본값 중 큰 값 사용
-    const barSlot = n > 0 ? Math.max(baseBarSlot, minSlot, Math.floor(innerAvailable / n)) : baseBarSlot;
+    const innerAvail = Math.max(containerWidth - PAD_LEFT - PAD_RIGHT, 0);
+    const slot = n > 0 ? Math.max(baseBarSlot, minSlot, Math.floor(innerAvail / n)) : baseBarSlot;
 
-    const totalWidth = n * barSlot;
-    const innerHeight = CHART_HEIGHT - PAD_TOP - PAD_BOTTOM;
-    const viewWidth = totalWidth + PAD_LEFT + PAD_RIGHT;
+    const iH = CHART_HEIGHT - PAD_TOP - PAD_BOTTOM;
+    const tW = n * slot;
+    const vW = tW + PAD_LEFT + PAD_RIGHT;
 
-    const yScale = (value: number) => innerHeight - (value / (yMax || 1)) * innerHeight;
-    const xCenter = (col: number) => col * barSlot + barSlot / 2;
-    const yTicks = Array.from({ length: Y_TICK_COUNT + 1 }, (_, i) => (yMax * i) / Y_TICK_COUNT);
+    const scale = (value: number) => iH - (value / (maxVal || 1)) * iH;
+    const center = (col: number) => col * slot + slot / 2;
+    const ticks = Array.from({ length: Y_TICK_COUNT + 1 }, (_, i) => (maxVal * i) / Y_TICK_COUNT);
 
-    // 막대 컬럼
-    const columns: StackedBarColumn[] = Array.from({ length: n }, (_, col) => {
+    return {
+      yMax: maxVal,
+      innerHeight: iH,
+      totalWidth: tW,
+      viewWidth: vW,
+      barSlot: slot,
+      yTicks: ticks,
+      yScale: scale,
+      xCenter: center,
+    };
+  }, [barDatasets, lineDatasets, n, containerWidth]);
+
+  // -----------------------------------------------------------------------
+  // 막대 데이터 값 애니메이션 (가시 barDatasets × n 개의 값)
+  // -----------------------------------------------------------------------
+  const barTargets = useMemo<number[]>(() => barDatasets.flatMap(ds => ds.data), [barDatasets]);
+  const animatedBarValues = useAnimatedValues(barTargets);
+
+  // -----------------------------------------------------------------------
+  // 선 데이터 값 애니메이션 (가시 lineDatasets × n 개의 값)
+  // -----------------------------------------------------------------------
+  const lineTargets = useMemo<number[]>(() => lineDatasets.flatMap(ds => ds.data), [lineDatasets]);
+  const animatedLineValues = useAnimatedValues(lineTargets);
+
+  // -----------------------------------------------------------------------
+  // 애니메이션 값으로 막대 컬럼 구성
+  // -----------------------------------------------------------------------
+  const columns = useMemo<StackedBarColumn[]>(() => {
+    return Array.from({ length: n }, (_, col) => {
       let stackBottom = innerHeight;
-      const segments = barDatasets.map(ds => {
-        const value = ds.data[col] ?? 0;
-        const barH = (value / (yMax || 1)) * innerHeight;
+      const segments = barDatasets.map((ds, barDsIdx) => {
+        const animValue = animatedBarValues[barDsIdx * n + col] ?? 0;
+        const barH = (animValue / (yMax || 1)) * innerHeight;
         const bw = ds.barThickness ?? 16;
         const bx = xCenter(col) - bw / 2;
         const by = stackBottom - barH;
@@ -345,10 +348,17 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
       });
       return { segments, colIndex: col, labelX: xCenter(col), labelText: labels[col] ?? '' };
     });
+  }, [barDatasets, animatedBarValues, n, innerHeight, yMax, xCenter, labels]);
 
-    // 선 오버레이
-    const lineOverlays: LineOverlayPath[] = lineDatasets.map(ds => {
-      const pts = ds.data.map((v, col) => ({ x: xCenter(col), y: yScale(v) }));
+  // -----------------------------------------------------------------------
+  // 애니메이션 값으로 선 오버레이 구성
+  // -----------------------------------------------------------------------
+  const lineOverlays = useMemo<LineOverlayPath[]>(() => {
+    return lineDatasets.map((ds, lineDsIdx) => {
+      const pts = Array.from({ length: n }, (_, col) => {
+        const animValue = animatedLineValues[lineDsIdx * n + col] ?? 0;
+        return { x: xCenter(col), y: yScale(animValue) };
+      });
       return {
         pathD: buildLinePath(pts, ds.tension ?? 0),
         points: pts,
@@ -358,11 +368,11 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
         pointFill: ds.pointBackgroundColor ?? ds.borderColor ?? '#888',
       };
     });
+  }, [lineDatasets, animatedLineValues, n, xCenter, yScale]);
 
-    return { barDatasets, yMax, totalWidth, innerHeight, viewWidth, yScale, yTicks, columns, lineOverlays };
-  }, [datasets, labels, n, hiddenIndices, containerWidth]);
-
+  // -----------------------------------------------------------------------
   // 범례 항목 (전체 데이터셋, 숨겨진 것도 포함)
+  // -----------------------------------------------------------------------
   const legendItems = useMemo<LegendItem[]>(
     () => datasets.map(ds => ({ label: ds.label, color: ds.backgroundColor ?? ds.borderColor ?? '#ccc' })),
     [datasets],
@@ -370,7 +380,6 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent, colIndex: number) => {
-      const visibleDatasets = datasets.filter((_, i) => !hiddenIndices.has(i));
       const items: MultiTooltipItem[] = visibleDatasets.map(ds => ({
         label: ds.label,
         value: ds.data[colIndex] ?? 0,
@@ -378,7 +387,7 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
       }));
       setTooltip({ x: e.clientX, y: e.clientY, title: labels[colIndex] ?? '', items });
     },
-    [datasets, labels, hiddenIndices],
+    [visibleDatasets, labels],
   );
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
@@ -398,7 +407,6 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
 
   return (
     <div style={{ width: '100%' }}>
-      {/* 범례 */}
       {showLegend && (
         <ChartLegend
           items={legendItems}
@@ -408,13 +416,9 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
         />
       )}
 
-      {/*
-       * ref로 컨테이너 너비를 감지합니다.
-       * overflow-x: auto 로 데이터가 많으면 가로 스크롤을 허용합니다.
-       */}
       <div ref={containerRef} style={{ width: '100%', overflowX: 'auto' }}>
         <svg
-          width={layout.viewWidth}
+          width={viewWidth}
           height={CHART_HEIGHT}
           style={{ display: 'block', minWidth: '100%' }}
           role="img"
@@ -422,10 +426,9 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
           onMouseLeave={hideTooltip}
         >
           <g transform={`translate(${PAD_LEFT}, ${PAD_TOP})`}>
-            {/* Y축 제목 */}
             {yTitle && (
               <text
-                x={-layout.innerHeight / 2}
+                x={-innerHeight / 2}
                 y={-PAD_LEFT + 14}
                 transform="rotate(-90)"
                 textAnchor="middle"
@@ -436,58 +439,34 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
               </text>
             )}
 
-            {/* Y축 격자선 */}
-            <YGridLines
-              yTicks={layout.yTicks}
-              yScale={layout.yScale}
-              totalWidth={layout.totalWidth}
-              formatYTick={formatYTick}
-            />
+            <YGridLines yTicks={yTicks} yScale={yScale} totalWidth={totalWidth} formatYTick={formatYTick} />
 
-            {/* X축 */}
-            <line
-              x1={0}
-              y1={layout.innerHeight}
-              x2={layout.totalWidth}
-              y2={layout.innerHeight}
-              stroke="#d1d5db"
-              strokeWidth={1}
-            />
+            <line x1={0} y1={innerHeight} x2={totalWidth} y2={innerHeight} stroke="#d1d5db" strokeWidth={1} />
 
-            {/* 쌓인 막대 */}
-            {layout.columns.map(col => (
+            {columns.map(col => (
               <StackedBarGroup
                 key={col.colIndex}
                 col={col}
                 onMouseEnter={handleMouseEnter}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={hideTooltip}
-                innerHeight={layout.innerHeight}
+                innerHeight={innerHeight}
               />
             ))}
 
-            {/* 선 오버레이 */}
-            {layout.lineOverlays.map((overlay, li) => (
+            {lineOverlays.map((overlay, li) => (
               <LineOverlay key={li} overlay={overlay} />
             ))}
           </g>
 
-          {/* X축 제목 */}
           {xTitle && (
-            <text
-              x={PAD_LEFT + layout.totalWidth / 2}
-              y={CHART_HEIGHT - 6}
-              textAnchor="middle"
-              fontSize={11}
-              fill="#6b7280"
-            >
+            <text x={PAD_LEFT + totalWidth / 2} y={CHART_HEIGHT - 6} textAnchor="middle" fontSize={11} fill="#6b7280">
               {xTitle}
             </text>
           )}
         </svg>
       </div>
 
-      {/* 툴팁 */}
       {tooltip && <MultiChartTooltip state={tooltip} formatLabel={formatTooltipLabel} />}
     </div>
   );

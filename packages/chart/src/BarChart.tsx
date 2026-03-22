@@ -1,5 +1,6 @@
 import { memo, useMemo, useCallback, useState } from 'react';
 import { getSliceColor } from './internal/color';
+import { useAnimatedValues } from './internal/useAnimatedValues';
 import { ChartTooltip, SimpleTooltipState } from './internal/ChartTooltip';
 
 // ---------------------------------------------------------------------------
@@ -18,10 +19,6 @@ const PAD_LEFT = 30;
 const MAX_BAR_WIDTH = 40;
 /** Y축 격자선 개수 */
 const Y_TICK_COUNT = 4;
-/** 막대별 애니메이션 시작 간격 (초). 첫 번째 막대: 0s, 두 번째: 0.05s, ... */
-const ANIM_STAGGER_S = 0.05;
-/** 막대 성장 애니메이션 재생 시간 (초) */
-const ANIM_DUR_S = 0.5;
 
 // ---------------------------------------------------------------------------
 // 공개 타입
@@ -58,12 +55,10 @@ interface BarSlot {
   color: string;
   /** 막대 왼쪽 x 좌표 */
   x: number;
-  /** 막대 위쪽 y 좌표 */
-  y: number;
-  /** 막대 너비 */
+  /** 완전히 채워졌을 때의 막대 너비 */
   width: number;
-  /** 막대 높이 */
-  height: number;
+  /** yMax 기준 막대의 비율 (0~1) */
+  ratio: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -77,7 +72,9 @@ interface BarSlot {
  * - 색상: `data.datasets[0].backgroundColor`
  * - 레이블: `data.labels`
  *
- * 마운트 시 각 막대가 아래에서 위로 자라나는 애니메이션이 재생됩니다.
+ * 애니메이션:
+ * - 마운트 시: 각 막대가 0에서 목표 높이까지 자랍니다.
+ * - 값 변경 시: 이전 높이에서 새 높이로 끊김 없이 전환됩니다.
  */
 export const BarChart = memo(function BarChart({ data, className }: BarChartProps) {
   const [tooltip, setTooltip] = useState<SimpleTooltipState | null>(null);
@@ -85,32 +82,36 @@ export const BarChart = memo(function BarChart({ data, className }: BarChartProp
   const chartWidth = VIEW_WIDTH - PAD_LEFT - PAD_RIGHT;
   const chartHeight = VIEW_HEIGHT - PAD_TOP - PAD_BOTTOM;
 
-  // 막대 레이아웃은 data 가 바뀔 때만 재계산
-  const { bars, yMax, yTicks } = useMemo(() => {
+  // -----------------------------------------------------------------------
+  // 막대 레이아웃 + 목표 비율 계산
+  // -----------------------------------------------------------------------
+  const { slots, yMax, yTicks } = useMemo(() => {
     const dataset = data.datasets[0];
-    if (!dataset) return { bars: [], yMax: 0, yTicks: [] };
+    if (!dataset) return { slots: [], yMax: 0, yTicks: [] };
 
     const values = dataset.data;
     const max = Math.max(...values, 0);
     const slotWidth = chartWidth / Math.max(values.length, 1);
     const barWidth = Math.min(slotWidth * 0.6, MAX_BAR_WIDTH);
 
-    const slots: BarSlot[] = values.map((value, i) => {
-      const barHeight = max > 0 ? (value / max) * chartHeight : 0;
-      return {
-        value,
-        label: data.labels[i] ?? '',
-        color: getSliceColor(dataset.backgroundColor, i),
-        x: i * slotWidth + (slotWidth - barWidth) / 2,
-        y: chartHeight - barHeight,
-        width: barWidth,
-        height: barHeight,
-      };
-    });
+    const barSlots: BarSlot[] = values.map((value, i) => ({
+      value,
+      label: data.labels[i] ?? '',
+      color: getSliceColor(dataset.backgroundColor, i),
+      x: i * slotWidth + (slotWidth - barWidth) / 2,
+      width: barWidth,
+      ratio: max > 0 ? value / max : 0,
+    }));
 
     const ticks = Array.from({ length: Y_TICK_COUNT + 1 }, (_, i) => (max * i) / Y_TICK_COUNT);
-    return { bars: slots, yMax: max, yTicks: ticks };
+    return { slots: barSlots, yMax: max, yTicks: ticks };
   }, [data.datasets, data.labels, chartWidth, chartHeight]);
+
+  // -----------------------------------------------------------------------
+  // 막대 비율 애니메이션: 0 → target (마운트), prev → new (업데이트)
+  // -----------------------------------------------------------------------
+  const targetRatios = useMemo(() => slots.map(s => s.ratio), [slots]);
+  const animatedRatios = useAnimatedValues(targetRatios);
 
   const hideTooltip = useCallback(() => setTooltip(null), []);
 
@@ -142,44 +143,30 @@ export const BarChart = memo(function BarChart({ data, className }: BarChartProp
           {/* X축 */}
           <line x1={0} y1={chartHeight} x2={chartWidth} y2={chartHeight} stroke="#d1d5db" strokeWidth={1} />
 
-          {/* 막대 + x 레이블 */}
-          {bars.map((bar, i) => (
-            <g key={i}>
-              {/* 막대: 아래→위 성장 애니메이션 */}
-              <rect
-                x={bar.x}
-                y={bar.y}
-                width={bar.width}
-                height={bar.height}
-                fill={bar.color}
-                style={{ cursor: 'pointer' }}
-                onMouseEnter={e => setTooltip({ x: e.clientX, y: e.clientY, label: bar.label, value: bar.value })}
-                onMouseMove={e => setTooltip(prev => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null))}
-                onMouseLeave={hideTooltip}
-              >
-                {/* SVG 네이티브 애니메이션: 막대가 바닥에서 위로 자랍니다 */}
-                <animate
-                  attributeName="height"
-                  from="0"
-                  to={bar.height}
-                  dur={`${ANIM_DUR_S}s`}
-                  begin={`${i * ANIM_STAGGER_S}s`}
-                  fill="freeze"
+          {/* 막대 + x 레이블: 애니메이션 비율로 높이/y 계산 */}
+          {slots.map((slot, i) => {
+            const ratio = animatedRatios[i] ?? 0;
+            const barHeight = ratio * chartHeight;
+            const barY = chartHeight - barHeight;
+            return (
+              <g key={i}>
+                <rect
+                  x={slot.x}
+                  y={barY}
+                  width={slot.width}
+                  height={Math.max(barHeight, 0)}
+                  fill={slot.color}
+                  style={{ cursor: 'pointer' }}
+                  onMouseEnter={e => setTooltip({ x: e.clientX, y: e.clientY, label: slot.label, value: slot.value })}
+                  onMouseMove={e => setTooltip(prev => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null))}
+                  onMouseLeave={hideTooltip}
                 />
-                <animate
-                  attributeName="y"
-                  from={chartHeight}
-                  to={bar.y}
-                  dur={`${ANIM_DUR_S}s`}
-                  begin={`${i * ANIM_STAGGER_S}s`}
-                  fill="freeze"
-                />
-              </rect>
-              <text x={bar.x + bar.width / 2} y={chartHeight + 16} textAnchor="middle" fontSize={10} fill="#6b7280">
-                {bar.label}
-              </text>
-            </g>
-          ))}
+                <text x={slot.x + slot.width / 2} y={chartHeight + 16} textAnchor="middle" fontSize={10} fill="#6b7280">
+                  {slot.label}
+                </text>
+              </g>
+            );
+          })}
         </g>
       </svg>
 

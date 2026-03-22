@@ -1,5 +1,6 @@
-import { memo, useMemo, useCallback, useState } from 'react';
+import { memo, useMemo, useCallback, useState, useRef, useLayoutEffect, useEffect } from 'react';
 import { toRad } from './internal/geometry';
+import { useAnimatedValues } from './internal/useAnimatedValues';
 import { ChartTooltip, SimpleTooltipState } from './internal/ChartTooltip';
 import { ChartLegend, LegendItem } from './internal/ChartLegend';
 
@@ -14,8 +15,6 @@ const RADAR_RADIUS = 140;
 const GRID_LEVELS = 5;
 /** 데이터 포인트 원의 반지름 (px) */
 const POINT_RADIUS = 4;
-/** 데이터셋 페이드인 재생 시간 (초) */
-const ANIM_DUR_S = 0.6;
 
 const CX = VIEWBOX_SIZE / 2;
 const CY = VIEWBOX_SIZE / 2;
@@ -91,11 +90,7 @@ interface RadarPoint {
   y: number;
 }
 
-interface ComputedRadarData {
-  /** 각 데이터셋의 다각형 폴리곤 points 문자열 */
-  polygons: string[];
-  /** 각 데이터셋의 개별 포인트 좌표 */
-  pointCoords: RadarPoint[][];
+interface ComputedRadarGrid {
   /** 격자 다각형 points 문자열 (GRID_LEVELS 개) */
   gridPolygons: string[];
   /** 레이블 텍스트 위치 좌표 */
@@ -117,9 +112,13 @@ interface ComputedRadarData {
  * - 범례: `options.plugins.legend.display`
  * - 범례 클릭 토글: `options.plugins.legend.toggleable`
  *
- * 크기: SVG 에 `style={{ width: '100%', height: 'auto' }}` 가 적용되어
- *       부모 컨테이너 너비에 따라 비율을 유지하며 크기가 결정됩니다.
- *       카드 크기를 넘지 않으려면 부모에 `max-width` 또는 `overflow: hidden` 을 설정하세요.
+ * 크기 동작:
+ * - 부모에 명시적 height 가 있고 width > height 인 경우: SVG 를 min(width, height) 의 정사각형으로 제한합니다.
+ * - 부모에 height 가 없는 경우: SVG 는 width = 100%, height = auto (종횡비 유지)
+ *
+ * 애니메이션:
+ * - 마운트 시: 각 데이터셋 폴리곤이 중심(0)에서 바깥쪽으로 성장합니다.
+ * - 값 변경 시: 이전 위치에서 새 위치로 끊김 없이 전환됩니다.
  */
 export const RadarChart = memo(function RadarChart({ data, options, className }: RadarChartProps) {
   const [tooltip, setTooltip] = useState<SimpleTooltipState | null>(null);
@@ -141,7 +140,42 @@ export const RadarChart = memo(function RadarChart({ data, options, className }:
   const gridColor = options?.scales?.r?.grid?.color ?? '#E5E7EB';
   const showAngleLines = options?.scales?.r?.angleLines?.display !== false;
 
+  // -----------------------------------------------------------------------
+  // 크기 제약: width > parentHeight 일 때 SVG 를 min(width, parentHeight) 로 제한
+  // -----------------------------------------------------------------------
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [svgSize, setSvgSize] = useState<number | undefined>(undefined);
+
+  const updateSize = useCallback(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const elWidth = el.offsetWidth;
+    const parentHeight = el.parentElement?.offsetHeight ?? 0;
+    // 부모에 명시적 height 가 있고 SVG 가 그것을 초과할 경우에만 제한
+    if (parentHeight > 0 && parentHeight < elWidth) {
+      setSvgSize(parentHeight);
+    } else {
+      setSvgSize(undefined);
+    }
+  }, []);
+
+  // 첫 렌더링에서 flash 없이 크기를 잡으려면 useLayoutEffect 사용
+  useLayoutEffect(() => {
+    updateSize();
+  }, [updateSize]);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(updateSize);
+    ro.observe(el);
+    if (el.parentElement) ro.observe(el.parentElement);
+    return () => ro.disconnect();
+  }, [updateSize]);
+
+  // -----------------------------------------------------------------------
   // 각도 → 좌표 변환 유틸리티
+  // -----------------------------------------------------------------------
   const angleForIndex = useCallback((i: number) => toRad((360 / n) * i) - Math.PI / 2, [n]);
 
   const valueToCoord = useCallback(
@@ -154,9 +188,10 @@ export const RadarChart = memo(function RadarChart({ data, options, className }:
     [angleForIndex, range, suggestedMin],
   );
 
-  // SVG 좌표 계산은 labels / datasets / 옵션이 바뀔 때만 재계산
-  const computed = useMemo<ComputedRadarData>(() => {
-    // 격자 다각형
+  // -----------------------------------------------------------------------
+  // 격자 / 레이블 / 축 계산 (애니메이션 불필요)
+  // -----------------------------------------------------------------------
+  const grid = useMemo<ComputedRadarGrid>(() => {
     const gridPolygons = Array.from({ length: GRID_LEVELS }, (_, level) => {
       const fr = (RADAR_RADIUS * (level + 1)) / GRID_LEVELS;
       return Array.from({ length: n }, (_, i) => {
@@ -164,36 +199,40 @@ export const RadarChart = memo(function RadarChart({ data, options, className }:
         return `${CX + fr * Math.cos(angle)},${CY + fr * Math.sin(angle)}`;
       }).join(' ');
     });
-
-    // 축 끝점
     const axisEndCoords = Array.from({ length: n }, (_, i) => {
       const angle = angleForIndex(i);
       return { x: CX + RADAR_RADIUS * Math.cos(angle), y: CY + RADAR_RADIUS * Math.sin(angle) };
     });
-
-    // 레이블 위치
     const labelCoords = Array.from({ length: n }, (_, i) => {
       const angle = angleForIndex(i);
       const labelR = RADAR_RADIUS + 24;
       return { x: CX + labelR * Math.cos(angle), y: CY + labelR * Math.sin(angle) };
     });
+    return { gridPolygons, axisEndCoords, labelCoords };
+  }, [n, angleForIndex]);
 
-    // 데이터셋별 다각형 & 포인트 좌표
-    const polygons = datasets.map(ds =>
-      ds.data
-        .map((v, i) => {
-          const { x, y } = valueToCoord(v, i);
-          return `${x},${y}`;
-        })
-        .join(' '),
-    );
+  // -----------------------------------------------------------------------
+  // 데이터 값 애니메이션: 0 → target (마운트), prev → new (업데이트)
+  // 모든 데이터셋의 값을 하나의 flat 배열로 관리합니다.
+  // -----------------------------------------------------------------------
+  const targetValues = useMemo<number[]>(
+    () => datasets.flatMap((ds, di) => (hiddenIndices.has(di) ? ds.data.map(() => 0) : ds.data)),
+    [datasets, hiddenIndices],
+  );
+  const animatedValues = useAnimatedValues(targetValues);
 
-    const pointCoords = datasets.map(ds => ds.data.map((v, i) => valueToCoord(v, i)));
+  // flat 배열을 datasets 별로 재구성
+  const getAnimatedDataForDs = useCallback(
+    (dsIdx: number): number[] => {
+      const start = dsIdx * n;
+      return Array.from({ length: n }, (_, i) => animatedValues[start + i] ?? 0);
+    },
+    [animatedValues, n],
+  );
 
-    return { gridPolygons, axisEndCoords, labelCoords, polygons, pointCoords };
-  }, [labels, datasets, angleForIndex, valueToCoord, n]);
-
+  // -----------------------------------------------------------------------
   // 범례 항목
+  // -----------------------------------------------------------------------
   const legendItems = useMemo<LegendItem[]>(
     () => datasets.map(ds => ({ label: ds.label, color: ds.borderColor })),
     [datasets],
@@ -210,51 +249,42 @@ export const RadarChart = memo(function RadarChart({ data, options, className }:
     });
   }, []);
 
+  // SVG 크기 스타일
+  const svgStyle: React.CSSProperties =
+    svgSize !== undefined
+      ? { display: 'block', margin: '0 auto', width: svgSize, height: svgSize }
+      : { display: 'block', width: '100%', height: 'auto' };
+
   return (
-    <div className={className}>
-      {/*
-       * height: 'auto' — viewBox 1:1 비율을 유지하며 너비에 맞게 높이를 자동 계산합니다.
-       * 이전의 height="100%" 는 부모에 명시적 높이가 없을 때 카드 크기를 넘어가는 문제를 일으켰습니다.
-       */}
-      <svg
-        viewBox={`0 0 ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}`}
-        style={{ width: '100%', height: 'auto', display: 'block' }}
-        role="img"
-        aria-label="레이더 차트"
-      >
+    <div ref={containerRef} className={className}>
+      <svg viewBox={`0 0 ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}`} style={svgStyle} role="img" aria-label="레이더 차트">
         {/* 격자 다각형 */}
-        {computed.gridPolygons.map((pts, level) => (
+        {grid.gridPolygons.map((pts, level) => (
           <polygon key={level} points={pts} fill="none" stroke={gridColor} strokeWidth={1} />
         ))}
 
         {/* 각 축 기준선 */}
         {showAngleLines &&
-          computed.axisEndCoords.map((end, i) => (
+          grid.axisEndCoords.map((end, i) => (
             <line key={i} x1={CX} y1={CY} x2={end.x} y2={end.y} stroke={gridColor} strokeWidth={1} />
           ))}
 
-        {/* 데이터셋별 다각형 + 포인트 (숨겨진 데이터셋은 건너뜁니다) */}
+        {/* 데이터셋별 다각형 + 포인트 (애니메이션 값 사용) */}
         {datasets.map((ds, di) => {
           const hidden = hiddenIndices.has(di);
+          const animData = getAnimatedDataForDs(di);
+          const pointCoords = animData.map((v, i) => valueToCoord(v, i));
+          const polygonPoints = pointCoords.map(pt => `${pt.x},${pt.y}`).join(' ');
+
           return (
             <g key={di} opacity={hidden ? 0 : 1} style={{ transition: 'opacity 0.2s' }}>
-              {!hidden && (
-                <animate
-                  attributeName="opacity"
-                  from="0"
-                  to="1"
-                  dur={`${ANIM_DUR_S}s`}
-                  begin={`${di * 0.15}s`}
-                  fill="freeze"
-                />
-              )}
               <polygon
-                points={computed.polygons[di]}
+                points={polygonPoints}
                 fill={ds.backgroundColor}
                 stroke={ds.borderColor}
                 strokeWidth={ds.borderWidth}
               />
-              {computed.pointCoords[di]?.map((pt, i) => (
+              {pointCoords.map((pt, i) => (
                 <circle
                   key={i}
                   cx={pt.x}
@@ -283,8 +313,8 @@ export const RadarChart = memo(function RadarChart({ data, options, className }:
         {labels.map((label, i) => (
           <text
             key={i}
-            x={computed.labelCoords[i]?.x}
-            y={computed.labelCoords[i]?.y}
+            x={grid.labelCoords[i]?.x}
+            y={grid.labelCoords[i]?.y}
             textAnchor="middle"
             dominantBaseline="middle"
             fontSize={pointLabelFontSize}
