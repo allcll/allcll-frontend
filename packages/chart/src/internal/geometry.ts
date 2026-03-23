@@ -29,11 +29,34 @@ export function arcPath(
   startAngle: number,
   endAngle: number,
 ): string {
+  const sweep = endAngle - startAngle;
+
+  // SVG arc 명령은 시작점과 끝점이 동일할 때(360° 이상) 렌더링되지 않습니다.
+  // 완전한 원이 되는 경우 두 개의 반원(semicircle)으로 분리합니다.
+  if (sweep >= 2 * Math.PI - 1e-9) {
+    const midAngle = startAngle + Math.PI;
+    const outerTop = polarToCartesian(cx, cy, r, startAngle);
+    const outerMid = polarToCartesian(cx, cy, r, midAngle);
+    const innerTop = polarToCartesian(cx, cy, innerR, startAngle);
+    const innerMid = polarToCartesian(cx, cy, innerR, midAngle);
+    return [
+      // 외부 원: 두 반원을 시계방향(sweepFlag=1)으로 그립니다
+      `M ${outerTop.x} ${outerTop.y}`,
+      `A ${r} ${r} 0 0 1 ${outerMid.x} ${outerMid.y}`,
+      `A ${r} ${r} 0 0 1 ${outerTop.x} ${outerTop.y}`,
+      // 내부 원: 반시계방향(sweepFlag=0)으로 구멍을 만듭니다
+      `L ${innerTop.x} ${innerTop.y}`,
+      `A ${innerR} ${innerR} 0 0 0 ${innerMid.x} ${innerMid.y}`,
+      `A ${innerR} ${innerR} 0 0 0 ${innerTop.x} ${innerTop.y}`,
+      'Z',
+    ].join(' ');
+  }
+
   const outerStart = polarToCartesian(cx, cy, r, startAngle);
   const outerEnd = polarToCartesian(cx, cy, r, endAngle);
   const innerStart = polarToCartesian(cx, cy, innerR, startAngle);
   const innerEnd = polarToCartesian(cx, cy, innerR, endAngle);
-  const largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
+  const largeArc = sweep > Math.PI ? 1 : 0;
 
   return [
     `M ${outerStart.x} ${outerStart.y}`,
