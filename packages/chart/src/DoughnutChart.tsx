@@ -74,7 +74,48 @@ interface ArcSlice {
   value: number;
   i: number;
   color: string;
+  /** 레이블 (key 및 툴팁에 사용) */
+  label: string;
 }
+
+// ---------------------------------------------------------------------------
+// 내부 서브 컴포넌트
+// ---------------------------------------------------------------------------
+
+interface DoughnutSliceProps {
+  arc: ArcSlice;
+  borderWidth: number;
+  dimmed: boolean;
+  showTooltip: boolean;
+  onMouseEnter: (arc: ArcSlice, e: React.MouseEvent<SVGPathElement>) => void;
+  onMouseMove: (e: React.MouseEvent<SVGPathElement>) => void;
+  onMouseLeave: () => void;
+}
+
+const DoughnutSlice = memo(function DoughnutSlice({
+  arc,
+  borderWidth,
+  dimmed,
+  showTooltip,
+  onMouseEnter,
+  onMouseMove,
+  onMouseLeave,
+}: DoughnutSliceProps) {
+  return (
+    <path
+      d={arc.path}
+      fill={arc.color}
+      stroke="white"
+      strokeWidth={borderWidth}
+      opacity={dimmed ? 0.7 : 1}
+      aria-label={`${arc.label}: ${arc.value}`}
+      style={{ cursor: showTooltip ? 'pointer' : 'default', transition: 'opacity 0.15s' }}
+      onMouseEnter={e => onMouseEnter(arc, e)}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+    />
+  );
+});
 
 // ---------------------------------------------------------------------------
 // 컴포넌트
@@ -125,7 +166,7 @@ export const DoughnutChart = memo(function DoughnutChart({ data, options, classN
   // -----------------------------------------------------------------------
   const arcs = useMemo<ArcSlice[]>(() => {
     if (!dataset) return [];
-    const cutoutPercent = parseFloat(dataset.cutout ?? '50') / 100;
+    const cutoutPercent = Number.parseFloat(dataset.cutout ?? '50') / 100;
     const innerRadius = OUTER_RADIUS * cutoutPercent;
     let currentAngle = -Math.PI / 2;
 
@@ -139,9 +180,10 @@ export const DoughnutChart = memo(function DoughnutChart({ data, options, classN
         value: dataset.data[i] ?? 0,
         i,
         color: getSliceColor(dataset.backgroundColor, i),
+        label: data.labels?.[i] ?? `항목 ${i + 1}`,
       };
     });
-  }, [dataset, animatedSweepAngles]);
+  }, [dataset, animatedSweepAngles, data.labels]);
 
   // 범례 항목도 data 가 바뀔 때만 재계산
   const legendItems = useMemo<LegendItem[]>(
@@ -157,6 +199,25 @@ export const DoughnutChart = memo(function DoughnutChart({ data, options, classN
     setHoveredIndex(null);
     setTooltip(null);
   }, []);
+
+  const handleSliceMouseEnter = useCallback(
+    (arc: ArcSlice, e: React.MouseEvent<SVGPathElement>) => {
+      setHoveredIndex(arc.i);
+      if (showTooltip) {
+        setTooltip({ x: e.clientX, y: e.clientY, label: arc.label, value: arc.value });
+      }
+    },
+    [showTooltip],
+  );
+
+  const handleSliceMouseMove = useCallback(
+    (e: React.MouseEvent<SVGPathElement>) => {
+      if (showTooltip) {
+        setTooltip(prev => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null));
+      }
+    },
+    [showTooltip],
+  );
 
   const handleLegendToggle = useCallback((index: number) => {
     setHiddenIndices(prev => {
@@ -178,34 +239,19 @@ export const DoughnutChart = memo(function DoughnutChart({ data, options, classN
         role="img"
         aria-label="도넛 차트"
       >
+        <title>도넛 차트</title>
         {arcs.map(arc => {
           if (arc.path === '') return null;
           const dimmed = hoveredIndex !== null && hoveredIndex !== arc.i;
           return (
-            <path
-              key={arc.i}
-              d={arc.path}
-              fill={arc.color}
-              stroke="white"
-              strokeWidth={dataset.borderWidth ?? 2}
-              opacity={dimmed ? 0.7 : 1}
-              style={{ cursor: showTooltip ? 'pointer' : 'default', transition: 'opacity 0.15s' }}
-              onMouseEnter={e => {
-                setHoveredIndex(arc.i);
-                if (showTooltip) {
-                  setTooltip({
-                    x: e.clientX,
-                    y: e.clientY,
-                    label: data.labels?.[arc.i] ?? `항목 ${arc.i + 1}`,
-                    value: arc.value,
-                  });
-                }
-              }}
-              onMouseMove={e => {
-                if (showTooltip) {
-                  setTooltip(prev => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null));
-                }
-              }}
+            <DoughnutSlice
+              key={arc.label}
+              arc={arc}
+              borderWidth={dataset.borderWidth ?? 2}
+              dimmed={dimmed}
+              showTooltip={showTooltip}
+              onMouseEnter={handleSliceMouseEnter}
+              onMouseMove={handleSliceMouseMove}
               onMouseLeave={handleMouseLeave}
             />
           );

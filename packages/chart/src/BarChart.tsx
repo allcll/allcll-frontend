@@ -62,6 +62,54 @@ interface BarSlot {
 }
 
 // ---------------------------------------------------------------------------
+// 내부 서브 컴포넌트
+// ---------------------------------------------------------------------------
+
+function YGridLine({ tickVal, yPos, chartWidth }: { tickVal: number; yPos: number; chartWidth: number }) {
+  return (
+    <g>
+      <line x1={0} y1={yPos} x2={chartWidth} y2={yPos} stroke="#e5e7eb" strokeWidth={1} />
+      <text x={-4} y={yPos + 4} textAnchor="end" fontSize={9} fill="#9ca3af">
+        {Math.round(tickVal)}
+      </text>
+    </g>
+  );
+}
+
+interface BarItemProps {
+  slot: BarSlot;
+  animatedRatio: number;
+  chartHeight: number;
+  onMouseEnter: (slot: BarSlot, e: React.MouseEvent<SVGRectElement>) => void;
+  onMouseMove: (e: React.MouseEvent<SVGRectElement>) => void;
+  onMouseLeave: () => void;
+}
+
+function BarItem({ slot, animatedRatio, chartHeight, onMouseEnter, onMouseMove, onMouseLeave }: BarItemProps) {
+  const barHeight = animatedRatio * chartHeight;
+  const barY = chartHeight - barHeight;
+  return (
+    <g>
+      <rect
+        x={slot.x}
+        y={barY}
+        width={slot.width}
+        height={Math.max(barHeight, 0)}
+        fill={slot.color}
+        aria-label={`${slot.label}: ${slot.value}`}
+        style={{ cursor: 'pointer' }}
+        onMouseEnter={e => onMouseEnter(slot, e)}
+        onMouseMove={onMouseMove}
+        onMouseLeave={onMouseLeave}
+      />
+      <text x={slot.x + slot.width / 2} y={chartHeight + 16} textAnchor="middle" fontSize={10} fill="#6b7280">
+        {slot.label}
+      </text>
+    </g>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // 컴포넌트
 // ---------------------------------------------------------------------------
 
@@ -115,6 +163,14 @@ export const BarChart = memo(function BarChart({ data, className }: BarChartProp
 
   const hideTooltip = useCallback(() => setTooltip(null), []);
 
+  const handleBarMouseEnter = useCallback((slot: BarSlot, e: React.MouseEvent<SVGRectElement>) => {
+    setTooltip({ x: e.clientX, y: e.clientY, label: slot.label, value: slot.value });
+  }, []);
+
+  const handleBarMouseMove = useCallback((e: React.MouseEvent<SVGRectElement>) => {
+    setTooltip(prev => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null));
+  }, []);
+
   // 데이터가 없으면 렌더링하지 않음
   if (!data.datasets[0]) return null;
 
@@ -126,47 +182,29 @@ export const BarChart = memo(function BarChart({ data, className }: BarChartProp
         role="img"
         aria-label="막대 차트"
       >
+        <title>막대 차트</title>
         <g transform={`translate(${PAD_LEFT}, ${PAD_TOP})`}>
           {/* Y축 격자선 + 눈금 레이블 */}
-          {yTicks.map((tickVal, i) => {
+          {yTicks.map(tickVal => {
             const yPos = chartHeight - (yMax > 0 ? (tickVal / yMax) * chartHeight : 0);
-            return (
-              <g key={i}>
-                <line x1={0} y1={yPos} x2={chartWidth} y2={yPos} stroke="#e5e7eb" strokeWidth={1} />
-                <text x={-4} y={yPos + 4} textAnchor="end" fontSize={9} fill="#9ca3af">
-                  {Math.round(tickVal)}
-                </text>
-              </g>
-            );
+            return <YGridLine key={tickVal} tickVal={tickVal} yPos={yPos} chartWidth={chartWidth} />;
           })}
 
           {/* X축 */}
           <line x1={0} y1={chartHeight} x2={chartWidth} y2={chartHeight} stroke="#d1d5db" strokeWidth={1} />
 
           {/* 막대 + x 레이블: 애니메이션 비율로 높이/y 계산 */}
-          {slots.map((slot, i) => {
-            const ratio = animatedRatios[i] ?? 0;
-            const barHeight = ratio * chartHeight;
-            const barY = chartHeight - barHeight;
-            return (
-              <g key={i}>
-                <rect
-                  x={slot.x}
-                  y={barY}
-                  width={slot.width}
-                  height={Math.max(barHeight, 0)}
-                  fill={slot.color}
-                  style={{ cursor: 'pointer' }}
-                  onMouseEnter={e => setTooltip({ x: e.clientX, y: e.clientY, label: slot.label, value: slot.value })}
-                  onMouseMove={e => setTooltip(prev => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null))}
-                  onMouseLeave={hideTooltip}
-                />
-                <text x={slot.x + slot.width / 2} y={chartHeight + 16} textAnchor="middle" fontSize={10} fill="#6b7280">
-                  {slot.label}
-                </text>
-              </g>
-            );
-          })}
+          {slots.map((slot, i) => (
+            <BarItem
+              key={slot.label}
+              slot={slot}
+              animatedRatio={animatedRatios[i] ?? 0}
+              chartHeight={chartHeight}
+              onMouseEnter={handleBarMouseEnter}
+              onMouseMove={handleBarMouseMove}
+              onMouseLeave={hideTooltip}
+            />
+          ))}
         </g>
       </svg>
 

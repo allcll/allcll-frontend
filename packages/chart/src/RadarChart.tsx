@@ -100,6 +100,54 @@ interface ComputedRadarGrid {
 }
 
 // ---------------------------------------------------------------------------
+// 내부 서브 컴포넌트
+// ---------------------------------------------------------------------------
+
+interface RadarDatasetPolygonProps {
+  ds: RadarDataset;
+  hidden: boolean;
+  polygonPoints: string;
+  pointCoords: RadarPoint[];
+  showTooltip: boolean;
+  labels: string[];
+  onMouseEnter: (e: React.MouseEvent<SVGCircleElement>, label: string, value: number) => void;
+  onMouseMove: (e: React.MouseEvent<SVGCircleElement>) => void;
+  onMouseLeave: () => void;
+}
+
+function RadarDatasetPolygon({
+  ds,
+  hidden,
+  polygonPoints,
+  pointCoords,
+  showTooltip,
+  labels,
+  onMouseEnter,
+  onMouseMove,
+  onMouseLeave,
+}: RadarDatasetPolygonProps) {
+  return (
+    <g opacity={hidden ? 0 : 1} style={{ transition: 'opacity 0.2s' }}>
+      <polygon points={polygonPoints} fill={ds.backgroundColor} stroke={ds.borderColor} strokeWidth={ds.borderWidth} />
+      {pointCoords.map((pt, i) => (
+        <circle
+          key={labels[i] ?? String(i)}
+          cx={pt.x}
+          cy={pt.y}
+          r={POINT_RADIUS}
+          fill={ds.pointBackgroundColor}
+          aria-label={`${ds.label} - ${labels[i]}: ${ds.data[i] ?? 0}`}
+          style={{ cursor: showTooltip ? 'pointer' : 'default' }}
+          onMouseEnter={e => onMouseEnter(e, `${ds.label}: ${labels[i]}`, ds.data[i] ?? 0)}
+          onMouseMove={onMouseMove}
+          onMouseLeave={onMouseLeave}
+        />
+      ))}
+    </g>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // 컴포넌트
 // ---------------------------------------------------------------------------
 
@@ -240,6 +288,19 @@ export const RadarChart = memo(function RadarChart({ data, options, className }:
 
   const hideTooltip = useCallback(() => setTooltip(null), []);
 
+  const handlePointMouseEnter = useCallback(
+    (e: React.MouseEvent<SVGCircleElement>, label: string, value: number) => {
+      if (showTooltip) {
+        setTooltip({ x: e.clientX, y: e.clientY, label, value });
+      }
+    },
+    [showTooltip],
+  );
+
+  const handlePointMouseMove = useCallback((e: React.MouseEvent<SVGCircleElement>) => {
+    setTooltip(prev => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null));
+  }, []);
+
   const handleLegendToggle = useCallback((index: number) => {
     setHiddenIndices(prev => {
       const next = new Set(prev);
@@ -258,15 +319,17 @@ export const RadarChart = memo(function RadarChart({ data, options, className }:
   return (
     <div ref={containerRef} className={className}>
       <svg viewBox={`0 0 ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}`} style={svgStyle} role="img" aria-label="레이더 차트">
+        <title>레이더 차트</title>
+
         {/* 격자 다각형 */}
         {grid.gridPolygons.map((pts, level) => (
-          <polygon key={level} points={pts} fill="none" stroke={gridColor} strokeWidth={1} />
+          <polygon key={`grid-level-${level}`} points={pts} fill="none" stroke={gridColor} strokeWidth={1} />
         ))}
 
         {/* 각 축 기준선 */}
         {showAngleLines &&
           grid.axisEndCoords.map((end, i) => (
-            <line key={i} x1={CX} y1={CY} x2={end.x} y2={end.y} stroke={gridColor} strokeWidth={1} />
+            <line key={labels[i]} x1={CX} y1={CY} x2={end.x} y2={end.y} stroke={gridColor} strokeWidth={1} />
           ))}
 
         {/* 데이터셋별 다각형 + 포인트 (애니메이션 값 사용) */}
@@ -275,44 +338,26 @@ export const RadarChart = memo(function RadarChart({ data, options, className }:
           const animData = getAnimatedDataForDs(di);
           const pointCoords = animData.map((v, i) => valueToCoord(v, i));
           const polygonPoints = pointCoords.map(pt => `${pt.x},${pt.y}`).join(' ');
-
           return (
-            <g key={di} opacity={hidden ? 0 : 1} style={{ transition: 'opacity 0.2s' }}>
-              <polygon
-                points={polygonPoints}
-                fill={ds.backgroundColor}
-                stroke={ds.borderColor}
-                strokeWidth={ds.borderWidth}
-              />
-              {pointCoords.map((pt, i) => (
-                <circle
-                  key={i}
-                  cx={pt.x}
-                  cy={pt.y}
-                  r={POINT_RADIUS}
-                  fill={ds.pointBackgroundColor}
-                  style={{ cursor: showTooltip ? 'pointer' : 'default' }}
-                  onMouseEnter={e => {
-                    if (showTooltip)
-                      setTooltip({
-                        x: e.clientX,
-                        y: e.clientY,
-                        label: `${ds.label}: ${labels[i]}`,
-                        value: ds.data[i] ?? 0,
-                      });
-                  }}
-                  onMouseMove={e => setTooltip(prev => (prev ? { ...prev, x: e.clientX, y: e.clientY } : null))}
-                  onMouseLeave={hideTooltip}
-                />
-              ))}
-            </g>
+            <RadarDatasetPolygon
+              key={ds.label}
+              ds={ds}
+              hidden={hidden}
+              polygonPoints={polygonPoints}
+              pointCoords={pointCoords}
+              showTooltip={showTooltip}
+              labels={labels}
+              onMouseEnter={handlePointMouseEnter}
+              onMouseMove={handlePointMouseMove}
+              onMouseLeave={hideTooltip}
+            />
           );
         })}
 
         {/* 축 레이블 */}
         {labels.map((label, i) => (
           <text
-            key={i}
+            key={label}
             x={grid.labelCoords[i]?.x}
             y={grid.labelCoords[i]?.y}
             textAnchor="middle"

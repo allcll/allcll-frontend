@@ -81,8 +81,8 @@ export function MultiChartTooltip({ state, formatLabel }: MultiChartTooltipProps
       style={{ ...TOOLTIP_STYLE, left: state.x + 14, top: state.y - 10, padding: '6px 12px', minWidth: 'max-content' }}
     >
       <div style={{ fontWeight: 600, marginBottom: 4 }}>{state.title}</div>
-      {state.items.map((item, i) => (
-        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+      {state.items.map(item => (
+        <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           <span
             style={{
               width: 8,

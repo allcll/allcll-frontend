@@ -99,7 +99,7 @@ interface MixedChartProps {
 // ---------------------------------------------------------------------------
 
 interface StackedBarColumn {
-  segments: { bx: number; by: number; height: number; color: string; thickness: number }[];
+  segments: { bx: number; by: number; height: number; color: string; thickness: number; datasetLabel: string }[];
   colIndex: number;
   labelX: number;
   labelText: string;
@@ -112,6 +112,8 @@ interface LineOverlayPath {
   borderWidth: number;
   pointRadius: number;
   pointFill: string;
+  /** 해당 데이터셋 레이블 (key 에 사용) */
+  datasetLabel: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -131,10 +133,10 @@ function YGridLines({
 }) {
   return (
     <>
-      {yTicks.map((tickVal, i) => {
+      {yTicks.map(tickVal => {
         const y = yScale(tickVal);
         return (
-          <g key={i}>
+          <g key={tickVal}>
             <line x1={0} y1={y} x2={totalWidth} y2={y} stroke="#e5e7eb" strokeWidth={1} />
             <text x={-6} y={y + 4} textAnchor="end" fontSize={10} fill="#9ca3af">
               {formatYTick(tickVal)}
@@ -166,8 +168,15 @@ function StackedBarGroup({
       onMouseLeave={onMouseLeave}
       style={{ cursor: 'pointer' }}
     >
-      {col.segments.map((seg, di) => (
-        <rect key={di} x={seg.bx} y={seg.by} width={seg.thickness} height={Math.max(seg.height, 0)} fill={seg.color} />
+      {col.segments.map(seg => (
+        <rect
+          key={seg.datasetLabel}
+          x={seg.bx}
+          y={seg.by}
+          width={seg.thickness}
+          height={Math.max(seg.height, 0)}
+          fill={seg.color}
+        />
       ))}
       <text x={col.labelX} y={innerHeight + 16} textAnchor="middle" fontSize={9} fill="#6b7280">
         {col.labelText}
@@ -182,8 +191,8 @@ function LineOverlay({ overlay }: { overlay: LineOverlayPath }) {
       {overlay.pathD && (
         <path d={overlay.pathD} fill="none" stroke={overlay.borderColor} strokeWidth={overlay.borderWidth} />
       )}
-      {overlay.points.map((p, pi) => (
-        <circle key={pi} cx={p.x} cy={p.y} r={overlay.pointRadius} fill={overlay.pointFill} />
+      {overlay.points.map(p => (
+        <circle key={p.x} cx={p.x} cy={p.y} r={overlay.pointRadius} fill={overlay.pointFill} />
       ))}
     </g>
   );
@@ -344,7 +353,7 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
         const bx = xCenter(col) - bw / 2;
         const by = stackBottom - barH;
         stackBottom -= barH;
-        return { bx, by, height: barH, color: ds.backgroundColor ?? '#888', thickness: bw };
+        return { bx, by, height: barH, color: ds.backgroundColor ?? '#888', thickness: bw, datasetLabel: ds.label };
       });
       return { segments, colIndex: col, labelX: xCenter(col), labelText: labels[col] ?? '' };
     });
@@ -366,6 +375,7 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
         borderWidth: ds.borderWidth ?? 2,
         pointRadius: ds.pointRadius ?? 4,
         pointFill: ds.pointBackgroundColor ?? ds.borderColor ?? '#888',
+        datasetLabel: ds.label,
       };
     });
   }, [lineDatasets, animatedLineValues, n, xCenter, yScale]);
@@ -425,6 +435,7 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
           aria-label="혼합 차트"
           onMouseLeave={hideTooltip}
         >
+          <title>혼합 차트</title>
           <g transform={`translate(${PAD_LEFT}, ${PAD_TOP})`}>
             {yTitle && (
               <text
@@ -445,7 +456,7 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
 
             {columns.map(col => (
               <StackedBarGroup
-                key={col.colIndex}
+                key={col.labelText}
                 col={col}
                 onMouseEnter={handleMouseEnter}
                 onMouseMove={handleMouseMove}
@@ -454,8 +465,8 @@ export const MixedChart = memo(function MixedChart({ data, options }: MixedChart
               />
             ))}
 
-            {lineOverlays.map((overlay, li) => (
-              <LineOverlay key={li} overlay={overlay} />
+            {lineOverlays.map(overlay => (
+              <LineOverlay key={overlay.datasetLabel} overlay={overlay} />
             ))}
           </g>
 
