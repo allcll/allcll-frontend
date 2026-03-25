@@ -1,14 +1,4 @@
-// import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from 'recharts';
-import {
-  Chart as ChartJS,
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip as ChartTooltip,
-  Legend,
-} from 'chart.js/auto';
-import { Radar as RadarChartJS } from 'react-chartjs-2';
+import { Suspense } from 'react';
 import { ExtendedResultResponse } from '@/pages/simulation/DashboardDetail.tsx';
 import {
   getSearchBtnSpeedRank,
@@ -16,35 +6,26 @@ import {
   getAccuracyRank,
   getCaptchaSpeedRank,
 } from '@/features/simulation/lib/score.ts';
+import { LazyRadarChart, RadarChartSkeleton } from '@/shared/ui/charts';
 
-ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, ChartTooltip, Legend);
-
-const options = {
+const radarOptions = {
   responsive: true,
   scales: {
     r: {
       angleLines: { display: true },
       suggestedMin: 0,
       suggestedMax: 100,
-      ticks: {
-        display: false,
-      },
+      ticks: { display: false },
       pointLabels: {
-        font: {
-          size: 14,
-        },
-        color: '#4B5563', // text-gray-700
+        font: { size: 14 },
+        color: '#4B5563',
       },
-      grid: {
-        color: '#E5E7EB', // border-gray-300
-      },
+      grid: { color: '#E5E7EB' },
     },
   },
   plugins: {
     legend: { display: false },
-    tooltip: {
-      enabled: true,
-    },
+    tooltip: { enabled: true },
   },
 };
 
@@ -60,7 +41,7 @@ function getDataset(result: IRadarChart['result']) {
       {
         label: '평균',
         data: getRankArr([1.776296, 9.30268, 93.58, 3.843947]),
-        backgroundColor: 'rgba(5, 223, 114, 0.2)', // bg-blue-500 with opacity
+        backgroundColor: 'rgba(5, 223, 114, 0.2)',
         borderColor: 'rgba(5, 223, 114, 1)',
         borderWidth: 2,
         pointBackgroundColor: 'rgba(5, 223, 114, 1)',
@@ -68,7 +49,7 @@ function getDataset(result: IRadarChart['result']) {
       {
         label: '내 능력',
         data: getRankArr(myData),
-        backgroundColor: 'rgb(0, 122, 255, 0.2)', // bg-blue-500 with opacity
+        backgroundColor: 'rgb(0, 122, 255, 0.2)',
         borderColor: 'rgba(0, 122, 255, 1)',
         borderWidth: 2,
         pointBackgroundColor: 'rgba(0, 122, 255, 1)',
@@ -100,7 +81,9 @@ function RadarChart({ result }: Readonly<IRadarChart>) {
     <>
       {/* 레이더 차트 */}
       <div className="h-90">
-        <RadarChartJS data={datasets} className="mx-auto" options={options} />
+        <Suspense fallback={<RadarChartSkeleton className="h-full" />}>
+          <LazyRadarChart data={datasets} className="mx-auto" options={radarOptions} />
+        </Suspense>
       </div>
 
       {/* 능력 설명 박스 */}

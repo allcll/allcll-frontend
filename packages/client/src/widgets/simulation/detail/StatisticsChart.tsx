@@ -1,24 +1,7 @@
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-  ChartData,
-  ChartOptions,
-  TooltipCallbacks,
-} from 'chart.js/auto';
-import { Chart } from 'react-chartjs-2';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { AggregatedResultResponse } from '@/features/simulation/lib/result.ts';
-import { isNumber } from 'chart.js/helpers';
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend);
-type ChartType = 'bar' | 'line';
+import { LazyMixedChart, MixedChartSkeleton } from '@/shared/ui/charts';
+import type { MixedChartData, MixedChartOptions } from '@/shared/ui/charts';
 
 // Fixme: type 정의 수정
 function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
@@ -28,10 +11,8 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
     ? result.simulations
     : result.simulations.filter(sim => sim.totalTime <= 80 && sim.searchBtnTime > 0);
 
-  // 시뮬레이션 라벨 생성 (Sim 1, Sim 2, ...)
   const labels = simulations.map((_, index) => `시뮬레이션 ${index + 1}`);
 
-  // 각 시뮬레이션의 시간 데이터 추출
   const searchBtnTimes = simulations.map(sim => sim.searchBtnTime);
   const captchaTimes = simulations.map(sim => sim.captchaTime - sim.searchBtnTime);
   const subjectTimes = simulations.map(sim => sim.subjectTime - sim.captchaTime);
@@ -39,10 +20,9 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
 
   const barThickness = simulations && simulations.length < 50 ? 16 : 8;
 
-  const data: ChartData<ChartType> = {
+  const data: MixedChartData = {
     labels,
     datasets: [
-      // 누적 막대 차트 데이터셋
       {
         type: 'bar',
         label: '검색 버튼 시간',
@@ -75,8 +55,6 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         backgroundColor: 'rgba(153, 102, 255, 0.7)',
         stack: 'Stack 0',
       },
-
-      // 경계선 그래프
       {
         type: 'line',
         label: '검색 완료',
@@ -124,45 +102,24 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
     ],
   };
 
-  const options: ChartOptions<ChartType> = {
+  const options: MixedChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        position: 'top',
-      },
-      // title: {
-      //   display: true,
-      //   text: '시뮬레이션별 시간 분포',
-      //   font: { size: 16 },
-      // },
+      legend: { position: 'top' },
       tooltip: {
         callbacks: {
-          label: function (context: { dataset: { label: string }; parsed: { y: any } }) {
-            const label = context.dataset.label || '';
-            const value = context.parsed.y;
-            return `${label}: ${value.toFixed(2)}초`;
-          },
-        } as Partial<TooltipCallbacks<ChartType>>,
+          label: context => `${context.dataset.label}: ${context.parsed.y.toFixed(2)}초`,
+        },
       },
     },
     scales: {
-      x: {
-        title: {
-          display: true,
-          text: '시뮬레이션',
-        },
-      },
+      x: { title: { display: true, text: '시뮬레이션' } },
       y: {
         stacked: true,
-        title: {
-          display: true,
-          text: '시간 (초)',
-        },
+        title: { display: true, text: '시간 (초)' },
         ticks: {
-          callback: function (value: number | string) {
-            return (isNumber(value) ? value.toFixed(1) : value) + '초';
-          },
+          callback: value => (typeof value === 'number' ? value.toFixed(1) : String(value)) + '초',
         },
       },
     },
@@ -171,7 +128,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
   return (
     <div className="w-full h-96 p-4 box-border">
       <div className="flex justify-between items-center mb-4">
-        <div></div>
+        <div />
         <div className="text-lg font-semibold">
           <input
             id="normal-data"
@@ -186,19 +143,12 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         </div>
       </div>
       <div className="h-full pb-6 overflow-x-auto">
-        <Chart type="bar" data={data} options={options} />
+        <Suspense fallback={<MixedChartSkeleton height={320} />}>
+          <LazyMixedChart data={data} options={options} />
+        </Suspense>
       </div>
     </div>
   );
 }
-
-// function getResultsData(result: AggregatedResultResponse) {
-//   return result.simulations.map(sim => ({
-//     captchaTime: sim.captchaTime || 0,
-//     subjectTime: sim.subjectTime || 0,
-//     searchBtnTime: sim.searchBtnTime || 0,
-//     otherTime: sim.otherTime || 0,
-//   }));
-// }
 
 export default StatisticsChart;

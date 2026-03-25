@@ -1,12 +1,10 @@
-import { Doughnut } from 'react-chartjs-2';
+import { Suspense } from 'react';
 import Section from '@/widgets/home/ui/Section.tsx';
-import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js/auto';
 import { DoughnutColors } from '@/features/wish/lib/doughnut';
 import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
 import BasketBadge from '@/entities/wishes/ui/BasketBadge.tsx';
 import { Heading } from '@allcll/allcll-ui';
-
-ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+import { LazyDoughnutChart, DoughnutChartSkeleton } from '@/shared/ui/charts';
 
 const doughnut = {
   labels: ['컴퓨터공학과', '정보통신공학과', '소프트웨어학과', '기타'],
@@ -30,7 +28,9 @@ function WishesSection() {
 
           <div className="flex justify-center mt-4">
             <div className="w-full max-w-xs">
-              <Doughnut data={doughnut} />
+              <Suspense fallback={<DoughnutChartSkeleton className="mx-auto" />}>
+                <LazyDoughnutChart data={doughnut} />
+              </Suspense>
             </div>
           </div>
         </div>
@@ -41,9 +41,9 @@ function WishesSection() {
           {[
             { name: '데이터베이스개론', dept: '데이터베이스 시스템', status: 30 },
             { name: '알고리즘분석', dept: '고급알고리즘', status: 14 },
-          ].map((course, index) => (
+          ].map(course => (
             <div
-              key={'recommend-course-' + index}
+              key={`${course.name}-${course.dept}`}
               className="mt-4 flex justify-between p-2 rounded-md border border-gray-200"
             >
               <div>
