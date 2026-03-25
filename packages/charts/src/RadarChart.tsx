@@ -1,7 +1,3 @@
-/**
- * chart.js / react-chartjs-2 기반 레이더 차트 래퍼.
- * 이 파일은 React.lazy()로 동적 임포트되어 별도 청크로 분리됩니다.
- */
 import { Radar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -17,7 +13,7 @@ import {
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
-interface RadarChartProps {
+export interface RadarChartProps {
   data: ChartData<'radar'>;
   options?: ChartOptions<'radar'>;
   className?: string;

@@ -1,8 +1,3 @@
-/**
- * 차트 로딩 중 Suspense fallback 스켈레톤 컴포넌트.
- * 차트 로드 전후 레이아웃 이동(CLS)이 없도록 실제 차트와 동일한 크기를 유지합니다.
- */
-
 /** 도넛/파이 차트 스켈레톤 */
 export function DoughnutChartSkeleton({ className }: { className?: string }) {
   return (
@@ -42,7 +37,7 @@ export function RadarChartSkeleton({ className }: { className?: string }) {
   );
 }
 
-interface MixedChartSkeletonProps {
+export interface MixedChartSkeletonProps {
   className?: string;
   height?: number;
 }
