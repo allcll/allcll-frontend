@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import EditSvg from '@/assets/edit.svg?react';
 import TrashSvg from '@/assets/trash.svg?react';
 import FileTextSvg from '@/assets/file-text.svg?react';
@@ -68,7 +67,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
                     {notice.title}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-500">
-                    {format(new Date(notice.createdAt), 'yyyy.MM.dd')}
+                    {notice.createdAt.slice(0, 10).replace(/-/g, '.')}
                   </td>
                   <td className="px-4 py-3">
                     <Flex align="items-center" gap="gap-1">
