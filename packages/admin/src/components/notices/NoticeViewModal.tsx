@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Button, Dialog, Badge, Flex } from '@allcll/allcll-ui';
@@ -19,7 +18,7 @@ function NoticeViewModal({ notice, onClose, onEdit }: Props) {
             <Badge variant="primary" size="small">
               {CATEGORY_LABELS[notice.category]}
             </Badge>
-            <span>{format(new Date(notice.createdAt), 'yyyy.MM.dd')}</span>
+            <span>{notice.createdAt.slice(0, 10).replace(/-/g, '.')}</span>
           </Flex>
           <div className="prose max-w-none max-h-[60vh] overflow-y-auto pr-1">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{notice.content}</ReactMarkdown>
