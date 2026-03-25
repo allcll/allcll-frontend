@@ -29,6 +29,10 @@ const Menus = [
     title: '사용자 후기',
     link: '/reviews',
   },
+  {
+    title: '공지사항',
+    link: '/notices',
+  },
 ];
 
 function SideNavBar() {
