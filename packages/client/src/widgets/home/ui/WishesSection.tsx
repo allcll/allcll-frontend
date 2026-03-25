@@ -1,12 +1,10 @@
-import { Doughnut } from 'react-chartjs-2';
+import { Suspense } from 'react';
 import Section from '@/widgets/home/ui/Section.tsx';
-import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js/auto';
 import { DoughnutColors } from '@/features/wish/lib/doughnut';
 import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
 import BasketBadge from '@/entities/wishes/ui/BasketBadge.tsx';
 import { Heading } from '@allcll/allcll-ui';
-
-ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+import { LazyDoughnutChart, DoughnutChartSkeleton } from '@/shared/ui/charts';
 
 const doughnut = {
   labels: ['컴퓨터공학과', '정보통신공학과', '소프트웨어학과', '기타'],
@@ -30,7 +28,9 @@ function WishesSection() {
 
           <div className="flex justify-center mt-4">
             <div className="w-full max-w-xs">
-              <Doughnut data={doughnut} />
+              <Suspense fallback={<DoughnutChartSkeleton />}>
+                <LazyDoughnutChart data={doughnut} />
+              </Suspense>
             </div>
           </div>
         </div>

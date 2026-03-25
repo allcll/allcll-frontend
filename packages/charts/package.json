@@ -1,0 +1,21 @@
+{
+  "name": "@allcll/charts",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "chart.js": "^4.5.0",
+    "react-chartjs-2": "^5.3.0"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.8"
+  }
+}
