@@ -7,6 +7,8 @@ import Logs from '@/pages/Logs';
 import Graduation from '@/pages/Graduation';
 import Reviews from '@/pages/Reviews';
 import GraduationView from '@/pages/GraduationView';
+import Notices from '@/pages/Notices';
+import NoticeEditor from '@/pages/NoticeEditor';
 
 const router = createBrowserRouter(
   [
@@ -71,6 +73,36 @@ const router = createBrowserRouter(
         {
           path: '/reviews/graduation/:studentId',
           element: <GraduationView />,
+        },
+      ],
+    },
+    {
+      path: '/notices',
+      element: <MainLayout />,
+      children: [
+        {
+          path: '/notices',
+          element: <Notices />,
+        },
+      ],
+    },
+    {
+      path: '/notices/new',
+      element: <MainLayout />,
+      children: [
+        {
+          path: '/notices/new',
+          element: <NoticeEditor />,
+        },
+      ],
+    },
+    {
+      path: '/notices/edit/:id',
+      element: <MainLayout />,
+      children: [
+        {
+          path: '/notices/edit/:id',
+          element: <NoticeEditor />,
         },
       ],
     },
