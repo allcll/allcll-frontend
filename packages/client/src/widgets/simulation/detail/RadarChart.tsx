@@ -1,14 +1,4 @@
-// import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip } from 'recharts';
-import {
-  Chart as ChartJS,
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip as ChartTooltip,
-  Legend,
-} from 'chart.js/auto';
-import { Radar as RadarChartJS } from 'react-chartjs-2';
+import { Suspense } from 'react';
 import { ExtendedResultResponse } from '@/pages/simulation/DashboardDetail.tsx';
 import {
   getSearchBtnSpeedRank,
@@ -16,10 +6,9 @@ import {
   getAccuracyRank,
   getCaptchaSpeedRank,
 } from '@/features/simulation/lib/score.ts';
+import { LazyRadarChart, RadarChartSkeleton } from '@/shared/ui/charts';
 
-ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, ChartTooltip, Legend);
-
-const options = {
+const radarOptions = {
   responsive: true,
   scales: {
     r: {
@@ -100,7 +89,9 @@ function RadarChart({ result }: Readonly<IRadarChart>) {
     <>
       {/* 레이더 차트 */}
       <div className="h-90">
-        <RadarChartJS data={datasets} className="mx-auto" options={options} />
+        <Suspense fallback={<RadarChartSkeleton className="h-full" />}>
+          <LazyRadarChart data={datasets} className="mx-auto" options={radarOptions} />
+        </Suspense>
       </div>
 
       {/* 능력 설명 박스 */}

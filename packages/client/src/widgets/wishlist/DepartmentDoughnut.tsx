@@ -1,6 +1,4 @@
-import { useState } from 'react';
-import { Doughnut } from 'react-chartjs-2';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js/auto';
+import { Suspense, useState } from 'react';
 import useDepartments, { DepartmentDict, useDepartmentDict } from '@/entities/departments/api/useDepartments.ts';
 import {
   getCollegeDoughnutData,
@@ -11,8 +9,7 @@ import {
 } from '@/features/wish/lib/doughnut';
 import { WishRegister } from '@/shared/model/types.ts';
 import { Flex, Heading, Label } from '@allcll/allcll-ui';
-
-ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+import { LazyDoughnutChart, DoughnutChartSkeleton } from '@/shared/ui/charts';
 
 export enum DoughnutSelectType {
   MAJOR = '전공/비전공',
@@ -53,7 +50,9 @@ function DepartmentDoughnut({ data, majorName }: Readonly<{ data?: WishRegister[
           <p className="text-center text-gray-500 font-semibold">관심과목을 담은 사람이 없습니다.</p>
         </Flex>
       ) : (
-        <Doughnut data={doughnutData} />
+        <Suspense fallback={<DoughnutChartSkeleton className="mt-4" />}>
+          <LazyDoughnutChart data={doughnutData} />
+        </Suspense>
       )}
     </>
   );

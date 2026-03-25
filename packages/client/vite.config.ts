@@ -64,6 +64,17 @@ export default ({ mode }: ConfigEnv) => {
     },
     build: {
       sourcemap: isProduction, // Source map generation for Sentry
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            // chart.js, react-chartjs-2 및 관련 파일을 하나의 청크로 묶어
+            // 트리셰이킹 후 단일 파일로 받을 수 있도록 합니다.
+            if (id.includes('chart.js') || id.includes('react-chartjs-2')) {
+              return 'vendor-chartjs';
+            }
+          },
+        },
+      },
     },
   });
 };
