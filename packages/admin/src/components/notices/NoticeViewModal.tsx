@@ -1,5 +1,6 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import remarkBreaks from 'remark-breaks';
 import { Button, Dialog, Badge, Flex } from '@allcll/allcll-ui';
 import { CATEGORY_LABELS, type Notice } from '@/hooks/server/useAdminNotices';
 
@@ -21,7 +22,7 @@ function NoticeViewModal({ notice, onClose, onEdit }: Props) {
             <span>{notice.createdAt.slice(0, 10).replace(/-/g, '.')}</span>
           </Flex>
           <div className="prose max-w-none max-h-[60vh] overflow-y-auto pr-1">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{notice.content}</ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{notice.content}</ReactMarkdown>
           </div>
         </Flex>
       </Dialog.Content>

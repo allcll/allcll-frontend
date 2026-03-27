@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import remarkBreaks from 'remark-breaks';
 import BoldSvg from '@/assets/bold.svg?react';
 import ItalicSvg from '@/assets/italic.svg?react';
 import CodeSvg from '@/assets/code.svg?react';
@@ -201,7 +202,7 @@ function MarkdownEditor({ content, onChange }: Props) {
           <div className="min-h-[480px] px-5 py-4">
             {content.trim() ? (
               <div className="prose max-w-none">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{content}</ReactMarkdown>
               </div>
             ) : (
               <p className="text-sm text-gray-400 italic">미리보기할 내용이 없습니다.</p>

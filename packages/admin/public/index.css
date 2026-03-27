@@ -8,3 +8,100 @@ body {
 :root {
   background-color: #f9fafb;
 }
+
+/* Markdown prose styles for notice editor preview */
+.prose {
+  color: #364153;
+  line-height: 1.75;
+}
+
+.prose h1,
+.prose h2 {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 0.3em;
+  color: #202123;
+  font-weight: 600;
+}
+
+.prose h1 { font-size: 1.875rem; margin: 1rem 0 0.5rem; }
+.prose h2 { font-size: 1.5rem; margin: 1rem 0 0.5rem; }
+.prose h3 { font-size: 1.25rem; color: #202123; font-weight: 600; margin: 0.75rem 0 0.5rem; }
+
+.prose p { margin: 0.75rem 0; }
+
+.prose code {
+  background: #eff6ff;
+  color: #2563eb;
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.875em;
+}
+
+.prose pre {
+  background: #f9fafb;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.prose pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  font-size: inherit;
+}
+
+.prose blockquote {
+  border-left: 4px solid #3b82f6;
+  padding-left: 1em;
+  color: #6b7280;
+  font-style: italic;
+  margin: 0.75rem 0;
+}
+
+.prose a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.prose ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin: 0.5rem 0;
+}
+
+.prose ul ul {
+  list-style-type: circle;
+}
+
+.prose ul ul ul {
+  list-style-type: square;
+}
+
+.prose ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+  margin: 0.5rem 0;
+}
+
+.prose li { margin: 0.25rem 0; }
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+}
+
+.prose th,
+.prose td {
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.prose th {
+  background: #f9fafb;
+  font-weight: 600;
+}
