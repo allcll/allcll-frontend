@@ -60,6 +60,7 @@ function MainBanner() {
           fetchPriority="high"
           alt=""
           aria-hidden="true"
+          width={320}
           className="hidden md:block absolute bottom-0 right-5 w-[320px] lg:w-[370px]"
         />
       </Section>
