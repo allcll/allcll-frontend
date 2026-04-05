@@ -12,8 +12,8 @@ import QuoteSvg from '@/assets/quote.svg?react';
 import { Label, Flex } from '@allcll/allcll-ui';
 import ToolbarButton from '@/components/notices/ToolbarButton';
 
-const MAX_LENGTH = 10000;
-const WARN_LENGTH = 9000;
+const MAX_LENGTH = 1000;
+const WARN_LENGTH = 900;
 
 type Tab = 'write' | 'preview';
 

@@ -12,10 +12,11 @@ import {
   useUpdateNotice,
   CATEGORY_LABELS,
   NOTICE_CATEGORIES,
-  type NoticeCategory,
 } from '@/hooks/server/useAdminNotices';
+import { type OperationType } from '@/hooks/server/useAdminReviews';
 
-const MAX_LENGTH = 10000;
+const MAX_LENGTH = 1000;
+const MAX_TITLE_LENGTH = 250;
 
 function NoticeEditor() {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ function NoticeEditor() {
   const isSaving = isCreating || isUpdating;
 
   const [title, setTitle] = useState('');
-  const [category, setCategory] = useState<NoticeCategory>('GRADUATION');
+  const [category, setCategory] = useState<OperationType>('GRADUATION');
   const [content, setContent] = useState('');
   const [isDirty, setIsDirty] = useState(false);
   const [showUnsavedModal, setShowUnsavedModal] = useState(false);
@@ -39,7 +40,7 @@ function NoticeEditor() {
   useEffect(() => {
     if (existingNotice) {
       setTitle(existingNotice.title);
-      setCategory(existingNotice.category);
+      setCategory(existingNotice.operationType);
       setContent(existingNotice.content);
       setIsDirty(false);
     }
@@ -64,6 +65,7 @@ function NoticeEditor() {
   const validate = () => {
     const errs: string[] = [];
     if (!title.trim()) errs.push('제목을 입력해주세요.');
+    if (title.length > MAX_TITLE_LENGTH) errs.push(`제목은 ${MAX_TITLE_LENGTH}자를 초과할 수 없습니다.`);
     if (!content.trim()) errs.push('내용을 입력해주세요.');
     if (content.length > MAX_LENGTH) errs.push(`내용은 ${MAX_LENGTH.toLocaleString()}자를 초과할 수 없습니다.`);
     setErrors(errs);
@@ -72,7 +74,7 @@ function NoticeEditor() {
 
   const handleSave = useCallback(() => {
     if (!validate()) return;
-    const payload = { title: title.trim(), content, category };
+    const payload = { title: title.trim(), content, operationType: category };
     if (isEditMode && numericId !== undefined) {
       updateNotice(payload, {
         onSuccess: () => {
@@ -102,7 +104,7 @@ function NoticeEditor() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleSave]);
 
-  const isOverLimit = content.length > MAX_LENGTH;
+  const isOverLimit = content.length > MAX_LENGTH || title.length > MAX_TITLE_LENGTH;
 
   if (isEditMode && isLoadingNotice) {
     return (
@@ -144,21 +146,30 @@ function NoticeEditor() {
       )}
 
       <Card className="flex flex-col gap-5 p-5">
-        <TextField
-          id="notice-title"
-          label="제목"
-          size="small"
-          value={title}
-          onChange={e => {
-            setTitle(e.target.value);
-            setIsDirty(true);
-          }}
-          placeholder="공지사항 제목 입력"
-          onClear={() => {
-            setTitle('');
-            setIsDirty(true);
-          }}
-        />
+        <Flex direction="flex-col" gap="gap-1">
+          <TextField
+            id="notice-title"
+            label="제목"
+            size="small"
+            value={title}
+            onChange={e => {
+              setTitle(e.target.value);
+              setIsDirty(true);
+            }}
+            placeholder="공지사항 제목 입력"
+            onClear={() => {
+              setTitle('');
+              setIsDirty(true);
+            }}
+          />
+          <Flex justify="justify-end">
+            <span
+              className={`text-xs ${title.length > MAX_TITLE_LENGTH ? 'text-red-600 font-semibold' : 'text-gray-400'}`}
+            >
+              {title.length} / {MAX_TITLE_LENGTH}자
+            </span>
+          </Flex>
+        </Flex>
 
         <Flex direction="flex-col" gap="gap-1.5">
           <Label id="notice-category">카테고리</Label>
@@ -166,7 +177,7 @@ function NoticeEditor() {
             id="notice-category"
             value={category}
             onChange={e => {
-              setCategory(e.target.value as NoticeCategory);
+              setCategory(e.target.value as OperationType);
               setIsDirty(true);
             }}
             className="w-48 p-2 rounded-md bg-white border border-gray-400 text-sm text-gray-900"
