@@ -17,7 +17,7 @@ function NoticeViewModal({ notice, onClose, onEdit }: Props) {
         <Flex direction="flex-col" gap="gap-4" className="w-[640px] max-w-full">
           <Flex align="items-center" gap="gap-2" className="text-xs text-gray-500">
             <Badge variant="primary" size="small">
-              {CATEGORY_LABELS[notice.category]}
+              {CATEGORY_LABELS[notice.operationType]}
             </Badge>
             <span>{notice.createdAt.slice(0, 10).replace(/-/g, '.')}</span>
           </Flex>

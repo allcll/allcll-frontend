@@ -57,7 +57,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
                 <tr key={notice.id} className="border-t border-gray-100 hover:bg-gray-50 transition-colors">
                   <td className="px-4 py-3">
                     <Badge variant="primary" size="small">
-                      {CATEGORY_LABELS[notice.category]}
+                      {CATEGORY_LABELS[notice.operationType]}
                     </Badge>
                   </td>
                   <td
