@@ -1,45 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchJsonOnAPI, fetchDeleteJsonOnAPI } from '@/utils/api';
+import { OperationType, OPERATION_TYPE_LABEL, OPERATION_TYPES } from '@/hooks/server/useAdminReviews';
+
+export const CATEGORY_LABELS = OPERATION_TYPE_LABEL;
+export const NOTICE_CATEGORIES = OPERATION_TYPES;
 
 export interface Notice {
   id: number;
   title: string;
   content: string;
-  category: NoticeCategory;
+  operationType: OperationType;
   createdAt: string;
 }
-
-export type NoticeCategory =
-  | 'SERVICE'
-  | 'GRADUATION'
-  | 'TIMETABLE'
-  | 'REALTIME'
-  | 'COURSE_ANALYSIS'
-  | 'SIMULATION'
-  | 'WISHLIST';
-
-export type NoticeCategoryAll = NoticeCategory | 'ALL';
-
-export const CATEGORY_LABELS: Record<NoticeCategoryAll, string> = {
-  ALL: '전체',
-  SERVICE: '서비스',
-  GRADUATION: '졸업요건',
-  TIMETABLE: '시간표',
-  REALTIME: '실시간 여석',
-  COURSE_ANALYSIS: '과목분석',
-  SIMULATION: '수강신청 연습',
-  WISHLIST: '관심과목',
-};
-
-export const NOTICE_CATEGORIES: NoticeCategory[] = [
-  'SERVICE',
-  'GRADUATION',
-  'TIMETABLE',
-  'REALTIME',
-  'COURSE_ANALYSIS',
-  'SIMULATION',
-  'WISHLIST',
-];
 
 interface NoticesResponse {
   notices: Notice[];
@@ -69,7 +41,7 @@ export function useAdminNotice(id: number | undefined) {
 interface NoticePayload {
   title: string;
   content: string;
-  category: NoticeCategory;
+  operationType: OperationType;
 }
 
 // POST /api/admin/notices

@@ -14,8 +14,8 @@ import {
   CATEGORY_LABELS,
   NOTICE_CATEGORIES,
   type Notice,
-  type NoticeCategory,
 } from '@/hooks/server/useAdminNotices';
+import { type OperationType } from '@/hooks/server/useAdminReviews';
 
 const CATEGORY_OPTIONS = NOTICE_CATEGORIES.map(value => ({ label: CATEGORY_LABELS[value], value }));
 
@@ -24,14 +24,12 @@ function Notices() {
   const { data: notices = [], isLoading, isError } = useAdminNotices();
   const { mutate: deleteNotice, isPending: isDeleting } = useDeleteNotice();
 
-  const [selectedCategories, setSelectedCategories] = useState<NoticeCategory[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<OperationType[]>([]);
   const [viewTarget, setViewTarget] = useState<Notice | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Notice | null>(null);
 
   const filtered =
-    selectedCategories.length === 0
-      ? notices
-      : notices.filter(n => selectedCategories.includes(n.category as NoticeCategory));
+    selectedCategories.length === 0 ? notices : notices.filter(n => selectedCategories.includes(n.operationType));
 
   const handleDeleteConfirm = () => {
     if (!deleteTarget) return;

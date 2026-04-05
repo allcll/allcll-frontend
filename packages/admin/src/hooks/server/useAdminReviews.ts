@@ -1,12 +1,39 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchJsonOnAPI } from '@/utils/api.ts';
 
-export type OperationType = 'GRADUATION';
-export const MAX_RATE = 3;
+export type OperationType =
+  | 'ALL'
+  | 'TIMETABLE'
+  | 'BASKETS'
+  | 'SIMULATION'
+  | 'LIVE'
+  | 'PRESEAT'
+  | 'GRADUATION'
+  | 'REVIEW';
 
 export const OPERATION_TYPE_LABEL: Record<OperationType, string> = {
+  ALL: '전체',
+  TIMETABLE: '시간표',
+  BASKETS: '관심과목',
+  SIMULATION: '수강신청 연습',
+  LIVE: '실시간 여석',
+  PRESEAT: '사전좌석',
   GRADUATION: '졸업요건',
+  REVIEW: '후기',
 };
+
+export const OPERATION_TYPES: OperationType[] = [
+  'ALL',
+  'TIMETABLE',
+  'BASKETS',
+  'SIMULATION',
+  'LIVE',
+  'PRESEAT',
+  'GRADUATION',
+  'REVIEW',
+];
+
+export const MAX_RATE = 3;
 
 export interface Review {
   id: number;
