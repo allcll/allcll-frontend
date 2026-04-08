@@ -23,7 +23,7 @@ function NoticeDetailModal({ notice, onClose }: Props) {
       <div className="relative z-10 bg-white rounded-xl shadow-xl w-full max-w-3xl max-h-[80vh] flex flex-col overflow-hidden">
         <Flex align="items-center" justify="justify-between" className="px-5 py-4 border-b border-gray-100">
           <Flex align="items-center" gap="gap-2">
-            <Badge variant="default" size="small">
+            <Badge variant="primary" size="small">
               {getNoticeLabel(notice.operationType)}
             </Badge>
             <span className="text-xs text-gray-400">{date}</span>

@@ -38,7 +38,7 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Pro
 
         <div className="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-3">
           <Flex align="items-center" gap="gap-2">
-            <Badge variant="default" size="small">
+            <Badge variant="primary" size="small">
               {getNoticeLabel(selectedNotice.operationType)}
             </Badge>
             <span className="text-xs text-gray-400">{selectedNotice.createdAt.slice(0, 10).replace(/-/g, '.')}</span>
