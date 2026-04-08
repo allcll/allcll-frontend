@@ -6,6 +6,7 @@ import HelpDeskSvg from '@/assets/help-desk.svg?react';
 import HelpChatSvg from '@/assets/chat-help.svg?react';
 import MenuSvg from '@/assets/menu.svg?react';
 import { IconButton, Badge } from '@allcll/allcll-ui';
+import NoticeBell from '@/features/notices/ui/NoticeBell';
 import MobileMenu from './MobileMenu';
 
 export const HeaderContents = [
@@ -81,15 +82,19 @@ function Header() {
               {icon}
             </a>
           ))}
+          <NoticeBell />
         </div>
-        <IconButton
-          className="md:hidden p-2 hover:bg-gray-100 active:bg-gray-100"
-          variant="plain"
-          icon={<MenuSvg className="w-6 h-6" />}
-          label="메뉴 열기"
-          onClick={openMenu}
-          aria-expanded={isOpen}
-        />
+        <div className="md:hidden flex items-center gap-1">
+          <NoticeBell />
+          <IconButton
+            className="p-2 hover:bg-gray-100 active:bg-gray-100"
+            variant="plain"
+            icon={<MenuSvg className="w-6 h-6" />}
+            label="메뉴 열기"
+            onClick={openMenu}
+            aria-expanded={isOpen}
+          />
+        </div>
       </div>
 
       <MobileMenu isOpen={isOpen} onClose={closeMenu} />

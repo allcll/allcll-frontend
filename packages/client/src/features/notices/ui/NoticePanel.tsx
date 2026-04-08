@@ -18,18 +18,18 @@ interface Props {
 }
 
 function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Props) {
-  const [selectedNotice, setSelected] = useState<Notice | null>(null);
+  const [selectedNotice, setSelectedNotice] = useState<Notice | null>(null);
 
   const handleCardClick = (notice: Notice) => {
     onRead(notice.id);
-    setSelected(notice);
+    setSelectedNotice(notice);
   };
 
   if (isMobile && selectedNotice) {
     return (
       <Flex direction="flex-col" className="h-full">
         <Flex align="items-center" justify="justify-between" className="px-4 py-3 border-b border-gray-100">
-          <Button variant="text" size="small" textColor="gray" onClick={() => setSelected(null)}>
+          <Button variant="text" size="small" textColor="gray" onClick={() => setSelectedNotice(null)}>
             <ChevronLeftSvg className="w-4 h-4" />
             목록
           </Button>
@@ -71,7 +71,7 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Pro
         )}
       </div>
 
-      {selectedNotice && <NoticeDetailModal notice={selectedNotice} onClose={() => setSelected(null)} />}
+      {selectedNotice && <NoticeDetailModal notice={selectedNotice} onClose={() => setSelectedNotice(null)} />}
     </Flex>
   );
 }
