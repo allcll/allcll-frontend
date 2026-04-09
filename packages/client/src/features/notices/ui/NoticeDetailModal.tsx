@@ -6,12 +6,12 @@ import { Badge, Flex, IconButton } from '@allcll/allcll-ui';
 import CloseSvg from '@/assets/x.svg?react';
 import { type Notice, getNoticeLabel } from '@/entities/notices/model';
 
-interface Props {
+interface NoticeDetailModalProps {
   notice: Notice;
   onClose: () => void;
 }
 
-function NoticeDetailModal({ notice, onClose }: Props) {
+function NoticeDetailModal({ notice, onClose }: Readonly<NoticeDetailModalProps>) {
   const date = notice.createdAt.slice(0, 10).replace(/-/g, '.');
 
   return createPortal(
@@ -19,7 +19,12 @@ function NoticeDetailModal({ notice, onClose }: Props) {
       className="fixed inset-0 z-200 flex items-center justify-center px-4"
       onMouseDown={e => e.nativeEvent.stopImmediatePropagation()}
     >
-      <div className="absolute inset-0 bg-black/40" onClick={onClose} />
+      <button
+        type="button"
+        className="absolute inset-0 bg-black/40 cursor-default"
+        aria-label="모달 닫기"
+        onClick={onClose}
+      />
       <div className="relative z-10 bg-white rounded-xl shadow-xl w-full max-w-3xl max-h-[80vh] flex flex-col overflow-hidden">
         <Flex align="items-center" justify="justify-between" className="px-5 py-4 border-b border-gray-100">
           <Flex align="items-center" gap="gap-2">

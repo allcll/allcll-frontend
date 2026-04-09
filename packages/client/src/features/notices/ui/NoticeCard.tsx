@@ -1,13 +1,13 @@
 import { Badge, Flex } from '@allcll/allcll-ui';
 import { type Notice, getNoticeLabel } from '@/entities/notices/model';
 
-interface Props {
+interface NoticeCardProps {
   notice: Notice;
   isRead: boolean;
   onClick: (notice: Notice) => void;
 }
 
-function NoticeCard({ notice, isRead, onClick }: Props) {
+function NoticeCard({ notice, isRead, onClick }: Readonly<NoticeCardProps>) {
   const date = notice.createdAt.slice(0, 10).replace(/-/g, '.');
 
   return (

@@ -9,7 +9,7 @@ import { type Notice, getNoticeLabel } from '@/entities/notices/model';
 import NoticeCard from './NoticeCard';
 import NoticeDetailModal from './NoticeDetailModal';
 
-interface Props {
+interface NoticePanelProps {
   notices: Notice[];
   isMobile?: boolean;
   isRead: (id: number) => boolean;
@@ -17,7 +17,7 @@ interface Props {
   onClose: () => void;
 }
 
-function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Props) {
+function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Readonly<NoticePanelProps>) {
   const [selectedNotice, setSelectedNotice] = useState<Notice | null>(null);
 
   const handleCardClick = (notice: Notice) => {

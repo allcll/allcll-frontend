@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { type Notice } from '@/entities/notices/model';
 import NoticePanel from './NoticePanel';
 
-interface Props {
+interface NoticeDropdownProps {
   notices: Notice[];
   isOpen: boolean;
   triggerRef: React.RefObject<HTMLButtonElement | null>;
@@ -12,7 +12,7 @@ interface Props {
   onClose: () => void;
 }
 
-function NoticeDropdown({ notices, isOpen, triggerRef, isRead, onRead, onClose }: Props) {
+function NoticeDropdown({ notices, isOpen, triggerRef, isRead, onRead, onClose }: Readonly<NoticeDropdownProps>) {
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

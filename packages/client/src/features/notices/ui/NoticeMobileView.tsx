@@ -4,7 +4,7 @@ import { type Notice } from '@/entities/notices/model';
 import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
 import NoticePanel from './NoticePanel';
 
-interface Props {
+interface NoticeMobileViewProps {
   notices: Notice[];
   isOpen: boolean;
   isRead: (id: number) => boolean;
@@ -12,7 +12,7 @@ interface Props {
   onClose: () => void;
 }
 
-function NoticeMobileView({ notices, isOpen, isRead, onRead, onClose }: Props) {
+function NoticeMobileView({ notices, isOpen, isRead, onRead, onClose }: Readonly<NoticeMobileViewProps>) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
