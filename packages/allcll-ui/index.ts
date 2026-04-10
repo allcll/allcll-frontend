@@ -26,5 +26,4 @@ export { default as Flex } from './src/components/flex/Flex';
 export { default as Grid } from './src/components/grid/Grid';
 export { PopoverGroup, usePopoverGroup } from './src/components/popover/popover/PopoverGroup';
 export { default as ListboxOption } from './src/components/listbox/ListboxOption';
-export { default as RadialProgress } from './src/components/radial-progress/RadialProgress';
 export * from './colors';
