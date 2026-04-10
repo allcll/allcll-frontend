@@ -6,72 +6,80 @@ import Service from '@/pages/Service';
 import Logs from '@/pages/Logs';
 import Graduation from '@/pages/Graduation';
 import Reviews from '@/pages/Reviews';
+import GraduationView from '@/pages/GraduationView';
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <MainLayout />,
-    children: [
-      {
-        path: '/',
-        element: <Dashboard />,
-      },
-    ],
-  },
-  {
-    path: '/clawlers',
-    element: <MainLayout />,
-    children: [
-      {
-        path: '/clawlers',
-        element: <Clawlers />,
-      },
-    ],
-  },
-  {
-    path: '/graduation',
-    element: <MainLayout />,
-    children: [
-      {
-        path: '/graduation',
-        element: <Graduation />,
-      },
-    ],
-  },
-  {
-    path: '/service',
-    element: <MainLayout />,
-    children: [
-      {
-        path: '/service',
-        element: <Service />,
-      },
-    ],
-  },
-  {
-    path: '/logs',
-    element: <MainLayout />,
-    children: [
-      {
-        path: '/logs',
-        element: <Logs />,
-      },
-    ],
-  },
-  {
-    path: '/reviews',
-    element: <MainLayout />,
-    children: [
-      {
-        path: '/reviews',
-        element: <Reviews />,
-      },
-    ],
-  },
-  {
-    path: '*',
-    element: <div>404 Not Found</div>,
-  },
-], { basename: import.meta.env.BASE_URL });
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <MainLayout />,
+      children: [
+        {
+          path: '/',
+          element: <Dashboard />,
+        },
+      ],
+    },
+    {
+      path: '/clawlers',
+      element: <MainLayout />,
+      children: [
+        {
+          path: '/clawlers',
+          element: <Clawlers />,
+        },
+      ],
+    },
+    {
+      path: '/graduation',
+      element: <MainLayout />,
+      children: [
+        {
+          path: '/graduation',
+          element: <Graduation />,
+        },
+      ],
+    },
+    {
+      path: '/service',
+      element: <MainLayout />,
+      children: [
+        {
+          path: '/service',
+          element: <Service />,
+        },
+      ],
+    },
+    {
+      path: '/logs',
+      element: <MainLayout />,
+      children: [
+        {
+          path: '/logs',
+          element: <Logs />,
+        },
+      ],
+    },
+    {
+      path: '/reviews',
+      element: <MainLayout />,
+      children: [
+        {
+          path: '/reviews',
+          element: <Reviews />,
+        },
+        {
+          path: '/reviews/graduation/:studentId',
+          element: <GraduationView />,
+        },
+      ],
+    },
+    {
+      path: '*',
+      element: <div>404 Not Found</div>,
+    },
+  ],
+  { basename: import.meta.env.BASE_URL },
+);
 
 export default router;
