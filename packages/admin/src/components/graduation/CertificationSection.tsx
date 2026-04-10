@@ -32,7 +32,7 @@ function CertificationCard({
   const badgeVariant = passed ? 'success' : overallSatisfied ? 'default' : 'danger';
 
   return (
-    <Card variant="outlined" className="h-full relative">
+    <Card variant="outlined" className="flex-1 relative">
       <div className="absolute top-3 right-3">
         <Badge variant={badgeVariant}>{statusText}</Badge>
       </div>
@@ -86,7 +86,7 @@ function CertificationSection({ certifications, criteriaData }: Readonly<Certifi
 
       <div className="flex flex-col md:flex-row gap-4">
         {english.isRequired && (
-          <div className="flex-1 h-full">
+          <div className="flex-1 flex flex-col">
             <CertificationCard
               title="영어인증"
               passed={english.isPassed}
@@ -106,7 +106,7 @@ function CertificationSection({ certifications, criteriaData }: Readonly<Certifi
         )}
 
         {classic.isRequired && (
-          <div className="flex-1 h-full">
+          <div className="flex-1 flex flex-col">
             <CertificationCard
               title="고전독서인증"
               passed={classic.isPassed}
@@ -138,7 +138,7 @@ function CertificationSection({ certifications, criteriaData }: Readonly<Certifi
         )}
 
         {coding.isRequired && (
-          <div className="flex-1 h-full">
+          <div className="flex-1 flex flex-col">
             <CertificationCard
               title="SW코딩졸업인증"
               passed={coding.isPassed}

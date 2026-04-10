@@ -1,12 +1,25 @@
-import { Card, Flex } from '@allcll/allcll-ui';
+import { Card, Flex, Button } from '@allcll/allcll-ui';
 import ProgressDoughnut from './ProgressDoughnut';
-import type { AdminGraduationViewResponse } from '@/hooks/server/graduation/useAdminGraduationView';
+import type {
+  AdminGraduationViewResponse,
+  BalanceRequiredArea,
+  CategoryType,
+  CriteriaCategory,
+  ScopeType,
+} from '@/hooks/server/graduation/useAdminGraduationView';
 
 type CategoryProgress = AdminGraduationViewResponse['checkData']['categories'][number];
 
 interface CategoryProgressCardProps {
   category: CategoryProgress;
   label: string;
+  criteriaCategory?: CriteriaCategory;
+  onViewCourses?: (
+    categoryType: CategoryType,
+    criteriaCategory?: CriteriaCategory,
+    earnedAreas?: BalanceRequiredArea[],
+  ) => void;
+  onViewEarnedCourses?: (categoryType: CategoryType, majorScope: ScopeType) => void;
 }
 
 function BalanceInfo({ category }: Readonly<{ category: CategoryProgress }>) {
@@ -47,10 +60,24 @@ function CreditInfo({ category }: Readonly<{ category: CategoryProgress }>) {
   );
 }
 
-function CategoryProgressCard({ category, label }: Readonly<CategoryProgressCardProps>) {
+function CategoryProgressCard({
+  category,
+  label,
+  criteriaCategory,
+  onViewCourses,
+  onViewEarnedCourses,
+}: Readonly<CategoryProgressCardProps>) {
   const isBalance = category.categoryType === 'BALANCE_REQUIRED' && category.requiredAreasCnt != null;
   const doughnutEarned = isBalance ? (category.earnedAreasCnt ?? 0) : category.earnedCredits;
   const doughnutRequired = isBalance ? (category.requiredAreasCnt ?? 0) : category.requiredCredits;
+
+  const handleViewCourses = () => {
+    onViewCourses?.(category.categoryType, criteriaCategory, category.earnedAreas ?? undefined);
+  };
+
+  const handleViewEarnedCourses = () => {
+    onViewEarnedCourses?.(category.categoryType, category.majorScope);
+  };
 
   return (
     <Card variant="outlined" className="h-full">
@@ -64,6 +91,19 @@ function CategoryProgressCard({ category, label }: Readonly<CategoryProgressCard
         </Flex>
 
         {isBalance ? <BalanceInfo category={category} /> : <CreditInfo category={category} />}
+
+        <div className="w-full mt-auto flex gap-1">
+          <div className="flex-1 [&>button]:w-full">
+            <Button variant="outlined" size="small" onClick={handleViewEarnedCourses}>
+              이수 과목
+            </Button>
+          </div>
+          <div className="flex-1 [&>button]:w-full">
+            <Button variant="outlined" size="small" onClick={handleViewCourses} disabled={category.satisfied}>
+              추천 과목
+            </Button>
+          </div>
+        </div>
       </Flex>
     </Card>
   );
