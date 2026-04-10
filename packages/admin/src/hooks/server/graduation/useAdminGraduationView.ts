@@ -36,7 +36,7 @@ export type CategoryType =
 
 export type ScopeType = 'PRIMARY' | 'SECONDARY' | 'MINOR';
 
-type BalanceRequiredArea = 'HISTORY_THOUGHT' | 'CULTURE_ARTS' | 'ECONOMY_SOCIETY' | 'NATURE_SCIENCE';
+export type BalanceRequiredArea = 'HISTORY_THOUGHT' | 'CULTURE_ARTS' | 'ECONOMY_SOCIETY' | 'NATURE_SCIENCE';
 
 interface CategoryProgress {
   majorScope: ScopeType;
@@ -118,11 +118,25 @@ interface CriteriaCategoriesContext {
   doubleDeptNm: string;
 }
 
-interface CriteriaCategory {
+export interface MissingCourse {
+  curiNo: string;
+  curiNm: string;
+}
+
+export interface BalanceAreaCourses {
+  balanceRequiredArea: BalanceRequiredArea;
+  requiredCourses: MissingCourse[];
+}
+
+export interface CriteriaCategory {
   majorScope: ScopeType;
   categoryType: CategoryType;
   isEnabled: boolean;
   requiredCredits: number;
+  requiredCourses: MissingCourse[];
+  requiredAreasCnt: number | null;
+  balanceAreaCourses: BalanceAreaCourses[] | null;
+  excludedArea: BalanceRequiredArea | null;
 }
 
 interface CriteriaCategoriesResponse {

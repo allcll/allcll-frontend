@@ -18,6 +18,13 @@ export const SCOPE_TYPE_LABELS: Record<ScopeType, string> = {
   MINOR: '부전공',
 };
 
+export const BALANCE_AREA_LABELS: Record<string, string> = {
+  HISTORY_THOUGHT: '역사와 사상',
+  CULTURE_ARTS: '문화와 예술',
+  ECONOMY_SOCIETY: '경제와 사회',
+  NATURE_SCIENCE: '자연과 과학',
+};
+
 export const CLASSIC_DOMAIN_LABELS: Record<string, string> = {
   WESTERN_HISTORY_THOUGHT: '서양의역사와사상',
   EASTERN_HISTORY_THOUGHT: '동양의역사와사상',
