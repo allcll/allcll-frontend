@@ -152,13 +152,13 @@ const CRITERIA_TYPE_TITLES: Record<CertificationType, string> = {
 
 type ContentRenderer = ComponentType<{ data: CertificationCriteriaData }>;
 
-function EnglishRenderer({ data }: { data: CertificationCriteriaData }) {
+function EnglishRenderer({ data }: Readonly<{ data: CertificationCriteriaData }>) {
   return <EnglishCriteriaContent data={data.englishCertCriteria} />;
 }
-function ClassicRenderer({ data }: { data: CertificationCriteriaData }) {
+function ClassicRenderer({ data }: Readonly<{ data: CertificationCriteriaData }>) {
   return <ClassicCriteriaContent data={data.classicCertCriteria} />;
 }
-function CodingRenderer({ data }: { data: CertificationCriteriaData }) {
+function CodingRenderer({ data }: Readonly<{ data: CertificationCriteriaData }>) {
   return <CodingCriteriaContent data={data.codingCertCriteria} />;
 }
 
