@@ -1,13 +1,21 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Banner, Button, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
-import { useAdminGraduationView } from '@/hooks/server/graduation/useAdminGraduationView';
+import { Button, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import {
+  useAdminGraduationView,
+  type BalanceRequiredArea,
+  type CategoryType,
+  type CriteriaCategory,
+  type ScopeType,
+} from '@/hooks/server/graduation/useAdminGraduationView';
 import PageHeader from '@/components/common/PageHeader';
 import ChevronLeftIcon from '@/assets/chevron-left.svg?react';
 import OverallSummaryCard from '@/components/graduation/OverallSummaryCard';
 import CategoryProgressCard from '@/components/graduation/CategoryProgressCard';
 import CertificationSection from '@/components/graduation/CertificationSection';
 import EarnedCoursesSection from '@/components/graduation/EarnedCoursesSection';
+import CategoryEarnedCoursesModal from '@/components/graduation/CategoryEarnedCoursesModal';
+import RecommendedCoursesModal from '@/components/graduation/RecommendedCoursesModal';
 import { CATEGORY_TYPE_LABELS, SCOPE_TYPE_LABELS } from '@/components/graduation/lib/mappers';
 import { MAJOR_CATEGORY_TYPES, GENERAL_CATEGORY_TYPES } from '@/components/graduation/lib/rules';
 
@@ -15,7 +23,15 @@ function GraduationView() {
   const { studentId } = useParams<{ studentId: string }>();
   const navigate = useNavigate();
   const { data, isPending, isError } = useAdminGraduationView(studentId ?? '');
-  const [showBanner, setShowBanner] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<{
+    categoryType: CategoryType;
+    criteriaCategory?: CriteriaCategory;
+    earnedAreas?: BalanceRequiredArea[];
+  } | null>(null);
+  const [selectedEarnedCategory, setSelectedEarnedCategory] = useState<{
+    categoryType: CategoryType;
+    majorScope: ScopeType;
+  } | null>(null);
 
   if (isPending) {
     return (
@@ -51,21 +67,34 @@ function GraduationView() {
     ? new Date(courses.createdAt).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })
     : null;
 
+  const getCriteriaCategory = (categoryType: CategoryType, majorScope: ScopeType) =>
+    data.criteriaCategories.categories.find(c => c.categoryType === categoryType && c.majorScope === majorScope);
+
+  const handleViewCourses = (
+    categoryType: CategoryType,
+    criteriaCategory?: CriteriaCategory,
+    earnedAreas?: BalanceRequiredArea[],
+  ) => {
+    setSelectedCategory({ categoryType, criteriaCategory, earnedAreas });
+  };
+
+  const handleViewEarnedCourses = (categoryType: CategoryType, majorScope: ScopeType) => {
+    setSelectedEarnedCategory({ categoryType, majorScope });
+  };
+
   return (
     <div className="flex flex-col gap-5">
-      {showBanner && (
-        <Banner variant="info" deleteBanner={() => setShowBanner(false)}>
-          어드민 열람 모드 — {user.name}({user.studentId})님의 졸업요건 데이터를 보고 있습니다.
-        </Banner>
-      )}
-
-      <Flex align="items-center" gap="gap-3">
+      <div className="w-fit">
         <Button variant="outlined" size="small" onClick={() => navigate('/reviews')}>
           <ChevronLeftIcon className="w-4 h-4" />
           후기 목록
         </Button>
-        <PageHeader title="졸업요건 분석" description={`${user.name}님의 졸업요건 분석 결과입니다.`} />
-      </Flex>
+      </div>
+
+      <PageHeader
+        title="졸업요건 분석"
+        description={`${user.name}(${user.studentId})님의 졸업요건 데이터를 보고 있습니다.`}
+      />
 
       <main className="flex flex-col gap-5">
         <OverallSummaryCard user={user} checkData={checkData} />
@@ -89,6 +118,9 @@ function GraduationView() {
                   <CategoryProgressCard
                     category={category}
                     label={CATEGORY_TYPE_LABELS[category.categoryType] ?? category.categoryType}
+                    criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
+                    onViewCourses={handleViewCourses}
+                    onViewEarnedCourses={handleViewEarnedCourses}
                   />
                 </div>
               ))}
@@ -108,6 +140,9 @@ function GraduationView() {
                       <CategoryProgressCard
                         category={category}
                         label={CATEGORY_TYPE_LABELS[category.categoryType] ?? category.categoryType}
+                        criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
+                        onViewCourses={handleViewCourses}
+                        onViewEarnedCourses={handleViewEarnedCourses}
                       />
                     </div>
                   ))}
@@ -127,6 +162,9 @@ function GraduationView() {
                 <CategoryProgressCard
                   category={category}
                   label={CATEGORY_TYPE_LABELS[category.categoryType] ?? category.categoryType}
+                  criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
+                  onViewCourses={handleViewCourses}
+                  onViewEarnedCourses={handleViewEarnedCourses}
                 />
               </div>
             ))}
@@ -135,6 +173,26 @@ function GraduationView() {
 
         <CertificationSection certifications={certifications} criteriaData={certificationCriteria} />
       </main>
+
+      {selectedCategory && (
+        <RecommendedCoursesModal
+          isOpen
+          onClose={() => setSelectedCategory(null)}
+          categoryType={selectedCategory.categoryType}
+          criteriaCategory={selectedCategory.criteriaCategory}
+          earnedAreas={selectedCategory.earnedAreas}
+        />
+      )}
+
+      {selectedEarnedCategory && (
+        <CategoryEarnedCoursesModal
+          isOpen
+          onClose={() => setSelectedEarnedCategory(null)}
+          categoryType={selectedEarnedCategory.categoryType}
+          majorScope={selectedEarnedCategory.majorScope}
+          courses={courses.courses}
+        />
+      )}
     </div>
   );
 }
