@@ -39,5 +39,16 @@ export default ({ mode }: ConfigEnv) => {
         },
       },
     },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('chart.js') || id.includes('react-chartjs-2')) {
+              return 'vendor-chartjs';
+            }
+          },
+        },
+      },
+    },
   });
 };

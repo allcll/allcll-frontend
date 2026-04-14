@@ -1,10 +1,9 @@
-import { Suspense } from 'react';
 import Section from '@/widgets/home/ui/Section.tsx';
 import { DoughnutColors } from '@/features/wish/lib/doughnut';
 import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
 import BasketBadge from '@/entities/wishes/ui/BasketBadge.tsx';
 import { Heading } from '@allcll/allcll-ui';
-import { LazyDoughnutChart, DoughnutChartSkeleton } from '@/shared/ui/charts';
+import { DoughnutChart } from '@/shared/ui/charts';
 
 const doughnut = {
   labels: ['컴퓨터공학과', '정보통신공학과', '소프트웨어학과', '기타'],
@@ -28,9 +27,7 @@ function WishesSection() {
 
           <div className="flex justify-center mt-4">
             <div className="w-full max-w-xs">
-              <Suspense fallback={<DoughnutChartSkeleton />}>
-                <LazyDoughnutChart data={doughnut} />
-              </Suspense>
+              <DoughnutChart data={doughnut} />
             </div>
           </div>
         </div>

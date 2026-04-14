@@ -1,6 +1,6 @@
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import { AggregatedResultResponse } from '@/features/simulation/lib/result.ts';
-import { LazyMixedChart, MixedChartSkeleton } from '@/shared/ui/charts';
+import { MixedChart } from '@/shared/ui/charts';
 import type { MixedChartProps } from '@/shared/ui/charts';
 
 // Fixme: type 정의 수정
@@ -164,9 +164,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
         </div>
       </div>
       <div className="h-full pb-6 overflow-x-auto">
-        <Suspense fallback={<MixedChartSkeleton height={288} />}>
-          <LazyMixedChart data={data} options={options} />
-        </Suspense>
+        <MixedChart data={data} options={options} height={288} />
       </div>
     </div>
   );

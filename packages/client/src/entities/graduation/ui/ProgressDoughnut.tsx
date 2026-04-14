@@ -1,6 +1,5 @@
-import { Suspense } from 'react';
 import { colors } from '@allcll/allcll-ui';
-import { LazyDoughnutChart, DoughnutChartSkeleton } from '@/shared/ui/charts';
+import { DoughnutChart } from '@/shared/ui/charts';
 
 interface ProgressDoughnutProps {
   /** 이수 학점 */
@@ -48,9 +47,7 @@ function ProgressDoughnut({ earned, required, size = 'medium', showPercentage = 
 
   return (
     <div className="relative flex items-center justify-center" style={{ width: config.width, height: config.height }}>
-      <Suspense fallback={<DoughnutChartSkeleton />}>
-        <LazyDoughnutChart data={data} options={options} />
-      </Suspense>
+      <DoughnutChart data={data} options={options} />
       {showPercentage && (
         <div className="absolute inset-0 flex items-center justify-center">
           <span className={`${config.fontSize} font-bold text-primary-500`}>{percentage}%</span>

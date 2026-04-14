@@ -1,6 +1,5 @@
-import { Suspense } from 'react';
 import BlurComponents from '@/shared/ui/BlurComponents.tsx';
-import { LazyBarChart, BarChartSkeleton } from '@/shared/ui/charts';
+import { BarChart } from '@/shared/ui/charts';
 
 // 학년별 관심도 (막대 그래프)
 const gradeData = {
@@ -18,9 +17,7 @@ function WishesBarChart() {
     <BlurComponents>
       <p className="text-sm text-gray-500">작년 대비 관심도 20% 증가 → 경쟁 치열할 가능성 높음</p>
       <div className="mt-4">
-        <Suspense fallback={<BarChartSkeleton />}>
-          <LazyBarChart data={gradeData} />
-        </Suspense>
+        <BarChart data={gradeData} />
       </div>
     </BlurComponents>
   );

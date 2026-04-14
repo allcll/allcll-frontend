@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import { ExtendedResultResponse } from '@/pages/simulation/DashboardDetail.tsx';
 import {
   getSearchBtnSpeedRank,
@@ -6,7 +5,7 @@ import {
   getAccuracyRank,
   getCaptchaSpeedRank,
 } from '@/features/simulation/lib/score.ts';
-import { LazyRadarChart, RadarChartSkeleton } from '@/shared/ui/charts';
+import { RadarChart as RadarChartComponent } from '@/shared/ui/charts';
 
 const radarOptions = {
   responsive: true,
@@ -89,9 +88,7 @@ function RadarChart({ result }: Readonly<IRadarChart>) {
     <>
       {/* 레이더 차트 */}
       <div className="h-90">
-        <Suspense fallback={<RadarChartSkeleton className="h-full" />}>
-          <LazyRadarChart data={datasets} className="mx-auto" options={radarOptions} />
-        </Suspense>
+        <RadarChartComponent data={datasets} className="mx-auto h-full" options={radarOptions} />
       </div>
 
       {/* 능력 설명 박스 */}

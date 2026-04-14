@@ -10,6 +10,7 @@ import {
   Tooltip,
   Legend,
   type ChartData,
+  ChartOptions,
 } from 'chart.js/auto';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend);
@@ -18,8 +19,7 @@ export type MixedChartType = 'bar' | 'line';
 
 export interface MixedChartProps {
   data: ChartData<MixedChartType>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  options?: Record<string, any>;
+  options?: ChartOptions<MixedChartType>;
 }
 
 function MixedChart({ data, options }: MixedChartProps) {
