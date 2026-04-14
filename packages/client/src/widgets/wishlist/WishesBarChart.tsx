@@ -1,5 +1,5 @@
 import BlurComponents from '@/shared/ui/BlurComponents.tsx';
-import { BarChart } from '@/shared/ui/charts';
+import { BarChart } from '@allcll/charts';
 
 // 학년별 관심도 (막대 그래프)
 const gradeData = {

@@ -1,5 +1,5 @@
 import { colors } from '@allcll/allcll-ui';
-import { DoughnutChart } from '@/shared/ui/charts';
+import { DoughnutChart } from '@allcll/charts';
 
 interface ProgressDoughnutProps {
   /** 이수 학점 */

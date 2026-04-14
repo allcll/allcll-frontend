@@ -5,7 +5,7 @@ import {
   getAccuracyRank,
   getCaptchaSpeedRank,
 } from '@/features/simulation/lib/score.ts';
-import { RadarChart as RadarChartComponent } from '@/shared/ui/charts';
+import { RadarChart as RadarChartComponent } from '@allcll/charts';
 
 const radarOptions = {
   responsive: true,

@@ -9,7 +9,7 @@ import {
 } from '@/features/wish/lib/doughnut';
 import { WishRegister } from '@/shared/model/types.ts';
 import { Flex, Heading, Label } from '@allcll/allcll-ui';
-import { DoughnutChart } from '@/shared/ui/charts';
+import { DoughnutChart } from '@allcll/charts';
 
 enum DoughnutSelectType {
   MAJOR = '전공/비전공',

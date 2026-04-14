@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { AggregatedResultResponse } from '@/features/simulation/lib/result.ts';
-import { MixedChart } from '@/shared/ui/charts';
-import type { MixedChartProps } from '@/shared/ui/charts';
+import { MixedChart, type MixedChartProps, type MixedChartTooltipItem } from '@allcll/charts';
 
 // Fixme: type 정의 수정
 function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
@@ -116,9 +115,9 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
       },
       tooltip: {
         callbacks: {
-          label: function (context: { dataset: { label: string }; parsed: { y: number } }) {
+          label: (context: MixedChartTooltipItem) => {
             const label = context.dataset.label || '';
-            const value = context.parsed.y;
+            const value = context.parsed.y ?? 0;
             return `${label}: ${value.toFixed(2)}초`;
           },
         },

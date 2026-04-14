@@ -3,7 +3,7 @@ import { DoughnutColors } from '@/features/wish/lib/doughnut';
 import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
 import BasketBadge from '@/entities/wishes/ui/BasketBadge.tsx';
 import { Heading } from '@allcll/allcll-ui';
-import { DoughnutChart } from '@/shared/ui/charts';
+import { DoughnutChart } from '@allcll/charts';
 
 const doughnut = {
   labels: ['컴퓨터공학과', '정보통신공학과', '소프트웨어학과', '기타'],

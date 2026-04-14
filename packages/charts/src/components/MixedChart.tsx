@@ -10,12 +10,14 @@ import {
   Tooltip,
   Legend,
   type ChartData,
-  ChartOptions,
+  type ChartOptions,
+  type TooltipItem,
 } from 'chart.js/auto';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend);
 
 export type MixedChartType = 'bar' | 'line';
+export type MixedChartTooltipItem = TooltipItem<MixedChartType>;
 
 export interface MixedChartProps {
   data: ChartData<MixedChartType>;
