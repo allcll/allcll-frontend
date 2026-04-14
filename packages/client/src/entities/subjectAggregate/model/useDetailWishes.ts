@@ -11,8 +11,8 @@ interface DetailWishes {
 
 type WishesWithSeat = Wishes | (Wishes & IPreRealSeat);
 
-function useDetailWishes(subjectId: number): DetailWishes {
-  const { data: wishes } = useWishes();
+function useDetailWishes(subjectId: number, semesterCode?: string): DetailWishes {
+  const { data: wishes } = useWishes(semesterCode);
   const data = useJoinPreSeats(wishes, InitWishes);
 
   if (!data) return { isPending: true };
@@ -22,7 +22,7 @@ function useDetailWishes(subjectId: number): DetailWishes {
   return {
     isPending: false,
     data: detail,
-    isLastSemesterWish: !detail,
+    isLastSemesterWish: !!semesterCode,
   };
 }
 

@@ -10,13 +10,16 @@ import SubjectDetail from '@/entities/subjects/ui/SubjectDetail.tsx';
 import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes.ts';
 import useRecommendWishes from '@/entities/subjectAggregate/model/useRecommendWishes.ts';
 import useDetailRegisters from '@/entities/wishes/model/useDetailRegisters.ts';
+import { useSemesterNameBySubjectId } from '@/entities/semester/model/useSemesterNameBySubjectId';
 import { getWishesColor } from '@/shared/config/colors.ts';
 import { Card, Flex, Grid, Heading, SupportingText } from '@allcll/allcll-ui';
 
 function WishesDetail() {
   const params = useParams();
   const subjectId = Number(params.id ?? '-1');
-  const { data: wishes, isPending, isLastSemesterWish } = useDetailWishes(subjectId);
+
+  const { semesterCode } = useSemesterNameBySubjectId(subjectId);
+  const { data: wishes, isPending, isLastSemesterWish } = useDetailWishes(subjectId, semesterCode);
   const { data: registers, error } = useDetailRegisters(subjectId);
 
   const data = wishes ?? InitWishes;
