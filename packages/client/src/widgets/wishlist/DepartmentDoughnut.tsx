@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js/auto';
-import useDepartments, { DepartmentDict, useDepartmentDict } from '@/entities/departments/api/useDepartments.ts';
 import {
   getCollegeDoughnutData,
   getDoughnutData,
@@ -9,10 +8,20 @@ import {
   getMajorDoughnutData,
   getUniversityDoughnutData,
 } from '@/features/wish/lib/doughnut';
+import { WishesInfo } from '@/features/wish/model/useWishesInfo';
+import useDepartments, { DepartmentDict, useDepartmentDict } from '@/entities/departments/api/useDepartments.ts';
+import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes';
+import useDetailRegisters from '@/entities/wishes/model/useDetailRegisters';
+import { InitWishes } from '@/entities/wishes/model/useWishes';
+import LoadingWithMessage from '@/shared/ui/Loading';
 import { WishRegister } from '@/shared/model/types.ts';
 import { Flex, Heading, Label } from '@allcll/allcll-ui';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+
+interface DepartmentDoughnutProps {
+  wishesInfo: WishesInfo;
+}
 
 export enum DoughnutSelectType {
   MAJOR = '전공/비전공',
@@ -21,7 +30,14 @@ export enum DoughnutSelectType {
   COLLEGE = '학부',
 }
 
-function DepartmentDoughnut({ data, majorName }: Readonly<{ data?: WishRegister[]; majorName: string }>) {
+function DepartmentDoughnut({ wishesInfo }: DepartmentDoughnutProps) {
+  const { data: wishes, isPending } = useDetailWishes(wishesInfo);
+  const { data: registers } = useDetailRegisters(wishesInfo);
+
+  const data = registers?.eachDepartmentRegisters ?? [];
+  const nonNullWishes = wishes ?? InitWishes;
+  const majorName = nonNullWishes.departmentName ?? nonNullWishes.manageDeptNm;
+
   const [selectedFilter, setSelectedFilter] = useState<DoughnutSelectType>(DoughnutSelectType.MAJOR);
   const { data: departmentData } = useDepartments();
   const departmentDict = useDepartmentDict(departmentData);
@@ -48,7 +64,11 @@ function DepartmentDoughnut({ data, majorName }: Readonly<{ data?: WishRegister[
         </select>
       </Flex>
 
-      {!totalCount ? (
+      {isPending ? (
+        <Flex justify="justify-center" align="items-center" className="h-48">
+          <LoadingWithMessage message="관심과목 현황을 불러오는 중입니다..." />
+        </Flex>
+      ) : !totalCount ? (
         <Flex justify="justify-center" align="items-center" className="h-48">
           <p className="text-center text-gray-500 font-semibold">관심과목을 담은 사람이 없습니다.</p>
         </Flex>

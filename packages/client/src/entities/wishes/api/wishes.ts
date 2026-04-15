@@ -1,6 +1,6 @@
 import { fetchJsonOnPublic, fetchOnAPI } from '@/shared/api/api.ts';
 import { WishRegister } from '@/shared/model/types.ts';
-import { BadRequestError } from '@/shared/lib/errors.ts';
+import { BadRequestError, NotFoundError } from '@/shared/lib/errors.ts';
 
 export interface WishesApiResponse {
   baskets: { subjectId: number; totalCount: number }[];
@@ -25,8 +25,13 @@ export const fetchDetailRegisters = async (subjectId: number): Promise<DetailReg
     const errorMessage = await response.text();
     const parsedError = jsonParse(errorMessage);
 
-    if (parsedError?.status === '400 BAD_REQUEST') {
-      throw new BadRequestError(parsedError.code);
+    console.log('status', response.status);
+    if (response.status === 400) {
+      throw new BadRequestError(parsedError.message ?? response.statusText);
+    }
+
+    if (response.status === 404) {
+      throw new NotFoundError(parsedError.message ?? response.statusText);
     }
 
     throw new Error(await response.text());

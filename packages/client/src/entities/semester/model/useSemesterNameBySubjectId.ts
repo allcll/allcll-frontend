@@ -1,3 +1,5 @@
+import { SEMESTERS } from '../api/semester';
+
 const semesters = [
   { code: 'SPRING_25', startId: 1, endId: 2422 },
   { code: 'SUMMER_25', startId: 2562, endId: 2647 },
@@ -9,5 +11,14 @@ const semesters = [
 export function useSemesterNameBySubjectId(subjectId: number) {
   const semester = semesters.find(sem => subjectId >= sem.startId && subjectId <= sem.endId);
 
-  return { semesterCode: semester ? semester.code : undefined };
+  const semesterData = SEMESTERS.find(s => s.semesterCode === semester?.code);
+
+  if (!semesterData) {
+    return {
+      semesterCode: undefined,
+      semesterValue: undefined,
+    };
+  }
+
+  return semesterData;
 }
