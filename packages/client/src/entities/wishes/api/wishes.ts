@@ -25,7 +25,6 @@ export const fetchDetailRegisters = async (subjectId: number): Promise<DetailReg
     const errorMessage = await response.text();
     const parsedError = jsonParse(errorMessage);
 
-    console.log('status', response.status);
     if (response.status === 400) {
       throw new BadRequestError(parsedError.message ?? response.statusText);
     }
