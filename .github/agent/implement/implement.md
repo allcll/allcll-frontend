@@ -24,9 +24,9 @@
 ### 읽어야 할 파일
 
 - 기능 요구사항 문서 (이슈, PR 본문, 별도 spec 파일)
-- `.github/agent/CLAUDE.md` — 프로젝트 개요·아키텍처
-- `.github/agent/SKILL.md` — 코드 컨벤션·훅 규칙
-- `.github/agent/allcll-ui.md` — 디자인 시스템 컴포넌트 카탈로그
+- `CLAUDE.md` — 프로젝트 개요·아키텍처 (루트에 위치, Claude Code가 자동 로드)
+- `.github/agent/implement/SKILL.md` — 코드 컨벤션·훅 규칙
+- `.github/agent/implement/allcll-ui.md` — 디자인 시스템 컴포넌트 카탈로그
 
 ### 이 단계에서 결정할 것
 
