@@ -11,7 +11,7 @@ function ScheduleInfoModal() {
   const semester = useSemesterParam();
 
   const { schedule } = useScheduleModalData();
-  const { deleteSchedule } = useScheduleModal();
+  const { deleteSchedule, openEditFromInfoModal } = useScheduleModal();
   const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
   const { data: subjects } = useSubject(semester);
 
@@ -49,6 +49,9 @@ function ScheduleInfoModal() {
       <Dialog.Footer>
         <Button variant="text" size="medium" textColor="secondary" onClick={handleDeleteOfficialSchedule}>
           삭제
+        </Button>
+        <Button variant="text" size="medium" textColor="primary" onClick={openEditFromInfoModal}>
+          수정
         </Button>
       </Dialog.Footer>
     </Dialog>

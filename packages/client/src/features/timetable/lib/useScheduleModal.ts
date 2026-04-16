@@ -110,6 +110,21 @@ function useScheduleModal() {
     } else if (mode === ScheduleMutateType.EDIT) {
       updateScheduleData({ schedule });
       changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);
+    } else if (mode === ScheduleMutateType.EDIT_OFFICIAL) {
+      // official 과목은 PATCH 미지원 → 기존 삭제 후 custom으로 새로 생성
+      deleteScheduleData({
+        schedule: {
+          scheduleId: prevSchedule.scheduleId,
+          scheduleType: 'official',
+          subjectId: prevSchedule.subjectId ?? 0,
+          subjectName: null,
+          professorName: null,
+          location: null,
+          timeSlots: [],
+        },
+      });
+      schedule.scheduleId = getUniqueNegativeId(globalPrevTimetable?.schedules ?? []);
+      createScheduleData({ schedule });
     }
 
     // 모달 state 초기화
@@ -141,6 +156,21 @@ function useScheduleModal() {
     if (close) closeBottomSheet('edit');
   };
 
+  /** 상세 모달(info)에서 수정 버튼 클릭 시, 커스텀 과목 수정 모달을 기존 데이터로 채워서 엽니다 */
+  const openEditFromInfoModal = () => {
+    const currentSchedule = useScheduleState.getState().schedule;
+
+    closeBottomSheet('info');
+    changeScheduleData(
+      {
+        ...currentSchedule,
+        scheduleType: 'custom',
+      },
+      ScheduleMutateType.EDIT_OFFICIAL,
+    );
+    openBottomSheet('edit');
+  };
+
   return {
     setOptimisticSchedule,
     openScheduleModal,
@@ -148,6 +178,7 @@ function useScheduleModal() {
     saveSchedule,
     deleteSchedule,
     cancelSchedule,
+    openEditFromInfoModal,
   };
 }
 

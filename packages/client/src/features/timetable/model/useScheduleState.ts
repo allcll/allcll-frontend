@@ -7,6 +7,7 @@ export enum ScheduleMutateType {
   NONE = 'none',
   CREATE = 'create',
   EDIT = 'edit',
+  EDIT_OFFICIAL = 'edit_official', // official 과목을 custom으로 변환하며 수정
   VIEW = 'view',
 }
 

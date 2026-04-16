@@ -12,7 +12,7 @@ function ScheduleInfoBottomSheet() {
   const semester = useSemesterParam();
 
   const { schedule } = useScheduleModalData();
-  const { deleteSchedule, cancelSchedule } = useScheduleModal();
+  const { deleteSchedule, cancelSchedule, openEditFromInfoModal } = useScheduleModal();
   const { data: subjects } = useSubject(semester);
 
   const handleDeleteOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -52,9 +52,12 @@ function ScheduleInfoBottomSheet() {
           <span>{findSubjectById?.remark ?? ''}</span>
         </Flex>
 
-        <Flex justify="justify-end" className="px-2">
+        <Flex justify="justify-end" gap="gap-1" className="px-2">
           <Button variant="text" size="medium" textColor="secondary" onClick={handleDeleteOfficialSchedule}>
             삭제
+          </Button>
+          <Button variant="text" size="medium" textColor="primary" onClick={openEditFromInfoModal}>
+            수정
           </Button>
         </Flex>
       </Flex>
