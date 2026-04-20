@@ -1,14 +1,15 @@
 const BaseUrl = import.meta.env.VITE_API_BASE_URL ?? '';
+const Base = (import.meta.env.VITE_BASE ?? '').replace(/\/$/, '');
 
 export async function fetchOnAPI(url: string, options?: RequestInit): Promise<Response> {
-  return await fetch(BaseUrl + url, {
+  return await fetch(BaseUrl + Base + url, {
     credentials: 'include',
     ...options,
   });
 }
 
 export async function fetchJsonOnAPI<T>(url: string, options?: RequestInit): Promise<T> {
-  const response = await fetch(BaseUrl + url, {
+  const response = await fetch(BaseUrl + Base + url, {
     credentials: 'include',
     ...options,
     headers: {
@@ -29,7 +30,7 @@ export async function fetchDeleteJsonOnAPI<T>(
   body?: any,
   options?: Omit<RequestInit, 'method' | 'body'>,
 ): Promise<T | null> {
-  const response = await fetch(BaseUrl + url, {
+  const response = await fetch(BaseUrl + Base + url, {
     method: 'DELETE',
     credentials: 'include',
     headers: {
@@ -52,14 +53,14 @@ export async function fetchDeleteJsonOnAPI<T>(
 }
 
 export function fetchEventSource(url: string, options?: EventSourceInit): EventSource {
-  return new EventSource(BaseUrl + url, {
+  return new EventSource(BaseUrl + Base + url, {
     withCredentials: true,
     ...options,
   });
 }
 
 export async function fetchJsonOnPublic<T>(url: string, options?: RequestInit): Promise<T> {
-  const response = await fetch(url, {
+  const response = await fetch(Base + url, {
     credentials: 'include',
     ...options,
   });
@@ -69,4 +70,14 @@ export async function fetchJsonOnPublic<T>(url: string, options?: RequestInit): 
   }
 
   return await response.json();
+}
+
+export async function fetchTextOnPublic(url: string, options?: RequestInit): Promise<string> {
+  const response = await fetch(Base + url, options);
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+
+  return await response.text();
 }

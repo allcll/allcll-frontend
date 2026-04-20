@@ -14,12 +14,20 @@ const Menus = [
     link: '/clawlers',
   },
   {
+    title: '졸업요건 설정',
+    link: '/graduation',
+  },
+  {
     title: '서비스 설정',
     link: '/service',
   },
   {
     title: '로그 설정',
     link: '/logs',
+  },
+  {
+    title: '사용자 후기',
+    link: '/reviews',
   },
 ];
 

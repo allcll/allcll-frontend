@@ -1,5 +1,7 @@
-import { Helmet } from 'react-helmet';
 import { useState } from 'react';
+import { Helmet } from 'react-helmet';
+import LoadingWithMessage from '@/shared/ui/Loading';
+import { Flex } from '@allcll/allcll-ui';
 
 function ServiceInfo() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -10,7 +12,7 @@ function ServiceInfo() {
         <title>ALLCLL | 소개</title>
       </Helmet>
 
-      <div className="mx-auto flex flex-col justify-center bg-blue-100 h-max">
+      <Flex justify='justify-center' align='items-center' direction='flex-col' className="h-screen bg-blue-100">
         <iframe
           src="https://resilient-may-c73.notion.site/ebd/1f2acf7c316280939afed2657259c817"
           // allowFullScreen
@@ -21,9 +23,9 @@ function ServiceInfo() {
           로드 중…
         </iframe>
         {!isLoaded && (
-          <div className="w-4xl mx-auto h-screen flex justify-center items-center text-3xl">로딩 중...</div>
+          <LoadingWithMessage message="페이지를 불러오는 중입니다." />
         )}
-      </div>
+      </Flex>
     </>
   );
 }

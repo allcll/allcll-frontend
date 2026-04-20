@@ -5,7 +5,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
 import { getSessionConfig } from '@/utils/sessionConfig.ts';
-import useToastNotification from '@allcll/common/store/useToastNotification';
+import { useToastNotification } from '@allcll/common';
 
 export const REFETCH_INTERVAL = 15 * 1000; // 15초
 

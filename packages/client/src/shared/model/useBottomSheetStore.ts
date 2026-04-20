@@ -3,7 +3,7 @@ import { create } from 'zustand';
 /**
  * Todo: 디자인 시스템화
  */
-export type ScheduleBottomSheetType = 'search' | 'filter' | 'edit' | 'info';
+export type ScheduleBottomSheetType = 'search' | 'filter' | 'edit' | 'info' | 'feedback';
 
 type BottomSheetState = {
   isOpen: boolean;
@@ -25,6 +25,7 @@ const initialSheets: BottomSheets = {
   filter: { isOpen: false },
   edit: { isOpen: false },
   info: { isOpen: false },
+  feedback: { isOpen: false },
 };
 
 export const useBottomSheetStore = create<BottomSheetStore>(set => ({

@@ -1,7 +1,7 @@
 //인증정보 갱신 취소, 인증정보 갱신 관련 훅
 import { fetchOnAPI } from '@/utils/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import useToastNotification from '@allcll/common/store/useToastNotification';
+import { useToastNotification } from '@allcll/common';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
 import { getSessionConfig } from '@/utils/sessionConfig.ts';
 

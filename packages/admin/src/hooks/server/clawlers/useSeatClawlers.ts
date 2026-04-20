@@ -1,6 +1,6 @@
 import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import useToastNotification from '@allcll/common/store/useToastNotification';
+import { useToastNotification } from '@allcll/common';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
 import { getSessionConfig, isValidSession } from '@/utils/sessionConfig.ts';
 import { REFETCH_INTERVAL } from '@/hooks/server/session/useAdminSession.ts';

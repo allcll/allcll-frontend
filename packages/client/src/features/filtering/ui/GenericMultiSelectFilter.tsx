@@ -2,9 +2,8 @@ import useMobile from '@/shared/lib/useMobile.ts';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { getMultiSelectedLabel } from '@/features/filtering/lib/getFilteringFormatter.ts';
 import MultiSelectFilter from './MultiSelectFilter.tsx';
-import CheckboxAdapter from '@common/components/checkbox/CheckboxAdapter.tsx';
+import { CheckboxAdapter, Filtering } from '@allcll/common';
 import { Chip } from '@allcll/allcll-ui';
-import Filtering from '@common/components/filtering/Filtering.tsx';
 import { FilterItemProps, FilterValueType } from '@/features/filtering/model/types.ts';
 
 interface GenericMultiSelectFilterProps<K extends keyof Filters> {

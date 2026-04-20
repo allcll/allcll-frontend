@@ -14,8 +14,10 @@ export default ({ mode }: ConfigEnv) => {
   const TargetServer = `https://${TargetHost}`;
 
   const isProduction = mode === 'production';
+  const base = env.VITE_BASE ?? '/';
 
   return defineConfig({
+    base,
     plugins: [
       react(),
       tsconfigPaths(),

@@ -4,6 +4,8 @@ import Dashboard from '@/pages/Dashboard';
 import Clawlers from '@/pages/ClawlersSetting';
 import Service from '@/pages/Service';
 import Logs from '@/pages/Logs';
+import Graduation from '@/pages/Graduation';
+import Reviews from '@/pages/Reviews';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +29,16 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: '/graduation',
+    element: <MainLayout />,
+    children: [
+      {
+        path: '/graduation',
+        element: <Graduation />,
+      },
+    ],
+  },
+  {
     path: '/service',
     element: <MainLayout />,
     children: [
@@ -46,11 +58,20 @@ const router = createBrowserRouter([
       },
     ],
   },
-
+  {
+    path: '/reviews',
+    element: <MainLayout />,
+    children: [
+      {
+        path: '/reviews',
+        element: <Reviews />,
+      },
+    ],
+  },
   {
     path: '*',
     element: <div>404 Not Found</div>,
   },
-]);
+], { basename: import.meta.env.BASE_URL });
 
 export default router;

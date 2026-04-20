@@ -6,6 +6,7 @@ import { useSimulationModalStore } from '@/features/simulation/model/useSimulati
 import { getSummaryResult, SIMULATION_ERROR } from '@/features/simulation/lib/simulation.ts';
 import { getAggregatedSimulationResults } from '@/features/simulation/lib/result.ts';
 import { Dialog } from '@allcll/allcll-ui';
+import Image from '@/shared/ui/Image.tsx';
 
 function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number }>) {
   const openedModal = useSimulationModalStore(state => state.type);
@@ -95,7 +96,7 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
           <div className="flex flex-col justify-center items-center">
             <div className="m-2 flex justify-center">
               {isSuccessSimulation ? (
-                <img src="/ci.svg" alt="축하 아이콘" className="w-20 h-20" />
+                <Image src="/ci.svg" alt="축하 아이콘" className="w-20 h-20" />
               ) : (
                 <span className="text-[50px]">💥</span>
               )}
