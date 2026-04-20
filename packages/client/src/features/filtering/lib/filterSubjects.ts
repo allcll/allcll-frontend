@@ -11,7 +11,6 @@ import { IDayTimeItem } from '@/features/filtering/ui/DayTimeFilter.tsx';
 import { isFilterEmpty } from '@/features/filtering/lib/filterUtils.ts';
 import { Grade, RangeFilter, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
-import { getNormalizedKeyword } from '@/shared/lib/search.ts';
 
 /** 활성화 된 필터만 실행하는 함수를 반환 (최적화) */
 export function useFilterFunctions(filters: Filters) {
