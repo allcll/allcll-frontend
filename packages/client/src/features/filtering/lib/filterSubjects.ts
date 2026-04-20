@@ -10,6 +10,7 @@ import { IDayTimeItem } from '@/features/filtering/ui/DayTimeFilter.tsx';
 import { isFilterEmpty } from '@/features/filtering/lib/filterUtils.ts';
 import { Grade, RangeFilter, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
+import { getNormalizedKeyword } from '@/shared/lib/search.ts';
 
 /** 활성화 된 필터만 실행하는 함수를 반환 (최적화) */
 export function useFilterFunctions(filters: Filters) {
@@ -70,11 +71,6 @@ function filterMatches<T>(value: T, matchList: T[]) {
   return !matchList.length || matchList.includes(value);
 }
 
-function getNormalizedKeyword(keyword: string) {
-  const cleanSearchInput = keyword.replace(/[^\wㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
-  return disassemble(cleanSearchInput).toLowerCase();
-}
-
 export function filterDays(subject: Wishes | Subject, selectedDays: Day[]) {
   if (!subject.lesnTime || !selectedDays || selectedDays.length === 0) {
     return true;
@@ -133,7 +129,7 @@ function filterSearchKeywords(subject: Wishes | Subject, cleanedKeyword: string,
   const disassembledProfessorName = subject.professorName ? disassemble(subject.professorName).toLowerCase() : '';
   const disassembledSubjectName = getNormalizedKeyword(subject.subjectName);
 
-  const addSubjectAndClassCode = subject.subjectCode + subject.classCode;
+  const addSubjectAndClassCode = (subject.subjectCode || '') + (subject.classCode || '');
   const filteredBySubjectAndClassCode = addSubjectAndClassCode.toLowerCase().includes(keywordForCode);
 
   return (

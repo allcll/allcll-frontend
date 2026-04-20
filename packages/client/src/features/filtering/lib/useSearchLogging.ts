@@ -23,17 +23,30 @@ const Logging = {
   commitDelay: COMMIT_DELAY,
   data: [] as Searches[],
   loadLoggingData() {
-    if (Logging.data.length > 0) return Logging.data;
+    if (Array.isArray(Logging.data) && Logging.data.length > 0) return Logging.data;
 
     // 로컬 스토리지에서 검색 로그 데이터를 불러옵니다.
     const data = localStorage.getItem(SEARCH_LOGGING_KEY);
-    if (data) Logging.data = JSON.parse(data);
+    if (data) {
+        try {
+            const parsed = JSON.parse(data);
+            if (Array.isArray(parsed)) {
+                Logging.data = parsed;
+            } else {
+                Logging.data = [];
+            }
+        } catch (e) {
+            Logging.data = [];
+        }
+    }
 
-    return Logging.data;
+    return Logging.data || [];
   },
 
   /** 검색 로그 데이터를 업데이트합니다. */
   updateLoggingData(searchTerm: string | undefined, departmentCode: string | undefined, subjectId: number) {
+    if (!Array.isArray(Logging.data)) Logging.data = [];
+    
     const departmentCodeValue = !departmentCode || Number.isNaN(Number(departmentCode)) ? -1 : Number(departmentCode);
     const term =
       searchTerm === undefined && Logging.data.length > 0

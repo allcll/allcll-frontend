@@ -93,8 +93,8 @@ function setRankByAverageTotalCount<T extends Wishes>(subjectData: T[]) {
   // 2. 각 그룹의 평균을 계산하고, 원본 배열에 'rank' 속성을 추가합니다.
   return subjectData.map(subject => {
     const key = `${subject.subjectCode}-${subject.departmentCode}`;
-    const group = groupedData.get(key)!;
-    const rank = group.sum / group.count;
+    const group = groupedData.get(key);
+    const rank = group ? group.sum / group.count : 0;
     return { ...subject, rank };
   });
 }

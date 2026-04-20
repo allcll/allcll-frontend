@@ -15,8 +15,8 @@ export function joinData<T extends SubjectData, U extends SubjectData>(
 ) {
   if (!dataA || !dataB) return dataA || dataB;
 
-  const sortedA = dataA.sort((a, b) => a.subjectId - b.subjectId);
-  const sortedB = dataB.sort((a, b) => a.subjectId - b.subjectId);
+  const sortedA = [...dataA].sort((a, b) => a.subjectId - b.subjectId);
+  const sortedB = [...dataB].sort((a, b) => a.subjectId - b.subjectId);
 
   const joinedData: (T & U)[] = [];
   let i = 0,

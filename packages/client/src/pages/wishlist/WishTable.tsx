@@ -49,10 +49,12 @@ function WishTable() {
 
 function WishTableComponent() {
   const { data: wishes, isPending } = useWishes();
-  const data = useSearchRank(useJoinPreSeats(wishes, InitWishes));
+  const joinedData = useJoinPreSeats(wishes, InitWishes);
+  const data = useSearchRank(joinedData);
 
   const filters = useWishSearchStore(state => state.filters);
-  const filteredData = useDeferredValue(useFilteringSubjects(data ?? [], filters));
+  const filteringResult = useFilteringSubjects(data ?? [], filters);
+  const filteredData = useDeferredValue(filteringResult);
 
   const placeholder = {
     title: '검색 결과가 없습니다.',

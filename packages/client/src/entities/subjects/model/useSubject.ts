@@ -32,7 +32,7 @@ function useSubject(semester?: string) {
 
     staleTime: Infinity,
 
-    select: data => data.subjectResponses,
+    select: data => data?.subjectResponses ?? [],
   });
 }
 
