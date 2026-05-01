@@ -3,13 +3,13 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, type ChartData, type Cha
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export interface DoughnutChartProps {
+export interface IDoughnutChartProps {
   data: ChartData<'doughnut'>;
   options?: ChartOptions<'doughnut'>;
   className?: string;
 }
 
-function DoughnutChart({ data, options, className }: DoughnutChartProps) {
+function DoughnutChart({ data, options, className }: IDoughnutChartProps) {
   return <Doughnut data={data} options={options} className={className} />;
 }
 

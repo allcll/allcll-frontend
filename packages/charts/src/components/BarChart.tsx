@@ -12,13 +12,13 @@ import {
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
-export interface BarChartProps {
+export interface IBarChartProps {
   data: ChartData<'bar'>;
   options?: ChartOptions<'bar'>;
   className?: string;
 }
 
-function BarChart({ data, options, className }: BarChartProps) {
+function BarChart({ data, options, className }: IBarChartProps) {
   return <Bar data={data} options={options} className={className} />;
 }
 

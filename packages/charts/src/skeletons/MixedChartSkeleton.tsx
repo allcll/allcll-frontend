@@ -1,9 +1,9 @@
-export interface MixedChartSkeletonProps {
+export interface IMixedChartSkeletonProps {
   className?: string;
   height?: number;
 }
 
-export function MixedChartSkeleton({ className, height = 384 }: MixedChartSkeletonProps) {
+export function MixedChartSkeleton({ className, height = 384 }: IMixedChartSkeletonProps) {
   return (
     <div
       className={`w-full bg-gray-100 animate-pulse rounded ${className ?? ''}`}

@@ -13,13 +13,13 @@ import {
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
-export interface RadarChartProps {
+export interface IRadarChartProps {
   data: ChartData<'radar'>;
   options?: ChartOptions<'radar'>;
   className?: string;
 }
 
-function RadarChart({ data, options, className }: RadarChartProps) {
+function RadarChart({ data, options, className }: IRadarChartProps) {
   return <Radar data={data} options={options} className={className} />;
 }
 

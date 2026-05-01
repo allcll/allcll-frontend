@@ -19,13 +19,15 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineEleme
 export type MixedChartType = 'bar' | 'line';
 export type MixedChartTooltipItem = TooltipItem<MixedChartType>;
 
-export interface MixedChartProps {
+export interface IMixedChartProps {
   data: ChartData<MixedChartType>;
   options?: ChartOptions<MixedChartType>;
+  className?: string;
+  height?: number | string;
 }
 
-function MixedChart({ data, options }: MixedChartProps) {
-  return <Chart type="bar" data={data} options={options} />;
+function MixedChart({ data, options, className, height }: IMixedChartProps) {
+  return <Chart type="bar" data={data} options={options} className={className} height={height} />;
 }
 
 export default MixedChart;
