@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet';
-import WishesBarChart from '@/widgets/wishlist/WishesBarChart.tsx';
+import WishesBarChart from '@/widgets/wishlist/WishesBarChart';
 import DepartmentDoughnut from '@/widgets/wishlist/DepartmentDoughnut';
 import RecommendWishes from '@/widgets/wishlist/RecommendWishes';
 import WishesDetailInfo from '@/widgets/wishlist/WishesDetailInfo';
@@ -37,7 +37,7 @@ function WishesDetail() {
             </Card>
           </Grid>
 
-          <Card>
+          <Card className="mt-2">
             <RecommendWishes wishesInfo={wishesInfo} />
           </Card>
         </Card>

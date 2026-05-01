@@ -67,11 +67,11 @@ export interface Subject {
   // departmentName: string;
 }
 
-export interface WishesInfo {
+export interface IWishesInfo {
   subjectId: number;
   semesterCode: string | undefined;
   semesterValue: string | undefined;
-  isLastSemesterWish: boolean;
+  isPastSemester: boolean;
 }
 
 /** before: 튜토리얼 + 관심과목 선택

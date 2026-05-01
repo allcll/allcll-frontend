@@ -1,17 +1,17 @@
-import { Wishes, WishesInfo } from '@/shared/model/types.ts';
-import useWishes, { InitWishes } from '@/entities/wishes/model/useWishes.ts';
-import { IPreRealSeat } from '@/entities/seat/api/usePreRealSeats';
-import { useJoinPreSeats } from '@/entities/subjectAggregate/lib/joinSubjects.ts';
+import type { Wishes, IWishesInfo } from '@/shared/model/types';
+import useWishes, { InitWishes } from '@/entities/wishes/model/useWishes';
+import type { IPreRealSeat } from '@/entities/seat/api/usePreRealSeats';
+import { useJoinPreSeats } from '@/entities/subjectAggregate/lib/joinSubjects';
 
 interface DetailWishes {
   isPending: boolean;
   data?: WishesWithSeat;
-  isLastSemesterWish?: boolean;
+  isPastSemester?: boolean;
 }
 
 type WishesWithSeat = Wishes | (Wishes & IPreRealSeat);
 
-function useDetailWishes(wishesInfo: WishesInfo): DetailWishes {
+function useDetailWishes(wishesInfo: IWishesInfo): DetailWishes {
   const { data: wishes } = useWishes(wishesInfo.semesterCode);
   const data = useJoinPreSeats(wishes, InitWishes);
 
@@ -22,7 +22,7 @@ function useDetailWishes(wishesInfo: WishesInfo): DetailWishes {
   return {
     isPending: false,
     data: detail,
-    isLastSemesterWish: !!wishesInfo.semesterCode,
+    isPastSemester: !!wishesInfo.semesterCode,
   };
 }
 

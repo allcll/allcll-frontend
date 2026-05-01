@@ -8,19 +8,18 @@ import {
   getMajorDoughnutData,
   getUniversityDoughnutData,
 } from '@/features/wish/lib/doughnut';
-import { WishesInfo } from '@/shared/model/types';
-import useDepartments, { DepartmentDict, useDepartmentDict } from '@/entities/departments/api/useDepartments.ts';
+import type { IWishesInfo, WishRegister } from '@/shared/model/types';
+import useDepartments, { type DepartmentDict, useDepartmentDict } from '@/entities/departments/api/useDepartments';
 import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes';
 import useDetailRegisters from '@/entities/wishes/model/useDetailRegisters';
 import { InitWishes } from '@/entities/wishes/model/useWishes';
 import LoadingWithMessage from '@/shared/ui/Loading';
-import { WishRegister } from '@/shared/model/types.ts';
 import { Flex, Heading, Label } from '@allcll/allcll-ui';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
-interface DepartmentDoughnutProps {
-  wishesInfo: WishesInfo;
+interface IDepartmentDoughnutProps {
+  wishesInfo: IWishesInfo;
 }
 
 export enum DoughnutSelectType {
@@ -30,7 +29,7 @@ export enum DoughnutSelectType {
   COLLEGE = '학부',
 }
 
-function DepartmentDoughnut({ wishesInfo }: DepartmentDoughnutProps) {
+function DepartmentDoughnut({ wishesInfo }: IDepartmentDoughnutProps) {
   const { data: wishes, isPending } = useDetailWishes(wishesInfo);
   const { data: registers } = useDetailRegisters(wishesInfo);
 

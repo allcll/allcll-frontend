@@ -1,16 +1,16 @@
-import FavoriteButton from '@/features/filtering/ui/button/FavoriteButton.tsx';
+import FavoriteButton from '@/features/filtering/ui/button/FavoriteButton';
 import AlarmButton from '@/features/live/pin/ui/AlarmButton';
-import { WishesInfo } from '@/shared/model/types';
-import { InitWishes } from '@/entities/wishes/model/useWishes.ts';
-import SubjectDetail from '@/entities/subjects/ui/SubjectDetail.tsx';
-import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes.ts';
+import type { IWishesInfo } from '@/shared/model/types';
+import { InitWishes } from '@/entities/wishes/model/useWishes';
+import SubjectDetail from '@/entities/subjects/ui/SubjectDetail';
+import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes';
 import { Flex, Heading } from '@allcll/allcll-ui';
 
-interface WishesDetailInfoProps {
-  wishesInfo: WishesInfo;
+interface IWishesDetailInfoProps {
+  wishesInfo: IWishesInfo;
 }
 
-function WishesDetailInfo({ wishesInfo }: WishesDetailInfoProps) {
+function WishesDetailInfo({ wishesInfo }: IWishesDetailInfoProps) {
   const { data: wishes, isPending } = useDetailWishes(wishesInfo);
   const data = wishes ?? InitWishes;
 
@@ -33,15 +33,13 @@ function WishesDetailInfo({ wishesInfo }: WishesDetailInfoProps) {
   );
 }
 
-function InlineSkeleton({
-  isPending,
-  count = 1,
-  children,
-}: {
+interface IInlineSkeletonProps {
   isPending: boolean;
   count?: number;
   children: React.ReactNode;
-}) {
+}
+
+function InlineSkeleton({ isPending, count = 1, children }: IInlineSkeletonProps) {
   if (isPending) {
     return (
       <div className="animate-pulse">

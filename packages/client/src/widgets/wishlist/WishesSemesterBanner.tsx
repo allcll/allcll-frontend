@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { Banner } from '@allcll/allcll-ui';
-import { WishesInfo } from '@/shared/model/types';
+import type { IWishesInfo } from '@/shared/model/types';
 
-interface WishesSemesterBannerProps {
-  wishesInfo: WishesInfo;
+interface IWishesSemesterBannerProps {
+  wishesInfo: IWishesInfo;
 }
 
-function WishesSemesterBanner({ wishesInfo }: WishesSemesterBannerProps) {
+function WishesSemesterBanner({ wishesInfo }: IWishesSemesterBannerProps) {
   const [showBanner, setShowBanner] = useState(true);
 
-  if (!wishesInfo.isLastSemesterWish || !showBanner) return null;
+  if (!wishesInfo.isPastSemester || !showBanner) return null;
 
   return (
     <Banner variant="warning" deleteBanner={() => setShowBanner(false)}>

@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { WishesInfo } from '@/shared/model/types';
+import { IWishesInfo } from '@/shared/model/types';
 import { fetchDetailRegisters } from '@/entities/wishes/api/wishes.ts';
 import { BadRequestError, NotFoundError } from '@/shared/lib/errors.ts';
 
-function useDetailRegisters(wishesInfo: WishesInfo) {
+function useDetailRegisters(wishesInfo: IWishesInfo) {
   return useQuery({
     queryKey: ['detail-registers', wishesInfo.subjectId],
     queryFn: () => fetchDetailRegisters(wishesInfo.subjectId),

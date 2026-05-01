@@ -1,16 +1,16 @@
 import { Bar } from 'react-chartjs-2';
 import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Tooltip } from 'chart.js/auto';
-import { WishesInfo } from '@/shared/model/types';
+import type { IWishesInfo } from '@/shared/model/types';
 import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes';
 import { InitWishes } from '@/entities/wishes/model/useWishes';
-import BlurComponents from '@/shared/ui/BlurComponents.tsx';
-import { getWishesColor } from '@/shared/config/colors.ts';
+import BlurComponents from '@/shared/ui/BlurComponents';
+import { getWishesColor } from '@/shared/config/colors';
 import { Flex, Heading } from '@allcll/allcll-ui';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
-interface WishesBarChartProps {
-  wishesInfo: WishesInfo;
+interface IWishesBarChartProps {
+  wishesInfo: IWishesInfo;
 }
 
 // 학년별 관심도 (막대 그래프)
@@ -24,7 +24,7 @@ const gradeData = {
   ],
 };
 
-function WishesBarChart({ wishesInfo }: WishesBarChartProps) {
+function WishesBarChart({ wishesInfo }: IWishesBarChartProps) {
   const { data: wishes } = useDetailWishes(wishesInfo);
   const data = wishes ?? InitWishes;
   const isWishesAvailable = wishes && 'totalCount' in wishes;

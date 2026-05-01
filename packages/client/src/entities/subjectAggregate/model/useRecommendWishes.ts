@@ -1,10 +1,10 @@
-import { WishesInfo } from '@/shared/model/types';
+import { IWishesInfo } from '@/shared/model/types';
 import useWishes, { InitWishes } from '@/entities/wishes/model/useWishes.ts';
 import { useJoinPreSeats } from '@/entities/subjectAggregate/lib/joinSubjects.ts';
 import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes.ts';
 
 /** subjectId 에 대한 추천 과목을 반환합니다. */
-function useRecommendWishes(wishesInfo: WishesInfo) {
+function useRecommendWishes(wishesInfo: IWishesInfo) {
   const { data: wishes } = useWishes(wishesInfo.semesterCode);
   const data = useJoinPreSeats(wishes, InitWishes);
 
