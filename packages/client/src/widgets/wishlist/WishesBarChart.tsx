@@ -1,6 +1,6 @@
 import { Bar } from 'react-chartjs-2';
 import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Tooltip } from 'chart.js/auto';
-import { WishesInfo } from '@/features/wish/model/useWishesInfo';
+import { WishesInfo } from '@/shared/model/types';
 import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes';
 import { InitWishes } from '@/entities/wishes/model/useWishes';
 import BlurComponents from '@/shared/ui/BlurComponents.tsx';

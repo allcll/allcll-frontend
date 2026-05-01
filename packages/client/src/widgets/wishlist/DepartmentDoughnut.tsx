@@ -8,7 +8,7 @@ import {
   getMajorDoughnutData,
   getUniversityDoughnutData,
 } from '@/features/wish/lib/doughnut';
-import { WishesInfo } from '@/features/wish/model/useWishesInfo';
+import { WishesInfo } from '@/shared/model/types';
 import useDepartments, { DepartmentDict, useDepartmentDict } from '@/entities/departments/api/useDepartments.ts';
 import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes';
 import useDetailRegisters from '@/entities/wishes/model/useDetailRegisters';

@@ -1,5 +1,5 @@
 import Table from '@/widgets/wishlist/Table';
-import { WishesInfo } from '@/features/wish/model/useWishesInfo';
+import { WishesInfo } from '@/shared/model/types';
 import useRecommendWishes from '@/entities/subjectAggregate/model/useRecommendWishes.ts';
 import { Heading, SupportingText } from '@allcll/allcll-ui';
 

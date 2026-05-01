@@ -1,4 +1,4 @@
-import { WishesInfo } from '@/features/wish/model/useWishesInfo';
+import { WishesInfo } from '@/shared/model/types';
 import useWishes, { InitWishes } from '@/entities/wishes/model/useWishes.ts';
 import { useJoinPreSeats } from '@/entities/subjectAggregate/lib/joinSubjects.ts';
 import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes.ts';

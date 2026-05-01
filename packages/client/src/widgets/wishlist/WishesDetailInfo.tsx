@@ -1,6 +1,6 @@
 import FavoriteButton from '@/features/filtering/ui/button/FavoriteButton.tsx';
 import AlarmButton from '@/features/live/pin/ui/AlarmButton';
-import { WishesInfo } from '@/features/wish/model/useWishesInfo';
+import { WishesInfo } from '@/shared/model/types';
 import { InitWishes } from '@/entities/wishes/model/useWishes.ts';
 import SubjectDetail from '@/entities/subjects/ui/SubjectDetail.tsx';
 import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes.ts';

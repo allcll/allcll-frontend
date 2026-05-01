@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { WishesInfo } from '@/features/wish/model/useWishesInfo';
+import { WishesInfo } from '@/shared/model/types';
 import { fetchDetailRegisters } from '@/entities/wishes/api/wishes.ts';
 import { BadRequestError, NotFoundError } from '@/shared/lib/errors.ts';
 

@@ -1,8 +1,7 @@
-import { Wishes } from '@/shared/model/types.ts';
+import { Wishes, WishesInfo } from '@/shared/model/types.ts';
 import useWishes, { InitWishes } from '@/entities/wishes/model/useWishes.ts';
 import { IPreRealSeat } from '@/entities/seat/api/usePreRealSeats';
 import { useJoinPreSeats } from '@/entities/subjectAggregate/lib/joinSubjects.ts';
-import { WishesInfo } from '@/features/wish/model/useWishesInfo';
 
 interface DetailWishes {
   isPending: boolean;
