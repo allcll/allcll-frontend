@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef, RefObject } from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
 import ArrowIcon from '../svgs/ArrowIcon';
 import CancelIcon from '../svgs/CancelIcon';
 import type React from 'react';
@@ -6,7 +6,7 @@ import type React from 'react';
 type ChipVariantType = 'select' | 'cancel' | 'none';
 
 interface IChip extends ComponentPropsWithoutRef<'button'> {
-  containerRef?: RefObject<HTMLButtonElement | null>;
+  containerRef?: React.ForwardedRef<HTMLButtonElement>;
   /**Chip의 텍스트 */
   label: string | React.ReactElement;
   /**Chip이 선택되었는지 여부 */

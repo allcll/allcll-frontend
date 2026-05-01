@@ -25,6 +25,11 @@
   "pnpm": {
     "overrides": {
       "vite": "7.3.2",
+      "@types/react": "18.3.18",
+      "@types/react-dom": "18.3.5",
+      "react-router-dom": "6.30.3",
+      "react-router": "6.30.3",
+      "@remix-run/router": "1.23.2",
       "minimatch@<3.1.4": "3.1.4",
       "minimatch@>=8.0.0 <8.0.6": "8.0.6",
       "minimatch@>=9.0.0 <9.0.7": "9.0.7",
@@ -35,27 +40,57 @@
       "brace-expansion@<1.1.13": "1.1.13",
       "brace-expansion@>=2.0.0 <2.0.3": "2.0.3",
       "yaml": "2.8.3",
-      "postcss": "8.5.10"
+      "postcss": "8.5.10",
+      "vfile": "5.3.7",
+      "vfile-message": "3.1.4"
+    },
+    "packageExtensions": {
+      "zustand": {
+        "peerDependencies": {
+          "@types/react": "18.3.18"
+        }
+      },
+      "react-markdown": {
+        "peerDependencies": {
+          "@types/react": "18.3.18"
+        }
+      },
+      "@radix-ui/react-slot": {
+        "peerDependencies": {
+          "@types/react": "18.3.18"
+        }
+      },
+      "@sentry/react": {
+        "peerDependencies": {
+          "@types/react": "18.3.18"
+        }
+      },
+      "react-transition-group": {
+        "peerDependencies": {
+          "@types/react": "18.3.18"
+        }
+      }
     }
   },
   "dependencies": {
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-router-dom": "7.12.0",
+    "react-router-dom": "6.26.2",
     "tailwindcss": "4.1.18"
   },
   "devDependencies": {
     "@eslint/js": "9.32.0",
     "@tailwindcss/vite": "4.1.18",
     "@types/node": "20.19.9",
-    "@types/react": "19.1.8",
-    "@types/react-dom": "18.3.7",
-    "@vitejs/plugin-react": "4.7.0",
+    "@types/react": "18.3.18",
+    "@types/react-dom": "18.3.5",
+    "@vitejs/plugin-react": "4.3.4",
     "eslint": "9.32.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.3",
     "eslint-plugin-react-hooks": "5.2.0",
     "eslint-plugin-react-refresh": "0.4.20",
+    "eslint-plugin-storybook": "10.0.1",
     "globals": "16.3.0",
     "husky": "9.1.7",
     "lint-staged": "16.2.7",
@@ -66,7 +101,10 @@
     "vite-tsconfig-paths": "5.1.4"
   },
   "resolutions": {
-    "@types/react": "19.1.6"
+    "@types/react": "18.3.18",
+    "@types/react-dom": "18.3.5",
+    "vite": "7.3.2",
+    "@types/vite": "7.3.2"
   },
   "lint-staged": {
     "packages/**/*.{ts,tsx}": [
