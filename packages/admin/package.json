@@ -10,22 +10,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@allcll/common": "workspace:^",
-    "@allcll/allcll-ui": "workspace:^",
-    "@svgr/webpack": "^8.1.0",
-    "@tanstack/react-query": "^5.83.0",
-    "@vitejs/plugin-basic-ssl": "^2.1.0",
-    "dexie": "^4.0.11",
-    "dotenv": "^16.6.1",
-    "react-datepicker": "^8.4.0",
-    "react-helmet": "^6.1.0"
+    "@allcll/common": "workspace:*",
+    "@allcll/allcll-ui": "workspace:*",
+    "@svgr/webpack": "8.1.0",
+    "@tanstack/react-query": "5.83.0",
+    "@vitejs/plugin-basic-ssl": "2.1.0",
+    "dexie": "4.0.11",
+    "dotenv": "16.6.1",
+    "react-datepicker": "8.4.0",
+    "react-helmet": "6.1.0"
   },
   "devDependencies": {
-    "@allcll/mock-server": "workspace:^",
-    "@types/node": "20",
-    "@types/react-datepicker": "^7.0.0",
-    "@types/react-helmet": "^6.1.11",
-    "@vitejs/plugin-basic-ssl": "^2.1.0",
-    "vite-plugin-svgr": "^4.3.0"
+    "@allcll/mock-server": "workspace:*",
+    "@types/node": "20.19.9",
+    "@types/react-datepicker": "7.0.0",
+    "@types/react-helmet": "6.1.11",
+    "vite-plugin-svgr": "4.3.0"
   }
 }
