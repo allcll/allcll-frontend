@@ -1,11 +1,13 @@
+import { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import useWishesInfo from '@/features/wish/model/useWishesInfo';
 import WishesBarChart from '@/widgets/wishlist/WishesBarChart.tsx';
 import DepartmentDoughnut from '@/widgets/wishlist/DepartmentDoughnut';
 import RecommendWishes from '@/widgets/wishlist/RecommendWishes';
 import WishesDetailInfo from '@/widgets/wishlist/WishesDetailInfo';
+import useWishesInfo from '@/features/wish/model/useWishesInfo';
 import useDetailRegisters from '@/entities/wishes/model/useDetailRegisters';
-import { Card, Grid } from '@allcll/allcll-ui';
+import { WishesInfo } from '@/shared/model/types';
+import { Banner, Card, Grid } from '@allcll/allcll-ui';
 
 function WishesDetail() {
   const wishesInfo = useWishesInfo();
@@ -20,11 +22,7 @@ function WishesDetail() {
         <meta name="description" content="세종대학교 관심과목의 상세 정보를 확인해보세요." />
       </Helmet>
 
-      {wishesInfo.isLastSemesterWish && (
-        <p className="bg-red-100 text-red-500 py-2 px-4 font-bold">
-          {wishesInfo.semesterValue}학기의 과목 입니다. 수강 신청에 유의해주세요.
-        </p>
-      )}
+      <WishesSemesterBanner wishesInfo={wishesInfo} />
 
       {/*Fixme: div depth 최적화하기*/}
       <div className="min-h-screen bg-gray-50">
@@ -49,6 +47,18 @@ function WishesDetail() {
         </div>
       </div>
     </>
+  );
+}
+
+function WishesSemesterBanner({ wishesInfo }: { wishesInfo: WishesInfo }) {
+  const [showBanner, setShowBanner] = useState(true);
+
+  if (!wishesInfo.isLastSemesterWish || !showBanner) return null;
+
+  return (
+    <Banner variant="warning" deleteBanner={() => setShowBanner(false)}>
+      {wishesInfo.semesterValue}학기의 과목 입니다. 수강 신청에 유의해주세요.
+    </Banner>
   );
 }
 
