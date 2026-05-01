@@ -22,6 +22,21 @@
     "prepare": "husky"
   },
   "packageManager": "pnpm@9.15.4",
+  "pnpm": {
+    "overrides": {
+      "minimatch@<3.1.4": "3.1.4",
+      "minimatch@>=8.0.0 <8.0.6": "8.0.6",
+      "minimatch@>=9.0.0 <9.0.7": "9.0.7",
+      "flatted": "^3.4.2",
+      "svgo": "^3.3.3",
+      "picomatch": "^4.0.4",
+      "ajv@^6.0.0": ">=6.14.0",
+      "brace-expansion@^1.0.0": ">=1.1.13",
+      "brace-expansion@^2.0.0": ">=2.0.3",
+      "yaml": ">=2.8.3",
+      "postcss": ">=8.5.10"
+    }
+  },
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -46,7 +61,7 @@
     "prettier": "^3.6.2",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.38.0",
-    "vite": "7.3.2",
+    "vite": "^7.3.2",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "resolutions": {
