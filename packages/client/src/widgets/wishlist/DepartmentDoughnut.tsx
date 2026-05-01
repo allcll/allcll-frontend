@@ -22,12 +22,14 @@ interface IDepartmentDoughnutProps {
   wishesInfo: IWishesInfo;
 }
 
-export enum DoughnutSelectType {
-  MAJOR = '전공/비전공',
-  UNIVERSITY = '대학',
-  DEPARTMENT = '학과',
-  COLLEGE = '학부',
-}
+const DOUGHNUT_SELECT_TYPES = {
+  MAJOR: '전공/비전공',
+  UNIVERSITY: '대학',
+  DEPARTMENT: '학과',
+  COLLEGE: '학부',
+} as const;
+
+type DoughnutSelectType = (typeof DOUGHNUT_SELECT_TYPES)[keyof typeof DOUGHNUT_SELECT_TYPES];
 
 function DepartmentDoughnut({ wishesInfo }: IDepartmentDoughnutProps) {
   const { data: wishes, isPending } = useDetailWishes(wishesInfo);
@@ -37,7 +39,7 @@ function DepartmentDoughnut({ wishesInfo }: IDepartmentDoughnutProps) {
   const nonNullWishes = wishes ?? InitWishes;
   const majorName = nonNullWishes.departmentName ?? nonNullWishes.manageDeptNm;
 
-  const [selectedFilter, setSelectedFilter] = useState<DoughnutSelectType>(DoughnutSelectType.MAJOR);
+  const [selectedFilter, setSelectedFilter] = useState<DoughnutSelectType>(DOUGHNUT_SELECT_TYPES.MAJOR);
   const { data: departmentData } = useDepartments();
   const departmentDict = useDepartmentDict(departmentData);
   const { doughnutData, totalCount } = useDoughnutData(data, departmentDict, majorName, selectedFilter);
@@ -55,7 +57,7 @@ function DepartmentDoughnut({ wishesInfo }: IDepartmentDoughnutProps) {
           value={selectedFilter}
           onChange={e => setSelectedFilter(e.target.value as DoughnutSelectType)}
         >
-          {Object.values(DoughnutSelectType).map(type => (
+          {Object.values(DOUGHNUT_SELECT_TYPES).map(type => (
             <option key={type} value={type}>
               {type}
             </option>
@@ -88,16 +90,16 @@ function useDoughnutData(
   const { universityDict, collegeDict } = departmentDict;
 
   switch (selectedFilter) {
-    case DoughnutSelectType.MAJOR:
+    case DOUGHNUT_SELECT_TYPES.MAJOR:
       doughnutData = getMajorDoughnutData(majorName, data);
       break;
-    case DoughnutSelectType.UNIVERSITY:
+    case DOUGHNUT_SELECT_TYPES.UNIVERSITY:
       doughnutData = getUniversityDoughnutData(data, universityDict);
       break;
-    case DoughnutSelectType.DEPARTMENT:
+    case DOUGHNUT_SELECT_TYPES.DEPARTMENT:
       doughnutData = getCollegeDoughnutData(data, collegeDict);
       break;
-    case DoughnutSelectType.COLLEGE:
+    case DOUGHNUT_SELECT_TYPES.COLLEGE:
       doughnutData = getDoughnutData(data);
       break;
     default:
