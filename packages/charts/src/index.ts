@@ -15,4 +15,7 @@ export {
   RadarChartSkeleton,
   MixedChartSkeleton,
 } from './skeletons/ChartSkeleton';
+export type { IDoughnutChartSkeletonProps as DoughnutChartSkeletonProps } from './skeletons/DoughnutChartSkeleton';
+export type { IBarChartSkeletonProps as BarChartSkeletonProps } from './skeletons/BarChartSkeleton';
+export type { IRadarChartSkeletonProps as RadarChartSkeletonProps } from './skeletons/RadarChartSkeleton';
 export type { IMixedChartSkeletonProps as MixedChartSkeletonProps } from './skeletons/MixedChartSkeleton';
