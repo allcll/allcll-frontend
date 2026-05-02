@@ -84,6 +84,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
+      contents: write
     steps:
       - name: Download Client Artifact
         uses: actions/download-artifact@v4
@@ -168,6 +169,42 @@ jobs:
                 body,
               });
             }
+
+      - name: Deployment Report (Preview)
+        if: always()
+        env:
+          CLIENT_PREVIEW_BASE_URL: ${{ secrets.DEV_CLIENT_PREVIEW_BASE_URL }}
+          ADMIN_PREVIEW_BASE_URL: ${{ secrets.DEV_ADMIN_PREVIEW_BASE_URL }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr_number = context.payload.pull_request.number;
+            const client_base_url = process.env.CLIENT_PREVIEW_BASE_URL || 'https://dev.allcll.kr';
+            const admin_base_url = process.env.ADMIN_PREVIEW_BASE_URL || 'https://dev-admin.allcll.kr';
+            const client_preview_url = `${client_base_url}/pr-${pr_number}/`;
+            const admin_preview_url = `${admin_base_url}/pr-${pr_number}/`;
+            
+            const status = '${{ job.status }}';
+            const getStatusEmoji = (s) => s === 'success' ? '✅' : '❌';
+            
+            const body = [
+              '### 🚀 Preview Deployment Report',
+              `- **Status:** ${getStatusEmoji(status)} ${status}`,
+              `- **Client:** [${client_preview_url}](${client_preview_url})`,
+              `- **Admin:** [${admin_preview_url}](${admin_preview_url})`,
+              `- **Commit:** ${context.sha.substring(0, 7)}`
+            ].join('\n');
+            
+            core.summary.addRaw(body).write();
+            
+            try {
+              await github.rest.repos.createCommitComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                commit_sha: context.sha,
+                body: body
+              });
+            } catch (e) {}
 
   cleanup-preview:
     if: github.event.action == 'closed' && github.event.pull_request.head.repo.full_name == github.repository
