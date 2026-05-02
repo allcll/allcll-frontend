@@ -61,25 +61,6 @@ jobs:
           name: admin-dist
           path: packages/admin/dist
 
-  deploy-preview:
-    if: github.event.action != 'closed'
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-    steps:
-      - name: Download Client Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: client-dist
-          path: client-dist
-
-      - name: Download Admin Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: admin-dist
-          path: admin-dist
-
       - name: Deploy Client preview to server
         uses: appleboy/scp-action@v1
         with:
@@ -87,9 +68,9 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.DEV_SERVER_SSH_KEY }}
           port: 22
-          source: client-dist/*
+          source: packages/client/dist/*
           target: ${{ secrets.PWD }}/clients/pr-${{ github.event.pull_request.number }}
-          strip_components: 1
+          strip_components: 3
 
       - name: Deploy Admin preview to server
         uses: appleboy/scp-action@v1
@@ -98,9 +79,9 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.DEV_SERVER_SSH_KEY }}
           port: 22
-          source: admin-dist/*
+          source: packages/admin/dist/*
           target: ${{ secrets.PWD }}/admins/pr-${{ github.event.pull_request.number }}
-          strip_components: 1
+          strip_components: 3
 
       - name: Reload Nginx
         uses: appleboy/ssh-action@v1
