@@ -6,7 +6,7 @@ on:
     types: [opened, synchronize, reopened, closed]
 
 jobs:
-  build-client:
+  build:
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     permissions:
@@ -19,6 +19,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24'
+          cache: 'pnpm'
 
       - name: Install pnpm
         run: npm install -g pnpm
@@ -26,51 +27,33 @@ jobs:
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
 
-      - name: Build Client for Preview
-        run: pnpm -F @allcll/client run build
-        env:
-          VITE_BASE: /pr-${{ github.event.pull_request.number }}/
-          VITE_SUPABASE_URL: ${{ secrets.DEV_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.DEV_SUPABASE_ANON_KEY }}
-          VITE_SUPABASE_TABLE_NAME: ${{ secrets.DEV_SUPABASE_TABLE_NAME }}
-          VITE_API_BASE_URL: ${{ secrets.DEV_API_BASE_URL }}
-          VITE_DEV_SERVER: true
+      - name: Build Projects for Preview in Parallel
+        run: |
+          (
+            export VITE_BASE=/pr-${{ github.event.pull_request.number }}/
+            export VITE_SUPABASE_URL="${{ secrets.DEV_SUPABASE_URL }}"
+            export VITE_SUPABASE_ANON_KEY="${{ secrets.DEV_SUPABASE_ANON_KEY }}"
+            export VITE_SUPABASE_TABLE_NAME="${{ secrets.DEV_SUPABASE_TABLE_NAME }}"
+            export VITE_API_BASE_URL="${{ secrets.DEV_API_BASE_URL }}"
+            export VITE_DEV_SERVER=true
+            pnpm -F @allcll/client run build
+          ) &
+          (
+            export VITE_BASE=/pr-${{ github.event.pull_request.number }}/
+            export VITE_SUPABASE_URL="${{ secrets.DEV_SUPABASE_URL }}"
+            export VITE_SUPABASE_ANON_KEY="${{ secrets.DEV_SUPABASE_ANON_KEY }}"
+            export VITE_SUPABASE_TABLE_NAME="${{ secrets.DEV_SUPABASE_TABLE_NAME }}"
+            export VITE_API_BASE_URL="${{ secrets.DEV_API_BASE_URL }}"
+            export VITE_DEV_SERVER=true
+            pnpm -F @allcll/admin run build
+          ) &
+          wait
       
       - name: Upload Client Artifact
         uses: actions/upload-artifact@v4
         with:
           name: client-dist
           path: packages/client/dist
-
-  build-admin:
-    if: github.event.action != 'closed'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-
-      - name: Install pnpm
-        run: npm install -g pnpm
-
-      - name: Install dependencies
-        run: pnpm i --frozen-lockfile
-
-      - name: Build Admin for Preview
-        run: pnpm -F @allcll/admin run build
-        env:
-          VITE_BASE: /pr-${{ github.event.pull_request.number }}/
-          VITE_SUPABASE_URL: ${{ secrets.DEV_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.DEV_SUPABASE_ANON_KEY }}
-          VITE_SUPABASE_TABLE_NAME: ${{ secrets.DEV_SUPABASE_TABLE_NAME }}
-          VITE_API_BASE_URL: ${{ secrets.DEV_API_BASE_URL }}
-          VITE_DEV_SERVER: true
 
       - name: Upload Admin Artifact
         uses: actions/upload-artifact@v4
@@ -80,7 +63,7 @@ jobs:
 
   deploy-preview:
     if: github.event.action != 'closed'
-    needs: [build-client, build-admin]
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
