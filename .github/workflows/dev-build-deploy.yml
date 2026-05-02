@@ -66,7 +66,7 @@ jobs:
           name: admin-development-files
           path: ./packages/admin/dist
 
-  client-gh-pages-deploy:
+  deploy:
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -76,6 +76,12 @@ jobs:
           name: development-files
           path: development-files
 
+      - name: Download Admin Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: admin-development-files
+          path: admin-development-files
+
       - name: Deploy Client to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -83,81 +89,30 @@ jobs:
           publish_dir: development-files
           publish_branch: 'gh-dev-pages'
 
-  client-dev-deploy:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.DEV_SERVER_HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.DEV_SERVER_SSH_KEY }}
-          #passphrase: ${{ secrets.PASSPHRASE }}
           port: 22
           script: |
             cd ${{ secrets.PWD }}/client
             sudo git pull https://${{ secrets.GIT_TOKEN }}:x-oauth-basic@github.com/allcll/frontend.git gh-dev-pages
             sudo systemctl reload nginx
-            # 필요한 cmd 명령어 사용
 
-
-  client-test:
-    runs-on: ubuntu-latest
-    needs: client-dev-deploy
-    timeout-minutes: 15
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-
-      - name: Install NPM packages
-        run: |
-          npm install -g pnpm
-          pnpm i --frozen-lockfile
-
-      - name: Install Playwright Browsers
-        run: |
-          cd ./packages/e2e
-          npx playwright install --with-deps
-      - name: Run Playwright tests
-        run: |
-          pnpm run test
-        env:
-          VITE_TEST_ENV: ${{ secrets.DEV_TEST_ENV }}
-          # Add any other environment variables needed for your tests here
-
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
-
-  admin-dev-cd:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: admin-development-files
-          path: admin
-
-      - name: Copy files to Server via SCP
+      - name: Copy Admin files to Server via SCP
         uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.DEV_SERVER_HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.DEV_SERVER_SSH_KEY }}
           port: 22
-          source: admin/*
-          target: ${{secrets.PWD}} # 원격 서버의 배포 경로
+          source: admin-development-files/*
+          target: ${{secrets.PWD}}/admin
+          strip_components: 1
 
-      - name: deploy - executing remote ssh commands using ssh key
+      - name: Reload Admin Nginx
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.DEV_SERVER_HOST }}
@@ -166,6 +121,11 @@ jobs:
           port: 22
           script: |
             sudo systemctl reload nginx
+
+  client-test:
+    runs-on: ubuntu-latest
+    needs: deploy
+    timeout-minutes: 15
 
 
 ### Deployment to Cloudfront

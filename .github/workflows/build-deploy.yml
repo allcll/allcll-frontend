@@ -91,11 +91,23 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: production-files
 
-  client-deploy:
+  deploy:
     runs-on: ubuntu-latest
     needs: build
 
     steps:
+      - name: Download Client Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: production-files
+          path: production-files
+
+      - name: Download Admin Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: admin-build-files
+          path: admin-dist
+
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@v1
         with:
@@ -108,27 +120,17 @@ jobs:
             cd ${{ secrets.PWD }}/frontend
             sudo git pull https://${{ secrets.GIT_TOKEN }}:x-oauth-basic@github.com/allcll/frontend.git gh-pages
             sudo systemctl reload nginx
-            # 필요한 cmd 명령어 사용
 
-  admin-deploy:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: admin-build-files
-          path: admin
-
-      - name: Copy files to Server via SCP
+      - name: Copy Admin files to Server via SCP
         uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.MAIN_SERVER_HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.MAIN_SERVER_SSH_KEY }}
           port: 22
-          source: admin/*
-          target: ${{secrets.PWD}} # 원격 서버의 배포 경로
+          source: admin-dist/*
+          target: ${{secrets.PWD}}/admin
+          strip_components: 1
 
       - name: deploy - executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@v1
