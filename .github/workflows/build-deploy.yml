@@ -8,6 +8,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  deployments: write
 
 # ssh 이용한 빌드 및 배포
 # Allow one concurrent deployment
@@ -83,6 +84,9 @@ jobs:
   client-deploy:
     runs-on: ubuntu-latest
     needs: client-build
+    environment:
+      name: production-client
+      url: https://allcll.kr
 
     steps:
       - name: executing remote ssh commands using ssh key
@@ -98,6 +102,24 @@ jobs:
             sudo git pull https://${{ secrets.GIT_TOKEN }}:x-oauth-basic@github.com/allcll/frontend.git gh-pages
             sudo systemctl reload nginx
             # 필요한 cmd 명령어 사용
+
+      - name: Deployment Report (Client)
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const status = '${{ job.status }}';
+            const getStatusEmoji = (s) => s === 'success' ? '✅' : '❌';
+            const body = `### 🚀 Client Production Deployment\n- **Status:** ${getStatusEmoji(status)} ${status}\n- **URL:** [https://allcll.kr](https://allcll.kr)\n- **Commit:** ${context.sha.substring(0, 7)}`;
+            core.summary.addRaw(body).write();
+            try {
+              await github.rest.repos.createCommitComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                commit_sha: context.sha,
+                body: body
+              });
+            } catch (e) {}
 
 ### Admin page 배포
 
@@ -137,6 +159,9 @@ jobs:
   admin-deploy:
     runs-on: ubuntu-latest
     needs: admin-build
+    environment:
+      name: production-admin
+      url: https://admin.allcll.kr
 
     steps:
       - uses: actions/download-artifact@v4
@@ -163,6 +188,24 @@ jobs:
           port: 22
           script: |
             sudo systemctl reload nginx
+
+      - name: Deployment Report (Admin)
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const status = '${{ job.status }}';
+            const getStatusEmoji = (s) => s === 'success' ? '✅' : '❌';
+            const body = `### 🚀 Admin Production Deployment\n- **Status:** ${getStatusEmoji(status)} ${status}\n- **URL:** [https://admin.allcll.kr](https://admin.allcll.kr)\n- **Commit:** ${context.sha.substring(0, 7)}`;
+            core.summary.addRaw(body).write();
+            try {
+              await github.rest.repos.createCommitComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                commit_sha: context.sha,
+                body: body
+              });
+            } catch (e) {}
 
 
 # cloudfront 배포
