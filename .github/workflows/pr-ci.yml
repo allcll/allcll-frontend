@@ -61,24 +61,16 @@ jobs:
           name: admin-dist
           path: packages/admin/dist
 
-  deploy-preview:
+  deploy-client-preview:
     if: github.event.action != 'closed'
     needs: build
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
     steps:
       - name: Download Client Artifact
         uses: actions/download-artifact@v4
         with:
           name: client-dist
           path: client-dist
-
-      - name: Download Admin Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: admin-dist
-          path: admin-dist
 
       - name: Deploy Client preview to server
         uses: appleboy/scp-action@v1
@@ -90,6 +82,26 @@ jobs:
           source: client-dist/*
           target: ${{ secrets.PWD }}/clients/pr-${{ github.event.pull_request.number }}
           strip_components: 1
+
+      - name: Reload Nginx
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEV_SERVER_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          port: 22
+          script: sudo systemctl reload nginx
+
+  deploy-admin-preview:
+    if: github.event.action != 'closed'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Admin Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: admin-dist
+          path: admin-dist
 
       - name: Deploy Admin preview to server
         uses: appleboy/scp-action@v1
@@ -111,6 +123,13 @@ jobs:
           port: 22
           script: sudo systemctl reload nginx
 
+  comment-preview:
+    if: github.event.action != 'closed'
+    needs: [deploy-client-preview, deploy-admin-preview]
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
       - name: Comment preview URL on PR
         uses: actions/github-script@v7
         env:

@@ -75,11 +75,21 @@ jobs:
           name: admin-build-files
           path: ./packages/admin/dist
 
+  client-gh-pages-deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download Client Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: production-files
+          path: production-files
+
       - name: Deploy Client to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./packages/client/build
+          publish_dir: production-files
 
   client-deploy:
     runs-on: ubuntu-latest
