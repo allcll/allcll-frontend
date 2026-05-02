@@ -8,6 +8,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  deployments: write
 
 # Allow one concurrent deployment
 concurrency:
@@ -64,6 +65,9 @@ jobs:
   client-dev-deploy:
     runs-on: ubuntu-latest
     needs: client-dev-ci
+    environment:
+      name: development
+      url: https://dev.allcll.kr
 
     steps:
       - name: executing remote ssh commands using ssh key
@@ -89,14 +93,6 @@ jobs:
             const getStatusEmoji = (s) => s === 'success' ? '✅' : '❌';
             const body = `### 🛠️ Client Development Deployment\n- **Status:** ${getStatusEmoji(status)} ${status}\n- **URL:** [https://dev.allcll.kr](https://dev.allcll.kr)\n- **Commit:** ${context.sha.substring(0, 7)}`;
             core.summary.addRaw(body).write();
-            try {
-              await github.rest.repos.createCommitComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                commit_sha: context.sha,
-                body: body
-              });
-            } catch (e) {}
 
 
   client-test:
@@ -173,6 +169,9 @@ jobs:
   admin-dev-cd:
     runs-on: ubuntu-latest
     needs: admin-dev-ci
+    environment:
+      name: development-admin
+      url: https://dev-admin.allcll.kr
 
     steps:
       - uses: actions/download-artifact@v4
@@ -209,14 +208,6 @@ jobs:
             const getStatusEmoji = (s) => s === 'success' ? '✅' : '❌';
             const body = `### 🛠️ Admin Development Deployment\n- **Status:** ${getStatusEmoji(status)} ${status}\n- **URL:** [https://dev-admin.allcll.kr](https://dev-admin.allcll.kr)\n- **Commit:** ${context.sha.substring(0, 7)}`;
             core.summary.addRaw(body).write();
-            try {
-              await github.rest.repos.createCommitComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                commit_sha: context.sha,
-                body: body
-              });
-            } catch (e) {}
 
 
 ### Deployment to Cloudfront

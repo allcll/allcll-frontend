@@ -85,6 +85,10 @@ jobs:
     permissions:
       pull-requests: write
       contents: write
+      deployments: write
+    environment:
+      name: preview/pr-${{ github.event.pull_request.number }}
+      url: https://dev.allcll.kr/pr-${{ github.event.pull_request.number }}/
     steps:
       - name: Download Client Artifact
         uses: actions/download-artifact@v4
@@ -196,15 +200,6 @@ jobs:
             ].join('\n');
             
             core.summary.addRaw(body).write();
-            
-            try {
-              await github.rest.repos.createCommitComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                commit_sha: context.sha,
-                body: body
-              });
-            } catch (e) {}
 
   cleanup-preview:
     if: github.event.action == 'closed' && github.event.pull_request.head.repo.full_name == github.repository
