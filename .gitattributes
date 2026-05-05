@@ -1,0 +1,4 @@
+# husky 셸 스크립트는 무조건 LF — Windows 팀원의 git config core.autocrlf=true 환경에서
+# CRLF 로 변환되면 sh 가 "bad interpreter" 로 죽는다.
+.husky/* text eol=lf
+*.sh text eol=lf
