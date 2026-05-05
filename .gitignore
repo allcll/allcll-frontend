@@ -26,3 +26,7 @@ dist-ssr
 
 # environment
 .env
+
+# Claude Code (개인용 설정만 무시, 팀 공통은 커밋)
+.claude/settings.local.json
+CLAUDE.local.md

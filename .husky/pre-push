@@ -1,0 +1,56 @@
+#!/usr/bin/env sh
+
+# pre-push hook
+# 푸시 전 빌드 검증으로 빌드 깨진 채로 push 되는 것을 막음.
+# pre-commit 에 빌드를 두지 않는 이유: 빌드가 30초~1분 걸려서 매 커밋마다 돌리면 부담이 큼.
+# pre-push 시점은 "다른 사람이 본다" 의 결정 지점이라 검증의 자연스러운 위치.
+
+# 변경 파일 가지치기 — push 되는 커밋들에 client/admin src 변경이 있을 때만 빌드
+# (단순 md/json 변경은 빌드 안 돌려도 됨)
+
+# 푸시 대상 브랜치와 비교해서 변경 파일 추출
+# remote 와 비교가 안 되는 경우 (첫 push 등) 최근 커밋 기준
+RANGE=$(git rev-list @{u}..HEAD 2>/dev/null | head -1)
+if [ -z "$RANGE" ]; then
+  CHANGED_FILES=$(git diff --name-only HEAD~5..HEAD 2>/dev/null || git diff --name-only HEAD)
+else
+  CHANGED_FILES=$(git diff --name-only @{u}..HEAD)
+fi
+
+NEED_CLIENT_BUILD=false
+NEED_ADMIN_BUILD=false
+
+if echo "$CHANGED_FILES" | grep -qE 'packages/client/src/.*\.(ts|tsx|js|jsx)$'; then
+  NEED_CLIENT_BUILD=true
+fi
+
+if echo "$CHANGED_FILES" | grep -qE 'packages/admin/src/.*\.(ts|tsx|js|jsx)$'; then
+  NEED_ADMIN_BUILD=true
+fi
+
+if [ "$NEED_CLIENT_BUILD" = true ]; then
+  echo "🔍 Client 빌드 검증 중..."
+  if ! pnpm run build-client; then
+    echo ""
+    echo "❌ Client 빌드 실패. 수정 후 다시 push 하세요."
+    echo "   (긴급한 경우 git push --no-verify 로 우회 가능, 다만 CI 가 잡을 것)"
+    exit 1
+  fi
+  echo "✅ Client 빌드 통과"
+fi
+
+if [ "$NEED_ADMIN_BUILD" = true ]; then
+  echo "🔍 Admin 빌드 검증 중..."
+  if ! pnpm run build-admin; then
+    echo ""
+    echo "❌ Admin 빌드 실패. 수정 후 다시 push 하세요."
+    exit 1
+  fi
+  echo "✅ Admin 빌드 통과"
+fi
+
+if [ "$NEED_CLIENT_BUILD" = false ] && [ "$NEED_ADMIN_BUILD" = false ]; then
+  echo "ℹ️  client/admin src 변경 없음 — 빌드 스킵"
+fi
+
+exit 0
