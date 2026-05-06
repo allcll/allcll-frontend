@@ -10,6 +10,7 @@ ALLCLL 프로젝트에 기여해주셔서 감사합니다.
   - 기능: `feature/브랜치명`
   - 버그 수정: `fix/브랜치명`
   - 리팩터링: `refactor/브랜치명`
+  - 잡무: `chore/브랜치명`
 - **PR Merge 옵션**
   - 일반 PR: `Squash and merge`
   - `main <- develop` 병합: `Create a merge commit`
