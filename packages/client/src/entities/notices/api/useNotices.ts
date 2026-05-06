@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchJsonOnPublic } from '@/shared/api/api';
+import { fetchJsonOnAPI } from '@/shared/api/api';
 import { type Notice, type NoticesResponse } from '../model/notice';
 
 export function useNotices() {
   return useQuery<NoticesResponse, Error, Notice[]>({
     queryKey: ['notices'],
-    queryFn: () => fetchJsonOnPublic<NoticesResponse>('/api/notices'),
+    queryFn: () => fetchJsonOnAPI<NoticesResponse>('/api/notices'),
     select: data => data.notices,
   });
 }
