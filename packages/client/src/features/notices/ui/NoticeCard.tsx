@@ -1,5 +1,5 @@
 import { Badge, Flex } from '@allcll/allcll-ui';
-import { type Notice, getNoticeLabel } from '@/entities/notices/model';
+import { type Notice, getNoticeLabel } from '@/entities/notices/model/notice';
 
 interface NoticeCardProps {
   notice: Notice;

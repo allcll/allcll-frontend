@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { type Notice } from '@/entities/notices/model';
+import { type Notice } from '@/entities/notices/model/notice';
 import NoticePanel from './NoticePanel';
 
 interface NoticeDropdownProps {

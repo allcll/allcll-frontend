@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { type Notice } from '@/entities/notices/model';
+import { type Notice } from '@/entities/notices/model/notice';
 import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
 import NoticePanel from './NoticePanel';
 

@@ -5,7 +5,7 @@ import remarkBreaks from 'remark-breaks';
 import { Badge, Button, Flex, IconButton } from '@allcll/allcll-ui';
 import CloseSvg from '@/assets/x.svg?react';
 import ChevronLeftSvg from '@/assets/chevron-left.svg?react';
-import { type Notice, getNoticeLabel } from '@/entities/notices/model';
+import { type Notice, getNoticeLabel } from '@/entities/notices/model/notice';
 import NoticeCard from './NoticeCard';
 import NoticeDetailModal from './NoticeDetailModal';
 

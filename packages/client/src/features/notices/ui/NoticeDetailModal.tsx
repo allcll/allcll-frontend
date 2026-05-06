@@ -4,7 +4,7 @@ import remarkBreaks from 'remark-breaks';
 import { createPortal } from 'react-dom';
 import { Badge, Flex, IconButton } from '@allcll/allcll-ui';
 import CloseSvg from '@/assets/x.svg?react';
-import { type Notice, getNoticeLabel } from '@/entities/notices/model';
+import { type Notice, getNoticeLabel } from '@/entities/notices/model/notice';
 
 interface NoticeDetailModalProps {
   notice: Notice;

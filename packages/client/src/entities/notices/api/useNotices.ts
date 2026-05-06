@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchJsonOnPublic } from '@/shared/api/api';
-import { type Notice, type NoticesResponse } from '../model';
+import { type Notice, type NoticesResponse } from '../model/notice';
 
 export function useNotices() {
   return useQuery<NoticesResponse, Error, Notice[]>({
