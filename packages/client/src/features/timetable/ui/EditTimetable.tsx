@@ -19,7 +19,7 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
   const timeTable = useScheduleState(state => state.currentTimetable);
   const currentSemester = useServiceSemester();
 
-  const [timeTableName, setTimeTableName] = useState(timeTable?.timeTableName ?? '');
+  const [timeTableName, setTimeTableName] = useState(type === 'edit' ? (timeTable?.timeTableName ?? '') : '');
 
   const [selectedSemester, setSelectedSemester] = useState(
     timeTable?.semesterCode ?? currentSemester.data?.semesterCode ?? '',
