@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  useCreateTimetable,
-  useDeleteTimetable,
-  useUpdateTimetable,
-} from '@/entities/timetable/api/useTimetableSchedules.ts';
+import { useCreateTimetable, useUpdateTimetable } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import useToastNotification from '@/features/notification/model/useToastNotification.ts';
 import { Button, Chip, Dialog, Grid, Label, TextField } from '@allcll/allcll-ui';
@@ -26,19 +22,9 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
   );
 
   const { mutate: updateTimetable } = useUpdateTimetable();
-  const { mutate: deleteTimetable } = useDeleteTimetable();
   const { mutate: createTimetable } = useCreateTimetable();
 
   const addToast = useToastNotification.getState().addToast;
-
-  const handleDeleteTimetable = () => {
-    if (type === 'edit' && timeTable) {
-      deleteTimetable(timeTable.timeTableId, {
-        onError: () => addToast('시간표 삭제에 실패했습니다. 다시 시도해주세요.', 'timetable-delete-error'),
-      });
-      onClose();
-    }
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,18 +97,6 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
           <Button type="submit" variant="primary" size="medium">
             저장
           </Button>
-
-          {timeTable && type === 'edit' && (
-            <Button
-              type="button"
-              variant="secondary"
-              textColor="secondary"
-              size="medium"
-              onClick={handleDeleteTimetable}
-            >
-              삭제
-            </Button>
-          )}
         </Dialog.Footer>
       </form>
     </Dialog>
