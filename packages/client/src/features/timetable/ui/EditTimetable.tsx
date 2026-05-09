@@ -16,10 +16,10 @@ interface IEditTimetable {
 }
 
 function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
-  const [timeTableName, setTimeTableName] = useState('');
-
   const timeTable = useScheduleState(state => state.currentTimetable);
   const currentSemester = useServiceSemester();
+
+  const [timeTableName, setTimeTableName] = useState(timeTable?.timeTableName ?? '');
 
   const [selectedSemester, setSelectedSemester] = useState(
     timeTable?.semesterCode ?? currentSemester.data?.semesterCode ?? '',
