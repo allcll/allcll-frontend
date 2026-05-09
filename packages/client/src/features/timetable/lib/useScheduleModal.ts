@@ -1,6 +1,7 @@
 // This hook is used to manage the schedule modal state and actions
 import React, { useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import useToastNotification from '@/features/notification/model/useToastNotification.ts';
 import {
   CustomSchedule,
   OfficialSchedule,
@@ -67,7 +68,7 @@ function useScheduleModal() {
     const prevSchedule = useScheduleState.getState().schedule;
     // state 변경 로직
 
-    let newSchedule = schedule instanceof Function ? schedule(prevSchedule) : schedule;
+    const newSchedule = schedule instanceof Function ? schedule(prevSchedule) : schedule;
     changeScheduleData(newSchedule);
   };
 
@@ -89,14 +90,14 @@ function useScheduleModal() {
     const isTimeslotValid = new TimeslotAdapter(prevSchedule.timeSlots).validate();
 
     if (!isTimeslotValid) {
-      alert('시작 시간이 종료 시간 보다 늦지 않아야 합니다.');
+      useToastNotification.getState().addToast('시작 시간이 종료 시간보다 늦지 않아야 합니다.', 'timeslot-validation');
       return;
     }
 
     const isSelectedDay = prevSchedule.timeSlots.length !== 0;
     const isCustom = prevSchedule.scheduleType === 'custom';
     if (isCustom && !isSelectedDay) {
-      alert('요일을 선택해주세요!.');
+      useToastNotification.getState().addToast('요일을 선택해주세요.', 'day-validation');
       return;
     }
 
@@ -106,9 +107,25 @@ function useScheduleModal() {
     if (mode === ScheduleMutateType.CREATE) {
       // 생성중인 Schedule 구분 용 - unique negative id 생성
       schedule.scheduleId = getUniqueNegativeId(globalPrevTimetable?.schedules ?? []);
-      createScheduleData({ schedule });
+      createScheduleData(
+        { schedule },
+        {
+          onError: () =>
+            useToastNotification
+              .getState()
+              .addToast('수업 추가에 실패했습니다. 다시 시도해주세요.', 'schedule-create-error'),
+        },
+      );
     } else if (mode === ScheduleMutateType.EDIT) {
-      updateScheduleData({ schedule });
+      updateScheduleData(
+        { schedule },
+        {
+          onError: () =>
+            useToastNotification
+              .getState()
+              .addToast('수업 수정에 실패했습니다. 다시 시도해주세요.', 'schedule-update-error'),
+        },
+      );
       changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);
     }
 
@@ -122,7 +139,15 @@ function useScheduleModal() {
     if (e) e.preventDefault();
 
     const schedule = new ScheduleAdapter(prevSchedule).toApiData();
-    deleteScheduleData({ schedule });
+    deleteScheduleData(
+      { schedule },
+      {
+        onError: () =>
+          useToastNotification
+            .getState()
+            .addToast('수업 삭제에 실패했습니다. 다시 시도해주세요.', 'schedule-delete-error'),
+      },
+    );
 
     // 모달 state 초기화
     changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);

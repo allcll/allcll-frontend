@@ -5,6 +5,7 @@ import {
   useUpdateTimetable,
 } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
+import useToastNotification from '@/features/notification/model/useToastNotification.ts';
 import { Button, Chip, Dialog, Grid, Label, TextField } from '@allcll/allcll-ui';
 import { SEMESTERS } from '@/entities/semester/api/semester.ts';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
@@ -28,9 +29,13 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
   const { mutate: deleteTimetable } = useDeleteTimetable();
   const { mutate: createTimetable } = useCreateTimetable();
 
+  const addToast = useToastNotification.getState().addToast;
+
   const handleDeleteTimetable = () => {
     if (type === 'edit' && timeTable) {
-      deleteTimetable(timeTable.timeTableId);
+      deleteTimetable(timeTable.timeTableId, {
+        onError: () => addToast('시간표 삭제에 실패했습니다. 다시 시도해주세요.', 'timetable-delete-error'),
+      });
       onClose();
     }
   };
@@ -39,15 +44,18 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
     e.preventDefault();
 
     if (timeTable && type === 'edit') {
-      updateTimetable({ timeTableId: timeTable.timeTableId, timeTableName: timeTableName });
+      updateTimetable(
+        { timeTableId: timeTable.timeTableId, timeTableName: timeTableName },
+        { onError: () => addToast('시간표 수정에 실패했습니다. 다시 시도해주세요.', 'timetable-update-error') },
+      );
       onClose();
       return;
     }
     if (type === 'create') {
-      createTimetable({
-        timeTableName: timeTableName,
-        semesterCode: selectedSemester,
-      });
+      createTimetable(
+        { timeTableName: timeTableName, semesterCode: selectedSemester },
+        { onError: () => addToast('시간표 생성에 실패했습니다. 다시 시도해주세요.', 'timetable-create-error') },
+      );
       onClose();
     }
   };
@@ -65,7 +73,7 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
 
   const handleTimetableSemester = (semesterCode: string) => {
     if (type === 'edit') {
-      alert('학기는 수정할 수 없습니다.');
+      addToast('학기는 수정할 수 없습니다.', 'semester-edit-warning');
       return;
     }
 

@@ -1,5 +1,6 @@
 import { TimetableType, useDeleteTimetable } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
+import useToastNotification from '@/features/notification/model/useToastNotification.ts';
 import { Button, Checkbox, Flex, Popover, SupportingText } from '@allcll/allcll-ui';
 
 interface TimetableSelectProps {
@@ -29,7 +30,12 @@ const TimetableSelect = ({ setIsOpenModal, openCreateModal, timetables, currentT
   };
 
   const handleTimetableDelete = (optionId: number) => {
-    deleteTimetable(optionId);
+    deleteTimetable(optionId, {
+      onError: () =>
+        useToastNotification
+          .getState()
+          .addToast('시간표 삭제에 실패했습니다. 다시 시도해주세요.', 'timetable-delete-error'),
+    });
   };
 
   if (!currentTimetable && timetables.length === 0) {

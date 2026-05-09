@@ -1,4 +1,4 @@
-import { getEmptyScheduleSlots, GeneralSchedule } from '@/entities/timetable/api/useTimetableSchedules.ts';
+import { useEmptyScheduleSlots, GeneralSchedule } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import XGraySvg from '@/assets/x-darkgray.svg?react';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import { Flex, IconButton } from '@allcll/allcll-ui';
@@ -8,7 +8,7 @@ interface IScheduleSlotList {
 }
 
 function ScheduleSlotList({ schedules }: IScheduleSlotList) {
-  const scheduleSlots = getEmptyScheduleSlots(schedules);
+  const scheduleSlots = useEmptyScheduleSlots(schedules);
 
   return (
     <Flex direction="flex-col" gap="gap-2" className="mt-3">

@@ -253,12 +253,7 @@ export function useCreateTimetable() {
       await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
     },
     onError: async error => {
-      try {
-        const e = JSON.parse(error.message);
-        alert(e.message);
-      } catch {
-        alert('Error adding Timetable');
-      }
+      console.error('시간표 생성 실패:', error);
       await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
     },
   });
@@ -466,7 +461,7 @@ function toGeneralSchedules(timetable: Timetable, subjects?: Subject[]): General
  * @param generalSchedules - Schedule 배열
  * @param minTime
  */
-export function getScheduleSlots(generalSchedules?: GeneralSchedule[], minTime = 9) {
+export function useScheduleSlots(generalSchedules?: GeneralSchedule[], minTime = 9) {
   const selectedSchedule = useScheduleState(state => state.schedule);
   const selectMode = useScheduleState(state => state.mode);
   const colors: ScheduleSlot['color'][] = ['rose', 'amber', 'green', 'emerald', 'blue', 'violet'];
@@ -575,7 +570,7 @@ export interface EmptyScheduleSlot extends GeneralSchedule {
 /** 시간표의 Timeslot이 비어있는 ScheduleSlot 을 가져오는 훅입니다.
  * @param generalSchedules - Schedule 배열
  */
-export function getEmptyScheduleSlots(generalSchedules?: GeneralSchedule[]): EmptyScheduleSlot[] {
+export function useEmptyScheduleSlots(generalSchedules?: GeneralSchedule[]): EmptyScheduleSlot[] {
   const schedule = useScheduleState(state => state.schedule);
   const mode = useScheduleState(state => state.mode);
 
