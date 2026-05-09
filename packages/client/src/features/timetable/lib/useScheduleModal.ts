@@ -124,7 +124,7 @@ function useScheduleModal() {
           onError: () =>
             useToastNotification
               .getState()
-              .addToast('수업 추가에 실패했습니다. 다시 시도해주세요.', 'schedule-create-error'),
+              .addToast('과목 추가에 실패했습니다. 다시 시도해주세요.', 'schedule-create-error'),
         },
       );
     } else if (mode === ScheduleMutateType.EDIT) {
@@ -134,7 +134,7 @@ function useScheduleModal() {
           onError: () =>
             useToastNotification
               .getState()
-              .addToast('수업 수정에 실패했습니다. 다시 시도해주세요.', 'schedule-update-error'),
+              .addToast('과목 수정에 실패했습니다. 다시 시도해주세요.', 'schedule-update-error'),
         },
       );
       changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);
@@ -156,7 +156,7 @@ function useScheduleModal() {
         onError: () =>
           useToastNotification
             .getState()
-            .addToast('수업 삭제에 실패했습니다. 다시 시도해주세요.', 'schedule-delete-error'),
+            .addToast('과목 삭제에 실패했습니다. 다시 시도해주세요.', 'schedule-delete-error'),
       },
     );
 
