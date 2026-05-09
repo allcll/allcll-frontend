@@ -105,6 +105,17 @@ function useScheduleModal() {
 
     // 생성 및 수정 로직
     if (mode === ScheduleMutateType.CREATE) {
+      if (prevSchedule.scheduleType === 'official') {
+        const timetableData = queryClient.getQueryData<Timetable>(['timetableData', timetableId]);
+        const isDuplicate = timetableData?.schedules.some(
+          s => s.scheduleType === 'official' && s.subjectId === prevSchedule.subjectId,
+        );
+        if (isDuplicate) {
+          useToastNotification.getState().addToast('이미 시간표에 추가된 과목입니다.', 'duplicate-subject');
+          return;
+        }
+      }
+
       // 생성중인 Schedule 구분 용 - unique negative id 생성
       schedule.scheduleId = getUniqueNegativeId(globalPrevTimetable?.schedules ?? []);
       createScheduleData(
