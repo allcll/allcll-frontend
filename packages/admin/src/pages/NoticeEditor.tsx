@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ArrowLeftSvg from '@/assets/arrow-left.svg?react';
 import SaveSvg from '@/assets/save.svg?react';
@@ -62,18 +62,15 @@ function NoticeEditor() {
     }
   };
 
-  const validate = () => {
+  const handleSave = () => {
+    if (isSaving) return;
     const errs: string[] = [];
     if (!title.trim()) errs.push('제목을 입력해주세요.');
     if (title.length > MAX_TITLE_LENGTH) errs.push(`제목은 ${MAX_TITLE_LENGTH}자를 초과할 수 없습니다.`);
     if (!content.trim()) errs.push('내용을 입력해주세요.');
     if (content.length > MAX_LENGTH) errs.push(`내용은 ${MAX_LENGTH.toLocaleString()}자를 초과할 수 없습니다.`);
     setErrors(errs);
-    return errs.length === 0;
-  };
-
-  const handleSave = useCallback(() => {
-    if (!validate()) return;
+    if (errs.length > 0) return;
     const payload = { title: title.trim(), content, operationType: category };
     if (isEditMode && numericId !== undefined) {
       updateNotice(payload, {
@@ -90,19 +87,22 @@ function NoticeEditor() {
         },
       });
     }
-  }, [title, content, category, isEditMode, numericId]);
+  };
+
+  const handleSaveRef = useRef(handleSave);
+  handleSaveRef.current = handleSave;
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const isMod = e.ctrlKey || e.metaKey;
       if (isMod && e.key === 'Enter') {
         e.preventDefault();
-        handleSave();
+        handleSaveRef.current();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleSave]);
+  }, []);
 
   const isOverLimit = content.length > MAX_LENGTH || title.length > MAX_TITLE_LENGTH;
 
