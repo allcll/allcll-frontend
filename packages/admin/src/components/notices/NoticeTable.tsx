@@ -22,7 +22,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
             <tr className="bg-gray-50 text-sm text-gray-500">
               <th className="text-left px-4 py-2 font-medium w-28">카테고리</th>
               <th className="text-left px-4 py-2 font-medium">제목</th>
-              <th className="text-left px-4 py-2 font-medium w-28">작성일</th>
+              <th className="text-left px-4 py-2 font-medium w-32">날짜</th>
               <th className="w-24" />
             </tr>
           </thead>
@@ -66,8 +66,13 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
                   >
                     {notice.title}
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-500">
-                    {notice.createdAt.slice(0, 10).replace(/-/g, '.')}
+                  <td className="px-4 py-3 text-sm text-gray-500 whitespace-nowrap">
+                    <div>{notice.updatedAt.slice(0, 10).replace(/-/g, '.')}</div>
+                    {notice.updatedAt !== notice.createdAt && (
+                      <div className="text-xs text-gray-400">
+                        작성 {notice.createdAt.slice(0, 10).replace(/-/g, '.')}
+                      </div>
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     <Flex align="items-center" gap="gap-1">

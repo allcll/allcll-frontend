@@ -14,12 +14,15 @@ function NoticeViewModal({ notice, onClose, onEdit }: Props) {
   return (
     <Dialog title={notice.title} onClose={onClose}>
       <Dialog.Content>
-        <Flex direction="flex-col" gap="gap-4" className="w-[640px] max-w-full">
+        <Flex direction="flex-col" gap="gap-4" className="w-160 max-w-full">
           <Flex align="items-center" gap="gap-2" className="text-xs text-gray-500">
             <Badge variant="primary" size="small">
               {CATEGORY_LABELS[notice.operationType]}
             </Badge>
-            <span>{notice.createdAt.slice(0, 10).replace(/-/g, '.')}</span>
+            <span>{notice.updatedAt.slice(0, 10).replace(/-/g, '.')}</span>
+            {notice.updatedAt !== notice.createdAt && (
+              <span className="text-gray-400">· 작성 {notice.createdAt.slice(0, 10).replace(/-/g, '.')}</span>
+            )}
           </Flex>
           <div className="prose max-w-none max-h-[60vh] overflow-y-auto pr-1">
             <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{notice.content}</ReactMarkdown>
