@@ -7,5 +7,6 @@ export function useNotices() {
     queryKey: ['notices'],
     queryFn: () => fetchJsonOnAPI<NoticesResponse>('/api/notices'),
     select: data => data.notices,
+    staleTime: 1000 * 60 * 5,
   });
 }

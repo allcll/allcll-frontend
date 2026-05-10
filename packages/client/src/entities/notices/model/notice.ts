@@ -1,8 +1,18 @@
+export type OperationType =
+  | 'ALL'
+  | 'TIMETABLE'
+  | 'BASKETS'
+  | 'SIMULATION'
+  | 'LIVE'
+  | 'PRESEAT'
+  | 'GRADUATION'
+  | 'REVIEW';
+
 export interface Notice {
   id: number;
   title: string;
   content: string;
-  operationType: string;
+  operationType: OperationType;
   createdAt: string;
 }
 
@@ -10,7 +20,7 @@ export interface NoticesResponse {
   notices: Notice[];
 }
 
-export const NOTICE_TYPE_LABEL: Record<string, string> = {
+export const NOTICE_TYPE_LABEL: Record<OperationType, string> = {
   ALL: '전체',
   TIMETABLE: '시간표',
   BASKETS: '관심과목',
@@ -21,6 +31,6 @@ export const NOTICE_TYPE_LABEL: Record<string, string> = {
   REVIEW: '후기',
 };
 
-export function getNoticeLabel(operationType: string) {
-  return NOTICE_TYPE_LABEL[operationType] ?? operationType;
+export function getNoticeLabel(operationType: OperationType): string {
+  return NOTICE_TYPE_LABEL[operationType];
 }
