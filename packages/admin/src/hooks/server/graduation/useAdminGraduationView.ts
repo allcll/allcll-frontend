@@ -50,14 +50,19 @@ interface CategoryProgress {
   satisfied: boolean;
 }
 
+type EnglishTargetType = 'ENGLISH_MAJOR' | 'NON_MAJOR' | 'EXEMPT';
+type CodingTargetType = 'CODING_MAJOR' | 'NON_MAJOR' | 'EXEMPT';
+
 interface EnglishCertification {
   isPassed: boolean;
   isRequired: boolean;
+  targetType: EnglishTargetType;
 }
 
 interface CodingCertification {
   isPassed: boolean;
   isRequired: boolean;
+  targetType: CodingTargetType;
 }
 
 interface ClassicDomain {
@@ -75,7 +80,13 @@ interface ClassicCertification {
   domains: ClassicDomain[];
 }
 
+interface CertificationPolicy {
+  ruleType: string;
+  requiredPassCount: number;
+}
+
 interface Certifications {
+  policy: CertificationPolicy;
   isSatisfied: boolean;
   passedCount: number;
   requiredPassCount: number;
@@ -114,8 +125,8 @@ interface CriteriaCategoriesContext {
   majorType: string;
   primaryDeptCd: string;
   primaryDeptNm: string;
-  doubleDeptCd: string;
-  doubleDeptNm: string;
+  doubleDeptCd: string | null;
+  doubleDeptNm: string | null;
 }
 
 export interface MissingCourse {
