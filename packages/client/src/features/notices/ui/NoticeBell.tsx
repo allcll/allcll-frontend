@@ -1,8 +1,7 @@
 import { useRef, useState, useCallback } from 'react';
-
-const MOBILE_BREAKPOINT = 768;
 import AlarmSvg from '@/assets/alarm.svg?react';
 import { useNotices } from '@/entities/notices/api/useNotices';
+import useMobile from '@/shared/lib/useMobile';
 import { useNoticeRead } from '../lib/useNoticeRead';
 import NoticeDropdown from './NoticeDropdown';
 import NoticeMobileView from './NoticeMobileView';
@@ -10,17 +9,14 @@ import NoticeMobileView from './NoticeMobileView';
 function NoticeBell() {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useMobile();
 
   const { data: notices = [] } = useNotices();
   const { isRead, markAsRead } = useNoticeRead();
 
   const hasNew = notices.some(n => !isRead(n));
 
-  const toggle = () => {
-    setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
-    setIsOpen(prev => !prev);
-  };
+  const toggle = () => setIsOpen(prev => !prev);
   const close = useCallback(() => setIsOpen(false), []);
 
   return (
