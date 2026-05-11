@@ -12,8 +12,8 @@ import NoticeDetailModal from './NoticeDetailModal';
 interface NoticePanelProps {
   notices: Notice[];
   isMobile?: boolean;
-  isRead: (id: number) => boolean;
-  onRead: (id: number) => void;
+  isRead: (notice: Notice) => boolean;
+  onRead: (notice: Notice) => void;
   onClose: () => void;
 }
 
@@ -21,7 +21,7 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
   const [selectedNotice, setSelectedNotice] = useState<Notice | null>(null);
 
   const handleCardClick = (notice: Notice) => {
-    onRead(notice.id);
+    onRead(notice);
     setSelectedNotice(notice);
   };
 
@@ -66,7 +66,7 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
           </Flex>
         ) : (
           notices.map(notice => (
-            <NoticeCard key={notice.id} notice={notice} isRead={isRead(notice.id)} onClick={handleCardClick} />
+            <NoticeCard key={notice.id} notice={notice} isRead={isRead(notice)} onClick={handleCardClick} />
           ))
         )}
       </div>

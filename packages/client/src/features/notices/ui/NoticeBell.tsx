@@ -15,7 +15,7 @@ function NoticeBell() {
   const { data: notices = [] } = useNotices();
   const { isRead, markAsRead } = useNoticeRead();
 
-  const hasNew = notices.some(n => !isRead(n.id));
+  const hasNew = notices.some(n => !isRead(n));
 
   const toggle = () => {
     setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);

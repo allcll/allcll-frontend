@@ -7,8 +7,8 @@ interface NoticeDropdownProps {
   notices: Notice[];
   isOpen: boolean;
   triggerRef: React.RefObject<HTMLButtonElement | null>;
-  isRead: (id: number) => boolean;
-  onRead: (id: number) => void;
+  isRead: (notice: Notice) => boolean;
+  onRead: (notice: Notice) => void;
   onClose: () => void;
 }
 

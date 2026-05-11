@@ -14,6 +14,7 @@ export interface Notice {
   content: string;
   operationType: OperationType;
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface NoticesResponse {

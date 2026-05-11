@@ -7,8 +7,8 @@ import NoticePanel from './NoticePanel';
 interface NoticeMobileViewProps {
   notices: Notice[];
   isOpen: boolean;
-  isRead: (id: number) => boolean;
-  onRead: (id: number) => void;
+  isRead: (notice: Notice) => boolean;
+  onRead: (notice: Notice) => void;
   onClose: () => void;
 }
 

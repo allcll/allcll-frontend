@@ -1,33 +1,35 @@
 import { useState, useCallback } from 'react';
+import { type Notice } from '@/entities/notices/model/notice';
 
 const STORAGE_KEY = 'allcll-read-notices';
 
-function getReadIds(): Set<number> {
+type ReadMap = Record<number, string>;
+
+function getReadMap(): ReadMap {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? new Set(JSON.parse(stored) as number[]) : new Set();
+    return stored ? (JSON.parse(stored) as ReadMap) : {};
   } catch {
-    return new Set();
+    return {};
   }
 }
 
-function saveReadIds(ids: Set<number>) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify([...ids]));
+function saveReadMap(map: ReadMap) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(map));
 }
 
 export function useNoticeRead() {
-  const [readIds, setReadIds] = useState<Set<number>>(getReadIds);
+  const [readMap, setReadMap] = useState<ReadMap>(getReadMap);
 
-  const markAsRead = useCallback((id: number) => {
-    setReadIds(prev => {
-      const next = new Set(prev);
-      next.add(id);
-      saveReadIds(next);
+  const markAsRead = useCallback((notice: Notice) => {
+    setReadMap(prev => {
+      const next = { ...prev, [notice.id]: notice.updatedAt };
+      saveReadMap(next);
       return next;
     });
   }, []);
 
-  const isRead = (id: number) => readIds.has(id);
+  const isRead = (notice: Notice) => readMap[notice.id] === notice.updatedAt;
 
   return { isRead, markAsRead };
 }
