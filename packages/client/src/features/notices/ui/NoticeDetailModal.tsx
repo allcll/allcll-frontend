@@ -25,7 +25,12 @@ function NoticeDetailModal({ notice, onClose }: Readonly<NoticeDetailModalProps>
         aria-label="모달 닫기"
         onClick={onClose}
       />
-      <div className="relative z-10 bg-white rounded-xl shadow-xl w-full max-w-3xl max-h-[80vh] flex flex-col overflow-hidden">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="notice-detail-title"
+        className="relative z-10 bg-white rounded-xl shadow-xl w-full max-w-3xl max-h-[80vh] flex flex-col overflow-hidden"
+      >
         <Flex align="items-center" justify="justify-between" className="px-5 py-4 border-b border-gray-100">
           <Flex align="items-center" gap="gap-2">
             <Badge variant="primary" size="small">
@@ -37,7 +42,9 @@ function NoticeDetailModal({ notice, onClose }: Readonly<NoticeDetailModalProps>
         </Flex>
 
         <div className="px-5 py-4 overflow-y-auto">
-          <h2 className="text-base font-semibold text-gray-900 mb-4">{notice.title}</h2>
+          <h2 id="notice-detail-title" className="text-base font-semibold text-gray-900 mb-4">
+            {notice.title}
+          </h2>
           <div className="prose max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{notice.content}</ReactMarkdown>
           </div>
