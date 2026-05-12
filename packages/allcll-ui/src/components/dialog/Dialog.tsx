@@ -23,7 +23,7 @@ function DialogMain({ children, isOpen = true, title, onClose }: IDialogMain) {
     if (!dialog) return;
 
     if (isOpen) {
-      dialog.show();
+      dialog.showModal();
     } else {
       dialog.close();
     }

@@ -1,4 +1,5 @@
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { createPortal } from 'react-dom';
 import CloseSvg from '@/assets/x-gray.svg?react';
 import AlarmSvg from '@/assets/alarm.svg?react';
 import useToastNotification, { IToastMessage } from '../model/useToastNotification';
@@ -6,8 +7,9 @@ import useToastNotification, { IToastMessage } from '../model/useToastNotificati
 function ToastNotification() {
   const messages = useToastNotification(state => state.messages);
   const closeToast = useToastNotification(state => state.clearToast);
+  const portalTarget = getToastPortalTarget();
 
-  return (
+  return createPortal(
     <div className="fixed top-2 right-2 z-400 max-w-screen">
       <TransitionGroup className="flex gap-2 flex-col-reverse">
         {messages.slice(-3).map((message, index) => (
@@ -16,7 +18,8 @@ function ToastNotification() {
           </CSSTransition>
         ))}
       </TransitionGroup>
-    </div>
+    </div>,
+    portalTarget,
   );
 }
 
@@ -38,3 +41,8 @@ function Toast({ toast, closeToast }: IToast) {
 }
 
 export default ToastNotification;
+
+function getToastPortalTarget() {
+  const openedDialogs = document.querySelectorAll<HTMLDialogElement>('dialog[open]');
+  return openedDialogs[openedDialogs.length - 1] ?? document.body;
+}
