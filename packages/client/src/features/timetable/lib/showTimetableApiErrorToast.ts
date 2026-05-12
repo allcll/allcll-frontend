@@ -20,7 +20,7 @@ export function showTimetableApiErrorToast(error: unknown, options: ShowTimetabl
 
 function getTimetableApiErrorMessage(error: unknown) {
   if (error instanceof TypeError) {
-    return '인터넷 연결을 확인해주세요. 네트워크 상태를 확인 후 다시 시도해주세요.';
+    return '네트워크 상태를 확인 후 다시 시도해주세요.';
   }
 
   if (!(error instanceof Error)) return null;
