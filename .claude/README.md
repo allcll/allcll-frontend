@@ -14,7 +14,7 @@
 │   └── simulation.md           # 시뮬레이션 도메인 (simulation/ 작업 시)
 └── skills/                     # 팀 공통 슬래시 커맨드
     ├── review/SKILL.md         # /review — PR 셀프 리뷰
-    ├── new-slice/SKILL.md      # /new-slice — FSD 슬라이스 스캐폴딩
+    ├── new-api/SKILL.md        # /new-api — entities 슬라이스 API 함수 + RQ 훅 스캐폴딩
     └── pr-ready/SKILL.md       # /pr-ready — PR 직전 종합 검증
 ```
 

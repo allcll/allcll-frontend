@@ -67,7 +67,7 @@ git diff --name-only HEAD | grep -E '^packages/(allcll-ui|sejong-ui)/(src|index\
 - `widgets/**` 안의 파일이 `from '@/pages/` 를 import → ❌
 - `shared/**` 안의 파일이 `from '@/(entities|features|widgets|pages)/` 를 import → ❌
 
-기존 위반 7건(`.claude/rules/fsd-architecture.md` 표 참조)은 *신규 위반이 아닌 한* 무시. 변경 파일 라인이 그 7건 중 하나면 ⚠️ (점진 개선 대상이라 안내만).
+기존 위반 목록은 `.claude/rules/fsd-architecture.md` 의 *"알려진 위반 사례"* 표를 단일 출처로 사용. 그 표의 항목은 *신규 위반이 아닌 한* 무시 — 변경 파일 라인이 표에 있으면 ⚠️ (점진 개선 대상이라 안내만), 표에 없는 새 위반이면 ❌.
 
 #### 규칙 5 — 빌드 실패 상태 커밋 금지
 

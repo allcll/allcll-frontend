@@ -9,10 +9,15 @@
 # (단순 md/json 변경은 빌드 안 돌려도 됨)
 
 # 푸시 대상 브랜치와 비교해서 변경 파일 추출
-# remote 와 비교가 안 되는 경우 (첫 push 등) 최근 커밋 기준
+# remote 와 비교가 안 되는 경우 (첫 push 등) develop/main merge-base 기준
 RANGE=$(git rev-list @{u}..HEAD 2>/dev/null | head -1)
 if [ -z "$RANGE" ]; then
-  CHANGED_FILES=$(git diff --name-only HEAD~5..HEAD 2>/dev/null || git diff --name-only HEAD)
+  BASE=$(git merge-base HEAD develop 2>/dev/null || git merge-base HEAD main 2>/dev/null)
+  if [ -n "$BASE" ]; then
+    CHANGED_FILES=$(git diff --name-only "$BASE"..HEAD)
+  else
+    CHANGED_FILES=$(git diff --name-only HEAD)
+  fi
 else
   CHANGED_FILES=$(git diff --name-only @{u}..HEAD)
 fi
@@ -20,11 +25,14 @@ fi
 NEED_CLIENT_BUILD=false
 NEED_ADMIN_BUILD=false
 
-if echo "$CHANGED_FILES" | grep -qE 'packages/client/src/.*\.(ts|tsx|js|jsx)$'; then
+# client 빌드 트리거 — client/src 또는 워크스페이스 import 대상인 common 변경 시
+# (common 은 @allcll/common 으로 워크스페이스 import 됨. src/ 외에 진입점 index.ts 도 포함)
+if echo "$CHANGED_FILES" | grep -qE 'packages/client/src/.*\.(ts|tsx|js|jsx)$|packages/common/(src/.*\.(ts|tsx|js|jsx)|index\.ts)$'; then
   NEED_CLIENT_BUILD=true
 fi
 
-if echo "$CHANGED_FILES" | grep -qE 'packages/admin/src/.*\.(ts|tsx|js|jsx)$'; then
+# admin 빌드 트리거 — admin/src 또는 common 변경 시
+if echo "$CHANGED_FILES" | grep -qE 'packages/admin/src/.*\.(ts|tsx|js|jsx)$|packages/common/(src/.*\.(ts|tsx|js|jsx)|index\.ts)$'; then
   NEED_ADMIN_BUILD=true
 fi
 
