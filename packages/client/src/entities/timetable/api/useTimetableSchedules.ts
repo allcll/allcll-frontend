@@ -197,7 +197,13 @@ export function useDeleteTimetable() {
 
   return useMutation({
     mutationFn: async (timeTableId: number) => {
-      return await fetchOnAPI(`/api/timetables/${timeTableId}`, { method: 'DELETE' });
+      const response = await fetchOnAPI(`/api/timetables/${timeTableId}`, { method: 'DELETE' });
+
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+
+      return response;
     },
     onMutate: async (timeTableId: number) => {
       await queryClient.cancelQueries({ queryKey: ['timetableList'] });

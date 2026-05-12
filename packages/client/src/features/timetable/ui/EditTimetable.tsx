@@ -5,6 +5,7 @@ import useToastNotification from '@/features/notification/model/useToastNotifica
 import { Button, Chip, Dialog, Grid, Label, TextField } from '@allcll/allcll-ui';
 import { SEMESTERS } from '@/entities/semester/api/semester.ts';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
+import { showTimetableApiErrorToast } from '../lib/showTimetableApiErrorToast';
 
 interface IEditTimetable {
   onClose: () => void;
@@ -32,7 +33,13 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
     if (timeTable && type === 'edit') {
       updateTimetable(
         { timeTableId: timeTable.timeTableId, timeTableName: timeTableName },
-        { onError: () => addToast('시간표 수정에 실패했습니다. 다시 시도해주세요.', 'timetable-update-error') },
+        {
+          onError: error =>
+            showTimetableApiErrorToast(error, {
+              fallbackMessage: '시간표 수정에 실패했습니다. 다시 시도해주세요.',
+              tag: 'timetable-update-error',
+            }),
+        },
       );
       onClose();
       return;
@@ -40,7 +47,13 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
     if (type === 'create') {
       createTimetable(
         { timeTableName: timeTableName, semesterCode: selectedSemester },
-        { onError: () => addToast('시간표 생성에 실패했습니다. 다시 시도해주세요.', 'timetable-create-error') },
+        {
+          onError: error =>
+            showTimetableApiErrorToast(error, {
+              fallbackMessage: '시간표 생성에 실패했습니다. 다시 시도해주세요.',
+              tag: 'timetable-create-error',
+            }),
+        },
       );
       onClose();
     }

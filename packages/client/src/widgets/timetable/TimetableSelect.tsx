@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { TimetableType, useDeleteTimetable } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
-import useToastNotification from '@/features/notification/model/useToastNotification.ts';
 import { Button, Checkbox, Flex, Popover, SupportingText, usePopoverContext } from '@allcll/allcll-ui';
 import ConfirmDialog from '@/shared/ui/ConfirmDialog.tsx';
+import { showTimetableApiErrorToast } from '@/features/timetable/lib/showTimetableApiErrorToast';
 
 function TimetableActions({ onEdit, onDelete }: { onEdit: () => void; onDelete: () => void }) {
   const { close } = usePopoverContext();
@@ -69,10 +69,11 @@ const TimetableSelect = ({ setIsOpenModal, openCreateModal, timetables, currentT
   const confirmTimetableDelete = () => {
     if (pendingDeleteId === null) return;
     deleteTimetable(pendingDeleteId, {
-      onError: () =>
-        useToastNotification
-          .getState()
-          .addToast('시간표 삭제에 실패했습니다. 다시 시도해주세요.', 'timetable-delete-error'),
+      onError: error =>
+        showTimetableApiErrorToast(error, {
+          fallbackMessage: '시간표 삭제에 실패했습니다. 다시 시도해주세요.',
+          tag: 'timetable-delete-error',
+        }),
     });
     setPendingDeleteId(null);
   };

@@ -15,6 +15,7 @@ import { ScheduleMutateType, useScheduleState } from '@/features/timetable/model
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
+import { showTimetableApiErrorToast } from './showTimetableApiErrorToast';
 
 const getInitCustomSchedule = () => new ScheduleAdapter().toUiData();
 let globalPrevTimetable: Timetable | undefined = undefined;
@@ -90,7 +91,7 @@ function useScheduleModal() {
     const isTimeslotValid = new TimeslotAdapter(prevSchedule.timeSlots).validate();
 
     if (!isTimeslotValid) {
-      useToastNotification.getState().addToast('시작 시간이 종료 시간보다 늦지 않아야 합니다.', 'timeslot-validation');
+      useToastNotification.getState().addToast('종료 시간은 시작 시간보다 늦어야 합니다.', 'timeslot-validation');
       return;
     }
 
@@ -121,20 +122,22 @@ function useScheduleModal() {
       createScheduleData(
         { schedule },
         {
-          onError: () =>
-            useToastNotification
-              .getState()
-              .addToast('과목 추가에 실패했습니다. 다시 시도해주세요.', 'schedule-create-error'),
+          onError: error =>
+            showTimetableApiErrorToast(error, {
+              fallbackMessage: '과목 추가에 실패했습니다. 다시 시도해주세요.',
+              tag: 'schedule-create-error',
+            }),
         },
       );
     } else if (mode === ScheduleMutateType.EDIT) {
       updateScheduleData(
         { schedule },
         {
-          onError: () =>
-            useToastNotification
-              .getState()
-              .addToast('과목 수정에 실패했습니다. 다시 시도해주세요.', 'schedule-update-error'),
+          onError: error =>
+            showTimetableApiErrorToast(error, {
+              fallbackMessage: '과목 수정에 실패했습니다. 다시 시도해주세요.',
+              tag: 'schedule-update-error',
+            }),
         },
       );
       changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);
@@ -153,10 +156,11 @@ function useScheduleModal() {
     deleteScheduleData(
       { schedule },
       {
-        onError: () =>
-          useToastNotification
-            .getState()
-            .addToast('과목 삭제에 실패했습니다. 다시 시도해주세요.', 'schedule-delete-error'),
+        onError: error =>
+          showTimetableApiErrorToast(error, {
+            fallbackMessage: '과목 삭제에 실패했습니다. 다시 시도해주세요.',
+            tag: 'schedule-delete-error',
+          }),
       },
     );
 
