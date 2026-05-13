@@ -62,7 +62,15 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
                   </td>
                   <td
                     className="px-4 py-3 text-sm text-gray-900 truncate cursor-pointer hover:text-blue-500 transition-colors"
+                    role="button"
+                    tabIndex={0}
                     onClick={() => onView(notice)}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        onView(notice);
+                      }
+                    }}
                   >
                     {notice.title}
                   </td>
