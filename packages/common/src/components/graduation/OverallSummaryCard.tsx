@@ -1,14 +1,22 @@
 import { Card, Flex, Badge, SupportingText } from '@allcll/allcll-ui';
-import CircleCheckIcon from '@/assets/circle-check.svg?react';
-import CircleXIcon from '@/assets/circle-x.svg?react';
+import type { GraduationCheckData } from '../../types/graduation';
+import { isGeneralSatisfied, isMajorSatisfied } from '../../lib/graduation/rules';
+import CircleCheckIcon from '../../assets/circle-check.svg?react';
+import CircleXIcon from '../../assets/circle-x.svg?react';
 import ProgressDoughnut from './ProgressDoughnut';
-import type { GraduationCheckData } from '@/entities/graduation/api/graduation';
-import type { UserResponse } from '@/entities/user/model/types';
-import { isMajorSatisfied, isGeneralSatisfied } from '@/entities/graduation/lib/rules';
+
+export interface GraduationUserProfile {
+  name: string;
+  studentId: string;
+  collegeName: string;
+  deptName: string;
+  doubleCollegeName: string | null;
+  doubleDeptName: string | null;
+}
 
 interface OverallSummaryCardProps {
-  user: UserResponse;
-  graduationData: GraduationCheckData;
+  user: GraduationUserProfile;
+  checkData: GraduationCheckData;
 }
 
 interface StatusIconProps {
@@ -16,7 +24,7 @@ interface StatusIconProps {
   label: string;
 }
 
-function StatusIcon({ passed, label }: StatusIconProps) {
+function StatusIcon({ passed, label }: Readonly<StatusIconProps>) {
   return (
     <Flex direction="flex-col" align="items-center" gap="gap-2" className="md:flex-row">
       <div className={passed ? 'text-primary-500' : 'text-gray-400'}>
@@ -27,8 +35,8 @@ function StatusIcon({ passed, label }: StatusIconProps) {
   );
 }
 
-function OverallSummaryCard({ user, graduationData }: OverallSummaryCardProps) {
-  const { summary, categories, certifications } = graduationData;
+function OverallSummaryCard({ user, checkData }: Readonly<OverallSummaryCardProps>) {
+  const { summary, categories, certifications } = checkData;
 
   const majorPassed = isMajorSatisfied(categories);
   const generalPassed = isGeneralSatisfied(categories);
@@ -37,17 +45,16 @@ function OverallSummaryCard({ user, graduationData }: OverallSummaryCardProps) {
   return (
     <Card variant="outlined" className="p-6 md:p-10">
       <Flex direction="flex-col" gap="gap-4" className="md:flex-row md:justify-between md:items-center">
-        {/* 왼쪽: 텍스트 정보 */}
         <Flex direction="flex-col" gap="gap-3" className="md:flex-1">
           <Flex align="items-center" gap="gap-3">
             <SupportingText>전체 진행률</SupportingText>
-            <Badge variant={graduationData.isGraduatable ? 'success' : 'warning'}>
-              {graduationData.isGraduatable ? '졸업 가능' : '진행 중'}
+            <Badge variant={checkData.isGraduatable ? 'success' : 'warning'}>
+              {checkData.isGraduatable ? '졸업 가능' : '진행 중'}
             </Badge>
           </Flex>
 
           <div>
-            {graduationData.isGraduatable ? (
+            {checkData.isGraduatable ? (
               <p className="text-xl md:text-2xl font-bold">
                 졸업 요건 <span className="text-primary-500">ALLCLL</span>
               </p>
@@ -77,21 +84,20 @@ function OverallSummaryCard({ user, graduationData }: OverallSummaryCardProps) {
             <Flex gap="gap-2">
               <span className="text-gray-500 w-16 shrink-0">학과</span>
               <span>
-                {user.deptName}({user.collegeName})
+                {user.deptName} ({user.collegeName})
               </span>
             </Flex>
             {user.doubleDeptName && (
               <Flex gap="gap-2">
                 <span className="text-gray-500 w-16 shrink-0">복수전공</span>
                 <span>
-                  {user.doubleDeptName}({user.doubleCollegeName})
+                  {user.doubleDeptName} ({user.doubleCollegeName})
                 </span>
               </Flex>
             )}
           </Flex>
         </Flex>
 
-        {/* 오른쪽: 상태 아이콘 + 도넛 */}
         <Flex direction="flex-col" className="md:flex-row md:items-center md:gap-24">
           <Flex justify="justify-between" className="md:flex-col md:gap-6 py-4 px-5 md:p-0">
             <StatusIcon passed={majorPassed} label="전공" />

@@ -1,11 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { Flex, Chip, ListboxOption } from '@allcll/allcll-ui';
-import { useGraduationCourses } from '@/entities/graduation/model/useGraduation';
-import type { CategoryType, GraduationCourse } from '@/entities/graduation/api/graduation';
-import { CATEGORY_TYPE_LABELS } from '../../lib/mappers';
-import { COURSE_CATEGORY_ORDER } from '@/entities/graduation/lib/rules';
-import CheckSvg from '@/assets/checkbox-blue.svg?react';
-import ArrowDownSvg from '@/assets/arrow-down-gray.svg?react';
+import type { CategoryType, GraduationCourse } from '../../types/graduation';
+import { CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
+import { COURSE_CATEGORY_ORDER } from '../../lib/graduation/rules';
+import ArrowDownSvg from '../../assets/arrow-down-gray.svg?react';
+import CheckSvg from '../../assets/checkbox-blue.svg?react';
+
+interface EarnedCoursesSectionProps {
+  courses: GraduationCourse[];
+}
 
 function getUniqueCategories(courses: GraduationCourse[]): CategoryType[] {
   const existingCategories = new Set(courses.map(course => course.categoryType));
@@ -42,9 +45,8 @@ function CourseRow({ course }: Readonly<{ course: GraduationCourse }>) {
   );
 }
 
-function EarnedCoursesSection() {
+function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) {
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isPending, isError } = useGraduationCourses();
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | '전체'>('전체');
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
@@ -67,7 +69,6 @@ function EarnedCoursesSection() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isSelectOpen]);
 
-  const courses = data?.courses ?? [];
   const categories = getUniqueCategories(courses);
   const visibleCourses = filterCourses(courses, selectedCategory);
   const earnedCourses = visibleCourses.filter(course => course.isEarned);
@@ -82,30 +83,26 @@ function EarnedCoursesSection() {
   return (
     <div className="border border-gray-200 rounded-lg bg-white">
       <button
+        type="button"
         onClick={() => setIsOpen(prev => !prev)}
-        className={`w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors ${isOpen ? 'rounded-t-lg' : 'rounded-lg'}`}
+        aria-expanded={isOpen}
+        className={`w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors ${
+          isOpen ? 'rounded-t-lg' : 'rounded-lg'
+        }`}
       >
         <span className="text-sm font-medium text-gray-700">내 이수 과목</span>
         <ArrowDownSvg
           className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          aria-hidden="true"
         />
       </button>
 
       {isOpen && (
         <div className="border-t border-gray-100 px-4 pb-4">
           <Flex direction="flex-col" gap="gap-3" className="pt-3">
-            {isPending && (
-              <p className="text-sm text-gray-400 text-center py-4">불러오는 중...</p>
-            )}
-            {isError && (
-              <p className="text-sm text-secondary-500 text-center py-4">
-                이수 과목 정보를 불러올 수 없습니다.
-              </p>
-            )}
-            {!isPending && !isError && courses.length === 0 && (
+            {courses.length === 0 ? (
               <p className="text-sm text-gray-400 text-center py-4">이수 과목 정보가 없습니다.</p>
-            )}
-            {courses.length > 0 && (
+            ) : (
               <>
                 <Flex align="items-center" justify="justify-between" gap="gap-3">
                   <div ref={selectRef} className="relative">
@@ -117,7 +114,7 @@ function EarnedCoursesSection() {
                       onClick={() => setIsSelectOpen(prev => !prev)}
                     />
                     {isSelectOpen && (
-                      <div className="absolute z-10 mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto min-w-[120px]">
+                      <div className="absolute z-10 mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto min-w-30">
                         {categoryOptions.map(option => (
                           <ListboxOption
                             key={option.value}

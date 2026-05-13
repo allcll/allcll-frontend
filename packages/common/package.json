@@ -11,9 +11,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@allcll/allcll-ui": "workspace:^",
+    "chart.js": "^4.5.0",
+    "react-chartjs-2": "^5.3.0",
     "react-transition-group": "^4.4.5",
-    "zustand": "^5.0.6",
-    "@allcll/allcll-ui": "workspace:^"
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@types/react-transition-group": "^4.4.12"

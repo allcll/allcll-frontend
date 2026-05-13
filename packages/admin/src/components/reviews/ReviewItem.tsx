@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Badge, Flex, IconButton, SupportingText } from '@allcll/allcll-ui';
 import { Review, OPERATION_TYPE_LABEL, MAX_RATE } from '@/hooks/server/useAdminReviews';
 import CiIcon from '@/assets/ci-icon.svg?react';
@@ -8,7 +9,8 @@ interface ReviewItemProps {
   review: Review;
 }
 
-function ReviewItem({ review }: ReviewItemProps) {
+function ReviewItem({ review }: Readonly<ReviewItemProps>) {
+  const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isClamped, setIsClamped] = useState(false);
   const detailRef = useRef<HTMLParagraphElement>(null);
@@ -19,12 +21,24 @@ function ReviewItem({ review }: ReviewItemProps) {
     setIsClamped(detailParagraph.scrollHeight > detailParagraph.clientHeight);
   }, []);
 
+  const isGraduation = review.operationType === 'GRADUATION';
+
   return (
     <tr className="bg-white hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0">
-      <td className="px-4 py-3 align-top w-32">
-        <SupportingText>{review.studentId}</SupportingText>
+      <td className="px-4 py-3 align-top w-28">
+        {isGraduation ? (
+          <button
+            className="text-blue-600 underline hover:text-blue-800 text-sm font-medium"
+            onClick={() => navigate(`/reviews/graduation/${review.studentId}`)}
+            aria-label={`${review.studentId} 졸업요건 조회`}
+          >
+            {review.studentId}
+          </button>
+        ) : (
+          <SupportingText>{review.studentId}</SupportingText>
+        )}
       </td>
-      <td className="px-4 py-3 align-top w-24">
+      <td className="px-4 py-3 align-top w-32">
         <Badge variant="primary" appearance="outline">
           {OPERATION_TYPE_LABEL[review.operationType]}
         </Badge>
@@ -40,7 +54,7 @@ function ReviewItem({ review }: ReviewItemProps) {
         </Flex>
       </td>
       <td className="px-4 py-3 align-top">
-        <div className="flex items-start gap-2">
+        <Flex align="items-start" gap="gap-2">
           <p
             ref={detailRef}
             className={`text-sm text-gray-700 leading-relaxed flex-1 ${isExpanded ? '' : 'line-clamp-2'}`}
@@ -50,13 +64,17 @@ function ReviewItem({ review }: ReviewItemProps) {
           {isClamped && (
             <IconButton
               variant="plain"
-              icon={<ArrowDownSvg className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? 'rotate-180' : 'rotate-0'}`} />}
+              icon={
+                <ArrowDownSvg
+                  className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}
+                />
+              }
               label={isExpanded ? '접기' : '더보기'}
               onClick={() => setIsExpanded(prev => !prev)}
               className="shrink-0 mt-0.5 text-gray-400 hover:text-gray-600"
             />
           )}
-        </div>
+        </Flex>
       </td>
     </tr>
   );

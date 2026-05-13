@@ -1,14 +1,14 @@
+import { useEffect } from 'react';
 import { Dialog, Flex, Button } from '@allcll/allcll-ui';
-import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
-import { useGraduationCourses } from '@/entities/graduation/model/useGraduation';
-import type { CategoryType, ScopeType, GraduationCourse } from '@/entities/graduation/api/graduation';
-import { CATEGORY_TYPE_LABELS } from '../../lib/mappers';
+import type { CategoryType, GraduationCourse, ScopeType } from '../../types/graduation';
+import { CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
 
 interface CategoryEarnedCoursesModalProps {
   isOpen: boolean;
   onClose: () => void;
   categoryType: CategoryType;
   majorScope: ScopeType;
+  courses: GraduationCourse[];
 }
 
 function CourseRow({ course }: Readonly<{ course: GraduationCourse }>) {
@@ -36,30 +36,29 @@ function CategoryEarnedCoursesModal({
   onClose,
   categoryType,
   majorScope,
+  courses,
 }: Readonly<CategoryEarnedCoursesModalProps>) {
-  const { data, isPending, isError } = useGraduationCourses();
-  useBodyScrollLock(isOpen);
+  useEffect(() => {
+    if (!isOpen) return;
+    const original = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = original;
+    };
+  }, [isOpen]);
 
-  const courses = (data?.courses ?? []).filter(
-    c => c.categoryType === categoryType && c.majorScope === majorScope && c.isEarned,
-  );
-
-  const earnedCredits = courses.reduce((sum, c) => sum + c.credits, 0);
-  const earnedCount = courses.length;
+  const filtered = courses.filter(c => c.categoryType === categoryType && c.majorScope === majorScope && c.isEarned);
+  const earnedCredits = filtered.reduce((sum, c) => sum + c.credits, 0);
+  const earnedCount = filtered.length;
   const categoryLabel = CATEGORY_TYPE_LABELS[categoryType];
 
   return (
     <Dialog title={`${categoryLabel} 이수 과목`} onClose={onClose} isOpen={isOpen}>
       <Dialog.Content>
         <Flex direction="flex-col" gap="gap-3" className="min-w-64 md:min-w-96">
-          {isPending && <p className="text-sm text-gray-400 text-center py-8">불러오는 중...</p>}
-          {isError && (
-            <p className="text-sm text-secondary-500 text-center py-8">이수 과목 정보를 불러올 수 없습니다.</p>
-          )}
-          {!isPending && !isError && courses.length === 0 && (
+          {filtered.length === 0 ? (
             <p className="text-sm text-gray-400 text-center py-8">해당 카테고리의 이수 과목이 없습니다.</p>
-          )}
-          {courses.length > 0 && (
+          ) : (
             <>
               <Flex justify="justify-end">
                 <span className="text-xs text-gray-500 shrink-0">
@@ -67,7 +66,7 @@ function CategoryEarnedCoursesModal({
                 </span>
               </Flex>
               <Flex direction="flex-col" gap="gap-1" className="overflow-y-auto max-h-80 pr-1">
-                {courses.map(course => (
+                {filtered.map(course => (
                   <CourseRow key={course.id} course={course} />
                 ))}
               </Flex>
