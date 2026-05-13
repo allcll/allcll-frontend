@@ -18,6 +18,15 @@ import { type OperationType } from '@/hooks/server/useAdminReviews';
 const MAX_LENGTH = 1000;
 const MAX_TITLE_LENGTH = 250;
 
+function validateNotice(title: string, content: string): string[] {
+  const errors: string[] = [];
+  if (!title.trim()) errors.push('제목을 입력해주세요.');
+  if (title.length > MAX_TITLE_LENGTH) errors.push(`제목은 ${MAX_TITLE_LENGTH}자를 초과할 수 없습니다.`);
+  if (!content.trim()) errors.push('내용을 입력해주세요.');
+  if (content.length > MAX_LENGTH) errors.push(`내용은 ${MAX_LENGTH.toLocaleString()}자를 초과할 수 없습니다.`);
+  return errors;
+}
+
 function NoticeEditor() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
@@ -64,13 +73,9 @@ function NoticeEditor() {
 
   const handleSave = () => {
     if (isSaving) return;
-    const errs: string[] = [];
-    if (!title.trim()) errs.push('제목을 입력해주세요.');
-    if (title.length > MAX_TITLE_LENGTH) errs.push(`제목은 ${MAX_TITLE_LENGTH}자를 초과할 수 없습니다.`);
-    if (!content.trim()) errs.push('내용을 입력해주세요.');
-    if (content.length > MAX_LENGTH) errs.push(`내용은 ${MAX_LENGTH.toLocaleString()}자를 초과할 수 없습니다.`);
-    setErrors(errs);
-    if (errs.length > 0) return;
+    const validationErrors = validateNotice(title, content);
+    setErrors(validationErrors);
+    if (validationErrors.length > 0) return;
     const payload = { title: title.trim(), content, operationType: category };
     if (isEditMode && numericId !== undefined) {
       updateNotice(payload, {
@@ -95,7 +100,7 @@ function NoticeEditor() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const isMod = e.ctrlKey || e.metaKey;
-      if (isMod && e.key === 'Enter') {
+      if (isMod && (e.key.toLowerCase() === 's' || e.key === 'Enter')) {
         e.preventDefault();
         handleSaveRef.current();
       }
