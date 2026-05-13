@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useToastNotification } from '@allcll/common';
 import { fetchJsonOnAPI, fetchDeleteJsonOnAPI } from '@/utils/api';
 import { OperationType, OPERATION_TYPE_LABEL, OPERATION_TYPES } from '@/hooks/server/useAdminReviews';
 
@@ -78,10 +79,14 @@ export function useUpdateNotice(id: number) {
 // DELETE /api/admin/notices/:id
 export function useDeleteNotice() {
   const queryClient = useQueryClient();
+  const toast = useToastNotification.getState().addToast;
   return useMutation<null, Error, number>({
     mutationFn: id => fetchDeleteJsonOnAPI<null>(`/api/admin/notices/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: NOTICES_QUERY_KEY });
+    },
+    onError: () => {
+      toast('공지사항 삭제에 실패했습니다.');
     },
   });
 }
