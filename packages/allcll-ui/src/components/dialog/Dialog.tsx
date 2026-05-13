@@ -43,7 +43,6 @@ function DialogMain({ children, isOpen = true, title, onClose }: IDialogMain) {
       ref={dialogRef}
       role="dialog"
       aria-labelledby={titleId}
-      className="border-0 p-0 bg-transparent max-w-none max-h-none overflow-visible"
       onCancel={e => {
         e.preventDefault();
         onClose();
