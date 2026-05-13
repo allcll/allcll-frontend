@@ -1,13 +1,13 @@
 import { Card, Flex, Button } from '@allcll/allcll-ui';
-import {
-  CATEGORY_TYPE_LABELS,
-  type BalanceRequiredArea,
-  type CategoryProgress,
-  type CategoryType,
-  type CriteriaCategory,
-  type ScopeType,
-} from '@allcll/common';
-import ProgressDoughnut from '@/entities/graduation/ui/ProgressDoughnut';
+import type {
+  BalanceRequiredArea,
+  CategoryProgress,
+  CategoryType,
+  CriteriaCategory,
+  ScopeType,
+} from '../../types/graduation';
+import { CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
+import ProgressDoughnut from './ProgressDoughnut';
 
 interface CategoryProgressCardProps {
   category: CategoryProgress;
@@ -78,12 +78,10 @@ function CategoryProgressCard({
   return (
     <Card variant="outlined" className="h-full">
       <Flex direction="flex-col" gap="gap-2" className="h-full">
-        {/* 카테고리 제목 */}
         <div className="text-center">
           <span className="text-lg font-bold">{label}</span>
         </div>
 
-        {/* 도넛 차트 - 균형교양은 영역 수 기준 */}
         <Flex justify="justify-center">
           <ProgressDoughnut
             earned={isBalance ? (category.earnedAreasCnt ?? 0) : category.earnedCredits}
@@ -92,10 +90,8 @@ function CategoryProgressCard({
           />
         </Flex>
 
-        {/* 정보 영역 */}
         {isBalance ? <BalanceInfo category={category} /> : <CreditInfo category={category} />}
 
-        {/* 과목 확인 버튼 */}
         <div className="w-full mt-auto flex gap-1">
           <div className="flex-1 [&>button]:w-full">
             <Button variant="outlined" size="small" onClick={handleViewEarnedCourses}>

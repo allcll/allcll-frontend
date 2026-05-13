@@ -1,15 +1,23 @@
 import { Card, Flex, Badge, SupportingText } from '@allcll/allcll-ui';
-import { GENERAL_CATEGORY_TYPES, MAJOR_CATEGORY_TYPES } from '@allcll/common';
-import CircleCheckIcon from '@/assets/circle-check.svg?react';
-import CircleXIcon from '@/assets/circle-x.svg?react';
+import type { GraduationCheckData } from '../../types/graduation';
+import { isGeneralSatisfied, isMajorSatisfied } from '../../lib/graduation/rules';
+import CircleCheckIcon from '../../assets/circle-check.svg?react';
+import CircleXIcon from '../../assets/circle-x.svg?react';
 import ProgressDoughnut from './ProgressDoughnut';
-import type {
-  AdminGraduationUser,
-  AdminGraduationViewResponse,
-} from '@/hooks/server/graduation/useAdminGraduationView';
 
-type User = AdminGraduationUser;
-type CheckData = AdminGraduationViewResponse['checkData'];
+export interface GraduationUserProfile {
+  name: string;
+  studentId: string;
+  collegeName: string;
+  deptName: string;
+  doubleCollegeName: string | null;
+  doubleDeptName: string | null;
+}
+
+interface OverallSummaryCardProps {
+  user: GraduationUserProfile;
+  checkData: GraduationCheckData;
+}
 
 interface StatusIconProps {
   passed: boolean;
@@ -27,16 +35,11 @@ function StatusIcon({ passed, label }: Readonly<StatusIconProps>) {
   );
 }
 
-interface OverallSummaryCardProps {
-  user: User;
-  checkData: CheckData;
-}
-
 function OverallSummaryCard({ user, checkData }: Readonly<OverallSummaryCardProps>) {
   const { summary, categories, certifications } = checkData;
 
-  const majorPassed = categories.filter(c => MAJOR_CATEGORY_TYPES.includes(c.categoryType)).every(c => c.satisfied);
-  const generalPassed = categories.filter(c => GENERAL_CATEGORY_TYPES.includes(c.categoryType)).every(c => c.satisfied);
+  const majorPassed = isMajorSatisfied(categories);
+  const generalPassed = isGeneralSatisfied(categories);
   const certificationPassed = certifications.isSatisfied;
 
   return (

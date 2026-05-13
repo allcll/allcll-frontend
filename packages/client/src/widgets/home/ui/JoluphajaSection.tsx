@@ -1,7 +1,7 @@
 import { Badge, Card, Heading, SupportingText } from '@allcll/allcll-ui';
+import { ProgressDoughnut } from '@allcll/common';
 import Section from './Section';
 import SectionHeader from './SectionHeader';
-import ProgressDoughnut from '@/entities/graduation/ui/ProgressDoughnut';
 
 const MOCK_CATEGORIES = [
   { label: '전공필수', earned: 18, required: 24 },

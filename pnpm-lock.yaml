@@ -309,6 +309,12 @@ importers:
       '@allcll/allcll-ui':
         specifier: workspace:^
         version: link:../allcll-ui
+      chart.js:
+        specifier: ^4.5.0
+        version: 4.5.1
+      react-chartjs-2:
+        specifier: ^5.3.0
+        version: 5.3.1(chart.js@4.5.1)(react@18.3.1)
       react-transition-group:
         specifier: ^4.4.5
         version: 4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)

@@ -1,13 +1,7 @@
+import { useEffect } from 'react';
 import { Dialog, Flex, Button } from '@allcll/allcll-ui';
-import {
-  BALANCE_AREA_LABELS,
-  CATEGORY_TYPE_LABELS,
-  type BalanceRequiredArea,
-  type CategoryType,
-  type CriteriaCategory,
-  type MissingCourse,
-} from '@allcll/common';
-import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
+import type { BalanceRequiredArea, CategoryType, CriteriaCategory, MissingCourse } from '../../types/graduation';
+import { BALANCE_AREA_LABELS, CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
 
 interface RecommendedCoursesModalProps {
   isOpen: boolean;
@@ -19,17 +13,19 @@ interface RecommendedCoursesModalProps {
 
 function CourseList({ courses }: Readonly<{ courses: MissingCourse[] }>) {
   return (
-    <div className="flex flex-col gap-2">
+    <Flex direction="flex-col" gap="gap-2">
       {courses.map((course, index) => (
-        <div
+        <Flex
           key={`${course.curiNo}-${index}`}
-          className="flex items-center justify-between px-4 py-3 bg-gray-50 rounded-md"
+          align="items-center"
+          justify="justify-between"
+          className="px-4 py-3 bg-gray-50 rounded-md"
         >
           <span className="text-sm font-medium">{course.curiNm}</span>
           <span className="text-xs text-gray-400 ml-4 shrink-0">{course.curiNo}</span>
-        </div>
+        </Flex>
       ))}
-    </div>
+    </Flex>
   );
 }
 
@@ -49,7 +45,7 @@ function BalanceAreaContent({
         합니다.
         {excludedArea && <span className="text-gray-400"> ({BALANCE_AREA_LABELS[excludedArea]} 영역 제외)</span>}
       </p>
-      <div className="flex flex-col gap-4 max-h-80 overflow-y-auto">
+      <Flex direction="flex-col" gap="gap-4" className="max-h-80 overflow-y-auto">
         {balanceAreaCourses?.map(area => {
           const isEarned = earnedAreas.includes(area.balanceRequiredArea);
           return (
@@ -79,7 +75,7 @@ function BalanceAreaContent({
             </div>
           );
         })}
-      </div>
+      </Flex>
     </Flex>
   );
 }
@@ -113,7 +109,14 @@ function RecommendedCoursesModal({
   const categoryLabel = CATEGORY_TYPE_LABELS[categoryType];
   const isBalanceRequired = categoryType === 'BALANCE_REQUIRED' && criteriaCategory?.balanceAreaCourses != null;
 
-  useBodyScrollLock(isOpen);
+  useEffect(() => {
+    if (!isOpen) return;
+    const original = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = original;
+    };
+  }, [isOpen]);
 
   return (
     <Dialog title={`${categoryLabel} 추천 과목`} onClose={onClose} isOpen={isOpen}>

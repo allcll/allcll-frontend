@@ -1,8 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { Flex, Chip, ListboxOption } from '@allcll/allcll-ui';
-import { CATEGORY_TYPE_LABELS, COURSE_CATEGORY_ORDER, type CategoryType, type GraduationCourse } from '@allcll/common';
-import ArrowDownSvg from '@/assets/arrow-down-gray.svg?react';
-import CheckSvg from '@/assets/checkbox-blue.svg?react';
+import type { CategoryType, GraduationCourse } from '../../types/graduation';
+import { CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
+import { COURSE_CATEGORY_ORDER } from '../../lib/graduation/rules';
+import ArrowDownSvg from '../../assets/arrow-down-gray.svg?react';
+import CheckSvg from '../../assets/checkbox-blue.svg?react';
+
+interface EarnedCoursesSectionProps {
+  courses: GraduationCourse[];
+}
 
 function getUniqueCategories(courses: GraduationCourse[]): CategoryType[] {
   const existingCategories = new Set(courses.map(course => course.categoryType));
@@ -32,17 +38,11 @@ function CourseRow({ course }: Readonly<{ course: GraduationCourse }>) {
         <span className="text-xs text-gray-400">{course.curiNo}</span>
       </Flex>
       <Flex align="items-center" gap="gap-3" className="shrink-0">
-        <span className="text-xs text-gray-500 whitespace-nowrap">
-          {CATEGORY_TYPE_LABELS[course.categoryType] ?? course.categoryType}
-        </span>
+        <span className="text-xs text-gray-500 whitespace-nowrap">{CATEGORY_TYPE_LABELS[course.categoryType]}</span>
         <span className="text-xs text-gray-500 whitespace-nowrap">{course.credits}학점</span>
       </Flex>
     </Flex>
   );
-}
-
-interface EarnedCoursesSectionProps {
-  courses: GraduationCourse[];
 }
 
 function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) {
@@ -77,15 +77,18 @@ function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) 
 
   const categoryOptions = [
     { value: '전체' as const, label: '전체' },
-    ...categories.map(category => ({ value: category, label: CATEGORY_TYPE_LABELS[category] ?? category })),
+    ...categories.map(category => ({ value: category, label: CATEGORY_TYPE_LABELS[category] })),
   ];
 
   return (
     <div className="border border-gray-200 rounded-lg bg-white">
       <button
+        type="button"
         onClick={() => setIsOpen(prev => !prev)}
         aria-expanded={isOpen}
-        className={`w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors ${isOpen ? 'rounded-t-lg' : 'rounded-lg'}`}
+        className={`w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors ${
+          isOpen ? 'rounded-t-lg' : 'rounded-lg'
+        }`}
       >
         <span className="text-sm font-medium text-gray-700">내 이수 과목</span>
         <ArrowDownSvg
@@ -104,11 +107,7 @@ function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) 
                 <Flex align="items-center" justify="justify-between" gap="gap-3">
                   <div ref={selectRef} className="relative">
                     <Chip
-                      label={
-                        selectedCategory === '전체'
-                          ? '전체'
-                          : (CATEGORY_TYPE_LABELS[selectedCategory] ?? selectedCategory)
-                      }
+                      label={selectedCategory === '전체' ? '전체' : CATEGORY_TYPE_LABELS[selectedCategory]}
                       selected={isSelectOpen}
                       variant="select"
                       isChipOpen={isSelectOpen}

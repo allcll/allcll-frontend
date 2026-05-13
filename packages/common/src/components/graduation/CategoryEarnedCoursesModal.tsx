@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Dialog, Flex, Button } from '@allcll/allcll-ui';
-import { CATEGORY_TYPE_LABELS, type CategoryType, type GraduationCourse, type ScopeType } from '@allcll/common';
+import type { CategoryType, GraduationCourse, ScopeType } from '../../types/graduation';
+import { CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
 
 interface CategoryEarnedCoursesModalProps {
   isOpen: boolean;

@@ -1,9 +1,12 @@
-import type { ComponentType } from 'react';
+import { useEffect, type ComponentType } from 'react';
 import { Dialog, Flex, Button, Badge, SupportingText } from '@allcll/allcll-ui';
-import type { ClassicCertCriteria, CodingCertCriteria, EnglishCertCriteria } from '@allcll/common';
-import type { CertificationCriteriaData } from '@/hooks/server/graduation/useAdminGraduationView';
-
-export type CertificationType = 'english' | 'classic' | 'coding';
+import type {
+  CertificationType,
+  ClassicCertCriteria,
+  CodingCertCriteria,
+  EnglishCertCriteria,
+  GraduationCertificationCriteria,
+} from '../../types/graduation';
 
 function TargetTypeBadge({ targetType }: Readonly<{ targetType: string }>) {
   const isMajor = targetType !== 'NON_MAJOR';
@@ -146,15 +149,15 @@ const CRITERIA_TYPE_TITLES: Record<CertificationType, string> = {
   coding: 'SW코딩 인증 기준',
 };
 
-type ContentRenderer = ComponentType<{ data: CertificationCriteriaData }>;
+type ContentRenderer = ComponentType<{ data: GraduationCertificationCriteria }>;
 
-function EnglishRenderer({ data }: Readonly<{ data: CertificationCriteriaData }>) {
+function EnglishRenderer({ data }: Readonly<{ data: GraduationCertificationCriteria }>) {
   return <EnglishCriteriaContent data={data.englishCertCriteria} />;
 }
-function ClassicRenderer({ data }: Readonly<{ data: CertificationCriteriaData }>) {
+function ClassicRenderer({ data }: Readonly<{ data: GraduationCertificationCriteria }>) {
   return <ClassicCriteriaContent data={data.classicCertCriteria} />;
 }
-function CodingRenderer({ data }: Readonly<{ data: CertificationCriteriaData }>) {
+function CodingRenderer({ data }: Readonly<{ data: GraduationCertificationCriteria }>) {
   return <CodingCriteriaContent data={data.codingCertCriteria} />;
 }
 
@@ -168,7 +171,7 @@ interface CertificationCriteriaModalProps {
   isOpen: boolean;
   onClose: () => void;
   criteriaType: CertificationType;
-  criteriaData: CertificationCriteriaData;
+  criteriaData: GraduationCertificationCriteria;
 }
 
 function CertificationCriteriaModal({
@@ -177,6 +180,15 @@ function CertificationCriteriaModal({
   criteriaType,
   criteriaData,
 }: Readonly<CertificationCriteriaModalProps>) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const original = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = original;
+    };
+  }, [isOpen]);
+
   const title = CRITERIA_TYPE_TITLES[criteriaType];
   const ContentComponent = criteriaContentRegistry[criteriaType];
 

@@ -169,3 +169,11 @@ export interface GraduationCourse {
   majorScope: ScopeType;
   isEarned: boolean;
 }
+
+export interface GraduationCertificationCriteria {
+  englishCertCriteria: EnglishCertCriteria | null;
+  classicCertCriteria: ClassicCertCriteria;
+  codingCertCriteria: CodingCertCriteria | null;
+}
+
+export type CertificationType = 'english' | 'classic' | 'coding';

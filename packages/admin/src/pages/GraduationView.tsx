@@ -2,10 +2,18 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import {
-  CATEGORY_TYPE_LABELS,
+  CategoryEarnedCoursesModal,
+  CategoryProgressCard,
+  CertificationSection,
+  EarnedCoursesSection,
   GENERAL_CATEGORY_TYPES,
   MAJOR_CATEGORY_TYPES,
+  OverallSummaryCard,
+  RecommendedCoursesModal,
   SCOPE_TYPE_LABELS,
+  filterCategories,
+  filterCategoriesByScope,
+  getScopeTypes,
   type BalanceRequiredArea,
   type CategoryType,
   type CriteriaCategory,
@@ -14,12 +22,6 @@ import {
 import { useAdminGraduationView } from '@/hooks/server/graduation/useAdminGraduationView';
 import PageHeader from '@/components/common/PageHeader';
 import ChevronLeftIcon from '@/assets/chevron-left.svg?react';
-import OverallSummaryCard from '@/components/graduation/OverallSummaryCard';
-import CategoryProgressCard from '@/components/graduation/CategoryProgressCard';
-import CertificationSection from '@/components/graduation/CertificationSection';
-import EarnedCoursesSection from '@/components/graduation/EarnedCoursesSection';
-import CategoryEarnedCoursesModal from '@/components/graduation/CategoryEarnedCoursesModal';
-import RecommendedCoursesModal from '@/components/graduation/RecommendedCoursesModal';
 
 function GraduationView() {
   const { studentId } = useParams<{ studentId: string }>();
@@ -57,13 +59,11 @@ function GraduationView() {
   const { user, checkData, courses, certificationCriteria } = data;
   const { categories, certifications } = checkData;
 
-  const majorCategories = categories.filter(c => (MAJOR_CATEGORY_TYPES as readonly string[]).includes(c.categoryType));
-  const generalCategories = categories.filter(c =>
-    (GENERAL_CATEGORY_TYPES as readonly string[]).includes(c.categoryType),
-  );
+  const majorCategories = filterCategories(categories, MAJOR_CATEGORY_TYPES);
+  const generalCategories = filterCategories(categories, GENERAL_CATEGORY_TYPES);
 
   const isSingleMajor = user.majorType === 'SINGLE';
-  const scopeTypes = isSingleMajor ? (['PRIMARY'] as const) : (['PRIMARY', 'SECONDARY'] as const);
+  const scopeTypes = getScopeTypes(user.majorType);
 
   const analyzedAt = courses.createdAt
     ? new Date(courses.createdAt).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -114,41 +114,39 @@ function GraduationView() {
             <Heading level={2} className="mb-2">
               전공 이수 현황
             </Heading>
-            <div className="flex flex-col md:flex-row gap-4">
+            <Flex direction="flex-col" gap="gap-4" className="md:flex-row">
               {majorCategories.map(category => (
                 <div className="flex-1" key={category.categoryType}>
                   <CategoryProgressCard
                     category={category}
-                    label={CATEGORY_TYPE_LABELS[category.categoryType] ?? category.categoryType}
                     criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
                     onViewCourses={handleViewCourses}
                     onViewEarnedCourses={handleViewEarnedCourses}
                   />
                 </div>
               ))}
-            </div>
+            </Flex>
           </section>
         ) : (
           scopeTypes.map(scope => {
-            const scopeCategories = majorCategories.filter(c => c.majorScope === scope);
+            const scopeCategories = filterCategoriesByScope(categories, scope, MAJOR_CATEGORY_TYPES);
             return (
               <section key={scope}>
                 <Heading level={2} className="mb-2">
                   {SCOPE_TYPE_LABELS[scope]} 이수 현황
                 </Heading>
-                <div className="flex flex-col md:flex-row gap-4">
+                <Flex direction="flex-col" gap="gap-4" className="md:flex-row">
                   {scopeCategories.map(category => (
                     <div className="flex-1" key={`${category.majorScope}-${category.categoryType}`}>
                       <CategoryProgressCard
                         category={category}
-                        label={CATEGORY_TYPE_LABELS[category.categoryType] ?? category.categoryType}
                         criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
                         onViewCourses={handleViewCourses}
                         onViewEarnedCourses={handleViewEarnedCourses}
                       />
                     </div>
                   ))}
-                </div>
+                </Flex>
               </section>
             );
           })
@@ -158,19 +156,18 @@ function GraduationView() {
           <Heading level={2} className="mb-2">
             교양 이수 현황
           </Heading>
-          <div className="flex flex-col md:flex-row gap-4">
+          <Flex direction="flex-col" gap="gap-4" className="md:flex-row">
             {generalCategories.map(category => (
               <div className="flex-1" key={category.categoryType}>
                 <CategoryProgressCard
                   category={category}
-                  label={CATEGORY_TYPE_LABELS[category.categoryType] ?? category.categoryType}
                   criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
                   onViewCourses={handleViewCourses}
                   onViewEarnedCourses={handleViewEarnedCourses}
                 />
               </div>
             ))}
-          </div>
+          </Flex>
         </section>
 
         <CertificationSection certifications={certifications} criteriaData={certificationCriteria} />
