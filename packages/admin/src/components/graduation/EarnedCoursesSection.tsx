@@ -1,12 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Flex, Chip, ListboxOption } from '@allcll/allcll-ui';
-import type { AdminGraduationViewResponse, CategoryType } from '@/hooks/server/graduation/useAdminGraduationView';
+import { CATEGORY_TYPE_LABELS, COURSE_CATEGORY_ORDER, type CategoryType, type GraduationCourse } from '@allcll/common';
 import ArrowDownSvg from '@/assets/arrow-down-gray.svg?react';
 import CheckSvg from '@/assets/checkbox-blue.svg?react';
-import { CATEGORY_TYPE_LABELS } from './lib/mappers';
-import { COURSE_CATEGORY_ORDER } from './lib/rules';
-
-type GraduationCourse = AdminGraduationViewResponse['courses']['courses'][number];
 
 function getUniqueCategories(courses: GraduationCourse[]): CategoryType[] {
   const existingCategories = new Set(courses.map(course => course.categoryType));

@@ -1,11 +1,14 @@
 import { Card, Flex, Badge, SupportingText } from '@allcll/allcll-ui';
+import { GENERAL_CATEGORY_TYPES, MAJOR_CATEGORY_TYPES } from '@allcll/common';
 import CircleCheckIcon from '@/assets/circle-check.svg?react';
 import CircleXIcon from '@/assets/circle-x.svg?react';
 import ProgressDoughnut from './ProgressDoughnut';
-import type { AdminGraduationViewResponse } from '@/hooks/server/graduation/useAdminGraduationView';
-import { MAJOR_CATEGORY_TYPES, GENERAL_CATEGORY_TYPES } from './lib/rules';
+import type {
+  AdminGraduationUser,
+  AdminGraduationViewResponse,
+} from '@/hooks/server/graduation/useAdminGraduationView';
 
-type User = AdminGraduationViewResponse['user'];
+type User = AdminGraduationUser;
 type CheckData = AdminGraduationViewResponse['checkData'];
 
 interface StatusIconProps {

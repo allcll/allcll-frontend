@@ -1,14 +1,6 @@
 import { Card, Flex, Button } from '@allcll/allcll-ui';
+import type { BalanceRequiredArea, CategoryProgress, CategoryType, CriteriaCategory, ScopeType } from '@allcll/common';
 import ProgressDoughnut from './ProgressDoughnut';
-import type {
-  AdminGraduationViewResponse,
-  BalanceRequiredArea,
-  CategoryType,
-  CriteriaCategory,
-  ScopeType,
-} from '@/hooks/server/graduation/useAdminGraduationView';
-
-type CategoryProgress = AdminGraduationViewResponse['checkData']['categories'][number];
 
 interface CategoryProgressCardProps {
   category: CategoryProgress;

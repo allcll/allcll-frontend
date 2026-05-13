@@ -1,8 +1,7 @@
 import { Dialog, Flex, Button } from '@allcll/allcll-ui';
+import { CATEGORY_TYPE_LABELS, type CategoryType, type GraduationCourse, type ScopeType } from '@allcll/common';
 import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
 import { useGraduationCourses } from '@/entities/graduation/model/useGraduation';
-import type { CategoryType, ScopeType, GraduationCourse } from '@/entities/graduation/api/graduation';
-import { CATEGORY_TYPE_LABELS } from '../../lib/mappers';
 
 interface CategoryEarnedCoursesModalProps {
   isOpen: boolean;

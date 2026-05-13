@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import { Dialog, Flex, Button } from '@allcll/allcll-ui';
-import type {
-  BalanceRequiredArea,
-  CategoryType,
-  CriteriaCategory,
-  MissingCourse,
-} from '@/hooks/server/graduation/useAdminGraduationView';
-import { CATEGORY_TYPE_LABELS, BALANCE_AREA_LABELS } from './lib/mappers';
+import {
+  BALANCE_AREA_LABELS,
+  CATEGORY_TYPE_LABELS,
+  type BalanceRequiredArea,
+  type CategoryType,
+  type CriteriaCategory,
+  type MissingCourse,
+} from '@allcll/common';
 
 interface RecommendedCoursesModalProps {
   isOpen: boolean;

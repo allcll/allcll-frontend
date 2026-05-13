@@ -1,11 +1,7 @@
 import type { ComponentType } from 'react';
 import { Dialog, Flex, Button, Badge, SupportingText } from '@allcll/allcll-ui';
-import type {
-  CertificationCriteriaData,
-  EnglishCertCriteria,
-  ClassicCertCriteria,
-  CodingCertCriteria,
-} from '@/hooks/server/graduation/useAdminGraduationView';
+import type { ClassicCertCriteria, CodingCertCriteria, EnglishCertCriteria } from '@allcll/common';
+import type { CertificationCriteriaData } from '@/hooks/server/graduation/useAdminGraduationView';
 
 export type CertificationType = 'english' | 'classic' | 'coding';
 

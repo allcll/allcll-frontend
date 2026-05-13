@@ -2,12 +2,16 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import {
-  useAdminGraduationView,
+  CATEGORY_TYPE_LABELS,
+  GENERAL_CATEGORY_TYPES,
+  MAJOR_CATEGORY_TYPES,
+  SCOPE_TYPE_LABELS,
   type BalanceRequiredArea,
   type CategoryType,
   type CriteriaCategory,
   type ScopeType,
-} from '@/hooks/server/graduation/useAdminGraduationView';
+} from '@allcll/common';
+import { useAdminGraduationView } from '@/hooks/server/graduation/useAdminGraduationView';
 import PageHeader from '@/components/common/PageHeader';
 import ChevronLeftIcon from '@/assets/chevron-left.svg?react';
 import OverallSummaryCard from '@/components/graduation/OverallSummaryCard';
@@ -16,8 +20,6 @@ import CertificationSection from '@/components/graduation/CertificationSection';
 import EarnedCoursesSection from '@/components/graduation/EarnedCoursesSection';
 import CategoryEarnedCoursesModal from '@/components/graduation/CategoryEarnedCoursesModal';
 import RecommendedCoursesModal from '@/components/graduation/RecommendedCoursesModal';
-import { CATEGORY_TYPE_LABELS, SCOPE_TYPE_LABELS } from '@/components/graduation/lib/mappers';
-import { MAJOR_CATEGORY_TYPES, GENERAL_CATEGORY_TYPES } from '@/components/graduation/lib/rules';
 
 function GraduationView() {
   const { studentId } = useParams<{ studentId: string }>();

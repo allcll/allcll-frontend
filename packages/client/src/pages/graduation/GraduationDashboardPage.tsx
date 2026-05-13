@@ -13,18 +13,16 @@ import useFeedbackTrigger from '@/features/feedback/lib/FeedbackTrigger';
 import FeedbackModal from '@/features/feedback/ui/FeedbackModal';
 import {
   filterCategories,
-  MAJOR_CATEGORY_TYPES,
-  GENERAL_CATEGORY_TYPES,
-  getScopeTypes,
   filterCategoriesByScope,
-} from '@/entities/graduation/lib/rules';
-import { SCOPE_TYPE_LABELS } from '@/features/graduation/lib/mappers';
-import type {
-  CategoryType,
-  CriteriaCategory,
-  BalanceRequiredArea,
-  ScopeType,
-} from '@/entities/graduation/api/graduation';
+  getScopeTypes,
+  GENERAL_CATEGORY_TYPES,
+  MAJOR_CATEGORY_TYPES,
+  SCOPE_TYPE_LABELS,
+  type BalanceRequiredArea,
+  type CategoryType,
+  type CriteriaCategory,
+  type ScopeType,
+} from '@allcll/common';
 import OverallSummaryCard from '@/entities/graduation/ui/OverallSummaryCard';
 import CategoryProgressCard from '@/features/graduation/ui/dashboard/CategoryProgressCard';
 import CertificationSection from '@/features/graduation/ui/dashboard/CertificationSection';

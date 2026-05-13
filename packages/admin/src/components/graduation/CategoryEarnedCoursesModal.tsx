@@ -1,13 +1,6 @@
 import { useEffect } from 'react';
 import { Dialog, Flex, Button } from '@allcll/allcll-ui';
-import type {
-  AdminGraduationViewResponse,
-  CategoryType,
-  ScopeType,
-} from '@/hooks/server/graduation/useAdminGraduationView';
-import { CATEGORY_TYPE_LABELS } from './lib/mappers';
-
-type GraduationCourse = AdminGraduationViewResponse['courses']['courses'][number];
+import { CATEGORY_TYPE_LABELS, type CategoryType, type GraduationCourse, type ScopeType } from '@allcll/common';
 
 interface CategoryEarnedCoursesModalProps {
   isOpen: boolean;

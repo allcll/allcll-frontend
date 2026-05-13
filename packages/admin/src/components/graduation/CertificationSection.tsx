@@ -1,13 +1,8 @@
 import { useState } from 'react';
 import { Card, Flex, Badge, Button, Heading, SupportingText } from '@allcll/allcll-ui';
-import type {
-  AdminGraduationViewResponse,
-  CertificationCriteriaData,
-} from '@/hooks/server/graduation/useAdminGraduationView';
+import { CLASSIC_DOMAIN_LABELS, type Certifications } from '@allcll/common';
+import type { CertificationCriteriaData } from '@/hooks/server/graduation/useAdminGraduationView';
 import CertificationCriteriaModal, { type CertificationType } from './CertificationCriteriaModal';
-import { CLASSIC_DOMAIN_LABELS } from './lib/mappers';
-
-type Certifications = AdminGraduationViewResponse['checkData']['certifications'];
 
 interface CertificationCardProps {
   title: string;

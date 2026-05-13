@@ -1,13 +1,13 @@
 import { Card, Flex, Button } from '@allcll/allcll-ui';
+import {
+  CATEGORY_TYPE_LABELS,
+  type BalanceRequiredArea,
+  type CategoryProgress,
+  type CategoryType,
+  type CriteriaCategory,
+  type ScopeType,
+} from '@allcll/common';
 import ProgressDoughnut from '@/entities/graduation/ui/ProgressDoughnut';
-import type {
-  BalanceRequiredArea,
-  CategoryProgress,
-  CategoryType,
-  CriteriaCategory,
-  ScopeType,
-} from '@/entities/graduation/api/graduation';
-import { CATEGORY_TYPE_LABELS } from '../../lib/mappers';
 
 interface CategoryProgressCardProps {
   category: CategoryProgress;
@@ -58,7 +58,12 @@ function CreditInfo({ category }: Readonly<{ category: CategoryProgress }>) {
   );
 }
 
-function CategoryProgressCard({ category, criteriaCategory, onViewCourses, onViewEarnedCourses }: Readonly<CategoryProgressCardProps>) {
+function CategoryProgressCard({
+  category,
+  criteriaCategory,
+  onViewCourses,
+  onViewEarnedCourses,
+}: Readonly<CategoryProgressCardProps>) {
   const label = CATEGORY_TYPE_LABELS[category.categoryType];
   const isBalance = category.categoryType === 'BALANCE_REQUIRED' && category.requiredAreasCnt != null;
 

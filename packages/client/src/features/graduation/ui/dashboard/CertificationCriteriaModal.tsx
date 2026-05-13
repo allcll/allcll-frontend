@@ -1,11 +1,8 @@
 import type { ComponentType } from 'react';
 import { Dialog, Flex, Button, Badge } from '@allcll/allcll-ui';
+import type { CodingTargetType, EnglishTargetType } from '@allcll/common';
 import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
-import type {
-  CertificationCriteriaData,
-  EnglishTargetType,
-  CodingTargetType,
-} from '@/entities/graduation/api/graduation';
+import type { CertificationCriteriaData } from '@/entities/graduation/api/graduation';
 import { useCertificationCriteria } from '@/entities/graduation/model/useGraduation';
 import type { CertificationType } from './CertificationSection';
 

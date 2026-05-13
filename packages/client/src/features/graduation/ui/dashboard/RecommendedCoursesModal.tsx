@@ -1,12 +1,13 @@
 import { Dialog, Flex, Button } from '@allcll/allcll-ui';
+import {
+  BALANCE_AREA_LABELS,
+  CATEGORY_TYPE_LABELS,
+  type BalanceRequiredArea,
+  type CategoryType,
+  type CriteriaCategory,
+  type MissingCourse,
+} from '@allcll/common';
 import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
-import type {
-  BalanceRequiredArea,
-  CategoryType,
-  CriteriaCategory,
-  MissingCourse,
-} from '@/entities/graduation/api/graduation';
-import { CATEGORY_TYPE_LABELS, BALANCE_AREA_LABELS } from '../../lib/mappers';
 
 interface RecommendedCoursesModalProps {
   isOpen: boolean;

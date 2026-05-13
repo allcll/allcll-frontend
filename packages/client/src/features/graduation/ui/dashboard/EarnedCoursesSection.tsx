@@ -1,9 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Flex, Chip, ListboxOption } from '@allcll/allcll-ui';
+import { CATEGORY_TYPE_LABELS, COURSE_CATEGORY_ORDER, type CategoryType, type GraduationCourse } from '@allcll/common';
 import { useGraduationCourses } from '@/entities/graduation/model/useGraduation';
-import type { CategoryType, GraduationCourse } from '@/entities/graduation/api/graduation';
-import { CATEGORY_TYPE_LABELS } from '../../lib/mappers';
-import { COURSE_CATEGORY_ORDER } from '@/entities/graduation/lib/rules';
 import CheckSvg from '@/assets/checkbox-blue.svg?react';
 import ArrowDownSvg from '@/assets/arrow-down-gray.svg?react';
 
@@ -86,21 +84,15 @@ function EarnedCoursesSection() {
         className={`w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors ${isOpen ? 'rounded-t-lg' : 'rounded-lg'}`}
       >
         <span className="text-sm font-medium text-gray-700">내 이수 과목</span>
-        <ArrowDownSvg
-          className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
-        />
+        <ArrowDownSvg className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
         <div className="border-t border-gray-100 px-4 pb-4">
           <Flex direction="flex-col" gap="gap-3" className="pt-3">
-            {isPending && (
-              <p className="text-sm text-gray-400 text-center py-4">불러오는 중...</p>
-            )}
+            {isPending && <p className="text-sm text-gray-400 text-center py-4">불러오는 중...</p>}
             {isError && (
-              <p className="text-sm text-secondary-500 text-center py-4">
-                이수 과목 정보를 불러올 수 없습니다.
-              </p>
+              <p className="text-sm text-secondary-500 text-center py-4">이수 과목 정보를 불러올 수 없습니다.</p>
             )}
             {!isPending && !isError && courses.length === 0 && (
               <p className="text-sm text-gray-400 text-center py-4">이수 과목 정보가 없습니다.</p>
