@@ -21,14 +21,9 @@ const UsingMockServer = import.meta.env.VITE_USE_MOCK === 'true';
 if (UsingMockServer) {
   const { server } = await import('@allcll/mock-server');
 
-  server
-    .start({ onUnhandledRequest: 'bypass' })
-    .then(() => {
-      loadApp();
-    })
-    .catch(() => {
-      loadApp();
-    });
+  server.start().then(() => {
+    loadApp();
+  });
 } else {
   loadApp();
 }
