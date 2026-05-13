@@ -2,7 +2,7 @@ import { useRef, useState, useCallback } from 'react';
 import AlarmSvg from '@/assets/alarm.svg?react';
 import { useNotices } from '@/entities/notices/api/useNotices';
 import useMobile from '@/shared/lib/useMobile';
-import { useNoticeRead } from '../lib/useNoticeRead';
+import { useIsNoticeRead, useNoticeReadStore } from '../model/useNoticeReadStore';
 import NoticeDropdown from './NoticeDropdown';
 import NoticeMobileView from './NoticeMobileView';
 
@@ -12,7 +12,8 @@ function NoticeBell() {
   const isMobile = useMobile();
 
   const { data: notices = [] } = useNotices();
-  const { isRead, markAsRead } = useNoticeRead();
+  const isRead = useIsNoticeRead();
+  const markAsRead = useNoticeReadStore(s => s.markAsRead);
 
   const hasNew = notices.some(n => !isRead(n));
 
