@@ -35,6 +35,8 @@ import useFeedbackTrigger from '@/features/feedback/lib/FeedbackTrigger';
 import FeedbackModal from '@/features/feedback/ui/FeedbackModal';
 import MobileTabs, { useMobileTabs } from '@/features/graduation/ui/dashboard/MobileTabs';
 import EditProfileModal from '@/features/graduation/ui/dashboard/EditProfileModal';
+import CertificationEditModal from '@/features/graduation/ui/dashboard/CertificationEditModal';
+import { useUpdateEnglishCertMutation } from '@/features/graduation/lib/useUpdateEnglishCertMutation';
 import LoadingWithMessage from '@/shared/ui/Loading';
 
 //TODO: API 연동 시간 측정 후, spinner로 변경 혹은 네트워크 지연 시간에 따른 스피너 타입 결정 훅 구현
@@ -52,6 +54,7 @@ function GraduationDashboardPage() {
   const navigate = useNavigate();
   const [showBanner, setShowBanner] = useState(true);
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const [isEnglishCertEditOpen, setIsEnglishCertEditOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<{
     categoryType: CategoryType;
     criteriaCategory?: CriteriaCategory;
@@ -65,7 +68,12 @@ function GraduationDashboardPage() {
   const { user, graduationData, analyzedAt, isPending, isError, error } = useGraduationDashboard();
   const { data: criteriaCategories } = useCriteriaCategories();
   const { data: graduationCourses } = useGraduationCourses();
-  const { data: certificationCriteria } = useCertificationCriteria(true);
+  const {
+    data: certificationCriteria,
+    isPending: isCriteriaLoading,
+    isError: isCriteriaError,
+  } = useCertificationCriteria(true);
+  const { mutate: updateEnglishCert, isPending: isUpdatingEnglishCert } = useUpdateEnglishCertMutation();
   const {
     isOpen: isFeedbackOpen,
     openMode: feedbackOpenMode,
@@ -86,6 +94,13 @@ function GraduationDashboardPage() {
 
   const handleEditProfile = () => {
     setIsEditProfileOpen(true);
+  };
+
+  const handleConfirmEnglishCertEdit = () => {
+    if (!graduationData) return;
+    updateEnglishCert(!graduationData.certifications.english.isPassed, {
+      onSuccess: () => setIsEnglishCertEditOpen(false),
+    });
   };
 
   const handleDeleteBanner = () => {
@@ -198,7 +213,11 @@ function GraduationDashboardPage() {
         );
       case 'certification':
         return certificationCriteria ? (
-          <CertificationSection certifications={graduationData.certifications} criteriaData={certificationCriteria} />
+          <CertificationSection
+            certifications={graduationData.certifications}
+            criteriaData={certificationCriteria}
+            onEditEnglishCert={() => setIsEnglishCertEditOpen(true)}
+          />
         ) : null;
       default:
         return null;
@@ -305,6 +324,7 @@ function GraduationDashboardPage() {
                 <CertificationSection
                   certifications={graduationData.certifications}
                   criteriaData={certificationCriteria}
+                  onEditEnglishCert={() => setIsEnglishCertEditOpen(true)}
                 />
               )}
             </Flex>
@@ -333,6 +353,19 @@ function GraduationDashboardPage() {
       )}
 
       {user && <EditProfileModal isOpen={isEditProfileOpen} onClose={() => setIsEditProfileOpen(false)} user={user} />}
+
+      {isEnglishCertEditOpen && (
+        <CertificationEditModal
+          isOpen
+          currentIsPassed={graduationData.certifications.english.isPassed}
+          isPending={isUpdatingEnglishCert}
+          criteriaData={certificationCriteria}
+          isCriteriaLoading={isCriteriaLoading}
+          isCriteriaError={isCriteriaError}
+          onClose={() => setIsEnglishCertEditOpen(false)}
+          onConfirm={handleConfirmEnglishCertEdit}
+        />
+      )}
 
       <FeedbackModal isOpen={isFeedbackOpen} onClose={closeFeedback} openMode={feedbackOpenMode} />
     </>
