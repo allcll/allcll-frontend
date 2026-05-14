@@ -97,7 +97,7 @@ function EnglishCertContent({ isPassed, onEdit }: Readonly<EnglishCertContentPro
           textColor="primary"
           size="small"
           onClick={onEdit}
-          className="underline underline-offset-2"
+          className="underline underline-offset-2 cursor-pointer"
         >
           결과가 잘못되었나요?
         </Button>
