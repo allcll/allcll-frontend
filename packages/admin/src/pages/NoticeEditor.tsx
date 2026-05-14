@@ -6,13 +6,7 @@ import { Card, Button, TextField, Label, Flex } from '@allcll/allcll-ui';
 import PageHeader from '@/components/common/PageHeader';
 import MarkdownEditor from '@/components/notices/MarkdownEditor';
 import UnsavedModal from '@/components/notices/UnsavedModal';
-import {
-  useAdminNotice,
-  useCreateNotice,
-  useUpdateNotice,
-  CATEGORY_LABELS,
-  NOTICE_CATEGORIES,
-} from '@/hooks/server/useAdminNotices';
+import { useAdminNotice, useSaveNotice, CATEGORY_LABELS, NOTICE_CATEGORIES } from '@/hooks/server/useAdminNotices';
 import { type OperationType } from '@/hooks/server/useAdminReviews';
 
 const MAX_LENGTH = 1000;
@@ -34,10 +28,7 @@ function NoticeEditor() {
   const numericId = isEditMode ? Number(id) : undefined;
 
   const { data: existingNotice, isLoading: isLoadingNotice } = useAdminNotice(numericId);
-  const { mutate: createNotice, isPending: isCreating } = useCreateNotice();
-  const { mutate: updateNotice, isPending: isUpdating } = useUpdateNotice(numericId ?? 0);
-
-  const isSaving = isCreating || isUpdating;
+  const { mutate: saveNotice, isPending: isSaving } = useSaveNotice(numericId);
 
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState<OperationType>('GRADUATION');
@@ -77,21 +68,12 @@ function NoticeEditor() {
     setErrors(validationErrors);
     if (validationErrors.length > 0) return;
     const payload = { title: title.trim(), content, operationType: category };
-    if (isEditMode && numericId !== undefined) {
-      updateNotice(payload, {
-        onSuccess: () => {
-          setIsDirty(false);
-          navigate('/notices');
-        },
-      });
-    } else {
-      createNotice(payload, {
-        onSuccess: () => {
-          setIsDirty(false);
-          navigate('/notices');
-        },
-      });
-    }
+    saveNotice(payload, {
+      onSuccess: () => {
+        setIsDirty(false);
+        navigate('/notices');
+      },
+    });
   };
 
   const handleSaveRef = useRef(handleSave);

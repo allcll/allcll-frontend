@@ -46,30 +46,20 @@ interface NoticePayload {
   operationType: OperationType;
 }
 
-// POST /api/admin/notices
-export function useCreateNotice() {
+// POST 또는 PATCH /api/admin/notices[/:id]
+export function useSaveNotice(id?: number) {
   const queryClient = useQueryClient();
   return useMutation<Notice, Error, NoticePayload>({
     mutationFn: payload =>
-      fetchJsonOnAPI<Notice>('/api/admin/notices', {
-        method: 'POST',
-        body: JSON.stringify(payload),
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: NOTICES_QUERY_KEY });
-    },
-  });
-}
-
-// PATCH /api/admin/notices/:id
-export function useUpdateNotice(id: number) {
-  const queryClient = useQueryClient();
-  return useMutation<Notice, Error, NoticePayload>({
-    mutationFn: payload =>
-      fetchJsonOnAPI<Notice>(`/api/admin/notices/${id}`, {
-        method: 'PATCH',
-        body: JSON.stringify(payload),
-      }),
+      id !== undefined
+        ? fetchJsonOnAPI<Notice>(`/api/admin/notices/${id}`, {
+            method: 'PATCH',
+            body: JSON.stringify(payload),
+          })
+        : fetchJsonOnAPI<Notice>('/api/admin/notices', {
+            method: 'POST',
+            body: JSON.stringify(payload),
+          }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: NOTICES_QUERY_KEY });
     },
