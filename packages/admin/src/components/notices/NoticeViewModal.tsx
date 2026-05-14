@@ -19,9 +19,9 @@ function NoticeViewModal({ notice, onClose, onEdit }: Props) {
             <Badge variant="primary" size="small">
               {CATEGORY_LABELS[notice.operationType]}
             </Badge>
-            <span>{notice.updatedAt.slice(0, 10).replace(/-/g, '.')}</span>
-            {notice.updatedAt !== notice.createdAt && (
-              <span className="text-gray-400">· 작성 {notice.createdAt.slice(0, 10).replace(/-/g, '.')}</span>
+            <span>작성 {notice.createdAt.slice(0, 10).replace(/-/g, '.')}</span>
+            {notice.updatedAt.slice(0, 10) !== notice.createdAt.slice(0, 10) && (
+              <span className="text-gray-400">· 수정 {notice.updatedAt.slice(0, 10).replace(/-/g, '.')}</span>
             )}
           </Flex>
           <div className="prose max-w-none max-h-[60vh] overflow-y-auto pr-1">
