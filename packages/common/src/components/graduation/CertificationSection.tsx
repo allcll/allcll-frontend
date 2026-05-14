@@ -92,7 +92,7 @@ function EnglishCertContent({ isPassed, onEdit }: Readonly<EnglishCertContentPro
         <span className="text-gray-500">이수 내역 없음</span>
       )}
       {onEdit && (
-        <Button variant="text" textColor="primary" size="small" onClick={onEdit}>
+        <Button variant="text" textColor="gray" size="small" onClick={onEdit}>
           <span className="underline underline-offset-2">결과가 잘못되었나요?</span>
         </Button>
       )}
