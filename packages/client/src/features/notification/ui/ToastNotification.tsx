@@ -12,9 +12,9 @@ function ToastNotification() {
   return createPortal(
     <div className="fixed top-2 right-2 z-400 max-w-screen">
       <TransitionGroup className="flex gap-2 flex-col-reverse">
-        {messages.slice(-3).map((message, index) => (
-          <CSSTransition key={`${index} : ${message}`} timeout={300} classNames="toast">
-            <Toast toast={message} closeToast={() => closeToast(index)} />
+        {messages.slice(-3).map(message => (
+          <CSSTransition key={message.id} timeout={300} classNames="toast">
+            <Toast toast={message} closeToast={() => closeToast(message.id)} />
           </CSSTransition>
         ))}
       </TransitionGroup>
@@ -43,6 +43,30 @@ function Toast({ toast, closeToast }: IToast) {
 export default ToastNotification;
 
 function getToastPortalTarget() {
-  const openedDialogs = document.querySelectorAll<HTMLDialogElement>('dialog[open]');
-  return openedDialogs[openedDialogs.length - 1] ?? document.body;
+  const popoverRoot = getToastPopoverRoot();
+
+  if (popoverRoot) {
+    return popoverRoot;
+  }
+
+  return document.body;
+}
+
+function getToastPopoverRoot() {
+  const id = 'toast-popover-root';
+  let root = document.getElementById(id);
+
+  if (!root) {
+    root = document.createElement('div');
+    root.id = id;
+    root.setAttribute('popover', 'manual');
+    root.className = 'toast-popover-root';
+    document.body.appendChild(root);
+  }
+
+  if ('showPopover' in root && !root.matches(':popover-open')) {
+    root.showPopover();
+  }
+
+  return root;
 }

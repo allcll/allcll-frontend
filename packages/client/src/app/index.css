@@ -4,8 +4,9 @@
 @layer base {
   @font-face {
     font-family: 'Pretendard';
-    src: url('/font/woff2/Pretendard-Regular.subset.woff2') format('woff2'),
-        url('/font/woff/Pretendard-Regular.subset.woff') format('woff');
+    src:
+      url('/font/woff2/Pretendard-Regular.subset.woff2') format('woff2'),
+      url('/font/woff/Pretendard-Regular.subset.woff') format('woff');
 
     font-weight: 400;
     font-style: normal;
@@ -14,8 +15,9 @@
 
   @font-face {
     font-family: 'Pretendard';
-    src: url('/font/woff2/Pretendard-SemiBold.subset.woff2') format('woff2'),
-        url('/font/woff/Pretendard-SemiBold.subset.woff') format('woff');
+    src:
+      url('/font/woff2/Pretendard-SemiBold.subset.woff2') format('woff2'),
+      url('/font/woff/Pretendard-SemiBold.subset.woff') format('woff');
 
     font-weight: 600;
     font-style: normal;
@@ -24,8 +26,9 @@
 
   @font-face {
     font-family: 'Pretendard';
-    src: url('/font/woff2/Pretendard-Bold.subset.woff2') format('woff2'),
-        url('/font/woff/Pretendard-Bold.subset.woff') format('woff');
+    src:
+      url('/font/woff2/Pretendard-Bold.subset.woff2') format('woff2'),
+      url('/font/woff/Pretendard-Bold.subset.woff') format('woff');
 
     font-weight: 700;
     font-style: normal;
@@ -118,6 +121,20 @@ body {
 .toast-move {
   transform: translateY(100%);
   transition: transform 300ms;
+}
+.toast-popover-root {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  overflow: visible;
+  pointer-events: none;
+}
+.toast-popover-root::backdrop {
+  display: none;
+}
+.toast-popover-root button {
+  pointer-events: auto;
 }
 
 .seat-change-enter {
