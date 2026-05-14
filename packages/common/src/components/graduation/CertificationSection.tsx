@@ -94,10 +94,9 @@ function EnglishCertContent({ isPassed, onEdit }: Readonly<EnglishCertContentPro
       {onEdit && (
         <Button
           variant="text"
-          textColor="primary"
           size="small"
           onClick={onEdit}
-          className="underline underline-offset-2 cursor-pointer"
+          className="underline underline-offset-2 cursor-pointer text-primary-500 hover:text-primary-700"
         >
           결과가 잘못되었나요?
         </Button>
