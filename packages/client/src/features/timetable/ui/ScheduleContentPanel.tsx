@@ -38,7 +38,7 @@ function ScheduleContentPanel() {
 
         <ScheduleFilter />
         <Button variant="text" size="small" onClick={() => openScheduleModal(initSchedule)}>
-          + 커스텀 일정 생성
+          + 커스텀 과목 생성
         </Button>
 
         <Flex direction="flex-col" className="h-full overflow-hidden overflow-y-auto">

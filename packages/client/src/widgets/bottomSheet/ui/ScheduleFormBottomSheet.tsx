@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib/useScheduleModal.ts';
 import { ScheduleMutateType } from '@/features/timetable/model/useScheduleState.ts';
 import { Button, Flex } from '@allcll/allcll-ui';
@@ -6,8 +6,10 @@ import useMobile from '@/shared/lib/useMobile.ts';
 import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
 import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader';
 import ScheduleFormContent from '@/features/timetable/ui/ScheduleFormContent';
+import ConfirmDialog from '@/shared/ui/ConfirmDialog';
 
 function ScheduleFormBottomSheet() {
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const { modalActionType } = useScheduleModalData();
   const { cancelSchedule, deleteSchedule, saveSchedule } = useScheduleModal();
 
@@ -22,27 +24,49 @@ function ScheduleFormBottomSheet() {
     saveSchedule(e);
   };
 
+  const handleDeleteSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsDeleteOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    setIsDeleteOpen(false);
+    requestAnimationFrame(() => deleteSchedule());
+  };
+
   return (
-    <BottomSheet>
-      <BottomSheetHeader title={`커스텀 일정 ${title}`} headerType="close" onClose={handleCancelSchedule} />
-      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-        <Flex direction="flex-col" className="py-5 px-2 overflow-y-auto max-h-[80vh]">
-          <ScheduleFormContent />
-        </Flex>
+    <>
+      <BottomSheet>
+        <BottomSheetHeader title={`커스텀 과목 ${title}`} headerType="close" onClose={handleCancelSchedule} />
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          <Flex direction="flex-col" className="py-5 px-2 overflow-y-auto max-h-[80vh]">
+            <ScheduleFormContent />
+          </Flex>
 
-        <Flex justify="justify-end" gap={isMobile ? 'gap-2' : 'gap-4'} className="p-4">
-          {(modalActionType === ScheduleMutateType.EDIT || modalActionType === ScheduleMutateType.VIEW) && (
-            <Button variant="secondary" size={isMobile ? 'small' : 'medium'} onClick={deleteSchedule}>
-              삭제
+          <Flex justify="justify-end" gap={isMobile ? 'gap-2' : 'gap-4'} className="p-4">
+            {(modalActionType === ScheduleMutateType.EDIT || modalActionType === ScheduleMutateType.VIEW) && (
+              <Button variant="secondary" size={isMobile ? 'small' : 'medium'} onClick={handleDeleteSchedule}>
+                삭제
+              </Button>
+            )}
+
+            <Button type="submit" variant="primary" size={isMobile ? 'small' : 'medium'}>
+              저장
             </Button>
-          )}
+          </Flex>
+        </form>
+      </BottomSheet>
 
-          <Button type="submit" variant="primary" size={isMobile ? 'small' : 'medium'}>
-            저장
-          </Button>
-        </Flex>
-      </form>
-    </BottomSheet>
+      <ConfirmDialog
+        isOpen={isDeleteOpen}
+        title="커스텀 과목 삭제"
+        description="해당 커스텀 과목을 삭제하시겠습니까?"
+        confirmLabel="삭제"
+        danger
+        onConfirm={handleConfirmDelete}
+        onClose={() => setIsDeleteOpen(false)}
+      />
+    </>
   );
 }
 

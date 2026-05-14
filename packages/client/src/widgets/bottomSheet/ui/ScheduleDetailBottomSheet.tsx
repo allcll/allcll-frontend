@@ -21,6 +21,11 @@ function ScheduleInfoBottomSheet() {
     setIsDeleteOpen(true);
   };
 
+  const handleConfirmDelete = () => {
+    setIsDeleteOpen(false);
+    requestAnimationFrame(() => deleteSchedule());
+  };
+
   const findSubjectById = subjects?.find(subject => subject.subjectId === schedule.subjectId);
 
   return (
@@ -66,10 +71,7 @@ function ScheduleInfoBottomSheet() {
         description="해당 과목을 삭제하시겠습니까?"
         confirmLabel="삭제"
         danger
-        onConfirm={() => {
-          deleteSchedule();
-          setIsDeleteOpen(false);
-        }}
+        onConfirm={handleConfirmDelete}
         onClose={() => setIsDeleteOpen(false)}
       />
     </>
