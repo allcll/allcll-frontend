@@ -84,6 +84,10 @@ export interface InitTimetableType {
   semesterCode: string;
 }
 
+interface TimetableMutationOptions {
+  onSuccess?: () => void;
+}
+
 const InitTimetableSchedules = {
   timeTableId: -1,
   timeTableName: '새 시간표',
@@ -148,7 +152,7 @@ export function useGetTimetableSchedules(timetableId?: number, semester?: string
  * 시간표 수정 훅
  * timetableId에에 대한 timetableName을 수정합니다.
  */
-export function useUpdateTimetable() {
+export function useUpdateTimetable(options?: TimetableMutationOptions) {
   const queryClient = useQueryClient();
   const { currentTimetable, pickTimetable } = useScheduleState.getState();
 
@@ -178,6 +182,7 @@ export function useUpdateTimetable() {
 
       await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
       await queryClient.invalidateQueries({ queryKey: ['timetableList', updatedId] });
+      options?.onSuccess?.();
     },
 
     onError: async (error, _variables, context) => {
@@ -192,7 +197,7 @@ export function useUpdateTimetable() {
  * 시간표 삭제 훅
  * timetableId로 시간표를 삭제합니다.
  */
-export function useDeleteTimetable() {
+export function useDeleteTimetable(options?: TimetableMutationOptions) {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -220,6 +225,7 @@ export function useDeleteTimetable() {
       await queryClient.invalidateQueries({
         queryKey: ['timetableData', context?.timeTableId],
       });
+      options?.onSuccess?.();
     },
   });
 }
@@ -228,7 +234,7 @@ export function useDeleteTimetable() {
  * 시간표 생성 훅
  * 시간표를 생성합니다.
  */
-export function useCreateTimetable() {
+export function useCreateTimetable(options?: TimetableMutationOptions) {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -257,6 +263,7 @@ export function useCreateTimetable() {
       });
 
       await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+      options?.onSuccess?.();
     },
     onError: async error => {
       console.error('시간표 생성 실패:', error);
@@ -269,6 +276,10 @@ interface ScheduleMutationProps {
   schedule: ScheduleApiResponse;
 }
 
+interface ScheduleMutationOptions {
+  onSuccess?: () => void;
+}
+
 /** 스케줄을 생성하는 Mutation 훅입니다.
  * onMutate: mutation 전에 캐싱된 데이터를 context로 넘겨줍니다.
  * onError: 에러 발생 시 캐싱된 데이터를 롤백합니다.
@@ -276,7 +287,7 @@ interface ScheduleMutationProps {
  * @param timetableId
  * @param semesterCode
  */
-export function useCreateSchedule(timetableId?: number, semesterCode?: string) {
+export function useCreateSchedule(timetableId?: number, semesterCode?: string, options?: ScheduleMutationOptions) {
   semesterCode = semesterCode ?? RECENT_SEMESTERS.semesterCode;
 
   const queryClient = useQueryClient();
@@ -353,6 +364,8 @@ export function useCreateSchedule(timetableId?: number, semesterCode?: string) {
           return sch; // Return unchanged schedules
         }),
       });
+
+      options?.onSuccess?.();
     },
   });
 }
@@ -363,7 +376,7 @@ export function useCreateSchedule(timetableId?: number, semesterCode?: string) {
  * onSuccess: 성공 시 캐싱된 데이터를 업데이트합니다.
  * @param timetableId
  */
-export function useUpdateSchedule(timetableId?: number) {
+export function useUpdateSchedule(timetableId?: number, options?: ScheduleMutationOptions) {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -388,6 +401,7 @@ export function useUpdateSchedule(timetableId?: number) {
       if (!context?.prevTimetableSchedules) {
         await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
         await queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
+        options?.onSuccess?.();
         return;
       }
 
@@ -400,6 +414,8 @@ export function useUpdateSchedule(timetableId?: number) {
           return sch; // Return unchanged schedules
         }),
       });
+
+      options?.onSuccess?.();
     },
   });
 }
@@ -410,7 +426,7 @@ export function useUpdateSchedule(timetableId?: number) {
  * onSuccess: 성공 시 캐싱된 데이터를 업데이트합니다.
  * @param timetableId
  */
-export function useDeleteSchedule(timetableId?: number) {
+export function useDeleteSchedule(timetableId?: number, options?: ScheduleMutationOptions) {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -436,6 +452,7 @@ export function useDeleteSchedule(timetableId?: number) {
       if (!context?.prevTimetableSchedules) {
         await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
         await queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
+        options?.onSuccess?.();
         return;
       }
 
@@ -446,6 +463,7 @@ export function useDeleteSchedule(timetableId?: number) {
       });
 
       await queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
+      options?.onSuccess?.();
     },
   });
 }

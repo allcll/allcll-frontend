@@ -15,7 +15,7 @@ import { ScheduleMutateType, useScheduleState } from '@/features/timetable/model
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
-import { showTimetableApiErrorToast } from './showTimetableApiErrorToast';
+import { showTimetableApiErrorToast, showTimetableApiSuccessToast } from './showTimetableApiErrorToast';
 
 const getInitCustomSchedule = () => new ScheduleAdapter().toUiData();
 let globalPrevTimetable: Timetable | undefined = undefined;
@@ -33,9 +33,27 @@ function useScheduleModal() {
   const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
   const [, startTransition] = useTransition();
 
-  const { mutate: createScheduleData } = useCreateSchedule(timetableId, currentSemester);
-  const { mutate: updateScheduleData } = useUpdateSchedule(timetableId);
-  const { mutate: deleteScheduleData } = useDeleteSchedule(timetableId);
+  const { mutate: createScheduleData } = useCreateSchedule(timetableId, currentSemester, {
+    onSuccess: () =>
+      showTimetableApiSuccessToast({
+        message: '과목을 추가했습니다.',
+        tag: 'schedule-create-success',
+      }),
+  });
+  const { mutate: updateScheduleData } = useUpdateSchedule(timetableId, {
+    onSuccess: () =>
+      showTimetableApiSuccessToast({
+        message: '과목을 수정했습니다.',
+        tag: 'schedule-update-success',
+      }),
+  });
+  const { mutate: deleteScheduleData } = useDeleteSchedule(timetableId, {
+    onSuccess: () =>
+      showTimetableApiSuccessToast({
+        message: '과목을 삭제했습니다.',
+        tag: 'schedule-delete-success',
+      }),
+  });
 
   /** Schedule Time 만 제어할 때 사용. 모달을 열고 싶지 않을 때 사용*/
   const setOptimisticSchedule = (targetSchedule: GeneralSchedule) => {

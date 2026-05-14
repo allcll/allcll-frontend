@@ -11,9 +11,20 @@ interface ShowTimetableApiErrorToastOptions {
   tag: string;
 }
 
+interface ShowTimetableApiSuccessToastOptions {
+  message: string;
+  tag: string;
+}
+
 export function showTimetableApiErrorToast(error: unknown, options: ShowTimetableApiErrorToastOptions) {
   const { fallbackMessage, tag } = options;
   const message = getTimetableApiErrorMessage(error) ?? fallbackMessage;
+
+  useToastNotification.getState().addToast(message, tag);
+}
+
+export function showTimetableApiSuccessToast(options: ShowTimetableApiSuccessToastOptions) {
+  const { message, tag } = options;
 
   useToastNotification.getState().addToast(message, tag);
 }

@@ -5,7 +5,7 @@ import useToastNotification from '@/features/notification/model/useToastNotifica
 import { Button, Chip, Dialog, Grid, Label, TextField } from '@allcll/allcll-ui';
 import { SEMESTERS } from '@/entities/semester/api/semester.ts';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
-import { showTimetableApiErrorToast } from '../lib/showTimetableApiErrorToast';
+import { showTimetableApiErrorToast, showTimetableApiSuccessToast } from '../lib/showTimetableApiErrorToast';
 
 interface IEditTimetable {
   onClose: () => void;
@@ -22,8 +22,20 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
     timeTable?.semesterCode ?? currentSemester.data?.semesterCode ?? '',
   );
 
-  const { mutate: updateTimetable } = useUpdateTimetable();
-  const { mutate: createTimetable } = useCreateTimetable();
+  const { mutate: updateTimetable } = useUpdateTimetable({
+    onSuccess: () =>
+      showTimetableApiSuccessToast({
+        message: '시간표를 수정했습니다.',
+        tag: 'timetable-update-success',
+      }),
+  });
+  const { mutate: createTimetable } = useCreateTimetable({
+    onSuccess: () =>
+      showTimetableApiSuccessToast({
+        message: '시간표를 생성했습니다.',
+        tag: 'timetable-create-success',
+      }),
+  });
 
   const addToast = useToastNotification.getState().addToast;
 

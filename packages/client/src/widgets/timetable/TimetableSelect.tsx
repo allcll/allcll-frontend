@@ -3,7 +3,10 @@ import { TimetableType, useDeleteTimetable } from '@/entities/timetable/api/useT
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { Button, Checkbox, Flex, Popover, SupportingText, usePopoverContext } from '@allcll/allcll-ui';
 import ConfirmDialog from '@/shared/ui/ConfirmDialog.tsx';
-import { showTimetableApiErrorToast } from '@/features/timetable/lib/showTimetableApiErrorToast';
+import {
+  showTimetableApiErrorToast,
+  showTimetableApiSuccessToast,
+} from '@/features/timetable/lib/showTimetableApiErrorToast';
 
 function TimetableActions({ onEdit, onDelete }: { onEdit: () => void; onDelete: () => void }) {
   const { close } = usePopoverContext();
@@ -46,7 +49,13 @@ const TimetableSelect = ({ setIsOpenModal, openCreateModal, timetables, currentT
   const [pendingDeleteId, setPendingDeleteId] = useState<number | null>(null);
   const pickTimetable = useScheduleState(state => state.pickTimetable);
 
-  const { mutate: deleteTimetable } = useDeleteTimetable();
+  const { mutate: deleteTimetable } = useDeleteTimetable({
+    onSuccess: () =>
+      showTimetableApiSuccessToast({
+        message: '시간표를 삭제했습니다.',
+        tag: 'timetable-delete-success',
+      }),
+  });
 
   const handleOptionClick = (option: TimetableType) => {
     const selectedTimetable = timetables.find(
