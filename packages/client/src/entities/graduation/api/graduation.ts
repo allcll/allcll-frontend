@@ -16,7 +16,7 @@ export async function fetchGraduationCheck(): Promise<GraduationCheckData> {
   return await fetchJsonOnAPI<GraduationCheckData>('/api/graduation/check');
 }
 
-export async function updateEnglishCertPass(isPassed: boolean): Promise<void> {
+export async function updateEnglishCertPass(isPassed: boolean): Promise<GraduationCheckData> {
   const response = await fetchOnAPI('/api/graduation/check/certifications/english', {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
@@ -25,6 +25,7 @@ export async function updateEnglishCertPass(isPassed: boolean): Promise<void> {
   if (!response.ok) {
     throw new Error(await response.text());
   }
+  return (await response.json()) as GraduationCheckData;
 }
 
 export interface CriteriaTarget {
