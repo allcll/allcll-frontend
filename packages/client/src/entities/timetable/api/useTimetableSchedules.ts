@@ -84,7 +84,7 @@ export interface InitTimetableType {
   semesterCode: string;
 }
 
-interface TimetableMutationOptions {
+interface ITimetableMutationOptions {
   onSuccess?: () => void;
 }
 
@@ -152,7 +152,7 @@ export function useGetTimetableSchedules(timetableId?: number, semester?: string
  * 시간표 수정 훅
  * timetableId에에 대한 timetableName을 수정합니다.
  */
-export function useUpdateTimetable(options?: TimetableMutationOptions) {
+export function useUpdateTimetable(options?: ITimetableMutationOptions) {
   const queryClient = useQueryClient();
   const { currentTimetable, pickTimetable } = useScheduleState.getState();
 
@@ -197,7 +197,7 @@ export function useUpdateTimetable(options?: TimetableMutationOptions) {
  * 시간표 삭제 훅
  * timetableId로 시간표를 삭제합니다.
  */
-export function useDeleteTimetable(options?: TimetableMutationOptions) {
+export function useDeleteTimetable(options?: ITimetableMutationOptions) {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -234,7 +234,7 @@ export function useDeleteTimetable(options?: TimetableMutationOptions) {
  * 시간표 생성 훅
  * 시간표를 생성합니다.
  */
-export function useCreateTimetable(options?: TimetableMutationOptions) {
+export function useCreateTimetable(options?: ITimetableMutationOptions) {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -276,7 +276,7 @@ interface ScheduleMutationProps {
   schedule: ScheduleApiResponse;
 }
 
-interface ScheduleMutationOptions {
+interface IScheduleMutationOptions {
   onSuccess?: () => void;
 }
 
@@ -287,7 +287,7 @@ interface ScheduleMutationOptions {
  * @param timetableId
  * @param semesterCode
  */
-export function useCreateSchedule(timetableId?: number, semesterCode?: string, options?: ScheduleMutationOptions) {
+export function useCreateSchedule(timetableId?: number, semesterCode?: string, options?: IScheduleMutationOptions) {
   semesterCode = semesterCode ?? RECENT_SEMESTERS.semesterCode;
 
   const queryClient = useQueryClient();
@@ -306,8 +306,8 @@ export function useCreateSchedule(timetableId?: number, semesterCode?: string, o
         targetTimetableId = timetable.timeTableId;
 
         /* timetable 생성 후, transaction을 위해 잠시 대기
-        -> targetTimetableId로 스케줄을 생성하기 위해
-        */
+                -> targetTimetableId로 스케줄을 생성하기 위해
+                */
         await timeSleep(300);
 
         // 시간표 생성 후, optimistic하게 스케줄을 설정합니다.
@@ -376,7 +376,7 @@ export function useCreateSchedule(timetableId?: number, semesterCode?: string, o
  * onSuccess: 성공 시 캐싱된 데이터를 업데이트합니다.
  * @param timetableId
  */
-export function useUpdateSchedule(timetableId?: number, options?: ScheduleMutationOptions) {
+export function useUpdateSchedule(timetableId?: number, options?: IScheduleMutationOptions) {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -426,7 +426,7 @@ export function useUpdateSchedule(timetableId?: number, options?: ScheduleMutati
  * onSuccess: 성공 시 캐싱된 데이터를 업데이트합니다.
  * @param timetableId
  */
-export function useDeleteSchedule(timetableId?: number, options?: ScheduleMutationOptions) {
+export function useDeleteSchedule(timetableId?: number, options?: IScheduleMutationOptions) {
   const queryClient = useQueryClient();
 
   return useMutation({

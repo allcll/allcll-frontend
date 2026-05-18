@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { TimetableType, useDeleteTimetable } from '@/entities/timetable/api/useTimetableSchedules.ts';
+import { useDeleteTimetable } from '@/entities/timetable/api/useTimetableSchedules.ts';
+import type { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { Button, Checkbox, Flex, Popover, SupportingText, usePopoverContext } from '@allcll/allcll-ui';
 import ConfirmDialog from '@/shared/ui/ConfirmDialog.tsx';
