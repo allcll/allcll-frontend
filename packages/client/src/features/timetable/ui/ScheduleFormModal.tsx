@@ -40,7 +40,7 @@ function ScheduleFormModal() {
 
   return (
     <>
-      <Dialog title={`커스텀 과목 ${title}`} onClose={cancelSchedule} isOpen={true}>
+      <Dialog title={`커스텀 일정 ${title}`} onClose={cancelSchedule} isOpen={true}>
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <Dialog.Content>
             <ScheduleFormContent />
@@ -62,8 +62,8 @@ function ScheduleFormModal() {
 
       <ConfirmDialog
         isOpen={isDeleteOpen}
-        title="커스텀 과목 삭제"
-        description="해당 커스텀 과목을 삭제하시겠습니까?"
+        title="커스텀 일정 삭제"
+        description="해당 커스텀 일정을 삭제하시겠습니까?"
         confirmLabel="삭제"
         danger
         onConfirm={handleConfirmDelete}

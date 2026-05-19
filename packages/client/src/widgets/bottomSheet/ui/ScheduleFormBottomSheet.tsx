@@ -37,7 +37,7 @@ function ScheduleFormBottomSheet() {
   return (
     <>
       <BottomSheet>
-        <BottomSheetHeader title={`커스텀 과목 ${title}`} headerType="close" onClose={handleCancelSchedule} />
+        <BottomSheetHeader title={`커스텀 일정 ${title}`} headerType="close" onClose={handleCancelSchedule} />
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <Flex direction="flex-col" className="py-5 px-2 overflow-y-auto max-h-[80vh]">
             <ScheduleFormContent />
@@ -59,8 +59,8 @@ function ScheduleFormBottomSheet() {
 
       <ConfirmDialog
         isOpen={isDeleteOpen}
-        title="커스텀 과목 삭제"
-        description="해당 커스텀 과목을 삭제하시겠습니까?"
+        title="커스텀 일정 삭제"
+        description="해당 커스텀 일정을 삭제하시겠습니까?"
         confirmLabel="삭제"
         danger
         onConfirm={handleConfirmDelete}
