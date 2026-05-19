@@ -7,10 +7,9 @@ import { Button, Flex, Heading } from '@allcll/allcll-ui';
 import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
 import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
-import ConfirmDialog from '@/shared/ui/ConfirmDialog.tsx';
 
 function ScheduleInfoBottomSheet() {
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isDeleteConfirming, setIsDeleteConfirming] = useState(false);
   const semester = useSemesterParam();
 
   const { schedule } = useScheduleModalData();
@@ -18,63 +17,68 @@ function ScheduleInfoBottomSheet() {
   const { data: subjects } = useSubject(semester);
 
   const handleDeleteOfficialSchedule = () => {
-    setIsDeleteOpen(true);
+    setIsDeleteConfirming(true);
+  };
+
+  const handleCancelDeleteConfirmation = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDeleteConfirming(false);
   };
 
   const handleConfirmDelete = () => {
-    setIsDeleteOpen(false);
-    requestAnimationFrame(() => deleteSchedule());
+    deleteSchedule();
   };
 
   const findSubjectById = subjects?.find(subject => subject.subjectId === schedule.subjectId);
 
   return (
-    <>
-      <BottomSheet>
-        <BottomSheetHeader headerType="close" onClose={cancelSchedule} />
-        <Flex direction="flex-col" className="px-2 py-3 w-full text-sm text-gray-500 gap-2">
-          <Heading level={3}>{schedule.subjectName}</Heading>
-          <p className="text-sm text-gray-500">{schedule.professorName ?? '교수 정보 없음'}</p>
+    <BottomSheet>
+      <BottomSheetHeader headerType="close" onClose={cancelSchedule} />
+      <Flex direction="flex-col" className="px-2 py-3 w-full text-sm text-gray-500 gap-2">
+        <Heading level={3}>{schedule.subjectName}</Heading>
+        <p className="text-sm text-gray-500">{schedule.professorName ?? '교수 정보 없음'}</p>
 
-          <Flex align="items-center">
-            <ClockGraySvg className="w-4 h-4 text-gray-400" />
-            <span>{findSubjectById?.lesnTime}</span>
-          </Flex>
+        <Flex align="items-center">
+          <ClockGraySvg className="w-4 h-4 text-gray-400" />
+          <span>{findSubjectById?.lesnTime}</span>
+        </Flex>
 
-          <Flex align="items-center">
-            <HouseSvg className="w-4 h-4 text-gray-400" />
-            <span>{findSubjectById?.lesnRoom ?? '장소 정보 없음'}</span>
-          </Flex>
+        <Flex align="items-center">
+          <HouseSvg className="w-4 h-4 text-gray-400" />
+          <span>{findSubjectById?.lesnRoom ?? '장소 정보 없음'}</span>
+        </Flex>
 
-          <Flex>
-            <span>{findSubjectById?.manageDeptNm}</span>
-            <span> {findSubjectById?.studentYear + '학년'}</span>
-            <span className="text-blue-500 text-sm">{findSubjectById?.tmNum[0] + '학점'}</span>
-          </Flex>
+        <Flex>
+          <span>{findSubjectById?.manageDeptNm}</span>
+          <span> {findSubjectById?.studentYear + '학년'}</span>
+          <span className="text-blue-500 text-sm">{findSubjectById?.tmNum[0] + '학점'}</span>
+        </Flex>
 
-          <Flex>
-            <span>{findSubjectById?.curiTypeCdNm ?? ''} </span>
-            <span>{findSubjectById?.remark ?? ''}</span>
-          </Flex>
+        <Flex>
+          <span>{findSubjectById?.curiTypeCdNm ?? ''} </span>
+          <span>{findSubjectById?.remark ?? ''}</span>
+        </Flex>
 
-          <Flex justify="justify-end" className="px-2">
+        <Flex justify="justify-end" align="items-center" gap="gap-2" className="px-2">
+          {isDeleteConfirming ? (
+            <>
+              <span className="self-center text-sm text-gray-600">과목을 삭제하시겠습니까?</span>
+              <Button type="button" variant="secondary" size="medium" onClick={handleCancelDeleteConfirmation}>
+                취소
+              </Button>
+              <Button type="button" variant="danger" size="medium" onClick={handleConfirmDelete}>
+                삭제
+              </Button>
+            </>
+          ) : (
             <Button variant="text" size="medium" textColor="secondary" onClick={handleDeleteOfficialSchedule}>
               삭제
             </Button>
-          </Flex>
+          )}
         </Flex>
-      </BottomSheet>
-
-      <ConfirmDialog
-        isOpen={isDeleteOpen}
-        title="과목 삭제"
-        description="해당 과목을 삭제하시겠습니까?"
-        confirmLabel="삭제"
-        danger
-        onConfirm={handleConfirmDelete}
-        onClose={() => setIsDeleteOpen(false)}
-      />
-    </>
+      </Flex>
+    </BottomSheet>
   );
 }
 

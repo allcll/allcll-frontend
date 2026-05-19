@@ -4,10 +4,9 @@ import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib
 import { ScheduleMutateType } from '@/features/timetable/model/useScheduleState.ts';
 import { Button, Dialog } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile.ts';
-import ConfirmDialog from '@/shared/ui/ConfirmDialog.tsx';
 
 function ScheduleFormModal() {
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isDeleteConfirming, setIsDeleteConfirming] = useState(false);
   const { modalActionType } = useScheduleModalData();
   const title = modalActionType === ScheduleMutateType.CREATE ? '생성' : '수정';
   const { saveSchedule, deleteSchedule, cancelSchedule } = useScheduleModal();
@@ -30,46 +29,63 @@ function ScheduleFormModal() {
 
   const handleDeleteSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setIsDeleteOpen(true);
+    setIsDeleteConfirming(true);
+  };
+
+  const handleCancelDeleteConfirmation = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDeleteConfirming(false);
   };
 
   const handleConfirmDelete = () => {
-    setIsDeleteOpen(false);
-    requestAnimationFrame(() => deleteSchedule());
+    deleteSchedule();
   };
 
   return (
-    <>
-      <Dialog title={`커스텀 일정 ${title}`} onClose={cancelSchedule} isOpen={true}>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          <Dialog.Content>
-            <ScheduleFormContent />
-          </Dialog.Content>
+    <Dialog title={`커스텀 일정 ${title}`} onClose={cancelSchedule} isOpen={true}>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <Dialog.Content>
+          <ScheduleFormContent />
+        </Dialog.Content>
 
-          <Dialog.Footer>
-            {(modalActionType === ScheduleMutateType.EDIT || modalActionType === ScheduleMutateType.VIEW) && (
-              <Button variant="secondary" size={isMobile ? 'small' : 'medium'} onClick={handleDeleteSchedule}>
+        <Dialog.Footer>
+          {isDeleteConfirming ? (
+            <>
+              <span className="self-center text-sm text-gray-600">커스텀 일정을 삭제하시겠습니까?</span>
+              <Button
+                type="button"
+                variant="secondary"
+                size={isMobile ? 'small' : 'medium'}
+                onClick={handleCancelDeleteConfirmation}
+              >
+                취소
+              </Button>
+              <Button type="button" variant="danger" size={isMobile ? 'small' : 'medium'} onClick={handleConfirmDelete}>
                 삭제
               </Button>
-            )}
+            </>
+          ) : (
+            <>
+              {(modalActionType === ScheduleMutateType.EDIT || modalActionType === ScheduleMutateType.VIEW) && (
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size={isMobile ? 'small' : 'medium'}
+                  onClick={handleDeleteSchedule}
+                >
+                  삭제
+                </Button>
+              )}
 
-            <Button type="submit" variant="primary" size={isMobile ? 'small' : 'medium'}>
-              저장
-            </Button>
-          </Dialog.Footer>
-        </form>
-      </Dialog>
-
-      <ConfirmDialog
-        isOpen={isDeleteOpen}
-        title="커스텀 일정 삭제"
-        description="해당 커스텀 일정을 삭제하시겠습니까?"
-        confirmLabel="삭제"
-        danger
-        onConfirm={handleConfirmDelete}
-        onClose={() => setIsDeleteOpen(false)}
-      />
-    </>
+              <Button type="submit" variant="primary" size={isMobile ? 'small' : 'medium'}>
+                저장
+              </Button>
+            </>
+          )}
+        </Dialog.Footer>
+      </form>
+    </Dialog>
   );
 }
 
