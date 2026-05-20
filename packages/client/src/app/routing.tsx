@@ -4,7 +4,6 @@ import ServiceLayout from '@/app/layouts/ServiceLayout.tsx';
 import SimulationLayout from '@/app/layouts/SimulationLayout.tsx';
 import Landing from '@/pages/home/Landing.tsx';
 import Live from '@/pages/live/Live.tsx';
-import ServiceInfo from '@/pages/serviceInfo/ServiceInfo.tsx';
 import CustomerService from '@/pages/customerService/CustomerService.tsx';
 import FAQ from '@/pages/faq/FAQ';
 import WishTable from '@/pages/wishlist/WishTable.tsx';
@@ -20,118 +19,117 @@ import GraduationDashboard from '@/pages/graduation/Dashboard.tsx';
 import NotFound from '@/pages/notfound/NotFound';
 import PrivacyPolicy from '@/pages/user/PrivacyPolicy';
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <MainLayout />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: '/',
-        element: <Landing />,
-      },
-      {
-        path: 'survey',
-        element: <CustomerService />,
-      },
-      {
-        path: 'about',
-        element: <ServiceInfo />,
-      },
-      {
-        path: 'faq',
-        element: <FAQ />,
-      },
-    ],
-  },
-  {
-    path: 'wishes',
-    element: <ServiceLayout serviceId="baskets" />,
-    errorElement: <ErrorPageWith404 />,
-    children: [
-      {
-        path: '',
-        element: <WishTable />,
-      },
-      {
-        path: ':id',
-        element: <WishesDetail />,
-      },
-    ],
-  },
-  {
-    path: 'live',
-    element: <ServiceLayout serviceId="live" />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: '',
-        element: <Live />,
-      },
-    ],
-  },
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <MainLayout />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: '/',
+          element: <Landing />,
+        },
+        {
+          path: 'survey',
+          element: <CustomerService />,
+        },
+        {
+          path: 'faq',
+          element: <FAQ />,
+        },
+      ],
+    },
+    {
+      path: 'wishes',
+      element: <ServiceLayout serviceId="baskets" />,
+      errorElement: <ErrorPageWith404 />,
+      children: [
+        {
+          path: '',
+          element: <WishTable />,
+        },
+        {
+          path: ':id',
+          element: <WishesDetail />,
+        },
+      ],
+    },
+    {
+      path: 'live',
+      element: <ServiceLayout serviceId="live" />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: '',
+          element: <Live />,
+        },
+      ],
+    },
 
-  {
-    path: 'simulation',
-    element: <SimulationLayout />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: '',
-        element: <Simulation />,
-      },
-      {
-        path: 'logs',
-        element: <SimulationDashboard />,
-      },
-      {
-        path: 'logs/:runId',
-        element: <SimulationDashboardDetail />,
-      },
-    ],
-  },
-  {
-    path: 'timetable',
-    element: <MainLayout />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        index: true,
-        element: <Timetable />,
-      },
-    ],
-  },
-  {
-    path: 'graduation',
-    element: <ServiceLayout serviceId="graduation" />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: '',
-        element: <GraduationSettingSteps />,
-      },
-      {
-        path: 'result',
-        element: <GraduationDashboard />,
-      },
-    ],
-  },
-  {
-    path: 'privacy-policy',
-    element: <MainLayout />,
-    children: [
-      {
-        index: true,
-        element: <PrivacyPolicy />,
-      },
-    ],
-    errorElement: <ErrorPage />,
-  },
+    {
+      path: 'simulation',
+      element: <SimulationLayout />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: '',
+          element: <Simulation />,
+        },
+        {
+          path: 'logs',
+          element: <SimulationDashboard />,
+        },
+        {
+          path: 'logs/:runId',
+          element: <SimulationDashboardDetail />,
+        },
+      ],
+    },
+    {
+      path: 'timetable',
+      element: <MainLayout />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          index: true,
+          element: <Timetable />,
+        },
+      ],
+    },
+    {
+      path: 'graduation',
+      element: <ServiceLayout serviceId="graduation" />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: '',
+          element: <GraduationSettingSteps />,
+        },
+        {
+          path: 'result',
+          element: <GraduationDashboard />,
+        },
+      ],
+    },
+    {
+      path: 'privacy-policy',
+      element: <MainLayout />,
+      children: [
+        {
+          index: true,
+          element: <PrivacyPolicy />,
+        },
+      ],
+      errorElement: <ErrorPage />,
+    },
 
-  {
-    path: '*',
-    element: <NotFound />,
-  },
-], { basename: import.meta.env.BASE_URL });
+    {
+      path: '*',
+      element: <NotFound />,
+    },
+  ],
+  { basename: import.meta.env.BASE_URL },
+);
 
 export default router;

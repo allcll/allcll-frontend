@@ -15,7 +15,7 @@ const FooterItems: IFooterItem[] = [
   {
     title: '고객지원',
     children: [
-      { title: 'ALLCLL 소개', href: '/about' },
+      { title: 'ALLCLL 소개', href: '/blog/about' },
       { title: '자주 묻는 질문', href: '/faq' },
       { title: '오류 및 제안', href: 'https://forms.gle/bCDTVujEHunnvHe88' },
       { title: 'allcllclla@google.com' },
@@ -75,11 +75,11 @@ function Footer() {
                 <li key={index} className="mb-1">
                   {!child.href ? (
                     <p>{child.title}</p>
-                  ) : child.href.startsWith('http') ? (
+                  ) : child.href.startsWith('http') || child.href.startsWith('/blog') ? (
                     <a
                       className="hover:text-blue-500 hover:underline hover:font-bold"
                       href={child.href}
-                      target="_blank"
+                      target={child.href.startsWith('http') ? '_blank' : undefined}
                     >
                       {child.title}
                     </a>

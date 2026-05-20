@@ -1,2 +1,5 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://allcll.kr/sitemap.xml
+Sitemap: https://allcll.kr/blog/sitemap.xml
