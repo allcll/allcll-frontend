@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib/useScheduleModal.ts';
 import ClockGraySvg from '@/assets/clock-gray.svg?react';
 import HouseSvg from '@/assets/house.svg?react';
@@ -6,29 +5,18 @@ import useSubject from '@/entities/subjects/model/useSubject.ts';
 import { Button, Dialog, Flex } from '@allcll/allcll-ui';
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
+import DeleteConfirmationActions from '@/features/timetable/ui/DeleteConfirmationActions.tsx';
+import useDeleteConfirmation from '@/features/timetable/lib/useDeleteConfirmation.ts';
 
 function ScheduleInfoModal() {
-  const [isDeleteConfirming, setIsDeleteConfirming] = useState(false);
   const semester = useSemesterParam();
 
   const { schedule } = useScheduleModalData();
   const { deleteSchedule } = useScheduleModal();
   const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
   const { data: subjects } = useSubject(semester);
-
-  const handleDeleteOfficialSchedule = () => {
-    setIsDeleteConfirming(true);
-  };
-
-  const handleCancelDeleteConfirmation = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDeleteConfirming(false);
-  };
-
-  const handleConfirmDelete = () => {
-    deleteSchedule();
-  };
+  const { isDeleteConfirming, requestDeleteConfirmation, cancelDeleteConfirmation, confirmDelete } =
+    useDeleteConfirmation(deleteSchedule);
 
   const findSubjectById = subjects?.find(subject => subject.subjectId === schedule.subjectId);
 
@@ -56,17 +44,14 @@ function ScheduleInfoModal() {
 
       <Dialog.Footer>
         {isDeleteConfirming ? (
-          <>
-            <span className="self-center text-sm text-gray-600">과목을 삭제하시겠습니까?</span>
-            <Button type="button" variant="secondary" size="medium" onClick={handleCancelDeleteConfirmation}>
-              취소
-            </Button>
-            <Button type="button" variant="danger" size="medium" onClick={handleConfirmDelete}>
-              삭제
-            </Button>
-          </>
+          <DeleteConfirmationActions
+            message="과목을 삭제하시겠습니까?"
+            size="medium"
+            onCancel={cancelDeleteConfirmation}
+            onConfirm={confirmDelete}
+          />
         ) : (
-          <Button variant="text" size="medium" textColor="secondary" onClick={handleDeleteOfficialSchedule}>
+          <Button variant="text" size="medium" textColor="secondary" onClick={requestDeleteConfirmation}>
             삭제
           </Button>
         )}
