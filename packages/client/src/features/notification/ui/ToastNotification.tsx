@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { createPortal } from 'react-dom';
 import CloseSvg from '@/assets/x-gray.svg?react';
@@ -7,19 +8,29 @@ import useToastNotification, { IToastMessage } from '../model/useToastNotificati
 function ToastNotification() {
   const messages = useToastNotification(state => state.messages);
   const closeToast = useToastNotification(state => state.clearToast);
-  const portalTarget = getToastPortalTarget();
+  const popoverRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const popover = popoverRef.current;
+
+    if (popover && 'showPopover' in popover && !popover.matches(':popover-open')) {
+      popover.showPopover();
+    }
+  }, []);
 
   return createPortal(
-    <div className="fixed top-2 right-2 z-400 max-w-screen">
-      <TransitionGroup className="flex gap-2 flex-col-reverse">
-        {messages.slice(-3).map(message => (
-          <CSSTransition key={message.id} timeout={300} classNames="toast">
-            <Toast toast={message} closeToast={() => closeToast(message.id)} />
-          </CSSTransition>
-        ))}
-      </TransitionGroup>
+    <div ref={popoverRef} popover="manual" className="toast-popover-root">
+      <div className="fixed top-2 right-2 z-400 max-w-screen">
+        <TransitionGroup className="flex gap-2 flex-col-reverse">
+          {messages.slice(-3).map(message => (
+            <CSSTransition key={message.id} timeout={300} classNames="toast">
+              <Toast toast={message} closeToast={() => closeToast(message.id)} />
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      </div>
     </div>,
-    portalTarget,
+    document.body,
   );
 }
 
@@ -41,32 +52,3 @@ function Toast({ toast, closeToast }: IToast) {
 }
 
 export default ToastNotification;
-
-function getToastPortalTarget() {
-  const popoverRoot = getToastPopoverRoot();
-
-  if (popoverRoot) {
-    return popoverRoot;
-  }
-
-  return document.body;
-}
-
-function getToastPopoverRoot() {
-  const id = 'toast-popover-root';
-  let root = document.getElementById(id);
-
-  if (!root) {
-    root = document.createElement('div');
-    root.id = id;
-    root.setAttribute('popover', 'manual');
-    root.className = 'toast-popover-root';
-    document.body.appendChild(root);
-  }
-
-  if ('showPopover' in root && !root.matches(':popover-open')) {
-    root.showPopover();
-  }
-
-  return root;
-}
