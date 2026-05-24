@@ -8,7 +8,7 @@ import type {
   GraduationCheckData,
   GraduationCourse,
 } from '@allcll/common';
-import { fetchJsonOnAPI, fetchOnAPI } from '@/shared/api/api';
+import { fetchJsonOnAPI } from '@/shared/api/api';
 
 export type CategoryGroup = 'major' | 'general';
 
@@ -17,15 +17,10 @@ export async function fetchGraduationCheck(): Promise<GraduationCheckData> {
 }
 
 export async function updateEnglishCertPass(isPassed: boolean): Promise<GraduationCheckData> {
-  const response = await fetchOnAPI('/api/graduation/check/certifications/english', {
+  return await fetchJsonOnAPI<GraduationCheckData>('/api/graduation/check/certifications/english', {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ isPassed }),
   });
-  if (!response.ok) {
-    throw new Error(await response.text());
-  }
-  return (await response.json()) as GraduationCheckData;
 }
 
 export interface CriteriaTarget {
