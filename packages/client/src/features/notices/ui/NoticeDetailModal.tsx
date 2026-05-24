@@ -31,20 +31,22 @@ function NoticeDetailModal({ notice, onClose }: Readonly<NoticeDetailModalProps>
         aria-labelledby="notice-detail-title"
         className="relative z-10 bg-white rounded-xl shadow-xl w-full max-w-3xl max-h-[80vh] flex flex-col overflow-hidden"
       >
-        <Flex align="items-center" justify="justify-between" className="px-5 py-4 border-b border-gray-100">
+        <Flex direction="flex-col" gap="gap-2" className="px-5 py-4 border-b border-gray-100">
+          <Flex align="items-start" justify="justify-between" gap="gap-3">
+            <h2 id="notice-detail-title" className="text-base font-semibold text-gray-900">
+              {notice.title}
+            </h2>
+            <IconButton variant="plain" label="닫기" icon={<CloseSvg className="w-4 h-4" />} onClick={onClose} />
+          </Flex>
           <Flex align="items-center" gap="gap-2">
             <Badge variant="primary" size="small">
               {getNoticeLabel(notice.operationType)}
             </Badge>
             <span className="text-xs text-gray-400">{date}</span>
           </Flex>
-          <IconButton variant="plain" label="닫기" icon={<CloseSvg className="w-4 h-4" />} onClick={onClose} />
         </Flex>
 
         <div className="px-5 py-4 overflow-y-auto">
-          <h2 id="notice-detail-title" className="text-base font-semibold text-gray-900 mb-4">
-            {notice.title}
-          </h2>
           <div className="prose max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{notice.content}</ReactMarkdown>
           </div>

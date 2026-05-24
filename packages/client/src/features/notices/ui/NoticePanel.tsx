@@ -37,13 +37,13 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
         </Flex>
 
         <div className="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-3">
+          <h2 className="text-base font-semibold text-gray-900">{selectedNotice.title}</h2>
           <Flex align="items-center" gap="gap-2">
             <Badge variant="primary" size="small">
               {getNoticeLabel(selectedNotice.operationType)}
             </Badge>
             <span className="text-xs text-gray-400">{selectedNotice.createdAt.slice(0, 10).replace(/-/g, '.')}</span>
           </Flex>
-          <h2 className="text-base font-semibold text-gray-900">{selectedNotice.title}</h2>
           <div className="prose max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{selectedNotice.content}</ReactMarkdown>
           </div>
