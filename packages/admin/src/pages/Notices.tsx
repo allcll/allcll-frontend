@@ -8,14 +8,9 @@ import PageHeader from '@/components/common/PageHeader';
 import NoticeTable from '@/components/notices/NoticeTable';
 import NoticeViewModal from '@/components/notices/NoticeViewModal';
 import NoticeDeleteModal from '@/components/notices/NoticeDeleteModal';
-import {
-  useAdminNotices,
-  useDeleteNotice,
-  CATEGORY_LABELS,
-  NOTICE_CATEGORIES,
-  type Notice,
-} from '@/hooks/server/useAdminNotices';
-import { type OperationType } from '@/hooks/server/useAdminReviews';
+import { useAdminNotices, useDeleteNotice, CATEGORY_LABELS, NOTICE_CATEGORIES } from '@/hooks/server/useAdminNotices';
+import type { Notice } from '@/hooks/server/useAdminNotices';
+import type { OperationType } from '@/hooks/server/useAdminReviews';
 
 const CATEGORY_OPTIONS = NOTICE_CATEGORIES.map(value => ({ label: CATEGORY_LABELS[value], value }));
 

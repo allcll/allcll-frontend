@@ -2,7 +2,8 @@ import EditSvg from '@/assets/edit.svg?react';
 import TrashSvg from '@/assets/trash.svg?react';
 import FileTextSvg from '@/assets/file-text.svg?react';
 import { Card, SupportingText, Badge, IconButton, Flex } from '@allcll/allcll-ui';
-import { CATEGORY_LABELS, type Notice } from '@/hooks/server/useAdminNotices';
+import { CATEGORY_LABELS } from '@/hooks/server/useAdminNotices';
+import type { Notice } from '@/hooks/server/useAdminNotices';
 
 interface INoticeTableProps {
   notices: Notice[];

@@ -1,5 +1,6 @@
 import { Button, Dialog, Flex } from '@allcll/allcll-ui';
-import { CATEGORY_LABELS, type Notice } from '@/hooks/server/useAdminNotices';
+import { CATEGORY_LABELS } from '@/hooks/server/useAdminNotices';
+import type { Notice } from '@/hooks/server/useAdminNotices';
 
 interface INoticeDeleteModalProps {
   notice: Notice;

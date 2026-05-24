@@ -7,7 +7,7 @@ import PageHeader from '@/components/common/PageHeader';
 import MarkdownEditor from '@/components/notices/MarkdownEditor';
 import UnsavedModal from '@/components/notices/UnsavedModal';
 import { useAdminNotice, useSaveNotice, CATEGORY_LABELS, NOTICE_CATEGORIES } from '@/hooks/server/useAdminNotices';
-import { type OperationType } from '@/hooks/server/useAdminReviews';
+import type { OperationType } from '@/hooks/server/useAdminReviews';
 
 const MAX_LENGTH = 1000;
 const MAX_TITLE_LENGTH = 250;

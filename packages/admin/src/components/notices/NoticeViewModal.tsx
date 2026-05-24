@@ -2,7 +2,8 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import { Button, Dialog, Badge, Flex } from '@allcll/allcll-ui';
-import { CATEGORY_LABELS, type Notice } from '@/hooks/server/useAdminNotices';
+import { CATEGORY_LABELS } from '@/hooks/server/useAdminNotices';
+import type { Notice } from '@/hooks/server/useAdminNotices';
 
 interface INoticeViewModalProps {
   notice: Notice;
