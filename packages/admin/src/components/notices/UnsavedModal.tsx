@@ -1,12 +1,12 @@
 import AlertTriangleSvg from '@/assets/alert-triangle.svg?react';
 import { Button, Dialog, Flex } from '@allcll/allcll-ui';
 
-interface Props {
+interface IUnsavedModalProps {
   onCancel: () => void;
   onConfirm: () => void;
 }
 
-function UnsavedModal({ onCancel, onConfirm }: Props) {
+function UnsavedModal({ onCancel, onConfirm }: IUnsavedModalProps) {
   return (
     <Dialog title="저장되지 않은 변경사항" onClose={onCancel}>
       <Dialog.Content>

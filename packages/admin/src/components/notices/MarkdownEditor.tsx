@@ -17,12 +17,12 @@ const WARN_LENGTH = 900;
 
 type Tab = 'write' | 'preview';
 
-interface Props {
+interface IMarkdownEditorProps {
   content: string;
   onChange: (value: string) => void;
 }
 
-function MarkdownEditor({ content, onChange }: Props) {
+function MarkdownEditor({ content, onChange }: IMarkdownEditorProps) {
   const [tab, setTab] = useState<Tab>('write');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 

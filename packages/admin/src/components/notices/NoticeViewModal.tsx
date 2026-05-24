@@ -4,13 +4,13 @@ import remarkBreaks from 'remark-breaks';
 import { Button, Dialog, Badge, Flex } from '@allcll/allcll-ui';
 import { CATEGORY_LABELS, type Notice } from '@/hooks/server/useAdminNotices';
 
-interface Props {
+interface INoticeViewModalProps {
   notice: Notice;
   onClose: () => void;
   onEdit: () => void;
 }
 
-function NoticeViewModal({ notice, onClose, onEdit }: Props) {
+function NoticeViewModal({ notice, onClose, onEdit }: INoticeViewModalProps) {
   return (
     <Dialog title={notice.title} onClose={onClose}>
       <Dialog.Content>

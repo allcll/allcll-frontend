@@ -1,12 +1,12 @@
 import { IconButton } from '@allcll/allcll-ui';
 
-interface Props {
+interface IToolbarButtonProps {
   onClick: () => void;
   title: string;
   children: React.ReactNode;
 }
 
-function ToolbarButton({ onClick, title, children }: Props) {
+function ToolbarButton({ onClick, title, children }: IToolbarButtonProps) {
   return (
     <IconButton
       icon={children}

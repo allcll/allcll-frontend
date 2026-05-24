@@ -4,7 +4,7 @@ import FileTextSvg from '@/assets/file-text.svg?react';
 import { Card, SupportingText, Badge, IconButton, Flex } from '@allcll/allcll-ui';
 import { CATEGORY_LABELS, type Notice } from '@/hooks/server/useAdminNotices';
 
-interface Props {
+interface INoticeTableProps {
   notices: Notice[];
   isLoading: boolean;
   isError: boolean;
@@ -13,7 +13,7 @@ interface Props {
   onDelete: (notice: Notice) => void;
 }
 
-function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: Props) {
+function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: INoticeTableProps) {
   return (
     <Card className="overflow-hidden flex flex-col flex-1 min-h-0">
       <div className="overflow-y-auto flex-1">

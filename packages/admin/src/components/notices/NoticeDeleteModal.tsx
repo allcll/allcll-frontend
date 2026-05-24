@@ -1,14 +1,14 @@
 import { Button, Dialog, Flex } from '@allcll/allcll-ui';
 import { CATEGORY_LABELS, type Notice } from '@/hooks/server/useAdminNotices';
 
-interface Props {
+interface INoticeDeleteModalProps {
   notice: Notice;
   onCancel: () => void;
   onConfirm: () => void;
   isDeleting: boolean;
 }
 
-function NoticeDeleteModal({ notice, onCancel, onConfirm, isDeleting }: Props) {
+function NoticeDeleteModal({ notice, onCancel, onConfirm, isDeleting }: INoticeDeleteModalProps) {
   return (
     <Dialog title="공지사항 삭제" onClose={onCancel}>
       <Dialog.Content>
