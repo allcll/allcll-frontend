@@ -453,7 +453,27 @@ export const handlers = [
     }
 
     setGraduationState({ englishCertPassedOverride: body.isPassed });
-    return new HttpResponse(null, { status: 204 });
+
+    const updatedState = getGraduationState();
+    const result = checkResultsByUserType[updatedState.userType];
+    const certs = result.certifications;
+    const overriddenEnglish = { ...certs.english, isPassed: body.isPassed };
+    const passedCount = [overriddenEnglish, certs.coding, certs.classic].filter(
+      cert => cert.isRequired && cert.isPassed,
+    ).length;
+    const isCertsSatisfied = passedCount >= certs.requiredPassCount;
+    const categoriesAllSatisfied = result.categories.every(cat => cat.satisfied);
+
+    return HttpResponse.json({
+      ...result,
+      isGraduatable: categoriesAllSatisfied && isCertsSatisfied,
+      certifications: {
+        ...certs,
+        english: overriddenEnglish,
+        passedCount,
+        isSatisfied: isCertsSatisfied,
+      },
+    });
   }),
 
   // 6-1. GET /api/graduation/courses
