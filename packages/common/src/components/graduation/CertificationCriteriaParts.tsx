@@ -9,13 +9,13 @@ export function TargetTypeBadge({ targetType }: Readonly<{ targetType: string }>
   );
 }
 
-interface CriteriaTableRow {
+interface ICriteriaTableRow {
   key: string;
   label: string;
   value: string;
 }
 
-export function CriteriaTable({ headers, rows }: Readonly<{ headers: [string, string]; rows: CriteriaTableRow[] }>) {
+export function CriteriaTable({ headers, rows }: Readonly<{ headers: [string, string]; rows: ICriteriaTableRow[] }>) {
   return (
     <div className="text-sm">
       <table className="w-full">

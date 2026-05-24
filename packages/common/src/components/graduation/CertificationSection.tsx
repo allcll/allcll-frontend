@@ -9,13 +9,13 @@ import type {
 import { CLASSIC_DOMAIN_LABELS } from '../../lib/graduation/mappers';
 import CertificationCriteriaModal from './CertificationCriteriaModal';
 
-interface CertificationSectionProps {
+interface ICertificationSectionProps {
   certifications: Certifications;
   criteriaData: GraduationCertificationCriteria;
   onEditEnglishCert?: () => void;
 }
 
-interface CertificationCardProps {
+interface ICertificationCardProps {
   title: string;
   isPassed: boolean;
   customStatus?: string;
@@ -33,7 +33,7 @@ function CertificationCard({
   certificationType,
   onViewStandards,
   children,
-}: Readonly<CertificationCardProps>) {
+}: Readonly<ICertificationCardProps>) {
   const statusText = isPassed ? '인증' : (customStatus ?? '미인증');
   const badgeVariant = isPassed ? 'success' : overallSatisfied ? 'default' : 'danger';
 
@@ -78,12 +78,12 @@ function ClassicReadingTable({ domains }: Readonly<{ domains: ClassicDomain[] }>
   );
 }
 
-interface EnglishCertContentProps {
+interface IEnglishCertContentProps {
   isPassed: boolean;
   onEdit?: () => void;
 }
 
-function EnglishCertContent({ isPassed, onEdit }: Readonly<EnglishCertContentProps>) {
+function EnglishCertContent({ isPassed, onEdit }: Readonly<IEnglishCertContentProps>) {
   return (
     <Flex direction="flex-col" align="items-center" justify="justify-center" gap="gap-1" className="h-full">
       {isPassed ? (
@@ -110,7 +110,7 @@ function CertificationSection({
   certifications,
   criteriaData,
   onEditEnglishCert,
-}: Readonly<CertificationSectionProps>) {
+}: Readonly<ICertificationSectionProps>) {
   const { english, coding, classic, passedCount, requiredPassCount } = certifications;
   const [activeCriteriaType, setActiveCriteriaType] = useState<CertificationType | null>(null);
 

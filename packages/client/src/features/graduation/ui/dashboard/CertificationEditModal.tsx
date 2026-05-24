@@ -3,7 +3,7 @@ import { EnglishCriteriaContent } from '@allcll/common';
 import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
 import type { CertificationCriteriaData } from '@/entities/graduation/api/graduation';
 
-interface CertificationEditModalProps {
+interface ICertificationEditModalProps {
   isOpen: boolean;
   currentIsPassed: boolean;
   isPending?: boolean;
@@ -23,7 +23,7 @@ function CertificationEditModal({
   isCriteriaError,
   onClose,
   onConfirm,
-}: Readonly<CertificationEditModalProps>) {
+}: Readonly<ICertificationEditModalProps>) {
   useBodyScrollLock(isOpen);
 
   const prompt = currentIsPassed ? '위 기준을 충족하지 못하셨나요?' : '위 기준을 충족하셨나요?';
