@@ -12,22 +12,21 @@ import QuoteSvg from '@/assets/quote.svg?react';
 import { Label, Flex } from '@allcll/allcll-ui';
 import ToolbarButton from '@/components/notices/ToolbarButton';
 
-const MAX_LENGTH = 1000;
-const WARN_LENGTH = 900;
-
 type Tab = 'write' | 'preview';
 
 interface IMarkdownEditorProps {
   content: string;
+  maxLength: number;
   onChange: (value: string) => void;
 }
 
-function MarkdownEditor({ content, onChange }: IMarkdownEditorProps) {
+function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) {
   const [tab, setTab] = useState<Tab>('write');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const warnLength = Math.floor(maxLength * 0.9);
 
   const handleContentChange = (v: string) => {
-    if (v.length <= MAX_LENGTH) onChange(v);
+    if (v.length <= maxLength) onChange(v);
   };
 
   const insertMarkdown = (before: string, after = '', placeholder = '', linePrefix = false) => {
@@ -58,11 +57,7 @@ function MarkdownEditor({ content, onChange }: IMarkdownEditorProps) {
 
   const charCount = content.length;
   const charCountClass =
-    charCount > MAX_LENGTH
-      ? 'text-red-600 font-semibold'
-      : charCount > WARN_LENGTH
-        ? 'text-amber-600'
-        : 'text-gray-400';
+    charCount > maxLength ? 'text-red-600 font-semibold' : charCount > warnLength ? 'text-amber-600' : 'text-gray-400';
 
   return (
     <Flex direction="flex-col" gap="gap-1.5">
@@ -213,7 +208,7 @@ function MarkdownEditor({ content, onChange }: IMarkdownEditorProps) {
 
       <Flex align="items-center" justify="justify-end" className="text-xs">
         <span className={charCountClass}>
-          {charCount.toLocaleString()} / {MAX_LENGTH.toLocaleString()}자
+          {charCount.toLocaleString()} / {maxLength.toLocaleString()}자
         </span>
       </Flex>
     </Flex>

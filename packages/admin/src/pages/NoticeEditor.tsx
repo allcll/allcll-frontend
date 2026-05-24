@@ -179,6 +179,7 @@ function NoticeEditor() {
 
         <MarkdownEditor
           content={content}
+          maxLength={MAX_LENGTH}
           onChange={v => {
             setContent(v);
             setIsDirty(true);
