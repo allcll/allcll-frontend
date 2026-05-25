@@ -14,7 +14,6 @@ interface IUseToastNotification {
 }
 
 let toastId = 0;
-const toastTimers = new Map<string, ReturnType<typeof setTimeout>>();
 
 const useToastNotification = create<IUseToastNotification>((set, get) => ({
   isActivated: false,
@@ -24,13 +23,9 @@ const useToastNotification = create<IUseToastNotification>((set, get) => ({
 
     set(state => ({ messages: [...state.messages, toast] }));
     if (tag) {
-      const timerKey = `${tag}-${toast.id}`;
-      const timer = setTimeout(() => {
+      setTimeout(() => {
         get().clearToast(toast.id);
-        toastTimers.delete(timerKey);
       }, 3000);
-
-      toastTimers.set(timerKey, timer);
     }
   },
   clearToast: filter =>
