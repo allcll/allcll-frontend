@@ -28,12 +28,18 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
   if (isMobile && selectedNotice) {
     return (
       <Flex direction="flex-col" className="h-full">
-        <Flex align="items-center" justify="justify-between" className="px-4 py-3 border-b border-gray-100">
-          <Button variant="text" size="small" textColor="gray" onClick={() => setSelectedNotice(null)}>
+        <Flex align="items-center" justify="justify-between" className="p-4 border-b border-gray-100">
+          <Button variant="text" size="medium" textColor="gray" onClick={() => setSelectedNotice(null)}>
             <ChevronLeftSvg className="w-4 h-4" />
             목록
           </Button>
-          <IconButton variant="plain" label="닫기" icon={<CloseSvg className="w-4 h-4" />} onClick={onClose} />
+          <IconButton
+            className="p-2 hover:bg-gray-100 active:bg-gray-100"
+            variant="plain"
+            label="닫기"
+            icon={<CloseSvg className="w-6 h-6" />}
+            onClick={onClose}
+          />
         </Flex>
 
         <div className="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-3">
@@ -54,9 +60,15 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
 
   return (
     <Flex direction="flex-col" className="h-full">
-      <Flex align="items-center" justify="justify-between" className="px-4 py-3 border-b border-gray-100">
-        <span className="text-sm font-semibold text-gray-900">공지사항</span>
-        <IconButton variant="plain" label="닫기" icon={<CloseSvg className="w-4 h-4" />} onClick={onClose} />
+      <Flex align="items-center" justify="justify-between" className="p-4 border-b border-gray-100">
+        <span className="text-base font-semibold text-gray-900">공지사항</span>
+        <IconButton
+          className="p-2 hover:bg-gray-100 active:bg-gray-100"
+          variant="plain"
+          label="닫기"
+          icon={<CloseSvg className="w-6 h-6" />}
+          onClick={onClose}
+        />
       </Flex>
 
       <div className="flex-1 overflow-y-auto divide-y divide-gray-100">
