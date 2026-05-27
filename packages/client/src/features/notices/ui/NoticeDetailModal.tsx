@@ -2,7 +2,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import { createPortal } from 'react-dom';
-import { Badge, Flex, IconButton } from '@allcll/allcll-ui';
+import { Badge, Flex, Heading, IconButton } from '@allcll/allcll-ui';
 import CloseSvg from '@/assets/x.svg?react';
 import { type Notice, getNoticeLabel } from '@/entities/notices/model/notice';
 
@@ -33,9 +33,9 @@ function NoticeDetailModal({ notice, onClose }: Readonly<NoticeDetailModalProps>
       >
         <Flex direction="flex-col" gap="gap-2" className="px-5 py-4 border-b border-gray-100">
           <Flex align="items-start" justify="justify-between" gap="gap-3">
-            <h2 id="notice-detail-title" className="text-base font-semibold text-gray-900">
+            <Heading level={2} size="lg" id="notice-detail-title" className="text-gray-900">
               {notice.title}
-            </h2>
+            </Heading>
             <IconButton variant="plain" label="닫기" icon={<CloseSvg className="w-4 h-4" />} onClick={onClose} />
           </Flex>
           <Flex align="items-center" gap="gap-2">
