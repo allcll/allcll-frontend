@@ -23,8 +23,8 @@ function ProgressDoughnut({
 
   const sizeMap = {
     small: 'w-20 h-20',
-    medium: 'w-28 h-28',
-    large: 'w-36 h-36',
+    medium: 'w-32 h-32',
+    large: 'w-40 h-40',
   };
 
   const textSizeMap = {
