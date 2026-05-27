@@ -1,24 +1,18 @@
-import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, SupportingText } from '@allcll/allcll-ui';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
-import { useSpringConfetti } from '@/widgets/home/lib/useMainBannerSeasonConfetti';
 import Section from '@/widgets/home/ui/Section.tsx';
 import Image from '@/shared/ui/Image.tsx';
-import LogoName from '@/assets/logo/logo-name-spring.svg?react';
+import LogoName from '@/assets/logo/logo-name-summer.svg?react';
 
 const START_DATE = '03/04(수)';
 const END_DATE = '03/09(월)';
 
 function MainBanner() {
   const { data } = useServiceSemester();
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useSpringConfetti(canvasRef);
 
   return (
     <div className="relative overflow-hidden">
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-10" />
       <Section
         className="relative z-20 flex flex-col md:flex-row items-center justify-between !py-5"
         bgColor="bg-banner-skysoft"
@@ -57,7 +51,7 @@ function MainBanner() {
           </div>
         </div>
         <Image
-          src="/spring-banner-min.png"
+          src="/summer-banner-min.png"
           fetchPriority="high"
           alt=""
           aria-hidden="true"

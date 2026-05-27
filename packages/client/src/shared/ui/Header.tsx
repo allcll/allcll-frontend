@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import LogoCI from '@/assets/logo/ci-spring.svg?react';
-import LogoName from '@/assets/logo/logo-name-spring.svg?react';
+import LogoCI from '@/assets/logo/ci-summer.svg?react';
+import LogoName from '@/assets/logo/logo-name-summer.svg?react';
 import HelpDeskSvg from '@/assets/help-desk.svg?react';
 import HelpChatSvg from '@/assets/chat-help.svg?react';
 import MenuSvg from '@/assets/menu.svg?react';
