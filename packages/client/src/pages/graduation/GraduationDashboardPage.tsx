@@ -3,36 +3,40 @@ import { Helmet } from 'react-helmet';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { Flex, Banner, Button, Heading, SupportingText } from '@allcll/allcll-ui';
+import {
+  CategoryEarnedCoursesModal,
+  CategoryProgressCard,
+  CertificationSection,
+  EarnedCoursesSection,
+  OverallSummaryCard,
+  RecommendedCoursesModal,
+  SCOPE_TYPE_LABELS,
+  filterCategories,
+  filterCategoriesByScope,
+  getScopeTypes,
+  GENERAL_CATEGORY_TYPES,
+  MAJOR_CATEGORY_TYPES,
+  type BalanceRequiredArea,
+  type CategoryType,
+  type CriteriaCategory,
+  type ScopeType,
+} from '@allcll/common';
 import useMobile from '@/shared/lib/useMobile';
-import { graduationQueryKeys } from '@/entities/graduation/model/useGraduation';
+import {
+  graduationQueryKeys,
+  useCertificationCriteria,
+  useCriteriaCategories,
+  useGraduationCourses,
+} from '@/entities/graduation/model/useGraduation';
 import LogoutButton from '@/features/user/ui/LogoutButton';
 import { useGraduationDashboard } from '@/features/graduation/model/useGraduationDashboard';
 import { useGraduationConfetti } from '@/features/graduation/lib/useGraduationConfetti';
-import { useCriteriaCategories } from '@/entities/graduation/model/useGraduation';
 import useFeedbackTrigger from '@/features/feedback/lib/FeedbackTrigger';
 import FeedbackModal from '@/features/feedback/ui/FeedbackModal';
-import {
-  filterCategories,
-  MAJOR_CATEGORY_TYPES,
-  GENERAL_CATEGORY_TYPES,
-  getScopeTypes,
-  filterCategoriesByScope,
-} from '@/entities/graduation/lib/rules';
-import { SCOPE_TYPE_LABELS } from '@/features/graduation/lib/mappers';
-import type {
-  CategoryType,
-  CriteriaCategory,
-  BalanceRequiredArea,
-  ScopeType,
-} from '@/entities/graduation/api/graduation';
-import OverallSummaryCard from '@/entities/graduation/ui/OverallSummaryCard';
-import CategoryProgressCard from '@/features/graduation/ui/dashboard/CategoryProgressCard';
-import CertificationSection from '@/features/graduation/ui/dashboard/CertificationSection';
 import MobileTabs, { useMobileTabs } from '@/features/graduation/ui/dashboard/MobileTabs';
-import RecommendedCoursesModal from '@/features/graduation/ui/dashboard/RecommendedCoursesModal';
 import EditProfileModal from '@/features/graduation/ui/dashboard/EditProfileModal';
-import EarnedCoursesSection from '@/features/graduation/ui/dashboard/EarnedCoursesSection';
-import CategoryEarnedCoursesModal from '@/features/graduation/ui/dashboard/CategoryEarnedCoursesModal';
+import CertificationEditModal from '@/features/graduation/ui/dashboard/CertificationEditModal';
+import { useUpdateEnglishCertMutation } from '@/features/graduation/lib/useUpdateEnglishCertMutation';
 import LoadingWithMessage from '@/shared/ui/Loading';
 
 //TODO: API 연동 시간 측정 후, spinner로 변경 혹은 네트워크 지연 시간에 따른 스피너 타입 결정 훅 구현
@@ -50,6 +54,7 @@ function GraduationDashboardPage() {
   const navigate = useNavigate();
   const [showBanner, setShowBanner] = useState(true);
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const [isEnglishCertEditOpen, setIsEnglishCertEditOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<{
     categoryType: CategoryType;
     criteriaCategory?: CriteriaCategory;
@@ -62,6 +67,13 @@ function GraduationDashboardPage() {
   const { activeTab, setActiveTab } = useMobileTabs('major');
   const { user, graduationData, analyzedAt, isPending, isError, error } = useGraduationDashboard();
   const { data: criteriaCategories } = useCriteriaCategories();
+  const { data: graduationCourses } = useGraduationCourses();
+  const {
+    data: certificationCriteria,
+    isPending: isCriteriaLoading,
+    isError: isCriteriaError,
+  } = useCertificationCriteria(true);
+  const { mutate: updateEnglishCert, isPending: isUpdatingEnglishCert } = useUpdateEnglishCertMutation();
   const {
     isOpen: isFeedbackOpen,
     openMode: feedbackOpenMode,
@@ -82,6 +94,13 @@ function GraduationDashboardPage() {
 
   const handleEditProfile = () => {
     setIsEditProfileOpen(true);
+  };
+
+  const handleConfirmEnglishCertEdit = () => {
+    if (!graduationData) return;
+    updateEnglishCert(!graduationData.certifications.english.isPassed, {
+      onSuccess: () => setIsEnglishCertEditOpen(false),
+    });
   };
 
   const handleDeleteBanner = () => {
@@ -122,63 +141,65 @@ function GraduationDashboardPage() {
   const majorCategories = filterCategories(graduationData.categories, MAJOR_CATEGORY_TYPES);
   const generalCategories = filterCategories(graduationData.categories, GENERAL_CATEGORY_TYPES);
 
-  // 전공 타입에 따른 스코프 목록
   const scopeTypes = getScopeTypes(user.majorType);
   const isSingleMajor = user.majorType === 'SINGLE';
+  const courses = graduationCourses?.courses ?? [];
 
-  // 카테고리 기준 정보 조회
   const getCriteriaCategory = (categoryType: CategoryType, majorScope: ScopeType) => {
     return criteriaCategories?.categories.find(c => c.categoryType === categoryType && c.majorScope === majorScope);
   };
 
-  // 모바일 탭별 컨텐츠 렌더링
+  const renderCategoryCards = (cats: typeof majorCategories) => (
+    <Flex direction="flex-col" gap="gap-4" className="md:flex-row">
+      {cats.map(category => (
+        <div className="flex-1" key={`${category.majorScope}-${category.categoryType}`}>
+          <CategoryProgressCard
+            category={category}
+            criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
+            onViewCourses={handleViewCourses}
+            onViewEarnedCourses={handleViewEarnedCourses}
+          />
+        </div>
+      ))}
+    </Flex>
+  );
+
+  const renderMobileCategoryCards = (cats: typeof majorCategories) => (
+    <Flex direction="flex-col" gap="gap-4">
+      {cats.map(category => (
+        <CategoryProgressCard
+          key={`${category.majorScope}-${category.categoryType}`}
+          category={category}
+          criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
+          onViewCourses={handleViewCourses}
+          onViewEarnedCourses={handleViewEarnedCourses}
+        />
+      ))}
+    </Flex>
+  );
+
   const renderMobileContent = () => {
     switch (activeTab) {
       case 'major':
         return isSingleMajor ? (
-          // 단일 전공
           <section>
             <Heading level={2} className="mb-4">
               전공 이수 현황
             </Heading>
-            <Flex direction="flex-col" gap="gap-4">
-              {majorCategories.map(category => (
-                <CategoryProgressCard
-                  key={category.categoryType}
-                  category={category}
-                  criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
-                  onViewCourses={handleViewCourses}
-                  onViewEarnedCourses={handleViewEarnedCourses}
-                />
-              ))}
-            </Flex>
+            {renderMobileCategoryCards(majorCategories)}
           </section>
         ) : (
-          // 복수전공/부전공
           <Flex direction="flex-col" gap="gap-6">
-            {scopeTypes.map(scope => {
-              const scopeCategories = filterCategoriesByScope(graduationData.categories, scope, MAJOR_CATEGORY_TYPES);
-              const scopeLabel = SCOPE_TYPE_LABELS[scope];
-
-              return (
-                <section key={scope}>
-                  <Heading level={2} className="mb-4">
-                    {scopeLabel} 이수 현황
-                  </Heading>
-                  <Flex direction="flex-col" gap="gap-4">
-                    {scopeCategories.map(category => (
-                      <CategoryProgressCard
-                        key={`${category.majorScope}-${category.categoryType}`}
-                        category={category}
-                        criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
-                        onViewCourses={handleViewCourses}
-                        onViewEarnedCourses={handleViewEarnedCourses}
-                      />
-                    ))}
-                  </Flex>
-                </section>
-              );
-            })}
+            {scopeTypes.map(scope => (
+              <section key={scope}>
+                <Heading level={2} className="mb-4">
+                  {SCOPE_TYPE_LABELS[scope]} 이수 현황
+                </Heading>
+                {renderMobileCategoryCards(
+                  filterCategoriesByScope(graduationData.categories, scope, MAJOR_CATEGORY_TYPES),
+                )}
+              </section>
+            ))}
           </Flex>
         );
       case 'general':
@@ -187,21 +208,17 @@ function GraduationDashboardPage() {
             <Heading level={2} className="mb-4">
               교양 이수 현황
             </Heading>
-            <Flex direction="flex-col" gap="gap-4">
-              {generalCategories.map(category => (
-                <CategoryProgressCard
-                  key={category.categoryType}
-                  category={category}
-                  criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
-                  onViewCourses={handleViewCourses}
-                  onViewEarnedCourses={handleViewEarnedCourses}
-                />
-              ))}
-            </Flex>
+            {renderMobileCategoryCards(generalCategories)}
           </section>
         );
       case 'certification':
-        return <CertificationSection certifications={graduationData.certifications} />;
+        return certificationCriteria ? (
+          <CertificationSection
+            certifications={graduationData.certifications}
+            criteriaData={certificationCriteria}
+            onEditEnglishCert={() => setIsEnglishCertEditOpen(true)}
+          />
+        ) : null;
       default:
         return null;
     }
@@ -214,7 +231,6 @@ function GraduationDashboardPage() {
         <meta name="description" content="졸업요건 분석 결과를 확인하세요." />
       </Helmet>
 
-      {/* 안내 배너 */}
       {showBanner && (
         <Banner deleteBanner={handleDeleteBanner}>
           본 서비스는 베타 버전으로, 분석 결과는 공식적인 효력을 갖지 않습니다. 오류 또는 개선 사항이 있으시면
@@ -226,7 +242,6 @@ function GraduationDashboardPage() {
       )}
 
       <div className="max-w-5xl mx-auto mt-2 px-4">
-        {/* 페이지 제목 */}
         <Flex justify="justify-between" align="items-center">
           <Heading level={1}>졸업요건 분석</Heading>
           <Flex gap="gap-2">
@@ -245,13 +260,9 @@ function GraduationDashboardPage() {
         <SupportingText>{user.name}님의 졸업요건 분석 결과입니다.</SupportingText>
 
         <Flex direction="flex-col" gap="gap-2" className="mb-4 mt-2">
-          {/* 전체 진행률 카드 */}
-          <OverallSummaryCard user={user} graduationData={graduationData} />
+          <OverallSummaryCard user={user} checkData={graduationData} />
 
-          {/* 이수 과목 섹션 */}
-          <EarnedCoursesSection />
-
-          {/* 다시 검사하기 버튼 */}
+          <EarnedCoursesSection courses={courses} />
 
           <Flex justify="justify-between" align="items-center">
             <div></div>
@@ -275,7 +286,6 @@ function GraduationDashboardPage() {
             </Flex>
           </Flex>
 
-          {/* 모바일: 탭 UI */}
           {isMobile ? (
             <>
               <MobileTabs activeTab={activeTab} onTabChange={setActiveTab} />
@@ -283,87 +293,45 @@ function GraduationDashboardPage() {
             </>
           ) : (
             <Flex direction="flex-col" gap="gap-4">
-              {/* 웹: 전공 이수 현황 */}
               {isSingleMajor ? (
-                // 단일 전공
                 <section>
                   <Heading level={2} className="mb-2">
                     전공 이수 현황
                   </Heading>
-                  <div className="flex flex-col md:flex-row gap-4">
-                    {majorCategories.map(category => (
-                      <div className="flex-1" key={category.categoryType}>
-                        <CategoryProgressCard
-                          category={category}
-                          criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
-                          onViewCourses={handleViewCourses}
-                          onViewEarnedCourses={handleViewEarnedCourses}
-                        />
-                      </div>
-                    ))}
-                  </div>
+                  {renderCategoryCards(majorCategories)}
                 </section>
               ) : (
-                // 복수전공/부전공
-                <>
-                  {scopeTypes.map(scope => {
-                    const scopeCategories = filterCategoriesByScope(
-                      graduationData.categories,
-                      scope,
-                      MAJOR_CATEGORY_TYPES,
-                    );
-                    const scopeLabel = SCOPE_TYPE_LABELS[scope];
-
-                    return (
-                      <section key={scope}>
-                        <Heading level={2} className="mb-2">
-                          {scopeLabel} 이수 현황
-                        </Heading>
-                        <div className="flex flex-col md:flex-row gap-4">
-                          {scopeCategories.map(category => (
-                            <div className="flex-1" key={`${category.majorScope}-${category.categoryType}`}>
-                              <CategoryProgressCard
-                                category={category}
-                                criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
-                                onViewCourses={handleViewCourses}
-                                onViewEarnedCourses={handleViewEarnedCourses}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      </section>
-                    );
-                  })}
-                </>
+                scopeTypes.map(scope => (
+                  <section key={scope}>
+                    <Heading level={2} className="mb-2">
+                      {SCOPE_TYPE_LABELS[scope]} 이수 현황
+                    </Heading>
+                    {renderCategoryCards(
+                      filterCategoriesByScope(graduationData.categories, scope, MAJOR_CATEGORY_TYPES),
+                    )}
+                  </section>
+                ))
               )}
 
-              {/* 웹: 교양 이수 현황 */}
               <section>
                 <Heading level={2} className="mb-2">
                   교양 이수 현황
                 </Heading>
-                <div className="flex flex-col md:flex-row gap-4">
-                  {generalCategories.map(category => (
-                    <div className="flex-1" key={category.categoryType}>
-                      <CategoryProgressCard
-                        category={category}
-                        criteriaCategory={getCriteriaCategory(category.categoryType, category.majorScope)}
-                        onViewCourses={handleViewCourses}
-                        onViewEarnedCourses={handleViewEarnedCourses}
-                      />
-                    </div>
-                  ))}
-                </div>
+                {renderCategoryCards(generalCategories)}
               </section>
 
-              {/* 웹: 졸업인증 */}
-              <CertificationSection certifications={graduationData.certifications} />
+              {certificationCriteria && (
+                <CertificationSection
+                  certifications={graduationData.certifications}
+                  criteriaData={certificationCriteria}
+                  onEditEnglishCert={() => setIsEnglishCertEditOpen(true)}
+                />
+              )}
             </Flex>
           )}
         </Flex>
       </div>
 
-      {/* 추천 과목 모달 */}
       {selectedCategory && (
         <RecommendedCoursesModal
           isOpen
@@ -374,20 +342,31 @@ function GraduationDashboardPage() {
         />
       )}
 
-      {/* 카테고리별 이수 과목 모달 */}
       {selectedEarnedCategory && (
         <CategoryEarnedCoursesModal
           isOpen
           onClose={() => setSelectedEarnedCategory(null)}
           categoryType={selectedEarnedCategory.categoryType}
           majorScope={selectedEarnedCategory.majorScope}
+          courses={courses}
         />
       )}
 
-      {/* 회원 정보 수정 모달 */}
       {user && <EditProfileModal isOpen={isEditProfileOpen} onClose={() => setIsEditProfileOpen(false)} user={user} />}
 
-      {/* 피드백 모달 */}
+      {isEnglishCertEditOpen && (
+        <CertificationEditModal
+          isOpen
+          currentIsPassed={graduationData.certifications.english.isPassed}
+          isPending={isUpdatingEnglishCert}
+          criteriaData={certificationCriteria}
+          isCriteriaLoading={isCriteriaLoading}
+          isCriteriaError={isCriteriaError}
+          onClose={() => setIsEnglishCertEditOpen(false)}
+          onConfirm={handleConfirmEnglishCertEdit}
+        />
+      )}
+
       <FeedbackModal isOpen={isFeedbackOpen} onClose={closeFeedback} openMode={feedbackOpenMode} />
     </>
   );

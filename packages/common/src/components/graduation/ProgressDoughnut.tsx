@@ -5,59 +5,61 @@ import { colors } from '@allcll/allcll-ui';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface ProgressDoughnutProps {
-  /** 이수 학점 */
   earned: number;
-  /** 필요 학점 */
   required: number;
-  /** 차트 크기 */
   size?: 'small' | 'medium' | 'large';
-  /** 가운데 퍼센트 표시 여부 */
   showPercentage?: boolean;
 }
 
-function ProgressDoughnut({ earned, required, size = 'medium', showPercentage = true }: ProgressDoughnutProps) {
+function ProgressDoughnut({
+  earned,
+  required,
+  size = 'medium',
+  showPercentage = true,
+}: Readonly<ProgressDoughnutProps>) {
   const percentage = required === 0 ? 100 : Math.min(100, Math.round((earned / required) * 100));
   const remaining = Math.max(0, required - earned);
   const earnedForChart = Math.min(earned, required);
 
-  const sizeConfig = {
-    small: { width: 100, height: 100, fontSize: 'text-lg' },
-    medium: { width: 140, height: 140, fontSize: 'text-2xl' },
-    large: { width: 180, height: 180, fontSize: 'text-3xl' },
+  const sizeMap = {
+    small: 'w-20 h-20',
+    medium: 'w-32 h-32',
+    large: 'w-40 h-40',
   };
 
-  const config = sizeConfig[size];
+  const textSizeMap = {
+    small: 'text-base',
+    medium: 'text-2xl',
+    large: 'text-3xl',
+  };
 
   const data = {
+    labels: ['이수', '미이수'],
     datasets: [
       {
         data: [earnedForChart, remaining],
-        backgroundColor: [colors.primary[500], '#E5E7EB'],
+        backgroundColor: [colors.primary[500], '#e5e7eb'],
         borderWidth: 0,
-        cutout: '75%',
       },
     ],
   };
 
   const options = {
+    cutout: '70%',
     responsive: true,
     maintainAspectRatio: true,
     plugins: {
-      legend: {
-        display: false,
-      },
-      tooltip: {
-        enabled: false,
-      },
+      legend: { display: false },
+      tooltip: { enabled: false },
     },
   };
 
   return (
-    <div className="relative flex items-center justify-center" style={{ width: config.width, height: config.height }}>
+    <div className={`relative ${sizeMap[size]}`}>
       <Doughnut data={data} options={options} />
       {showPercentage && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className={`${config.fontSize} font-bold text-primary-500`}>{percentage}%</span>
+          <span className={`font-bold ${textSizeMap[size]} text-primary-500`}>{percentage}%</span>
         </div>
       )}
     </div>

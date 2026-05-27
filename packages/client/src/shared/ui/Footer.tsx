@@ -3,8 +3,8 @@ import { HeaderContents } from '@/shared/ui/Header.tsx';
 import GithubSvg from '@/assets/icon-github.svg?react';
 import InstagramSvg from '@/assets/icon-instagram.svg?react';
 import KakaoSvg from '@/assets/icon-kakao.svg?react';
-import LogoCI from '@/assets/logo/ci-spring.svg?react';
-import LogoName from '@/assets/logo/logo-name-spring.svg?react';
+import LogoCI from '@/assets/logo/ci-summer.svg?react';
+import LogoName from '@/assets/logo/logo-name-summer.svg?react';
 
 interface IFooterItem {
   title: string;
