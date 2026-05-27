@@ -23,8 +23,8 @@ function ProgressDoughnut({
 
   const sizeMap = {
     small: 'w-20 h-20',
-    medium: 'w-32 h-32',
-    large: 'w-40 h-40',
+    medium: 'w-28 h-28',
+    large: 'w-36 h-36',
   };
 
   const textSizeMap = {
@@ -59,7 +59,7 @@ function ProgressDoughnut({
       <Doughnut data={data} options={options} />
       {showPercentage && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className={`font-bold ${textSizeMap[size]}`}>{percentage}%</span>
+          <span className={`font-bold ${textSizeMap[size]} text-primary-500`}>{percentage}%</span>
         </div>
       )}
     </div>
