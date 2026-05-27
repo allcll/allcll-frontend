@@ -9,14 +9,15 @@ import type {
 import { CLASSIC_DOMAIN_LABELS } from '../../lib/graduation/mappers';
 import CertificationCriteriaModal from './CertificationCriteriaModal';
 
-interface CertificationSectionProps {
+interface ICertificationSectionProps {
   certifications: Certifications;
   criteriaData: GraduationCertificationCriteria;
+  onEditEnglishCert?: () => void;
 }
 
-interface CertificationCardProps {
+interface ICertificationCardProps {
   title: string;
-  passed: boolean;
+  isPassed: boolean;
   customStatus?: string;
   overallSatisfied?: boolean;
   certificationType: CertificationType;
@@ -26,15 +27,15 @@ interface CertificationCardProps {
 
 function CertificationCard({
   title,
-  passed,
+  isPassed,
   customStatus,
   overallSatisfied,
   certificationType,
   onViewStandards,
   children,
-}: Readonly<CertificationCardProps>) {
-  const statusText = passed ? '인증' : (customStatus ?? '미인증');
-  const badgeVariant = passed ? 'success' : overallSatisfied ? 'default' : 'danger';
+}: Readonly<ICertificationCardProps>) {
+  const statusText = isPassed ? '인증' : (customStatus ?? '미인증');
+  const badgeVariant = isPassed ? 'success' : overallSatisfied ? 'default' : 'danger';
 
   return (
     <Card variant="outlined" className="h-full relative">
@@ -77,13 +78,39 @@ function ClassicReadingTable({ domains }: Readonly<{ domains: ClassicDomain[] }>
   );
 }
 
+interface IEnglishCertContentProps {
+  isPassed: boolean;
+  onEdit?: () => void;
+}
+
+function EnglishCertContent({ isPassed, onEdit }: Readonly<IEnglishCertContentProps>) {
+  return (
+    <Flex direction="flex-col" align="items-center" justify="justify-center" gap="gap-1" className="h-full">
+      {isPassed ? (
+        <span className="text-primary">인증 완료</span>
+      ) : (
+        <span className="text-gray-500">이수 내역 없음</span>
+      )}
+      {onEdit && (
+        <Button variant="text" textColor="gray" size="small" onClick={onEdit}>
+          <span className="underline underline-offset-2">결과가 잘못되었나요?</span>
+        </Button>
+      )}
+    </Flex>
+  );
+}
+
 const CERT_NAMES: Record<CertificationType, string> = {
   english: '영어인증',
   coding: 'SW코딩졸업인증',
   classic: '고전독서인증',
 };
 
-function CertificationSection({ certifications, criteriaData }: Readonly<CertificationSectionProps>) {
+function CertificationSection({
+  certifications,
+  criteriaData,
+  onEditEnglishCert,
+}: Readonly<ICertificationSectionProps>) {
   const { english, coding, classic, passedCount, requiredPassCount } = certifications;
   const [activeCriteriaType, setActiveCriteriaType] = useState<CertificationType | null>(null);
 
@@ -111,25 +138,19 @@ function CertificationSection({ certifications, criteriaData }: Readonly<Certifi
         {english.isRequired && (
           <CertificationCard
             title={CERT_NAMES.english}
-            passed={english.isPassed}
+            isPassed={english.isPassed}
             certificationType="english"
             overallSatisfied={certifications.isSatisfied}
             onViewStandards={setActiveCriteriaType}
           >
-            <Flex justify="justify-center" align="items-center" className="h-full">
-              {english.isPassed ? (
-                <span className="text-primary">인증 완료</span>
-              ) : (
-                <span className="text-gray-500">이수 내역 없음</span>
-              )}
-            </Flex>
+            <EnglishCertContent isPassed={english.isPassed} onEdit={onEditEnglishCert} />
           </CertificationCard>
         )}
 
         {classic.isRequired && (
           <CertificationCard
             title={CERT_NAMES.classic}
-            passed={classic.isPassed}
+            isPassed={classic.isPassed}
             customStatus={`${classic.totalMyCount}/${classic.totalRequiredCount}`}
             certificationType="classic"
             overallSatisfied={certifications.isSatisfied}
@@ -142,7 +163,7 @@ function CertificationSection({ certifications, criteriaData }: Readonly<Certifi
         {coding.isRequired && (
           <CertificationCard
             title={CERT_NAMES.coding}
-            passed={coding.isPassed}
+            isPassed={coding.isPassed}
             certificationType="coding"
             overallSatisfied={certifications.isSatisfied}
             onViewStandards={setActiveCriteriaType}

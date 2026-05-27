@@ -16,6 +16,13 @@ export async function fetchGraduationCheck(): Promise<GraduationCheckData> {
   return await fetchJsonOnAPI<GraduationCheckData>('/api/graduation/check');
 }
 
+export async function updateEnglishCertPass(isPassed: boolean): Promise<GraduationCheckData> {
+  return await fetchJsonOnAPI<GraduationCheckData>('/api/graduation/check/certifications/english', {
+    method: 'PATCH',
+    body: JSON.stringify({ isPassed }),
+  });
+}
+
 export interface CriteriaTarget {
   englishTargetType: EnglishTargetType;
   codingTargetType: CodingTargetType;

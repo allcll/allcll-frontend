@@ -19,4 +19,7 @@ export { default as CategoryEarnedCoursesModal } from './src/components/graduati
 export { default as EarnedCoursesSection } from './src/components/graduation/EarnedCoursesSection';
 export { default as RecommendedCoursesModal } from './src/components/graduation/RecommendedCoursesModal';
 export { default as CertificationCriteriaModal } from './src/components/graduation/CertificationCriteriaModal';
+export { default as ClassicCriteriaContent } from './src/components/graduation/ClassicCriteriaContent';
+export { default as CodingCriteriaContent } from './src/components/graduation/CodingCriteriaContent';
+export { default as EnglishCriteriaContent } from './src/components/graduation/EnglishCriteriaContent';
 export { default as CertificationSection } from './src/components/graduation/CertificationSection';
