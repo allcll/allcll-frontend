@@ -3,10 +3,10 @@ import { Filtering } from '@allcll/common';
 import { useState } from 'react';
 import SectionHeader from '../common/SectionHeader';
 
-const semesters = ['2025-동계'];
+const semesters = ['2026-하계'];
 
 function SemesterSetting() {
-  const [semester, setSemester] = useState('2025-동계');
+  const [semester, setSemester] = useState('2026-하계');
 
   return (
     <section>
