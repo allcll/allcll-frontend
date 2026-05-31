@@ -7,7 +7,7 @@ import { useCheckAdminSession } from '@/hooks/server/session/useAdminSession';
 import { Card } from '@allcll/allcll-ui';
 import SectionHeader from '../common/SectionHeader';
 
-const SEASON_DATE = new Date('2025-12-04T00:00:00+09:00');
+const SEASON_DATE = new Date('2026-06-04T00:00:00+09:00');
 
 function Control() {
   const serviceActions = useAdminActions();
