@@ -20,6 +20,7 @@ function useWishes(semester?: string) {
     queryKey: ['wishlist', semester],
     queryFn: () => fetchWishesDataBySemester(semester),
     staleTime: Infinity,
+    enabled: !!subjects,
     select: data => joinSubjects(data, subjects),
   });
 
