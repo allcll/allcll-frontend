@@ -104,13 +104,13 @@ const SERVICE_SEMESTER_DUMMY: ServiceSemesterApiResponse = {
     {
       id: 'live',
       startDate: isDevServer ? '2026-05-28' : '2026-06-01', //dev서버에서 먼저 확인 하기 위해
-      endDate: '2026-06-04',
+      endDate: '2026-06-12',
       message: null,
     },
     {
       id: 'preSeat',
-      startDate: '2026-02-10',
-      endDate: '2026-03-09',
+      startDate: '2026-06-02',
+      endDate: '2026-06-11',
       message: null,
     },
   ],
