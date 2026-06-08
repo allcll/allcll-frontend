@@ -22,6 +22,10 @@ const serviceList = [
     id: 'live',
     name: '실시간',
   },
+  {
+    id: 'preSeat',
+    name: 'pre seat',
+  },
 ];
 
 const initPeriodService: PreiodService[] = [
@@ -46,7 +50,13 @@ const initPeriodService: PreiodService[] = [
   {
     id: 'live',
     startDate: '2026-06-01',
-    endDate: '2026-06-04',
+    endDate: '2026-06-12',
+    message: '',
+  },
+  {
+    id: 'preSeat',
+    startDate: '2026-06-02',
+    endDate: '2026-06-11',
     message: '',
   },
 ];
