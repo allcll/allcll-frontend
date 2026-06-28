@@ -33,7 +33,7 @@ export const fetchDetailRegisters = async (subjectId: number): Promise<DetailReg
       throw new NotFoundError(parsedError.message ?? response.statusText);
     }
 
-    throw new Error(await response.text());
+    throw new Error(errorMessage);
   }
 
   return response.json();
