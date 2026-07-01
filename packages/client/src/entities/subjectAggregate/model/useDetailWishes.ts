@@ -6,7 +6,6 @@ import { useJoinPreSeats } from '@/entities/subjectAggregate/lib/joinSubjects';
 interface DetailWishes {
   isPending: boolean;
   data?: WishesWithSeat;
-  isPastSemester?: boolean;
 }
 
 type WishesWithSeat = Wishes | (Wishes & IPreRealSeat);
@@ -22,7 +21,6 @@ function useDetailWishes(wishesInfo: IWishesInfo): DetailWishes {
   return {
     isPending: false,
     data: detail,
-    isPastSemester: !!wishesInfo.semesterCode,
   };
 }
 
