@@ -79,3 +79,9 @@ export interface IWishesInfo {
  * progress: 과목 신청 프로세스
  * finish: 결과 모달 */
 export type SimulationStatusType = 'before' | 'start' | 'progress' | 'finish';
+
+/** API 대한 에러 타입 */
+export interface ApiException {
+  code: string;
+  message: string;
+}
