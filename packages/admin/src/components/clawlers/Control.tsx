@@ -5,9 +5,10 @@ import { useAdminActions } from '@/hooks/useAdminActions';
 import ControlRow from './ControlRow';
 import { useCheckAdminSession } from '@/hooks/server/session/useAdminSession';
 import { Card } from '@allcll/allcll-ui';
+import { CRAWLER_SEASON_DATE } from '@allcll/common';
 import SectionHeader from '../common/SectionHeader';
 
-const SEASON_DATE = new Date('2026-06-05T00:00:00+09:00');
+const SEASON_DATE = new Date(CRAWLER_SEASON_DATE);
 
 function Control() {
   const serviceActions = useAdminActions();
