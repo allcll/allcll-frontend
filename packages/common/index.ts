@@ -10,6 +10,7 @@ export type { IToastMessage } from './src/store/useToastNotification';
 export * from './src/types/graduation';
 export * from './src/lib/graduation/mappers';
 export * from './src/lib/graduation/rules';
+export * from './src/lib/semester/config';
 
 export { default as ProgressDoughnut } from './src/components/graduation/ProgressDoughnut';
 export { default as OverallSummaryCard } from './src/components/graduation/OverallSummaryCard';
