@@ -2,10 +2,11 @@ import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib
 import ClockGraySvg from '@/assets/clock-gray.svg?react';
 import HouseSvg from '@/assets/house.svg?react';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
-import React from 'react';
 import { Button, Dialog, Flex } from '@allcll/allcll-ui';
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
+import DeleteConfirmationActions from '@/features/timetable/ui/DeleteConfirmationActions.tsx';
+import useDeleteConfirmation from '@/features/timetable/lib/useDeleteConfirmation.ts';
 
 function ScheduleInfoModal() {
   const semester = useSemesterParam();
@@ -14,13 +15,8 @@ function ScheduleInfoModal() {
   const { deleteSchedule } = useScheduleModal();
   const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
   const { data: subjects } = useSubject(semester);
-
-  const handleDeleteOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const confirmed = confirm('해당 과목을 삭제하시겠습니까?');
-    if (!confirmed) return;
-
-    deleteSchedule(e);
-  };
+  const { isDeleteConfirming, requestDeleteConfirmation, cancelDeleteConfirmation, confirmDelete } =
+    useDeleteConfirmation(deleteSchedule);
 
   const findSubjectById = subjects?.find(subject => subject.subjectId === schedule.subjectId);
 
@@ -47,9 +43,18 @@ function ScheduleInfoModal() {
       </Dialog.Content>
 
       <Dialog.Footer>
-        <Button variant="text" size="medium" textColor="secondary" onClick={handleDeleteOfficialSchedule}>
-          삭제
-        </Button>
+        {isDeleteConfirming ? (
+          <DeleteConfirmationActions
+            message="과목을 삭제하시겠습니까?"
+            size="medium"
+            onCancel={cancelDeleteConfirmation}
+            onConfirm={confirmDelete}
+          />
+        ) : (
+          <Button variant="text" size="medium" textColor="secondary" onClick={requestDeleteConfirmation}>
+            삭제
+          </Button>
+        )}
       </Dialog.Footer>
     </Dialog>
   );

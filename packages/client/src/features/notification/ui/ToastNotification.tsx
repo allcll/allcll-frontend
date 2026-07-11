@@ -1,4 +1,6 @@
+import { useEffect, useRef } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { createPortal } from 'react-dom';
 import CloseSvg from '@/assets/x-gray.svg?react';
 import AlarmSvg from '@/assets/alarm.svg?react';
 import useToastNotification, { IToastMessage } from '../model/useToastNotification';
@@ -6,17 +8,29 @@ import useToastNotification, { IToastMessage } from '../model/useToastNotificati
 function ToastNotification() {
   const messages = useToastNotification(state => state.messages);
   const closeToast = useToastNotification(state => state.clearToast);
+  const popoverRef = useRef<HTMLDivElement>(null);
 
-  return (
-    <div className="fixed top-2 right-2 z-100 max-w-screen">
-      <TransitionGroup className="flex gap-2 flex-col-reverse">
-        {messages.slice(-3).map((message, index) => (
-          <CSSTransition key={`${index} : ${message}`} timeout={300} classNames="toast">
-            <Toast toast={message} closeToast={() => closeToast(index)} />
-          </CSSTransition>
-        ))}
-      </TransitionGroup>
-    </div>
+  useEffect(() => {
+    const popover = popoverRef.current;
+
+    if (popover && 'showPopover' in popover && !popover.matches(':popover-open')) {
+      popover.showPopover();
+    }
+  }, []);
+
+  return createPortal(
+    <div ref={popoverRef} popover="manual" className="toast-popover-root">
+      <div className="fixed top-2 right-2 z-400 max-w-screen">
+        <TransitionGroup className="flex gap-2 flex-col-reverse">
+          {messages.slice(-3).map(message => (
+            <CSSTransition key={message.id} timeout={300} classNames="toast">
+              <Toast toast={message} closeToast={() => closeToast(message.id)} />
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      </div>
+    </div>,
+    document.body,
   );
 }
 

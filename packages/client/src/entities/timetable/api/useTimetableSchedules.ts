@@ -84,6 +84,10 @@ export interface InitTimetableType {
   semesterCode: string;
 }
 
+interface ITimetableMutationOptions {
+  onSuccess?: () => void;
+}
+
 const InitTimetableSchedules = {
   timeTableId: -1,
   timeTableName: '새 시간표',
@@ -148,7 +152,7 @@ export function useGetTimetableSchedules(timetableId?: number, semester?: string
  * 시간표 수정 훅
  * timetableId에에 대한 timetableName을 수정합니다.
  */
-export function useUpdateTimetable() {
+export function useUpdateTimetable(options?: ITimetableMutationOptions) {
   const queryClient = useQueryClient();
   const { currentTimetable, pickTimetable } = useScheduleState.getState();
 
@@ -178,6 +182,7 @@ export function useUpdateTimetable() {
 
       await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
       await queryClient.invalidateQueries({ queryKey: ['timetableList', updatedId] });
+      options?.onSuccess?.();
     },
 
     onError: async (error, _variables, context) => {
@@ -192,12 +197,18 @@ export function useUpdateTimetable() {
  * 시간표 삭제 훅
  * timetableId로 시간표를 삭제합니다.
  */
-export function useDeleteTimetable() {
+export function useDeleteTimetable(options?: ITimetableMutationOptions) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (timeTableId: number) => {
-      return await fetchOnAPI(`/api/timetables/${timeTableId}`, { method: 'DELETE' });
+      const response = await fetchOnAPI(`/api/timetables/${timeTableId}`, { method: 'DELETE' });
+
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+
+      return response;
     },
     onMutate: async (timeTableId: number) => {
       await queryClient.cancelQueries({ queryKey: ['timetableList'] });
@@ -214,6 +225,7 @@ export function useDeleteTimetable() {
       await queryClient.invalidateQueries({
         queryKey: ['timetableData', context?.timeTableId],
       });
+      options?.onSuccess?.();
     },
   });
 }
@@ -222,7 +234,7 @@ export function useDeleteTimetable() {
  * 시간표 생성 훅
  * 시간표를 생성합니다.
  */
-export function useCreateTimetable() {
+export function useCreateTimetable(options?: ITimetableMutationOptions) {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -251,14 +263,10 @@ export function useCreateTimetable() {
       });
 
       await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
+      options?.onSuccess?.();
     },
     onError: async error => {
-      try {
-        const e = JSON.parse(error.message);
-        alert(e.message);
-      } catch {
-        alert('Error adding Timetable');
-      }
+      console.error('시간표 생성 실패:', error);
       await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
     },
   });
@@ -268,6 +276,10 @@ interface ScheduleMutationProps {
   schedule: ScheduleApiResponse;
 }
 
+interface IScheduleMutationOptions {
+  onSuccess?: () => void;
+}
+
 /** 스케줄을 생성하는 Mutation 훅입니다.
  * onMutate: mutation 전에 캐싱된 데이터를 context로 넘겨줍니다.
  * onError: 에러 발생 시 캐싱된 데이터를 롤백합니다.
@@ -275,7 +287,7 @@ interface ScheduleMutationProps {
  * @param timetableId
  * @param semesterCode
  */
-export function useCreateSchedule(timetableId?: number, semesterCode?: string) {
+export function useCreateSchedule(timetableId?: number, semesterCode?: string, options?: IScheduleMutationOptions) {
   semesterCode = semesterCode ?? RECENT_SEMESTERS.semesterCode;
 
   const queryClient = useQueryClient();
@@ -294,8 +306,8 @@ export function useCreateSchedule(timetableId?: number, semesterCode?: string) {
         targetTimetableId = timetable.timeTableId;
 
         /* timetable 생성 후, transaction을 위해 잠시 대기
-        -> targetTimetableId로 스케줄을 생성하기 위해
-        */
+                -> targetTimetableId로 스케줄을 생성하기 위해
+                */
         await timeSleep(300);
 
         // 시간표 생성 후, optimistic하게 스케줄을 설정합니다.
@@ -352,6 +364,8 @@ export function useCreateSchedule(timetableId?: number, semesterCode?: string) {
           return sch; // Return unchanged schedules
         }),
       });
+
+      options?.onSuccess?.();
     },
   });
 }
@@ -362,7 +376,7 @@ export function useCreateSchedule(timetableId?: number, semesterCode?: string) {
  * onSuccess: 성공 시 캐싱된 데이터를 업데이트합니다.
  * @param timetableId
  */
-export function useUpdateSchedule(timetableId?: number) {
+export function useUpdateSchedule(timetableId?: number, options?: IScheduleMutationOptions) {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -387,6 +401,7 @@ export function useUpdateSchedule(timetableId?: number) {
       if (!context?.prevTimetableSchedules) {
         await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
         await queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
+        options?.onSuccess?.();
         return;
       }
 
@@ -399,6 +414,8 @@ export function useUpdateSchedule(timetableId?: number) {
           return sch; // Return unchanged schedules
         }),
       });
+
+      options?.onSuccess?.();
     },
   });
 }
@@ -409,7 +426,7 @@ export function useUpdateSchedule(timetableId?: number) {
  * onSuccess: 성공 시 캐싱된 데이터를 업데이트합니다.
  * @param timetableId
  */
-export function useDeleteSchedule(timetableId?: number) {
+export function useDeleteSchedule(timetableId?: number, options?: IScheduleMutationOptions) {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -435,6 +452,7 @@ export function useDeleteSchedule(timetableId?: number) {
       if (!context?.prevTimetableSchedules) {
         await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
         await queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
+        options?.onSuccess?.();
         return;
       }
 
@@ -445,6 +463,7 @@ export function useDeleteSchedule(timetableId?: number) {
       });
 
       await queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
+      options?.onSuccess?.();
     },
   });
 }
@@ -466,7 +485,7 @@ function toGeneralSchedules(timetable: Timetable, subjects?: Subject[]): General
  * @param generalSchedules - Schedule 배열
  * @param minTime
  */
-export function getScheduleSlots(generalSchedules?: GeneralSchedule[], minTime = 9) {
+export function useScheduleSlots(generalSchedules?: GeneralSchedule[], minTime = 9) {
   const selectedSchedule = useScheduleState(state => state.schedule);
   const selectMode = useScheduleState(state => state.mode);
   const colors: ScheduleSlot['color'][] = ['rose', 'amber', 'green', 'emerald', 'blue', 'violet'];
@@ -575,7 +594,7 @@ export interface EmptyScheduleSlot extends GeneralSchedule {
 /** 시간표의 Timeslot이 비어있는 ScheduleSlot 을 가져오는 훅입니다.
  * @param generalSchedules - Schedule 배열
  */
-export function getEmptyScheduleSlots(generalSchedules?: GeneralSchedule[]): EmptyScheduleSlot[] {
+export function useEmptyScheduleSlots(generalSchedules?: GeneralSchedule[]): EmptyScheduleSlot[] {
   const schedule = useScheduleState(state => state.schedule);
   const mode = useScheduleState(state => state.mode);
 

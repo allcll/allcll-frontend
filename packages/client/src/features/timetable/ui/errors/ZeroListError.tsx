@@ -11,7 +11,7 @@ function ZeroListError() {
     <div className="flex flex-col items-center gap-3 pt-5">
       <ZeroContent
         title="검색 결과가 없습니다."
-        description="찾으시는 과목이 없으신가요? 과목을 직접 등록해주세요."
+        description="찾으시는 과목이 없으신가요? 커스텀 일정을 직접 등록해주세요."
       />
 
       <Button variant="primary" size="medium" onClick={() => openScheduleModal(initSchedule)}>

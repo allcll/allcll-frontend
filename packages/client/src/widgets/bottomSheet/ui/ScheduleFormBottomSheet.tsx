@@ -6,6 +6,8 @@ import useMobile from '@/shared/lib/useMobile.ts';
 import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
 import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader';
 import ScheduleFormContent from '@/features/timetable/ui/ScheduleFormContent';
+import DeleteConfirmationActions from '@/features/timetable/ui/DeleteConfirmationActions';
+import useDeleteConfirmation from '@/features/timetable/lib/useDeleteConfirmation';
 
 function ScheduleFormBottomSheet() {
   const { modalActionType } = useScheduleModalData();
@@ -17,6 +19,9 @@ function ScheduleFormBottomSheet() {
 
   const title = modalActionType === ScheduleMutateType.CREATE ? '생성' : '수정';
   const isMobile = useMobile();
+  const buttonSize = isMobile ? 'small' : 'medium';
+  const { isDeleteConfirming, requestDeleteConfirmation, cancelDeleteConfirmation, confirmDelete } =
+    useDeleteConfirmation(deleteSchedule);
 
   const handleSubmit = (e: React.FormEvent) => {
     saveSchedule(e);
@@ -30,16 +35,27 @@ function ScheduleFormBottomSheet() {
           <ScheduleFormContent />
         </Flex>
 
-        <Flex justify="justify-end" gap={isMobile ? 'gap-2' : 'gap-4'} className="p-4">
-          {(modalActionType === ScheduleMutateType.EDIT || modalActionType === ScheduleMutateType.VIEW) && (
-            <Button variant="secondary" size={isMobile ? 'small' : 'medium'} onClick={deleteSchedule}>
-              삭제
-            </Button>
-          )}
+        <Flex justify="justify-end" align="items-center" gap={isMobile ? 'gap-2' : 'gap-4'} className="p-4">
+          {isDeleteConfirming ? (
+            <DeleteConfirmationActions
+              message="커스텀 일정을 삭제하시겠습니까?"
+              size={buttonSize}
+              onCancel={cancelDeleteConfirmation}
+              onConfirm={confirmDelete}
+            />
+          ) : (
+            <>
+              {(modalActionType === ScheduleMutateType.EDIT || modalActionType === ScheduleMutateType.VIEW) && (
+                <Button type="button" variant="secondary" size={buttonSize} onClick={requestDeleteConfirmation}>
+                  삭제
+                </Button>
+              )}
 
-          <Button type="submit" variant="primary" size={isMobile ? 'small' : 'medium'}>
-            저장
-          </Button>
+              <Button type="submit" variant="primary" size={buttonSize}>
+                저장
+              </Button>
+            </>
+          )}
         </Flex>
       </form>
     </BottomSheet>
