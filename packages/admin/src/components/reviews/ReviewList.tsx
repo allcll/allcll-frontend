@@ -22,6 +22,7 @@ function ReviewList({ reviews, isLoading, isError, filterBar }: Readonly<ReviewL
           <table className="w-full border-collapse table-fixed">
             <thead className="sticky top-0 z-10">
               <tr className="bg-gray-50 text-sm text-gray-500">
+                <th className="text-left px-4 py-2 font-medium w-36">등록일</th>
                 <th className="text-left px-4 py-2 font-medium w-28">학번</th>
                 <th className="text-left px-4 py-2 font-medium w-32">도메인</th>
                 <th className="text-left px-4 py-2 font-medium w-24">평점</th>
@@ -31,21 +32,21 @@ function ReviewList({ reviews, isLoading, isError, filterBar }: Readonly<ReviewL
             <tbody>
               {isLoading && (
                 <tr>
-                  <td colSpan={4} className="py-8 text-center">
+                  <td colSpan={5} className="py-8 text-center">
                     <SupportingText>불러오는 중...</SupportingText>
                   </td>
                 </tr>
               )}
               {!isLoading && isError && (
                 <tr>
-                  <td colSpan={4} className="py-8 text-center text-sm text-red-500">
+                  <td colSpan={5} className="py-8 text-center text-sm text-red-500">
                     후기 데이터를 불러오는데 실패했습니다.
                   </td>
                 </tr>
               )}
               {!isLoading && !isError && reviews.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="py-8 text-center">
+                  <td colSpan={5} className="py-8 text-center">
                     <SupportingText>등록된 후기가 없습니다.</SupportingText>
                   </td>
                 </tr>

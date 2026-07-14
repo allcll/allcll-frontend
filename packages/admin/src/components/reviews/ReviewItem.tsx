@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Badge, Flex, IconButton, SupportingText } from '@allcll/allcll-ui';
 import { Review, OPERATION_TYPE_LABEL, MAX_RATE } from '@/hooks/server/useAdminReviews';
+import { formatDateTime } from '@/utils/formatTime';
 import CiIcon from '@/assets/ci-icon.svg?react';
 import ArrowDownSvg from '@/assets/arrow-down.svg?react';
 
@@ -25,6 +26,9 @@ function ReviewItem({ review }: Readonly<ReviewItemProps>) {
 
   return (
     <tr className="bg-white hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0">
+      <td className="px-4 py-3 align-top w-36">
+        <SupportingText className="whitespace-nowrap">{formatDateTime(review.createdAt)}</SupportingText>
+      </td>
       <td className="px-4 py-3 align-top w-28">
         {isGraduation ? (
           <button
