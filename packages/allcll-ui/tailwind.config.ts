@@ -1,39 +1,19 @@
 import type { Config } from 'tailwindcss';
+import { Z_INDEX } from './zIndex';
+import { colors } from './colors';
 
 /** @type {import('tailwindcss').Config} */
 const config: Config = {
   content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      // z-index 단일 관리: ./zIndex.ts (z-content, z-modal 등 생성)
+      zIndex: Object.fromEntries(Object.entries(Z_INDEX).map(([key, value]) => [key, String(value)])),
+      // colors 단일 관리: ./colors.ts (기존 인라인 중복 제거)
       colors: {
-        primary: {
-          50: '#EFF6FF',
-          100: '#DBEAFE',
-          200: '#BFDBFE',
-          300: '#93C5FD',
-          400: '#60A5FA',
-          500: '#3B82F6',
-          600: '#2563EB',
-          700: '#1D4ED8',
-          800: '#1E40AF',
-          900: '#1E3A8A',
-        },
-        secondary: {
-          50: '#FEF2F2',
-          100: '#FEE2E2',
-          200: '#FECACA',
-          300: '#FCA5A5',
-          400: '#F87171',
-          500: '#EF4444',
-          600: '#DC2626',
-          700: '#B91C1C',
-          800: '#991B1B',
-          900: '#7F1D1D',
-        },
-        text: {
-          100: '#1B1B1B',
-          200: '#202123',
-        },
+        primary: colors.primary,
+        secondary: colors.secondary,
+        text: colors.text,
       },
     },
   },

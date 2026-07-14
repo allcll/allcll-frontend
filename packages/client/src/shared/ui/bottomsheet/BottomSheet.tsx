@@ -22,7 +22,6 @@ function BottomSheet({ children }: IBottomSheet) {
   const { cancelSchedule } = useScheduleModal();
   const [isInitialized, setIsInitialized] = useState(false);
 
-  
   // 초기 렌더링 후 transition 활성화
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -39,7 +38,7 @@ function BottomSheet({ children }: IBottomSheet) {
   useCloseBottomSheetOnBackKey();
 
   return (
-    <div className="fixed inset-0 z-[200]">
+    <div className="fixed inset-0 z-bottomSheet">
       {type && (
         <div
           className="absolute inset-0 bg-black/5 bg-opacity-80"
@@ -50,7 +49,7 @@ function BottomSheet({ children }: IBottomSheet) {
 
       <div
         ref={sheet}
-        className={`fixed rounded-t-xl bottom-0 left-0 w-full bg-white z-200 ${
+        className={`fixed rounded-t-xl bottom-0 left-0 w-full bg-white z-bottomSheet ${
           isInitialized ? 'transition-transform duration-300' : ''
         }`}
         style={{

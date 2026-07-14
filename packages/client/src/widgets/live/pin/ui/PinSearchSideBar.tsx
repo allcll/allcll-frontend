@@ -25,7 +25,7 @@ const transitionClasses = {
 function PinSearchSideBar({ isOpen, onClose }: PinSearchSideBarProps) {
   return (
     <CSSTransition in={isOpen} timeout={100} classNames={transitionClasses} unmountOnExit>
-      <Flex direction="flex-col" className="w-92 flex-auto bg-gray-50 shadow-lg z-10">
+      <Flex direction="flex-col" className="w-92 flex-auto bg-gray-50 shadow-lg z-content">
         <div className="flex justify-between items-center py-2 pl-4 pr-2 bg-white border-b border-gray-200">
           <Heading level={2}>알림 설정</Heading>
           <IconButton aria-label="알림 설정 닫기" icon={<XSvg className="w-4 h-4" />} onClick={onClose} />

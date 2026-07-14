@@ -37,7 +37,7 @@ function Table({ data, isPending = false, placeholder }: Readonly<ITable>) {
   return (
     <table className="w-full bg-white rounded-lg relative text-sm">
       <thead>
-        <tr className="bg-gray-50 sticky top-0 z-10 text-nowrap">
+        <tr className="bg-gray-50 sticky top-0 z-content text-nowrap">
           {headers.map(({ title }) => (
             <th key={'table-header-name-' + title} className="px-4 py-2">
               {title}

@@ -24,6 +24,22 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
     }
   });
 
+  useEffect(() => {
+    async function fetchResult() {
+      getSummaryResult({ simulationId }).then(result => {
+        if ('errMsg' in result) {
+          if (result.errMsg === SIMULATION_ERROR.SIMULATION_NOT_FOUND) {
+            closeModal();
+          } else alert(result.errMsg);
+        } else {
+          setResult(result);
+          setLogParam(simulationId);
+        }
+      });
+    }
+    fetchResult().then();
+  }, []);
+
   if (simulationAllResult && 'error' in simulationAllResult) {
     return <div className="flex flex-col w-full items-center justify-center h-120 gap-3"></div>;
   }
@@ -42,22 +58,6 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
         },
       }
     : undefined;
-
-  useEffect(() => {
-    async function fetchResult() {
-      getSummaryResult({ simulationId }).then(result => {
-        if ('errMsg' in result) {
-          if (result.errMsg === SIMULATION_ERROR.SIMULATION_NOT_FOUND) {
-            closeModal();
-          } else alert(result.errMsg);
-        } else {
-          setResult(result);
-          setLogParam(simulationId);
-        }
-      });
-    }
-    fetchResult().then();
-  }, []);
 
   if (!result) {
     return <ProcessingModal />;
@@ -82,7 +82,7 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
             <div className="animate-float5 absolute top-1/2 left-1/2 w-2 h-2 bg-purple-400 rounded-full" />
           </div>
         )}
-        <div className="relative z-10 text-center">
+        <div className="relative z-content text-center">
           <h2 className="text-xl font-bold text-gray-900">
             수강 신청
             <span className={isSuccessSimulation ? `text-blue-600` : `text-red-500`}>

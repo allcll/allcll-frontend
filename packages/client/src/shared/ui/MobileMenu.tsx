@@ -38,7 +38,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
   return (
     <>
       <CSSTransition in={isOpen} timeout={300} classNames="mobile-menu-overlay" unmountOnExit nodeRef={overlayRef}>
-        <div ref={overlayRef} className="fixed inset-0 z-40 md:hidden bg-black/30" aria-hidden="true" />
+        <div ref={overlayRef} className="fixed inset-0 z-overlay md:hidden bg-black/30" aria-hidden="true" />
       </CSSTransition>
 
       <CSSTransition
@@ -55,7 +55,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
           aria-modal="true"
           aria-labelledby="mobile-menu-title"
           tabIndex={-1}
-          className="fixed top-0 right-0 h-full w-full bg-white shadow-lg z-50 md:hidden flex flex-col"
+          className="fixed top-0 right-0 h-full w-full bg-white shadow-lg z-floating md:hidden flex flex-col"
         >
           <h2 id="mobile-menu-title" className="sr-only">
             모바일 메뉴

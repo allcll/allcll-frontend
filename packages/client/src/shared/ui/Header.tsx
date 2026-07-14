@@ -38,7 +38,7 @@ function Header() {
   const closeMenu = useCallback(() => setIsOpen(false), []);
 
   return (
-    <header className="bg-white shadow-sm z-50 sticky top-0">
+    <header className="bg-white shadow-sm z-header sticky top-0">
       <div className="container flex items-center justify-between mx-auto max-w-7xl px-4 md:px-16">
         <div className="flex items-center space-x-4 py-4">
           <Link to="/" className="flex items-center gap-1 space-x-2" aria-label="메인 페이지">
