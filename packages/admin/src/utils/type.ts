@@ -34,15 +34,6 @@ export interface Wishes {
   totalCount: number;
 }
 
-export type Service = 'timetable' | 'baskets' | 'simulation' | 'live' | 'preSeat';
-
-export interface PreiodService {
-  id: Service;
-  startDate: string;
-  endDate: string;
-  message: string;
-}
-
 export enum SetupStep {
   TOKEN = 1,
   CONTROL = 2,
