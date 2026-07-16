@@ -26,9 +26,6 @@ function ReviewItem({ review }: Readonly<ReviewItemProps>) {
 
   return (
     <tr className="bg-white hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0">
-      <td className="px-4 py-3 align-top w-36">
-        <SupportingText className="whitespace-nowrap">{formatDateTime(review.createdAt)}</SupportingText>
-      </td>
       <td className="px-4 py-3 align-top w-28">
         {isGraduation ? (
           <button
@@ -79,6 +76,9 @@ function ReviewItem({ review }: Readonly<ReviewItemProps>) {
             />
           )}
         </Flex>
+      </td>
+      <td className="px-4 py-3 align-top w-36">
+        <SupportingText className="whitespace-nowrap">{formatDateTime(review.createdAt)}</SupportingText>
       </td>
     </tr>
   );
