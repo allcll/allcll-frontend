@@ -1,4 +1,3 @@
-import { colors } from '@allcll/allcll-ui';
 import { ExtendedResultResponse } from '@/pages/simulation/DashboardDetail.tsx';
 import {
   getSearchBtnSpeedRank,
@@ -7,6 +6,7 @@ import {
   getCaptchaSpeedRank,
 } from '@/features/simulation/lib/score.ts';
 import { RadarChart as RadarChartComponent } from '@allcll/charts';
+import tailwindColors from 'tailwindcss/colors';
 
 const radarOptions = {
   responsive: true,
@@ -22,10 +22,10 @@ const radarOptions = {
         font: {
           size: 14,
         },
-        color: colors.gray[600], // text-gray-700
+        color: tailwindColors.gray[600], // text-gray-700
       },
       grid: {
-        color: colors.gray[200], // border-gray-300
+        color: tailwindColors.gray[200], // border-gray-300
       },
     },
   },
