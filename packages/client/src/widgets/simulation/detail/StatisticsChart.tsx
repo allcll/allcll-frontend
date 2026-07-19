@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { AggregatedResultResponse } from '@/features/simulation/lib/result.ts';
 import { MixedChart, type MixedChartProps, type MixedChartTooltipItem } from '@allcll/charts';
 
-// Fixme: type 정의 수정
 function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
   const [normalData, setNormalData] = useState(true);
 

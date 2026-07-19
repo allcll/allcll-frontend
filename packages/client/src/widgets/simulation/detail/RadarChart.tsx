@@ -1,3 +1,4 @@
+import { colors } from '@allcll/allcll-ui';
 import { ExtendedResultResponse } from '@/pages/simulation/DashboardDetail.tsx';
 import {
   getSearchBtnSpeedRank,
@@ -21,10 +22,10 @@ const radarOptions = {
         font: {
           size: 14,
         },
-        color: '#4B5563', // text-gray-700
+        color: colors.gray[600], // text-gray-700
       },
       grid: {
-        color: '#E5E7EB', // border-gray-300
+        color: colors.gray[200], // border-gray-300
       },
     },
   },

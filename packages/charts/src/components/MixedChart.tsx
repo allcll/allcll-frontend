@@ -9,10 +9,8 @@ import {
   Title,
   Tooltip,
   Legend,
-  type ChartData,
-  type ChartOptions,
-  type TooltipItem,
-} from 'chart.js/auto';
+} from 'chart.js';
+import type { ChartData, ChartOptions, TooltipItem } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend);
 

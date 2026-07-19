@@ -43,6 +43,7 @@ export default ({ mode }: ConfigEnv) => {
       rollupOptions: {
         output: {
           manualChunks(id) {
+            // @allcll/charts 내부 의존성(chart.js/react-chartjs-2)을 별도 vendor 청크로 분리
             if (id.includes('chart.js') || id.includes('react-chartjs-2')) {
               return 'vendor-chartjs';
             }

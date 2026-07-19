@@ -1,7 +1,7 @@
 import { colors } from '@allcll/allcll-ui';
 import { DoughnutChart } from '@allcll/charts';
 
-interface ProgressDoughnutProps {
+interface IProgressDoughnutProps {
   earned: number;
   required: number;
   size?: 'small' | 'medium' | 'large';
@@ -13,7 +13,7 @@ function ProgressDoughnut({
   required,
   size = 'medium',
   showPercentage = true,
-}: Readonly<ProgressDoughnutProps>) {
+}: Readonly<IProgressDoughnutProps>) {
   const percentage = required === 0 ? 100 : Math.min(100, Math.round((earned / required) * 100));
   const remaining = Math.max(0, required - earned);
   const earnedForChart = Math.min(earned, required);

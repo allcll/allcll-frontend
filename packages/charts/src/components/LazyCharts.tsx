@@ -12,16 +12,19 @@ interface ISkeletonProps {
 const createLazyChart = <T extends object>(
   importFn: () => Promise<{ default: ComponentType<T> }>,
   Skeleton: ComponentType<ISkeletonProps>,
+  displayName: string,
 ) => {
   const LazyComponent = lazy(importFn);
-  return (props: T & ISkeletonProps) => (
+  const ChartComponent = (props: T & ISkeletonProps) => (
     <Suspense fallback={<Skeleton className={props.className} height={props.height} />}>
       <LazyComponent {...props} />
     </Suspense>
   );
+  ChartComponent.displayName = displayName;
+  return ChartComponent;
 };
 
-export const DoughnutChart = createLazyChart(() => import('./DoughnutChart'), DoughnutChartSkeleton);
-export const BarChart = createLazyChart(() => import('./BarChart'), BarChartSkeleton);
-export const RadarChart = createLazyChart(() => import('./RadarChart'), RadarChartSkeleton);
-export const MixedChart = createLazyChart(() => import('./MixedChart'), MixedChartSkeleton);
+export const DoughnutChart = createLazyChart(() => import('./DoughnutChart'), DoughnutChartSkeleton, 'DoughnutChart');
+export const BarChart = createLazyChart(() => import('./BarChart'), BarChartSkeleton, 'BarChart');
+export const RadarChart = createLazyChart(() => import('./RadarChart'), RadarChartSkeleton, 'RadarChart');
+export const MixedChart = createLazyChart(() => import('./MixedChart'), MixedChartSkeleton, 'MixedChart');
