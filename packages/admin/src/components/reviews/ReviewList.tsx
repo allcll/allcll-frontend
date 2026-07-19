@@ -10,7 +10,7 @@ interface ReviewListProps {
   filterBar?: React.ReactNode;
 }
 
-function ReviewList({ reviews, isLoading, isError, filterBar }: ReviewListProps) {
+function ReviewList({ reviews, isLoading, isError, filterBar }: Readonly<ReviewListProps>) {
   return (
     <Flex direction="flex-col" gap="gap-2" className="h-full">
       <SectionHeader title="후기 목록" description="서비스별 사용자 후기를 확인합니다." />
@@ -22,7 +22,7 @@ function ReviewList({ reviews, isLoading, isError, filterBar }: ReviewListProps)
           <table className="w-full border-collapse table-fixed">
             <thead className="sticky top-0 z-10">
               <tr className="bg-gray-50 text-sm text-gray-500">
-                <th className="text-left px-4 py-2 font-medium w-32">학번</th>
+                <th className="text-left px-4 py-2 font-medium w-28">학번</th>
                 <th className="text-left px-4 py-2 font-medium w-32">도메인</th>
                 <th className="text-left px-4 py-2 font-medium w-24">평점</th>
                 <th className="text-left px-4 py-2 font-medium">후기 내용</th>

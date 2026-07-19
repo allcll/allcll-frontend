@@ -11,9 +11,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@allcll/allcll-ui": "workspace:^",
+    "@allcll/charts": "workspace:^",
     "react-transition-group": "^4.4.5",
-    "zustand": "^5.0.6",
-    "@allcll/allcll-ui": "workspace:^"
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@types/react-transition-group": "^4.4.12"

@@ -49,6 +49,10 @@ const isDevServer = import.meta.env.VITE_DEV_SERVER === 'true';
  */
 export const SEMESTERS = [
   {
+    semesterCode: 'SUMMER_26',
+    semesterValue: '2026-여름',
+  },
+  {
     semesterCode: 'SPRING_26',
     semesterValue: '2026-1',
   },
@@ -76,31 +80,31 @@ export const RECENT_SEMESTERS = SEMESTERS[0];
  * 서비스 API연결하기 전까지 해당 데이터 사용하기
  * @deprecated fetchServiceSemester로 대체, 또는 useServiceSemester 을 사용하세요. */
 const SERVICE_SEMESTER_DUMMY: ServiceSemesterApiResponse = {
-  semesterCode: 'SPRING_26',
-  semesterValue: '2026-1',
+  semesterCode: 'SUMMER_26',
+  semesterValue: '2026-여름',
   services: [
     {
       id: 'timetable',
-      startDate: '2026-01-23',
+      startDate: '2026-05-28',
       endDate: '2099-12-31',
       message: null,
     },
     {
       id: 'baskets',
-      startDate: '2026-01-23',
+      startDate: '2026-05-28',
       endDate: '2099-12-31',
       message: null,
     },
     {
       id: 'simulation',
-      startDate: '2026-01-23',
+      startDate: '2026-05-28',
       endDate: '2099-12-31',
       message: null,
     },
     {
       id: 'live',
-      startDate: isDevServer ? '2026-01-23' : '2026-02-09', //dev서버에서 먼저 확인 하기 위해
-      endDate: '2026-03-09',
+      startDate: isDevServer ? '2026-05-28' : '2026-06-01', //dev서버에서 먼저 확인 하기 위해
+      endDate: '2026-06-04',
       message: null,
     },
     {

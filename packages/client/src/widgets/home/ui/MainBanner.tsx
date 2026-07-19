@@ -1,33 +1,27 @@
-import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, SupportingText, Heading, Flex } from '@allcll/allcll-ui';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
-import { useSpringConfetti } from '@/widgets/home/lib/useMainBannerSeasonConfetti';
 import Section from '@/widgets/home/ui/Section.tsx';
 import Image from '@/shared/ui/Image.tsx';
-import LogoName from '@/assets/logo/logo-name-spring.svg?react';
+import LogoName from '@/assets/logo/logo-name-summer.svg?react';
 
-const START_DATE = '03/04(수)';
-const END_DATE = '03/09(월)';
+const START_DATE = '06/01(월)';
+const END_DATE = '06/04(목)';
 
 function MainBanner() {
   const { data } = useServiceSemester();
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useSpringConfetti(canvasRef);
 
   return (
     <div className="relative overflow-hidden">
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-10" />
       <Section
         className="relative z-20 flex flex-col md:flex-row items-center justify-between py-5!"
         bgColor="bg-banner-skysoft"
       >
         <div className="max-w-xl">
           <Flex direction="flex-row" gap="gap-2" align="items-center">
-            <Image src="/calendar.png" alt="2026-1학기 세종대 수강신청 일정 아이콘" className="w-10 h-10" />
+            <Image src="/calendar.png" alt="2026-여름학기 세종대 수강신청 일정 아이콘" className="w-10 h-10" />
             <span className="italic text-xs text-stone-500 ">
-              {data?.semesterValue}학기 수강 정정 기간 <br />
+              {data?.semesterValue}학기 수강신청 기간 <br />
               {START_DATE} ~ {END_DATE}
             </span>
           </Flex>
@@ -62,7 +56,7 @@ function MainBanner() {
           </Flex>
         </div>
         <Image
-          src="/spring-banner-min.png"
+          src="/summer-banner-min.png"
           fetchPriority="high"
           alt=""
           aria-hidden="true"
