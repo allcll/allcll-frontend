@@ -1,7 +1,7 @@
 import { fetchJsonOnPublic, fetchOnAPI } from '@/shared/api/api.ts';
-import { ApiException, WishRegister } from '@/shared/model/types.ts';
-import { BadRequestError, NotFoundError } from '@/shared/lib/errors.ts';
-import { jsonParse } from '@/shared/lib/parser.ts';
+import { ApiException, WishRegister } from '@/shared/model/types';
+import { BadRequestError, NotFoundError } from '@/shared/lib/errors';
+import { jsonParse } from '@/shared/lib/parser';
 
 export interface WishesApiResponse {
   baskets: { subjectId: number; totalCount: number }[];
