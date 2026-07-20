@@ -1,4 +1,4 @@
-import { IWishesInfo } from '@/shared/model/types';
+import type { IWishesInfo } from '@/shared/model/types';
 import useWishes, { InitWishes } from '@/entities/wishes/model/useWishes.ts';
 import { useJoinPreSeats } from '@/entities/subjectAggregate/lib/joinSubjects.ts';
 import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes.ts';
