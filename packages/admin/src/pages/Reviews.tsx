@@ -2,7 +2,8 @@ import { useMemo, useState } from 'react';
 import PageHeader from '@/components/common/PageHeader';
 import ReviewList from '@/components/reviews/ReviewList';
 import ReviewStats from '@/components/reviews/ReviewStats';
-import { useAdminReviews, OPERATION_TYPE_LABEL, Review } from '@/hooks/server/useAdminReviews';
+import { useAdminReviews, OPERATION_TYPE_LABEL } from '@/hooks/server/useAdminReviews';
+import type { Review } from '@/hooks/server/useAdminReviews';
 import { Filtering, CheckboxAdapter } from '@allcll/common';
 import MultiSelectFilterOption from '@/components/common/MultiSelectFilterOption';
 import { Button, Flex, ListboxOption } from '@allcll/allcll-ui';
@@ -14,7 +15,7 @@ type ReviewSortKey = 'latest' | 'oldest' | 'studentId' | 'rateDesc' | 'rateAsc';
 
 type ReviewComparator = (a: Review, b: Review) => number;
 
-interface ReviewSortOption {
+interface IReviewSortOption {
   value: ReviewSortKey;
   label: string;
   compare: ReviewComparator;
@@ -30,7 +31,7 @@ const compareByCreatedAt =
     return direction === 'asc' ? compared : -compared;
   };
 
-const SORT_OPTIONS: ReviewSortOption[] = [
+const SORT_OPTIONS: IReviewSortOption[] = [
   { value: 'latest', label: '최신순', compare: compareByCreatedAt('desc') },
   { value: 'oldest', label: '오래된순', compare: compareByCreatedAt('asc') },
   { value: 'studentId', label: '학번순', compare: (a, b) => a.studentId.localeCompare(b.studentId) },

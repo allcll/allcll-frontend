@@ -1,5 +1,5 @@
 import { Card, Flex, SupportingText } from '@allcll/allcll-ui';
-import { Review } from '@/hooks/server/useAdminReviews';
+import type { Review } from '@/hooks/server/useAdminReviews';
 import ReviewItem from './ReviewItem';
 import SectionHeader from '@/components/common/SectionHeader';
 
@@ -12,14 +12,14 @@ const COLUMNS: { label: string; width: string }[] = [
   { label: '등록일', width: 'w-36' },
 ];
 
-interface ReviewListProps {
+interface IReviewListProps {
   reviews: Review[];
   isLoading: boolean;
   isError: boolean;
   filterBar?: React.ReactNode;
 }
 
-function ReviewList({ reviews, isLoading, isError, filterBar }: Readonly<ReviewListProps>) {
+function ReviewList({ reviews, isLoading, isError, filterBar }: Readonly<IReviewListProps>) {
   return (
     <Flex direction="flex-col" gap="gap-2" className="h-full">
       <SectionHeader title="후기 목록" description="서비스별 사용자 후기를 확인합니다." />
