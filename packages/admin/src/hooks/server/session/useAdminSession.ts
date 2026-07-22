@@ -28,6 +28,42 @@ const getAdminSessions = async (userId: string) => {
   return await fetchJsonOnAPI<Session>(`/api/admin/session?userId=${encodeURIComponent(userId)}`);
 };
 
+export interface SsoLoginRequest {
+  studentId: string;
+  password: string;
+}
+
+interface SsoLoginResponse {
+  userId: string;
+}
+
+const postSsoLogin = async (request: SsoLoginRequest): Promise<SsoLoginResponse> => {
+  const response = await fetchOnAPI('/api/admin/session/sso', {
+    method: 'POST',
+    body: JSON.stringify(request),
+  });
+
+  const responseBody = await response.text();
+
+  /** 요청 로그는 IndexedDB에 남아 로그 화면에 그대로 표시된다. 비밀번호가 브라우저에 평문으로 저장되지 않도록 학번만 기록한다. */
+  await addRequestLog(response, 'POST', { studentId: request.studentId });
+
+  if (!response.ok) {
+    throw new Error(extractErrorMessage(responseBody));
+  }
+
+  return JSON.parse(responseBody) as SsoLoginResponse;
+};
+
+/** 백엔드는 실패 시 {code, message} 형태로 응답한다. 원인을 구분할 수 있도록 메시지를 꺼내 쓴다. */
+const extractErrorMessage = (responseBody: string): string => {
+  try {
+    return JSON.parse(responseBody).message ?? responseBody;
+  } catch {
+    return responseBody;
+  }
+};
+
 /**
  * userId의 인증 정보를 조회합니다.
  * queryKey에 userId를 포함해 캐시를 사용자별로 구분합니다.
@@ -82,6 +118,33 @@ export function usePostAdminSession() {
     onError: err => {
       console.error(err);
       toast('인증 정보 설정에 실패했습니다.');
+    },
+  });
+}
+
+/**
+ * 학번과 비밀번호로 수강신청 시스템 세션을 수립합니다.
+ * 응답으로 받은 userId는 이후 세션 갱신과 크롤링 요청이 그대로 사용하므로 localStorage에 저장합니다.
+ */
+export function usePostSsoLogin() {
+  const queryClient = useQueryClient();
+  const toast = useToastNotification.getState().addToast;
+
+  return useMutation({
+    mutationFn: postSsoLogin,
+
+    onSuccess: async data => {
+      localStorage.setItem('userId', data.userId);
+
+      await queryClient.invalidateQueries({ queryKey: ['sessions', data.userId] });
+      await queryClient.invalidateQueries({ queryKey: ['check-session'] });
+
+      toast('인증 정보가 성공적으로 설정되었습니다.');
+    },
+
+    onError: (err: Error) => {
+      console.error(err);
+      toast(err.message || '인증 정보 설정에 실패했습니다.');
     },
   });
 }
