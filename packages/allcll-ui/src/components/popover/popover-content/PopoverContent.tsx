@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { usePopoverContext } from '../popover/Popover';
 import useDetectClose from '../../../hooks/useDetectClose';
+import { Z_INDEX } from '../../../../zIndex';
 
 function PopoverContent({ children }: { children: React.ReactNode }) {
   const { isOpen, close, open, triggerRef } = usePopoverContext();
@@ -32,7 +33,7 @@ function PopoverContent({ children }: { children: React.ReactNode }) {
         }
       `}
       style={{
-        zIndex: 120,
+        zIndex: Z_INDEX.popover,
         top: rect.bottom + 8,
         left: rect.left,
       }}

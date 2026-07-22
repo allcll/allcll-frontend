@@ -44,7 +44,7 @@ function LiveSection() {
           <div className="overflow-x-auto">
             <table className="w-full bg-white rounded-lg text-sm">
               <thead>
-                <tr className="bg-gray-50 z-10 text-nowrap">
+                <tr className="bg-gray-50 z-content text-nowrap">
                   <th className="px-4 py-2">학수번호</th>
                   <th className="px-4 py-2">과목명</th>
                   <th className="px-4 py-2">교수명</th>

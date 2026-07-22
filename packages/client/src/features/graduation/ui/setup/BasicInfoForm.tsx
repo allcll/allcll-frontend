@@ -153,7 +153,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
                 />
 
                 {isPrimarySearchOpen && (
-                  <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
+                  <div className="absolute z-content w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
                     {filteredPrimaryDepartments && filteredPrimaryDepartments.length > 0 ? (
                       filteredPrimaryDepartments.map(department => {
                         const departmentName = department.departmentName || '학과 정보 없음';
@@ -206,7 +206,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
                 />
 
                 {isSearchOpen && (
-                  <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
+                  <div className="absolute z-content w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
                     {filteredDoubleDepartments && filteredDoubleDepartments.length > 0 ? (
                       filteredDoubleDepartments.map(department => {
                         const departmentName = department.departmentName || '학과 정보 없음';

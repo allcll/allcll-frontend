@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useMemo } from 'react';
 import EyeGray from '@/assets/eye-gray.svg?react';
 import EyeDeleteGray from '@/assets/eye-delete-gray.svg?react';
+import { Z_INDEX } from '@allcll/allcll-ui/zIndex';
 
 interface Item {
   title: string; // Assuming title is unique
@@ -137,7 +138,7 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
       left: rect.left,
       top: rect.top,
       position: 'fixed',
-      zIndex: 50,
+      zIndex: Z_INDEX.floating,
       pointerEvents: 'none',
       transition: 'none',
     });
@@ -164,7 +165,7 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
     if (hoverIndex === -1) hoverIndex = items.length;
 
     const fromIndex = dragMetaRef.current.currentIndex;
-    let toIndex = Math.max(0, Math.min(items.length - 1, hoverIndex > fromIndex ? hoverIndex - 1 : hoverIndex));
+    const toIndex = Math.max(0, Math.min(items.length - 1, hoverIndex > fromIndex ? hoverIndex - 1 : hoverIndex));
 
     if (toIndex !== fromIndex) {
       dragMetaRef.current.currentIndex = toIndex;

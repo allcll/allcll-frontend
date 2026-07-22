@@ -14,7 +14,7 @@ function MainBanner() {
   return (
     <div className="relative overflow-hidden">
       <Section
-        className="relative z-20 flex flex-col md:flex-row items-center justify-between !py-5"
+        className="relative z-elevated flex flex-col md:flex-row items-center justify-between !py-5"
         bgColor="bg-banner-skysoft"
       >
         <div className="max-w-xl">

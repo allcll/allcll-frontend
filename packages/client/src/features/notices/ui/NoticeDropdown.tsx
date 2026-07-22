@@ -38,7 +38,7 @@ function NoticeDropdown({ notices, isOpen, triggerRef, isRead, onRead, onClose }
   return createPortal(
     <div
       ref={panelRef}
-      className="fixed w-120 h-120 bg-white rounded-xl shadow-xl border border-gray-100 flex flex-col z-50"
+      className="fixed w-120 h-120 bg-white rounded-xl shadow-xl border border-gray-100 flex flex-col z-floating"
       style={{
         top: rect.bottom + 8,
         right: window.innerWidth - rect.right,

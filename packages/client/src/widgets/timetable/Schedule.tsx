@@ -78,7 +78,9 @@ function Schedule({
   return (
     <div
       ref={ref}
-      className={`flex absolute ${bgLight} rounded-l-xs cursor-pointer hover:z-20 focus:z-20 ` + attrs.className}
+      className={
+        `flex absolute ${bgLight} rounded-l-xs cursor-pointer hover:z-elevated focus:z-elevated ` + attrs.className
+      }
       onMouseDown={onMouseDown}
       onKeyDown={onKeyDown}
       tabIndex={0}

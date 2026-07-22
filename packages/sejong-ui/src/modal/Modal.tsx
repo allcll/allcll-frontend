@@ -30,7 +30,7 @@ function Modal({ children, onBackdropClick, preventAutoFocus, noBorder }: Readon
   };
 
   return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center">
+    <div className="fixed inset-0 z-modal flex items-center justify-center">
       <button
         type="button"
         aria-label="Close dialog"

@@ -30,7 +30,7 @@ export default function FeedbackDesktopModal({
   titles,
 }: FeedbackDesktopModalProps) {
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-6 right-6 z-floating">
       <div className="w-80 bg-white rounded-2xl shadow-lg">
         {!success ? (
           <>
@@ -41,7 +41,14 @@ export default function FeedbackDesktopModal({
             </Dialog.Header>
 
             <Dialog.Content>
-              <FeedbackFields titles={titles} rate={rate} setRate={setRate} detail={detail} setDetail={setDetail} error={error} />
+              <FeedbackFields
+                titles={titles}
+                rate={rate}
+                setRate={setRate}
+                detail={detail}
+                setDetail={setDetail}
+                error={error}
+              />
             </Dialog.Content>
 
             <Dialog.Footer>
