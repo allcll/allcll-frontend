@@ -21,3 +21,9 @@ export const toDateString = (date: Date) => {
   const pad = (value: number) => String(value).padStart(2, '0');
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 };
+
+// YYYY-MM-DD를 로컬 자정으로 파싱 (new Date('YYYY-MM-DD')는 UTC 자정이라 날짜가 어긋남)
+export const fromDateString = (dateString: string) => {
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day);
+};
