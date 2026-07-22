@@ -11,7 +11,8 @@ import svgr from 'vite-plugin-svgr';
 export default ({ mode }: ConfigEnv) => {
   const env = loadEnv(mode, process.cwd());
   const TargetHost = env.VITE_TARGET_HOST ?? 'localhost:8080';
-  const TargetServer = `https://${TargetHost}`;
+  // 스킴을 직접 지정할 수 있게 한다. 로컬 백엔드는 http 라 https 로 고정하면 프록시가 붙지 않는다.
+  const TargetServer = /^https?:\/\//.test(TargetHost ?? '') ? TargetHost : `https://${TargetHost}`;
 
   const isProduction = mode === 'production';
   const base = env.VITE_BASE ?? '/';
