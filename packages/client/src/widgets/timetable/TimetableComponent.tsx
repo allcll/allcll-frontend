@@ -3,7 +3,7 @@ import DaySchedule from '@/widgets/timetable/DaySchedule.tsx';
 import TmNumsComponent from '@/widgets/timetable/TmNumsComponent.tsx';
 import ScheduleSlotList from '@/widgets/timetable/ScheduleSlotList.tsx';
 import { useUpdateTimetableOptions } from '@/features/timetable/lib/useUpdateTimetableOptions.ts';
-import { GeneralSchedule, getScheduleSlots, ScheduleSlot } from '@/entities/timetable/api/useTimetableSchedules.ts';
+import { GeneralSchedule, useScheduleSlots, ScheduleSlot } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import useNotifyDeletedSchedule from '@/features/notification/lib/useNotifyDeletedSchedule.ts';
 import TimetableGridComponent from '@/widgets/timetable/TimetableGridComponent.tsx';
@@ -48,7 +48,7 @@ const DefaultScheduleTimes: Record<Day, ScheduleSlot[]> = DAYS.reduce(
 function WeekTable({ schedules }: { schedules: GeneralSchedule[] }) {
   const { colNames, minTime } = useScheduleState(state => state.options);
 
-  const scheduleSlots = getScheduleSlots(schedules, minTime) ?? DefaultScheduleTimes;
+  const scheduleSlots = useScheduleSlots(schedules, minTime) ?? DefaultScheduleTimes;
 
   useNotifyDeletedSchedule(schedules);
   useUpdateTimetableOptions(schedules);

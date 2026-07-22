@@ -39,7 +39,7 @@ function PinSearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
             onClick={expandToMax}
           />
 
-          <div className="sticky py-3 px-2 top-0 bg-white z-10 flex flex-col gap-2 mb-4 flex-auto">
+          <div className="sticky py-3 px-2 top-0 bg-white z-content flex flex-col gap-2 mb-4 flex-auto">
             <SearchBox
               placeholder="과목명 교수명 검색"
               onChange={e => setSearchInput(e.target.value)}

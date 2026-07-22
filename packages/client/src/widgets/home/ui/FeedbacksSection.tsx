@@ -7,7 +7,7 @@ function FeedbacksSection() {
     <Section className="text-center">
       <Heading level={2}>올클을 써보신 분들의 한마디!</Heading>
       <div className="overflow-hidden mt-6 relative">
-        <div className="absolute top-0 left-0 w-12 h-full bg-gradient-to-r from-gray-50 to-transparent z-10"></div>
+        <div className="absolute top-0 left-0 w-12 h-full bg-gradient-to-r from-gray-50 to-transparent z-content"></div>
         <div className="animate-marquee flex gap-6 flex-nowrap w-fit">
           {UserFeedbacks.map((feedback, index) => (
             <UserFeedbackCard key={'feedback-left-' + index} {...feedback} />
@@ -16,7 +16,7 @@ function FeedbacksSection() {
             <UserFeedbackCard key={'feedback-right-' + index} {...feedback} />
           ))}
         </div>
-        <div className="absolute top-0 right-0 w-12 h-full bg-gradient-to-l from-gray-50 to-transparent z-10"></div>
+        <div className="absolute top-0 right-0 w-12 h-full bg-gradient-to-l from-gray-50 to-transparent z-content"></div>
       </div>
     </Section>
   );

@@ -1,6 +1,7 @@
 // This hook is used to manage the schedule modal state and actions
 import React, { useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import useToastNotification from '@/features/notification/model/useToastNotification.ts';
 import {
   CustomSchedule,
   OfficialSchedule,
@@ -14,6 +15,7 @@ import { ScheduleMutateType, useScheduleState } from '@/features/timetable/model
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
+import { showTimetableApiErrorToast, showTimetableApiSuccessToast } from './showTimetableApiErrorToast';
 
 const getInitCustomSchedule = () => new ScheduleAdapter().toUiData();
 let globalPrevTimetable: Timetable | undefined = undefined;
@@ -31,9 +33,27 @@ function useScheduleModal() {
   const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
   const [, startTransition] = useTransition();
 
-  const { mutate: createScheduleData } = useCreateSchedule(timetableId, currentSemester);
-  const { mutate: updateScheduleData } = useUpdateSchedule(timetableId);
-  const { mutate: deleteScheduleData } = useDeleteSchedule(timetableId);
+  const { mutate: createScheduleData } = useCreateSchedule(timetableId, currentSemester, {
+    onSuccess: () =>
+      showTimetableApiSuccessToast({
+        message: '과목을 추가했습니다.',
+        tag: 'schedule-create-success',
+      }),
+  });
+  const { mutate: updateScheduleData } = useUpdateSchedule(timetableId, {
+    onSuccess: () =>
+      showTimetableApiSuccessToast({
+        message: '과목을 수정했습니다.',
+        tag: 'schedule-update-success',
+      }),
+  });
+  const { mutate: deleteScheduleData } = useDeleteSchedule(timetableId, {
+    onSuccess: () =>
+      showTimetableApiSuccessToast({
+        message: '과목을 삭제했습니다.',
+        tag: 'schedule-delete-success',
+      }),
+  });
 
   /** Schedule Time 만 제어할 때 사용. 모달을 열고 싶지 않을 때 사용*/
   const setOptimisticSchedule = (targetSchedule: GeneralSchedule) => {
@@ -67,7 +87,7 @@ function useScheduleModal() {
     const prevSchedule = useScheduleState.getState().schedule;
     // state 변경 로직
 
-    let newSchedule = schedule instanceof Function ? schedule(prevSchedule) : schedule;
+    const newSchedule = schedule instanceof Function ? schedule(prevSchedule) : schedule;
     changeScheduleData(newSchedule);
   };
 
@@ -89,14 +109,14 @@ function useScheduleModal() {
     const isTimeslotValid = new TimeslotAdapter(prevSchedule.timeSlots).validate();
 
     if (!isTimeslotValid) {
-      alert('시작 시간이 종료 시간 보다 늦지 않아야 합니다.');
+      useToastNotification.getState().addToast('종료 시간은 시작 시간보다 늦어야 합니다.', 'timeslot-validation');
       return;
     }
 
     const isSelectedDay = prevSchedule.timeSlots.length !== 0;
     const isCustom = prevSchedule.scheduleType === 'custom';
     if (isCustom && !isSelectedDay) {
-      alert('요일을 선택해주세요!.');
+      useToastNotification.getState().addToast('요일을 선택해주세요.', 'day-validation');
       return;
     }
 
@@ -104,11 +124,40 @@ function useScheduleModal() {
 
     // 생성 및 수정 로직
     if (mode === ScheduleMutateType.CREATE) {
+      if (prevSchedule.scheduleType === 'official') {
+        const timetableData = queryClient.getQueryData<Timetable>(['timetableData', timetableId]);
+        const isDuplicate = timetableData?.schedules.some(
+          s => s.scheduleType === 'official' && s.subjectId === prevSchedule.subjectId,
+        );
+        if (isDuplicate) {
+          useToastNotification.getState().addToast('이미 시간표에 추가된 과목입니다.', 'duplicate-subject');
+          return;
+        }
+      }
+
       // 생성중인 Schedule 구분 용 - unique negative id 생성
       schedule.scheduleId = getUniqueNegativeId(globalPrevTimetable?.schedules ?? []);
-      createScheduleData({ schedule });
+      createScheduleData(
+        { schedule },
+        {
+          onError: error =>
+            showTimetableApiErrorToast(error, {
+              fallbackMessage: '과목 추가에 실패했습니다. 다시 시도해주세요.',
+              tag: 'schedule-create-error',
+            }),
+        },
+      );
     } else if (mode === ScheduleMutateType.EDIT) {
-      updateScheduleData({ schedule });
+      updateScheduleData(
+        { schedule },
+        {
+          onError: error =>
+            showTimetableApiErrorToast(error, {
+              fallbackMessage: '과목 수정에 실패했습니다. 다시 시도해주세요.',
+              tag: 'schedule-update-error',
+            }),
+        },
+      );
       changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);
     }
 
@@ -122,7 +171,16 @@ function useScheduleModal() {
     if (e) e.preventDefault();
 
     const schedule = new ScheduleAdapter(prevSchedule).toApiData();
-    deleteScheduleData({ schedule });
+    deleteScheduleData(
+      { schedule },
+      {
+        onError: error =>
+          showTimetableApiErrorToast(error, {
+            fallbackMessage: '과목 삭제에 실패했습니다. 다시 시도해주세요.',
+            tag: 'schedule-delete-error',
+          }),
+      },
+    );
 
     // 모달 state 초기화
     changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);

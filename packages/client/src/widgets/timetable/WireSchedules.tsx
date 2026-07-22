@@ -47,10 +47,12 @@ function WireSchedules({ dayOfWeeks }: Readonly<IWireSchedulesProps>) {
 }
 
 function WireSchedule({ title, professor, location, ...attrs }: Readonly<IScheduleProps>) {
+  // timeslotIndex 는 DOM 으로 전파되지 않도록 의도적으로 분리해 버린다.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { timeslotIndex: _, ...rest } = attrs;
   return (
     <div
-      className={`flex absolute rounded-md z-20 
+      className={`flex absolute rounded-md z-elevated
       border-violet-500 border-2 md:border-4
       ${attrs.className}`}
       style={{ ...attrs.style }}

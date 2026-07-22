@@ -8,7 +8,7 @@ export { Dialog } from './src/components/dialog/Dialog';
 export { default as IconButton } from './src/components/icon-button/IconButton';
 export { default as Input } from './src/components/input/Input';
 export { default as Label } from './src/components/label/Label';
-export { Popover } from './src/components/popover/popover/Popover';
+export { Popover, usePopoverContext } from './src/components/popover/popover/Popover';
 export { default as RowCenter } from './src/components/row/RowCenter';
 export { default as RowLeft } from './src/components/row/RowLeft';
 export { default as RowMain } from './src/components/row/RowMain';

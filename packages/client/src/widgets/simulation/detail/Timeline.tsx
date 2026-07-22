@@ -50,7 +50,10 @@ function Timeline({ result }: Readonly<{ result: ExtendedResultResponse }>) {
             style={{ width: `${TICK_WIDTH * timelineTicks.length}px` }}
           >
             {/* subject info */}
-            <div className="py-2 text-sm md:sticky left-0 right-0 z-10 bg-white" style={{ width: `${HEADER_WIDTH}px` }}>
+            <div
+              className="py-2 text-sm md:sticky left-0 right-0 z-content bg-white"
+              style={{ width: `${HEADER_WIDTH}px` }}
+            >
               <div className={`font-semibold ${getTextColor600(subject.color)}`}>{subject.name}</div>
               <span className={`text-xs ${getTextColor500(subject.color)}`}>{subject.code}</span>
             </div>
@@ -116,7 +119,7 @@ function TimelineDot({
 
       {/* Tooltip wrapper */}
       <div
-        className={`absolute z-10 ${tooltipPos} left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-black text-white text-nowrap text-xs text-center opacity-0 peer-hover:opacity-100 transition-opacity duration-200`}
+        className={`absolute z-content ${tooltipPos} left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-black text-white text-nowrap text-xs text-center opacity-0 peer-hover:opacity-100 transition-opacity duration-200`}
       >
         {eventTitle}
         <br />

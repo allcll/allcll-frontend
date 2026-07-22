@@ -23,7 +23,7 @@ function ScheduleFormContent() {
   const textFields = [
     {
       id: 'subjectName',
-      name: '과목명',
+      name: '일정명',
       value: scheduleForm?.subjectName ?? '',
     },
     {

@@ -57,7 +57,7 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
       <div className="overflow-x-auto">
         <table className="w-full bg-white rounded-lg text-sm">
           <thead>
-            <tr className="bg-gray-50 sticky top-0 z-10 text-nowrap">
+            <tr className="bg-gray-50 sticky top-0 z-content text-nowrap">
               {tableTitles
                 .filter(t => t.visible)
                 .map(({ title }) => (
@@ -135,8 +135,8 @@ function SubjectBody({ tableTitles }: Readonly<{ tableTitles: HeadTitle<SseSubje
   return (
     <TransitionGroup component={null}>
       {tableData.map(subject => (
-        <CSSTransition key={subject.code} timeout={500} classNames="row-change">
-          <SubjectRow key={subject.code} subject={subject} HeadTitles={HeadTitles} />
+        <CSSTransition key={subject.subjectId} timeout={500} classNames="row-change">
+          <SubjectRow key={subject.subjectId} subject={subject} HeadTitles={HeadTitles} />
         </CSSTransition>
       ))}
     </TransitionGroup>
@@ -165,7 +165,8 @@ function SubjectRow({ subject, HeadTitles }: Readonly<{ subject: SseSubject; Hea
     <tr
       className={`border-t border-gray-200 text-black transition-colors duration-500 text-nowrap ${bgColor}`}
       data-testid="crawl-row"
-      data-crawled-at={crawledAt}>
+      data-crawled-at={crawledAt}
+    >
       {HeadTitles.map(({ key }) => {
         switch (key) {
           case 'seat':

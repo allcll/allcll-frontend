@@ -34,7 +34,7 @@ export interface Wishes {
   totalCount: number;
 }
 
-export type Service = 'timetable' | 'baskets' | 'simulation' | 'live';
+export type Service = 'timetable' | 'baskets' | 'simulation' | 'live' | 'preSeat';
 
 export interface PreiodService {
   id: Service;
