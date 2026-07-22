@@ -3,28 +3,61 @@ import PageHeader from '@/components/common/PageHeader';
 import ReviewList from '@/components/reviews/ReviewList';
 import ReviewStats from '@/components/reviews/ReviewStats';
 import { useAdminReviews, OPERATION_TYPE_LABEL } from '@/hooks/server/useAdminReviews';
+import type { Review } from '@/hooks/server/useAdminReviews';
 import { Filtering, CheckboxAdapter } from '@allcll/common';
 import MultiSelectFilterOption from '@/components/common/MultiSelectFilterOption';
-import { Button, Flex } from '@allcll/allcll-ui';
+import { Button, Flex, ListboxOption } from '@allcll/allcll-ui';
 
 const DOMAIN_OPTIONS = Object.entries(OPERATION_TYPE_LABEL).map(([value, label]) => ({ label, value }));
 const RATING_OPTIONS = [1, 2, 3].map(r => ({ label: `${r}점`, value: String(r) }));
+
+type ReviewSortKey = 'latest' | 'oldest' | 'studentId' | 'rateDesc' | 'rateAsc';
+
+type ReviewComparator = (a: Review, b: Review) => number;
+
+interface IReviewSortOption {
+  value: ReviewSortKey;
+  label: string;
+  compare: ReviewComparator;
+}
+
+// createdAt 누락 데이터는 정렬 방향과 무관하게 항상 맨 뒤로. ISO 문자열은 사전순 = 시간순.
+const compareByCreatedAt =
+  (direction: 'asc' | 'desc'): ReviewComparator =>
+  (a, b) => {
+    if (!a.createdAt) return 1;
+    if (!b.createdAt) return -1;
+    const compared = a.createdAt.localeCompare(b.createdAt);
+    return direction === 'asc' ? compared : -compared;
+  };
+
+const SORT_OPTIONS: IReviewSortOption[] = [
+  { value: 'latest', label: '최신순', compare: compareByCreatedAt('desc') },
+  { value: 'oldest', label: '오래된순', compare: compareByCreatedAt('asc') },
+  { value: 'studentId', label: '학번순', compare: (a, b) => a.studentId.localeCompare(b.studentId) },
+  { value: 'rateDesc', label: '평점 높은순', compare: (a, b) => b.rate - a.rate },
+  { value: 'rateAsc', label: '평점 낮은순', compare: (a, b) => a.rate - b.rate },
+];
 
 function Reviews() {
   const { data: reviews = [], isLoading, isFetching, isError, refetch } = useAdminReviews();
   const [selectedOperationTypes, setSelectedOperationTypes] = useState<string[]>([]);
   const [selectedYears, setSelectedYears] = useState<string[]>([]);
   const [selectedRatings, setSelectedRatings] = useState<string[]>([]);
+  const [sortKey, setSortKey] = useState<ReviewSortKey>('latest');
 
   const yearOptions = useMemo(() => {
     const years = [...new Set(reviews.map(r => r.studentId.substring(0, 2)))].sort((a, b) => a.localeCompare(b));
     return years.map(y => ({ label: `${y}학번`, value: y }));
   }, [reviews]);
 
+  const activeSortOption = SORT_OPTIONS.find(option => option.value === sortKey) ?? SORT_OPTIONS[0];
+
   const filteredReviews = reviews
     .filter(r => !selectedOperationTypes.length || selectedOperationTypes.includes(r.operationType))
     .filter(r => !selectedYears.length || selectedYears.includes(r.studentId.substring(0, 2)))
-    .filter(r => !selectedRatings.length || selectedRatings.includes(String(r.rate)));
+    .filter(r => !selectedRatings.length || selectedRatings.includes(String(r.rate)))
+    .sort(activeSortOption.compare);
 
   const filterBar = (
     <Flex align="items-center" gap="gap-2">
@@ -54,6 +87,18 @@ function Reviews() {
           options={RATING_OPTIONS}
           ItemComponent={CheckboxAdapter}
         />
+      </Filtering>
+      <Filtering label={`정렬: ${activeSortOption.label}`} selected={sortKey !== 'latest'}>
+        <div className="flex flex-col gap-1 min-w-32">
+          {SORT_OPTIONS.map(option => (
+            <ListboxOption
+              key={option.value}
+              selected={sortKey === option.value}
+              onSelect={() => setSortKey(option.value)}
+              left={option.label}
+            />
+          ))}
+        </div>
       </Filtering>
       <div className="ml-auto">
         <Button variant="outlined" size="small" disabled={isFetching} onClick={() => refetch()}>
