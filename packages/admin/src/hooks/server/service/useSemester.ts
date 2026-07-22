@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchJsonOnAPI } from '@/utils/api';
 
-export interface SemesterResponse {
+export interface ISemesterResponse {
   semesterCode: string;
   semesterValue: string;
   period: {
@@ -11,7 +11,7 @@ export interface SemesterResponse {
 }
 
 const fetchSemester = () => {
-  return fetchJsonOnAPI<SemesterResponse>('/api/service/semester');
+  return fetchJsonOnAPI<ISemesterResponse>('/api/service/semester');
 };
 
 // GET /api/service/semester

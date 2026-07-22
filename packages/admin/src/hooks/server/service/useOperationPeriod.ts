@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useToastNotification } from '@allcll/common';
 import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
-import { OperationType } from '@/hooks/server/useAdminReviews';
+import type { OperationType } from '@/hooks/server/useAdminReviews';
 
 export const SERVICE_OPERATIONS: { operationType: OperationType; label: string }[] = [
   { operationType: 'TIMETABLE', label: '시간표' },
@@ -18,20 +18,20 @@ export const SERVICE_OPERATION_LABEL: Record<string, string> = Object.fromEntrie
   SERVICE_OPERATIONS.map(({ operationType, label }) => [operationType, label]),
 );
 
-export interface OperationPeriodDetail {
+export interface IOperationPeriodDetail {
   operationType: OperationType;
   startDate: string; // LocalDateTime (YYYY-MM-DDTHH:mm:ss)
   endDate: string;
   message: string | null;
 }
 
-export interface OperationPeriodsResponse {
+export interface IOperationPeriodsResponse {
   semesterCode: string | null;
   semesterKoreanName: string | null;
-  operationPeriodDetailResponses: OperationPeriodDetail[];
+  operationPeriodDetailResponses: IOperationPeriodDetail[];
 }
 
-export interface OperationPeriodRequest {
+export interface IOperationPeriodRequest {
   operationType: OperationType;
   startDate: string;
   endDate: string;
@@ -41,7 +41,7 @@ export interface OperationPeriodRequest {
 const OPERATION_PERIOD_QUERY_KEY = ['operation-period'];
 
 const fetchOperationPeriods = (date: string) => {
-  return fetchJsonOnAPI<OperationPeriodsResponse>(`/api/operation-period?date=${date}`);
+  return fetchJsonOnAPI<IOperationPeriodsResponse>(`/api/operation-period?date=${date}`);
 };
 
 // GET /api/operation-period
@@ -54,7 +54,7 @@ export function useOperationPeriods(date: string) {
   });
 }
 
-const postOperationPeriod = async (semesterCode: string, body: OperationPeriodRequest) => {
+const postOperationPeriod = async (semesterCode: string, body: IOperationPeriodRequest) => {
   const response = await fetchOnAPI(`/api/admin/operation-period?semesterCode=${semesterCode}`, {
     method: 'POST',
     body: JSON.stringify(body),
@@ -73,7 +73,7 @@ export function useSaveOperationPeriods() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ semesterCode, periods }: { semesterCode: string; periods: OperationPeriodRequest[] }) => {
+    mutationFn: async ({ semesterCode, periods }: { semesterCode: string; periods: IOperationPeriodRequest[] }) => {
       for (const period of periods) {
         await postOperationPeriod(semesterCode, period);
       }

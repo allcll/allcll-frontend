@@ -40,8 +40,8 @@ function ServiceOpen() {
                   <Badge variant={open ? 'success' : 'danger'}>{open ? 'OPEN' : 'CLOSED'}</Badge>
                 </Flex>
 
-                <p className="text-sm text-gray-500">시작: {startDate.slice(0, 16).replace('T', ' ')}</p>
-                <p className="text-sm text-gray-500">종료: {endDate.slice(0, 16).replace('T', ' ')}</p>
+                <SupportingText>시작: {startDate.slice(0, 16).replace('T', ' ')}</SupportingText>
+                <SupportingText>종료: {endDate.slice(0, 16).replace('T', ' ')}</SupportingText>
               </Card>
             );
           })}

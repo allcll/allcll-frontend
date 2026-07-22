@@ -4,20 +4,20 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import SectionHeader from '../common/SectionHeader';
 import {
-  OperationPeriodRequest,
   SERVICE_OPERATIONS,
   useOperationPeriods,
   useSaveOperationPeriods,
 } from '@/hooks/server/service/useOperationPeriod';
+import type { IOperationPeriodRequest } from '@/hooks/server/service/useOperationPeriod';
 import { useSemester } from '@/hooks/server/service/useSemester';
 import { toDateString } from '@/utils/formatTime';
 
-interface PeriodInput {
+interface IPeriodInput {
   startDate: string; // YYYY-MM-DD
   endDate: string;
 }
 
-const emptyPeriods = (): PeriodInput[] => SERVICE_OPERATIONS.map(() => ({ startDate: '', endDate: '' }));
+const emptyPeriods = (): IPeriodInput[] => SERVICE_OPERATIONS.map(() => ({ startDate: '', endDate: '' }));
 
 function ServicePeriod() {
   const today = toDateString(new Date());
@@ -25,7 +25,7 @@ function ServicePeriod() {
   const { data: details } = useOperationPeriods(today);
   const { mutate: saveOperationPeriods, isPending } = useSaveOperationPeriods();
 
-  const [periods, setPeriods] = useState<PeriodInput[]>(emptyPeriods);
+  const [periods, setPeriods] = useState<IPeriodInput[]>(emptyPeriods);
 
   useEffect(() => {
     if (!details) return;
@@ -41,7 +41,7 @@ function ServicePeriod() {
     );
   }, [details]);
 
-  const updateDate = (index: number, key: keyof PeriodInput, date: Date | null) => {
+  const updateDate = (index: number, key: keyof IPeriodInput, date: Date | null) => {
     setPeriods(prev =>
       prev.map((period, i) => (i === index ? { ...period, [key]: date ? toDateString(date) : '' } : period)),
     );
@@ -52,7 +52,7 @@ function ServicePeriod() {
     if (!semester) return;
 
     // LocalDateTime 형식으로 변환 (종료일은 23:59:59까지 포함)
-    const requests: OperationPeriodRequest[] = SERVICE_OPERATIONS.map(({ operationType }, index) => ({
+    const requests: IOperationPeriodRequest[] = SERVICE_OPERATIONS.map(({ operationType }, index) => ({
       operationType,
       ...periods[index],
     }))
