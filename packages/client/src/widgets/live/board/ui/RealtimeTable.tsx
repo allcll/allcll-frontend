@@ -57,7 +57,7 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
       <div className="overflow-x-auto">
         <table className="w-full bg-white rounded-lg text-sm">
           <thead>
-            <tr className="bg-gray-50 sticky top-0 z-10 text-nowrap">
+            <tr className="bg-gray-50 sticky top-0 z-content text-nowrap">
               {tableTitles
                 .filter(t => t.visible)
                 .map(({ title }) => (

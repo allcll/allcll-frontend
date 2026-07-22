@@ -1,4 +1,3 @@
-import React from 'react';
 import ClockGraySvg from '@/assets/clock-gray.svg?react';
 import HouseSvg from '@/assets/house.svg?react';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
@@ -7,6 +6,8 @@ import { Button, Flex, Heading } from '@allcll/allcll-ui';
 import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
 import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
+import DeleteConfirmationActions from '@/features/timetable/ui/DeleteConfirmationActions';
+import useDeleteConfirmation from '@/features/timetable/lib/useDeleteConfirmation';
 
 function ScheduleInfoBottomSheet() {
   const semester = useSemesterParam();
@@ -14,13 +15,8 @@ function ScheduleInfoBottomSheet() {
   const { schedule } = useScheduleModalData();
   const { deleteSchedule, cancelSchedule } = useScheduleModal();
   const { data: subjects } = useSubject(semester);
-
-  const handleDeleteOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const confirmed = confirm('해당 과목을 삭제하시겠습니까?');
-    if (!confirmed) return;
-
-    deleteSchedule(e);
-  };
+  const { isDeleteConfirming, requestDeleteConfirmation, cancelDeleteConfirmation, confirmDelete } =
+    useDeleteConfirmation(deleteSchedule);
 
   const findSubjectById = subjects?.find(subject => subject.subjectId === schedule.subjectId);
 
@@ -52,10 +48,19 @@ function ScheduleInfoBottomSheet() {
           <span>{findSubjectById?.remark ?? ''}</span>
         </Flex>
 
-        <Flex justify="justify-end" className="px-2">
-          <Button variant="text" size="medium" textColor="secondary" onClick={handleDeleteOfficialSchedule}>
-            삭제
-          </Button>
+        <Flex justify="justify-end" align="items-center" gap="gap-2" className="px-2">
+          {isDeleteConfirming ? (
+            <DeleteConfirmationActions
+              message="과목을 삭제하시겠습니까?"
+              size="medium"
+              onCancel={cancelDeleteConfirmation}
+              onConfirm={confirmDelete}
+            />
+          ) : (
+            <Button variant="text" size="medium" textColor="secondary" onClick={requestDeleteConfirmation}>
+              삭제
+            </Button>
+          )}
         </Flex>
       </Flex>
     </BottomSheet>

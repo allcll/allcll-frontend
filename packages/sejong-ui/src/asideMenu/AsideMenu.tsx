@@ -17,7 +17,7 @@ function AsideMenu({ menus }: AsideMenuProps) {
   return (
     <aside
       className={
-        (isOpen ? 'relative z-10' : 'relative bg-blue-50 z-10') +
+        (isOpen ? 'relative z-content' : 'relative bg-blue-50 z-content') +
         (!isOpen || isMobile ? ' w-[20px] min-w-[20px] h-[calc(100vh-60px)]' : ' w-[230px] min-w-[230px]')
       }
     >

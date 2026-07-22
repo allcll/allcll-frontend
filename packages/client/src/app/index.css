@@ -239,6 +239,20 @@ body {
   transform: translateY(100%);
   transition: transform 300ms;
 }
+.toast-popover-root {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  overflow: visible;
+  pointer-events: none;
+}
+.toast-popover-root::backdrop {
+  display: none;
+}
+.toast-popover-root button {
+  pointer-events: auto;
+}
 
 .seat-change-enter {
   background-color: transparent;

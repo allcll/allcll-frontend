@@ -23,6 +23,7 @@ export interface Review {
   rate: 1 | 2 | 3;
   detail: string;
   operationType: OperationType;
+  createdAt: string;
 }
 
 interface ReviewsResponse {

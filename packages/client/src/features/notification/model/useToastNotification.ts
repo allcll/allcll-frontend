@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 export interface IToastMessage {
+  id: number;
   message: string;
   tag?: string;
 }
@@ -12,19 +13,25 @@ interface IUseToastNotification {
   clearToast: (filter: number | string) => void;
 }
 
+let toastId = 0;
+
 const useToastNotification = create<IUseToastNotification>((set, get) => ({
   isActivated: false,
   messages: [],
   addToast: (message, tag) => {
-    set(state => ({ messages: [...state.messages, { message, tag }] }));
+    const toast = { id: toastId++, message, tag };
+
+    set(state => ({ messages: [...state.messages, toast] }));
     if (tag) {
-      setTimeout(() => get().clearToast(tag), 3000);
+      setTimeout(() => {
+        get().clearToast(toast.id);
+      }, 3000);
     }
   },
   clearToast: filter =>
     set(state => {
       if (typeof filter === 'number') {
-        state.messages = [...state.messages.slice(0, filter), ...state.messages.slice(filter + 1)];
+        state.messages = state.messages.filter(m => m.id !== filter);
       } else {
         state.messages = state.messages.filter(m => m.tag !== filter);
       }

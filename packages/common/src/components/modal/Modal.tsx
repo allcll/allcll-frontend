@@ -27,7 +27,7 @@ function Modal({ children, onClose, preventAutoFocus }: Readonly<IModalProps>) {
   // Todo: aria-labelledby, aria-describedby 추가
   return (
     <div
-      className="flex items-center justify-center fixed inset-0 w-full h-full z-100"
+      className="flex items-center justify-center fixed inset-0 w-full h-full z-modal"
       role="none"
       ref={containerRef}
       tabIndex={-1}
@@ -36,7 +36,7 @@ function Modal({ children, onClose, preventAutoFocus }: Readonly<IModalProps>) {
       <div className="fixed inset-0 justify-center opacity-30 bg-gray-300 border-b-2 border-gray-400" />
       <div className="flex items-center justify-center" tabIndex={-1}>
         <div
-          className="rounded-lg z-50 bg-white max-h-[90vh] border border-gray-200 overflow-y-auto"
+          className="rounded-lg z-floating bg-white max-h-[90vh] border border-gray-200 overflow-y-auto"
           role="dialog"
           tabIndex={-1}
           onClick={e => e.stopPropagation()}

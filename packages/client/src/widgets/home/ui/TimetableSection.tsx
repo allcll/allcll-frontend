@@ -1,7 +1,7 @@
 import Section from '@/widgets/home/ui/Section.tsx';
 import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
 import TimetableGridComponent from '@/widgets/timetable/TimetableGridComponent.tsx';
-import { GeneralSchedule, getScheduleSlots, ScheduleSlot } from '@/entities/timetable/api/useTimetableSchedules.ts';
+import { GeneralSchedule, useScheduleSlots, ScheduleSlot } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import Schedule from '@/widgets/timetable/Schedule.tsx';
 import { Card } from '@allcll/allcll-ui';
 
@@ -54,7 +54,7 @@ const ScheduleData = [
 ] as GeneralSchedule[];
 
 function TimetableSection() {
-  const data = getScheduleSlots(ScheduleData, 9);
+  const data = useScheduleSlots(ScheduleData, 9);
 
   return (
     <Section>

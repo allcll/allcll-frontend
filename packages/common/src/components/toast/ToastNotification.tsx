@@ -9,7 +9,7 @@ function ToastNotification() {
   const closeToast = useToastNotification(state => state.clearToast);
 
   return (
-    <div className="fixed top-2 right-2 z-100 max-w-screen">
+    <div className="fixed top-2 right-2 z-toast max-w-screen">
       <TransitionGroup className="flex gap-2 flex-col-reverse">
         {messages.slice(-3).map((message, index) => (
           <CSSTransition key={`${index} : ${message}`} timeout={300} classNames="toast">
