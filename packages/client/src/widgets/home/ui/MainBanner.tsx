@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom';
 import { Button, SupportingText } from '@allcll/allcll-ui';
-import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 import Section from '@/widgets/home/ui/Section.tsx';
 import Image from '@/shared/ui/Image.tsx';
 import LogoName from '@/assets/logo/logo-name-summer.svg?react';
 
-const START_DATE = '06/01(월)';
-const END_DATE = '06/04(목)';
+// TODO: 학기 롤오버 시 SEMESTER_LABEL을 useServiceSemester의 semesterValue 참조로 되돌리기.
+//       학기/기간 설정 단일화 PR(375번)이 머지되면 이 상수들이 @allcll/common config.ts로 이동하므로 거기서 함께 정리.
+const SEMESTER_LABEL = '2026-2학기';
+const START_DATE = '08/14(금)';
+const END_DATE = '08/21(금)';
 
 function MainBanner() {
-  const { data } = useServiceSemester();
-
   return (
     <div className="relative overflow-hidden">
       <Section
@@ -19,9 +19,9 @@ function MainBanner() {
       >
         <div className="max-w-xl">
           <div className="flex flex-row gap-2 items-center">
-            <Image src="/calendar.png" alt="2026-여름학기 세종대 수강신청 일정 아이콘" className="w-10 h-10" />
+            <Image src="/calendar.png" alt={`${SEMESTER_LABEL} 세종대 수강신청 일정 아이콘`} className="w-10 h-10" />
             <span className="italic text-xs text-stone-500 ">
-              {data?.semesterValue}학기 수강신청 기간 <br />
+              {SEMESTER_LABEL} 수강신청 기간 <br />
               {START_DATE} ~ {END_DATE}
             </span>
           </div>
