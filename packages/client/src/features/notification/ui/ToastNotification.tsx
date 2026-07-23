@@ -20,7 +20,7 @@ function ToastNotification() {
 
   return createPortal(
     <div ref={popoverRef} popover="manual" className="toast-popover-root">
-      <div className="fixed top-2 right-2 z-400 max-w-screen">
+      <div className="fixed top-2 right-2 z-toast max-w-screen">
         <TransitionGroup className="flex gap-2 flex-col-reverse">
           {messages.slice(-3).map(message => (
             <CSSTransition key={message.id} timeout={300} classNames="toast">

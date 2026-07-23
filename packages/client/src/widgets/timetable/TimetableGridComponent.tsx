@@ -61,7 +61,7 @@ function TimetableGridComponent({ rowHeight = ROW_HEIGHT, colNames, rowNames, ch
       <div
         id="timetable"
         ref={timetableRef}
-        className="absolute inset-0 flex z-10"
+        className="absolute inset-0 flex z-content"
         style={{ top: `${headerHeight}px`, left: `${headerWidth}px` }}
       >
         {children}

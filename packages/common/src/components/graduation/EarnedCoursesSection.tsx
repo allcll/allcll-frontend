@@ -114,7 +114,7 @@ function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) 
                       onClick={() => setIsSelectOpen(prev => !prev)}
                     />
                     {isSelectOpen && (
-                      <div className="absolute z-10 mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto min-w-30">
+                      <div className="absolute z-content mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto min-w-30">
                         {categoryOptions.map(option => (
                           <ListboxOption
                             key={option.value}

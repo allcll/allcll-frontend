@@ -42,7 +42,7 @@ function ScheduleSearchBottomSheet({ onCloseSearch, onOpenFiltering }: ISearchBo
             onClick={() => openScheduleModal(initSchedule)}
           />
 
-          <div className="sticky px-2 top-0 bg-white z-10 flex items-center gap-2 py-3">
+          <div className="sticky px-2 top-0 bg-white z-content flex items-center gap-2 py-3">
             <SearchBox
               type="text"
               placeholder="과목명 및 교수명 검색"

@@ -1,15 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Badge, Flex, IconButton, SupportingText } from '@allcll/allcll-ui';
-import { Review, OPERATION_TYPE_LABEL, MAX_RATE } from '@/hooks/server/useAdminReviews';
+import { OPERATION_TYPE_LABEL, MAX_RATE } from '@/hooks/server/useAdminReviews';
+import type { Review } from '@/hooks/server/useAdminReviews';
+import { formatDateTime } from '@/utils/formatTime';
 import CiIcon from '@/assets/ci-icon.svg?react';
 import ArrowDownSvg from '@/assets/arrow-down.svg?react';
 
-interface ReviewItemProps {
+interface IReviewItemProps {
   review: Review;
 }
 
-function ReviewItem({ review }: Readonly<ReviewItemProps>) {
+function ReviewItem({ review }: Readonly<IReviewItemProps>) {
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isClamped, setIsClamped] = useState(false);
@@ -75,6 +77,9 @@ function ReviewItem({ review }: Readonly<ReviewItemProps>) {
             />
           )}
         </Flex>
+      </td>
+      <td className="px-4 py-3 align-top w-36">
+        <SupportingText className="whitespace-nowrap">{formatDateTime(review.createdAt)}</SupportingText>
       </td>
     </tr>
   );

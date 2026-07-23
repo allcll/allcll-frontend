@@ -16,7 +16,7 @@ function NoticeDetailModal({ notice, onClose }: Readonly<NoticeDetailModalProps>
 
   return createPortal(
     <div
-      className="fixed inset-0 z-200 flex items-center justify-center px-4"
+      className="fixed inset-0 z-bottomSheet flex items-center justify-center px-4"
       onMouseDown={e => e.nativeEvent.stopImmediatePropagation()}
     >
       <button
@@ -29,7 +29,7 @@ function NoticeDetailModal({ notice, onClose }: Readonly<NoticeDetailModalProps>
         role="dialog"
         aria-modal="true"
         aria-labelledby="notice-detail-title"
-        className="relative z-10 bg-white rounded-xl shadow-xl w-full max-w-3xl max-h-[80vh] flex flex-col overflow-hidden"
+        className="relative z-content bg-white rounded-xl shadow-xl w-full max-w-3xl max-h-[80vh] flex flex-col overflow-hidden"
       >
         <Flex direction="flex-col" gap="gap-2" className="px-5 py-4 border-b border-gray-100">
           <Flex align="items-start" justify="justify-between" gap="gap-3">

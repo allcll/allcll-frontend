@@ -16,9 +16,10 @@ export const formatTime = (dateString: string) => {
   return `${year}-${month}-${day}  ${String(hour).padStart(2, '0')}:${minute}`;
 };
 
+const pad = (value: number) => String(value).padStart(2, '0');
+
 // 로컬 기준 YYYY-MM-DD로 변환 (toISOString은 UTC라 이른 시간대에 날짜가 하루 어긋남)
 export const toDateString = (date: Date) => {
-  const pad = (value: number) => String(value).padStart(2, '0');
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 };
 
@@ -26,4 +27,14 @@ export const toDateString = (date: Date) => {
 export const fromDateString = (dateString: string) => {
   const [year, month, day] = dateString.split('-').map(Number);
   return new Date(year, month - 1, day);
+};
+
+// UTC(Z)로 내려오는 값을 로컬(KST) 24시간제로 표시 (Date getter가 로컬 타임존 변환).
+export const formatDateTime = (dateString: string) => {
+  if (!dateString) return '';
+
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) return '';
+
+  return `${date.getFullYear()}.${pad(date.getMonth() + 1)}.${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
 };
