@@ -4,14 +4,14 @@
  * client/admin 양쪽에서 import 하므로 React/Vite(import.meta.env) 의존을 두지 않습니다.
  */
 
-export interface SemesterInfo {
+export interface ISemesterInfo {
   semesterCode: string;
   semesterValue: string;
 }
 
 export type ServiceId = 'timetable' | 'baskets' | 'simulation' | 'live' | 'preSeat';
 
-export interface ServicePeriodConfig {
+export interface IServicePeriodConfig {
   id: ServiceId;
   startDate: string;
   devStartDate?: string; // dev 서버에서 먼저 확인하기 위한 시작일
@@ -26,7 +26,7 @@ export type PreSeatMode = 'force-open' | 'auto' | 'force-close';
  * @description 지난 학기 과목은 packages/client/public/<semesterCode>/subjects.json 스냅샷에서 읽으므로,
  * 새 학기를 맨 앞에 추가하기 전에 직전 학기 스냅샷 파일이 있어야 합니다.
  */
-export const SEMESTERS: SemesterInfo[] = [
+export const SEMESTERS: ISemesterInfo[] = [
   {
     semesterCode: 'SUMMER_26',
     semesterValue: '2026-여름',
@@ -59,7 +59,7 @@ export const CURRENT_SEMESTER = SEMESTERS[0];
 export const CURRENT_SEMESTER_ADMIN_LABEL = '2026-하계';
 
 // 서비스별 운영 기간 — client 서비스 기간과 admin 서비스 기간 설정 초기값의 공통 출처
-export const SERVICE_PERIODS: ServicePeriodConfig[] = [
+export const SERVICE_PERIODS: IServicePeriodConfig[] = [
   {
     id: 'timetable',
     startDate: '2026-05-28',
