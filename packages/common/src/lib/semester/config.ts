@@ -97,12 +97,6 @@ export const PRESEAT_MODE: PreSeatMode = 'force-open';
 export const PRESEAT_CLOSE_DATE = '2026-06-11';
 export const PRESEAT_START_TIME = '10:00';
 
-// pre-seats.json 파일 업데이트 시 반드시 `PRESEAT_CACHE_VERSION` 값을 함께 변경해주세요. (YYYYMMDD)
-export const PRESEAT_CACHE_VERSION = '20260608';
-
-// baskets.json 파일 업데이트 시 반드시 `BASKETS_CACHE_VERSION` 값을 함께 변경해주세요.
-export const BASKETS_CACHE_VERSION = 'SUMMER_26_20260528';
-
 // 메인 배너 수강신청 일정 표기
 export const BANNER_PERIOD_LABEL = '수강신청 기간';
 export const BANNER_START_DATE = '06/01(월)';
