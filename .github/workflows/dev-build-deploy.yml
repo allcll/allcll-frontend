@@ -87,9 +87,11 @@ jobs:
       - name: Deployment Report (Client)
         if: always()
         uses: actions/github-script@v7
+        env:
+          JOB_STATUS: ${{ job.status }}
         with:
           script: |
-            const status = '${{ job.status }}';
+            const status = process.env.JOB_STATUS;
             const getStatusEmoji = (s) => s === 'success' ? '✅' : '❌';
             const body = `### 🛠️ Client Development Deployment\n- **Status:** ${getStatusEmoji(status)} ${status}\n- **URL:** [https://dev.allcll.kr](https://dev.allcll.kr)\n- **Commit:** ${context.sha.substring(0, 7)}`;
             core.summary.addRaw(body).write();
@@ -202,9 +204,11 @@ jobs:
       - name: Deployment Report (Admin)
         if: always()
         uses: actions/github-script@v7
+        env:
+          JOB_STATUS: ${{ job.status }}
         with:
           script: |
-            const status = '${{ job.status }}';
+            const status = process.env.JOB_STATUS;
             const getStatusEmoji = (s) => s === 'success' ? '✅' : '❌';
             const body = `### 🛠️ Admin Development Deployment\n- **Status:** ${getStatusEmoji(status)} ${status}\n- **URL:** [https://dev-admin.allcll.kr](https://dev-admin.allcll.kr)\n- **Commit:** ${context.sha.substring(0, 7)}`;
             core.summary.addRaw(body).write();
