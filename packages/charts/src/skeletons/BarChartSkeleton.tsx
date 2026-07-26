@@ -1,3 +1,4 @@
+const SKELETON_BAR_MIN_HEIGHT = 120;
 const SKELETON_BAR_HEIGHTS = [55, 80, 40, 65];
 
 export interface IBarChartSkeletonProps {
@@ -9,7 +10,7 @@ export function BarChartSkeleton({ className, height }: IBarChartSkeletonProps) 
   return (
     <div
       className={`w-full bg-gray-100 animate-pulse rounded ${className ?? ''}`}
-      style={{ aspectRatio: '16 / 9', minHeight: 120, height }}
+      style={{ aspectRatio: '16 / 9', minHeight: SKELETON_BAR_MIN_HEIGHT, height }}
       aria-busy="true"
       aria-label="차트 로딩 중"
     >
