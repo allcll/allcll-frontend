@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AllCLL Frontend Test Coverage Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #6366f1;
+      --primary-glow: rgba(99, 102, 241, 0.15);
+      
+      --color-high: #10b981;
+      --color-medium: #f59e0b;
+      --color-low: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 2.5rem 1.5rem;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 2.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(to right, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .grid-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 35px rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+
+    .summary-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .summary-card .title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+    }
+
+    .radial-progress {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin-bottom: 1rem;
+    }
+
+    .radial-progress svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .radial-progress circle {
+      fill: none;
+      stroke-width: 8;
+    }
+
+    .radial-progress .bg {
+      stroke: rgba(255, 255, 255, 0.05);
+    }
+
+    .radial-progress .val {
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s ease-in-out;
+    }
+
+    .radial-progress .percentage {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .summary-card .stats {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 1.5rem;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    .file-table-container {
+      overflow-x: auto;
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      text-align: left;
+    }
+
+    th, td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    th {
+      background: rgba(15, 23, 42, 0.6);
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .file-name {
+      font-weight: 600;
+      color: #e2e8f0;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      transition: color 0.2s ease;
+    }
+
+    .file-name:hover {
+      color: #818cf8;
+    }
+
+    .file-name span {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-top: 0.25rem;
+    }
+
+    .progress-bar-container {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-width: 140px;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.8s ease;
+    }
+
+    .pct-val {
+      font-size: 0.9rem;
+      font-weight: 600;
+      width: 2.5rem;
+      text-align: right;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      gap: 0.35rem;
+    }
+
+    .status-badge::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .status-high {
+      background: rgba(16, 185, 129, 0.12);
+      color: #34d399;
+    }
+    .status-high::before {
+      background: #10b981;
+    }
+
+    .status-medium {
+      background: rgba(245, 158, 11, 0.12);
+      color: #fbbf24;
+    }
+    .status-medium::before {
+      background: #f59e0b;
+    }
+
+    .status-low {
+      background: rgba(239, 68, 68, 0.12);
+      color: #f87171;
+    }
+    .status-low::before {
+      background: #ef4444;
+    }
+
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>AllCLL Test Coverage Dashboard</h1>
+      <p>개발 브랜치 (PoC) 단위 테스트 커버리지 현황 • 생성일시: 2026. 7. 26. 오후 10:42:03</p>
+    </header>
+
+    <div class="grid-summary">
+      <!-- Lines Summary -->
+      <div class="card summary-card">
+        <span class="title">Lines</span>
+        <div class="radial-progress">
+          <svg>
+            <circle class="bg" cx="60" cy="60" r="50"></circle>
+            <circle class="val" cx="60" cy="60" r="50" 
+                    stroke="#10b981" 
+                    stroke-dasharray="314.16" 
+                    stroke-dashoffset="12.566400000000044"></circle>
+          </svg>
+          <div class="percentage">96%</div>
+        </div>
+        <span class="stats">24 / 25 라인</span>
+      </div>
+
+      <!-- Statements Summary -->
+      <div class="card summary-card">
+        <span class="title">Statements</span>
+        <div class="radial-progress">
+          <svg>
+            <circle class="bg" cx="60" cy="60" r="50"></circle>
+            <circle class="val" cx="60" cy="60" r="50" 
+                    stroke="#10b981" 
+                    stroke-dasharray="314.16" 
+                    stroke-dashoffset="10.147368000000029"></circle>
+          </svg>
+          <div class="percentage">96.77%</div>
+        </div>
+        <span class="stats">30 / 31 구문</span>
+      </div>
+
+      <!-- Functions Summary -->
+      <div class="card summary-card">
+        <span class="title">Functions</span>
+        <div class="radial-progress">
+          <svg>
+            <circle class="bg" cx="60" cy="60" r="50"></circle>
+            <circle class="val" cx="60" cy="60" r="50" 
+                    stroke="#10b981" 
+                    stroke-dasharray="314.16" 
+                    stroke-dashoffset="0"></circle>
+          </svg>
+          <div class="percentage">100%</div>
+        </div>
+        <span class="stats">15 / 15 함수</span>
+      </div>
+
+      <!-- Branches Summary -->
+      <div class="card summary-card">
+        <span class="title">Branches</span>
+        <div class="radial-progress">
+          <svg>
+            <circle class="bg" cx="60" cy="60" r="50"></circle>
+            <circle class="val" cx="60" cy="60" r="50" 
+                    stroke="#10b981" 
+                    stroke-dasharray="314.16" 
+                    stroke-dashoffset="26.200943999999993"></circle>
+          </svg>
+          <div class="percentage">91.66%</div>
+        </div>
+        <span class="stats">11 / 12 분기</span>
+      </div>
+    </div>
+
+    <h2 class="section-title">대상 파일별 상세 커버리지</h2>
+    <div class="file-table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>파일명</th>
+            <th>라인 커버리지</th>
+            <th>구문</th>
+            <th>함수</th>
+            <th>분기</th>
+            <th>상태</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr>
+              <td>
+                <a class="file-name" href="file:///D:/Hyunwoo/code repos/WebstormProjects/ChecllFrontend/packages/common/src/lib/graduation/mappers.ts" target="_blank">
+                  mappers.ts
+                  <span>packages/common/src/lib/graduation/mappers.ts</span>
+                </a>
+              </td>
+              <td>
+                <div class="progress-bar-container">
+                  <div class="progress-bar">
+                    <div class="progress-bar-fill" style="width: 100%; background: #10b981;"></div>
+                  </div>
+                  <span class="pct-val" style="color: #10b981;">100%</span>
+                </div>
+              </td>
+              <td>100%</td>
+              <td>100%</td>
+              <td>100%</td>
+              <td>
+                <span class="status-badge status-high">High</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <a class="file-name" href="file:///D:/Hyunwoo/code repos/WebstormProjects/ChecllFrontend/packages/common/src/lib/graduation/rules.ts" target="_blank">
+                  rules.ts
+                  <span>packages/common/src/lib/graduation/rules.ts</span>
+                </a>
+              </td>
+              <td>
+                <div class="progress-bar-container">
+                  <div class="progress-bar">
+                    <div class="progress-bar-fill" style="width: 94.73%; background: #10b981;"></div>
+                  </div>
+                  <span class="pct-val" style="color: #10b981;">94.73%</span>
+                </div>
+              </td>
+              <td>96%</td>
+              <td>100%</td>
+              <td>87.5%</td>
+              <td>
+                <span class="status-badge status-high">High</span>
+              </td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <footer>
+      <p>ChecllFrontend Test Automation Script © 2026</p>
+    </footer>
+  </div>
+</body>
+</html>
