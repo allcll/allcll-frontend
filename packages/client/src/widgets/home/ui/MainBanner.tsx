@@ -60,8 +60,8 @@ function MainBanner() {
           fetchPriority="high"
           alt=""
           aria-hidden="true"
-          width={740}
-          height={788}
+          width={800}
+          height={662}
           className="hidden md:block self-end shrink-0 w-[320px] lg:w-[370px]"
         />
       </Section>
