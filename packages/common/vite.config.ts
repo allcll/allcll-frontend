@@ -27,7 +27,7 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'json-summary'],
       reportsDirectory: './coverage',
-      include: ['src/lib/graduation/**/*.{ts,tsx}'],
+      include: ['src/lib/graduation/**/*.{ts,tsx}', 'src/store/**/*.{ts,tsx}'],
     },
   },
 });
