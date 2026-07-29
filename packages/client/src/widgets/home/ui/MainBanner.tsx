@@ -19,7 +19,7 @@ function MainBanner() {
       >
         <div className="max-w-xl">
           <div className="flex flex-row gap-2 items-center">
-            <Image src="/calendar.png" alt={`${SEMESTER_LABEL} 세종대 수강신청 일정 아이콘`} className="w-10 h-10" />
+            <Image src="/calendar.png" alt="" className="w-10 h-10" />
             <span className="italic text-xs text-stone-500 ">
               {SEMESTER_LABEL} 수강신청 기간 <br />
               {START_DATE} ~ {END_DATE}
