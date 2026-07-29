@@ -1,6 +1,7 @@
 import { fetchJsonOnPublic, fetchOnAPI } from '@/shared/api/api.ts';
-import { WishRegister } from '@/shared/model/types.ts';
-import { BadRequestError } from '@/shared/lib/errors.ts';
+import { ApiException, WishRegister } from '@/shared/model/types';
+import { BadRequestError, NotFoundError } from '@/shared/lib/errors';
+import { jsonParse } from '@/shared/lib/parser';
 
 export interface WishesApiResponse {
   baskets: { subjectId: number; totalCount: number }[];
@@ -23,22 +24,19 @@ export const fetchDetailRegisters = async (subjectId: number): Promise<DetailReg
 
   if (!response.ok) {
     const errorMessage = await response.text();
-    const parsedError = jsonParse(errorMessage);
+    const parsedError = jsonParse<ApiException>(errorMessage);
+    const errorText = parsedError?.message ?? response.statusText;
 
-    if (parsedError?.status === '400 BAD_REQUEST') {
-      throw new BadRequestError(parsedError.code);
+    if (response.status === 400) {
+      throw new BadRequestError(errorText);
     }
 
-    throw new Error(await response.text());
+    if (response.status === 404) {
+      throw new NotFoundError(errorText);
+    }
+
+    throw new Error(errorMessage);
   }
 
   return response.json();
-};
-
-const jsonParse = (data: string) => {
-  try {
-    return JSON.parse(data);
-  } catch {
-    return null;
-  }
 };
