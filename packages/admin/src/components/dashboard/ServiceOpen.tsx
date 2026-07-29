@@ -1,52 +1,65 @@
-import { Badge, Card, Flex, Grid } from '@allcll/allcll-ui';
+import { Badge, Card, Flex, Grid, SupportingText } from '@allcll/allcll-ui';
 import SectionHeader from '../common/SectionHeader';
+import {
+  SERVICE_OPERATION_LABEL,
+  SERVICE_OPERATION_TYPES,
+  useOperationPeriods,
+} from '@/hooks/server/service/useOperationPeriod';
+import { formatDateTime, toDateString } from '@/utils/formatTime';
 
-const systemOpenStatus = [
-  {
-    name: '시간표',
-    start: '2025-02-01 09:00',
-    end: '2025-06-30 23:59',
-    status: 'OPEN',
-  },
-  {
-    name: '과목분석',
-    start: '2025-02-01 09:00',
-    end: '2025-06-30 23:59',
-    status: 'OPEN',
-  },
-  {
-    name: '올클연습',
-    start: '2025-02-15 09:00',
-    end: '2025-06-30 23:59',
-    status: 'CLOSED',
-  },
-  {
-    name: '실시간',
-    start: '2025-02-01 09:00',
-    end: '2025-06-30 23:59',
-    status: 'OPEN',
-  },
-];
+const isOpen = (now: Date, startDate: string, endDate: string) => {
+  return now >= new Date(startDate) && now <= new Date(endDate);
+};
 
 function ServiceOpen() {
   return (
     <section>
       <SectionHeader title="서비스 오픈 현황" description="각 서비스의 오픈 상태를 확인합니다." />
+      <ServiceOpenContent />
+    </section>
+  );
+}
 
-      <Grid columns={{ base: 2, sm: 4 }} gap="gap-4">
-        {systemOpenStatus.map(({ name, start, end, status }) => (
-          <Card key={name}>
+function ServiceOpenContent() {
+  const today = toDateString(new Date());
+  const { data, isLoading, isError } = useOperationPeriods(today);
+
+  if (isLoading) {
+    return <SupportingText>불러오는 중...</SupportingText>;
+  }
+
+  if (isError) {
+    return <SupportingText className="text-red-500">불러오지 못했습니다.</SupportingText>;
+  }
+
+  const periods = (data ?? []).filter(period => SERVICE_OPERATION_TYPES.includes(period.operationType));
+
+  if (periods.length === 0) {
+    return <SupportingText>등록된 운영 기간이 없습니다.</SupportingText>;
+  }
+
+  const now = new Date();
+
+  return (
+    <Grid columns={{ base: 2, sm: 4 }} gap="gap-4">
+      {periods.map(({ operationType, startDate, endDate }) => {
+        const open = isOpen(now, startDate, endDate);
+
+        return (
+          <Card key={operationType}>
             <Flex align="items-start" justify="justify-between">
-              <span className="text-sm font-medium text-gray-700">{name}</span>
-              <Badge variant={status === 'OPEN' ? 'success' : 'danger'}>{status}</Badge>
+              <span className="text-sm font-medium text-gray-700">
+                {SERVICE_OPERATION_LABEL[operationType] ?? operationType}
+              </span>
+              <Badge variant={open ? 'success' : 'danger'}>{open ? 'OPEN' : 'CLOSED'}</Badge>
             </Flex>
 
-            <p className="text-sm text-gray-500">시작: {start}</p>
-            <p className="text-sm text-gray-500">종료: {end}</p>
+            <SupportingText>시작: {formatDateTime(startDate)}</SupportingText>
+            <SupportingText>종료: {formatDateTime(endDate)}</SupportingText>
           </Card>
-        ))}
-      </Grid>
-    </section>
+        );
+      })}
+    </Grid>
   );
 }
 
