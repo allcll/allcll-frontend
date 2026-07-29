@@ -84,7 +84,7 @@ function CaptchaInput() {
   }
 
   return (
-    <SejongUI.Modal>
+    <SejongUI.Modal preventAutoFocus>
       <div className="sm:w-[460px]">
         <SejongUI.Modal.Header title="매크로방지 코드입력 (Arti-marco code input)" onClose={closeCaptcha} />
 
