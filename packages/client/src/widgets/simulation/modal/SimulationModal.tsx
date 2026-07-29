@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import SejongUI from '@allcll/sejong-ui';
 import CheckBlueSvg from '@/assets/check-blue.svg?react';
 import ImportantSvg from '@/assets/important.svg?react';
@@ -73,14 +72,10 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
   );
   const isCloseDisabled = closeDisabledStatuses.includes(modalStatus);
 
-  const confirmBtnRef = useRef<HTMLButtonElement | null>(null);
-
   if (!modalData) return null;
 
-  confirmBtnRef.current?.focus();
-
   /** 에러 체크 해주고, 에러 있으면 throw */
-  const checkErrorValue = (res: Record<string, any>, forceFinish: boolean = false) => {
+  const checkErrorValue = (res: Record<string, unknown>, forceFinish: boolean = false) => {
     if ('errMsg' in res) {
       alert(res.errMsg);
 
@@ -90,13 +85,13 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
         });
       }
 
-      throw new Error(res.errMsg);
+      throw new Error(String(res.errMsg));
     }
   };
 
-  const catchAction = (e: any) => {
+  const catchAction = (e: unknown) => {
     console.error('예외 발생:', e);
-    alert('예외 발생:' + e.toString());
+    alert('예외 발생:' + String(e));
   };
 
   const handleProgress = async (subjectId: number) => {
@@ -211,6 +206,7 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
           lectures,
         );
         checkErrorValue(result, true);
+        closeModal('simulation');
       }
     } catch (error) {
       catchAction(error);
@@ -247,12 +243,11 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
       </div>
 
       <SejongUI.Modal.ButtonContainer className="px-6 py-2 bg-gray-100">
-        {modalData.status === APPLY_STATUS.PROGRESS ||
-          (modalData.status === APPLY_STATUS.SUCCESS && (
-            <SejongUI.Modal.Button variant="cancel" onClick={handleClickCancel}>
-              취소
-            </SejongUI.Modal.Button>
-          ))}
+        {(modalData.status === APPLY_STATUS.PROGRESS || modalData.status === APPLY_STATUS.SUCCESS) && (
+          <SejongUI.Modal.Button variant="cancel" onClick={handleClickCancel}>
+            취소
+          </SejongUI.Modal.Button>
+        )}
         <SejongUI.Modal.Button variant="primary" onClick={handleClickCheck}>
           확인
         </SejongUI.Modal.Button>
