@@ -1,41 +1,39 @@
-import { Card, Checkbox, Flex } from '@allcll/allcll-ui';
-import { Filtering } from '@allcll/common';
-import { useState } from 'react';
+import { Card, Flex, SupportingText } from '@allcll/allcll-ui';
 import SectionHeader from '../common/SectionHeader';
-
-const semesters = ['2026-하계'];
+import { useSemester } from '@/hooks/server/service/useSemester';
 
 function SemesterSetting() {
-  const [semester, setSemester] = useState('2026-하계');
-
   return (
     <section>
       <Card>
         <Flex direction="flex-col" gap="gap-4">
-          <SectionHeader title="학기 설정" description="서비스 전체에서 사용할 학기를 설정합니다." />
-          <Flex direction="flex-col" gap="gap-2" className="w-40">
-            <Filtering
-              label={semester ?? '학기를 선택해주세요.'}
-              selected={semester !== ''}
-              className="gap-4 max-h-80 overflow-y-auto"
-            >
-              {semesters.length === 0 && <div> 새로운 학기를 추가해주세요.</div>}
-              {semesters.length !== 0 &&
-                semesters.map(option => (
-                  <div className="flex gap-5" key={option}>
-                    <Checkbox
-                      key={option}
-                      label={option}
-                      checked={semester === option}
-                      onChange={() => setSemester(option)}
-                    />
-                  </div>
-                ))}
-            </Filtering>
-          </Flex>
+          <SectionHeader title="현재 학기" description="날짜 기준으로 자동 판별된 현재 학기입니다." />
+          <SemesterContent />
         </Flex>
       </Card>
     </section>
   );
 }
+
+function SemesterContent() {
+  const { data, isLoading, isError } = useSemester();
+
+  if (isLoading) {
+    return <SupportingText>불러오는 중...</SupportingText>;
+  }
+
+  if (isError || !data) {
+    return <SupportingText className="text-red-500">불러오지 못했습니다.</SupportingText>;
+  }
+
+  return (
+    <Flex direction="flex-col" gap="gap-1">
+      <span className="text-lg font-semibold text-gray-800">{data.semesterValue}</span>
+      <SupportingText>
+        {data.period.startDate} ~ {data.period.endDate}
+      </SupportingText>
+    </Flex>
+  );
+}
+
 export default SemesterSetting;

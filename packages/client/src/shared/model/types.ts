@@ -67,8 +67,21 @@ export interface Subject {
   // departmentName: string;
 }
 
+export interface IWishesInfo {
+  subjectId: number;
+  semesterCode: string | undefined;
+  semesterValue: string | undefined;
+  isPastSemester: boolean;
+}
+
 /** before: 튜토리얼 + 관심과목 선택
  * start: 시작 -> 대기 -> 과목 불러오기 전
  * progress: 과목 신청 프로세스
  * finish: 결과 모달 */
 export type SimulationStatusType = 'before' | 'start' | 'progress' | 'finish';
+
+/** API 대한 에러 타입 */
+export interface ApiException {
+  code: string;
+  message: string;
+}

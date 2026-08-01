@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import useDepartments, { DepartmentDict, useDepartmentDict } from '@/entities/departments/api/useDepartments.ts';
 import {
   getCollegeDoughnutData,
   getDoughnutData,
@@ -7,19 +6,37 @@ import {
   getMajorDoughnutData,
   getUniversityDoughnutData,
 } from '@/features/wish/lib/doughnut';
-import { WishRegister } from '@/shared/model/types.ts';
+import type { IWishesInfo, WishRegister } from '@/shared/model/types';
+import useDepartments, { type DepartmentDict, useDepartmentDict } from '@/entities/departments/api/useDepartments';
+import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes';
+import useDetailRegisters from '@/entities/wishes/model/useDetailRegisters';
+import { InitWishes } from '@/entities/wishes/model/useWishes';
+import LoadingWithMessage from '@/shared/ui/Loading';
 import { Flex, Heading, Label } from '@allcll/allcll-ui';
 import { DoughnutChart } from '@allcll/charts';
 
-enum DoughnutSelectType {
-  MAJOR = '전공/비전공',
-  UNIVERSITY = '대학',
-  DEPARTMENT = '학과',
-  COLLEGE = '학부',
+interface IDepartmentDoughnutProps {
+  wishesInfo: IWishesInfo;
 }
 
-function DepartmentDoughnut({ data, majorName }: Readonly<{ data?: WishRegister[]; majorName: string }>) {
-  const [selectedFilter, setSelectedFilter] = useState<DoughnutSelectType>(DoughnutSelectType.MAJOR);
+const DOUGHNUT_SELECT_TYPES = {
+  MAJOR: '전공/비전공',
+  UNIVERSITY: '대학',
+  DEPARTMENT: '학과',
+  COLLEGE: '학부',
+} as const;
+
+type DoughnutSelectType = (typeof DOUGHNUT_SELECT_TYPES)[keyof typeof DOUGHNUT_SELECT_TYPES];
+
+function DepartmentDoughnut({ wishesInfo }: IDepartmentDoughnutProps) {
+  const { data: wishes, isPending } = useDetailWishes(wishesInfo);
+  const { data: registers } = useDetailRegisters(wishesInfo);
+
+  const data = registers?.eachDepartmentRegisters ?? [];
+  const nonNullWishes = wishes ?? InitWishes;
+  const majorName = nonNullWishes.departmentName ?? nonNullWishes.manageDeptNm;
+
+  const [selectedFilter, setSelectedFilter] = useState<DoughnutSelectType>(DOUGHNUT_SELECT_TYPES.MAJOR);
   const { data: departmentData } = useDepartments();
   const departmentDict = useDepartmentDict(departmentData);
   const { doughnutData, totalCount } = useDoughnutData(data, departmentDict, majorName, selectedFilter);
@@ -37,7 +54,7 @@ function DepartmentDoughnut({ data, majorName }: Readonly<{ data?: WishRegister[
           value={selectedFilter}
           onChange={e => setSelectedFilter(e.target.value as DoughnutSelectType)}
         >
-          {Object.values(DoughnutSelectType).map(type => (
+          {Object.values(DOUGHNUT_SELECT_TYPES).map(type => (
             <option key={type} value={type}>
               {type}
             </option>
@@ -45,7 +62,11 @@ function DepartmentDoughnut({ data, majorName }: Readonly<{ data?: WishRegister[
         </select>
       </Flex>
 
-      {!totalCount ? (
+      {isPending ? (
+        <Flex justify="justify-center" align="items-center" className="h-48">
+          <LoadingWithMessage message="관심과목 현황을 불러오는 중입니다..." />
+        </Flex>
+      ) : !totalCount ? (
         <Flex justify="justify-center" align="items-center" className="h-48">
           <p className="text-center text-gray-500 font-semibold">관심과목을 담은 사람이 없습니다.</p>
         </Flex>
@@ -66,16 +87,16 @@ function useDoughnutData(
   const { universityDict, collegeDict } = departmentDict;
 
   switch (selectedFilter) {
-    case DoughnutSelectType.MAJOR:
+    case DOUGHNUT_SELECT_TYPES.MAJOR:
       doughnutData = getMajorDoughnutData(majorName, data);
       break;
-    case DoughnutSelectType.UNIVERSITY:
+    case DOUGHNUT_SELECT_TYPES.UNIVERSITY:
       doughnutData = getUniversityDoughnutData(data, universityDict);
       break;
-    case DoughnutSelectType.DEPARTMENT:
+    case DOUGHNUT_SELECT_TYPES.DEPARTMENT:
       doughnutData = getCollegeDoughnutData(data, collegeDict);
       break;
-    case DoughnutSelectType.COLLEGE:
+    case DOUGHNUT_SELECT_TYPES.COLLEGE:
       doughnutData = getDoughnutData(data);
       break;
     default:
