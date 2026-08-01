@@ -12,7 +12,7 @@ export function RadarChartSkeleton({ className, height }: IRadarChartSkeletonPro
       aria-label="차트 로딩 중"
     >
       <div
-        className="bg-gray-200 animate-pulse"
+        className="bg-gray-300 animate-pulse"
         style={{ width: '100%', aspectRatio: '1', clipPath: 'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)' }}
       />
     </div>
