@@ -21,7 +21,7 @@ const FileUploadGuide = () => {
                 to="https://sjpt.sejong.ac.kr/main/view/Login/doSsoLogin.do?p="
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary underline font-semibold"
+                className="text-primary-500 underline font-semibold"
               >
                 학사 정보 시스템
               </NavLink>
@@ -42,14 +42,16 @@ const FileUploadGuide = () => {
 
         <div className="space-y-1 ml-1 text-gray-600 text-xs sm:text-sm">
           <p>
-            ※ 다운로드한 파일은 <span className="text-primary font-semibold">수정 없이 그대로</span> 업로드해 주세요.
+            ※ 다운로드한 파일은 <span className="text-primary-500 font-semibold">수정 없이 그대로</span> 업로드해
+            주세요.
           </p>
           <p>
-            ※ 학점이 <span className="text-primary font-semibold">F 또는 NP</span>인 과목은 저장 시{' '}
-            <span className="text-primary  font-semibold">자동으로 제외</span>됩니다.
+            ※ 학점이 <span className="text-primary-500 font-semibold">F 또는 NP</span>인 과목은 저장 시{' '}
+            <span className="text-primary-500  font-semibold">자동으로 제외</span>됩니다.
           </p>
           <p>
-            ※ 업로드한 엑셀 파일은 <span className="text-primary font-semibold">서버에 별도로 저장되지 않습니다.</span>
+            ※ 업로드한 엑셀 파일은{' '}
+            <span className="text-primary-500 font-semibold">서버에 별도로 저장되지 않습니다.</span>
           </p>
         </div>
       </Flex>
