@@ -1,5 +1,6 @@
 export const colors = {
   primary: {
+    DEFAULT: '#3B82F6', // primary-500과 동일. text-primary 처럼 셰이드 없이 쓰는 경우를 위한 기본값
     50: '#EFF6FF',
     100: '#DBEAFE',
     200: '#BFDBFE',
