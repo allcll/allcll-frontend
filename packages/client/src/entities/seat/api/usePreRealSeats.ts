@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchJsonOnPublic } from '@/shared/api/api.ts';
+import { useIsPreSeatCrawlingPeriod } from '@/shared/config/preseat';
 
 const SEC = 1000;
-const MIN = 60 * SEC;
 
 export interface IPreRealSeat {
   subjectId: number;
@@ -19,16 +19,17 @@ export const InitPreRealSeat: IPreRealSeat = {
 };
 
 function usePreRealSeats() {
-  return useQuery({
-    queryKey: ['preRealSeats'],
-    queryFn: fetchPreRealSeats,
-    staleTime: 10 * MIN,
-    select: data => data?.preSeats ?? null,
-  });
-}
+  const isCrawlingPeriod = useIsPreSeatCrawlingPeriod();
 
-async function fetchPreRealSeats(): Promise<IPreRealSeatsResponse> {
-  return await fetchJsonOnPublic<IPreRealSeatsResponse>('/pre-seats.json?date=20260608');
+  return useQuery({
+    queryKey: ['preRealSeats', isCrawlingPeriod],
+    queryFn: () => fetchJsonOnPublic<IPreRealSeatsResponse>('/pre-seats.json'),
+    staleTime: isCrawlingPeriod ? 15 * SEC : Infinity,
+    refetchInterval: isCrawlingPeriod ? 15 * SEC : false,
+    retry: 2,
+    retryDelay: 1000,
+    select: data => data?.preSeats ?? [],
+  });
 }
 
 export default usePreRealSeats;
