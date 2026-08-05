@@ -5,7 +5,7 @@ import { useCheckSseScheduler } from '@/hooks/server/sse/useSeatScheduler';
 import { useAdminActions } from '@/hooks/useAdminActions';
 import ControlRow from './ControlRow';
 import { useCheckAdminSession } from '@/hooks/server/session/useAdminSession';
-import { Card, ListboxOption, Flex } from '@allcll/allcll-ui';
+import { Card, ListboxOption } from '@allcll/allcll-ui';
 import { Filtering } from '@allcll/common';
 import SectionHeader from '../common/SectionHeader';
 import { useState } from 'react';
@@ -55,7 +55,7 @@ function Control() {
         />
 
         {isBeforeSeasonDeadline ? (
-          <Flex align="items-center" gap="gap-2">
+          <div>
             <ControlRow label="일반 여석 크롤링" checked={isSeatActive} onToggle={() => toggleSeat(false)} />
             <Filtering
               label={`학년: ${SEAT_UTILS_OPTIONS.find(o => o.value === normalSeatGrade)?.label}`}
@@ -72,9 +72,9 @@ function Control() {
                 ))}
               </div>
             </Filtering>
-          </Flex>
+          </div>
         ) : (
-          <Flex align="items-center" gap="gap-2">
+          <div>
             <ControlRow label="계절 여석 크롤링" checked={isSeatActive} onToggle={() => toggleSeat(true)} />
             <Filtering
               label={`학년: ${SEAT_UTILS_OPTIONS.find(o => o.value === seasonSeatGrade)?.label}`}
@@ -91,7 +91,7 @@ function Control() {
                 ))}
               </div>
             </Filtering>
-          </Flex>
+          </div>
         )}
         <ControlRow label="여석 데이터 전송" checked={isActiveSse ?? false} onToggle={toggleSse} />
       </Card.Content>
