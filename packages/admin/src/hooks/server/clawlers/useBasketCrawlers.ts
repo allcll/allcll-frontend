@@ -8,7 +8,7 @@ export interface CralwersParams {
 }
 
 const crawlingBasket = async ({ userId }: CralwersParams) => {
-  const response = await fetchOnAPI(`/api/admin/basket?userId=${userId}`, {
+  const response = await fetchOnAPI(`/api/admin/basket/fetch?userId=${userId}`, {
     method: 'POST',
   });
 
@@ -28,8 +28,8 @@ const crawlingBasket = async ({ userId }: CralwersParams) => {
   return response;
 };
 
-const getCrawleredBasket = async ({ userId }: CralwersParams) => {
-  return await fetchJsonOnAPI(`/api/admin/basket?userId=${userId}`);
+const getCrawleredBasket = async () => {
+  return await fetchJsonOnAPI(`/api/baskets`);
 };
 
 /**
@@ -61,9 +61,9 @@ export function useCrawlersBasket() {
  * @param params
  * @returns
  */
-export function useGetBasket(params: CralwersParams) {
+export function useGetBasket() {
   return useQuery({
     queryKey: ['crawlers-basket'],
-    queryFn: () => getCrawleredBasket(params),
+    queryFn: () => getCrawleredBasket(),
   });
 }
