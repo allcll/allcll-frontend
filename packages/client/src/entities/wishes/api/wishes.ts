@@ -7,11 +7,8 @@ export interface WishesApiResponse {
   baskets: { subjectId: number; totalCount: number }[];
 }
 
-// baskets.json 파일 업데이트 시 반드시 `CACHE_VERSION` 값을 함께 변경해주세요.
-const CACHE_VERSION = 'SUMMER_26_20260528';
-
 export const fetchWishesDataBySemester = async (semester: string) => {
-  return await fetchJsonOnPublic<WishesApiResponse>(`/${semester}/baskets.json?v=${CACHE_VERSION}`);
+  return await fetchJsonOnPublic<WishesApiResponse>(`/${semester}/baskets.json`);
 };
 
 interface DetailRegistersResponse {

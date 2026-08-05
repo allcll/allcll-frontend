@@ -9,7 +9,7 @@ const startIdx = SEMESTERS.findIndex(s => s.semesterCode === START_SEMESTER_CODE
 const TIMETABLE_SEMESTERS = startIdx !== -1 ? SEMESTERS.slice(0, startIdx + 1) : [];
 
 function TimetableSemesterTabs({ currentSemester }: { currentSemester?: string }) {
-  const activeClassName = 'border-b-2 border-primary text-primary pb-2';
+  const activeClassName = 'border-b-2 border-primary-500 text-primary-500 pb-2';
 
   return (
     <Flex gap="gap-4" className="border-b text-sm border-gray-200">
