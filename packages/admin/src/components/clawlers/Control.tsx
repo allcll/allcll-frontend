@@ -5,7 +5,8 @@ import { useCheckSseScheduler } from '@/hooks/server/sse/useSeatScheduler';
 import { useAdminActions } from '@/hooks/useAdminActions';
 import ControlRow from './ControlRow';
 import { useCheckAdminSession } from '@/hooks/server/session/useAdminSession';
-import { Card, Chip, Flex, Grid, Label } from '@allcll/allcll-ui';
+import { Card, ListboxOption, Flex } from '@allcll/allcll-ui';
+import { Filtering } from '@allcll/common';
 import SectionHeader from '../common/SectionHeader';
 import { useState } from 'react';
 
@@ -54,41 +55,43 @@ function Control() {
         />
 
         {isBeforeSeasonDeadline ? (
-          <div>
+          <Flex align="items-center" gap="gap-2">
             <ControlRow label="일반 여석 크롤링" checked={isSeatActive} onToggle={() => toggleSeat(false)} />
-            <Flex direction="flex-col" gap="gap-2" className="mt-4 mb-6">
-              <Label>학년 선택</Label>
-              <Grid columns={{ md: 5 }} gap="gap-2">
+            <Filtering
+              label={`학년: ${SEAT_UTILS_OPTIONS.find(o => o.value === normalSeatGrade)?.label}`}
+              selected={normalSeatGrade !== 'TOTAL'}
+            >
+              <div className="flex flex-col gap-1 min-w-32">
                 {SEAT_UTILS_OPTIONS.map(option => (
-                  <Chip
+                  <ListboxOption
                     key={option.value}
-                    label={option.label}
                     selected={normalSeatGrade === option.value}
-                    onClick={() => setNormalSeatGrade(option.value)}
-                    variant="none"
+                    onSelect={() => setNormalSeatGrade(option.value)}
+                    left={option.label}
                   />
                 ))}
-              </Grid>
-            </Flex>
-          </div>
+              </div>
+            </Filtering>
+          </Flex>
         ) : (
-          <div>
+          <Flex align="items-center" gap="gap-2">
             <ControlRow label="계절 여석 크롤링" checked={isSeatActive} onToggle={() => toggleSeat(true)} />
-            <Flex direction="flex-col" gap="gap-2" className="mt-4 mb-6">
-              <Label>학년 선택</Label>
-              <Grid columns={{ md: 5 }} gap="gap-2">
+            <Filtering
+              label={`학년: ${SEAT_UTILS_OPTIONS.find(o => o.value === seasonSeatGrade)?.label}`}
+              selected={seasonSeatGrade !== 'TOTAL'}
+            >
+              <div className="flex flex-col gap-1 min-w-32">
                 {SEAT_UTILS_OPTIONS.map(option => (
-                  <Chip
+                  <ListboxOption
                     key={option.value}
-                    label={option.label}
                     selected={seasonSeatGrade === option.value}
-                    onClick={() => setSeasonSeatGrade(option.value)}
-                    variant="none"
+                    onSelect={() => setSeasonSeatGrade(option.value)}
+                    left={option.label}
                   />
                 ))}
-              </Grid>
-            </Flex>
-          </div>
+              </div>
+            </Filtering>
+          </Flex>
         )}
         <ControlRow label="여석 데이터 전송" checked={isActiveSse ?? false} onToggle={toggleSse} />
       </Card.Content>
