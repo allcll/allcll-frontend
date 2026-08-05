@@ -39,7 +39,11 @@ export function FeedbackFields({ titles, rate, setRate, detail, setDetail, error
         onChange={e => setDetail(e.target.value)}
       />
 
-      {error && <p className="text-red-600 text-sm mb-3" aria-live='assertive'>{error}</p>}
+      {error && (
+        <p className="text-red-600 text-sm mb-3" aria-live="assertive">
+          {error}
+        </p>
+      )}
     </>
   );
 }
@@ -60,10 +64,14 @@ export function FeedbackActions({ isPending, onDontShowAgain, onSubmit }: Action
 export function FeedbackSuccess() {
   return (
     <Flex direction="flex-col" justify="justify-center" align="items-center" className="py-4">
-      <Flex justify="justify-center" align="items-center" className="w-14 h-14 rounded-full bg-emerald-100 mb-3 animate-pulse">
+      <Flex
+        justify="justify-center"
+        align="items-center"
+        className="w-14 h-14 rounded-full bg-emerald-100 mb-3 animate-pulse"
+      >
         <CheckIcon className="text-emerald-600" />
       </Flex>
-      <SupportingText className="text-primary">좋은 의견 주셔서 감사합니다</SupportingText>
+      <SupportingText className="text-primary-500">좋은 의견 주셔서 감사합니다</SupportingText>
     </Flex>
   );
 }
@@ -89,7 +97,7 @@ function RateInputs({ rate, currentRate, onClick }: RateButtonProps) {
       aria-checked={currentRate === rate}
       aria-label={LabelText}
       className={`flex flex-col items-center gap-2 p-2 rounded-xl transition-colors duration-200 font-bold
-        ${currentRate === rate ? 'text-primary' : 'text-gray-300 hover:text-blue-300'}`}
+        ${currentRate === rate ? 'text-primary-500' : 'text-gray-300 hover:text-blue-300'}`}
       onClick={onClick}
     >
       {faces[rate]}
