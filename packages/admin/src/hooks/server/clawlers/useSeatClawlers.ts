@@ -5,8 +5,10 @@ import { addRequestLog } from '@/utils/log/adminApiLogs';
 import { getSessionConfig, isValidSession } from '@/utils/sessionConfig.ts';
 import { REFETCH_INTERVAL } from '@/hooks/server/session/useAdminSession.ts';
 
-const startCrawlersSeat = async (userId: string) => {
-  const response = await fetchOnAPI(`/api/admin/seat/start?userId=${userId}`, {
+export type SeatUtilsType = 'TOTAL' | 'GRADE_1' | 'GRADE_2' | 'GRADE_3' | 'GRADE_4';
+
+const startCrawlersSeat = async (userId: string, seatUtilsType: SeatUtilsType = 'TOTAL') => {
+  const response = await fetchOnAPI(`/api/admin/seat/start?userId=${userId}&seatUtilsType=${seatUtilsType}`, {
     method: 'POST',
   });
 
@@ -38,8 +40,8 @@ const cancelCrawlersSeat = async () => {
   return response;
 };
 
-const startSeasonCrawlersSeat = async (userId: string) => {
-  const response = await fetchOnAPI(`/api/admin/season-seat/start?userId=${userId}`, {
+const startSeasonCrawlersSeat = async (userId: string, seatUtilsType: SeatUtilsType = 'TOTAL') => {
+  const response = await fetchOnAPI(`/api/admin/season-seat/start?userId=${userId}&seatUtilsType=${seatUtilsType}`, {
     method: 'POST',
   });
 
@@ -89,7 +91,7 @@ export function useStartCrawlersSeat() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => startCrawlersSeat(session?.userId ?? ''),
+    mutationFn: (seatUtilsType: SeatUtilsType) => startCrawlersSeat(session?.userId ?? '', seatUtilsType),
     onSuccess: async () => {
       toast('여석 크롤링이 시작되었습니다.');
 
@@ -128,7 +130,7 @@ export function useStartSeasonCrawlersSeat() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => startSeasonCrawlersSeat(session?.userId ?? ''),
+    mutationFn: (seatUtilsType: SeatUtilsType) => startSeasonCrawlersSeat(session?.userId ?? '', seatUtilsType),
     onSuccess: async () => {
       toast('계절 여석 크롤링이 시작되었습니다.');
       await queryClient.invalidateQueries({ queryKey: ['check-seat'] });
