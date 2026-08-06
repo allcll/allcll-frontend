@@ -45,7 +45,7 @@ export function useCrawlersPreseat() {
     mutationFn: ({ userId }: CralwersParams) => crawlingPreseat({ userId }),
 
     onSuccess: () => {
-      toast('전체 여석 크롤링에 성공하셨습니다.');
+      toast('전체 여석 크롤링에 성공했습니다.', 'preseat-crawl-success');
 
       queryClient.invalidateQueries({
         queryKey: ['crawlers-pre-seat'],

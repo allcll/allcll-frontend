@@ -8,76 +8,76 @@ import { REFETCH_INTERVAL } from '@/hooks/server/session/useAdminSession.ts';
 export type SeatUtilsType = 'TOTAL' | 'GRADE_1' | 'GRADE_2' | 'GRADE_3' | 'GRADE_4';
 
 interface ISeatUtilsOption {
-  value: SeatUtilsType;
-  label: string;
+    value: SeatUtilsType;
+    label: string;
 }
 
 export const SEAT_UTILS_OPTIONS: ISeatUtilsOption[] = [
-  { value: 'TOTAL', label: '전체' },
-  { value: 'GRADE_1', label: '1학년' },
-  { value: 'GRADE_2', label: '2학년' },
-  { value: 'GRADE_3', label: '3학년' },
-  { value: 'GRADE_4', label: '4학년' },
+    { value: 'TOTAL', label: '전체' },
+    { value: 'GRADE_1', label: '1학년' },
+    { value: 'GRADE_2', label: '2학년' },
+    { value: 'GRADE_3', label: '3학년' },
+    { value: 'GRADE_4', label: '4학년' },
 ];
 
 const getSeatUtilsLabel = (seatUtilsType: SeatUtilsType) =>
-  SEAT_UTILS_OPTIONS.find(option => option.value === seatUtilsType)?.label ?? '전체';
+    SEAT_UTILS_OPTIONS.find(option => option.value === seatUtilsType)?.label ?? '전체';
 
 const startCrawlersSeat = async (userId: string, seatUtilsType: SeatUtilsType = 'TOTAL') => {
-  const response = await fetchOnAPI(`/api/admin/seat/start?userId=${userId}&seatUtilsType=${seatUtilsType}`, {
-    method: 'POST',
-  });
+    const response = await fetchOnAPI(`/api/admin/seat/start?userId=${userId}&seatUtilsType=${seatUtilsType}`, {
+        method: 'POST',
+    });
 
-  const response_body = await response.text();
-  if (!response.ok) {
+    const response_body = await response.text();
+    if (!response.ok) {
+        await addRequestLog(response, 'POST', '');
+        throw new Error(response_body);
+    }
+
     await addRequestLog(response, 'POST', '');
-    throw new Error(response_body);
-  }
 
-  await addRequestLog(response, 'POST', '');
-
-  return response;
+    return response;
 };
 
 const cancelCrawlersSeat = async () => {
-  const response = await fetchOnAPI('/api/admin/seat/cancel', {
-    method: 'POST',
-  });
+    const response = await fetchOnAPI('/api/admin/seat/cancel', {
+        method: 'POST',
+    });
 
-  const response_body = await response.text();
+    const response_body = await response.text();
 
-  if (!response.ok) {
+    if (!response.ok) {
+        await addRequestLog(response, 'POST', '');
+        throw new Error(response_body);
+    }
+
     await addRequestLog(response, 'POST', '');
-    throw new Error(response_body);
-  }
 
-  await addRequestLog(response, 'POST', '');
-
-  return response;
+    return response;
 };
 
 const startSeasonCrawlersSeat = async (userId: string, seatUtilsType: SeatUtilsType = 'TOTAL') => {
-  const response = await fetchOnAPI(`/api/admin/season-seat/start?userId=${userId}&seatUtilsType=${seatUtilsType}`, {
-    method: 'POST',
-  });
+    const response = await fetchOnAPI(`/api/admin/season-seat/start?userId=${userId}&seatUtilsType=${seatUtilsType}`, {
+        method: 'POST',
+    });
 
-  const response_body = await response.text();
-  if (!response.ok) {
+    const response_body = await response.text();
+    if (!response.ok) {
+        await addRequestLog(response, 'POST', '');
+        throw new Error(response_body);
+    }
+
     await addRequestLog(response, 'POST', '');
-    throw new Error(response_body);
-  }
-
-  await addRequestLog(response, 'POST', '');
-  return response;
+    return response;
 };
 
 interface CheckedCrawlerSeatResponse {
-  userId: string;
-  isActive: boolean;
+    userId: string;
+    isActive: boolean;
 }
 
 const checkCrawlersSeat = async () => {
-  return await fetchJsonOnAPI<CheckedCrawlerSeatResponse>('/api/admin/seat/check');
+    return await fetchJsonOnAPI<CheckedCrawlerSeatResponse>('/api/admin/seat/check');
 };
 
 /**
@@ -85,16 +85,16 @@ const checkCrawlersSeat = async () => {
  * @returns
  */
 export function useCheckCrawlerSeat() {
-  const isValid = isValidSession();
+    const isValid = isValidSession();
 
-  return useQuery({
-    queryKey: ['check-seat'],
-    queryFn: checkCrawlersSeat,
-    select: data => data,
-    staleTime: 0, // 항상 stale로 간주
-    refetchInterval: REFETCH_INTERVAL,
-    enabled: isValid,
-  });
+    return useQuery({
+        queryKey: ['check-seat'],
+        queryFn: checkCrawlersSeat,
+        select: data => data,
+        staleTime: 0, // 항상 stale로 간주
+        refetchInterval: REFETCH_INTERVAL,
+        enabled: isValid,
+    });
 }
 
 /**
@@ -102,19 +102,19 @@ export function useCheckCrawlerSeat() {
  * @returns
  */
 export function useStartCrawlersSeat() {
-  const toast = useToastNotification.getState().addToast;
-  const session = getSessionConfig();
-  const queryClient = useQueryClient();
+    const toast = useToastNotification.getState().addToast;
+    const session = getSessionConfig();
+    const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (seatUtilsType: SeatUtilsType = 'TOTAL') => startCrawlersSeat(session?.userId ?? '', seatUtilsType),
-    onSuccess: async (_, seatUtilsType) => {
-      toast(`${getSeatUtilsLabel(seatUtilsType ?? 'TOTAL')} 여석 크롤링이 시작되었습니다.`);
+    return useMutation({
+        mutationFn: (seatUtilsType: SeatUtilsType = 'TOTAL') => startCrawlersSeat(session?.userId ?? '', seatUtilsType),
+        onSuccess: async (_, seatUtilsType) => {
+            toast(`${getSeatUtilsLabel(seatUtilsType ?? 'TOTAL')} 여석 크롤링이 시작되었습니다.`, 'seat-crawl-start');
 
-      await queryClient.invalidateQueries({ queryKey: ['check-seat'] });
-    },
-    onError: err => console.error(err),
-  });
+            await queryClient.invalidateQueries({ queryKey: ['check-seat'] });
+        },
+        onError: err => console.error(err),
+    });
 }
 
 /**
@@ -122,18 +122,18 @@ export function useStartCrawlersSeat() {
  * @returns
  */
 export function useCancelCrawlersSeat() {
-  const toast = useToastNotification.getState().addToast;
-  const queryClient = useQueryClient();
+    const toast = useToastNotification.getState().addToast;
+    const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: cancelCrawlersSeat,
-    onSuccess: async () => {
-      toast('여석 크롤링이 중단되었습니다.');
+    return useMutation({
+        mutationFn: cancelCrawlersSeat,
+        onSuccess: async () => {
+            toast('여석 크롤링이 중단되었습니다.', 'seat-crawl-stop');
 
-      await queryClient.invalidateQueries({ queryKey: ['check-seat'] });
-    },
-    onError: err => console.error(err),
-  });
+            await queryClient.invalidateQueries({ queryKey: ['check-seat'] });
+        },
+        onError: err => console.error(err),
+    });
 }
 
 /**
@@ -141,17 +141,17 @@ export function useCancelCrawlersSeat() {
  * @returns
  */
 export function useStartSeasonCrawlersSeat() {
-  const toast = useToastNotification.getState().addToast;
-  const session = getSessionConfig();
-  const queryClient = useQueryClient();
+    const toast = useToastNotification.getState().addToast;
+    const session = getSessionConfig();
+    const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (seatUtilsType: SeatUtilsType = 'TOTAL') =>
-      startSeasonCrawlersSeat(session?.userId ?? '', seatUtilsType),
-    onSuccess: async (_, seatUtilsType) => {
-      toast(`${getSeatUtilsLabel(seatUtilsType ?? 'TOTAL')} 계절 여석 크롤링이 시작되었습니다.`);
-      await queryClient.invalidateQueries({ queryKey: ['check-seat'] });
-    },
-    onError: err => console.error(err),
-  });
+    return useMutation({
+        mutationFn: (seatUtilsType: SeatUtilsType = 'TOTAL') =>
+            startSeasonCrawlersSeat(session?.userId ?? '', seatUtilsType),
+        onSuccess: async (_, seatUtilsType) => {
+            toast(`${getSeatUtilsLabel(seatUtilsType ?? 'TOTAL')} 계절 여석 크롤링이 시작되었습니다.`, 'season-seat-crawl-start');
+            await queryClient.invalidateQueries({ queryKey: ['check-seat'] });
+        },
+        onError: err => console.error(err),
+    });
 }

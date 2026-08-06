@@ -45,7 +45,7 @@ export function useCrawlersBasket() {
     mutationFn: ({ userId }: CralwersParams) => crawlingBasket({ userId }),
 
     onSuccess: () => {
-      toast('관심과목 크롤링에 성공하셨습니다..');
+      toast('관심과목 크롤링에 성공했습니다.', 'basket-crawl-success');
 
       queryClient.invalidateQueries({
         queryKey: ['crawlers-basket'],
