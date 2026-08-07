@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
-import { CralwersParams, useClawlersDepartments } from '@/hooks/server/clawlers/useDepartmentClawlers';
-import { useSubjectsClawlers } from '@/hooks/server/clawlers/useSubjuectClawlers';
+import { CrawlersParams, useCrawlersDepartments } from '@/hooks/server/crawlers/useDepartmentCrawlers';
+import { useSubjectsCrawlers } from '@/hooks/server/crawlers/useSubjectCrawlers';
 import { Button, Card, Flex, Label, SupportingText } from '@allcll/allcll-ui';
 import SectionHeader from '../common/SectionHeader';
-import { useCrawlersPreseat } from '@/hooks/server/clawlers/usePreseatCrawlers';
-import { useCrawlersBasket } from '@/hooks/server/clawlers/useBasketCrawlers';
+import { useCrawlersPreseat } from '@/hooks/server/crawlers/usePreseatCrawlers';
+import { useCrawlersBasket } from '@/hooks/server/crawlers/useBasketCrawlers';
 import { useCheckAdminSession } from '@/hooks/server/session/useAdminSession';
 import { useSemester } from '@/hooks/server/service/useSemester';
 import { getSessionConfig } from '@/utils/sessionConfig';
@@ -21,14 +21,14 @@ const SEMESTER_OPTIONS = [
 ];
 
 function CrawlerControlComponent() {
-  const { mutate: clawlersDepartments } = useClawlersDepartments();
-  const { mutate: clawlersSubjects } = useSubjectsClawlers();
+  const { mutate: crawlersDepartments } = useCrawlersDepartments();
+  const { mutate: crawlersSubjects } = useSubjectsCrawlers();
   const { mutate: crawlersPreseat } = useCrawlersPreseat();
   const { mutate: crawlersBasket } = useCrawlersBasket();
 
   const { data: semester } = useSemester();
   const { data: sessionStatus } = useCheckAdminSession();
-  const [clawlersParams, setClawlersParams] = useState<CralwersParams>({
+  const [crawlersParams, setCrawlersParams] = useState<CrawlersParams>({
     userId: getSessionConfig()?.userId ?? '',
     year: '',
     semesterCode: '',
@@ -50,7 +50,7 @@ function CrawlerControlComponent() {
       return;
     }
 
-    setClawlersParams(prev => ({
+    setCrawlersParams(prev => ({
       ...prev,
       year: prev.year || currentYear,
       semesterCode: prev.semesterCode || currentSemesterCode,
@@ -63,23 +63,23 @@ function CrawlerControlComponent() {
       return;
     }
 
-    setClawlersParams(prev =>
+    setCrawlersParams(prev =>
       sessionStatus.some(({ userId }) => userId === prev.userId) ? prev : { ...prev, userId: '' },
     );
   }, [sessionStatus]);
 
-  const setParam = (key: keyof CralwersParams, value: string) => {
-    setClawlersParams(prev => ({ ...prev, [key]: value }));
+  const setParam = (key: keyof CrawlersParams, value: string) => {
+    setCrawlersParams(prev => ({ ...prev, [key]: value }));
   };
 
   const validParamsForm = (type: crawlerType) => {
-    if (!clawlersParams.userId) {
+    if (!crawlersParams.userId) {
       alert('userId를 선택해주세요.');
       return false;
     }
 
     if (type === 'department' || type === 'subject') {
-      if (!clawlersParams.year || !clawlersParams.semesterCode) {
+      if (!crawlersParams.year || !crawlersParams.semesterCode) {
         alert('year와 semesterCode를 모두 선택해주세요.');
         return false;
       }
@@ -92,13 +92,13 @@ function CrawlerControlComponent() {
 
   const handleSubmit = (type: crawlerType) => {
     if (type === 'department' && validParamsForm('department')) {
-      clawlersDepartments(clawlersParams);
+      crawlersDepartments(crawlersParams);
     } else if (type === 'subject' && validParamsForm('subject')) {
-      clawlersSubjects(clawlersParams);
+      crawlersSubjects(crawlersParams);
     } else if (type === 'pre-seat' && validParamsForm('pre-seat')) {
-      crawlersPreseat({ userId: clawlersParams.userId });
+      crawlersPreseat({ userId: crawlersParams.userId });
     } else if (type === 'basket' && validParamsForm('basket')) {
-      crawlersBasket({ userId: clawlersParams.userId });
+      crawlersBasket({ userId: crawlersParams.userId });
     }
   };
 
@@ -114,7 +114,7 @@ function CrawlerControlComponent() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <ParamSelect
               id="userId"
-              value={clawlersParams.userId}
+              value={crawlersParams.userId}
               onChange={value => setParam('userId', value)}
               disabled={!sessionStatus?.length}
               placeholder="학번을 선택해주세요"
@@ -133,7 +133,7 @@ function CrawlerControlComponent() {
 
             <ParamSelect
               id="year"
-              value={clawlersParams.year}
+              value={crawlersParams.year}
               onChange={value => setParam('year', value)}
               placeholder="연도를 선택해주세요"
             >
@@ -146,7 +146,7 @@ function CrawlerControlComponent() {
 
             <ParamSelect
               id="semesterCode"
-              value={clawlersParams.semesterCode}
+              value={crawlersParams.semesterCode}
               onChange={value => setParam('semesterCode', value)}
               placeholder="학기를 선택해주세요"
               description={semester?.semesterValue && `현재 학기: ${semester.semesterValue}`}
@@ -183,7 +183,7 @@ function CrawlerControlComponent() {
 }
 
 interface IParamSelect {
-  id: keyof CralwersParams;
+  id: keyof CrawlersParams;
   value: string;
   onChange: (value: string) => void;
   placeholder: string;

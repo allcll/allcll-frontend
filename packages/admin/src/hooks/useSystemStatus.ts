@@ -1,4 +1,4 @@
-import { useCheckCrawlerSeat } from '@/hooks/server/clawlers/useSeatClawlers';
+import { useCheckCrawlerSeat } from '@/hooks/server/crawlers/useSeatCrawlers';
 import { useCheckSseScheduler } from '@/hooks/server/sse/useSeatScheduler';
 import { SystemStatusKey } from '@/components/dashboard/SystemChecking';
 import { useCheckAdminSession } from './server/session/useAdminSession';
