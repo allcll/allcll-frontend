@@ -39,7 +39,9 @@ function CrawlerControlComponent() {
   const currentSemesterCode = SEMESTER_OPTIONS.find(option => option.season === season)?.code ?? '';
 
   const yearOptions = useMemo(() => {
-    const lastYear = Number(currentYear || new Date().getFullYear()) + 1;
+    const parsedYear = Number(currentYear);
+    const baseYear = Number.isFinite(parsedYear) ? parsedYear : new Date().getFullYear();
+    const lastYear = Math.max(baseYear + 1, FIRST_CRAWLED_YEAR);
 
     return Array.from({ length: lastYear - FIRST_CRAWLED_YEAR + 1 }, (_, index) => String(lastYear - index));
   }, [currentYear]);
