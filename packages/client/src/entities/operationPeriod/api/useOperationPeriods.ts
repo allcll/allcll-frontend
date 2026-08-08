@@ -12,7 +12,7 @@ export function useOperationPeriods(date: string) {
   return useQuery({
     queryKey: [...OPERATION_PERIOD_QUERY_KEY, date],
     queryFn: () => fetchOperationPeriods(date),
-    select: data => data.operationPeriodDetailResponses,
+    select: data => data?.operationPeriodDetailResponses ?? [],
     staleTime: 5 * 60 * 1000,
   });
 }
