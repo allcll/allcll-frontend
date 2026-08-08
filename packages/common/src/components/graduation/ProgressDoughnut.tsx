@@ -17,7 +17,9 @@ function ProgressDoughnut({
   size = 'medium',
   showPercentage = true,
 }: Readonly<ProgressDoughnutProps>) {
-  const percentage = required === 0 ? 100 : Math.min(100, Math.round((earned / required) * 100));
+  // 기준이 0 이면 비율을 말할 수 없다. 100% 로 채우면 요건이 없는데 다 채운 것처럼 보인다.
+  const hasTarget = required > 0;
+  const percentage = hasTarget ? Math.min(100, Math.round((earned / required) * 100)) : null;
   const remaining = Math.max(0, required - earned);
   const earnedForChart = Math.min(earned, required);
 
@@ -37,7 +39,7 @@ function ProgressDoughnut({
     labels: ['이수', '미이수'],
     datasets: [
       {
-        data: [earnedForChart, remaining],
+        data: hasTarget ? [earnedForChart, remaining] : [0, 1],
         backgroundColor: [colors.primary[500], '#e5e7eb'],
         borderWidth: 0,
       },
@@ -59,7 +61,9 @@ function ProgressDoughnut({
       <Doughnut data={data} options={options} />
       {showPercentage && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className={`font-bold ${textSizeMap[size]} text-primary-500`}>{percentage}%</span>
+          <span className={`font-bold ${textSizeMap[size]} ${hasTarget ? 'text-primary-500' : 'text-gray-400'}`}>
+            {hasTarget ? `${percentage}%` : '-'}
+          </span>
         </div>
       )}
     </div>
