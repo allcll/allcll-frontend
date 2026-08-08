@@ -7,6 +7,22 @@ import { REFETCH_INTERVAL } from '@/hooks/server/session/useAdminSession.ts';
 
 export type SeatUtilsType = 'TOTAL' | 'GRADE_1' | 'GRADE_2' | 'GRADE_3' | 'GRADE_4';
 
+interface ISeatUtilsOption {
+  value: SeatUtilsType;
+  label: string;
+}
+
+export const SEAT_UTILS_OPTIONS: ISeatUtilsOption[] = [
+  { value: 'TOTAL', label: '전체' },
+  { value: 'GRADE_1', label: '1학년' },
+  { value: 'GRADE_2', label: '2학년' },
+  { value: 'GRADE_3', label: '3학년' },
+  { value: 'GRADE_4', label: '4학년' },
+];
+
+const getSeatUtilsLabel = (seatUtilsType: SeatUtilsType) =>
+  SEAT_UTILS_OPTIONS.find(option => option.value === seatUtilsType)?.label ?? '전체';
+
 const startCrawlersSeat = async (userId: string, seatUtilsType: SeatUtilsType = 'TOTAL') => {
   const response = await fetchOnAPI(`/api/admin/seat/start?userId=${userId}&seatUtilsType=${seatUtilsType}`, {
     method: 'POST',
@@ -91,9 +107,9 @@ export function useStartCrawlersSeat() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (seatUtilsType: SeatUtilsType) => startCrawlersSeat(session?.userId ?? '', seatUtilsType),
-    onSuccess: async () => {
-      toast('여석 크롤링이 시작되었습니다.');
+    mutationFn: (seatUtilsType: SeatUtilsType = 'TOTAL') => startCrawlersSeat(session?.userId ?? '', seatUtilsType),
+    onSuccess: async (_, seatUtilsType) => {
+      toast(`${getSeatUtilsLabel(seatUtilsType ?? 'TOTAL')} 여석 크롤링이 시작되었습니다.`);
 
       await queryClient.invalidateQueries({ queryKey: ['check-seat'] });
     },
@@ -130,9 +146,10 @@ export function useStartSeasonCrawlersSeat() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (seatUtilsType: SeatUtilsType) => startSeasonCrawlersSeat(session?.userId ?? '', seatUtilsType),
-    onSuccess: async () => {
-      toast('계절 여석 크롤링이 시작되었습니다.');
+    mutationFn: (seatUtilsType: SeatUtilsType = 'TOTAL') =>
+      startSeasonCrawlersSeat(session?.userId ?? '', seatUtilsType),
+    onSuccess: async (_, seatUtilsType) => {
+      toast(`${getSeatUtilsLabel(seatUtilsType ?? 'TOTAL')} 계절 여석 크롤링이 시작되었습니다.`);
       await queryClient.invalidateQueries({ queryKey: ['check-seat'] });
     },
     onError: err => console.error(err),
