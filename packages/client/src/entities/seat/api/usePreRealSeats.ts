@@ -23,7 +23,8 @@ function usePreRealSeats() {
 
   return useQuery({
     queryKey: ['preRealSeats', isCrawlingPeriod],
-    queryFn: () => fetchJsonOnPublic<IPreRealSeatsResponse>('/pre-seats.json'),
+    // nginx가 10분 캐시(max-age=600)를 내려주므로, 매 폴링마다 ETag로 재검증해 최신 데이터를 받습니다.
+    queryFn: () => fetchJsonOnPublic<IPreRealSeatsResponse>('/pre-seats.json', { cache: 'no-cache' }),
     staleTime: isCrawlingPeriod ? 15 * SEC : Infinity,
     refetchInterval: isCrawlingPeriod ? 15 * SEC : false,
     retry: 2,
