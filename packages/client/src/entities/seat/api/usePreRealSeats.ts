@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchJsonOnPublic } from '@/shared/api/api.ts';
-import { useIsPreSeatCrawlingPeriod } from '@/shared/config/preseat';
+import { useIsPreSeatCrawlingPeriod } from '@/entities/operationPeriod/model/usePreSeatPeriod';
 
 const SEC = 1000;
 
