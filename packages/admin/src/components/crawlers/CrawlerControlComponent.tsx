@@ -195,7 +195,7 @@ interface IParamSelect {
 function ParamSelect({ id, value, onChange, placeholder, disabled, description, children }: IParamSelect) {
   return (
     <Flex direction="flex-col" gap="gap-1.5">
-      <Label id={id} required>
+      <Label htmlFor={id} required>
         {id}
       </Label>
 
