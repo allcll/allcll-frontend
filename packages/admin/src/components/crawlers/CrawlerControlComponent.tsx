@@ -80,13 +80,11 @@ function CrawlerControlComponent() {
       return false;
     }
 
-    if (type === 'department' || type === 'subject') {
-      if (!crawlersParams.year || !crawlersParams.semesterCode) {
-        alert('year와 semesterCode를 모두 선택해주세요.');
-        return false;
-      }
+    const needsSemester = type === 'department' || type === 'subject';
 
-      return true;
+    if (needsSemester && (!crawlersParams.year || !crawlersParams.semesterCode)) {
+      alert('year와 semesterCode를 모두 선택해주세요.');
+      return false;
     }
 
     return true;
