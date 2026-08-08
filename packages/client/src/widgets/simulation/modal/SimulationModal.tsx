@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import SejongUI from '@allcll/sejong-ui';
 import CheckBlueSvg from '@/assets/check-blue.svg?react';
 import ImportantSvg from '@/assets/important.svg?react';
@@ -11,6 +12,7 @@ import {
   triggerButtonEvent,
 } from '@/features/simulation/lib/simulation.ts';
 import useLectures from '@/entities/subjects/model/useLectures.ts';
+import useModalFocusTrap from '@/shared/lib/useModalFocusTrap.ts';
 
 const SIMULATION_MODAL_CONTENTS = [
   {
@@ -57,6 +59,7 @@ interface ISimulationModal {
 }
 
 function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>) {
+  const modalRef = useRef<HTMLDivElement>(null);
   const openModal = useSimulationModalStore(state => state.openModal);
   const closeModal = useSimulationModalStore(state => state.closeModal);
   const { currentSubjectId, setSubjectStatus, subjectStatusMap } = useSimulationSubjectStore();
@@ -71,6 +74,8 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
     modalStatus,
   );
   const isCloseDisabled = closeDisabledStatuses.includes(modalStatus);
+
+  useModalFocusTrap({ containerRef: modalRef, resetKey: modalStatus });
 
   if (!modalData) return null;
 
@@ -220,39 +225,41 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
   };
 
   return (
-    <SejongUI.Modal modalCassName="max-w-md">
-      <SejongUI.Modal.Header title="" onClose={handleClickCloseButton} />
-      <div className={`px-6 pb-6 items-center flex-col flex ${getMinHeightClass(modalStatus)}`}>
-        <div className="flex justify-center mb-2 py-2">
-          {modalData.status === APPLY_STATUS.SUCCESS || modalData.status === APPLY_STATUS.PROGRESS ? (
-            <CheckBlueSvg className="w-12 h-12" />
-          ) : (
-            <ImportantSvg className="w-12 h-12" fill="#C4C4C4" />
+    <div ref={modalRef}>
+      <SejongUI.Modal preventAutoFocus modalCassName="max-w-md">
+        <SejongUI.Modal.Header title="" onClose={handleClickCloseButton} />
+        <div className={`px-6 pb-6 items-center flex-col flex ${getMinHeightClass(modalStatus)}`}>
+          <div className="flex justify-center mb-2 py-2">
+            {modalData.status === APPLY_STATUS.SUCCESS || modalData.status === APPLY_STATUS.PROGRESS ? (
+              <CheckBlueSvg className="w-12 h-12" />
+            ) : (
+              <ImportantSvg className="w-12 h-12" fill="#C4C4C4" />
+            )}
+          </div>
+          <p className="text-gray-700 text-sm mb-4">{modalData.topMessage}</p>
+
+          {modalData.description && (
+            <p className="text-sm text-gray-700 whitespace-pre-line text-center">
+              {modalData.description}{' '}
+              {modalData.status === APPLY_STATUS.PROGRESS && (
+                <span>{lectures?.find(lecture => lecture.subjectId === currentSubjectId)?.subjectName}</span>
+              )}
+            </p>
           )}
         </div>
-        <p className="text-gray-700 text-sm mb-4">{modalData.topMessage}</p>
 
-        {modalData.description && (
-          <p className="text-sm text-gray-700 whitespace-pre-line text-center">
-            {modalData.description}{' '}
-            {modalData.status === APPLY_STATUS.PROGRESS && (
-              <span>{lectures?.find(lecture => lecture.subjectId === currentSubjectId)?.subjectName}</span>
-            )}
-          </p>
-        )}
-      </div>
-
-      <SejongUI.Modal.ButtonContainer className="px-6 py-2 bg-gray-100">
-        {(modalData.status === APPLY_STATUS.PROGRESS || modalData.status === APPLY_STATUS.SUCCESS) && (
-          <SejongUI.Modal.Button variant="cancel" onClick={handleClickCancel}>
-            취소
+        <SejongUI.Modal.ButtonContainer className="px-6 py-2 bg-gray-100">
+          {(modalData.status === APPLY_STATUS.PROGRESS || modalData.status === APPLY_STATUS.SUCCESS) && (
+            <SejongUI.Modal.Button variant="cancel" onClick={handleClickCancel}>
+              취소
+            </SejongUI.Modal.Button>
+          )}
+          <SejongUI.Modal.Button variant="primary" onClick={handleClickCheck}>
+            확인
           </SejongUI.Modal.Button>
-        )}
-        <SejongUI.Modal.Button variant="primary" onClick={handleClickCheck}>
-          확인
-        </SejongUI.Modal.Button>
-      </SejongUI.Modal.ButtonContainer>
-    </SejongUI.Modal>
+        </SejongUI.Modal.ButtonContainer>
+      </SejongUI.Modal>
+    </div>
   );
 }
 
