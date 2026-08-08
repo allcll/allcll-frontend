@@ -49,7 +49,7 @@ function WishFilter() {
     .map(cat => cat);
   const allSelectedFilters = getAllSelectedLabels(filters);
 
-  const hasPreSeats = subjects && 'seat' in subjects;
+  const hasPreSeats = !!(subjects && 'seat' in subjects);
   const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
   const isWishesAvailable = subjects && 'totalCount' in subjects;
 

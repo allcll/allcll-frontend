@@ -8,12 +8,14 @@ import PinSearchBottomSheet from '@/widgets/live/pin/ui/PinSearchBottomSheet';
 import RealtimeTable from '@/widgets/live/board/ui/RealtimeTable';
 import useAlarmModalStore from '@/features/live/pin/model/useAlarmModalStore';
 import usePreSeatGate from '@/entities/seat/model/usePreSeatGate';
+import usePreRealSeats from '@/entities/seat/api/usePreRealSeats';
 
 function Live() {
   const isSearchOpen = useAlarmModalStore(state => state.isSearchOpen);
   const setIsSearchOpen = useAlarmModalStore(state => state.setIsSearchOpen);
   const isMobile = useMobile();
-  const { isPreSeatAvailable } = usePreSeatGate();
+  const { data: preSeats } = usePreRealSeats();
+  const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: !!preSeats?.length });
 
   return (
     <>

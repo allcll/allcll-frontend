@@ -12,7 +12,7 @@ interface ISubjectDetailProps {
 /** Wishes Detail 에서 사용하는 Subject 컴포넌트 */
 function SubjectDetail({ wishes }: ISubjectDetailProps) {
   const data = wishes ?? InitWishes;
-  const hasPreSeats = wishes && 'seat' in wishes;
+  const hasPreSeats = !!(wishes && 'seat' in wishes);
   const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
 
   const seats = hasPreSeats ? wishes.seat : -1;

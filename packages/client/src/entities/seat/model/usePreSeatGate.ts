@@ -1,7 +1,7 @@
 import { useIsPreSeatCrawlingPeriod } from '@/entities/operationPeriod/model/usePreSeatPeriod';
 
 interface IPreSeatGateOptions {
-  hasSeats?: boolean;
+  hasSeats: boolean;
 }
 
 /**
@@ -9,11 +9,10 @@ interface IPreSeatGateOptions {
  * operation-period API에서 PRESEAT 기간을 조회하고
  * 기간 내 + 여석 데이터가 있으면 활성화합니다.
  */
-function usePreSeatGate(opts?: IPreSeatGateOptions) {
-  const { hasSeats } = opts ?? {};
+function usePreSeatGate({ hasSeats }: IPreSeatGateOptions) {
   const isCrawlingPeriod = useIsPreSeatCrawlingPeriod();
 
-  const isPreSeatAvailable = isCrawlingPeriod && Boolean(hasSeats);
+  const isPreSeatAvailable = isCrawlingPeriod && hasSeats;
 
   return { isPreSeatAvailable };
 }
