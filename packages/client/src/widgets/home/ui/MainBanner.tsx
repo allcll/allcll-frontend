@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Button, SupportingText } from '@allcll/allcll-ui';
-import { BANNER_END_DATE, BANNER_PERIOD_LABEL, BANNER_START_DATE, CURRENT_SEMESTER } from '@allcll/common';
+import { BANNER_END_DATE, BANNER_PERIOD_LABEL, BANNER_START_DATE } from '@allcll/common';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 import Section from '@/widgets/home/ui/Section.tsx';
 import Image from '@/shared/ui/Image.tsx';
@@ -17,11 +17,7 @@ function MainBanner() {
       >
         <div className="max-w-xl">
           <div className="flex flex-row gap-2 items-center">
-            <Image
-              src="/calendar.png"
-              alt={`${CURRENT_SEMESTER.semesterValue}학기 세종대 수강신청 일정 아이콘`}
-              className="w-10 h-10"
-            />
+            <Image src="/calendar.png" alt="" className="w-10 h-10" />
             <span className="italic text-xs text-stone-500 ">
               {data?.semesterValue}학기 {BANNER_PERIOD_LABEL} <br />
               {BANNER_START_DATE} ~ {BANNER_END_DATE}
