@@ -49,9 +49,10 @@ function WishFilter() {
     .map(cat => cat);
   const allSelectedFilters = getAllSelectedLabels(filters);
 
-  const hasPreSeats = !!(subjects && 'seat' in subjects);
+  const hasPreSeats = !!(subjects && subjects[0] && 'seat' in subjects[0]);
+
   const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
-  const isWishesAvailable = subjects && 'totalCount' in subjects;
+  const isWishesAvailable = subjects && subjects[0] && 'totalCount' in subjects[0];
 
   const setToggleFavorite = () => setFilter('favoriteOnly', !favoriteOnly);
 
