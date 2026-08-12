@@ -2,6 +2,7 @@ import { useAdminSession, usePostAdminSession } from '@/hooks/server/session/use
 import { useEffect, useState } from 'react';
 import { Button, TextField, Grid, Flex, Card } from '@allcll/allcll-ui';
 import SectionHeader from '../common/SectionHeader';
+import { TOKEN_FIELDS } from '@/utils/type';
 
 const initialTokens = {
   tokenJ: '',
@@ -17,8 +18,6 @@ interface TokensType {
   tokenL: string;
   [key: string]: string;
 }
-
-const tokenType = ['tokenJ', 'tokenU', 'tokenR', 'tokenL'];
 
 function AuthTokenSetting() {
   const userId = localStorage.getItem('userId') ?? '';
@@ -53,16 +52,16 @@ function AuthTokenSetting() {
 
       <form onSubmit={submitTokens}>
         <Grid columns={{ base: 2 }} gap="gap-4" className="w-full">
-          {tokenType.map(token => (
+          {TOKEN_FIELDS.map(({ key, label }) => (
             <TextField
-              key={token}
-              id={token}
-              label={token}
+              key={key}
+              id={key}
+              label={label}
               size="medium"
-              value={tokens[token]}
+              value={tokens[key]}
               required
               placeholder="토큰을 입력하세요"
-              onChange={e => handleTokenChange(token, e.target.value)}
+              onChange={e => handleTokenChange(key, e.target.value)}
             />
           ))}
 

@@ -1,7 +1,7 @@
 import { useAdminSession } from '@/hooks/server/session/useAdminSession';
 import { Button, Flex, Card } from '@allcll/allcll-ui';
 import SectionHeader from '../common/SectionHeader';
-const tokenKeys = ['tokenJ', 'tokenU', 'tokenR', 'tokenL'];
+import { TOKEN_FIELDS } from '@/utils/type';
 
 function AuthTokenViewer() {
   const { data, isFetching, refetch } = useAdminSession();
@@ -19,9 +19,9 @@ function AuthTokenViewer() {
           </Flex>
 
           <div className="bg-gray-100 w-full text-sm text-gray-700 px-4 py-3 rounded-md">
-            {tokenKeys.map(key => (
+            {TOKEN_FIELDS.map(({ key, label }) => (
               <p key={key}>
-                토큰 {key}: <span className="font-mono break-all">{data ? data[key] : '[데이터 없음]'}</span>
+                {label}: <span className="font-mono break-all">{data ? data[key] : '[데이터 없음]'}</span>
               </p>
             ))}
           </div>

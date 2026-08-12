@@ -76,14 +76,14 @@ function CrawlerControlComponent() {
 
   const validParamsForm = (type: crawlerType) => {
     if (!crawlersParams.userId) {
-      alert('userId를 선택해주세요.');
+      alert('학번을 선택해주세요.');
       return false;
     }
 
     const needsSemester = type === 'department' || type === 'subject';
 
     if (needsSemester && (!crawlersParams.year || !crawlersParams.semesterCode)) {
-      alert('year와 semesterCode를 모두 선택해주세요.');
+      alert('연도와 학기를 모두 선택해주세요.');
       return false;
     }
 
@@ -107,13 +107,14 @@ function CrawlerControlComponent() {
       <Card>
         <SectionHeader
           title="크롤링 제어"
-          description="모든 크롤링을 실행합니다. 학과, 과목데이터: userId, year, semesterCode필수, PreSeat, Basket 데이터: userId 필수"
+          description="모든 크롤링을 실행합니다. 학과, 과목데이터: 학번, 연도, 학기 필수, PreSeat, Basket 데이터: 학번 필수"
         />
 
         <Flex direction="flex-col" gap="gap-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <ParamSelect
               id="userId"
+              label="학번"
               value={crawlersParams.userId}
               onChange={value => setParam('userId', value)}
               disabled={!sessionStatus?.length}
@@ -133,6 +134,7 @@ function CrawlerControlComponent() {
 
             <ParamSelect
               id="year"
+              label="연도"
               value={crawlersParams.year}
               onChange={value => setParam('year', value)}
               placeholder="연도를 선택해주세요"
@@ -146,6 +148,7 @@ function CrawlerControlComponent() {
 
             <ParamSelect
               id="semesterCode"
+              label="학기"
               value={crawlersParams.semesterCode}
               onChange={value => setParam('semesterCode', value)}
               placeholder="학기를 선택해주세요"
@@ -184,6 +187,7 @@ function CrawlerControlComponent() {
 
 interface IParamSelect {
   id: keyof CrawlersParams;
+  label: string;
   value: string;
   onChange: (value: string) => void;
   placeholder: string;
@@ -192,11 +196,11 @@ interface IParamSelect {
   children: React.ReactNode;
 }
 
-function ParamSelect({ id, value, onChange, placeholder, disabled, description, children }: IParamSelect) {
+function ParamSelect({ id, label, value, onChange, placeholder, disabled, description, children }: IParamSelect) {
   return (
     <Flex direction="flex-col" gap="gap-1.5">
       <Label htmlFor={id} required>
-        {id}
+        {label}
       </Label>
 
       <select
