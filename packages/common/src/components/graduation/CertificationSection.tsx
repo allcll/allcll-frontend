@@ -87,7 +87,7 @@ function EnglishCertContent({ isPassed, onEdit }: Readonly<IEnglishCertContentPr
   return (
     <Flex direction="flex-col" align="items-center" justify="justify-center" gap="gap-1" className="h-full">
       {isPassed ? (
-        <span className="text-primary">인증 완료</span>
+        <span className="text-primary-500">인증 완료</span>
       ) : (
         <span className="text-gray-500">이수 내역 없음</span>
       )}
@@ -170,7 +170,7 @@ function CertificationSection({
           >
             <Flex justify="justify-center" align="items-center" className="h-full">
               {coding.isPassed ? (
-                <span className="text-primary">인증 완료</span>
+                <span className="text-primary-500">인증 완료</span>
               ) : (
                 <span className="text-gray-500">이수 내역 없음</span>
               )}
