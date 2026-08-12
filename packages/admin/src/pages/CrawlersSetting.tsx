@@ -17,7 +17,7 @@ function CrawlerSettings() {
   const userId = getSessionConfig()?.userId;
   const mySessionStatus = sessionStatus?.find(status => status.userId === userId);
 
-  const isSessionSet = mySessionStatus?.isActive ?? false;
+  const isCredentialRegistered = !!mySessionStatus;
 
   return (
     <>
@@ -26,7 +26,7 @@ function CrawlerSettings() {
       <PageHeader title="크롤러 설정" description="크롤러 관련 설정을 변경합니다." />
 
       <main className="space-y-5">
-        <SetupProgress current={isSessionSet ? SetupStep.CONTROL : SetupStep.TOKEN} />
+        <SetupProgress current={isCredentialRegistered ? SetupStep.CONTROL : SetupStep.TOKEN} />
 
         <Flex direction="flex-col" gap="gap-4">
           {!mySessionStatus ? (
