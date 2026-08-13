@@ -35,7 +35,7 @@ function CaptchaInput() {
   }
 
   function handleChangeInput(event: React.ChangeEvent<HTMLInputElement>) {
-    let inputValue = event.target.value;
+    const inputValue = event.target.value;
 
     if (/[^0-9]/.test(inputValue)) {
       setInfoMessage('0~9까지의 숫자만 입력해주세요');
@@ -95,6 +95,7 @@ function CaptchaInput() {
               <button
                 onClick={handleRefreshCaptcha}
                 className="ml-2 px-2 py-1 bg-blue-500 text-white text-sm rounded-xs cursor-pointer hover:bg-blue-600"
+                tabIndex={-1}
               >
                 재생성
               </button>
