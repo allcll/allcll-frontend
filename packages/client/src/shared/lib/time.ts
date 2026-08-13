@@ -2,16 +2,6 @@ export function timeSleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export function getDateLocale(dateKST: string, tz: number = 9) {
-  const originOffset = tz * 60;
-
-  const locale = new Date();
-  const kst = new Date(dateKST);
-  kst.setMonth(kst.getMonth() - originOffset - locale.getTimezoneOffset());
-
-  return kst;
-}
-
 export interface TimeObject {
   hours: number;
   minutes: number;
@@ -24,15 +14,17 @@ export class Time {
 
   constructor(time: string | number | TimeObject) {
     switch (typeof time) {
-      case 'string':
+      case 'string': {
         const [h, m] = time.split(':').map(Number);
         this.time = h * 60 + m;
         break;
+      }
 
-      case 'object':
+      case 'object': {
         const { hours, minutes } = time;
         this.time = hours * 60 + minutes;
         break;
+      }
 
       case 'number':
         this.time = time;
@@ -67,4 +59,17 @@ export class Time {
     const comp = this.time - compareTime.time;
     return comp === 0 ? 0 : comp > 0 ? 1 : -1;
   }
+}
+
+const KST_OFFSET_MS = 9 * 60 * 60 * 1000;
+
+/**
+ * KST 기준으로 읽기 위해 UTC 로 9시간 밀어 둔 시각.
+ * getUTC* 로만 읽어야 하므로 밖으로 내보내지 않고, 아래 함수들을 통해서만 사용합니다.
+ */
+const getShiftedNowKST = () => new Date(Date.now() + KST_OFFSET_MS);
+
+/** 기기 타임존과 무관한 KST 기준 오늘 날짜 (YYYY-MM-DD) */
+export function getTodayKST(): string {
+  return getShiftedNowKST().toISOString().split('T')[0];
 }
