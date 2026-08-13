@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Button, SupportingText } from '@allcll/allcll-ui';
-import { BANNER_END_DATE, BANNER_PERIOD_LABEL, BANNER_START_DATE, CURRENT_SEMESTER } from '@allcll/common';
+import { BANNER_PERIOD_LABEL, CURRENT_SEMESTER } from '@allcll/common';
+import { formatSchedulePeriod, useCourseSchedule } from '@/entities/operationPeriod/model/useCourseSchedule';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 import Section from '@/widgets/home/ui/Section.tsx';
 import Image from '@/shared/ui/Image.tsx';
@@ -8,6 +9,8 @@ import LogoName from '@/assets/logo/logo-name-summer.svg?react';
 
 function MainBanner() {
   const { data } = useServiceSemester();
+  const schedule = useCourseSchedule();
+  const registrationPeriod = schedule && formatSchedulePeriod(schedule.registration);
 
   return (
     <div className="relative overflow-hidden">
@@ -20,7 +23,7 @@ function MainBanner() {
             <Image src="/calendar.png" alt="" className="w-10 h-10" />
             <span className="italic text-xs text-stone-500 ">
               {data?.semesterValue ?? CURRENT_SEMESTER.semesterValue}학기 {BANNER_PERIOD_LABEL} <br />
-              {BANNER_START_DATE} ~ {BANNER_END_DATE}
+              {registrationPeriod}
             </span>
           </div>
 

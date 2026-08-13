@@ -48,10 +48,8 @@ export const SEMESTERS: ISemesterInfo[] = [
 
 export const CURRENT_SEMESTER = SEMESTERS[0];
 
-// 메인 배너 수강신청 일정 표기
+// 메인 배너 수강신청 일정 표기 (날짜는 operation-period API 에서 구합니다)
 export const BANNER_PERIOD_LABEL = '수강신청 기간';
-export const BANNER_START_DATE = '08/14(금)';
-export const BANNER_END_DATE = '08/21(금)';
 
 // admin 크롤러 — 이 시각 이전에는 계절 여석 크롤링, 이후에는 일반 여석 크롤링 토글을 표시
 export const CRAWLER_SEASON_DATE = '2026-06-05T00:00:00+09:00';
