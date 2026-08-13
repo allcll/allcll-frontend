@@ -3,6 +3,7 @@ import HomeSvg from '@/assets/home-white.svg?react';
 
 import { ServiceSemester } from '@/entities/semester/api/semester.ts';
 import { Button, Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import { formatSchedulePeriod, useCourseSchedule } from '@/entities/operationPeriod/model/useCourseSchedule';
 
 interface IServiceClosed {
   data: ServiceSemester;
@@ -10,6 +11,8 @@ interface IServiceClosed {
 
 function ServiceClosed({ data }: IServiceClosed) {
   const isSemesterExpired = data.service?.endDate && data.service.endDate < new Date();
+  const schedule = useCourseSchedule();
+  const registrationPeriod = schedule && formatSchedulePeriod(schedule.registration);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen min-w-[250px] bg-gray-100 px-4">
@@ -35,9 +38,7 @@ function ServiceClosed({ data }: IServiceClosed) {
             <>
               <Heading level={2}>다음 서비스 기간 안내</Heading>
               <SupportingText>{data.semesterValue}학기 수강신청</SupportingText>
-              <SupportingText>
-                {data.service?.startDateStr} ~ {data.service?.endDateStr}
-              </SupportingText>
+              <SupportingText>{registrationPeriod}</SupportingText>
             </>
           )}
 

@@ -8,7 +8,9 @@ import useWishesPreSeats from '@/entities/subjectAggregate/model/useWishesPreSea
 
 import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
 import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
-import { PRESEAT_CLOSE_TIME, usePreSeatPeriod } from '@/entities/operationPeriod/model/usePreSeatPeriod';
+import { PRESEAT_CLOSE_TIME } from '@/entities/operationPeriod/model/usePreSeatPeriod';
+import { useCourseSchedule } from '@/entities/operationPeriod/model/useCourseSchedule';
+import { formatMonthDayWithDay } from '@/shared/lib/time.ts';
 
 import { Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import PreseatSubjectTable from './PreseatSubjectTable.tsx';
@@ -32,8 +34,9 @@ export interface ISubjectSearch {
 
 function PreSeatComponent() {
   const filters = useAlarmSearchStore(state => state.filters);
-  const preSeatPeriod = usePreSeatPeriod();
-  const liveOpenDate = preSeatPeriod?.endDate.split('T')[0];
+  const schedule = useCourseSchedule();
+  /** 변경 기간이 시작되는 날부터 실시간 여석이 다시 열린다 */
+  const liveOpenDate = schedule && formatMonthDayWithDay(schedule.change.startDate);
 
   return (
     <>
