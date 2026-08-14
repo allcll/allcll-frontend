@@ -122,6 +122,9 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
    * @returns
    */
   const handleClickSubjectMode = (mode: ModeType) => {
+    // 같은 모드를 다시 눌렀을 때 과목 목록이 비워지는 것을 방지한다.
+    if (mode === subjectMode) return;
+
     setSimulationSubjects([]);
     setSubjectMode(mode);
   };
