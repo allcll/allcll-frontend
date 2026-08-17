@@ -55,7 +55,7 @@ export function useStartSseScheduler() {
   return useMutation({
     mutationFn: startSseScheduler,
     onSuccess: async () => {
-      toast('여석 데이터 전송이 시작되었습니다.');
+      toast('여석 데이터 전송이 시작되었습니다.', 'sse-start');
 
       await queryClient.invalidateQueries({ queryKey: ['check-sse-scheduler'] });
     },
@@ -74,7 +74,7 @@ export function useCancelSseScheduler() {
   return useMutation({
     mutationFn: cancelSseScheduler,
     onSuccess: async () => {
-      toast('여석 데이터 전송이 취소되었습니다.');
+      toast('여석 데이터 전송이 취소되었습니다.', 'sse-stop');
 
       await queryClient.invalidateQueries({ queryKey: ['check-sse-scheduler'] });
     },

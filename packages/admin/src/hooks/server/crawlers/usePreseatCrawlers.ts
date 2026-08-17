@@ -3,11 +3,11 @@ import { addRequestLog } from '@/utils/log/adminApiLogs';
 import { useToastNotification } from '@allcll/common';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-export interface CralwersParams {
+export interface CrawlersParams {
   userId: string;
 }
 
-const crawlingPreseat = async ({ userId }: CralwersParams) => {
+const crawlingPreseat = async ({ userId }: CrawlersParams) => {
   const response = await fetchOnAPI(`/api/admin/pre-seat/fetch?userId=${userId}`, {
     method: 'POST',
   });
@@ -28,7 +28,7 @@ const crawlingPreseat = async ({ userId }: CralwersParams) => {
   return response;
 };
 
-const getCrawleredPreseat = async ({ userId }: CralwersParams) => {
+const getCrawleredPreseat = async ({ userId }: CrawlersParams) => {
   return await fetchJsonOnAPI(`/api/admin/pre-seat/fetch?userId=${userId}`);
 };
 
@@ -42,10 +42,10 @@ export function useCrawlersPreseat() {
   const toast = useToastNotification().addToast;
 
   return useMutation({
-    mutationFn: ({ userId }: CralwersParams) => crawlingPreseat({ userId }),
+    mutationFn: ({ userId }: CrawlersParams) => crawlingPreseat({ userId }),
 
     onSuccess: () => {
-      toast('전체 여석 크롤링에 성공하셨습니다.');
+      toast('전체 여석 크롤링에 성공했습니다.', 'preseat-crawl-success');
 
       queryClient.invalidateQueries({
         queryKey: ['crawlers-pre-seat'],
@@ -61,7 +61,7 @@ export function useCrawlersPreseat() {
  * @param params
  * @returns
  */
-export function useGetPreseat(params: CralwersParams) {
+export function useGetPreseat(params: CrawlersParams) {
   return useQuery({
     queryKey: ['crawlers-pre-seat'],
     queryFn: () => getCrawleredPreseat(params),

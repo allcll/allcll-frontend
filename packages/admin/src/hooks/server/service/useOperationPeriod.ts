@@ -79,11 +79,14 @@ export function useSaveOperationPeriods() {
       }
     },
     onSuccess: () => {
-      toast('서비스 운영 기간이 저장되었습니다.');
+      toast('서비스 운영 기간이 저장되었습니다.', 'operation-period-save-success');
     },
     onError: err => {
       console.error(err);
-      toast('서비스 운영 기간 저장에 실패했습니다. 저장된 내용은 목록에서 확인해주세요.');
+      toast(
+        '서비스 운영 기간 저장에 실패했습니다. 저장된 내용은 목록에서 확인해주세요.',
+        'operation-period-save-error',
+      );
     },
     // 중간에 실패해도 이미 저장된 만큼은 서버 상태와 맞춰야 함
     onSettled: async () => {

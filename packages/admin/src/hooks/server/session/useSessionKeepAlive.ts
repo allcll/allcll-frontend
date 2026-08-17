@@ -47,7 +47,7 @@ export function useStartSessionKeepAlive() {
   return useMutation({
     mutationFn: () => startSessionKeepAlive(session?.userId ?? ''),
     onSuccess: async () => {
-      toast('세션 KeepAlive이 시작되었습니다.');
+      toast('세션 KeepAlive이 시작되었습니다.', 'session-keep-alive-start');
 
       await queryClient.invalidateQueries({ queryKey: ['check-session'] });
     },
@@ -66,7 +66,7 @@ export function useCancelSessionKeepAlive() {
   return useMutation({
     mutationFn: () => cancelSessionKeepAlive(),
     onSuccess: async () => {
-      toast('세션 KeepAlive이 중지되었습니다.');
+      toast('세션 KeepAlive이 중지되었습니다.', 'session-keep-alive-stop');
       await queryClient.invalidateQueries({ queryKey: ['check-session'] });
     },
     onError: err => console.error(err),

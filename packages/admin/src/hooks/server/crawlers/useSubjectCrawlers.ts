@@ -1,9 +1,9 @@
 import { fetchOnAPI } from '@/utils/api';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { CralwersParams } from './useDepartmentClawlers';
+import { CrawlersParams } from './useDepartmentCrawlers';
 
-const subjectClawlers = async ({ userId, year, semesterCode }: CralwersParams) => {
+const subjectCrawlers = async ({ userId, year, semesterCode }: CrawlersParams) => {
   const response = await fetchOnAPI(`/api/admin/subjects?userId=${userId}&year=${year}&semesterCode=${semesterCode}`, {
     method: 'POST',
   });
@@ -32,14 +32,14 @@ const subjectClawlers = async ({ userId, year, semesterCode }: CralwersParams) =
  *여석 크롤링을 시작하는 API입니다.
  * @returns
  */
-export function useSubjectsClawlers() {
+export function useSubjectsCrawlers() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ userId, year, semesterCode }: CralwersParams) => subjectClawlers({ userId, year, semesterCode }),
+    mutationFn: ({ userId, year, semesterCode }: CrawlersParams) => subjectCrawlers({ userId, year, semesterCode }),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['clawlers-subjects'],
+        queryKey: ['crawlers-subjects'],
       });
     },
     onError: err => console.error(err),
