@@ -5,6 +5,14 @@ export interface Session {
   tokenL: string;
 }
 
+/** 인증정보 설정/조회 화면에서 공통으로 쓰는 토큰 키와 표시 이름 */
+export const TOKEN_FIELDS: { key: keyof Session; label: string }[] = [
+  { key: 'tokenJ', label: 'JSESSIONID' },
+  { key: 'tokenU', label: '학번' },
+  { key: 'tokenR', label: 'runningSejong' },
+  { key: 'tokenL', label: 'loginDt' },
+];
+
 export interface SubjectApiResponse {
   subjectId: number; // 과목 ID
   subjectName: string; // 과목명

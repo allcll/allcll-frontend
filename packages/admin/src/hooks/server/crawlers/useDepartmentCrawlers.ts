@@ -2,13 +2,13 @@ import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-export interface CralwersParams {
+export interface CrawlersParams {
   userId: string;
   year: string;
   semesterCode: string;
 }
 
-const clawlersDepartments = async ({ userId, year, semesterCode }: CralwersParams) => {
+const crawlersDepartments = async ({ userId, year, semesterCode }: CrawlersParams) => {
   const response = await fetchOnAPI(
     `/api/admin/departments?userId=${userId}&year=${year}&semesterCode=${semesterCode}`,
     {
@@ -36,7 +36,7 @@ const clawlersDepartments = async ({ userId, year, semesterCode }: CralwersParam
   return response;
 };
 
-const getDepartments = async ({ userId, year, semesterCode }: CralwersParams) => {
+const getDepartments = async ({ userId, year, semesterCode }: CrawlersParams) => {
   return await fetchJsonOnAPI(`/api/admin/departments?userId=${userId}&year=${year}&semesterCode=${semesterCode}`);
 };
 
@@ -45,15 +45,15 @@ const getDepartments = async ({ userId, year, semesterCode }: CralwersParams) =>
  * @param params
  * @returns
  */
-export function useClawlersDepartments() {
+export function useCrawlersDepartments() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ userId, year, semesterCode }: CralwersParams) => clawlersDepartments({ userId, year, semesterCode }),
+    mutationFn: ({ userId, year, semesterCode }: CrawlersParams) => crawlersDepartments({ userId, year, semesterCode }),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['clawlers-departments'],
+        queryKey: ['crawlers-departments'],
       });
     },
 
@@ -66,9 +66,9 @@ export function useClawlersDepartments() {
  * @param params
  * @returns
  */
-export function useGetDepartments(params: CralwersParams) {
+export function useGetDepartments(params: CrawlersParams) {
   return useQuery({
-    queryKey: ['clawlers-departments'],
+    queryKey: ['crawlers-departments'],
     queryFn: () => getDepartments(params),
   });
 }

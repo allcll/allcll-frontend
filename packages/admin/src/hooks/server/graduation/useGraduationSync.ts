@@ -27,7 +27,7 @@ export function useGraduationSync() {
   return useMutation({
     mutationFn: syncGraduation,
     onSuccess: () => {
-      toast('졸업요건 데이터가 동기화되었습니다.');
+      toast('졸업요건 데이터가 동기화되었습니다.', 'graduation-sync-success');
     },
     onError: err => console.error(err),
   });

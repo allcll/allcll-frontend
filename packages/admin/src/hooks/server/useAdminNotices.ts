@@ -76,7 +76,7 @@ export function useDeleteNotice() {
       queryClient.invalidateQueries({ queryKey: NOTICES_QUERY_KEY });
     },
     onError: () => {
-      toast('공지사항 삭제에 실패했습니다.');
+      toast('공지사항 삭제에 실패했습니다.', 'notice-delete-error');
     },
   });
 }

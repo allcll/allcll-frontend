@@ -11,7 +11,7 @@ const Menus = [
   },
   {
     title: '크롤러 설정',
-    link: '/clawlers',
+    link: '/crawlers',
   },
   {
     title: '졸업요건 설정',

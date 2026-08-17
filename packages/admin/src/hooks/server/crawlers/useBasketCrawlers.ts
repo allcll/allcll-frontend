@@ -3,11 +3,11 @@ import { addRequestLog } from '@/utils/log/adminApiLogs';
 import { useToastNotification } from '@allcll/common';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-export interface CralwersParams {
+export interface CrawlersParams {
   userId: string;
 }
 
-const crawlingBasket = async ({ userId }: CralwersParams) => {
+const crawlingBasket = async ({ userId }: CrawlersParams) => {
   const response = await fetchOnAPI(`/api/admin/basket/fetch?userId=${userId}`, {
     method: 'POST',
   });
@@ -42,10 +42,10 @@ export function useCrawlersBasket() {
   const toast = useToastNotification().addToast;
 
   return useMutation({
-    mutationFn: ({ userId }: CralwersParams) => crawlingBasket({ userId }),
+    mutationFn: ({ userId }: CrawlersParams) => crawlingBasket({ userId }),
 
     onSuccess: () => {
-      toast('관심과목 크롤링에 성공하셨습니다..');
+      toast('관심과목 크롤링에 성공했습니다.', 'basket-crawl-success');
 
       queryClient.invalidateQueries({
         queryKey: ['crawlers-basket'],

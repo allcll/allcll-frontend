@@ -3,7 +3,7 @@ import {
   useCancelCrawlersSeat,
   useStartCrawlersSeat,
   useStartSeasonCrawlersSeat,
-} from '@/hooks/server/clawlers/useSeatClawlers';
+} from '@/hooks/server/crawlers/useSeatCrawlers';
 import { useCancelSseScheduler, useStartSseScheduler } from '@/hooks/server/sse/useSeatScheduler';
 
 export function useAdminActions() {

@@ -76,12 +76,12 @@ export function usePostAdminSession() {
       /**요청 성공시, session 상태도 무효화 -> 다시 GET요청 */
       await queryClient.invalidateQueries({ queryKey: ['check-session'] });
 
-      toast('인증 정보가 성공적으로 업데이트되었습니다.');
+      toast('인증 정보가 성공적으로 업데이트되었습니다.', 'admin-session-update-success');
     },
 
     onError: err => {
       console.error(err);
-      toast('인증 정보 설정에 실패했습니다.');
+      toast('인증 정보 설정에 실패했습니다.', 'admin-session-update-error');
     },
   });
 }

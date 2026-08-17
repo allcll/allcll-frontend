@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from '@/layouts/MainLayout.tsx';
 import Dashboard from '@/pages/Dashboard';
-import Clawlers from '@/pages/ClawlersSetting';
+import Crawlers from '@/pages/CrawlersSetting';
 import Service from '@/pages/Service';
 import Logs from '@/pages/Logs';
 import Graduation from '@/pages/Graduation';
@@ -23,12 +23,12 @@ const router = createBrowserRouter(
       ],
     },
     {
-      path: '/clawlers',
+      path: '/crawlers',
       element: <MainLayout />,
       children: [
         {
-          path: '/clawlers',
-          element: <Clawlers />,
+          path: '/crawlers',
+          element: <Crawlers />,
         },
       ],
     },
