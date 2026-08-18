@@ -1,0 +1,9 @@
+<!-- CSS background-image 로 쓰여 currentColor 가 통하지 않으므로, gray-600 값을 직접 적는다 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 4" width="40" height="4">
+  <rect x="2" y="0" width="2" height="2" fill="#4b5563" />
+  <rect x="9" y="2" width="3" height="2" fill="#4b5563" />
+  <rect x="15" y="0" width="2" height="2" fill="#4b5563" />
+  <rect x="22" y="1" width="4" height="2" fill="#4b5563" />
+  <rect x="30" y="0" width="2" height="2" fill="#4b5563" />
+  <rect x="34" y="2" width="3" height="2" fill="#4b5563" />
+</svg>
