@@ -5,8 +5,13 @@ interface DocumentPictureInPicture {
   removeEventListener(type: string, listener: EventListenerOrEventListenerObject): void;
 }
 
-interface Window {
-  __TANSTACK_QUERY_CLIENT__: import('@tanstack/query-core').QueryClient;
-  documentPictureInPicture?: DocumentPictureInPicture;
+declare global {
+  interface Window {
+    __TANSTACK_QUERY_CLIENT__: import('@tanstack/query-core').QueryClient;
+    documentPictureInPicture?: DocumentPictureInPicture;
+  }
 }
+
+export {};
+
 
