@@ -4,20 +4,26 @@ import useNotificationInstruction from '../model/useNotificationInstruction.ts';
 import useBannerNotification, { ISetBanner } from '../model/useBannerNotification.ts';
 import { CustomNotification } from '../lib/useNotification.ts';
 
-const getNotification = () => {
-  return Notification ?? window.Notification;
+const getNotification = (): typeof Notification | undefined => {
+  if (typeof window === 'undefined') return undefined;
+  return window.Notification;
+};
+
+const getServiceWorker = (): ServiceWorkerContainer | undefined => {
+  if (typeof navigator === 'undefined') return undefined;
+  return navigator.serviceWorker;
 };
 
 const BrowserNotification: CustomNotification = {
   canNotify() {
-    return 'Notification' in window || !!getNotification();
+    return !!getNotification();
   },
   isGranted() {
-    return BrowserNotification.canNotify() && getNotification().permission === 'granted';
+    return getNotification()?.permission === 'granted';
   },
   requestPermission(callback?: (permission: NotificationPermission) => void) {
     const Notify = getNotification();
-    if (!BrowserNotification.canNotify()) {
+    if (!Notify) {
       alert('해당 브라우저는 브라우저 알림을 받을 수 없습니다. 다른 브라우저를 이용해주세요');
       return;
     }
@@ -43,35 +49,43 @@ const BrowserNotification: CustomNotification = {
     return [];
   },
   show(message: string, tag?: string) {
-    const canNotify = BrowserNotification.canNotify();
     const activated = isAlarmActivated(AlarmType.BROWSER);
     const setBanner = useBannerNotification.getState().setBanner;
     const Notify = getNotification();
+    const serviceWorker = getServiceWorker();
 
-    if (canNotify && activated && Notify.permission === 'granted') {
-      checkSystemNotification(setBanner);
+    if (!Notify || !serviceWorker || !activated || Notify.permission !== 'granted') return;
 
-      navigator.serviceWorker.ready.then(function (registration) {
-        registration
-          .showNotification(message, {
-            // icon: '/logo-name.svg',
-            badge: '/ci.svg',
-            tag,
-          })
-          .then();
+    checkSystemNotification(setBanner);
+
+    serviceWorker.ready
+      .then(function (registration) {
+        return registration.showNotification(message, {
+          // icon: '/logo-name.svg',
+          badge: '/ci.svg',
+          tag,
+        });
+      })
+      .catch(function (error) {
+        console.warn('Failed to show browser notification:', error);
       });
-    }
   },
   close(tag: string) {
-    if (!BrowserNotification.canNotify() || !BrowserNotification.isGranted()) return;
+    const serviceWorker = getServiceWorker();
+    if (!serviceWorker || !BrowserNotification.isGranted()) return;
 
-    navigator.serviceWorker.ready.then(function (registration) {
-      registration.getNotifications({ tag }).then(function (notifications) {
+    serviceWorker.ready
+      .then(function (registration) {
+        return registration.getNotifications({ tag });
+      })
+      .then(function (notifications) {
         notifications.forEach(function (notification) {
           notification.close();
         });
+      })
+      .catch(function (error) {
+        console.warn('Failed to close browser notification:', error);
       });
-    });
   },
 };
 
