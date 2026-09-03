@@ -1,20 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
 import useFeedbackStore from '@/features/feedback/model/useFeedbackStore';
 import useFeedbackMutation from '@/features/feedback/api/useFeedbackMutation';
+import { FeedbackCategory } from '@/features/feedback/api/feedbackApi';
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore';
 
 type UseFeedbackModalControllerProps = {
   isOpen: boolean;
   onClose: () => void;
   isMobile: boolean;
-  openMode?: 'auto' | 'manual';
+  category: FeedbackCategory;
+  // PeekBar를 거치지 않고 곧바로 바텀시트를 여는지 여부
+  opensSheetDirectly: boolean;
 };
 
 export function useFeedbackModalController({
   isOpen,
   onClose,
   isMobile,
-  openMode = 'auto',
+  category,
+  opensSheetDirectly,
 }: UseFeedbackModalControllerProps) {
   const hasMountedFeedbackSheet = useRef(false);
   const [rate, setRate] = useState<0 | 1 | 2 | 3>(0);
@@ -39,7 +43,7 @@ export function useFeedbackModalController({
   useEffect(() => {
     if (!isMobile) return;
 
-    if (isOpen && openMode === 'manual') {
+    if (isOpen && opensSheetDirectly) {
       openBottomSheet('feedback');
       return;
     }
@@ -47,7 +51,7 @@ export function useFeedbackModalController({
     if (!isOpen) {
       closeBottomSheet('feedback');
     }
-  }, [isMobile, isOpen, openMode, openBottomSheet, closeBottomSheet]);
+  }, [isMobile, isOpen, opensSheetDirectly, openBottomSheet, closeBottomSheet]);
 
   useEffect(() => {
     if (!isMobile) return;
@@ -84,14 +88,10 @@ export function useFeedbackModalController({
   };
 
   const handleSubmit = () => {
-    if (rate === 0) {
-      setError('평점을 선택해주세요');
-      setTimeout(() => setError(null), 3000);
-      return;
-    }
+    if (rate === 0) return;
 
     mutate(
-      { rate, detail: detail ?? '', operationType: 'GRADUATION' },
+      { rate, detail: detail ?? '', operationType: category },
       {
         onSuccess: () => {
           setSuccess(true);
@@ -122,6 +122,7 @@ export function useFeedbackModalController({
     success,
     error,
     isPending,
+    canSubmit: rate !== 0,
     handleSubmit,
     handleDontShowAgain,
     handleClose: closeFeedback,
