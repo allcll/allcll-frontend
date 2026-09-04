@@ -3,58 +3,15 @@ import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
 import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader';
 import { FeedbackActions, FeedbackFields, FeedbackSuccess } from './FeedbackSharedContent';
 import { Flex } from '@allcll/allcll-ui';
-import { FeedbackTitles } from '../lib/useFeedbackTitle';
+import { FeedbackViewProps } from './FeedbackViewProps';
 
-type FeedbackMobileSheetProps = {
-  success: boolean;
-  rate: 0 | 1 | 2 | 3;
-  setRate: (rate: 1 | 2 | 3) => void;
-  detail: string;
-  setDetail: (value: string) => void;
-  error: string | null;
-  isPending: boolean;
-  onClose: () => void;
-  onDontShowAgain: () => void;
-  onSubmit: () => void;
-  titles: FeedbackTitles;
-};
-
-export default function FeedbackMobileSheet({
-  success,
-  rate,
-  setRate,
-  detail,
-  setDetail,
-  error,
-  isPending,
-  onClose,
-  onDontShowAgain,
-  onSubmit,
-  titles,
-}: FeedbackMobileSheetProps) {
+export default function FeedbackMobileSheet(props: FeedbackViewProps) {
   return (
-    <BottomSheet>
-      {({ collapseToMin }) => (
-        <FeedbackContainer
-          success={success}
-          rate={rate}
-          setRate={setRate}
-          detail={detail}
-          setDetail={setDetail}
-          error={error}
-          isPending={isPending}
-          onClose={onClose}
-          onDontShowAgain={onDontShowAgain}
-          onSubmit={onSubmit}
-          collapseToMin={collapseToMin}
-          titles={titles}
-        />
-      )}
-    </BottomSheet>
+    <BottomSheet>{({ collapseToMin }) => <FeedbackContainer {...props} collapseToMin={collapseToMin} />}</BottomSheet>
   );
 }
 
-type FeedbackContainerProps = FeedbackMobileSheetProps & {
+type FeedbackContainerProps = FeedbackViewProps & {
   collapseToMin: (height?: number) => void;
 };
 
@@ -66,6 +23,7 @@ function FeedbackContainer({
   setDetail,
   error,
   isPending,
+  canSubmit,
   onClose,
   onDontShowAgain,
   onSubmit,
@@ -80,9 +38,21 @@ function FeedbackContainer({
     <>
       <BottomSheetHeader headerType="close" title={titles.title} onClose={onClose} />
       <div className="px-4 pb-4">
-        <FeedbackFields titles={titles} rate={rate} setRate={setRate} detail={detail} setDetail={setDetail} error={error} />
+        <FeedbackFields
+          titles={titles}
+          rate={rate}
+          setRate={setRate}
+          detail={detail}
+          setDetail={setDetail}
+          error={error}
+        />
         <Flex justify="justify-end" className="gap-2 pt-3">
-          <FeedbackActions isPending={isPending} onDontShowAgain={onDontShowAgain} onSubmit={onSubmit} />
+          <FeedbackActions
+            isPending={isPending}
+            canSubmit={canSubmit}
+            onDontShowAgain={onDontShowAgain}
+            onSubmit={onSubmit}
+          />
         </Flex>
       </div>
     </>

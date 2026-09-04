@@ -6,6 +6,7 @@ import LiveSection from '@/widgets/home/ui/LiveSection.tsx';
 import PainPointSection from '@/widgets/home/ui/PainPointSection.tsx';
 import FeedbacksSection from '@/widgets/home/ui/FeedbacksSection.tsx';
 import JouluphajaSection from '@/widgets/home/ui/JoluphajaSection';
+import FeedbackFab from '@/features/feedback/ui/FeedbackFab';
 
 function Landing() {
   return (
@@ -21,6 +22,8 @@ function Landing() {
 
       <PainPointSection />
       <FeedbacksSection />
+
+      <FeedbackFab category="ALL" />
     </div>
   );
 }
