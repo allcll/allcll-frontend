@@ -1,4 +1,4 @@
-import CloseIcon from '@/assets/x.svg?react';
+import { CloseIcon } from '@allcll/allcll-ui';
 import useTick from '@/features/live/board/lib/useTick.ts';
 import { useRemovePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
 import { getTimeDiffString } from '@/shared/lib/stringFormats.ts';

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import ListSvg from '@/assets/list.svg?react';
+import { ListIcon } from '@allcll/allcll-ui';
 import { Card, Flex, Heading, IconButton } from '@allcll/allcll-ui';
 
 import SkeletonRows from '@/shared/ui/SkeletonRows.tsx';
@@ -49,7 +49,7 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
           label="테이블 수정"
           variant="plain"
           aria-label="테이블 수정"
-          icon={<ListSvg className="w-4 h-4" />}
+          icon={<ListIcon className="w-4 h-4 text-gray-400" />}
           onClick={() => setIsModalOpen(true)}
         />
       </Flex>

@@ -1,5 +1,5 @@
 import AlarmIcon from '@/shared/ui/svgs/AlarmIcon';
-import AlarmDisabledIcon from '@/assets/alarm-disabled.svg?react';
+import { NotificationOffIcon } from '@allcll/allcll-ui';
 import { useSSEState } from '@/features/live/board/model/useSseState';
 import useNotificationInstruction from '@/features/notification/model/useNotificationInstruction.ts';
 import { SSE_STATE } from '@/features/live/board/model/useSseState';
@@ -13,7 +13,7 @@ function AlarmStatusIcon({ isAlarm }: Readonly<{ isAlarm: boolean }>) {
     ? AlarmNotification.getDeniedMessage()
     : [...AlarmNotification.getDeniedMessage(), '실시간 연결이 끊어졌어요'];
 
-  if (!isAlarm) return <AlarmDisabledIcon className="w-5 h-5" />;
+  if (!isAlarm) return <NotificationOffIcon className="w-5 h-5 text-gray-400" />;
 
   return isPermitted && isRealtime ? (
     <AlarmIcon className="w-5 h-5 text-primary-500" />
