@@ -2,7 +2,7 @@ import FeedbackFace from '@/assets/ci-icon.svg?react';
 import CheckIcon from '@/assets/check.svg?react';
 import { Button, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import { DETAIL_MAX_LENGTH } from '@/features/feedback/api/feedbackApi';
-import { FeedbackTitles } from '../lib/useFeedbackTitle';
+import { FeedbackTitles } from '../lib/getFeedbackTitle';
 
 type FeedbackFieldsProps = {
   rate: 0 | 1 | 2 | 3;
@@ -105,6 +105,7 @@ function RateInputs({ rate, currentRate, label, onClick }: RateButtonProps) {
 
   return (
     <button
+      type="button"
       role="radio"
       aria-checked={currentRate === rate}
       aria-label={label}
