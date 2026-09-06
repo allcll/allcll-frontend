@@ -1,5 +1,5 @@
 import { Button, Card, Checkbox, Flex, Heading, IconButton, SupportingText, TextField } from '@allcll/allcll-ui';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import useLoginForm from '../lib/useLoginForm';
 import useLoginConfirm from '../lib/useLoginConfirm';
 import { useLogin } from '@/entities/user/model/useAuth';
@@ -7,23 +7,22 @@ import useToastNotification from '@/features/notification/model/useToastNotifica
 import EyeOpenIcon from '@/assets/eye-gray.svg?react';
 import EyeClosedIcon from '@/assets/eye-delete-gray.svg?react';
 import LoginConfirmationDialog from './LoginConformDialog';
+import LoginErrorNotice from './LoginErrorNotice';
+import { LoginErrorView, toLoginErrorView } from '../lib/loginErrors.ts';
 
 interface LoginFormProps {
   onSuccess?: () => void;
+  /**
+   * 학과를 못 찾았을 때 다음 단계로 넘기는 콜백입니다.
+   * 백엔드가 학과 조회 실패 시 세션을 만들지 않아 아직 호출하지 못합니다.
+   */
   onDepartmentNotFound?: () => void;
 }
 
-function isDepartmentNotFoundError(error: Error): boolean {
-  try {
-    const { message } = JSON.parse(error.message);
-    return message === 'DEPARTMENT_NOT_FOUND';
-  } catch {
-    return false;
-  }
-}
-
-function LoginForm({ onSuccess, onDepartmentNotFound }: LoginFormProps) {
+function LoginForm({ onSuccess }: LoginFormProps) {
   const [showPassword, setShowPassword] = useState(false);
+  const [errorView, setErrorView] = useState<LoginErrorView | null>(null);
+  const errorDescriptionId = useId();
   const { values, errors, touched, onChange, onBlur, submit, isValid, clearField } = useLoginForm();
 
   const { mutate: login, isPending } = useLogin();
@@ -34,34 +33,36 @@ function LoginForm({ onSuccess, onDepartmentNotFound }: LoginFormProps) {
   });
 
   const handleLoginSuccess = () => {
+    setErrorView(null);
     onSuccess?.();
     addToast('로그인에 성공하셨습니다.', 'login-success');
   };
 
   const handleLoginError = (error: Error) => {
-    if (isDepartmentNotFoundError(error)) {
-      onDepartmentNotFound?.();
-      onSuccess?.();
-      addToast('학과 정보를 찾을 수 없습니다. 다음 단계에서 직접 선택해주세요.', 'login-dept-not-found');
-    } else {
-      addToast('로그인에 실패했습니다. 학번과 비밀번호를 확인해주세요.', 'login-error');
-    }
+    setErrorView(toLoginErrorView(error));
   };
 
   const getTextFieldProps = (name: 'studentId' | 'password') => ({
     name,
     id: name,
     value: values[name],
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => onChange(name, e),
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+      // 고치는 중에 이전 실패 안내가 남아 있으면 헷갈립니다.
+      setErrorView(null);
+      onChange(name, e);
+    },
     onBlur: () => onBlur(name),
     onClear: () => clearField(name),
     isError: touched[name] && !!errors[name],
     errorMessage: errors[name],
+    // 서버가 어느 칸이 틀렸는지 알려주지 않아 aria-invalid 없이 설명만 연결합니다.
+    'aria-describedby': errorView ? errorDescriptionId : undefined,
   });
 
   return (
     <>
-      <Card variant="outlined" className="w-full  mx-auto p-8">
+      {/* 상위가 max-w-4xl 이라 그대로 두면 폼이 860px 까지 늘어납니다. */}
+      <Card variant="outlined" className="w-full max-w-lg mx-auto p-8">
         <Flex justify="justify-center" direction="flex-col">
           <Heading level={2} size="xxl" className="mb-2 text-center">
             세종대 포털 로그인
@@ -100,6 +101,11 @@ function LoginForm({ onSuccess, onDepartmentNotFound }: LoginFormProps) {
                 className="absolute right-8 top-11"
               />
             )}
+          </div>
+
+          {/* 요소와 내용이 같이 생기면 스크린리더가 놓쳐서, 빈 채로 자리를 지킵니다. */}
+          <div role="alert">
+            {errorView && <LoginErrorNotice view={errorView} descriptionId={errorDescriptionId} />}
           </div>
 
           <Flex direction="flex-col" gap="gap-2">
