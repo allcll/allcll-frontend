@@ -4,11 +4,11 @@ import useFeedbackStore from '@/features/feedback/model/useFeedbackStore';
 type FeedbackTab = 'major' | 'general' | 'certification';
 export type FeedbackOpenMode = 'auto' | 'manual';
 
-type UseFeedbackTriggerOptions = {
+interface IUseFeedbackTriggerOptions {
   enabled?: boolean;
   isMobile?: boolean;
   activeTab?: FeedbackTab;
-};
+}
 
 function getPageDepth(): number {
   const doc = document.documentElement;
@@ -22,7 +22,7 @@ function getPageDepth(): number {
  * - returns modal state and onClose handler
  * - automatically opens when user stayed >=5s and scroll depth >=80% and 5s idle
  */
-export function useFeedbackTrigger({ enabled = true, isMobile = false, activeTab }: UseFeedbackTriggerOptions = {}) {
+export function useFeedbackTrigger({ enabled = true, isMobile = false, activeTab }: IUseFeedbackTriggerOptions = {}) {
   const [isOpen, setIsOpen] = useState(false);
   const [hasShown, setHasShown] = useState(false);
   const [openMode, setOpenMode] = useState<FeedbackOpenMode>('auto');

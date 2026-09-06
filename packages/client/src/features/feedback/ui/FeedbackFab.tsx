@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import HelpChatSvg from '@/assets/chat-help.svg?react';
 import FeedbackModal from './FeedbackModal';
-import { FeedbackCategory } from '../api/feedbackApi';
+import type { FeedbackCategory } from '../api/feedbackApi';
 
-interface FeedbackFabProps {
+interface IFeedbackFabProps {
   category: FeedbackCategory;
 }
 
-function FeedbackFab({ category }: Readonly<FeedbackFabProps>) {
+function FeedbackFab({ category }: Readonly<IFeedbackFabProps>) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

@@ -3,17 +3,17 @@ import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
 import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader';
 import { FeedbackActions, FeedbackFields, FeedbackSuccess } from './FeedbackSharedContent';
 import { Flex } from '@allcll/allcll-ui';
-import { FeedbackViewProps } from './FeedbackViewProps';
+import type { IFeedbackViewProps } from './FeedbackViewProps';
 
-export default function FeedbackMobileSheet(props: FeedbackViewProps) {
+export default function FeedbackMobileSheet(props: IFeedbackViewProps) {
   return (
     <BottomSheet>{({ collapseToMin }) => <FeedbackContainer {...props} collapseToMin={collapseToMin} />}</BottomSheet>
   );
 }
 
-type FeedbackContainerProps = FeedbackViewProps & {
+interface IFeedbackContainerProps extends IFeedbackViewProps {
   collapseToMin: (height?: number) => void;
-};
+}
 
 function FeedbackContainer({
   success,
@@ -29,7 +29,7 @@ function FeedbackContainer({
   onSubmit,
   collapseToMin,
   titles,
-}: FeedbackContainerProps) {
+}: IFeedbackContainerProps) {
   useEffect(() => {
     collapseToMin(380);
   }, [collapseToMin]);

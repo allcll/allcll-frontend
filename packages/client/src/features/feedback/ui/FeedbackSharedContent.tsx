@@ -2,25 +2,25 @@ import FeedbackFace from '@/assets/ci-icon.svg?react';
 import CheckIcon from '@/assets/check.svg?react';
 import { Button, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import { DETAIL_MAX_LENGTH } from '@/features/feedback/api/feedbackApi';
-import { FeedbackTitles } from '../lib/getFeedbackTitle';
+import type { FeedbackTitles } from '../lib/getFeedbackTitle';
 
-type FeedbackFieldsProps = {
+interface IFeedbackFieldsProps {
   rate: 0 | 1 | 2 | 3;
   setRate: (rate: 1 | 2 | 3) => void;
   detail: string;
   setDetail: (value: string) => void;
   error: string | null;
   titles: FeedbackTitles;
-};
+}
 
-type ActionProps = {
+interface IFeedbackActionsProps {
   isPending: boolean;
   canSubmit: boolean;
   onSubmit: () => void;
   onDontShowAgain?: () => void;
-};
+}
 
-export function FeedbackFields({ titles, rate, setRate, detail, setDetail, error }: FeedbackFieldsProps) {
+export function FeedbackFields({ titles, rate, setRate, detail, setDetail, error }: IFeedbackFieldsProps) {
   return (
     <>
       <Heading level={4}>{titles.radioTitle}</Heading>
@@ -59,7 +59,7 @@ export function FeedbackFields({ titles, rate, setRate, detail, setDetail, error
   );
 }
 
-export function FeedbackActions({ isPending, canSubmit, onSubmit, onDontShowAgain }: ActionProps) {
+export function FeedbackActions({ isPending, canSubmit, onSubmit, onDontShowAgain }: IFeedbackActionsProps) {
   return (
     <>
       {onDontShowAgain && (
@@ -89,14 +89,14 @@ export function FeedbackSuccess() {
   );
 }
 
-interface RateButtonProps {
+interface IRateButtonProps {
   rate: 1 | 2 | 3;
   currentRate: number;
   label: string;
   onClick: () => void;
 }
 
-function RateInputs({ rate, currentRate, label, onClick }: RateButtonProps) {
+function RateInputs({ rate, currentRate, label, onClick }: IRateButtonProps) {
   const faces = {
     1: <FeedbackFace className="w-16 h-16 mood-sad" />,
     2: <FeedbackFace className="w-16 h-16 mood-normal" />,

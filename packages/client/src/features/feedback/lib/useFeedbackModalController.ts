@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import useFeedbackStore from '@/features/feedback/model/useFeedbackStore';
 import useFeedbackMutation from '@/features/feedback/api/useFeedbackMutation';
-import { FeedbackCategory } from '@/features/feedback/api/feedbackApi';
+import type { FeedbackCategory } from '@/features/feedback/api/feedbackApi';
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore';
 
-type UseFeedbackModalControllerProps = {
+interface IUseFeedbackModalControllerProps {
   isOpen: boolean;
   onClose: () => void;
   isMobile: boolean;
   category: FeedbackCategory;
   // PeekBar를 거치지 않고 곧바로 바텀시트를 여는지 여부
   opensSheetDirectly: boolean;
-};
+}
 
 export function useFeedbackModalController({
   isOpen,
@@ -19,7 +19,7 @@ export function useFeedbackModalController({
   isMobile,
   category,
   opensSheetDirectly,
-}: UseFeedbackModalControllerProps) {
+}: IUseFeedbackModalControllerProps) {
   const hasMountedFeedbackSheet = useRef(false);
   const [rate, setRate] = useState<0 | 1 | 2 | 3>(0);
   const [detail, setDetail] = useState('');

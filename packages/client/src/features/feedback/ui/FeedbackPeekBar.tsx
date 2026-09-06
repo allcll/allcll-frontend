@@ -1,12 +1,12 @@
 import { Button, Flex, SupportingText } from '@allcll/allcll-ui';
 
-type Props = {
+interface IFeedbackPeekBarProps {
   message: string;
   onOpen: () => void;
   onClose: () => void;
-};
+}
 
-export default function FeedbackPeekBar({ message, onOpen, onClose }: Props) {
+export default function FeedbackPeekBar({ message, onOpen, onClose }: IFeedbackPeekBarProps) {
   return (
     <div className="fixed bottom-4 left-4 right-4 z-overlay">
       <div className="rounded-xl bg-white shadow-md border border-gray-100 px-3 py-2">

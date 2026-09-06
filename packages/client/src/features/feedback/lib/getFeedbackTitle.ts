@@ -1,5 +1,5 @@
-import { FeedbackCategory } from '@/features/feedback/api/feedbackApi';
-import { FeedbackOpenMode } from './FeedbackTrigger';
+import type { FeedbackCategory } from '@/features/feedback/api/feedbackApi';
+import type { FeedbackOpenMode } from './FeedbackTrigger';
 
 export interface FeedbackTitles {
   title: string;

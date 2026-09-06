@@ -1,6 +1,6 @@
-import { FeedbackTitles } from '../lib/getFeedbackTitle';
+import type { FeedbackTitles } from '../lib/getFeedbackTitle';
 
-export type FeedbackViewProps = {
+export interface IFeedbackViewProps {
   success: boolean;
   rate: 0 | 1 | 2 | 3;
   setRate: (rate: 1 | 2 | 3) => void;
@@ -13,4 +13,4 @@ export type FeedbackViewProps = {
   onSubmit: () => void;
   onDontShowAgain?: () => void;
   titles: FeedbackTitles;
-};
+}

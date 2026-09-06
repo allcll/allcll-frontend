@@ -1,6 +1,6 @@
 import { Dialog, Heading } from '@allcll/allcll-ui';
 import { FeedbackActions, FeedbackFields, FeedbackSuccess } from './FeedbackSharedContent';
-import { FeedbackViewProps } from './FeedbackViewProps';
+import type { IFeedbackViewProps } from './FeedbackViewProps';
 
 export default function FeedbackDesktopModal({
   success,
@@ -15,7 +15,7 @@ export default function FeedbackDesktopModal({
   onDontShowAgain,
   onSubmit,
   titles,
-}: FeedbackViewProps) {
+}: IFeedbackViewProps) {
   return (
     <div className="fixed bottom-6 right-6 z-floating">
       <div className="w-80 bg-white rounded-2xl shadow-lg">
