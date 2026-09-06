@@ -1,7 +1,5 @@
 import React, { useRef, useState } from 'react';
-import XIcon from '@/assets/x.svg?react';
-import UploadIcon from '@/assets/upload.svg?react';
-import FileSpreadsheetIcon from '@/assets/file-spreadsheet.svg?react';
+import { CloseIcon, DocumentIcon, UploadIcon } from '@allcll/allcll-ui';
 import { IconButton, Flex } from '@allcll/allcll-ui';
 import useToastNotification from '../../../notification/model/useToastNotification';
 
@@ -89,7 +87,7 @@ const FileDropZone = ({ onFileSelect, selectedFile, onDeleteFile, accept }: File
         ref={ref}
         className="absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0 opacity-0"
         onChange={handleFileChange}
-        onClick={(e) => e.stopPropagation()}
+        onClick={e => e.stopPropagation()}
       />
 
       {selectedFile ? <SelectedState file={selectedFile} onDelete={handleDeleteClick} /> : <EmptyState />}
@@ -107,7 +105,8 @@ const EmptyState = () => {
 
       <div className="text-center">
         <p className="text-base font-medium text-gray-700">
-          성적표 파일을 여기에 <span className="text-primary-500 font-semibold">드래그</span>하거나 <span className="text-primary-500 font-semibold">클릭</span>하여 선택하세요
+          성적표 파일을 여기에 <span className="text-primary-500 font-semibold">드래그</span>하거나{' '}
+          <span className="text-primary-500 font-semibold">클릭</span>하여 선택하세요
         </p>
         <p className="mt-1 text-sm text-gray-400">XLSX 파일만 가능 (최대 1MB)</p>
       </div>
@@ -123,26 +122,20 @@ const SelectedState = ({ file, onDelete }: { file: File; onDelete: (e: React.Mou
         <IconButton
           variant="plain"
           onClick={onDelete}
-          icon={<XIcon className="w-5 h-5 text-gray-400 hover:text-gray-600" />}
+          icon={<CloseIcon className="w-5 h-5 text-gray-400 hover:text-gray-600" />}
           label="파일 삭제"
         />
       </div>
 
       <Flex direction="flex-col" align="items-center" justify="justify-center" gap="gap-3">
         <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center text-green-500">
-          <FileSpreadsheetIcon className="w-7 h-7" />
+          <DocumentIcon className="w-7 h-7" />
         </div>
 
         <div className="text-center">
-          <p className="text-base font-semibold text-gray-900">
-            {file.name}
-          </p>
-          <p className="mt-1 text-sm text-gray-500">
-            '다음 단계' 버튼을 누르면 분석이 시작됩니다
-          </p>
-          <p className="mt-0.5 text-xs text-gray-400">
-            파일을 변경하려면 클릭하거나 드래그하세요
-          </p>
+          <p className="text-base font-semibold text-gray-900">{file.name}</p>
+          <p className="mt-1 text-sm text-gray-500">'다음 단계' 버튼을 누르면 분석이 시작됩니다</p>
+          <p className="mt-0.5 text-xs text-gray-400">파일을 변경하려면 클릭하거나 드래그하세요</p>
         </div>
       </Flex>
     </>

@@ -12,6 +12,7 @@ export {
   Reset as ResetIcon,
   Renew as RenewIcon,
   Link as LinkIcon,
+  Launch as LaunchIcon,
 
   /* 상태 표시 ---------------------------------------------------------- */
   Checkmark as CheckmarkIcon,
@@ -21,6 +22,7 @@ export {
   Warning as WarningIcon,
   WarningFilled as WarningFilledIcon,
   WarningAlt as WarningAltIcon,
+  Error as ErrorIcon,
   ErrorFilled as ErrorFilledIcon,
   Time as TimeIcon,
   Cursor_1 as CursorIcon,

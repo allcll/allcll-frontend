@@ -1,5 +1,5 @@
 import Section from '@/widgets/home/ui/Section.tsx';
-import ProfileSvg from '@/assets/profile.svg?react';
+import { UserAvatarFilledIcon } from '@allcll/allcll-ui';
 import { Heading } from '@allcll/allcll-ui';
 
 function FeedbacksSection() {
@@ -46,7 +46,7 @@ function UserFeedbackCard({ name, department, review }: Readonly<IUserFeedback>)
   return (
     <div className="w-screen md:w-xs flex flex-col gap-4 p-6 rounded-md bg-white text-left text-sm">
       <div className="flex gap-4 items-center">
-        <ProfileSvg className="w-6 h-6" />
+        <UserAvatarFilledIcon className="w-6 h-6 text-blue-500" />
         <div>
           <p className="font-bold">{name}</p>
           <p className="text-xs text-gray-500">{department}</p>

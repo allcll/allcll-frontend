@@ -1,5 +1,5 @@
 import FeedbackFace from '@/assets/ci-icon.svg?react';
-import CheckIcon from '@/assets/check.svg?react';
+import { CheckmarkIcon } from '@allcll/allcll-ui';
 import { Button, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import { DETAIL_MAX_LENGTH } from '@/features/feedback/api/feedbackApi';
 import type { FeedbackTitles } from '../lib/getFeedbackTitle';
@@ -82,7 +82,7 @@ export function FeedbackSuccess() {
         align="items-center"
         className="w-14 h-14 rounded-full bg-emerald-100 mb-3 animate-pulse"
       >
-        <CheckIcon className="text-emerald-600" />
+        <CheckmarkIcon className="w-6 h-6 text-emerald-600" />
       </Flex>
       <SupportingText className="text-primary-500">좋은 의견 주셔서 감사합니다</SupportingText>
     </Flex>

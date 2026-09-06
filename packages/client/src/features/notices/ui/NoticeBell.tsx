@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback } from 'react';
-import AlarmSvg from '@/assets/alarm.svg?react';
+import { NotificationFilledIcon } from '@allcll/allcll-ui';
 import { useNotices } from '@/entities/notices/api/useNotices';
 import useMobile from '@/shared/lib/useMobile';
 import { useIsNoticeRead, useNoticeReadStore } from '../model/useNoticeReadStore';
@@ -29,7 +29,7 @@ function NoticeBell() {
         aria-label="공지사항"
         className="relative p-2 rounded-md hover:bg-gray-100 transition-colors"
       >
-        <AlarmSvg className="w-4 h-4 text-gray-600" />
+        <NotificationFilledIcon className="w-4 h-4 text-gray-600" />
         {hasNew && (
           <span className="absolute -top-0.5 -right-0.5 h-4 px-1 bg-blue-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none">
             N

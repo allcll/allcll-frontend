@@ -1,13 +1,13 @@
 import { Card, Heading, Flex } from '@allcll/allcll-ui';
 import { NavLink } from 'react-router-dom';
-import ImportantSVG from '@/assets/important.svg?react';
+import { WarningFilledIcon } from '@allcll/allcll-ui';
 
 const FileUploadGuide = () => {
   return (
     <Card variant="outlined" className="w-full mx-auto p-8 mt-2">
       <Flex direction="flex-col" gap="gap-3">
         <Flex align="items-center" gap="gap-2">
-          <ImportantSVG className="w-5 h-5" />
+          <WarningFilledIcon className="w-5 h-5 text-gray-300" />
 
           <Heading level={3} className="text-gray-800">
             기이수 성적 파일 업로드 방법
