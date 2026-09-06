@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Badge, Flex, IconButton, SupportingText } from '@allcll/allcll-ui';
+import { Badge, Flex, IconButton, SupportingText, ChevronDownIcon } from '@allcll/allcll-ui';
 import { OPERATION_TYPE_LABEL, MAX_RATE } from '@/hooks/server/useAdminReviews';
 import type { Review } from '@/hooks/server/useAdminReviews';
 import { formatDateTime } from '@/utils/formatTime';
 import CiIcon from '@/assets/ci-icon.svg?react';
-import ArrowDownSvg from '@/assets/arrow-down.svg?react';
 
 interface IReviewItemProps {
   review: Review;
@@ -67,7 +66,7 @@ function ReviewItem({ review }: Readonly<IReviewItemProps>) {
             <IconButton
               variant="plain"
               icon={
-                <ArrowDownSvg
+                <ChevronDownIcon
                   className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}
                 />
               }

@@ -1,12 +1,12 @@
 import Logo from '@public/ci.svg?react';
-import BookSvg from '@/assets/book.svg?react';
+import { BookIcon } from '@allcll/allcll-ui';
 
 import { NavLink } from 'react-router-dom';
 
 const Menus = [
   {
     title: '대시보드',
-    icon: <BookSvg />,
+    icon: <BookIcon className="w-5 h-5" />,
     link: '/',
   },
   {
