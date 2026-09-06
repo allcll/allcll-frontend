@@ -1,5 +1,8 @@
 export type { CarbonIconProps as IconProps } from '@carbon/icons-react';
 
+/* 커스텀 아이콘 */
+export { LogoKakaoTalkIcon } from './custom';
+
 export {
   /* 액션 --------------------------------------------------------------- */
   Close as CloseIcon,

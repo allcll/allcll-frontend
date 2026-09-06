@@ -1,7 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import { HeaderContents } from '@/shared/ui/Header.tsx';
-import { LogoGithubIcon, LogoInstagramIcon } from '@allcll/allcll-ui';
-import KakaoSvg from '@/assets/icon-kakao.svg?react';
+import { LogoGithubIcon, LogoInstagramIcon, LogoKakaoTalkIcon } from '@allcll/allcll-ui';
 import LogoCI from '@/assets/logo/ci-summer.svg?react';
 import LogoName from '@/assets/logo/logo-name-summer.svg?react';
 
@@ -28,7 +27,11 @@ const OuterLinks = [
     title: '올클 github',
     href: 'https://github.com/allcll',
   },
-  { icon: <KakaoSvg className="w-8 h-8 m-2" />, title: '올클 오픈채팅', href: 'https://open.kakao.com/o/g3MztXfh' },
+  {
+    icon: <LogoKakaoTalkIcon className="w-8 h-8 m-2 text-gray-400" />,
+    title: '올클 오픈채팅',
+    href: 'https://open.kakao.com/o/g3MztXfh',
+  },
   {
     icon: <LogoInstagramIcon className="w-8 h-8 m-2 text-gray-400" />,
     title: '올클 instagram',
