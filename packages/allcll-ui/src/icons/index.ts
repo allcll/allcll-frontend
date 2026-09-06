@@ -57,7 +57,7 @@ export {
 
   /* 도움말 ------------------------------------------------------------- */
   Help as HelpIcon,
-  HelpDesk as HelpDeskIcon,
+  Headset as HeadsetIcon,
 
   /* 문서 · 에디터 ------------------------------------------------------- */
   Document as DocumentIcon,

@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import LogoCI from '@/assets/logo/ci-summer.svg?react';
 import LogoName from '@/assets/logo/logo-name-summer.svg?react';
-import CloseSvg from '@/assets/x.svg?react';
+import { CloseIcon } from '@allcll/allcll-ui';
 import { Flex, IconButton, Badge } from '@allcll/allcll-ui';
 import { useBodyScrollLock } from '../lib/useBodyScrollLock';
 import { HeaderContents, ButtonContents } from './Header';
@@ -75,7 +75,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
             <IconButton
               className="p-2 hover:bg-gray-100 active:bg-gray-100"
               variant="plain"
-              icon={<CloseSvg className="w-6 h-6" />}
+              icon={<CloseIcon className="w-6 h-6 text-gray-700" />}
               label="메뉴 닫기"
               onClick={onClose}
             />

@@ -2,9 +2,8 @@ import { useCallback, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import LogoCI from '@/assets/logo/ci-summer.svg?react';
 import LogoName from '@/assets/logo/logo-name-summer.svg?react';
-import HelpDeskSvg from '@/assets/help-desk.svg?react';
 import HelpChatSvg from '@/assets/chat-help.svg?react';
-import MenuSvg from '@/assets/menu.svg?react';
+import { HeadsetIcon, MenuIcon } from '@allcll/allcll-ui';
 import { IconButton, Badge } from '@allcll/allcll-ui';
 import NoticeBell from '@/features/notices/ui/NoticeBell';
 import MobileMenu from './MobileMenu';
@@ -20,7 +19,7 @@ export const HeaderContents = [
 
 export const ButtonContents = [
   {
-    icon: <HelpDeskSvg className="w-4 h-4" />,
+    icon: <HeadsetIcon className="w-4 h-4 text-gray-500" />,
     title: '오류 및 제안',
     path: 'https://forms.gle/bCDTVujEHunnvHe88',
   },
@@ -89,7 +88,7 @@ function Header() {
           <IconButton
             className="p-2 hover:bg-gray-100 active:bg-gray-100"
             variant="plain"
-            icon={<MenuSvg className="w-6 h-6" />}
+            icon={<MenuIcon className="w-6 h-6" />}
             label="메뉴 열기"
             onClick={openMenu}
             aria-expanded={isOpen}

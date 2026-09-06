@@ -1,4 +1,4 @@
-import AlarmSvg from '@/assets/alarm.svg?react';
+import { NotificationFilledIcon } from '@allcll/allcll-ui';
 
 interface IconProps {
   className?: string;
@@ -6,7 +6,7 @@ interface IconProps {
 }
 const AlarmIcon = ({ className, disabled = false }: IconProps) => {
   const style = disabled ? 'text-gray-400 ' : 'text-blue-500 ';
-  return <AlarmSvg className={style + className} />;
+  return <NotificationFilledIcon className={style + className} />;
 };
 
 export default AlarmIcon;
