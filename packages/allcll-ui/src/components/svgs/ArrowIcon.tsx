@@ -1,15 +1,12 @@
-import ArrowDownGraySvg from '@/assets/arrow-down.svg?react';
-import ArrowDownBlueSvg from '@/assets/arrow-down.svg?react';
+import { ChevronDownIcon } from '../../icons';
 
 interface IArrowIcon {
   className?: string;
   selected?: boolean;
 }
 
-const ArrowIcon = ({ className, selected = false }: IArrowIcon) => {
-  const finalClassName = selected ? className + ' text-blue-500' : className + ' text-gray-400';
-
-  return selected ? <ArrowDownBlueSvg className={finalClassName} /> : <ArrowDownGraySvg className={finalClassName} />;
-};
+const ArrowIcon = ({ className, selected = false }: IArrowIcon) => (
+  <ChevronDownIcon className={`${className ?? ''} ${selected ? 'text-blue-500' : 'text-gray-400'}`} />
+);
 
 export default ArrowIcon;

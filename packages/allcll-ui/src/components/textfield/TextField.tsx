@@ -2,7 +2,7 @@ import type { ComponentPropsWithoutRef } from 'react';
 import Label from '../label/Label';
 import Flex from '../flex/Flex';
 import IconButton from '../icon-button/IconButton';
-import XSvg from '@/assets/x.svg?react';
+import { CloseIcon } from '../../icons';
 
 interface TextFieldProps extends Omit<ComponentPropsWithoutRef<'input'>, 'size'> {
   label?: string;
@@ -46,7 +46,7 @@ function TextField({
         {onClear && value && (
           <IconButton
             aria-label="입력 내용 지우기"
-            icon={<XSvg className="w-4 h-4" />}
+            icon={<CloseIcon size={16} />}
             onClick={onClear}
             className=" absolute right-2 top-1/2 transform -translate-y-1/2 "
           />

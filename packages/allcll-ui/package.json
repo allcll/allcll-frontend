@@ -31,6 +31,7 @@
     "vitest": "^4.0.5"
   },
   "dependencies": {
+    "@carbon/icons-react": "^11.87.0",
     "@radix-ui/react-slot": "^1.2.4"
   }
 }

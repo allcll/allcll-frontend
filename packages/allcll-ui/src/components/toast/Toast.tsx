@@ -1,7 +1,7 @@
 import IconButton from '../icon-button/IconButton';
 import RowSlots from '../row/RowSlots';
 import AlarmIcon from '../svgs/AlarmIcon';
-import CloseSvg from '@/assets/x.svg?react';
+import { CloseIcon } from '../../icons';
 
 export interface IToastMessage {
   message: string;
@@ -24,7 +24,7 @@ function Toast({ toast, closeToast }: IToast) {
         <IconButton
           label="닫기"
           variant="plain"
-          icon={<CloseSvg className="text-gray-400 w-4 h-4 " />}
+          icon={<CloseIcon size={16} className="text-gray-400" />}
           className="p-2 rounded-full hover:bg-blue-100"
           onClick={closeToast}
         />
