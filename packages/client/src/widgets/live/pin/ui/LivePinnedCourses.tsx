@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Flex, Heading, IconButton, Tooltip } from '@allcll/allcll-ui';
+import { Button, Card, Flex, Heading, IconButton, Tooltip } from '@allcll/allcll-ui';
 import SettingSvg from '@/assets/settings.svg?react';
 import ReloadSvg from '@/assets/reload-blue.svg?react';
 
@@ -33,12 +33,9 @@ const LivePinnedCourses = () => {
           <p className="text-sm font-medium text-blue-900 mb-2">
             📺 실시간 여석 모니터링이 Picture-in-Picture (PiP) Floating Window에서 실행 중입니다.
           </p>
-          <button
-            onClick={closePiP}
-            className="px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors"
-          >
+          <Button variant="primary" size="small" onClick={closePiP}>
             PiP 창 닫기 / 메인 화면으로 돌아오기
-          </button>
+          </Button>
         </div>
       ) : (
         <PinCoursesBody />
@@ -49,15 +46,17 @@ const LivePinnedCourses = () => {
   );
 };
 
+interface IPinCoursesHeaderProps {
+  setIsAlarmSettingOpen: (open: boolean) => void;
+  isPiPOpen: boolean;
+  onTogglePiP: () => void;
+}
+
 function PinCoursesHeader({
   setIsAlarmSettingOpen,
   isPiPOpen,
   onTogglePiP,
-}: {
-  setIsAlarmSettingOpen: (open: boolean) => void;
-  isPiPOpen: boolean;
-  onTogglePiP: () => void;
-}) {
+}: IPinCoursesHeaderProps) {
   const { isAlarm, changeAlarm } = useNotification();
   const { isError, refetch } = useSseData(SSEType.PINNED);
 

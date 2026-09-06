@@ -1,18 +1,33 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
-interface UseDocumentPiPOptions {
+interface IUseDocumentPiPOptions {
   width?: number;
   height?: number;
 }
 
-export function useDocumentPiP(options: UseDocumentPiPOptions = {}) {
+const DEFAULT_PIP_WIDTH = 380;
+const DEFAULT_PIP_HEIGHT = 440;
+
+export function useDocumentPiP(options: IUseDocumentPiPOptions = {}) {
   const [pipWindow, setPipWindow] = useState<Window | null>(null);
   const [isSupported, setIsSupported] = useState<boolean>(false);
   const pipContainerRef = useRef<HTMLDivElement | null>(null);
+  const pipWindowRef = useRef<Window | null>(null);
+
+  useEffect(() => {
+    pipWindowRef.current = pipWindow;
+  }, [pipWindow]);
 
   useEffect(() => {
     setIsSupported('documentPictureInPicture' in window);
+
+    return () => {
+      if (pipWindowRef.current) {
+        pipWindowRef.current.close();
+        pipWindowRef.current = null;
+      }
+    };
   }, []);
 
   const openPiP = useCallback(async () => {
@@ -28,8 +43,8 @@ export function useDocumentPiP(options: UseDocumentPiPOptions = {}) {
 
     try {
       const win = await window.documentPictureInPicture.requestWindow({
-        width: options.width ?? 380,
-        height: options.height ?? 440,
+        width: options.width ?? DEFAULT_PIP_WIDTH,
+        height: options.height ?? DEFAULT_PIP_HEIGHT,
       });
 
       // Copy style elements & link tags from main document to PiP window
