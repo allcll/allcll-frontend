@@ -1,5 +1,5 @@
 import { useEmptyScheduleSlots, GeneralSchedule } from '@/entities/timetable/api/useTimetableSchedules.ts';
-import XGraySvg from '@/assets/x-darkgray.svg?react';
+import { CloseIcon } from '@allcll/allcll-ui';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import { Flex, IconButton } from '@allcll/allcll-ui';
 
@@ -45,7 +45,7 @@ function EmptyScheduleSlot({ schedule, selected }: Readonly<{ schedule: GeneralS
         aria-label="delete"
         variant="plain"
         label="delete"
-        icon={<XGraySvg className="w-5 h-5" />}
+        icon={<CloseIcon className="w-5 h-5 text-gray-500" />}
         onClick={handleDeleteEmptySlot}
       />
     </div>

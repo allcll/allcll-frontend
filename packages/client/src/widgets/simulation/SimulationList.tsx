@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { getSimulationList } from '@/features/simulation/lib/result.ts';
 import { SimulationRun } from '@/shared/config/dbConfig.ts';
-import CursorBlue from '@/assets/cursor-blue.svg?react';
+import { CursorIcon } from '@allcll/allcll-ui';
 
 function SimulationList() {
   return (
@@ -70,7 +70,7 @@ function SimulationBoard() {
         </div>
         <div className="flex items-center justify-end gap-1 w-20">
           <p className="hidden">점수</p>
-          <CursorBlue className="w-4 h-4" />
+          <CursorIcon className="w-4 h-4 text-blue-500" />
           <span className="font-bold">{log.score.toFixed(3)}</span>
         </div>
       </div>
