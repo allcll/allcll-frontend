@@ -37,7 +37,7 @@ function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
           {...rest}
         />
         {rest.checked && (
-          <CheckmarkIcon size={16} className="text-blue-500 absolute inset-0 m-auto pointer-events-none" />
+          <CheckmarkIcon className="text-blue-500 w-4 h-4 absolute inset-0 m-auto pointer-events-none" />
         )}
       </div>
 

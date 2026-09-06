@@ -46,7 +46,7 @@ function TextField({
         {onClear && value && (
           <IconButton
             aria-label="입력 내용 지우기"
-            icon={<CloseIcon size={16} />}
+            icon={<CloseIcon className="w-4 h-4" />}
             onClick={onClear}
             className=" absolute right-2 top-1/2 transform -translate-y-1/2 "
           />

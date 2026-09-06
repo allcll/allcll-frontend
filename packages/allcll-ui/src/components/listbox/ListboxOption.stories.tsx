@@ -18,7 +18,7 @@ export const Default: Story = {
   args: {
     selected: true,
     left: '리스트 옵션',
-    right: <CheckmarkIcon size={16} className="shrink-0" />,
+    right: <CheckmarkIcon className="w-4 h-4 shrink-0" />,
   },
 };
 
@@ -26,6 +26,6 @@ export const Unselected: Story = {
   args: {
     selected: false,
     left: '리스트 옵션',
-    right: <CheckmarkIcon size={16} className="shrink-0" />,
+    right: <CheckmarkIcon className="w-4 h-4 shrink-0" />,
   },
 };

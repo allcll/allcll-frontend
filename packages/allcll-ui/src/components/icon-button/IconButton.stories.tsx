@@ -20,7 +20,7 @@ const meta = {
   },
   args: {
     variant: 'plain',
-    icon: <SettingsAdjustIcon size={16} className="text-gray-400" />,
+    icon: <SettingsAdjustIcon className="w-4 h-4 text-gray-400" />,
   },
 } satisfies Meta<typeof IconButton>;
 
@@ -43,7 +43,7 @@ export const Variants: Story = {
   args: {
     variant: 'plain',
     label: 'Filter',
-    icon: <SettingsAdjustIcon size={16} className="text-gray-400" />,
+    icon: <SettingsAdjustIcon className="w-4 h-4 text-gray-400" />,
   },
   argTypes: {
     variant: { control: false },
@@ -54,7 +54,7 @@ export const Variants: Story = {
 export const Playground: Story = {
   args: {
     label: 'Filter',
-    icon: <SettingsAdjustIcon size={16} className="text-gray-400" />,
+    icon: <SettingsAdjustIcon className="w-4 h-4 text-gray-400" />,
     variant: 'plain',
   },
 };

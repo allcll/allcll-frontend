@@ -109,14 +109,14 @@ export const WithIcon: Story = {
     <div className="flex flex-wrap gap-4">
       <div>
         <Button variant={variant} size="small">
-          <HomeIcon size={20} />
+          <HomeIcon className="w-5 h-5" />
           LeftIcon
         </Button>
       </div>
       <div>
         <Button variant={variant} size="medium">
           RightIcon
-          <HomeIcon size={20} />
+          <HomeIcon className="w-5 h-5" />
         </Button>
       </div>
     </div>

@@ -42,7 +42,7 @@ export const WithDelete: Story = {
       <IconButton
         label="검색"
         variant="plain"
-        icon={<SearchIcon size={20} className="text-gray-400" />}
+        icon={<SearchIcon className="w-5 h-5 text-gray-400" />}
         className="absolute left-3 top-3"
       />
     ),
@@ -50,7 +50,7 @@ export const WithDelete: Story = {
       <IconButton
         label="삭제"
         variant="plain"
-        icon={<CloseIcon size={20} className="text-gray-400" />}
+        icon={<CloseIcon className="w-5 h-5 text-gray-400" />}
         className="absolute right-3 top-3"
         onClick={() => alert('삭제 버튼 클릭됨')}
       />

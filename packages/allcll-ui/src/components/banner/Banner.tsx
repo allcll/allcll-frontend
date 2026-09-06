@@ -17,13 +17,13 @@ function Banner({ variant = 'info', children, deleteBanner }: IBanner) {
     <RowSlots
       withPadding
       className={`${bannerColorClass} items-center`}
-      left={<WarningIcon size={16} className="text-gray-500" />}
+      left={<WarningIcon className="text-gray-500 w-4 h-4" />}
       center={<span className="text-xs">{children}</span>}
       right={
         <IconButton
           label="알림 닫기"
           variant="plain"
-          icon={<CloseIcon size={20} className="text-gray-500" />}
+          icon={<CloseIcon className="text-gray-500 w-5 h-5" />}
           onClick={deleteBanner}
           className="rounded-full"
         />

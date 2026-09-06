@@ -16,7 +16,7 @@ function DialogHeader({ children, onClose }: IDialogHeader) {
         className="w-6 h-6 cursor-pointer flex items-center justify-center bg-gray-100 rounded-full"
         onClick={onClose}
       >
-        <CloseIcon size={12} className="text-gray-600" />
+        <CloseIcon className="text-gray-600 w-3 h-3" />
       </button>
     </div>
   );
