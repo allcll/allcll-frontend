@@ -1,5 +1,4 @@
-import AlarmIcon from '@/shared/ui/svgs/AlarmIcon';
-import { NotificationOffIcon } from '@allcll/allcll-ui';
+import { NotificationFilledIcon, NotificationOffIcon } from '@allcll/allcll-ui';
 import { useSSEState } from '@/features/live/board/model/useSseState';
 import useNotificationInstruction from '@/features/notification/model/useNotificationInstruction.ts';
 import { SSE_STATE } from '@/features/live/board/model/useSseState';
@@ -16,10 +15,10 @@ function AlarmStatusIcon({ isAlarm }: Readonly<{ isAlarm: boolean }>) {
   if (!isAlarm) return <NotificationOffIcon className="w-5 h-5 text-gray-400" />;
 
   return isPermitted && isRealtime ? (
-    <AlarmIcon className="w-5 h-5 text-primary-500" />
+    <NotificationFilledIcon className="w-5 h-5 text-primary-500" />
   ) : (
     <>
-      <AlarmIcon className="w-5 h-5 text-secondary-500 animate-pulse" />
+      <NotificationFilledIcon className="w-5 h-5 text-secondary-500 animate-pulse" />
       {statusTooltip.length > 0 && (
         <span className="absolute left-full -bottom-2 transform -translate-x-full translate-y-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gray-900 text-white text-sm p-2 rounded w-64 h-fit text-center pointer-events-none">
           {statusTooltip.map((line, idx) => (

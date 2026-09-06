@@ -1,4 +1,4 @@
-import AlarmIcon from '@/shared/ui/svgs/AlarmIcon.tsx';
+import { NotificationFilledIcon } from '@allcll/allcll-ui';
 import SkeletonRows from '@/shared/ui/SkeletonRows';
 import { useAddPinned, usePinned, useRemovePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
 import useInfScroll from '@/shared/lib/useInfScroll.ts';
@@ -105,7 +105,7 @@ function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
           aria-label={isPinned ? '알림 과목 해제' : '알림 과목 등록'}
           onClick={handlePin}
         >
-          <AlarmIcon disabled={!isPinned} />
+          <NotificationFilledIcon className={isPinned ? 'text-blue-500' : 'text-gray-400'} />
         </button>
       </td>
       <td className="px-2 py-2 text-center">

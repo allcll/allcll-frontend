@@ -1,9 +1,8 @@
 // Todo:  widget/wish로 옮기기
 import { useState } from 'react';
-import StarIcon from '@/shared/ui/svgs/StarIcon.tsx';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import { Filters, initialFilters, useWishSearchStore } from '@/features/filtering/model/useFilterStore.ts';
-import { ListIcon } from '@allcll/allcll-ui';
+import { ListIcon, StarFilledIcon, StarIcon } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile.ts';
 import FilterBottomSheet from '@/widgets/filtering/ui/FilterBottomSheet.tsx';
 import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
@@ -190,7 +189,13 @@ function WishFilter() {
 
         <IconButton
           variant="contain"
-          icon={<StarIcon disabled={!favoriteOnly} />}
+          icon={
+            favoriteOnly ? (
+              <StarFilledIcon className="w-4 h-4 text-yellow-400" />
+            ) : (
+              <StarIcon className="w-4 h-4 text-gray-400" />
+            )
+          }
           aria-label={favoriteOnly ? '즐겨찾기 필터 제거' : '즐겨찾기 필터 추가'}
           label={favoriteOnly ? '즐겨찾기 필터 제거' : '즐겨찾기 필터 추가'}
           onClick={setToggleFavorite}
