@@ -15,7 +15,7 @@ export interface FeedbackTitles {
   peekMessage?: string;
 }
 
-function useFeedbackTitle(category: FeedbackCategory, openMode: FeedbackOpenMode): FeedbackTitles {
+function getFeedbackTitle(category: FeedbackCategory, openMode: FeedbackOpenMode): FeedbackTitles {
   if (category === 'GRADUATION') {
     return {
       title: openMode === 'auto' ? '졸업요건 검사 피드백' : '오류 제보',
@@ -37,4 +37,4 @@ function useFeedbackTitle(category: FeedbackCategory, openMode: FeedbackOpenMode
   };
 }
 
-export default useFeedbackTitle;
+export default getFeedbackTitle;
