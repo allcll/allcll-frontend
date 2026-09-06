@@ -1,4 +1,5 @@
 import useToastNotification from '@/features/notification/model/useToastNotification.ts';
+import { ApiError } from '@/shared/lib/errors.ts';
 
 interface TimetableApiErrorResponse {
   success?: boolean;
@@ -34,6 +35,11 @@ function getTimetableApiErrorMessage(error: unknown) {
     return '네트워크 상태를 확인 후 다시 시도해주세요.';
   }
 
+  if (error instanceof ApiError) {
+    return error.message;
+  }
+
+  // fetchOnAPI 를 직접 쓰는 곳은 아직 응답 본문을 그대로 던집니다.
   if (!(error instanceof Error)) return null;
 
   const parsed = parseApiErrorResponse(error.message);

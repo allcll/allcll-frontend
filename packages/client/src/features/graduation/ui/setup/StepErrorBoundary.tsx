@@ -1,5 +1,6 @@
-import React, { Component, ErrorInfo } from 'react';
+import React, { Component } from 'react';
 import { JolupSteps, useJolupStore } from '../../model/useJolupStore';
+import { stepForError } from '../../lib/stepForError.ts';
 
 interface Props {
   children: React.ReactNode;
@@ -16,21 +17,14 @@ class StepErrorBoundary extends Component<Props, State> {
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(_: Error): State {
+  static getDerivedStateFromError(): State {
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, _errorInfo: ErrorInfo) {
+  componentDidCatch(error: Error) {
     const { setStep } = useJolupStore.getState();
-    const message = error.message;
 
-    if (message.includes('401') || message.includes('Unauthorized')) {
-      setStep(JolupSteps.LOGIN);
-    } else if (message.includes('학과') || message.includes('Major') || message.includes('기본 정보')) {
-      setStep(JolupSteps.DEPARTMENT_INFO);
-    } else {
-      setStep(JolupSteps.FILE_UPLOAD);
-    }
+    setStep(stepForError(error));
   }
 
   componentDidUpdate(prevProps: Props) {

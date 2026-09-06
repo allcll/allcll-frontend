@@ -1,4 +1,4 @@
-import { fetchJsonOnAPI, fetchOnAPI, fetchDeleteJsonOnAPI } from '@/shared/api/api.ts';
+import { fetchJsonOnAPI, fetchOnAPI, fetchDeleteJsonOnAPI, throwApiError } from '@/shared/api/api.ts';
 import { LoginRequest, UpdateMeRequest, UserResponse } from '@/entities/user/model/types.ts';
 
 //TODO: features로 폴더 이동 고려
@@ -10,7 +10,7 @@ export const postLogin = async ({ studentId, password }: LoginRequest): Promise<
   });
 
   if (!response.ok) {
-    throw new Error(await response.text());
+    await throwApiError(response);
   }
 };
 
@@ -20,7 +20,7 @@ export const postLogout = async (): Promise<void> => {
   });
 
   if (!response.ok) {
-    throw new Error(await response.text());
+    await throwApiError(response);
   }
 };
 
@@ -36,7 +36,7 @@ export const updateMe = async (body: UpdateMeRequest): Promise<void> => {
   });
 
   if (!response.ok) {
-    throw new Error(await response.text());
+    await throwApiError(response);
   }
 };
 
