@@ -1,10 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { Flex, Chip, ListboxOption } from '@allcll/allcll-ui';
+import { Flex, Chip, ListboxOption, ChevronDownIcon, CheckmarkIcon } from '@allcll/allcll-ui';
 import type { CategoryType, GraduationCourse } from '../../types/graduation';
 import { CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
 import { COURSE_CATEGORY_ORDER } from '../../lib/graduation/rules';
-import ArrowDownSvg from '../../assets/arrow-down-gray.svg?react';
-import CheckSvg from '../../assets/checkbox-blue.svg?react';
 
 interface EarnedCoursesSectionProps {
   courses: GraduationCourse[];
@@ -91,8 +89,8 @@ function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) 
         }`}
       >
         <span className="text-sm font-medium text-gray-700">내 이수 과목</span>
-        <ArrowDownSvg
-          className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+        <ChevronDownIcon
+          className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
           aria-hidden="true"
         />
       </button>
@@ -120,7 +118,11 @@ function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) 
                             key={option.value}
                             selected={option.value === selectedCategory}
                             left={option.label}
-                            right={option.value === selectedCategory ? <CheckSvg className="w-4 h-4 shrink-0" /> : null}
+                            right={
+                              option.value === selectedCategory ? (
+                                <CheckmarkIcon className="w-4 h-4 shrink-0 text-blue-500" />
+                              ) : null
+                            }
                             onSelect={() => {
                               setSelectedCategory(option.value);
                               setIsSelectOpen(false);

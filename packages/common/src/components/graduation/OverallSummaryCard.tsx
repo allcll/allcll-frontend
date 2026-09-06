@@ -1,8 +1,6 @@
-import { Card, Flex, Badge, SupportingText } from '@allcll/allcll-ui';
+import { Card, Flex, Badge, SupportingText, CheckmarkOutlineIcon, MisuseIcon } from '@allcll/allcll-ui';
 import type { GraduationCheckData } from '../../types/graduation';
 import { isGeneralSatisfied, isMajorSatisfied } from '../../lib/graduation/rules';
-import CircleCheckIcon from '../../assets/circle-check.svg?react';
-import CircleXIcon from '../../assets/circle-x.svg?react';
 import ProgressDoughnut from './ProgressDoughnut';
 
 export interface GraduationUserProfile {
@@ -28,7 +26,7 @@ function StatusIcon({ passed, label }: Readonly<StatusIconProps>) {
   return (
     <Flex direction="flex-col" align="items-center" gap="gap-2" className="md:flex-row">
       <div className={passed ? 'text-primary-500' : 'text-gray-400'}>
-        {passed ? <CircleCheckIcon className="w-8 h-8" /> : <CircleXIcon className="w-8 h-8" />}
+        {passed ? <CheckmarkOutlineIcon className="w-8 h-8" /> : <MisuseIcon className="w-8 h-8" />}
       </div>
       <span className="text-xs md:text-sm text-gray-600">{label}</span>
     </Flex>
