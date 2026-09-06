@@ -1,4 +1,4 @@
-import { FeedbackTitles } from '../lib/useFeedbackTitle';
+import { FeedbackTitles } from '../lib/getFeedbackTitle';
 
 export type FeedbackViewProps = {
   success: boolean;

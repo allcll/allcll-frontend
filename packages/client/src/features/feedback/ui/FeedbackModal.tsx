@@ -4,7 +4,7 @@ import useFeedbackModalController from '@/features/feedback/lib/useFeedbackModal
 import FeedbackPeekBar from '@/features/feedback/ui/FeedbackPeekBar';
 import { FeedbackCategory } from '@/features/feedback/api/feedbackApi';
 import { FeedbackOpenMode } from '../lib/FeedbackTrigger';
-import useFeedbackTitle from '../lib/useFeedbackTitle';
+import getFeedbackTitle from '../lib/getFeedbackTitle';
 import useMobile from '@/shared/lib/useMobile';
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
 
 export const FeedbackModal = ({ isOpen, onClose, category, openMode = 'auto', showDontShowAgain = true }: Props) => {
   const isMobile = useMobile();
-  const titles = useFeedbackTitle(category, openMode);
+  const titles = getFeedbackTitle(category, openMode);
   const peekMessage = openMode === 'auto' ? titles.peekMessage : undefined;
   const controller = useFeedbackModalController({
     isOpen,
