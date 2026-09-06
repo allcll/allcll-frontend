@@ -367,7 +367,12 @@ function GraduationDashboardPage() {
         />
       )}
 
-      <FeedbackModal isOpen={isFeedbackOpen} onClose={closeFeedback} openMode={feedbackOpenMode} />
+      <FeedbackModal
+        isOpen={isFeedbackOpen}
+        onClose={closeFeedback}
+        category="GRADUATION"
+        openMode={feedbackOpenMode}
+      />
     </>
   );
 }
