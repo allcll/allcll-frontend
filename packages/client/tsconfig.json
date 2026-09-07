@@ -32,6 +32,7 @@
   },
   "include": [
     "src",
+    "global.d.ts",
     "vite.config.ts",
     "svg.d.ts",
     "tailwind.config.js",
