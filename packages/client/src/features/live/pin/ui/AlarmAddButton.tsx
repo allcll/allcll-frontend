@@ -6,11 +6,12 @@ function AlarmAddButton() {
 
   return (
     <Flex justify="justify-center" align="items-center">
-      <Button variant="ghost" size="medium" onClick={() => setIsSearchOpen(true)}>
-        + 알림 과목 등록
+      <Button variant="outlined" size="medium" onClick={() => setIsSearchOpen(true)}>
+        + 실시간 과목 핀/알림 추가
       </Button>
     </Flex>
   );
 }
 
 export default AlarmAddButton;
+
