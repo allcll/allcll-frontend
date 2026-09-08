@@ -15,10 +15,9 @@ export async function throwApiError(response: Response): Promise<never> {
     // 서버 앞단이 HTML 을 내려주는 경우가 있어 조용히 넘깁니다.
   }
 
-  // HTTP/2 는 statusText 가 항상 비어 있어서 마지막 기본값이 필요합니다.
-  const message = parsed?.message || response.statusText || `요청에 실패했습니다 (${response.status})`;
-
-  throw new ApiError(response.status, parsed?.code ?? '', message);
+  // 화면에 띄울 문구는 호출부가 정합니다. 여기서 기본값을 만들면 상태 코드가 그대로 노출됩니다.
+  // 빈 문자열도 쓸 수 없는 문구라 null 로 맞춥니다.
+  throw new ApiError(response.status, parsed?.code ?? '', parsed?.message || null);
 }
 
 export async function fetchOnAPI(url: string, options?: RequestInit): Promise<Response> {

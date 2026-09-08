@@ -36,7 +36,8 @@ function getTimetableApiErrorMessage(error: unknown) {
   }
 
   if (error instanceof ApiError) {
-    return error.message;
+    // 서버가 문구를 안 준 실패는 null 이라 호출부의 fallbackMessage 가 쓰입니다.
+    return error.serverMessage;
   }
 
   // fetchOnAPI 를 직접 쓰는 곳은 아직 응답 본문을 그대로 던집니다.
