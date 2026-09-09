@@ -1,7 +1,7 @@
 import LogoCI from '@/assets/logo/ci.svg?react';
 import LogoCIDead from '@/assets/logo/ci-dead.svg?react';
-import BellTowerSvg from '@/assets/notfound/bell-tower.svg?react';
-import CloudSvg from '@/assets/notfound/cloud.svg?react';
+import BellTowerSvg from '@/assets/jumpGame/bell-tower.svg?react';
+import CloudSvg from '@/assets/jumpGame/cloud.svg?react';
 import {
   CHARACTER_SIZE,
   CHARACTER_X,
@@ -14,11 +14,11 @@ import {
   TOWER_HEIGHT,
   TOWER_INITIAL_X,
   TOWER_WIDTH,
-} from '@/widgets/notfound/lib/gameConfig.ts';
-import { PALETTE } from '@/widgets/notfound/lib/palette.ts';
-import { useJumpGame } from '@/widgets/notfound/model/useJumpGame.ts';
-import GameResultOverlay from '@/widgets/notfound/ui/GameResultOverlay.tsx';
-import ObstacleShape from '@/widgets/notfound/ui/ObstacleShape.tsx';
+} from '@/widgets/jumpGame/lib/gameConfig.ts';
+import { PALETTE } from '@/widgets/jumpGame/lib/palette.ts';
+import { useJumpGame } from '@/widgets/jumpGame/model/useJumpGame.ts';
+import GameResultOverlay from '@/widgets/jumpGame/ui/GameResultOverlay.tsx';
+import ObstacleShape from '@/widgets/jumpGame/ui/ObstacleShape.tsx';
 
 function JumpGame() {
   const {

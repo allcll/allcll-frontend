@@ -1,7 +1,7 @@
-import CactusClusterSvg from '@/assets/notfound/cactus-cluster.svg?react';
-import CactusLargeSvg from '@/assets/notfound/cactus-large.svg?react';
-import CactusSmallSvg from '@/assets/notfound/cactus-small.svg?react';
-import type { ObstacleType } from '@/widgets/notfound/model/types.ts';
+import CactusClusterSvg from '@/assets/jumpGame/cactus-cluster.svg?react';
+import CactusLargeSvg from '@/assets/jumpGame/cactus-large.svg?react';
+import CactusSmallSvg from '@/assets/jumpGame/cactus-small.svg?react';
+import type { ObstacleType } from '@/widgets/jumpGame/model/types.ts';
 
 const OBSTACLE_SVGS: Record<ObstacleType, typeof CactusLargeSvg> = {
   'cactus-large': CactusLargeSvg,

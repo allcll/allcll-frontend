@@ -1,7 +1,7 @@
 import { Flex, Heading } from '@allcll/allcll-ui';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
-import JumpGame from '@/widgets/notfound/ui/JumpGame.tsx';
+import JumpGame from '@/widgets/jumpGame/ui/JumpGame.tsx';
 
 const NotFound = () => {
   return (

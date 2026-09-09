@@ -1,4 +1,4 @@
-import { getCharacterHitBox, getObstacleHitBox, isOverlapped } from '@/widgets/notfound/lib/collision.ts';
+import { getCharacterHitBox, getObstacleHitBox, isOverlapped } from '@/widgets/jumpGame/lib/collision.ts';
 import {
   AIR_TIME,
   CLOUD_INITIAL_LAYOUT,
@@ -27,8 +27,8 @@ import {
   TOWER_REST_MARGIN,
   TOWER_SPAWN_OFFSET,
   TOWER_WIDTH,
-} from '@/widgets/notfound/lib/gameConfig.ts';
-import type { IGameState } from '@/widgets/notfound/model/types.ts';
+} from '@/widgets/jumpGame/lib/gameConfig.ts';
+import type { IGameState } from '@/widgets/jumpGame/model/types.ts';
 
 /** 점프해서 착지할 때까지 도는 각도 */
 const JUMP_ROTATION = 90;

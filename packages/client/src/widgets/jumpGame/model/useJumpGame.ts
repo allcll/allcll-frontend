@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import { hasClearRecord, saveClearRecord } from '@/widgets/notfound/lib/clearRecord.ts';
+import { hasClearRecord, saveClearRecord } from '@/widgets/jumpGame/lib/clearRecord.ts';
 import {
   DEFAULT_STAGE_WIDTH,
   GROUND_PATTERN_WIDTH,
   INVINCIBILITY_BLINK_INTERVAL,
   INVINCIBILITY_BLINK_OPACITY,
   MAX_FRAME_DELTA,
-} from '@/widgets/notfound/lib/gameConfig.ts';
-import { createGame, jump, updateGame } from '@/widgets/notfound/model/gameLogic.ts';
-import type { EndingPhase, GameStatus, ICloud, IGameState, IObstacle } from '@/widgets/notfound/model/types.ts';
+} from '@/widgets/jumpGame/lib/gameConfig.ts';
+import { createGame, jump, updateGame } from '@/widgets/jumpGame/model/gameLogic.ts';
+import type { EndingPhase, GameStatus, ICloud, IGameState, IObstacle } from '@/widgets/jumpGame/model/types.ts';
 
 /** 키보드 조작이 페이지의 링크·버튼 동작을 가로채지 않도록 제외할 요소들 */
 const INTERACTIVE_SELECTOR = 'a, button, input, textarea, select';

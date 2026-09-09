@@ -1,4 +1,4 @@
-import RefreshSvg from '@/assets/notfound/refresh.svg?react';
+import RefreshSvg from '@/assets/jumpGame/refresh.svg?react';
 
 const RESTART_ICON_SIZE = 32;
 

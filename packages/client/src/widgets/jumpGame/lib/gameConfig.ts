@@ -1,5 +1,5 @@
-import groundPatternUrl from '@/assets/notfound/ground-pattern.svg';
-import type { IObstacleConfig } from '@/widgets/notfound/model/types.ts';
+import groundPatternUrl from '@/assets/jumpGame/ground-pattern.svg';
+import type { IObstacleConfig } from '@/widgets/jumpGame/model/types.ts';
 
 /**
  * 점프 게임 설정값 모음입니다.

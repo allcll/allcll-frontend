@@ -4,8 +4,8 @@ import {
   CHARACTER_X,
   GROUND_OFFSET,
   OBSTACLE_Y,
-} from '@/widgets/notfound/lib/gameConfig.ts';
-import type { IHitBox, IObstacle } from '@/widgets/notfound/model/types.ts';
+} from '@/widgets/jumpGame/lib/gameConfig.ts';
+import type { IHitBox, IObstacle } from '@/widgets/jumpGame/model/types.ts';
 
 export function getCharacterHitBox(offsetX: number, y: number): IHitBox {
   const left = CHARACTER_X + offsetX + CHARACTER_HITBOX_PADDING;
