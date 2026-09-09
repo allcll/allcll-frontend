@@ -5,7 +5,7 @@ import LogoCI from '@/assets/logo/ci-summer.svg?react';
 import LogoName from '@/assets/logo/logo-name-summer.svg?react';
 import CloseSvg from '@/assets/x.svg?react';
 import { Flex, IconButton, Badge } from '@allcll/allcll-ui';
-import { useBodyScrollLock } from '../lib/useBodyScrollLock';
+import useScrollLock from '../lib/useScrollLock';
 import { HeaderContents, ButtonContents } from './Header';
 
 interface MobileMenuProps {
@@ -33,7 +33,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
     }
   };
 
-  useBodyScrollLock(isOpen);
+  useScrollLock(isOpen);
 
   return (
     <>

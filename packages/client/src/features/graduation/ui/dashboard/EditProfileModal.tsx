@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Dialog, Flex, Button, Label } from '@allcll/allcll-ui';
 import CustomSelect from '@/shared/ui/CustomSelect';
-import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
+import useScrollLock from '@/shared/lib/useScrollLock';
 import { useEditProfileForm } from '@/features/graduation/lib/useEditProfileForm';
 import type { UserResponse } from '@/entities/user/model/types';
 
@@ -32,7 +32,7 @@ function EditProfileModal({ isOpen, onClose, user }: EditProfileModalProps) {
     isDeleting,
   } = useEditProfileForm(user, isOpen, onClose);
 
-  useBodyScrollLock(isOpen);
+  useScrollLock(isOpen);
 
   const [openDropdown, setOpenDropdown] = useState<'majorType' | 'dept' | 'doubleDept' | null>(null);
 

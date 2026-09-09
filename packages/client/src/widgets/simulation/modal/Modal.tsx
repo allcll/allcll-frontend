@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import useScrollLock from '@/shared/lib/useScrollLock';
 
 interface IModalProps {
   children: React.ReactNode;
@@ -9,14 +10,12 @@ interface IModalProps {
 function Modal({ children, onClose, preventAutoFocus }: Readonly<IModalProps>) {
   const containerRef = useRef<HTMLDivElement>(null);
 
+  useScrollLock(true);
+
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
     if (!preventAutoFocus) {
       containerRef.current?.focus();
     }
-    return () => {
-      document.body.style.overflow = '';
-    };
   }, [preventAutoFocus]);
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {

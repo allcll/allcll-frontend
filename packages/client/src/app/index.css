@@ -220,6 +220,19 @@ body {
   margin: 0;
 }
 
+/*
+ * 뷰포트 스크롤은 html 의 overflow 가 visible 일 때만 body 값을 따라갑니다.
+ * 광고 스크립트가 body 를 잠근 채 사라지는 경우가 있어, 값을 명시해 전파를 끊습니다.
+ */
+html {
+  overflow-y: auto;
+}
+
+/* useScrollLock 이 붙입니다. */
+html.scroll-locked {
+  overflow: hidden;
+}
+
 :root {
   background-color: #f9fafb;
 }

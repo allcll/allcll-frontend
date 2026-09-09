@@ -1,6 +1,6 @@
 import { Dialog, Button, Flex, SupportingText } from '@allcll/allcll-ui';
 import { EnglishCriteriaContent } from '@allcll/common';
-import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
+import useScrollLock from '@/shared/lib/useScrollLock';
 import type { CertificationCriteriaData } from '@/entities/graduation/api/graduation';
 
 interface ICertificationEditModalProps {
@@ -24,7 +24,7 @@ function CertificationEditModal({
   onClose,
   onConfirm,
 }: Readonly<ICertificationEditModalProps>) {
-  useBodyScrollLock(isOpen);
+  useScrollLock(isOpen);
 
   const prompt = currentIsPassed ? '위 기준을 충족하지 못하셨나요?' : '위 기준을 충족하셨나요?';
   const confirmLabel = currentIsPassed ? '네, 충족하지 못했어요' : '네, 충족했어요';
