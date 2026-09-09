@@ -19,5 +19,3 @@ export function stepForError(error: Error): JolupSteps {
       return JolupSteps.LOGIN;
   }
 }
-
-export default stepForError;
