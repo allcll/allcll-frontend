@@ -1,0 +1,32 @@
+<!-- 몸체는 currentColor 로 부모의 색을 따르고, 창과 입구는 스테이지 배경색(gray-50)으로 뚫어 낸다 -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 112" width="48" height="112" shape-rendering="crispEdges">
+  <!-- 피라미드 지붕 -->
+  <rect x="22" y="0" width="4" height="4" fill="currentColor" />
+  <rect x="18" y="4" width="12" height="4" fill="currentColor" />
+  <rect x="14" y="8" width="20" height="4" fill="currentColor" />
+  <rect x="12" y="12" width="24" height="4" fill="currentColor" />
+
+  <!-- 엠블럼 밴드 -->
+  <rect x="14" y="16" width="20" height="8" fill="currentColor" />
+  <rect x="22" y="18" width="4" height="4" fill="#f9fafb" />
+
+  <!-- 종루: 아치 창 3개 -->
+  <rect x="14" y="24" width="20" height="16" fill="currentColor" />
+  <rect x="16" y="28" width="4" height="10" fill="#f9fafb" />
+  <rect x="17" y="27" width="2" height="1" fill="#f9fafb" />
+  <rect x="22" y="28" width="4" height="10" fill="#f9fafb" />
+  <rect x="23" y="27" width="2" height="1" fill="#f9fafb" />
+  <rect x="28" y="28" width="4" height="10" fill="#f9fafb" />
+  <rect x="29" y="27" width="2" height="1" fill="#f9fafb" />
+
+  <!-- 코니스(띠) -->
+  <rect x="12" y="40" width="24" height="3" fill="currentColor" />
+
+  <!-- 길고 좁은 탑신 -->
+  <rect x="16" y="43" width="16" height="57" fill="currentColor" />
+  <rect x="22" y="52" width="4" height="6" fill="#f9fafb" />
+
+  <!-- 기단 (가운데는 입구로 뚫려 있어 캐릭터가 스며들 듯 들어간다) -->
+  <rect x="14" y="100" width="7" height="12" fill="currentColor" />
+  <rect x="27" y="100" width="7" height="12" fill="currentColor" />
+</svg>
