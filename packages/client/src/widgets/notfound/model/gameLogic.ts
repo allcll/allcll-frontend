@@ -3,8 +3,8 @@ import {
   AIR_TIME,
   CLOUD_INITIAL_LAYOUT,
   CLOUD_RESPAWN_X_SPREAD,
+  CLOUD_RESPAWN_Y_MAX,
   CLOUD_RESPAWN_Y_MIN,
-  CLOUD_RESPAWN_Y_SPREAD,
   CLOUD_SPEED_RATIO,
   CLOUD_WIDTH,
   ENDING_APPROACH_SPEED,
@@ -36,6 +36,14 @@ const JUMP_ROTATION = 90;
 // 판이 바뀌어도 이어서 증가시켜, 다시 시작한 직후에도 이전 판과 같은 key 가 나오지 않게 합니다
 let obstacleId = 0;
 let cloudId = 0;
+
+/**
+ * min 이상 max 미만의 난수입니다.
+ * 장애물 간격과 구름 위치를 정하는 연출용이라 Math.random 으로 충분해, 여기서만 감싸 씁니다.
+ */
+function randomBetween(min: number, max: number): number {
+  return min + Math.random() * (max - min); // NOSONAR
+}
 
 /**
  * 목표값으로 부드럽게 다가가는 보간입니다.
@@ -128,17 +136,23 @@ function updateSpeed(game: IGameState, dt: number, towerRestX: number): void {
 }
 
 function spawnObstacle(game: IGameState, stageWidth: number): void {
-  const config = OBSTACLE_CONFIGS[Math.floor(Math.random() * OBSTACLE_CONFIGS.length)];
+  const config = OBSTACLE_CONFIGS[Math.floor(randomBetween(0, OBSTACLE_CONFIGS.length))];
   obstacleId += 1;
 
   game.obstacles = [...game.obstacles, { ...config, id: obstacleId, x: stageWidth }];
-  game.nextSpawnAt = game.distance + MIN_GAP_DISTANCE + Math.random() * (MAX_GAP_DISTANCE - MIN_GAP_DISTANCE);
+  game.nextSpawnAt = game.distance + randomBetween(MIN_GAP_DISTANCE, MAX_GAP_DISTANCE);
 }
 
 function updateObstacles(game: IGameState, moved: number, stageWidth: number): void {
-  game.obstacles = game.obstacles
-    .map(obstacle => ({ ...obstacle, x: obstacle.x - moved }))
-    .filter(obstacle => obstacle.x + obstacle.width > 0);
+  for (const obstacle of game.obstacles) {
+    obstacle.x -= moved;
+  }
+
+  // 위치는 제자리에서 바꾸고, 목록이 실제로 줄어들 때만 새 배열로 바꿔 화면을 다시 그리게 합니다
+  const visible = game.obstacles.filter(obstacle => obstacle.x + obstacle.width > 0);
+  if (visible.length !== game.obstacles.length) {
+    game.obstacles = visible;
+  }
 
   // 엔딩에 들어서면 새 장애물은 더 내보내지 않습니다
   if (game.phase !== 'none' || game.distance < game.nextSpawnAt) return;
@@ -146,17 +160,14 @@ function updateObstacles(game: IGameState, moved: number, stageWidth: number): v
 }
 
 function updateClouds(game: IGameState, moved: number, stageWidth: number): void {
-  game.clouds = game.clouds.map(cloud => {
-    const nextX = cloud.x - moved * CLOUD_SPEED_RATIO;
-    if (nextX + CLOUD_WIDTH > 0) return { ...cloud, x: nextX };
+  for (const cloud of game.clouds) {
+    cloud.x -= moved * CLOUD_SPEED_RATIO;
+    if (cloud.x + CLOUD_WIDTH > 0) continue;
 
     // 화면을 벗어난 구름은 오른쪽 밖에 다시 놓아 재활용합니다
-    return {
-      ...cloud,
-      x: stageWidth + Math.random() * CLOUD_RESPAWN_X_SPREAD,
-      y: CLOUD_RESPAWN_Y_MIN + Math.random() * CLOUD_RESPAWN_Y_SPREAD,
-    };
-  });
+    cloud.x = randomBetween(stageWidth, stageWidth + CLOUD_RESPAWN_X_SPREAD);
+    cloud.y = randomBetween(CLOUD_RESPAWN_Y_MIN, CLOUD_RESPAWN_Y_MAX);
+  }
 }
 
 function updateCollision(game: IGameState, dt: number): void {

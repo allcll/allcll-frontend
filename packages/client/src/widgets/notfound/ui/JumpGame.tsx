@@ -31,6 +31,8 @@ function JumpGame() {
     characterRef,
     groundTextureRef,
     towerRef,
+    registerObstacle,
+    registerCloud,
     handleAction,
   } = useJumpGame();
 
@@ -40,15 +42,7 @@ function JumpGame() {
   return (
     <div
       ref={stageRef}
-      tabIndex={0}
-      role="application"
-      aria-label="올클 점프 미니게임"
-      onClick={handleAction}
-      onTouchStart={event => {
-        event.preventDefault();
-        handleAction();
-      }}
-      className="relative w-full max-w-md overflow-hidden cursor-pointer select-none focus:outline-none"
+      className="relative w-full max-w-md overflow-hidden select-none"
       style={{ height: STAGE_HEIGHT }}
     >
       <div className="absolute inset-0 bg-gray-50" />
@@ -57,8 +51,9 @@ function JumpGame() {
         clouds.map(cloud => (
           <div
             key={cloud.id}
-            className={`absolute ${palette.cloud}`}
-            style={{ top: cloud.y, transform: `translateX(${cloud.x}px)`, willChange: 'transform' }}
+            ref={registerCloud(cloud.id)}
+            className={`absolute top-0 left-0 ${palette.cloud}`}
+            style={{ transform: `translate(${cloud.x}px, ${cloud.y}px)`, willChange: 'transform' }}
             aria-hidden
           >
             <CloudSvg width={CLOUD_WIDTH} height={CLOUD_HEIGHT} />
@@ -81,6 +76,7 @@ function JumpGame() {
         obstacles.map(obstacle => (
           <div
             key={obstacle.id}
+            ref={registerObstacle(obstacle.id)}
             className={`absolute left-0 ${palette.obstacle}`}
             style={{
               bottom: OBSTACLE_Y,
@@ -132,6 +128,14 @@ function JumpGame() {
           <BellTowerSvg width="100%" height="100%" />
         </div>
       )}
+
+      {/* 스테이지 전체가 조작 영역입니다. 버튼으로 두면 포커스와 Space·Enter 입력을 브라우저가 처리합니다 */}
+      <button
+        type="button"
+        aria-label="올클 점프 미니게임"
+        onClick={handleAction}
+        className="absolute inset-0 cursor-pointer touch-manipulation"
+      />
 
       {gameStatus === 'gameOver' && <GameResultOverlay message="GAME OVER" onRestart={handleAction} />}
       {gameStatus === 'cleared' && <GameResultOverlay message="CLEAR!" onRestart={handleAction} />}

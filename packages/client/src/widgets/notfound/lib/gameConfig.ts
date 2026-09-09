@@ -79,7 +79,7 @@ export const CLOUD_INITIAL_LAYOUT = [
 /** 화면 밖으로 나간 구름을 오른쪽에 다시 놓을 때 쓰는 무작위 범위 */
 export const CLOUD_RESPAWN_X_SPREAD = 200;
 export const CLOUD_RESPAWN_Y_MIN = 12;
-export const CLOUD_RESPAWN_Y_SPREAD = 40;
+export const CLOUD_RESPAWN_Y_MAX = 52;
 
 // --- 엔딩 ---
 
