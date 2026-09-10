@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import SejongUI from '@allcll/sejong-ui';
-import { CheckmarkFilledIcon, WarningFilledIcon } from '@allcll/allcll-ui';
+import { CheckmarkOutlineIcon, WarningIcon } from '@allcll/allcll-ui';
 import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
 import useSimulationSubjectStore from '@/features/simulation/model/useSimulationSubject.ts';
 import useSimulationProcessStore from '@/features/simulation/model/useSimulationProcess.ts';
@@ -230,9 +230,9 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
         <div className={`px-6 pb-6 items-center flex-col flex ${getMinHeightClass(modalStatus)}`}>
           <div className="flex justify-center mb-2 py-2">
             {modalData.status === APPLY_STATUS.SUCCESS || modalData.status === APPLY_STATUS.PROGRESS ? (
-              <CheckmarkFilledIcon className="w-12 h-12" fill="#7890CE" />
+              <CheckmarkOutlineIcon className="w-12 h-12 text-[#7890CE]" />
             ) : (
-              <WarningFilledIcon className="w-12 h-12" fill="#C4C4C4" />
+              <WarningIcon className="w-12 h-12 text-[#C4C4C4]" />
             )}
           </div>
           <p className="text-gray-700 text-sm mb-4">{modalData.topMessage}</p>

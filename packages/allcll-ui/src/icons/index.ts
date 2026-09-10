@@ -1,34 +1,31 @@
-export type { CarbonIconProps as IconProps } from '@carbon/icons-react';
+export type { LucideProps as IconProps } from 'lucide-react';
 
 /* 커스텀 아이콘 */
-export { LogoKakaoTalkIcon } from './custom';
+export { LogoKakaoTalkIcon, LogoGithubIcon, LogoInstagramIcon, NotificationFilledIcon, StarFilledIcon } from './custom';
 
 export {
   /* 액션 --------------------------------------------------------------- */
-  Close as CloseIcon,
-  Add as AddIcon,
-  Edit as EditIcon,
-  TrashCan as TrashCanIcon,
+  X as CloseIcon,
+  Plus as AddIcon,
+  Pencil as EditIcon,
+  Trash as TrashCanIcon,
   Save as SaveIcon,
   Download as DownloadIcon,
   Upload as UploadIcon,
-  Reset as ResetIcon,
-  Renew as RenewIcon,
+  RotateCcw as ResetIcon,
+  RefreshCw as RenewIcon,
   Link as LinkIcon,
-  Launch as LaunchIcon,
+  ExternalLink as LaunchIcon,
 
   /* 상태 표시 ---------------------------------------------------------- */
-  Checkmark as CheckmarkIcon,
-  CheckmarkOutline as CheckmarkOutlineIcon,
-  CheckmarkFilled as CheckmarkFilledIcon,
-  Misuse as MisuseIcon,
-  Warning as WarningIcon,
-  WarningFilled as WarningFilledIcon,
-  WarningAlt as WarningAltIcon,
-  Error as ErrorIcon,
-  ErrorFilled as ErrorFilledIcon,
-  Time as TimeIcon,
-  Cursor_1 as CursorIcon,
+  Check as CheckmarkIcon,
+  CircleCheck as CheckmarkOutlineIcon,
+  CircleX as MisuseIcon,
+  CircleAlert as WarningIcon,
+  TriangleAlert as WarningAltIcon,
+  Ban as ErrorIcon,
+  Clock as TimeIcon,
+  MousePointer2 as CursorIcon,
 
   /* 방향 --------------------------------------------------------------- */
   ChevronDown as ChevronDownIcon,
@@ -37,44 +34,39 @@ export {
   ArrowRight as ArrowRightIcon,
 
   /* 알림 --------------------------------------------------------------- */
-  Notification as NotificationIcon,
-  NotificationFilled as NotificationFilledIcon,
-  NotificationOff as NotificationOffIcon,
+  Bell as NotificationIcon,
+  BellOff as NotificationOffIcon,
 
   /* 탐색 --------------------------------------------------------------- */
   Search as SearchIcon,
-  Home as HomeIcon,
+  House as HomeIcon,
   Menu as MenuIcon,
   List as ListIcon,
-  ListBulleted as ListBulletedIcon,
-  ListNumbered as ListNumberedIcon,
+  List as ListBulletedIcon,
+  ListOrdered as ListNumberedIcon,
 
   /* 필터 · 설정 -------------------------------------------------------- */
-  Filter as FilterIcon,
-  FilterRemove as FilterRemoveIcon,
+  Funnel as FilterIcon,
+  FunnelX as FilterRemoveIcon,
   Settings as SettingsIcon,
-  SettingsAdjust as SettingsAdjustIcon,
+  SlidersHorizontal as SettingsAdjustIcon,
 
   /* 표시 · 즐겨찾기 ----------------------------------------------------- */
-  View as ViewIcon,
-  ViewOff as ViewOffIcon,
+  Eye as ViewIcon,
+  EyeOff as ViewOffIcon,
   Star as StarIcon,
-  StarFilled as StarFilledIcon,
+  CircleUser as UserAvatarIcon,
 
   /* 도움말 ------------------------------------------------------------- */
-  Help as HelpIcon,
+  CircleQuestionMark as HelpIcon,
+  MessageCircleQuestionMark as ChatHelpIcon,
   Headset as HeadsetIcon,
 
   /* 문서 · 에디터 ------------------------------------------------------- */
-  Document as DocumentIcon,
+  FileText as DocumentIcon,
   Book as BookIcon,
   Code as CodeIcon,
-  TextBold as TextBoldIcon,
-  TextItalic as TextItalicIcon,
-  Quotes as QuotesIcon,
-
-  /* 사용자 · 브랜드 ----------------------------------------------------- */
-  UserAvatarFilled as UserAvatarFilledIcon,
-  LogoGithub as LogoGithubIcon,
-  LogoInstagram as LogoInstagramIcon,
-} from '@carbon/icons-react';
+  Bold as TextBoldIcon,
+  Italic as TextItalicIcon,
+  Quote as QuotesIcon,
+} from 'lucide-react';

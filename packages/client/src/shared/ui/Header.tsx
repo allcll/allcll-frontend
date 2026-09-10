@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import LogoCI from '@/assets/logo/ci-summer.svg?react';
 import LogoName from '@/assets/logo/logo-name-summer.svg?react';
-import { HeadsetIcon, HelpIcon, MenuIcon } from '@allcll/allcll-ui';
+import { ChatHelpIcon, HeadsetIcon, MenuIcon } from '@allcll/allcll-ui';
 import { IconButton, Badge } from '@allcll/allcll-ui';
 import NoticeBell from '@/features/notices/ui/NoticeBell';
 import MobileMenu from './MobileMenu';
@@ -23,7 +23,7 @@ export const ButtonContents = [
     path: 'https://forms.gle/bCDTVujEHunnvHe88',
   },
   {
-    icon: <HelpIcon className="w-4 h-4 text-gray-500" />,
+    icon: <ChatHelpIcon className="w-4 h-4 text-gray-500" />,
     title: '공지 채팅방',
     path: 'https://open.kakao.com/o/g3MztXfh',
   },

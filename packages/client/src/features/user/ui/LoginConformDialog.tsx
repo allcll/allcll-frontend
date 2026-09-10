@@ -1,6 +1,6 @@
 import { Button, Checkbox, Dialog, Flex, SupportingText } from '@allcll/allcll-ui';
 import { useState } from 'react';
-import { WarningFilledIcon } from '@allcll/allcll-ui';
+import { WarningIcon } from '@allcll/allcll-ui';
 
 interface ILoginConfirmationDialog {
   isOpen: boolean;
@@ -23,7 +23,7 @@ function LoginConfirmationDialog({ isOpen, onClose, onConfirm, isPending }: ILog
     <Dialog isOpen={isOpen} title="로그인 확인" onClose={onClose}>
       <Dialog.Content>
         <Flex direction="flex-col" align="items-center" gap="gap-4" className="py-4 min-w-[250px] px-6">
-          <WarningFilledIcon className="w-12 h-12 mx-auto text-gray-300" />
+          <WarningIcon className="w-12 h-12 mx-auto text-gray-300" />
           <p className="font-semibold text-gray-800 text-lg">학사정보시스템 로그아웃 안내</p>
           <SupportingText className="text-center">
             ALLCLL 로그인 시 <span className="text-secondary-500 font-semibold">학사정보시스템에서 로그아웃</span>
