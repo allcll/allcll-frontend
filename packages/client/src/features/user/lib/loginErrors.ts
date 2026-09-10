@@ -32,33 +32,33 @@ const INQUIRY_ACTION: LoginErrorAction = { label: '문의하기', href: 'https:/
  */
 const PORTAL_UNAVAILABLE_VIEW: LoginErrorView = {
   tone: 'neutral',
-  title: '지금 세종대 포털이 응답하지 않습니다',
-  description: '잠시 후 다시 시도해주세요.',
+  title: '세종대 포털 응답 없음',
+  description: '현재 세종대 포털에서 응답을 받아올 수 없습니다. 잠시 후 다시 시도해주세요.',
 };
 
 /** 백엔드 에러 코드별로 로그인 화면에 보여줄 내용입니다. */
 const LOGIN_ERROR_VIEWS: Record<string, LoginErrorView> = {
   SEJONG_LOGIN_FAIL: {
     tone: 'error',
-    title: '학번 또는 비밀번호가 올바르지 않습니다',
+    title: '학번 또는 비밀번호 오류',
     description: '세종대 포털에서 로그인이 되는지 먼저 확인해보세요.',
   },
   SEJONG_PRIVACY_CONSENT_REQUIRED: {
     tone: 'error',
-    title: '개인정보 수집동의가 필요합니다',
-    description: '세종대 포털에 로그인하면 동의 화면이 나옵니다. 동의하신 뒤 다시 시도해주세요.',
+    title: '개인정보 수집 동의 필요',
+    description: '세종대 포털에서 개인정보 수집 동의 후 다시 시도해주세요.',
     action: PORTAL_ACTION,
   },
   SEJONG_PASSWORD_CHANGE_REQUIRED: {
     tone: 'error',
-    title: '비밀번호 변경이 필요합니다',
-    description: '세종대 포털에 로그인하면 변경 화면이 나옵니다. 변경하신 뒤 다시 시도해주세요.',
+    title: '비밀번호 변경 필요',
+    description: '세종대 포털에서 비밀번호 변경 후 다시 시도해주세요.',
     action: PORTAL_ACTION,
   },
   SEJONG_ACCOUNT_LOCKED: {
     tone: 'error',
-    title: '세종대 포털에서 계정 상태를 확인해주세요',
-    description: '정지된 계정일 수 있습니다. 포털에 로그인해 확인해주세요.',
+    title: '계정 상태 확인 필요',
+    description: '계정 상태가 올바른지 포털에서 확인 후 다시 시도해주세요.',
     action: PORTAL_ACTION,
   },
   SEJONG_LOGIN_IO_ERROR: PORTAL_UNAVAILABLE_VIEW,
@@ -66,22 +66,21 @@ const LOGIN_ERROR_VIEWS: Record<string, LoginErrorView> = {
   USER_INFO_FETCH_FAIL: PORTAL_UNAVAILABLE_VIEW,
   DEPARTMENT_NOT_FOUND: {
     tone: 'error',
-    title: '학과 정보를 찾지 못했습니다',
-    description:
-      '로그인은 되었지만 학과 정보가 등록되어 있지 않습니다. 다시 시도해도 같은 결과라, 문의를 남겨주시면 확인 후 추가해드리겠습니다.',
+    title: '학과 정보 미등록',
+    description: '학과 정보가 등록되어 있지 않습니다. 문의를 남겨주시면 확인 후 등록해드리겠습니다.',
     action: INQUIRY_ACTION,
   },
 };
 
 const FALLBACK_VIEW: LoginErrorView = {
   tone: 'error',
-  title: '로그인에 실패했습니다',
+  title: '로그인 실패',
   description: '잠시 후 다시 시도해주세요.',
 };
 
 const NETWORK_VIEW: LoginErrorView = {
   tone: 'neutral',
-  title: '네트워크에 연결하지 못했습니다',
+  title: '네트워크 연결 없음',
   description: '연결 상태를 확인한 뒤 다시 시도해주세요.',
 };
 
