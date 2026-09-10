@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ApiError } from '@/shared/lib/errors.ts';
 import { JolupSteps, useJolupStore } from '../../model/useJolupStore';
 import { stepForError } from '../../lib/stepForError.ts';
 
@@ -24,7 +25,8 @@ class StepErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error) {
     const { setStep } = useJolupStore.getState();
 
-    setStep(stepForError(error));
+    // 렌더 중 터진 오류는 로그인과 무관하니 다시 로그인시키지 않습니다.
+    setStep(error instanceof ApiError ? stepForError(error) : JolupSteps.FILE_UPLOAD);
   }
 
   componentDidUpdate(prevProps: Props) {
