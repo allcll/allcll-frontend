@@ -29,6 +29,7 @@ import {
   useGraduationCourses,
 } from '@/entities/graduation/model/useGraduation';
 import LogoutButton from '@/features/user/ui/LogoutButton';
+import { useJolupStore } from '@/features/graduation/model/useJolupStore';
 import { useGraduationDashboard } from '@/features/graduation/model/useGraduationDashboard';
 import { useGraduationConfetti } from '@/features/graduation/lib/useGraduationConfetti';
 import useFeedbackTrigger from '@/features/feedback/lib/FeedbackTrigger';
@@ -251,6 +252,8 @@ function GraduationDashboardPage() {
             <LogoutButton
               size="small"
               onSuccess={() => {
+                // 스텝이 남아 있으면 뒤따르는 401 이 세션 만료로 안내됩니다.
+                useJolupStore.getState().reset();
                 queryClient.removeQueries({ queryKey: graduationQueryKeys.all });
                 navigate('/graduation');
               }}

@@ -1,15 +1,16 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import ReactGA from 'react-ga4';
 import Clarity from '@microsoft/clarity';
 import Sentry from '@/app/config/sentry.ts';
+import { createQueryClient } from '@/app/config/queryClient.ts';
 import router from '@/app/routing';
 import './index.css';
 import { PopoverGroup } from '@allcll/allcll-ui';
 
-const queryClient = new QueryClient();
+const queryClient = createQueryClient();
 const UsingMockServer = import.meta.env.VITE_USE_MOCK === 'true';
 const isProduction = process.env.NODE_ENV === 'production';
 const isDevServer = import.meta.env.VITE_DEV_SERVER === 'true';
@@ -23,7 +24,7 @@ if (isProduction && !isDevServer) {
 }
 
 if (!isProduction || !isDevServer) {
-  // @ts-ignore
+  // @ts-expect-error devtools 연동을 위해 전역에 queryClient 를 노출합니다
   window.__TANSTACK_QUERY_CLIENT__ = queryClient;
 }
 
