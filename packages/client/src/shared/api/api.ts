@@ -1,5 +1,5 @@
 import { ApiError } from '@/shared/lib/errors.ts';
-import { ApiException } from '@/shared/model/types.ts';
+import type { ApiException } from '@/shared/model/types.ts';
 
 const BaseUrl = import.meta.env.VITE_API_BASE_URL ?? '';
 const Base = (import.meta.env.VITE_BASE ?? '').replace(/\/$/, '');

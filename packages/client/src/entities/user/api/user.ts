@@ -1,5 +1,5 @@
 import { fetchJsonOnAPI, fetchOnAPI, fetchDeleteJsonOnAPI, throwApiError } from '@/shared/api/api.ts';
-import { LoginRequest, UpdateMeRequest, UserResponse } from '@/entities/user/model/types.ts';
+import type { LoginRequest, UpdateMeRequest, UserResponse } from '@/entities/user/model/types.ts';
 
 //TODO: features로 폴더 이동 고려
 export const postLogin = async ({ studentId, password }: LoginRequest): Promise<void> => {

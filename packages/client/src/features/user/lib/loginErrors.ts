@@ -3,16 +3,16 @@ import { ApiError } from '@/shared/lib/errors.ts';
 export type LoginErrorTone = 'error' | 'neutral';
 
 /** 포털에 나가야만 풀리는 경우에만 붙입니다. */
-export interface LoginErrorAction {
+export interface ILoginErrorAction {
   label: string;
   href: string;
 }
 
-export interface LoginErrorView {
+export interface ILoginErrorView {
   tone: LoginErrorTone;
   title: string;
   description: string;
-  action?: LoginErrorAction;
+  action?: ILoginErrorAction;
 }
 
 /**
@@ -22,22 +22,22 @@ export interface LoginErrorView {
 const SEJONG_PORTAL_LOGIN =
   'https://portal.sejong.ac.kr/jsp/login/loginSSL.jsp?rtUrl=portal.sejong.ac.kr/comm/member/user/ssoLoginProc.do';
 
-const PORTAL_ACTION: LoginErrorAction = { label: '세종대 포털로 이동', href: SEJONG_PORTAL_LOGIN };
-const INQUIRY_ACTION: LoginErrorAction = { label: '문의하기', href: 'https://forms.gle/bCDTVujEHunnvHe88' };
+const PORTAL_ACTION: ILoginErrorAction = { label: '세종대 포털로 이동', href: SEJONG_PORTAL_LOGIN };
+const INQUIRY_ACTION: ILoginErrorAction = { label: '문의하기', href: 'https://forms.gle/bCDTVujEHunnvHe88' };
 
 /**
  * 포털에서 정보를 받아오지 못한 경우입니다.
  * 로그인 요청과 정보 조회 중 어디서 끊겼든 기다렸다 다시 하는 것 말고는 할 수 있는 게 없어,
  * 세 코드가 같은 화면을 씁니다.
  */
-const PORTAL_UNAVAILABLE_VIEW: LoginErrorView = {
+const PORTAL_UNAVAILABLE_VIEW: ILoginErrorView = {
   tone: 'neutral',
   title: '세종대 포털 응답 없음',
   description: '현재 세종대 포털에서 응답을 받아올 수 없습니다. 잠시 후 다시 시도해주세요.',
 };
 
 /** 백엔드 에러 코드별로 로그인 화면에 보여줄 내용입니다. */
-const LOGIN_ERROR_VIEWS: Record<string, LoginErrorView> = {
+const LOGIN_ERROR_VIEWS: Record<string, ILoginErrorView> = {
   SEJONG_LOGIN_FAIL: {
     tone: 'error',
     title: '학번 또는 비밀번호 오류',
@@ -72,20 +72,20 @@ const LOGIN_ERROR_VIEWS: Record<string, LoginErrorView> = {
   },
 };
 
-const FALLBACK_VIEW: LoginErrorView = {
+const FALLBACK_VIEW: ILoginErrorView = {
   tone: 'error',
   title: '로그인 실패',
   description: '잠시 후 다시 시도해주세요.',
 };
 
-const NETWORK_VIEW: LoginErrorView = {
+const NETWORK_VIEW: ILoginErrorView = {
   tone: 'neutral',
   title: '네트워크 연결 없음',
   description: '연결 상태를 확인한 뒤 다시 시도해주세요.',
 };
 
 /** 로그인 실패 에러를 화면에 보여줄 형태로 바꿉니다. */
-export function toLoginErrorView(error: Error): LoginErrorView {
+export function toLoginErrorView(error: Error): ILoginErrorView {
   // fetch 자체가 실패하면 응답이 없어서 ApiError 로 오지 않습니다.
   if (error instanceof TypeError) {
     return NETWORK_VIEW;

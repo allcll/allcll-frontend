@@ -1,9 +1,9 @@
 import { Button, Flex, Heading } from '@allcll/allcll-ui';
 import ImportantSvg from '@/assets/important.svg?react';
-import { LoginErrorView } from '../lib/loginErrors.ts';
+import type { ILoginErrorView } from '../lib/loginErrors.ts';
 
 interface ILoginErrorNoticeProps {
-  view: LoginErrorView;
+  view: ILoginErrorView;
   /** 입력칸이 aria-describedby 로 가리키는 설명 문단의 id 입니다. */
   descriptionId: string;
 }
@@ -31,7 +31,7 @@ function LoginErrorNotice({ view, descriptionId }: ILoginErrorNoticeProps) {
 
   // role="alert" 는 LoginForm 의 상시 컨테이너가 들고 있습니다.
   return (
-    <div className={`flex items-start gap-2 rounded-md border p-3 ${tone.box}`}>
+    <Flex align="items-start" gap="gap-2" className={`rounded-md border p-3 ${tone.box}`}>
       {/* 뜻은 문구가 전달하므로 읽지 않습니다. */}
       <ImportantSvg aria-hidden="true" className={`w-4 h-4 mt-0.5 shrink-0 ${tone.icon}`} />
 
@@ -62,7 +62,7 @@ function LoginErrorNotice({ view, descriptionId }: ILoginErrorNoticeProps) {
           </div>
         )}
       </Flex>
-    </div>
+    </Flex>
   );
 }
 

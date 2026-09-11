@@ -8,9 +8,9 @@ import EyeOpenIcon from '@/assets/eye-gray.svg?react';
 import EyeClosedIcon from '@/assets/eye-delete-gray.svg?react';
 import LoginConfirmationDialog from './LoginConformDialog';
 import LoginErrorNotice from './LoginErrorNotice';
-import { LoginErrorView, toLoginErrorView } from '../lib/loginErrors.ts';
+import { type ILoginErrorView, toLoginErrorView } from '../lib/loginErrors.ts';
 
-interface LoginFormProps {
+interface ILoginFormProps {
   onSuccess?: () => void;
   /**
    * 학과를 못 찾았을 때 다음 단계로 넘기는 콜백입니다.
@@ -19,9 +19,9 @@ interface LoginFormProps {
   onDepartmentNotFound?: () => void;
 }
 
-function LoginForm({ onSuccess }: LoginFormProps) {
+function LoginForm({ onSuccess }: ILoginFormProps) {
   const [showPassword, setShowPassword] = useState(false);
-  const [errorView, setErrorView] = useState<LoginErrorView | null>(null);
+  const [errorView, setErrorView] = useState<ILoginErrorView | null>(null);
   const errorDescriptionId = useId();
   const { values, errors, touched, onChange, onBlur, submit, isValid, clearField } = useLoginForm();
 
