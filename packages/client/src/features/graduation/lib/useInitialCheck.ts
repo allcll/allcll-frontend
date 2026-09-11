@@ -8,7 +8,8 @@ import { stepForError } from './stepForError.ts';
 export function useInitialGraduationCheck(isRetry: boolean = false, skipInfo: boolean = false) {
   const queryClient = useQueryClient();
   const query = useQuery({
-    queryKey: ['initial', 'graduationCheck'],
+    // 로그아웃처럼 졸업 캐시를 비우는 곳에서 같이 지워지도록 graduation 아래에 둡니다.
+    queryKey: [...graduationQueryKeys.all, 'initialCheck'],
     queryFn: fetchGraduationCheck,
     refetchOnWindowFocus: false,
     retry: false,
