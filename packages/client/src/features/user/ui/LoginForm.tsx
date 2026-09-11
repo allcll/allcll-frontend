@@ -72,6 +72,11 @@ function LoginForm({ onSuccess }: LoginFormProps) {
           </SupportingText>
         </Flex>
 
+        {/* 요소와 내용이 같이 생기면 스크린리더가 놓쳐서 빈 채로 자리를 지킵니다. 비어 있을 땐 여백을 없앱니다. */}
+        <div role="alert" className="mt-4 mb-6 empty:m-0">
+          {errorView && <LoginErrorNotice view={errorView} descriptionId={errorDescriptionId} />}
+        </div>
+
         <form onSubmit={submit(interceptSubmit)} className="flex flex-col gap-6">
           <TextField
             label="학번"
@@ -101,11 +106,6 @@ function LoginForm({ onSuccess }: LoginFormProps) {
                 className="absolute right-8 top-11"
               />
             )}
-          </div>
-
-          {/* 요소와 내용이 같이 생기면 스크린리더가 놓쳐서, 빈 채로 자리를 지킵니다. */}
-          <div role="alert">
-            {errorView && <LoginErrorNotice view={errorView} descriptionId={errorDescriptionId} />}
           </div>
 
           <Flex direction="flex-col" gap="gap-2">
