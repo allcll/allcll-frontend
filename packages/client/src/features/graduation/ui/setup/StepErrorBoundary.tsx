@@ -25,7 +25,7 @@ class StepErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error) {
     const { setStep } = useJolupStore.getState();
 
-    // 렌더 중 터진 오류는 로그인과 무관하니 다시 로그인시키지 않습니다.
+    // 서버 응답이 아닌 오류는 로그인과 무관해 파일 업로드로 보내고, API 오류는 useInitialCheck 와 같은 기준으로 보냅니다.
     setStep(error instanceof ApiError ? stepForError(error) : JolupSteps.FILE_UPLOAD);
   }
 
