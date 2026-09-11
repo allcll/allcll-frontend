@@ -80,8 +80,8 @@ export interface IWishesInfo {
  * finish: 결과 모달 */
 export type SimulationStatusType = 'before' | 'start' | 'progress' | 'finish';
 
-/** API 대한 에러 타입 */
+/** API 대한 에러 타입. 응답 본문을 그대로 단언해 쓰는 자리라 두 필드 모두 없을 수 있습니다. */
 export interface ApiException {
-  code: string;
-  message: string;
+  code?: string;
+  message?: string;
 }

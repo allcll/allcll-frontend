@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAdmissionYearDepartments, graduationQueryKeys } from '@/entities/graduation/model/useGraduation';
 import { useUpdateMe, useDeleteMe } from '@/entities/user/model/useAuth';
+import { useJolupStore } from '../model/useJolupStore';
 import type { MajorType, UpdateMeRequest, UserResponse } from '@/entities/user/model/types';
 
 export function useEditProfileForm(user: UserResponse, isOpen: boolean, onClose: () => void) {
@@ -13,9 +14,8 @@ export function useEditProfileForm(user: UserResponse, isOpen: boolean, onClose:
   const { data: departments } = useAdmissionYearDepartments();
 
   const deptNames =
-    departments
-      ?.filter(dept => dept.departmentCode !== '9005')
-      .map(dept => dept.departmentName || '학과 정보 없음') ?? [];
+    departments?.filter(dept => dept.departmentCode !== '9005').map(dept => dept.departmentName || '학과 정보 없음') ??
+    [];
   const deptOptions = deptNames.map(name => ({ value: name, label: name }));
 
   const [majorType, setMajorType] = useState<MajorType>(user.majorType);
@@ -44,7 +44,12 @@ export function useEditProfileForm(user: UserResponse, isOpen: boolean, onClose:
       return;
     }
 
-    if (!window.confirm('학과 정보가 변경되어 졸업 요건 분석을 위해 기이수 성적 파일을 다시 업로드해야 합니다. 계속하시겠습니까?')) return;
+    if (
+      !window.confirm(
+        '학과 정보가 변경되어 졸업 요건 분석을 위해 기이수 성적 파일을 다시 업로드해야 합니다. 계속하시겠습니까?',
+      )
+    )
+      return;
 
     const isChangingToSingle = majorType === 'SINGLE' && user.majorType !== 'SINGLE';
 
@@ -68,6 +73,8 @@ export function useEditProfileForm(user: UserResponse, isOpen: boolean, onClose:
 
     deleteMeMutation.mutate(undefined, {
       onSuccess: () => {
+        // 스텝이 남아 있으면 뒤따르는 401 이 세션 만료로 안내됩니다.
+        useJolupStore.getState().reset();
         queryClient.invalidateQueries({ queryKey: graduationQueryKeys.all });
         onClose();
         navigate('/');

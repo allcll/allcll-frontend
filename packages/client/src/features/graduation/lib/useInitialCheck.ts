@@ -3,11 +3,13 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchGraduationCheck } from '@/entities/graduation/api/graduation';
 import { graduationQueryKeys } from '@/entities/graduation/model/useGraduation';
 import { JolupSteps } from '../model/useJolupStore';
+import { stepForError } from './stepForError.ts';
 
 export function useInitialGraduationCheck(isRetry: boolean = false, skipInfo: boolean = false) {
   const queryClient = useQueryClient();
   const query = useQuery({
-    queryKey: ['initial', 'graduationCheck'],
+    // 로그아웃처럼 졸업 캐시를 비우는 곳에서 같이 지워지도록 graduation 아래에 둡니다.
+    queryKey: [...graduationQueryKeys.all, 'initialCheck'],
     queryFn: fetchGraduationCheck,
     refetchOnWindowFocus: false,
     retry: false,
@@ -39,24 +41,7 @@ function determineStep(
   skipInfo: boolean,
 ): JolupSteps {
   if (isError && error) {
-    const message = error.message;
-
-    if (message.includes('401') || message.includes('Unauthorized') || message.includes('접근 권한')) {
-      return JolupSteps.LOGIN;
-    }
-    if (message.includes('학과') || message.includes('Major') || message.includes('기본 정보')) {
-      return JolupSteps.DEPARTMENT_INFO;
-    }
-
-    if (message.includes('결과')) {
-      return JolupSteps.FILE_UPLOAD;
-    }
-
-    if (message.includes('GRADUATION_CHECK_NOT_FOUND') || message.includes('검사 결과를 찾을 수 없습니다')) {
-      return JolupSteps.DEPARTMENT_INFO;
-    }
-
-    return JolupSteps.LOGIN;
+    return stepForError(error);
   }
 
   if (hasData) {
