@@ -9,7 +9,7 @@ interface IAlarmButton {
 function AlarmButton({ alarmOnly, setFilter }: IAlarmButton) {
   return (
     <Button variant="outlined" size="medium" onClick={() => setFilter('alarmOnly', !alarmOnly)}>
-      <NotificationFilledIcon className={alarmOnly ? 'text-blue-500' : 'text-gray-400'} />
+      <NotificationFilledIcon className={`w-4 h-4 ${alarmOnly ? 'text-blue-500' : 'text-gray-400'}`} />
       알림과목
     </Button>
   );

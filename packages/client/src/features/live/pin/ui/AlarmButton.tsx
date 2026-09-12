@@ -39,7 +39,7 @@ function AlarmButton({ subject, variant = 'contain', className, onClick, ...prop
       title={title}
       variant={variant === 'contain' ? 'contain' : 'plain'}
       onClick={handlePin}
-      icon={<NotificationFilledIcon className={isPinned ? 'text-blue-500' : 'text-gray-400'} />}
+      icon={<NotificationFilledIcon className={`w-4 h-4 ${isPinned ? 'text-blue-500' : 'text-gray-400'}`} />}
       className={className}
       {...props}
     />

@@ -105,7 +105,7 @@ function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
           aria-label={isPinned ? '알림 과목 해제' : '알림 과목 등록'}
           onClick={handlePin}
         >
-          <NotificationFilledIcon className={isPinned ? 'text-blue-500' : 'text-gray-400'} />
+          <NotificationFilledIcon className={`w-4 h-4 ${isPinned ? 'text-blue-500' : 'text-gray-400'}`} />
         </button>
       </td>
       <td className="px-2 py-2 text-center">
