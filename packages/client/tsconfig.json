@@ -30,12 +30,5 @@
       "@allcll/common/*": ["../common/src/*"]
     }
   },
-  "include": [
-    "src",
-    "vite.config.ts",
-    "svg.d.ts",
-    "tailwind.config.js",
-    "../common/index.ts",
-    "../common/src"
-  ]
+  "include": ["src", "vite.config.ts", "tailwind.config.js", "../common/index.ts", "../common/src"]
 }
