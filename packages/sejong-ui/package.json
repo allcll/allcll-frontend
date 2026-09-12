@@ -4,6 +4,9 @@
   "version": "0.0.1",
   "type": "module",
   "sideEffects": false,
+  "dependencies": {
+    "@allcll/allcll-ui": "workspace:^"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b",

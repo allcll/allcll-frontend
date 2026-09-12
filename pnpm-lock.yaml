@@ -358,6 +358,10 @@ importers:
         version: 2.12.10(@types/node@24.10.13)(typescript@5.9.3)
 
   packages/sejong-ui:
+    dependencies:
+      '@allcll/allcll-ui':
+        specifier: workspace:^
+        version: link:../allcll-ui
     devDependencies:
       '@chromatic-com/storybook':
         specifier: 4.1.2
