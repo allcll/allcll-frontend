@@ -2,7 +2,6 @@ import { ConfigEnv, defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import tailwindcss from '@tailwindcss/vite';
-import svgr from 'vite-plugin-svgr';
 import basicSsl from '@vitejs/plugin-basic-ssl';
 import dotenv from 'dotenv';
 
@@ -16,7 +15,7 @@ export default ({ mode }: ConfigEnv) => {
 
   return defineConfig({
     base,
-    plugins: [react(), tsconfigPaths(), tailwindcss(), svgr(), basicSsl()],
+    plugins: [react(), tsconfigPaths(), tailwindcss(), basicSsl()],
     server: {
       open: true,
       https: {
