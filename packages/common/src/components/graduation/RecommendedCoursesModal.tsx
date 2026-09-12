@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Dialog, Flex, Button } from '@allcll/allcll-ui';
+import { Dialog, Flex, Button, CheckmarkOutlineIcon, CircleOutlineIcon } from '@allcll/allcll-ui';
 import type { BalanceRequiredArea, CategoryType, CriteriaCategory, MissingCourse } from '../../types/graduation';
 import { BALANCE_AREA_LABELS, CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
 
@@ -52,18 +52,9 @@ function BalanceAreaContent({
             <div key={area.balanceRequiredArea}>
               <h4 className="flex items-center gap-2 text-sm font-semibold mb-2">
                 {isEarned ? (
-                  <svg
-                    className="w-4 h-4 text-primary-500 shrink-0"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
+                  <CheckmarkOutlineIcon className="w-4 h-4 text-primary-500 shrink-0" />
                 ) : (
-                  <svg className="w-4 h-4 text-gray-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <circle cx="12" cy="12" r="9" strokeWidth={2} />
-                  </svg>
+                  <CircleOutlineIcon className="w-4 h-4 text-gray-300 shrink-0" />
                 )}
                 <span className={isEarned ? 'text-primary-600' : 'text-gray-700'}>
                   {BALANCE_AREA_LABELS[area.balanceRequiredArea]}

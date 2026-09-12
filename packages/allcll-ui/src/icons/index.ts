@@ -20,6 +20,7 @@ export {
   /* 상태 표시 ---------------------------------------------------------- */
   Check as CheckmarkIcon,
   CircleCheck as CheckmarkOutlineIcon,
+  Circle as CircleOutlineIcon,
   CircleX as MisuseIcon,
   CircleAlert as WarningIcon,
   TriangleAlert as WarningAltIcon,
