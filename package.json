@@ -17,6 +17,8 @@
     "test": "pnpm -F @allcll/e2e run test",
     "test:ui": "pnpm -F @allcll/e2e run test:ui",
     "test:gen": "pnpm -F @allcll/e2e run test:gen",
+    "test:unit": "pnpm -F @allcll/common run test",
+    "test:unit:coverage": "pnpm -F @allcll/common run test:coverage && node scripts/generate-coverage-report.js",
     "sejongui": "pnpm -F @allcll/sejong-ui run storybook",
     "allcllui": "pnpm -F @allcll/allcll-ui run storybook",
     "prepare": "husky"
