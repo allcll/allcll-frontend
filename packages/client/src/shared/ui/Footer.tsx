@@ -1,8 +1,8 @@
 import { Link, NavLink } from 'react-router-dom';
 import { HeaderContents } from '@/shared/ui/Header.tsx';
 import { LogoGithubIcon, LogoInstagramIcon, LogoKakaoTalkIcon } from '@allcll/allcll-ui';
-import LogoCI from '@/assets/logo/ci-summer.svg?react';
-import LogoName from '@/assets/logo/logo-name-summer.svg?react';
+import logoCiUrl from '@/assets/logo/ci-summer.svg';
+import logoNameUrl from '@/assets/logo/logo-name-summer.svg';
 
 interface IFooterItem {
   title: string;
@@ -45,8 +45,8 @@ function Footer() {
       <div className="mx-auto max-w-7xl px-4 md:px-16 py-12 grid md:grid-cols-3 gap-6 text-center md:text-left">
         <div className="mx-auto md:mx-0">
           <div className="flex items-center mb-2 h-fit justify-center md:justify-start">
-            <LogoCI className="w-6 h-6 mr-2" />
-            <LogoName className="h-5 w-fit" />
+            <img src={logoCiUrl} alt="" className="w-6 h-6 mr-2" />
+            <img src={logoNameUrl} alt="" className="h-5 w-fit" />
           </div>
 
           <ul className="flex items-center">
