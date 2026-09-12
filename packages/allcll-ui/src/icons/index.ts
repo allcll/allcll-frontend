@@ -14,6 +14,7 @@ export {
   /* 액션 --------------------------------------------------------------- */
   X as CloseIcon,
   Plus as AddIcon,
+  Minus as SubtractIcon,
   Pencil as EditIcon,
   Trash as TrashCanIcon,
   Save as SaveIcon,
