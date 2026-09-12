@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { type Notice } from '@/entities/notices/model/notice';
-import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
+import useScrollLock from '@/shared/lib/useScrollLock';
 import NoticePanel from './NoticePanel';
 
 interface NoticeMobileViewProps {
@@ -16,7 +16,7 @@ function NoticeMobileView({ notices, isOpen, isRead, onRead, onClose }: Readonly
   const overlayRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
-  useBodyScrollLock(isOpen);
+  useScrollLock(isOpen);
 
   return (
     <>
