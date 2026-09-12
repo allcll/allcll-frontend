@@ -204,7 +204,7 @@ function WishFilter() {
         <IconButton
           variant="contain"
           label="테이블 수정"
-          icon={<ListIcon className="w-5 h-5 text-gray-400" />}
+          icon={<ListIcon className="w-4 h-4 text-gray-400" />}
           onClick={() => setIsModalOpen(true)}
         />
 
