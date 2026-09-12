@@ -1,7 +1,14 @@
 export type { LucideProps as IconProps } from 'lucide-react';
 
 /* 커스텀 아이콘 */
-export { LogoKakaoTalkIcon, LogoGithubIcon, LogoInstagramIcon, NotificationFilledIcon, StarFilledIcon } from './custom';
+export {
+  AllcllFaceIcon,
+  LogoKakaoTalkIcon,
+  LogoGithubIcon,
+  LogoInstagramIcon,
+  NotificationFilledIcon,
+  StarFilledIcon,
+} from './custom';
 
 export {
   /* 액션 --------------------------------------------------------------- */

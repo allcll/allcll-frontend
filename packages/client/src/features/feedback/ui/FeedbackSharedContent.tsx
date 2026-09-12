@@ -1,5 +1,4 @@
-import FeedbackFace from '@/assets/ci-icon.svg?react';
-import { CheckmarkIcon } from '@allcll/allcll-ui';
+import { AllcllFaceIcon, CheckmarkIcon } from '@allcll/allcll-ui';
 import { Button, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import { DETAIL_MAX_LENGTH } from '@/features/feedback/api/feedbackApi';
 import type { FeedbackTitles } from '../lib/getFeedbackTitle';
@@ -98,9 +97,9 @@ interface IRateButtonProps {
 
 function RateInputs({ rate, currentRate, label, onClick }: IRateButtonProps) {
   const faces = {
-    1: <FeedbackFace className="w-16 h-16 mood-sad" />,
-    2: <FeedbackFace className="w-16 h-16 mood-normal" />,
-    3: <FeedbackFace className="w-16 h-16 mood-smile" />,
+    1: <AllcllFaceIcon mood="sad" className="w-16 h-16" />,
+    2: <AllcllFaceIcon mood="normal" className="w-16 h-16" />,
+    3: <AllcllFaceIcon mood="smile" className="w-16 h-16" />,
   };
 
   return (
