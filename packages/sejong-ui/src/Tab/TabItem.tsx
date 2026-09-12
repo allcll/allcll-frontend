@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import type { ITab } from './TabContext';
-import XIcon from '../assets/x.svg?react';
+import { CloseIcon } from '@allcll/allcll-ui';
 
 interface SimulationTabItemProps {
   tab: ITab;
@@ -32,7 +32,7 @@ function TabItem({ tab, onDelete }: SimulationTabItemProps) {
           onDelete(tab.urlPath);
         }}
       >
-        <XIcon className="w-3 h-3" />
+        <CloseIcon className="w-3 h-3" />
       </button>
     </NavLink>
   );

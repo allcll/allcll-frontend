@@ -1,5 +1,4 @@
-import FeedbackFace from '@/assets/ci-icon.svg?react';
-import CheckIcon from '@/assets/check.svg?react';
+import { AllcllFaceIcon, CheckmarkIcon } from '@allcll/allcll-ui';
 import { Button, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import { DETAIL_MAX_LENGTH } from '@/features/feedback/api/feedbackApi';
 import type { FeedbackTitles } from '../lib/getFeedbackTitle';
@@ -82,7 +81,7 @@ export function FeedbackSuccess() {
         align="items-center"
         className="w-14 h-14 rounded-full bg-emerald-100 mb-3 animate-pulse"
       >
-        <CheckIcon className="text-emerald-600" />
+        <CheckmarkIcon className="w-6 h-6 text-emerald-600" />
       </Flex>
       <SupportingText className="text-primary-500">좋은 의견 주셔서 감사합니다</SupportingText>
     </Flex>
@@ -98,9 +97,9 @@ interface IRateButtonProps {
 
 function RateInputs({ rate, currentRate, label, onClick }: IRateButtonProps) {
   const faces = {
-    1: <FeedbackFace className="w-16 h-16 mood-sad" />,
-    2: <FeedbackFace className="w-16 h-16 mood-normal" />,
-    3: <FeedbackFace className="w-16 h-16 mood-smile" />,
+    1: <AllcllFaceIcon mood="sad" className="w-16 h-16" />,
+    2: <AllcllFaceIcon mood="normal" className="w-16 h-16" />,
+    3: <AllcllFaceIcon mood="smile" className="w-16 h-16" />,
   };
 
   return (

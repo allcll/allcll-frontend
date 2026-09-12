@@ -2,14 +2,17 @@ import { useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
-import BoldSvg from '@/assets/bold.svg?react';
-import ItalicSvg from '@/assets/italic.svg?react';
-import CodeSvg from '@/assets/code.svg?react';
-import LinkSvg from '@/assets/link.svg?react';
-import ListSvg from '@/assets/list.svg?react';
-import ListOrderedSvg from '@/assets/list-ordered.svg?react';
-import QuoteSvg from '@/assets/quote.svg?react';
-import { Label, Flex } from '@allcll/allcll-ui';
+import {
+  Label,
+  Flex,
+  TextBoldIcon,
+  TextItalicIcon,
+  CodeIcon,
+  LinkIcon,
+  ListBulletedIcon,
+  ListNumberedIcon,
+  QuotesIcon,
+} from '@allcll/allcll-ui';
 import ToolbarButton from '@/components/notices/ToolbarButton';
 
 type Tab = 'write' | 'preview';
@@ -96,27 +99,27 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
             {/* 툴바 */}
             <div className="flex items-center gap-0.5 px-2 py-1.5 bg-gray-50 border-b border-gray-200">
               <ToolbarButton title="굵게 (Bold)" onClick={() => insertMarkdown('**', '**')}>
-                <BoldSvg className="w-4 h-4" />
+                <TextBoldIcon className="w-4 h-4" />
               </ToolbarButton>
               <ToolbarButton title="기울임 (Italic)" onClick={() => insertMarkdown('*', '*')}>
-                <ItalicSvg className="w-4 h-4" />
+                <TextItalicIcon className="w-4 h-4" />
               </ToolbarButton>
               <div className="w-px h-4 bg-gray-300 mx-1" />
               <ToolbarButton title="코드 (Code)" onClick={() => insertMarkdown('`', '`')}>
-                <CodeSvg className="w-4 h-4" />
+                <CodeIcon className="w-4 h-4" />
               </ToolbarButton>
               <ToolbarButton title="링크 (Link)" onClick={() => insertMarkdown('[', '](url)')}>
-                <LinkSvg className="w-4 h-4" />
+                <LinkIcon className="w-4 h-4" />
               </ToolbarButton>
               <div className="w-px h-4 bg-gray-300 mx-1" />
               <ToolbarButton title="인용" onClick={() => insertMarkdown('> ', '', '', true)}>
-                <QuoteSvg className="w-4 h-4" />
+                <QuotesIcon className="w-4 h-4" />
               </ToolbarButton>
               <ToolbarButton title="목록" onClick={() => insertMarkdown('- ', '', '', true)}>
-                <ListSvg className="w-4 h-4" />
+                <ListBulletedIcon className="w-4 h-4" />
               </ToolbarButton>
               <ToolbarButton title="번호 목록" onClick={() => insertMarkdown('1. ', '', '', true)}>
-                <ListOrderedSvg className="w-4 h-4" />
+                <ListNumberedIcon className="w-4 h-4" />
               </ToolbarButton>
             </div>
             <textarea

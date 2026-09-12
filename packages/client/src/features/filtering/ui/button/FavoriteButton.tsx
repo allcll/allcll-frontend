@@ -1,8 +1,7 @@
 import React from 'react';
-import StarIcon from '@/shared/ui/svgs/StarIcon.tsx';
 import { Subject } from '@/shared/model/types.ts';
 import useFavorites from '@/features/filtering/model/useFavorites.ts';
-import { IconButton } from '@allcll/allcll-ui';
+import { IconButton, StarFilledIcon, StarIcon } from '@allcll/allcll-ui';
 
 interface IFavoriteButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   subject: Subject;
@@ -26,7 +25,13 @@ function FavoriteButton({ subject, variant = 'contain', className, onClick, ...p
       variant={variant}
       onClick={handleFavorite}
       label={title}
-      icon={<StarIcon disabled={!isFavorite} />}
+      icon={
+        isFavorite ? (
+          <StarFilledIcon className="w-4 h-4 text-yellow-400" />
+        ) : (
+          <StarIcon className="w-4 h-4 text-gray-400" />
+        )
+      }
       aria-label={title}
       className={className}
       {...props}

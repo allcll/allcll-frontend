@@ -1,5 +1,4 @@
-import ClockGraySvg from '@/assets/clock-gray.svg?react';
-import HouseSvg from '@/assets/house.svg?react';
+import { HomeIcon, TimeIcon } from '@allcll/allcll-ui';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib/useScheduleModal.ts';
 import { Button, Flex, Heading } from '@allcll/allcll-ui';
@@ -28,12 +27,12 @@ function ScheduleInfoBottomSheet() {
         <p className="text-sm text-gray-500">{schedule.professorName ?? '교수 정보 없음'}</p>
 
         <Flex align="items-center">
-          <ClockGraySvg className="w-4 h-4 text-gray-400" />
+          <TimeIcon className="w-4 h-4 text-gray-400" />
           <span>{findSubjectById?.lesnTime}</span>
         </Flex>
 
         <Flex align="items-center">
-          <HouseSvg className="w-4 h-4 text-gray-400" />
+          <HomeIcon className="w-4 h-4 text-gray-400" />
           <span>{findSubjectById?.lesnRoom ?? '장소 정보 없음'}</span>
         </Flex>
 

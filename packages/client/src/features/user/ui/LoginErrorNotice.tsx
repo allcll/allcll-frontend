@@ -1,5 +1,4 @@
-import { Button, Flex, Heading } from '@allcll/allcll-ui';
-import ImportantSvg from '@/assets/important.svg?react';
+import { Button, Flex, Heading, WarningIcon } from '@allcll/allcll-ui';
 import type { ILoginErrorView } from '../lib/loginErrors.ts';
 
 interface ILoginErrorNoticeProps {
@@ -12,14 +11,14 @@ interface ILoginErrorNoticeProps {
 const TONE_STYLE = {
   error: {
     box: 'bg-secondary-50 border-secondary-200',
-    icon: '[&_circle]:fill-secondary-700',
+    icon: 'text-secondary-700',
     // Heading 이 붙이는 text-text-200 이 CSS 에서 뒤에 있어 ! 로 덮습니다.
     title: '!text-secondary-700',
     button: 'danger',
   },
   neutral: {
     box: 'bg-gray-50 border-gray-200',
-    icon: '[&_circle]:fill-gray-700',
+    icon: 'text-gray-700',
     title: '',
     button: 'primary',
   },
@@ -33,7 +32,7 @@ function LoginErrorNotice({ view, descriptionId }: ILoginErrorNoticeProps) {
   return (
     <Flex align="items-start" gap="gap-2" className={`rounded-md border p-3 ${tone.box}`}>
       {/* 뜻은 문구가 전달하므로 읽지 않습니다. */}
-      <ImportantSvg aria-hidden="true" className={`w-4 h-4 mt-0.5 shrink-0 ${tone.icon}`} />
+      <WarningIcon aria-hidden="true" className={`w-4 h-4 mt-0.5 shrink-0 ${tone.icon}`} />
 
       <Flex direction="flex-col" gap="gap-1" className="min-w-0 flex-1">
         {/* 카드에 이미 h2 가 있어 문서 개요를 건드리지 않게 p 로 렌더합니다. */}

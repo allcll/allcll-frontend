@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import LinkBlue from '@/assets/link-blue.svg?react';
+import { LaunchIcon } from '@allcll/allcll-ui';
 import { Heading, SupportingText } from '@allcll/allcll-ui';
 
 interface ISectionHeader {
@@ -17,7 +17,7 @@ function SectionHeader({ title, subtitle, href, disabled = false }: ISectionHead
       {isLink ? (
         <Link to={href} className="flex items-center gap-2 hover:underline focus:underline">
           <Heading level={2}>{title}</Heading>
-          <LinkBlue className="w-4 h-4" />
+          <LaunchIcon className="w-4 h-4 text-blue-500" />
         </Link>
       ) : (
         <Heading level={2}>{title}</Heading>

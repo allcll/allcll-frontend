@@ -1,4 +1,4 @@
-import CheckSvg from '@/assets/check.svg?react';
+import { CheckmarkIcon } from '@allcll/allcll-ui';
 
 interface StepProps {
   number: number;
@@ -15,7 +15,7 @@ function Step({ number, finish, active, label }: StepProps) {
           ${active ? 'bg-blue-500 border-blue-500 text-white' : 'bg-white border-gray-300 text-gray-400'}
         `}
       >
-        {finish ? <CheckSvg className="w-4 h-4" /> : <span className="text-xs">{number}</span>}
+        {finish ? <CheckmarkIcon className="w-4 h-4" /> : <span className="text-xs">{number}</span>}
       </div>
 
       <span className="text-xs md:text-sm text-gray-600 whitespace-nowrap">{label}</span>

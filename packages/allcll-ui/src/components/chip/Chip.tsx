@@ -1,6 +1,5 @@
 import type { ComponentPropsWithoutRef, RefObject } from 'react';
-import ArrowIcon from '../svgs/ArrowIcon';
-import CancelIcon from '../svgs/CancelIcon';
+import { ChevronDownIcon, CloseIcon } from '../../icons';
 import type React from 'react';
 
 type ChipVariantType = 'select' | 'cancel' | 'none';
@@ -41,15 +40,17 @@ function Chip({
       <span className="text-xs sm:text-sm">{label}</span>
 
       {variant === 'select' && (
-        <ArrowIcon
+        <ChevronDownIcon
           aria-hidden="true"
-          selected={selected}
-          className={`w-5 h-5 pointer-events-none transition-transform text-blue-500 duration-200 ${isChipOpen ? 'rotate-180' : 'rotate-0'}`}
+          className={`w-5 h-5 pointer-events-none transition-transform duration-200 ${selected ? 'text-blue-500' : 'text-gray-400'} ${isChipOpen ? 'rotate-180' : 'rotate-0'}`}
         />
       )}
 
       {variant === 'cancel' && (
-        <CancelIcon aria-hidden="true" selected={selected} className="pointer-events-none w-4 h-4" />
+        <CloseIcon
+          aria-hidden="true"
+          className={`pointer-events-none w-4 h-4 ${selected ? 'text-blue-500' : 'text-gray-400'}`}
+        />
       )}
     </button>
   );

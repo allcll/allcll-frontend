@@ -4,7 +4,7 @@ import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import { Button, Flex, Label, ListboxOption } from '@allcll/allcll-ui';
 import { useFilteringDepartment } from '../lib/useFilteringDepartment';
-import CheckSvg from '@/assets/checkbox-blue.svg?react';
+import { CheckmarkIcon } from '@allcll/allcll-ui';
 import { ZeroContent } from '@/shared/ui/ZeroContent';
 import { Filtering } from '@allcll/common';
 import { DepartmentType } from '@/features/filtering/model/types.ts';
@@ -114,7 +114,7 @@ function SelectSubject({ departments, setFilter, selectedValue }: ISelectSubject
             key={department.departmentCode}
             selected={isSelected}
             left={departmentName}
-            right={isSelected ? <CheckSvg className="w-4 h-4 shrink-0" /> : null}
+            right={isSelected ? <CheckmarkIcon className="w-4 h-4 shrink-0 text-blue-500" /> : null}
             onSelect={() => handleChangeDepartment(department.departmentCode)}
           />
         );

@@ -1,4 +1,4 @@
-import XSvg from '../assets/x.svg?react';
+import { CloseIcon } from '@allcll/allcll-ui';
 
 interface IModalHeader {
   title: string;
@@ -16,7 +16,7 @@ function ModalHeader({ title, onClose = () => {} }: Readonly<IModalHeader>) {
         title="창닫기"
         tabIndex={-1}
       >
-        <XSvg className="w-full h-full" />
+        <CloseIcon className="w-full h-full" />
       </button>
     </div>
   );

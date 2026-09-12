@@ -1,5 +1,4 @@
-import AlertTriangleSvg from '@/assets/alert-triangle.svg?react';
-import { Button, Dialog, Flex } from '@allcll/allcll-ui';
+import { Button, Dialog, Flex, WarningAltIcon } from '@allcll/allcll-ui';
 
 interface IUnsavedModalProps {
   onCancel: () => void;
@@ -12,7 +11,7 @@ function UnsavedModal({ onCancel, onConfirm }: IUnsavedModalProps) {
       <Dialog.Content>
         <Flex gap="gap-3">
           <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-amber-100">
-            <AlertTriangleSvg className="w-5 h-5 text-amber-500" />
+            <WarningAltIcon className="w-5 h-5 text-amber-500" />
           </div>
           <Flex direction="flex-col" gap="gap-1">
             <p className="text-sm font-medium text-gray-800">작성 중인 내용이 있습니다.</p>

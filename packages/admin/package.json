@@ -12,7 +12,6 @@
   "dependencies": {
     "@allcll/allcll-ui": "workspace:^",
     "@allcll/common": "workspace:^",
-    "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query": "^5.83.0",
     "@vitejs/plugin-basic-ssl": "^2.1.0",
     "chart.js": "^4.5.0",
@@ -30,7 +29,6 @@
     "@types/node": "20",
     "@types/react-datepicker": "^7.0.0",
     "@types/react-helmet": "^6.1.11",
-    "@vitejs/plugin-basic-ssl": "^2.1.0",
-    "vite-plugin-svgr": "^4.3.0"
+    "@vitejs/plugin-basic-ssl": "^2.1.0"
   }
 }

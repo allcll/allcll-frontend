@@ -1,8 +1,7 @@
 import Section from '@/widgets/home/ui/Section.tsx';
 import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
 import SeatBadge from '@/entities/wishes/ui/SeatBadge.tsx';
-import AlarmIcon from '@/shared/ui/svgs/AlarmIcon.tsx';
-import { Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import { Flex, Heading, NotificationFilledIcon, SupportingText } from '@allcll/allcll-ui';
 
 function LiveSection() {
   return (
@@ -27,7 +26,7 @@ function LiveSection() {
               <div key={prof} className="bg-gray-50 shadow-sm rounded-lg p-4 w-full">
                 <Flex justify="justify-between" className="mb-2">
                   <Heading level={4}>{name}</Heading>
-                  <AlarmIcon />
+                  <NotificationFilledIcon className="w-4 h-4 text-blue-500" />
                 </Flex>
                 <Flex justify="justify-between">
                   <p className="text-sm text-gray-500">{prof}</p>

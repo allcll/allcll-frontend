@@ -1,12 +1,11 @@
-import Logo from '@public/ci.svg?react';
-import BookSvg from '@/assets/book.svg?react';
+import { BookIcon } from '@allcll/allcll-ui';
 
 import { NavLink } from 'react-router-dom';
 
 const Menus = [
   {
     title: '대시보드',
-    icon: <BookSvg />,
+    icon: <BookIcon className="w-5 h-5" />,
     link: '/',
   },
   {
@@ -39,7 +38,7 @@ function SideNavBar() {
   return (
     <aside className="w-64 bg-white shadow-md hidden md:block sticky top-0 h-screen">
       <div className="p-6 mb-6">
-        <Logo className="h-8 w-8" />
+        <img src={`${import.meta.env.BASE_URL}ci.svg`} alt="" className="h-8 w-8" />
       </div>
       <nav>
         <ul>

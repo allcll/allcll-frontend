@@ -1,4 +1,4 @@
-import ResetSvg from '@/assets/reset-blue.svg?react';
+import { ResetIcon } from '@allcll/allcll-ui';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { getLabelFormatter, labelPrefix } from '@/features/filtering/lib/getFilteringFormatter.ts';
 import MinMaxFilter from './MinMaxFilter.tsx';
@@ -70,7 +70,7 @@ function SingleSelectFilterOption<K extends keyof Filters>({
       {!isMobile && (
         <Flex justify="justify-end">
           <Button variant="text" size="small" textColor="gray" onClick={() => handleClickReset()}>
-            <ResetSvg className="inline w-3 h-3 mr-1" stroke="currentColor" />
+            <ResetIcon className="inline w-3 h-3 mr-1 text-blue-500" />
             초기화
           </Button>
         </Flex>

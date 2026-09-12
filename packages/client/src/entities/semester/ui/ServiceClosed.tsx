@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import HomeSvg from '@/assets/home-white.svg?react';
+import { HomeIcon } from '@allcll/allcll-ui';
 
 import { ServiceSemester } from '@/entities/semester/api/semester.ts';
 import { Button, Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
@@ -62,7 +62,7 @@ function ServiceClosed({ data }: IServiceClosed) {
         <Flex className="mt-6" justify="justify-center">
           <Button variant="primary" size="medium" asChild>
             <Link to="/">
-              <HomeSvg className="w-4 h-4" />
+              <HomeIcon className="w-4 h-4 text-white" />
               메인 페이지로 이동
             </Link>
           </Button>

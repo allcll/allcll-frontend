@@ -1,5 +1,5 @@
 import { useId, type ComponentPropsWithRef, type KeyboardEvent } from 'react';
-import CheckSvg from '@/assets/check.svg?react';
+import { CheckmarkIcon } from '../../icons';
 
 interface ICheckbox extends ComponentPropsWithRef<'input'> {
   label?: string;
@@ -36,7 +36,9 @@ function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
           onKeyDown={handleKeyDown}
           {...rest}
         />
-        {rest.checked && <CheckSvg className="text-blue-500 w-4 h-4 absolute inset-0 m-auto pointer-events-none" />}
+        {rest.checked && (
+          <CheckmarkIcon className="text-blue-500 w-4 h-4 absolute inset-0 m-auto pointer-events-none" />
+        )}
       </div>
 
       {label && <span className={`${rest.checked ? 'text-blue-500' : 'text-gray-600'}`}>{label}</span>}

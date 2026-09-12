@@ -3,7 +3,7 @@
  */
 import { useEffect, useState } from 'react';
 import useNotificationInstruction from '../model/useNotificationInstruction.ts';
-import SiteOptionIcon from '@/assets/chrome-options.svg?react';
+import { SettingsAdjustIcon } from '@allcll/allcll-ui';
 import { Dialog } from '@allcll/allcll-ui';
 
 // --- OS/Browser Detection Utilities ---
@@ -167,7 +167,7 @@ const ChromeGuide = () => (
       <ol className="list-decimal list-inside">
         <li>
           주소창 왼쪽의 사이트 정보 보기(
-          <SiteOptionIcon className="inline-block w-4 h-4" />) 아이콘을 클릭합니다.
+          <SettingsAdjustIcon className="inline-block w-4 h-4" />) 아이콘을 클릭합니다.
         </li>
         <li>나타나는 메뉴에서 '알림' 항목의 스위치를 켜서 '허용'으로 변경합니다.</li>
       </ol>

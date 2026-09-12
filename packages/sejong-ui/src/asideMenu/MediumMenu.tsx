@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AddIcon, SubtractIcon } from '@allcll/allcll-ui';
 import type { IMenu } from './types';
 import SmallMenu from './SmallMenu';
 
@@ -20,7 +21,7 @@ function MediumMenu({ menu }: MediumMenuProps) {
         }
         onClick={() => setIsOpen(prev => !prev)}
       >
-        <span>{isOpen ? '-' : '+'}</span>
+        {isOpen ? <SubtractIcon className="w-3.5 h-3.5 shrink-0" /> : <AddIcon className="w-3.5 h-3.5 shrink-0" />}
         <span>{menu.name}</span>
       </button>
 

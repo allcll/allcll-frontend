@@ -1,4 +1,4 @@
-import RightArrowSvg from '@/assets/right-arrow.svg?react';
+import { ArrowRightIcon } from '@allcll/allcll-ui';
 import useScrollToTop from '@/shared/lib/useScrollTop.ts';
 
 interface ScrollToTopButtonProps {
@@ -17,7 +17,7 @@ function ScrollToTopButton({ right = 'right-2 sm:right-10', bottom = 'bottom-4' 
                   ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
       onClick={scrollToTop}
     >
-      <RightArrowSvg className="w-6 h-6 -rotate-90" />
+      <ArrowRightIcon className="w-6 h-6 -rotate-90 text-white" />
     </button>
   );
 }
