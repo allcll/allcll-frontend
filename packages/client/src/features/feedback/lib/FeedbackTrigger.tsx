@@ -54,6 +54,8 @@ export function useFeedbackTrigger({ enabled = true, isMobile = false, activeTab
     const checkAndOpen = () => {
       if (hasShown) return;
       if (dontShowAgain) return;
+      // 사용자가 FAB로 직접 피드백을 작성 중이면 자동 노출하지 않음
+      if (useFeedbackStore.getState().isFeedbackOpen) return;
 
       const depth = getPageDepth();
 
