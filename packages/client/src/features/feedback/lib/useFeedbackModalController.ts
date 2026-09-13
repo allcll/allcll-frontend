@@ -25,6 +25,7 @@ export function useFeedbackModalController({
   const [detail, setDetail] = useState('');
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<FeedbackCategory>(category);
 
   const dontShowAgain = useFeedbackStore(s => s.dontShowAgain);
   const setDontShowAgain = useFeedbackStore(s => s.setDontShowAgain);
@@ -38,7 +39,7 @@ export function useFeedbackModalController({
     if (!isOpen) {
       initialize();
     }
-  }, [isOpen]);
+  }, [isOpen, category]);
 
   useEffect(() => {
     if (!isMobile) return;
@@ -74,6 +75,7 @@ export function useFeedbackModalController({
     setDetail('');
     setSuccess(false);
     setError(null);
+    setSelectedCategory(category);
   };
 
   const closeFeedback = () => {
@@ -91,7 +93,7 @@ export function useFeedbackModalController({
     if (rate === 0) return;
 
     mutate(
-      { rate, detail: detail ?? '', operationType: category },
+      { rate, detail: detail ?? '', operationType: selectedCategory },
       {
         onSuccess: () => {
           setSuccess(true);
@@ -119,6 +121,8 @@ export function useFeedbackModalController({
     setRate,
     detail,
     setDetail,
+    selectedCategory,
+    setSelectedCategory,
     success,
     error,
     isPending,

@@ -8,6 +8,8 @@ export default function FeedbackDesktopModal({
   setRate,
   detail,
   setDetail,
+  category,
+  onCategoryChange,
   error,
   isPending,
   canSubmit,
@@ -34,6 +36,8 @@ export default function FeedbackDesktopModal({
                 setRate={setRate}
                 detail={detail}
                 setDetail={setDetail}
+                category={category}
+                onCategoryChange={onCategoryChange}
                 error={error}
               />
             </Dialog.Content>
