@@ -10,7 +10,7 @@ function FloatingButton({ label, icon, className = '', ...rest }: Readonly<IFloa
     <button
       type="button"
       aria-label={label}
-      className={`fixed bottom-19 sm:bottom-21 right-4 sm:right-6 z-floating w-12 h-12 rounded-full bg-white border border-gray-200 shadow-lg
+      className={`fixed bottom-19 md:bottom-21 right-4 md:right-6 z-floating w-12 h-12 rounded-full bg-white border border-gray-200 shadow-lg
                   flex justify-center items-center cursor-pointer transition-[opacity,background-color] duration-200 hover:bg-gray-50 ${className}`}
       {...rest}
     >
