@@ -29,6 +29,7 @@ export function useFeedbackModalController({
 
   const dontShowAgain = useFeedbackStore(s => s.dontShowAgain);
   const setDontShowAgain = useFeedbackStore(s => s.setDontShowAgain);
+  const setIsFeedbackOpen = useFeedbackStore(s => s.setIsFeedbackOpen);
   const bottomSheetType = useBottomSheetStore(state => state.type);
   const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
   const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
@@ -40,6 +41,13 @@ export function useFeedbackModalController({
       initialize();
     }
   }, [isOpen, category]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    setIsFeedbackOpen(true);
+    return () => setIsFeedbackOpen(false);
+  }, [isOpen, setIsFeedbackOpen]);
 
   useEffect(() => {
     if (!isMobile) return;

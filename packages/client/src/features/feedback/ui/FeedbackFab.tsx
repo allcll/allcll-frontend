@@ -1,18 +1,19 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import HelpChatSvg from '@/assets/chat-help.svg?react';
+import useFeedbackStore from '../model/useFeedbackStore';
+import { getFeedbackCategoryByPath } from '../lib/feedbackCategory';
 import FeedbackModal from './FeedbackModal';
-import type { FeedbackCategory } from '../api/feedbackApi';
 
-interface IFeedbackFabProps {
-  category: FeedbackCategory;
-}
-
-function FeedbackFab({ category }: Readonly<IFeedbackFabProps>) {
+function FeedbackFab() {
   const [isOpen, setIsOpen] = useState(false);
+  const { pathname } = useLocation();
+  // 졸업요건 결과처럼 페이지 자체 피드백 모달이 열려 있으면 FAB를 숨깁니다.
+  const isFeedbackOpen = useFeedbackStore(s => s.isFeedbackOpen);
 
   return (
     <>
-      {!isOpen && (
+      {!isOpen && !isFeedbackOpen && (
         <button
           type="button"
           onClick={() => setIsOpen(true)}
@@ -29,9 +30,10 @@ function FeedbackFab({ category }: Readonly<IFeedbackFabProps>) {
       <FeedbackModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        category={category}
+        category={getFeedbackCategoryByPath(pathname)}
         openMode="manual"
         showDontShowAgain={false}
+        selectableCategory
       />
     </>
   );
