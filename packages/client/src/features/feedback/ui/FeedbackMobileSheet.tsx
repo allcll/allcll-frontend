@@ -5,6 +5,9 @@ import { FeedbackActions, FeedbackFields, FeedbackSuccess } from './FeedbackShar
 import { Flex } from '@allcll/allcll-ui';
 import type { IFeedbackViewProps } from './FeedbackViewProps';
 
+const SHEET_HEIGHT = 380;
+const SHEET_HEIGHT_WITH_CATEGORY = 500;
+
 export default function FeedbackMobileSheet(props: IFeedbackViewProps) {
   return (
     <BottomSheet>{({ collapseToMin }) => <FeedbackContainer {...props} collapseToMin={collapseToMin} />}</BottomSheet>
@@ -32,8 +35,7 @@ function FeedbackContainer({
   collapseToMin,
   titles,
 }: IFeedbackContainerProps) {
-  // 카테고리 선택 UI가 있으면 제출 버튼까지 보이도록 시트를 더 높게 띄움
-  const sheetHeight = onCategoryChange ? 500 : 380;
+  const sheetHeight = onCategoryChange ? SHEET_HEIGHT_WITH_CATEGORY : SHEET_HEIGHT;
 
   useEffect(() => {
     collapseToMin(sheetHeight);
