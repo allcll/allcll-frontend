@@ -43,7 +43,6 @@ export {
   ArrowRight as ArrowRightIcon,
 
   /* 알림 --------------------------------------------------------------- */
-  Bell as NotificationIcon,
   BellOff as NotificationOffIcon,
 
   /* 탐색 --------------------------------------------------------------- */
