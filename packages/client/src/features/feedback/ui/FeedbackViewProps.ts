@@ -1,3 +1,4 @@
+import type { FeedbackCategory } from '../api/feedbackApi';
 import type { FeedbackTitles } from '../lib/getFeedbackTitle';
 
 export interface IFeedbackViewProps {
@@ -6,6 +7,8 @@ export interface IFeedbackViewProps {
   setRate: (rate: 1 | 2 | 3) => void;
   detail: string;
   setDetail: (value: string) => void;
+  category: FeedbackCategory;
+  onCategoryChange?: (category: FeedbackCategory) => void;
   error: string | null;
   isPending: boolean;
   canSubmit: boolean;

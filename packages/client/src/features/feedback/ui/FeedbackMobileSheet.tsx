@@ -21,6 +21,8 @@ function FeedbackContainer({
   setRate,
   detail,
   setDetail,
+  category,
+  onCategoryChange,
   error,
   isPending,
   canSubmit,
@@ -30,9 +32,12 @@ function FeedbackContainer({
   collapseToMin,
   titles,
 }: IFeedbackContainerProps) {
+  // 카테고리 선택 UI가 있으면 제출 버튼까지 보이도록 시트를 더 높게 띄움
+  const sheetHeight = onCategoryChange ? 500 : 380;
+
   useEffect(() => {
-    collapseToMin(380);
-  }, [collapseToMin]);
+    collapseToMin(sheetHeight);
+  }, [collapseToMin, sheetHeight]);
 
   return !success ? (
     <>
@@ -44,6 +49,8 @@ function FeedbackContainer({
           setRate={setRate}
           detail={detail}
           setDetail={setDetail}
+          category={category}
+          onCategoryChange={onCategoryChange}
           error={error}
         />
         <Flex justify="justify-end" className="gap-2 pt-3">
