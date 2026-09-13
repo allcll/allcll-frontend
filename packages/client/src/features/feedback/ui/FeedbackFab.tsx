@@ -17,7 +17,7 @@ function FeedbackFab() {
         <button
           type="button"
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-floating h-12 rounded-full pl-3.5 pr-5
+          className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-floating h-12 rounded-full pl-3.5 pr-5
                  bg-primary-500 text-white shadow-lg flex items-center gap-2 cursor-pointer
                  transition-colors duration-200 hover:bg-primary-600"
         >
