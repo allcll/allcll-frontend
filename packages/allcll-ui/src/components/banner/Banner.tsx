@@ -18,7 +18,7 @@ function Banner({ variant = 'info', children, deleteBanner }: IBanner) {
       withPadding
       className={`${bannerColorClass} items-center`}
       left={<WarningIcon className="text-gray-500 w-4 h-4" />}
-      center={<span className="text-xs">{children}</span>}
+      center={<span className="block text-xs leading-5">{children}</span>}
       right={
         <IconButton
           label="알림 닫기"
