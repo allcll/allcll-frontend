@@ -8,7 +8,6 @@ import FeedbackModal from './FeedbackModal';
 function FeedbackFab() {
   const [isOpen, setIsOpen] = useState(false);
   const { pathname } = useLocation();
-  // 졸업요건 결과처럼 페이지 자체 피드백 모달이 열려 있으면 FAB를 숨깁니다.
   const isFeedbackOpen = useFeedbackStore(s => s.isFeedbackOpen);
 
   return (

@@ -121,7 +121,6 @@ function CategoryChips({ category, onChange }: ICategoryChipsProps) {
             key={value}
             label={label}
             selected={category === value}
-            // 선택된 칩을 다시 누르면 선택 해제
             onClick={() => onChange(category === value ? 'ALL' : value)}
           />
         ))}
