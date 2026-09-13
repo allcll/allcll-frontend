@@ -1,24 +1,17 @@
 import RightArrowSvg from '@/assets/right-arrow.svg?react';
 import useScrollToTop from '@/shared/lib/useScrollTop.ts';
+import FloatingButton from './FloatingButton';
 
-interface ScrollToTopButtonProps {
-  right?: string;
-  bottom?: string;
-}
-
-function ScrollToTopButton({ right = 'right-2 sm:right-10', bottom = 'bottom-4' }: ScrollToTopButtonProps) {
+function ScrollToTopButton() {
   const { isVisible, scrollToTop } = useScrollToTop(200);
 
   return (
-    <button
-      aria-label="맨 위로 가기"
-      className={`fixed ${bottom} ${right} z-floating w-12 h-12 rounded-full bg-primary-500 text-white shadow-lg
-                  flex justify-center items-center cursor-pointer transition-opacity duration-200
-                  ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+    <FloatingButton
+      label="맨 위로 가기"
+      icon={<RightArrowSvg className="w-5 h-5 -rotate-90 [&_path]:fill-primary-500" />}
+      className={isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}
       onClick={scrollToTop}
-    >
-      <RightArrowSvg className="w-6 h-6 -rotate-90" />
-    </button>
+    />
   );
 }
 

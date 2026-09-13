@@ -63,7 +63,7 @@ function PreSeatComponent() {
         </Card>
 
         <PreSeatBody filters={filters} />
-        <ScrollToTopButton right="right-2 sm:right-10" />
+        <ScrollToTopButton />
       </Flex>
     </>
   );

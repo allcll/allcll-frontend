@@ -40,7 +40,7 @@ function WishTable() {
             <WishTableComponent />
           </Card>
 
-          <ScrollToTopButton right="right-2 sm:right-20" />
+          <ScrollToTopButton />
         </Flex>
       </div>
     </>
