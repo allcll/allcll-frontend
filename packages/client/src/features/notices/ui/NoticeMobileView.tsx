@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import { type Notice } from '@/entities/notices/model/notice';
 import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
@@ -18,7 +19,8 @@ function NoticeMobileView({ notices, isOpen, isRead, onRead, onClose }: Readonly
 
   useBodyScrollLock(isOpen);
 
-  return (
+  // 헤더의 z-index에 갇히면 페이지의 FAB 등 floating UI 아래에 깔리므로 body에 렌더링
+  return createPortal(
     <>
       <CSSTransition in={isOpen} timeout={300} classNames="mobile-menu-overlay" unmountOnExit nodeRef={overlayRef}>
         <div
@@ -40,7 +42,8 @@ function NoticeMobileView({ notices, isOpen, isRead, onRead, onClose }: Readonly
           <NoticePanel notices={notices} isMobile isRead={isRead} onRead={onRead} onClose={onClose} />
         </div>
       </CSSTransition>
-    </>
+    </>,
+    document.body,
   );
 }
 
