@@ -54,16 +54,17 @@ export {
   ListOrdered as ListNumberedIcon,
 
   /* 필터 · 설정 -------------------------------------------------------- */
-  Funnel as FilterIcon,
+  SlidersHorizontal as FilterIcon,
   FunnelX as FilterRemoveIcon,
   Settings as SettingsIcon,
   SlidersHorizontal as SettingsAdjustIcon,
+  Columns3Cog as TableSettingsIcon,
 
   /* 표시 · 즐겨찾기 ----------------------------------------------------- */
   Eye as ViewIcon,
   EyeOff as ViewOffIcon,
   Star as StarIcon,
-  CircleUser as UserAvatarIcon,
+  CircleUserRound as UserAvatarIcon,
 
   /* 도움말 ------------------------------------------------------------- */
   CircleQuestionMark as HelpIcon,

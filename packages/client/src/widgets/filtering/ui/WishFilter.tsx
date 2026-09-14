@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import { Filters, initialFilters, useWishSearchStore } from '@/features/filtering/model/useFilterStore.ts';
-import { ListIcon, StarFilledIcon, StarIcon } from '@allcll/allcll-ui';
+import { TableSettingsIcon, StarFilledIcon, StarIcon } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile.ts';
 import FilterBottomSheet from '@/widgets/filtering/ui/FilterBottomSheet.tsx';
 import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
@@ -204,7 +204,7 @@ function WishFilter() {
         <IconButton
           variant="contain"
           label="테이블 수정"
-          icon={<ListIcon className="w-4 h-4 text-gray-400" />}
+          icon={<TableSettingsIcon className="w-4 h-4 text-gray-400" />}
           onClick={() => setIsModalOpen(true)}
         />
 
