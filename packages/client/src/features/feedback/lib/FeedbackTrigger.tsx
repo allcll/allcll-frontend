@@ -54,6 +54,7 @@ export function useFeedbackTrigger({ enabled = true, isMobile = false, activeTab
     const checkAndOpen = () => {
       if (hasShown) return;
       if (dontShowAgain) return;
+      if (useFeedbackStore.getState().isFeedbackOpen) return;
 
       const depth = getPageDepth();
 

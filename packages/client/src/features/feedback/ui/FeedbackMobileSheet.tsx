@@ -5,6 +5,9 @@ import { FeedbackActions, FeedbackFields, FeedbackSuccess } from './FeedbackShar
 import { Flex } from '@allcll/allcll-ui';
 import type { IFeedbackViewProps } from './FeedbackViewProps';
 
+const SHEET_HEIGHT = 380;
+const SHEET_HEIGHT_WITH_CATEGORY = 500;
+
 export default function FeedbackMobileSheet(props: IFeedbackViewProps) {
   return (
     <BottomSheet>{({ collapseToMin }) => <FeedbackContainer {...props} collapseToMin={collapseToMin} />}</BottomSheet>
@@ -21,6 +24,8 @@ function FeedbackContainer({
   setRate,
   detail,
   setDetail,
+  category,
+  onCategoryChange,
   error,
   isPending,
   canSubmit,
@@ -30,9 +35,11 @@ function FeedbackContainer({
   collapseToMin,
   titles,
 }: IFeedbackContainerProps) {
+  const sheetHeight = onCategoryChange ? SHEET_HEIGHT_WITH_CATEGORY : SHEET_HEIGHT;
+
   useEffect(() => {
-    collapseToMin(380);
-  }, [collapseToMin]);
+    collapseToMin(sheetHeight);
+  }, [collapseToMin, sheetHeight]);
 
   return !success ? (
     <>
@@ -44,6 +51,8 @@ function FeedbackContainer({
           setRate={setRate}
           detail={detail}
           setDetail={setDetail}
+          category={category}
+          onCategoryChange={onCategoryChange}
           error={error}
         />
         <Flex justify="justify-end" className="gap-2 pt-3">

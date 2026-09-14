@@ -1,22 +1,22 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import HelpChatSvg from '@/assets/chat-help.svg?react';
+import useFeedbackStore from '../model/useFeedbackStore';
+import { getFeedbackCategoryByPath } from '../lib/feedbackCategory';
 import FeedbackModal from './FeedbackModal';
-import type { FeedbackCategory } from '../api/feedbackApi';
 
-interface IFeedbackFabProps {
-  category: FeedbackCategory;
-}
-
-function FeedbackFab({ category }: Readonly<IFeedbackFabProps>) {
+function FeedbackFab() {
   const [isOpen, setIsOpen] = useState(false);
+  const { pathname } = useLocation();
+  const isFeedbackOpen = useFeedbackStore(s => s.isFeedbackOpen);
 
   return (
     <>
-      {!isOpen && (
+      {!isOpen && !isFeedbackOpen && (
         <button
           type="button"
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-floating h-12 rounded-full pl-3.5 pr-5
+          className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-floating h-12 rounded-full pl-3.5 pr-5
                  bg-primary-500 text-white shadow-lg flex items-center gap-2 cursor-pointer
                  transition-colors duration-200 hover:bg-primary-600"
         >
@@ -29,9 +29,10 @@ function FeedbackFab({ category }: Readonly<IFeedbackFabProps>) {
       <FeedbackModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        category={category}
+        category={getFeedbackCategoryByPath(pathname)}
         openMode="manual"
         showDontShowAgain={false}
+        selectableCategory
       />
     </>
   );

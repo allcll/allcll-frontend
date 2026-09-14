@@ -14,6 +14,7 @@ interface IFeedbackModalProps {
   openMode?: FeedbackOpenMode;
   // 자동 노출을 억제하는 버튼, 사용자가 직접 여는 진입에서는 비활성화
   showDontShowAgain?: boolean;
+  selectableCategory?: boolean;
 }
 
 export const FeedbackModal = ({
@@ -22,9 +23,10 @@ export const FeedbackModal = ({
   category,
   openMode = 'auto',
   showDontShowAgain = true,
+  selectableCategory = false,
 }: IFeedbackModalProps) => {
   const isMobile = useMobile();
-  const titles = getFeedbackTitle(category, openMode);
+  const titles = getFeedbackTitle(selectableCategory ? 'ALL' : category, openMode);
   const peekMessage = openMode === 'auto' ? titles.peekMessage : undefined;
   const controller = useFeedbackModalController({
     isOpen,
@@ -46,6 +48,8 @@ export const FeedbackModal = ({
     setRate: controller.setRate,
     detail: controller.detail,
     setDetail: controller.setDetail,
+    category: controller.selectedCategory,
+    onCategoryChange: selectableCategory ? controller.setSelectedCategory : undefined,
     error: controller.error,
     isPending: controller.isPending,
     canSubmit: controller.canSubmit,
