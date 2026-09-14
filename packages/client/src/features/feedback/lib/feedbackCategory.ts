@@ -9,8 +9,8 @@ interface ISelectableFeedbackCategory {
 export const SELECTABLE_FEEDBACK_CATEGORIES: ISelectableFeedbackCategory[] = [
   { category: 'TIMETABLE', label: '시간표', path: '/timetable' },
   { category: 'BASKETS', label: '관심과목', path: '/wishes' },
-  { category: 'LIVE', label: '실시간', path: '/live' },
-  { category: 'SIMULATION', label: '수강신청', path: '/simulation' },
+  { category: 'SIMULATION', label: '올클연습', path: '/simulation' },
+  { category: 'LIVE', label: '실시간여석', path: '/live' },
   { category: 'GRADUATION', label: '졸업요건', path: '/graduation' },
 ];
 
