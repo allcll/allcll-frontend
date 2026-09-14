@@ -1,7 +1,4 @@
-import EditSvg from '@/assets/edit.svg?react';
-import TrashSvg from '@/assets/trash.svg?react';
-import FileTextSvg from '@/assets/file-text.svg?react';
-import { Card, SupportingText, Badge, IconButton, Flex } from '@allcll/allcll-ui';
+import { Card, SupportingText, Badge, IconButton, Flex, EditIcon, TrashCanIcon, DocumentIcon } from '@allcll/allcll-ui';
 import { CATEGORY_LABELS } from '@/hooks/server/useAdminNotices';
 import type { Notice } from '@/hooks/server/useAdminNotices';
 
@@ -46,7 +43,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
               <tr>
                 <td colSpan={4} className="py-12 text-center">
                   <Flex direction="flex-col" align="items-center" gap="gap-2" className="text-gray-400">
-                    <FileTextSvg className="w-8 h-8" />
+                    <DocumentIcon className="w-8 h-8" />
                     <SupportingText>공지사항이 없습니다.</SupportingText>
                   </Flex>
                 </td>
@@ -81,14 +78,14 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
                   <td className="px-4 py-3">
                     <Flex align="items-center" gap="gap-1">
                       <IconButton
-                        icon={<EditSvg className="w-4 h-4" />}
+                        icon={<EditIcon className="w-4 h-4" />}
                         label="수정"
                         variant="plain"
                         onClick={() => onEdit(notice)}
                         className="p-1.5 text-gray-400 hover:text-blue-500 hover:bg-blue-50 transition-colors"
                       />
                       <IconButton
-                        icon={<TrashSvg className="w-4 h-4" />}
+                        icon={<TrashCanIcon className="w-4 h-4" />}
                         label="삭제"
                         variant="plain"
                         onClick={() => onDelete(notice)}

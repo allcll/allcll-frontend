@@ -1,5 +1,5 @@
 import useInfScroll from '@/shared/lib/useInfScroll.ts';
-import SearchSvg from '@/assets/search.svg?react';
+import { SearchIcon } from '@allcll/allcll-ui';
 import { WishesWithSeat } from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
 import { Wishes } from '@/shared/model/types.ts';
 import { Flex, Grid } from '@allcll/allcll-ui';
@@ -37,7 +37,7 @@ function Cards({ subjects, isPending = false, isLive = false }: Readonly<IPinCar
   if (!subjects.length) {
     return (
       <Flex direction="flex-col" align="items-center" gap="gap-2" className="text-center py-4">
-        <SearchSvg className="w-12 h-12" />
+        <SearchIcon className="w-12 h-12 text-gray-400" />
         <p className="text-gray-500 font-bold mt-4">검색된 과목이 없습니다.</p>
         <p className="text-gray-400 text-xs mt-1">다른 검색어로 다시 시도해보세요.</p>
       </Flex>

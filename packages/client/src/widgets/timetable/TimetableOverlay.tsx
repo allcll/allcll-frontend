@@ -1,5 +1,5 @@
 import { Button } from '@allcll/allcll-ui';
-import AddSvg from '@/assets/add.svg?react';
+import { AddIcon } from '@allcll/allcll-ui';
 import ScheduleSearchBottomSheet from '@/widgets/filtering/search/ui/ScheduleSearchBottomSheet';
 import FilterBottomSheet from '@/widgets/filtering/ui/FilterBottomSheet';
 import ScheduleFormModal from '@/features/timetable/ui/ScheduleFormModal.tsx';
@@ -46,9 +46,7 @@ function MobileTimetableOverlay() {
   return (
     <>
       <RenderIf when={bottomSheetType.search.isOpen}>
-        <ScheduleSearchBottomSheet onCloseSearch={handleCloseSearch} 
-        onOpenFiltering={handleOpenFiltering}
-        />
+        <ScheduleSearchBottomSheet onCloseSearch={handleCloseSearch} onOpenFiltering={handleOpenFiltering} />
       </RenderIf>
 
       <RenderIf when={bottomSheetType.filter.isOpen}>
@@ -77,7 +75,7 @@ function MobileTimetableOverlay() {
       >
         <div className="fixed bottom-4 right-4 z-5">
           <Button size="small" variant="circle" onClick={handleOpenSearch}>
-            <AddSvg fill="#ffffff" className="w-6 h-6 cursor-pointer" />
+            <AddIcon fill="#ffffff" className="w-6 h-6 cursor-pointer" />
           </Button>
         </div>
       </RenderIf>

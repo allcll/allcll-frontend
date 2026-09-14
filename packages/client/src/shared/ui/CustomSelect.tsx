@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Chip, ListboxOption, SupportingText } from '@allcll/allcll-ui';
-import SearchSvg from '@/assets/search.svg?react';
+import { SearchIcon } from '@allcll/allcll-ui';
 import { getNormalizedKeyword } from '@/shared/lib/search';
 
 interface SelectOption {
@@ -48,7 +48,7 @@ function CustomSelect({
         <div className="mt-1 border border-gray-200 rounded-md overflow-hidden">
           {searchable && (
             <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-100">
-              <SearchSvg className="w-4 h-4 text-gray-400 shrink-0" />
+              <SearchIcon className="w-4 h-4 text-gray-400 shrink-0" />
               <input
                 autoFocus
                 type="text"

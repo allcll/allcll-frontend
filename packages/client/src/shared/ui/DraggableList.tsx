@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect, useMemo } from 'react';
-import EyeGray from '@/assets/eye-gray.svg?react';
-import EyeDeleteGray from '@/assets/eye-delete-gray.svg?react';
+import { ViewIcon, ViewOffIcon } from '@allcll/allcll-ui';
 import { Z_INDEX } from '@allcll/allcll-ui/zIndex';
 
 interface Item {
@@ -244,7 +243,7 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
                 title={it.visible ? '숨기기' : '보이기'}
                 onClick={() => onVisibleChange(i)}
               >
-                {it.visible ? <EyeGray className="w-4 h-4" /> : <EyeDeleteGray className="w-4 h-4" />}
+                {it.visible ? <ViewIcon className="w-4 h-4" /> : <ViewOffIcon className="w-4 h-4" />}
               </button>
             </div>
           </li>

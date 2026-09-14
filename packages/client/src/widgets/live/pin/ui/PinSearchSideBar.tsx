@@ -1,6 +1,6 @@
 import { useDeferredValue, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import XSvg from '@/assets/x.svg?react';
+import { CloseIcon } from '@allcll/allcll-ui';
 import { Flex, Heading, IconButton } from '@allcll/allcll-ui';
 import { initialFilters } from '@/features/filtering/model/useFilterStore.ts';
 import useWishes from '@/entities/wishes/model/useWishes';
@@ -28,7 +28,11 @@ function PinSearchSideBar({ isOpen, onClose }: PinSearchSideBarProps) {
       <Flex direction="flex-col" className="w-92 flex-auto bg-gray-50 shadow-lg z-content">
         <div className="flex justify-between items-center py-2 pl-4 pr-2 bg-white border-b border-gray-200">
           <Heading level={2}>알림 설정</Heading>
-          <IconButton aria-label="알림 설정 닫기" icon={<XSvg className="w-4 h-4" />} onClick={onClose} />
+          <IconButton
+            aria-label="알림 설정 닫기"
+            icon={<CloseIcon className="w-4 h-4 text-gray-700" />}
+            onClick={onClose}
+          />
         </div>
         <PinSearch />
       </Flex>

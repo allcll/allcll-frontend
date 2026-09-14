@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ArrowLeftIcon, ArrowRightIcon } from '@allcll/allcll-ui';
 import type { IMenu } from './types';
 import BigMenu from './BigMenu';
 
@@ -29,8 +30,12 @@ function AsideMenu({ menus }: AsideMenuProps) {
         >
           <div className="h-12 bg-blue-500 text-white text-lg font-semibold flex items-center justify-between px-4">
             <span>학부생학사정보</span>
-            <button className="text-white hover:text-gray-200 cursor-pointer" onClick={toggleMenu}>
-              {'<'}
+            <button
+              className="text-white hover:text-gray-200 cursor-pointer"
+              onClick={toggleMenu}
+              aria-label="메뉴 접기"
+            >
+              <ArrowLeftIcon className="w-5 h-5" />
             </button>
           </div>
 
@@ -45,8 +50,9 @@ function AsideMenu({ menus }: AsideMenuProps) {
           <button
             className="w-full h-12 bg-blue-500 text-white text-lg font-semibold text-center cursor-pointer hover:text-gray-200"
             onClick={toggleMenu}
+            aria-label="메뉴 펼치기"
           >
-            {'>'}
+            <ArrowRightIcon className="w-4 h-4 mx-auto" />
           </button>
         </div>
       )}

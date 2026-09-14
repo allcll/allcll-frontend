@@ -1,10 +1,9 @@
 import React from 'react';
 import { Subject } from '@/shared/model/types.ts';
-import AlarmIcon from '@/shared/ui/svgs/AlarmIcon.tsx';
 import { useAddPinned, usePinned, useRemovePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
 import { loggingDepartment } from '@/features/filtering/lib/useSearchRank.ts';
 import useSearchLogging from '@/features/filtering/lib/useSearchLogging.ts';
-import { IconButton } from '@allcll/allcll-ui';
+import { IconButton, NotificationFilledIcon } from '@allcll/allcll-ui';
 
 interface IAlarmButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   subject: Subject;
@@ -40,7 +39,7 @@ function AlarmButton({ subject, variant = 'contain', className, onClick, ...prop
       title={title}
       variant={variant === 'contain' ? 'contain' : 'plain'}
       onClick={handlePin}
-      icon={<AlarmIcon disabled={!isPinned} />}
+      icon={<NotificationFilledIcon className={`w-4 h-4 ${isPinned ? 'text-blue-500' : 'text-gray-400'}`} />}
       className={className}
       {...props}
     />

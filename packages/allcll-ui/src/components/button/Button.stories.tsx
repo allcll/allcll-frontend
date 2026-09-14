@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import Button from './Button';
-import HomeSvg from '@/assets/home.svg?react';
+import { HomeIcon } from '../../icons';
 
 type ButtonProps = React.ComponentProps<typeof Button>;
 
@@ -109,14 +109,14 @@ export const WithIcon: Story = {
     <div className="flex flex-wrap gap-4">
       <div>
         <Button variant={variant} size="small">
-          <HomeSvg className="w-5 h-5" />
+          <HomeIcon className="w-5 h-5" />
           LeftIcon
         </Button>
       </div>
       <div>
         <Button variant={variant} size="medium">
           RightIcon
-          <HomeSvg className="w-5 h-5" />
+          <HomeIcon className="w-5 h-5" />
         </Button>
       </div>
     </div>

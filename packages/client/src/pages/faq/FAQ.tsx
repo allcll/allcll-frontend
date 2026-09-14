@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import useFaq from '@/entities/faq/model/useFaq.ts';
-import ArrowSvg from '@/assets/arrow-down-gray.svg?react';
+import { ChevronDownIcon } from '@allcll/allcll-ui';
 import markdownComponents from '@/shared/config/markdownComponents.tsx';
 import { Chip, Flex, Heading } from '@allcll/allcll-ui';
 
@@ -118,7 +118,11 @@ function FaqComponent({ item, index, isOpen, toggleAnswer }: IFaqComponent) {
       >
         {item.question}
 
-        <ArrowSvg className={'w-4 h-4 transform transition-transform duration-150 ' + (isOpen ? 'rotate-180' : '')} />
+        <ChevronDownIcon
+          className={
+            'w-4 h-4 text-gray-400 transform transition-transform duration-150 ' + (isOpen ? 'rotate-180' : '')
+          }
+        />
       </button>
       {isOpen && (
         <div className="p-4 border-t border-gray-200 text-sm">

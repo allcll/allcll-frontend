@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import ArrowLeftSvg from '@/assets/arrow-left.svg?react';
-import SaveSvg from '@/assets/save.svg?react';
-import { Card, Button, TextField, Label, Flex } from '@allcll/allcll-ui';
+import { Card, Button, TextField, Label, Flex, ArrowLeftIcon, SaveIcon } from '@allcll/allcll-ui';
 import PageHeader from '@/components/common/PageHeader';
 import MarkdownEditor from '@/components/notices/MarkdownEditor';
 import UnsavedModal from '@/components/notices/UnsavedModal';
@@ -112,12 +110,12 @@ function NoticeEditor() {
             onClick={handleBack}
             className="p-1 rounded-md text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
           >
-            <ArrowLeftSvg className="w-5 h-5" />
+            <ArrowLeftIcon className="w-5 h-5" />
           </button>
           <PageHeader title={isEditMode ? '공지사항 수정' : '새 공지 작성'} />
         </Flex>
         <Button variant="primary" size="small" onClick={handleSave} disabled={isSaving || isOverLimit}>
-          <SaveSvg className="w-4 h-4 mr-1" />
+          <SaveIcon className="w-4 h-4 mr-1" />
           {isSaving ? '저장 중...' : '저장하기'}
         </Button>
       </Flex>

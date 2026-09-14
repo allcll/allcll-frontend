@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Card, Flex, Heading, IconButton, Tooltip } from '@allcll/allcll-ui';
-import SettingSvg from '@/assets/settings.svg?react';
-import ReloadSvg from '@/assets/reload-blue.svg?react';
+import { RenewIcon, SettingsIcon } from '@allcll/allcll-ui';
 
 import AlarmOptionModal from '@/features/notification/ui/AlarmOptionModal.tsx';
 import NotificationInstructionsModal from '@/features/notification/ui/NotificationInstructionsModal.tsx';
@@ -44,14 +43,14 @@ function PinCoursesHeader({ setIsAlarmSettingOpen }: { setIsAlarmSettingOpen: (o
       <Flex align="items-center" gap="gap-1">
         {isError && (
           <IconButton
-            icon={<ReloadSvg className="w-5 h-5" />}
+            icon={<RenewIcon className="w-5 h-5 text-blue-500" />}
             aria-label="알림 재연결"
             label="알림 재연결"
             onClick={refetch}
           />
         )}
         <IconButton
-          icon={<SettingSvg className="w-5 h-5" />}
+          icon={<SettingsIcon className="w-5 h-5 text-gray-400" />}
           aria-label="알림 설정"
           label="알림 설정"
           onClick={() => setIsAlarmSettingOpen(true)}

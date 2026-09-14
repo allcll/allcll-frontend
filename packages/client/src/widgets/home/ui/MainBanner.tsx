@@ -5,7 +5,7 @@ import { formatSchedulePeriod, useCourseSchedule } from '@/entities/operationPer
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 import Section from '@/widgets/home/ui/Section.tsx';
 import Image from '@/shared/ui/Image.tsx';
-import LogoName from '@/assets/logo/logo-name-summer.svg?react';
+import logoNameUrl from '@/assets/logo/logo-name-summer.svg';
 
 function MainBanner() {
   const { data } = useServiceSemester();
@@ -31,8 +31,9 @@ function MainBanner() {
             세종대 수강신청 연습 · 수강여석 확인 · 졸업요건까지
           </h1>
           <div className="flex flex-row justify-start items-center text-xl sm:text-2xl md:text-4xl leading-snug font-bold mb-3">
-            <LogoName
-              aria-label="올클(ALLCLL) 세종대 수강신청 도우미 서비스"
+            <img
+              src={logoNameUrl}
+              alt="올클(ALLCLL) 세종대 수강신청 도우미 서비스"
               className="w-20 sm:w-32 md:w-40 lg:w-48 mr-2 animate-updown"
             />
             이 도와드립니다!

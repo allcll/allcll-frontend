@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import AlarmIcon from '@/shared/ui/svgs/AlarmIcon.tsx';
+import { NotificationFilledIcon } from '@allcll/allcll-ui';
 
 function GotoLive() {
   return (
@@ -8,8 +8,8 @@ function GotoLive() {
       state={{ openSearch: true }}
       className="inline-flex items-center gap-2 rounded-md border border-blue-500 px-3 py-2 text-sm text-blue-500 hover:bg-blue-50"
     >
-      <AlarmIcon />
-      알림등록하러가기
+      <NotificationFilledIcon className="w-4 h-4 text-blue-500" />
+      알림 등록하러 가기
     </NavLink>
   );
 }

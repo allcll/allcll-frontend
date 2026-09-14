@@ -3,8 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import { Badge, Button, Flex, Heading, IconButton } from '@allcll/allcll-ui';
-import CloseSvg from '@/assets/x.svg?react';
-import ChevronLeftSvg from '@/assets/chevron-left.svg?react';
+import { ChevronLeftIcon, CloseIcon } from '@allcll/allcll-ui';
 import { type Notice, getNoticeLabel } from '@/entities/notices/model/notice';
 import NoticeCard from './NoticeCard';
 import NoticeDetailModal from './NoticeDetailModal';
@@ -30,14 +29,14 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
       <Flex direction="flex-col" className="h-full">
         <Flex align="items-center" justify="justify-between" className="p-4 border-b border-gray-100">
           <Button variant="text" size="medium" textColor="gray" onClick={() => setSelectedNotice(null)}>
-            <ChevronLeftSvg className="w-4 h-4" />
+            <ChevronLeftIcon className="w-4 h-4 text-gray-700" />
             목록
           </Button>
           <IconButton
             className="p-2 hover:bg-gray-100 active:bg-gray-100"
             variant="plain"
             label="닫기"
-            icon={<CloseSvg className="w-6 h-6" />}
+            icon={<CloseIcon className="w-6 h-6 text-gray-700" />}
             onClick={onClose}
           />
         </Flex>
@@ -68,7 +67,7 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
           className="p-2 hover:bg-gray-100 active:bg-gray-100"
           variant="plain"
           label="닫기"
-          icon={<CloseSvg className="w-6 h-6" />}
+          icon={<CloseIcon className="w-6 h-6 text-gray-700" />}
           onClick={onClose}
         />
       </Flex>

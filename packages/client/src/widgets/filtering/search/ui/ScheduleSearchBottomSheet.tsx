@@ -7,7 +7,7 @@ import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
 import { useScheduleSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import { ScheduleAdapter } from '@/entities/timetable/model/adapter.ts';
-import FilterSvg from '@/assets/filter.svg?react';
+import { FilterIcon } from '@allcll/allcll-ui';
 import { Flex, IconButton } from '@allcll/allcll-ui';
 import useWishes from '@/entities/wishes/model/useWishes.ts';
 import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
@@ -56,7 +56,7 @@ function ScheduleSearchBottomSheet({ onCloseSearch, onOpenFiltering }: ISearchBo
               aria-label="filter"
               variant="plain"
               label="filter"
-              icon={<FilterSvg className="w-6 h-6" />}
+              icon={<FilterIcon className="w-6 h-6 text-gray-400" />}
               onClick={() => onOpenFiltering()}
             />
           </div>

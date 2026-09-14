@@ -2,7 +2,7 @@ import { useState } from 'react';
 import YouTube from 'react-youtube';
 import SejongUI from '@allcll/sejong-ui';
 import { Button, Checkbox, Dialog, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
-import ArrowdownSvg from '@/assets/arrow-down.svg?react';
+import { ChevronDownIcon } from '@allcll/allcll-ui';
 import useTutorialStore from '@/features/simulation/model/useTutorialStore.ts';
 import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
 import useMobile from '@/shared/lib/useMobile.ts';
@@ -100,11 +100,11 @@ function TutorialModal() {
         <div className="mt-4 flex flex-col justify-center items-center gap-2">
           <Flex justify="justify-center" align="items-center" className="gap-4">
             <Button variant="text" size="medium" aria-label="이전 튜토리얼" onClick={goToPreviousTutorial}>
-              {currentIndex !== 0 && <ArrowdownSvg className="w-5 h-5 transform rotate-90" />}
+              {currentIndex !== 0 && <ChevronDownIcon className="w-5 h-5 transform rotate-90 text-gray-700" />}
             </Button>
             <Heading level={3}>{currentVideo.title}</Heading>
             <Button variant="text" size="medium" aria-label="이전 튜토리얼" onClick={goToNextTutorial}>
-              {currentIndex < 3 && <ArrowdownSvg className="w-5 h-5 transform -rotate-90" />}
+              {currentIndex < 3 && <ChevronDownIcon className="w-5 h-5 transform -rotate-90 text-gray-700" />}
             </Button>
           </Flex>
           <SupportingText>

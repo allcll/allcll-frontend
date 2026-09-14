@@ -3,7 +3,7 @@ import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import { createPortal } from 'react-dom';
 import { Badge, Flex, Heading, IconButton } from '@allcll/allcll-ui';
-import CloseSvg from '@/assets/x.svg?react';
+import { CloseIcon } from '@allcll/allcll-ui';
 import { type Notice, getNoticeLabel } from '@/entities/notices/model/notice';
 
 interface NoticeDetailModalProps {
@@ -36,7 +36,12 @@ function NoticeDetailModal({ notice, onClose }: Readonly<NoticeDetailModalProps>
             <Heading level={2} size="lg" id="notice-detail-title" className="text-gray-900">
               {notice.title}
             </Heading>
-            <IconButton variant="plain" label="닫기" icon={<CloseSvg className="w-4 h-4" />} onClick={onClose} />
+            <IconButton
+              variant="plain"
+              label="닫기"
+              icon={<CloseIcon className="w-4 h-4 text-gray-700" />}
+              onClick={onClose}
+            />
           </Flex>
           <Flex align="items-center" gap="gap-2">
             <Badge variant="primary" size="small">

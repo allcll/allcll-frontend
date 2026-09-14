@@ -11,8 +11,8 @@ import {
   forceStopSimulation,
   triggerButtonEvent,
 } from '@/features/simulation/lib/simulation.ts';
-import SearchSvg from '@/assets/search-white.svg?react';
-import LogoSvg from '@public/ci.svg?react';
+import { SearchIcon } from '@allcll/allcll-ui';
+import logoCiUrl from '@/assets/logo/ci.svg';
 
 function SimulationSearchForm() {
   const { setCurrentSimulation, currentSimulation, resetSimulation } = useSimulationProcessStore();
@@ -160,9 +160,9 @@ function SimulationSearchForm() {
               disabled={!isRunning}
             >
               {currentSimulation.simulationStatus === 'start' && (
-                <LogoSvg className="absolute -top-20 right-8 w-15 h-15 animate-bounce rotate-170" />
+                <img src={logoCiUrl} alt="" className="absolute -top-20 right-8 w-15 h-15 animate-bounce rotate-170" />
               )}
-              <SearchSvg className="w-5 h-4" />
+              <SearchIcon className="w-5 h-4 text-white" />
               검색
             </button>
           </div>

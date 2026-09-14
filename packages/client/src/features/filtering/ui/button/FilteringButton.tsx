@@ -1,4 +1,4 @@
-import FilterSvg from '@/assets/filter.svg?react';
+import { FilterIcon } from '@allcll/allcll-ui';
 import { IconButton } from '@allcll/allcll-ui';
 
 function FilteringButton({ handleOpenFilter }: { handleOpenFilter: () => void }) {
@@ -8,7 +8,7 @@ function FilteringButton({ handleOpenFilter }: { handleOpenFilter: () => void })
       title="필터 수정"
       label="필터 수정"
       variant="contain"
-      icon={<FilterSvg className="w-4 h-4 " />}
+      icon={<FilterIcon className="w-4 h-4 text-gray-400" />}
       onClick={handleOpenFilter}
     />
   );

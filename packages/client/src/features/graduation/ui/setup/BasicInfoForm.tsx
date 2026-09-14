@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import { useAdmissionYearDepartments } from '@/entities/graduation/model/useGraduation';
 import { useFilteringDepartment } from '@/features/filtering/lib/useFilteringDepartment.ts';
-import CheckSvg from '@/assets/checkbox-blue.svg?react';
+import { CheckmarkIcon } from '@allcll/allcll-ui';
 import { ZeroContent } from '@/shared/ui/ZeroContent';
 import { JolupStepsProps } from '@/features/graduation/model/types.ts';
 import { updateMe } from '@/entities/user/api/user';
@@ -164,7 +164,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
                             key={department.departmentCode}
                             selected={isSelected}
                             left={<span>{departmentName}</span>}
-                            right={isSelected ? <CheckSvg className="w-4 h-4 shrink-0" /> : null}
+                            right={isSelected ? <CheckmarkIcon className="w-4 h-4 shrink-0 text-blue-500" /> : null}
                             onSelect={() => handlePrimaryDeptSelect(department.departmentCode, departmentName)}
                           />
                         );
@@ -217,7 +217,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
                             key={department.departmentCode}
                             selected={isSelected}
                             left={<span>{departmentName}</span>}
-                            right={isSelected ? <CheckSvg className="w-4 h-4 shrink-0" /> : null}
+                            right={isSelected ? <CheckmarkIcon className="w-4 h-4 shrink-0 text-blue-500" /> : null}
                             onSelect={() => handleDoubleMajorSelect(department.departmentCode, departmentName)}
                           />
                         );

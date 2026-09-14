@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PlusSvg from '@/assets/plus.svg?react';
-import { Button, Flex } from '@allcll/allcll-ui';
+import { Button, Flex, AddIcon } from '@allcll/allcll-ui';
 import { Filtering, CheckboxAdapter } from '@allcll/common';
 import MultiSelectFilterOption from '@/components/common/MultiSelectFilterOption';
 import PageHeader from '@/components/common/PageHeader';
@@ -38,7 +37,7 @@ function Notices() {
       <Flex align="items-center" justify="justify-between">
         <PageHeader title="공지사항 관리" description="등록된 공지사항을 관리합니다." />
         <Button variant="primary" size="small" onClick={() => navigate('/notices/new')}>
-          <PlusSvg className="w-4 h-4 mr-1" />새 공지 작성
+          <AddIcon className="w-4 h-4 mr-1" />새 공지 작성
         </Button>
       </Flex>
 

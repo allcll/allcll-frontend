@@ -2,7 +2,7 @@ import { RECENT_SEMESTERS } from '@/entities/semester/api/semester';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 import { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { Button, Chip, Flex, Grid, Label } from '@allcll/allcll-ui';
-import ImportantSvg from '@/assets/important.svg?react';
+import { WarningIcon } from '@allcll/allcll-ui';
 import { Link } from 'react-router-dom';
 
 interface ITimetableChip {
@@ -69,7 +69,7 @@ function TimetableChipEmpty({ semesterValue }: { semesterValue?: string }) {
       <Label>시간표 선택</Label>
 
       <Flex direction="flex-col" gap="gap-2" align="items-center">
-        <ImportantSvg className="w-7 h-7" fill="#C4C4C4" />
+        <WarningIcon className="w-7 h-7 text-[#C4C4C4]" />
         <p className="text-gray-500 text-sm">{semesterValue}학기 시간표가 없어요.</p>
         <Button asChild variant="secondary" size="small">
           <Link to="/timetable">새 시간표 추가</Link>

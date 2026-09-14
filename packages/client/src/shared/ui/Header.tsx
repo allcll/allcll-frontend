@@ -1,10 +1,8 @@
 import { useCallback, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import LogoCI from '@/assets/logo/ci-summer.svg?react';
-import LogoName from '@/assets/logo/logo-name-summer.svg?react';
-import HelpDeskSvg from '@/assets/help-desk.svg?react';
-import HelpChatSvg from '@/assets/chat-help.svg?react';
-import MenuSvg from '@/assets/menu.svg?react';
+import logoCiUrl from '@/assets/logo/ci-summer.svg';
+import logoNameUrl from '@/assets/logo/logo-name-summer.svg';
+import { ChatHelpIcon, HeadsetIcon, MenuIcon } from '@allcll/allcll-ui';
 import { IconButton, Badge } from '@allcll/allcll-ui';
 import NoticeBell from '@/features/notices/ui/NoticeBell';
 import MobileMenu from './MobileMenu';
@@ -20,12 +18,12 @@ export const HeaderContents = [
 
 export const ButtonContents = [
   {
-    icon: <HelpDeskSvg className="w-4 h-4" />,
+    icon: <HeadsetIcon className="w-4 h-4 text-gray-500" />,
     title: '오류 및 제안',
     path: 'https://forms.gle/bCDTVujEHunnvHe88',
   },
   {
-    icon: <HelpChatSvg className="w-4 h-4" />,
+    icon: <ChatHelpIcon className="w-4 h-4 text-gray-500" />,
     title: '공지 채팅방',
     path: 'https://open.kakao.com/o/g3MztXfh',
   },
@@ -43,8 +41,8 @@ function Header() {
         <div className="flex items-center space-x-4 py-4">
           <Link to="/" className="flex items-center gap-1 space-x-2" aria-label="메인 페이지">
             <h2 className="hidden">ALLCLL</h2>
-            <LogoCI className="w-6 h-6 m-0" />
-            <LogoName className="h-5" />
+            <img src={logoCiUrl} alt="" className="w-6 h-6 m-0" />
+            <img src={logoNameUrl} alt="" className="h-5" />
           </Link>
 
           <ul className="hidden md:flex space-x-4 text-sm sm:text-base">
@@ -89,7 +87,7 @@ function Header() {
           <IconButton
             className="p-2 hover:bg-gray-100 active:bg-gray-100"
             variant="plain"
-            icon={<MenuSvg className="w-6 h-6" />}
+            icon={<MenuIcon className="w-6 h-6" />}
             label="메뉴 열기"
             onClick={openMenu}
             aria-expanded={isOpen}
