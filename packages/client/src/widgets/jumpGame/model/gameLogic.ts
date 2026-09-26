@@ -108,11 +108,16 @@ function updateCharacter(game: IGameState, dt: number): void {
   character.isAirborne = false;
 }
 
-function updateSpeed(game: IGameState, dt: number, towerRestX: number): void {
-  if (game.phase === 'none') {
-    game.speed = Math.min(SPEED_MAX, game.speed + SPEED_ACCEL * dt);
-    return;
-  }
+function updateSpeed(game: IGameState, dt: number): void {
+  if (game.phase !== 'none') return;
+  game.speed = Math.min(SPEED_MAX, game.speed + SPEED_ACCEL * dt);
+}
+
+/**
+ * 엔딩에서 종탑이 올 때까지 감속하고, 자리 잡으면 멈춥니다.
+ * 이번 프레임의 이동 거리를 정하는 값이라 이동보다 먼저 호출합니다.
+ */
+function updateEndingSpeed(game: IGameState, dt: number, towerRestX: number): void {
   if (game.phase !== 'approach') return;
 
   if (game.towerX > towerRestX) {
@@ -178,7 +183,7 @@ function updateCollision(game: IGameState, dt: number): void {
   game.isDead = game.lives <= 0;
 }
 
-interface IEndingUpdateParams {
+interface IEndingSceneParams {
   game: IGameState;
   dt: number;
   moved: number;
@@ -186,32 +191,11 @@ interface IEndingUpdateParams {
   towerRestX: number;
 }
 
-function updateEnding({ game, dt, moved, stageWidth, towerRestX }: IEndingUpdateParams): void {
-  if (game.phase === 'approach') {
-    // 종탑도 배경과 같은 속도로 흘러오다, 자리에 닿으면 벽처럼 멈춥니다
-    game.towerX = Math.max(towerRestX, game.towerX - moved);
-    return;
-  }
-  if (game.phase !== 'enter') return;
-
-  // 캐릭터가 종탑 뒤를 지나 화면 밖으로 사라지면 클리어
-  game.character.offsetX += ENDING_ENTER_SPEED * dt;
-  game.isCleared = game.character.offsetX > stageWidth;
-}
-
-/** 한 프레임 진행합니다. dt 는 초 단위 경과 시간입니다 */
-export function updateGame(game: IGameState, dt: number, stageWidth: number): void {
-  const towerRestX = stageWidth - TOWER_WIDTH - TOWER_REST_MARGIN;
-
-  updateCharacter(game, dt);
-  updateSpeed(game, dt, towerRestX);
-
-  const moved = game.speed * dt;
-  game.distance += moved;
-
-  updateObstacles(game, moved, stageWidth);
-  updateClouds(game, moved, stageWidth);
-
+/**
+ * 엔딩에서 종탑을 등장시켜 제자리까지 옮기고, 멈춘 뒤에는 캐릭터를 종탑 뒤로 걸어 들어가게 합니다.
+ * 이번 프레임에 이동한 거리만큼 종탑을 옮기므로 이동 뒤에 호출합니다.
+ */
+function updateEndingScene({ game, dt, moved, stageWidth, towerRestX }: IEndingSceneParams): void {
   if (game.phase === 'none') {
     game.towerX = stageWidth + TOWER_SPAWN_OFFSET;
     if (game.distance >= ENDING_DISTANCE) {
@@ -219,10 +203,36 @@ export function updateGame(game: IGameState, dt: number, stageWidth: number): vo
     }
   }
 
-  // 엔딩 연출 중에는 남은 장애물이 흘러나갈 뿐이므로 충돌만 계속 확인합니다
+  if (game.phase === 'approach') {
+    // 종탑도 배경과 같은 속도로 흘러오다, 자리에 닿으면 벽처럼 멈춥니다
+    game.towerX = Math.max(towerRestX, game.towerX - moved);
+  }
+
+  if (game.phase === 'enter') {
+    // 캐릭터가 종탑 뒤를 지나 화면 밖으로 사라지면 클리어입니다
+    game.character.offsetX += ENDING_ENTER_SPEED * dt;
+    game.isCleared = game.character.offsetX > stageWidth;
+  }
+}
+
+/** 한 프레임 진행합니다. dt 는 초 단위 경과 시간입니다 */
+export function updateGame(game: IGameState, dt: number, stageWidth: number): void {
+  const towerRestX = stageWidth - TOWER_WIDTH - TOWER_REST_MARGIN;
+
+  updateCharacter(game, dt);
+  updateSpeed(game, dt);
+  updateEndingSpeed(game, dt, towerRestX);
+
+  const moved = game.speed * dt;
+  game.distance += moved;
+
+  updateObstacles(game, moved, stageWidth);
+  updateClouds(game, moved, stageWidth);
+
+  // 종탑으로 걸어 들어가는 동안에는 멈춰 있는 장애물에 걸리지 않도록 충돌을 보지 않습니다
   if (game.phase !== 'enter') {
     updateCollision(game, dt);
   }
 
-  updateEnding({ game, dt, moved, stageWidth, towerRestX });
+  updateEndingScene({ game, dt, moved, stageWidth, towerRestX });
 }
