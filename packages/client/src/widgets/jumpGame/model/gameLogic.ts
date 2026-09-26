@@ -28,6 +28,7 @@ import {
   TOWER_SPAWN_OFFSET,
   TOWER_WIDTH,
 } from '@/widgets/jumpGame/lib/gameConfig.ts';
+import { randomBetween } from '@/shared/lib/random.ts';
 import type { IGameState } from '@/widgets/jumpGame/model/types.ts';
 
 /** 점프해서 착지할 때까지 도는 각도 */
@@ -36,14 +37,6 @@ const JUMP_ROTATION = 90;
 // 판이 바뀌어도 이어서 증가시켜, 다시 시작한 직후에도 이전 판과 같은 key 가 나오지 않게 합니다
 let obstacleId = 0;
 let cloudId = 0;
-
-/**
- * min 이상 max 미만의 난수입니다.
- * 장애물 간격과 구름 위치를 정하는 연출용이라 Math.random 으로 충분해, 여기서만 감싸 씁니다.
- */
-function randomBetween(min: number, max: number): number {
-  return min + Math.random() * (max - min); // NOSONAR
-}
 
 /**
  * 목표값으로 부드럽게 다가가는 보간입니다.
