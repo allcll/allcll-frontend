@@ -1,6 +1,6 @@
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { IToastMessage } from '../../store/useToastNotification';
-import { CloseIcon, NotificationFilledIcon } from '@allcll/allcll-ui';
+import { CloseIcon, NotificationIcon } from '@allcll/allcll-ui';
 import useToastNotification from '../../store/useToastNotification';
 
 function ToastNotification() {
@@ -28,7 +28,7 @@ interface IToast {
 function Toast({ toast, closeToast }: IToast) {
   return (
     <div className="flex justify-between items-center gap-2 p-4 ml-2 bg-white text-black rounded-lg shadow-md">
-      <NotificationFilledIcon className="w-4 h-4 text-blue-500" />
+      <NotificationIcon className="w-4 h-4 text-blue-500" />
       <span className="flex-1 text-sm font-bold truncate max-w-72">{toast.message}</span>
       <button aria-label="닫기" onClick={closeToast} className="p-2 rounded-full hover:bg-blue-100">
         <CloseIcon className="w-4 h-4 text-gray-400" />

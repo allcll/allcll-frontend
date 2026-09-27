@@ -1,6 +1,6 @@
 import IconButton from '../icon-button/IconButton';
 import RowSlots from '../row/RowSlots';
-import { CloseIcon, NotificationFilledIcon } from '../../icons';
+import { CloseIcon, NotificationIcon } from '../../icons';
 
 export interface IToastMessage {
   message: string;
@@ -17,7 +17,7 @@ function Toast({ toast, closeToast }: IToast) {
     <RowSlots
       withPadding
       className="bg-white rounded-lg shadow-md"
-      left={<NotificationFilledIcon className="w-4 h-4 text-blue-500" />}
+      left={<NotificationIcon className="w-4 h-4 text-blue-500" />}
       center={<span className="flex-1 text-sm font-bold truncate max-w-72">{toast.message}</span>}
       right={
         <IconButton
