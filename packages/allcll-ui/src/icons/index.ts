@@ -72,6 +72,14 @@ export {
   MessageCircleQuestionMark as ChatHelpIcon,
   Headset as HeadsetIcon,
 
+  /* 관리자 메뉴 --------------------------------------------------------- */
+  LayoutDashboard as DashboardIcon,
+  Bot as BotIcon,
+  GraduationCap as GraduationCapIcon,
+  ScrollText as ScrollTextIcon,
+  MessageSquareText as MessageIcon,
+  Megaphone as MegaphoneIcon,
+
   /* 문서 · 에디터 ------------------------------------------------------- */
   FileText as DocumentIcon,
   Book as BookIcon,

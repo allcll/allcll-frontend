@@ -1,35 +1,49 @@
-import { BookIcon } from '@allcll/allcll-ui';
+import {
+  BotIcon,
+  DashboardIcon,
+  GraduationCapIcon,
+  MegaphoneIcon,
+  MessageIcon,
+  ScrollTextIcon,
+  SettingsIcon,
+} from '@allcll/allcll-ui';
 
 import { NavLink } from 'react-router-dom';
 
 const Menus = [
   {
     title: '대시보드',
-    icon: <BookIcon className="w-5 h-5" />,
+    icon: <DashboardIcon className="w-5 h-5" />,
     link: '/',
   },
   {
     title: '크롤러 설정',
+    icon: <BotIcon className="w-5 h-5" />,
     link: '/crawlers',
   },
   {
     title: '졸업요건 설정',
+    icon: <GraduationCapIcon className="w-5 h-5" />,
     link: '/graduation',
   },
   {
     title: '서비스 설정',
+    icon: <SettingsIcon className="w-5 h-5" />,
     link: '/service',
   },
   {
     title: '로그 설정',
+    icon: <ScrollTextIcon className="w-5 h-5" />,
     link: '/logs',
   },
   {
     title: '사용자 후기',
+    icon: <MessageIcon className="w-5 h-5" />,
     link: '/reviews',
   },
   {
     title: '공지사항',
+    icon: <MegaphoneIcon className="w-5 h-5" />,
     link: '/notices',
   },
 ];
