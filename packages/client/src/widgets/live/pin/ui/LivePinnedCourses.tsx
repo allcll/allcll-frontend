@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Card, Flex, Heading, IconButton, Tooltip } from '@allcll/allcll-ui';
-import { RenewIcon, SettingsIcon } from '@allcll/allcll-ui';
+import { Card, Flex, Heading, IconButton, Tooltip, RenewIcon, SettingsIcon } from '@allcll/allcll-ui';
 
 import AlarmOptionModal from '@/features/notification/ui/AlarmOptionModal.tsx';
 import NotificationInstructionsModal from '@/features/notification/ui/NotificationInstructionsModal.tsx';

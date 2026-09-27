@@ -1,8 +1,7 @@
 import useInfScroll from '@/shared/lib/useInfScroll.ts';
-import { SearchIcon } from '@allcll/allcll-ui';
+import { SearchIcon, Flex, Grid } from '@allcll/allcll-ui';
 import { WishesWithSeat } from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
 import { Wishes } from '@/shared/model/types.ts';
-import { Flex, Grid } from '@allcll/allcll-ui';
 import PinCard from '@/features/live/pin/ui/PinCard';
 
 interface IPinCards {

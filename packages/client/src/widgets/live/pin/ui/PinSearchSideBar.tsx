@@ -1,7 +1,6 @@
 import { useDeferredValue, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { CloseIcon } from '@allcll/allcll-ui';
-import { Flex, Heading, IconButton } from '@allcll/allcll-ui';
+import { CloseIcon, Flex, Heading, IconButton } from '@allcll/allcll-ui';
 import { initialFilters } from '@/features/filtering/model/useFilterStore.ts';
 import useWishes from '@/entities/wishes/model/useWishes';
 import SearchBox from '@/features/filtering/ui/SearchBox';

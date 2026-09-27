@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { CloseIcon, DocumentIcon, UploadIcon } from '@allcll/allcll-ui';
-import { IconButton, Flex } from '@allcll/allcll-ui';
+import { CloseIcon, DocumentIcon, UploadIcon, IconButton, Flex } from '@allcll/allcll-ui';
 import useToastNotification from '../../../notification/model/useToastNotification';
 
 interface FileDropZoneProps {

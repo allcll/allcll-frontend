@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
-import { LaunchIcon } from '@allcll/allcll-ui';
-import { Heading, SupportingText } from '@allcll/allcll-ui';
+import { LaunchIcon, Heading, SupportingText } from '@allcll/allcll-ui';
 
 interface ISectionHeader {
   title?: string;

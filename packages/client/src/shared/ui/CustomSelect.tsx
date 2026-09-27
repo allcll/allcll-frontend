@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Chip, ListboxOption, SupportingText } from '@allcll/allcll-ui';
-import { SearchIcon } from '@allcll/allcll-ui';
+import { Chip, ListboxOption, SupportingText, SearchIcon } from '@allcll/allcll-ui';
 import { getNormalizedKeyword } from '@/shared/lib/search';
 
 interface SelectOption {

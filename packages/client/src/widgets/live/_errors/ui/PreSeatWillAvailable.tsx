@@ -1,6 +1,5 @@
 import NoneLayout from '@/shared/ui/NoneLayout';
-import { NotificationIcon } from '@allcll/allcll-ui';
-import { Flex } from '@allcll/allcll-ui';
+import { NotificationIcon, Flex } from '@allcll/allcll-ui';
 
 function PreSeatWillAvailable() {
   return (

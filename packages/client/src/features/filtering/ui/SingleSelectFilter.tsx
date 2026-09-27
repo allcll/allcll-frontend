@@ -1,8 +1,7 @@
-import { ResetIcon } from '@allcll/allcll-ui';
+import { ResetIcon, Button, Flex, Grid, Label } from '@allcll/allcll-ui';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { getLabelFormatter, labelPrefix } from '@/features/filtering/lib/getFilteringFormatter.ts';
 import MinMaxFilter from './MinMaxFilter.tsx';
-import { Button, Flex, Grid, Label } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile.ts';
 import { FilterItemProps, RangeMinMaxFilter } from '@/features/filtering/model/types.ts';
 

@@ -1,5 +1,4 @@
-import { CheckmarkIcon } from '@allcll/allcll-ui';
-import { Flex, Heading } from '@allcll/allcll-ui';
+import { CheckmarkIcon, Flex, Heading } from '@allcll/allcll-ui';
 
 function GameTips() {
   return (

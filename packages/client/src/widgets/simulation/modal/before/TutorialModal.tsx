@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import YouTube from 'react-youtube';
 import SejongUI from '@allcll/sejong-ui';
-import { Button, Checkbox, Dialog, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
-import { ChevronDownIcon } from '@allcll/allcll-ui';
+import { Button, Checkbox, Dialog, Flex, Heading, SupportingText, ChevronDownIcon } from '@allcll/allcll-ui';
 import useTutorialStore from '@/features/simulation/model/useTutorialStore.ts';
 import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
 import useMobile from '@/shared/lib/useMobile.ts';

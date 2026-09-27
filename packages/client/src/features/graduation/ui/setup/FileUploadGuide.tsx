@@ -1,6 +1,5 @@
-import { Card, Heading, Flex } from '@allcll/allcll-ui';
+import { Card, Heading, Flex, WarningIcon } from '@allcll/allcll-ui';
 import { NavLink } from 'react-router-dom';
-import { WarningIcon } from '@allcll/allcll-ui';
 
 const FileUploadGuide = () => {
   return (

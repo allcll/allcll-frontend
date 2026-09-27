@@ -1,5 +1,4 @@
-import { Button } from '@allcll/allcll-ui';
-import { AddIcon } from '@allcll/allcll-ui';
+import { Button, AddIcon } from '@allcll/allcll-ui';
 import ScheduleSearchBottomSheet from '@/widgets/filtering/search/ui/ScheduleSearchBottomSheet';
 import FilterBottomSheet from '@/widgets/filtering/ui/FilterBottomSheet';
 import ScheduleFormModal from '@/features/timetable/ui/ScheduleFormModal.tsx';

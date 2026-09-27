@@ -1,6 +1,5 @@
 import Section from '@/widgets/home/ui/Section.tsx';
-import { ErrorIcon, RenewIcon, TimeIcon } from '@allcll/allcll-ui';
-import { Heading, SupportingText } from '@allcll/allcll-ui';
+import { ErrorIcon, RenewIcon, TimeIcon, Heading, SupportingText } from '@allcll/allcll-ui';
 
 function PainPointSection() {
   return (

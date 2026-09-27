@@ -1,8 +1,7 @@
 import { RECENT_SEMESTERS } from '@/entities/semester/api/semester';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 import { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
-import { Button, Chip, Flex, Grid, Label } from '@allcll/allcll-ui';
-import { WarningIcon } from '@allcll/allcll-ui';
+import { Button, Chip, Flex, Grid, Label, WarningIcon } from '@allcll/allcll-ui';
 import { Link } from 'react-router-dom';
 
 interface ITimetableChip {

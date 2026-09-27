@@ -1,10 +1,20 @@
 import { useState } from 'react';
-import { Card, Flex, Heading, SupportingText, Label, Chip, Button, ListboxOption, Grid } from '@allcll/allcll-ui';
+import {
+  Card,
+  Flex,
+  Heading,
+  SupportingText,
+  Label,
+  Chip,
+  Button,
+  ListboxOption,
+  Grid,
+  CheckmarkIcon,
+} from '@allcll/allcll-ui';
 import { useMutation } from '@tanstack/react-query';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import { useAdmissionYearDepartments } from '@/entities/graduation/model/useGraduation';
 import { useFilteringDepartment } from '@/features/filtering/lib/useFilteringDepartment.ts';
-import { CheckmarkIcon } from '@allcll/allcll-ui';
 import { ZeroContent } from '@/shared/ui/ZeroContent';
 import { JolupStepsProps } from '@/features/graduation/model/types.ts';
 import { updateMe } from '@/entities/user/api/user';

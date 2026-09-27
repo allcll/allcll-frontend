@@ -1,5 +1,4 @@
-import { AllcllFaceIcon, CheckmarkIcon } from '@allcll/allcll-ui';
-import { Button, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import { AllcllFaceIcon, CheckmarkIcon, Button, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import { DETAIL_MAX_LENGTH } from '@/features/feedback/api/feedbackApi';
 import type { FeedbackTitles } from '../lib/getFeedbackTitle';
 

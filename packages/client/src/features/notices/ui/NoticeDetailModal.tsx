@@ -2,8 +2,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import { createPortal } from 'react-dom';
-import { Badge, Flex, Heading, IconButton } from '@allcll/allcll-ui';
-import { CloseIcon } from '@allcll/allcll-ui';
+import { Badge, Flex, Heading, IconButton, CloseIcon } from '@allcll/allcll-ui';
 import { type Notice, getNoticeLabel } from '@/entities/notices/model/notice';
 
 interface NoticeDetailModalProps {

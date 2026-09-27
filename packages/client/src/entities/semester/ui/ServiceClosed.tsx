@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
-import { HomeIcon } from '@allcll/allcll-ui';
+import { HomeIcon, Button, Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 
 import { ServiceSemester } from '@/entities/semester/api/semester.ts';
-import { Button, Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import { formatSchedulePeriod, useCourseSchedule } from '@/entities/operationPeriod/model/useCourseSchedule';
 
 interface IServiceClosed {

@@ -1,6 +1,5 @@
 import { InputHTMLAttributes, useRef } from 'react';
-import { CloseIcon, SearchIcon } from '@allcll/allcll-ui';
-import { IconButton, Input } from '@allcll/allcll-ui';
+import { CloseIcon, SearchIcon, IconButton, Input } from '@allcll/allcll-ui';
 
 interface ISearchBox extends InputHTMLAttributes<HTMLInputElement> {
   onDelete: () => void;

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import { Filters, initialFilters, useWishSearchStore } from '@/features/filtering/model/useFilterStore.ts';
-import { TableSettingsIcon, StarFilledIcon, StarIcon } from '@allcll/allcll-ui';
+import { TableSettingsIcon, StarFilledIcon, StarIcon, IconButton, Flex, Chip } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile.ts';
 import FilterBottomSheet from '@/widgets/filtering/ui/FilterBottomSheet.tsx';
 import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
@@ -13,7 +13,6 @@ import DepartmentFilter from '../../../features/filtering/ui/DepartmentFilter.ts
 import FilterDelete from '../../../features/filtering/ui/FilterDelete.tsx';
 import usePreSeatGate from '@/entities/seat/model/usePreSeatGate';
 import useWishesPreSeats from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
-import { IconButton, Flex, Chip } from '@allcll/allcll-ui';
 import { useWishesTableStore } from '@/features/wish/model/useWishTableColumnStore.ts';
 import TableTitleSettingModal from '@/shared/ui/TableTitleSettingModal.tsx';
 import DetailFilterModal from '@/features/filtering/ui/DetailFilterModal.tsx';

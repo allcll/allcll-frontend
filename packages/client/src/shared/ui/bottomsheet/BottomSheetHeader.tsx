@@ -1,6 +1,5 @@
 import React from 'react';
-import { AddIcon, CloseIcon } from '@allcll/allcll-ui';
-import { Heading } from '@allcll/allcll-ui';
+import { AddIcon, CloseIcon, Heading } from '@allcll/allcll-ui';
 
 interface IBottomSheetHeader {
   title?: string;

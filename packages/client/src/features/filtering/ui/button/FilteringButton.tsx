@@ -1,5 +1,4 @@
-import { FilterIcon } from '@allcll/allcll-ui';
-import { IconButton } from '@allcll/allcll-ui';
+import { FilterIcon, IconButton } from '@allcll/allcll-ui';
 
 function FilteringButton({ handleOpenFilter }: { handleOpenFilter: () => void }) {
   return (

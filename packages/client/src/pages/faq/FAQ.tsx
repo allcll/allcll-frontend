@@ -4,9 +4,8 @@ import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import useFaq from '@/entities/faq/model/useFaq.ts';
-import { ChevronDownIcon } from '@allcll/allcll-ui';
+import { ChevronDownIcon, Chip, Flex, Heading } from '@allcll/allcll-ui';
 import markdownComponents from '@/shared/config/markdownComponents.tsx';
-import { Chip, Flex, Heading } from '@allcll/allcll-ui';
 
 const Tags = {
   all: '기타',

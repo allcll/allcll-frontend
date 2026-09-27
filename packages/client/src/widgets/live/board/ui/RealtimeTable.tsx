@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { TableSettingsIcon } from '@allcll/allcll-ui';
-import { Card, Flex, Heading, IconButton } from '@allcll/allcll-ui';
+import { TableSettingsIcon, Card, Flex, Heading, IconButton } from '@allcll/allcll-ui';
 
 import SkeletonRows from '@/shared/ui/SkeletonRows.tsx';
 import { getTimeDiffString } from '@/shared/lib/stringFormats.ts';

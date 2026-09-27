@@ -3,8 +3,7 @@
  */
 import { useEffect, useState } from 'react';
 import useNotificationInstruction from '../model/useNotificationInstruction.ts';
-import { SettingsAdjustIcon } from '@allcll/allcll-ui';
-import { Dialog } from '@allcll/allcll-ui';
+import { SettingsAdjustIcon, Dialog } from '@allcll/allcll-ui';
 
 // --- OS/Browser Detection Utilities ---
 

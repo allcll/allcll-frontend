@@ -1,8 +1,7 @@
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { saveImageFromElement } from '@/shared/lib/saveImage.ts';
-import { Button, Flex, IconButton } from '@allcll/allcll-ui';
-import { DownloadIcon, SearchIcon } from '@allcll/allcll-ui';
+import { Button, Flex, IconButton, DownloadIcon, SearchIcon } from '@allcll/allcll-ui';
 
 import { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
 

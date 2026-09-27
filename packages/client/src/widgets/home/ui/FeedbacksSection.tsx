@@ -1,6 +1,5 @@
 import Section from '@/widgets/home/ui/Section.tsx';
-import { UserAvatarIcon } from '@allcll/allcll-ui';
-import { Heading } from '@allcll/allcll-ui';
+import { UserAvatarIcon, Heading } from '@allcll/allcll-ui';
 
 function FeedbacksSection() {
   return (

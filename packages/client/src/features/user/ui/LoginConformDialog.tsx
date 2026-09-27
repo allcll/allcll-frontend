@@ -1,6 +1,5 @@
-import { Button, Checkbox, Dialog, Flex, SupportingText } from '@allcll/allcll-ui';
+import { Button, Checkbox, Dialog, Flex, SupportingText, WarningIcon } from '@allcll/allcll-ui';
 import { useState } from 'react';
-import { WarningIcon } from '@allcll/allcll-ui';
 
 interface ILoginConfirmationDialog {
   isOpen: boolean;

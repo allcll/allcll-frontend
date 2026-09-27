@@ -1,6 +1,5 @@
-import { FilterRemoveIcon } from '@allcll/allcll-ui';
+import { FilterRemoveIcon, Chip, Flex } from '@allcll/allcll-ui';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
-import { Chip, Flex } from '@allcll/allcll-ui';
 import { isFilterEmpty } from '@/features/filtering/lib/filterUtils.ts';
 
 interface FilterDelete {

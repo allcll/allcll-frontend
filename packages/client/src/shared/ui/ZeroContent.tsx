@@ -1,5 +1,4 @@
-import { Flex } from '@allcll/allcll-ui';
-import { SearchIcon } from '@allcll/allcll-ui';
+import { Flex, SearchIcon } from '@allcll/allcll-ui';
 
 interface ZeroContentProps {
   title: string;

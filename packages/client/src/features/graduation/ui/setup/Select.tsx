@@ -1,5 +1,4 @@
-import { Popover, PopoverGroup, ListboxOption } from '@allcll/allcll-ui';
-import { CheckmarkIcon } from '@allcll/allcll-ui';
+import { Popover, PopoverGroup, ListboxOption, CheckmarkIcon } from '@allcll/allcll-ui';
 
 interface SelectOption {
   value: string;

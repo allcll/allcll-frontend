@@ -2,8 +2,7 @@ import { useCallback, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import logoCiUrl from '@/assets/logo/ci-summer.svg';
 import logoNameUrl from '@/assets/logo/logo-name-summer.svg';
-import { ChatHelpIcon, HeadsetIcon, MenuIcon } from '@allcll/allcll-ui';
-import { IconButton, Badge } from '@allcll/allcll-ui';
+import { ChatHelpIcon, HeadsetIcon, MenuIcon, IconButton, Badge } from '@allcll/allcll-ui';
 import NoticeBell from '@/features/notices/ui/NoticeBell';
 import MobileMenu from './MobileMenu';
 
