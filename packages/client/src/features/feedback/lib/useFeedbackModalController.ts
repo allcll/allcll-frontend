@@ -3,6 +3,7 @@ import useFeedbackStore from '@/features/feedback/model/useFeedbackStore';
 import useFeedbackMutation from '@/features/feedback/api/useFeedbackMutation';
 import type { FeedbackCategory } from '@/features/feedback/api/feedbackApi';
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore';
+import { toPublicFeedbackCategory } from './feedbackCategory';
 
 interface IUseFeedbackModalControllerProps {
   isOpen: boolean;
@@ -11,6 +12,8 @@ interface IUseFeedbackModalControllerProps {
   category: FeedbackCategory;
   // PeekBar를 거치지 않고 곧바로 바텀시트를 여는지 여부
   opensSheetDirectly: boolean;
+  // 사용자가 카테고리를 직접 고를 수 있는지 여부
+  selectableCategory: boolean;
 }
 
 export function useFeedbackModalController({
@@ -19,6 +22,7 @@ export function useFeedbackModalController({
   isMobile,
   category,
   opensSheetDirectly,
+  selectableCategory,
 }: IUseFeedbackModalControllerProps) {
   const hasMountedFeedbackSheet = useRef(false);
   const [rate, setRate] = useState<0 | 1 | 2 | 3>(0);
@@ -100,8 +104,10 @@ export function useFeedbackModalController({
   const handleSubmit = () => {
     if (rate === 0) return;
 
+    const operationType = selectableCategory ? toPublicFeedbackCategory(selectedCategory) : selectedCategory;
+
     mutate(
-      { rate, detail: detail ?? '', operationType: selectedCategory },
+      { rate, detail: detail ?? '', operationType },
       {
         onSuccess: () => {
           setSuccess(true);

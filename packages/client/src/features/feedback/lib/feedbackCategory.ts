@@ -21,3 +21,11 @@ export function getFeedbackCategoryByPath(pathname: string): FeedbackCategory {
 
   return matched?.category ?? 'ALL';
 }
+
+// TODO: 백엔드에서 졸업요건 후기를 비로그인으로도 받을 수 있게 되면 제거
+const AUTH_REQUIRED_FEEDBACK_CATEGORIES: FeedbackCategory[] = ['GRADUATION'];
+
+// 인증이 필요한 카테고리는 비로그인 제출 시 오류가 발생하므로 공통 카테고리로 묶어서 제출
+export function toPublicFeedbackCategory(category: FeedbackCategory): FeedbackCategory {
+  return AUTH_REQUIRED_FEEDBACK_CATEGORIES.includes(category) ? 'ALL' : category;
+}

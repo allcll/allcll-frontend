@@ -34,6 +34,7 @@ export const FeedbackModal = ({
     isMobile,
     category,
     opensSheetDirectly: !peekMessage,
+    selectableCategory,
   });
 
   if (!isOpen) return null;
