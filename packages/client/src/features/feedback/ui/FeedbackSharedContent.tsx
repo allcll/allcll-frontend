@@ -1,14 +1,16 @@
-import FeedbackFace from '@/assets/ci-icon.svg?react';
-import CheckIcon from '@/assets/check.svg?react';
-import { Button, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import { AllcllFaceIcon, CheckmarkIcon, Button, Chip, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
 import { DETAIL_MAX_LENGTH } from '@/features/feedback/api/feedbackApi';
+import type { FeedbackCategory } from '@/features/feedback/api/feedbackApi';
 import type { FeedbackTitles } from '../lib/getFeedbackTitle';
+import { SELECTABLE_FEEDBACK_CATEGORIES } from '../lib/feedbackCategory';
 
 interface IFeedbackFieldsProps {
   rate: 0 | 1 | 2 | 3;
   setRate: (rate: 1 | 2 | 3) => void;
   detail: string;
   setDetail: (value: string) => void;
+  category: FeedbackCategory;
+  onCategoryChange?: (category: FeedbackCategory) => void;
   error: string | null;
   titles: FeedbackTitles;
 }
@@ -20,9 +22,20 @@ interface IFeedbackActionsProps {
   onDontShowAgain?: () => void;
 }
 
-export function FeedbackFields({ titles, rate, setRate, detail, setDetail, error }: IFeedbackFieldsProps) {
+export function FeedbackFields({
+  titles,
+  rate,
+  setRate,
+  detail,
+  setDetail,
+  category,
+  onCategoryChange,
+  error,
+}: IFeedbackFieldsProps) {
   return (
     <>
+      {onCategoryChange && <CategoryChips category={category} onChange={onCategoryChange} />}
+
       <Heading level={4}>{titles.radioTitle}</Heading>
       <Flex justify="justify-center" className="gap-3 mb-3" role="radiogroup" aria-label={titles.radioTitle}>
         <RateInputs rate={1} currentRate={rate} label={titles.rateLabels[0]} onClick={() => setRate(1)} />
@@ -82,10 +95,35 @@ export function FeedbackSuccess() {
         align="items-center"
         className="w-14 h-14 rounded-full bg-emerald-100 mb-3 animate-pulse"
       >
-        <CheckIcon className="text-emerald-600" />
+        <CheckmarkIcon className="w-6 h-6 text-emerald-600" />
       </Flex>
       <SupportingText className="text-primary-500">좋은 의견 주셔서 감사합니다</SupportingText>
     </Flex>
+  );
+}
+
+interface ICategoryChipsProps {
+  category: FeedbackCategory;
+  onChange: (category: FeedbackCategory) => void;
+}
+
+function CategoryChips({ category, onChange }: ICategoryChipsProps) {
+  return (
+    <>
+      <Heading level={4} className="block text-sm text-gray-600 mb-2">
+        어떤 서비스에 대한 의견인가요? (선택)
+      </Heading>
+      <Flex gap="gap-2" className="flex-wrap mb-4">
+        {SELECTABLE_FEEDBACK_CATEGORIES.map(({ category: value, label }) => (
+          <Chip
+            key={value}
+            label={label}
+            selected={category === value}
+            onClick={() => onChange(category === value ? 'ALL' : value)}
+          />
+        ))}
+      </Flex>
+    </>
   );
 }
 
@@ -98,9 +136,9 @@ interface IRateButtonProps {
 
 function RateInputs({ rate, currentRate, label, onClick }: IRateButtonProps) {
   const faces = {
-    1: <FeedbackFace className="w-16 h-16 mood-sad" />,
-    2: <FeedbackFace className="w-16 h-16 mood-normal" />,
-    3: <FeedbackFace className="w-16 h-16 mood-smile" />,
+    1: <AllcllFaceIcon mood="sad" className="w-16 h-16" />,
+    2: <AllcllFaceIcon mood="normal" className="w-16 h-16" />,
+    3: <AllcllFaceIcon mood="smile" className="w-16 h-16" />,
   };
 
   return (

@@ -5,6 +5,7 @@ import BannerNotification from '@/features/notification/ui/BannerNotification.ts
 import ToastNotification from '@/features/notification/ui/ToastNotification.tsx';
 import Footer from '@/shared/ui/Footer.tsx';
 import useGlobalEffect from '@/shared/lib/useGlobalEffect.ts';
+import FeedbackFab from '@/features/feedback/ui/FeedbackFab';
 
 function MainLayout() {
   useGlobalEffect();
@@ -22,6 +23,7 @@ function MainLayout() {
         <Outlet />
       </main>
       <Footer />
+      <FeedbackFab />
     </div>
   );
 }

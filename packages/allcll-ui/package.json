@@ -26,11 +26,11 @@
     "playwright": "^1.56.1",
     "storybook": "10.1.10",
     "vite": "^7.1.11",
-    "vite-plugin-svgr": "^4.3.0",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "^4.0.5"
   },
   "dependencies": {
-    "@radix-ui/react-slot": "^1.2.4"
+    "@radix-ui/react-slot": "^1.2.4",
+    "lucide-react": "^1.43.0"
   }
 }

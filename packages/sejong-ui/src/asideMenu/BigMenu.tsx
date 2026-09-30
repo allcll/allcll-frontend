@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ChevronDownIcon } from '@allcll/allcll-ui';
 import type { IMenu } from './types';
 import MediumMenu from './MediumMenu';
 
@@ -21,7 +22,11 @@ function BigMenu({ menu }: BigMenuProps) {
         onClick={() => setIsOpen(prev => !prev)}
       >
         {menu.name}
-        {menu.children && <span className="ml-auto text-gray-500">{isOpen ? '▲' : '▼'}</span>}
+        {menu.children && (
+          <ChevronDownIcon
+            className={`ml-auto w-4 h-4 text-gray-500 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          />
+        )}
       </button>
 
       {isOpen && menu.children && (

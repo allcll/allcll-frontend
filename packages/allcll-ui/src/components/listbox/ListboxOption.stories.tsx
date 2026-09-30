@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import ListboxOption from './ListboxOption';
-import CheckSvg from '@/assets/check.svg?react';
+import { CheckmarkIcon } from '../../icons';
 
 const meta = {
   title: 'AllcllUI/ListboxOption',
@@ -18,7 +18,7 @@ export const Default: Story = {
   args: {
     selected: true,
     left: '리스트 옵션',
-    right: <CheckSvg className="w-4 h-4 shrink-0" />
+    right: <CheckmarkIcon className="w-4 h-4 shrink-0" />,
   },
 };
 
@@ -26,6 +26,6 @@ export const Unselected: Story = {
   args: {
     selected: false,
     left: '리스트 옵션',
-    right: <CheckSvg className="w-4 h-4 shrink-0" />
+    right: <CheckmarkIcon className="w-4 h-4 shrink-0" />,
   },
 };

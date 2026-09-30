@@ -15,7 +15,6 @@ SejongUI 모듈은 `올클 연습` 서비스의 디자인 시스템을 제공합
 /packages/sejong-ui/
 ├── .storybook/         # Storybook 설정 파일
 ├── src/
-│   ├── assets/         # SVG 아이콘 등 정적 에셋
 │   ├── modal/          # 모달 관련 컴포넌트
 │   │   ├── Modal.tsx
 │   │   ├── ModalButton.tsx
@@ -51,11 +50,13 @@ SejongUI 모듈은 `올클 연습` 서비스의 디자인 시스템을 제공합
 - pnpm
 
 ### 의존성 설치
+
 ```bash
 pnpm install
 ```
 
 ### 개발 서버 실행 / Storybook 실행
+
 ```bash
 pnpm run sejongui
 ```

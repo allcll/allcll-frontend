@@ -5,7 +5,6 @@ import basicSsl from '@vitejs/plugin-basic-ssl';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { sentryVitePlugin } from '@sentry/vite-plugin';
-import svgr from 'vite-plugin-svgr';
 
 // https://vite.dev/config/
 export default ({ mode }: ConfigEnv) => {
@@ -22,7 +21,6 @@ export default ({ mode }: ConfigEnv) => {
       react(),
       tsconfigPaths(),
       tailwindcss(),
-      svgr(),
       visualizer({ open: true, filename: './dist/report.html' }),
       sentryVitePlugin({
         org: 'allcll-ly',

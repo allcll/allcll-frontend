@@ -1,10 +1,9 @@
-import CloseIcon from '@/assets/x.svg?react';
+import { CloseIcon, Badge, Card, Flex, Heading, IconButton } from '@allcll/allcll-ui';
 import useTick from '@/features/live/board/lib/useTick.ts';
 import { useRemovePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
 import { getTimeDiffString } from '@/shared/lib/stringFormats.ts';
 import { getSeatVariant } from '@/shared/config/colors.ts';
 import { Subject, Wishes } from '@/shared/model/types.ts';
-import { Badge, Card, Flex, Heading, IconButton } from '@allcll/allcll-ui';
 
 interface IPinCard {
   subject: Subject | Wishes;

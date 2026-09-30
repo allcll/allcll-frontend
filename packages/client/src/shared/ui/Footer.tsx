@@ -1,10 +1,8 @@
 import { Link, NavLink } from 'react-router-dom';
 import { HeaderContents } from '@/shared/ui/Header.tsx';
-import GithubSvg from '@/assets/icon-github.svg?react';
-import InstagramSvg from '@/assets/icon-instagram.svg?react';
-import KakaoSvg from '@/assets/icon-kakao.svg?react';
-import LogoCI from '@/assets/logo/ci-summer.svg?react';
-import LogoName from '@/assets/logo/logo-name-summer.svg?react';
+import { LogoGithubIcon, LogoInstagramIcon, LogoKakaoTalkIcon } from '@allcll/allcll-ui';
+import logoCiUrl from '@/assets/logo/ci-summer.svg';
+import logoNameUrl from '@/assets/logo/logo-name-summer.svg';
 
 interface IFooterItem {
   title: string;
@@ -24,10 +22,18 @@ const FooterItems: IFooterItem[] = [
 ];
 
 const OuterLinks = [
-  { icon: <GithubSvg className="w-8 h-8 m-2" />, title: '올클 github', href: 'https://github.com/allcll' },
-  { icon: <KakaoSvg className="w-8 h-8 m-2" />, title: '올클 오픈채팅', href: 'https://open.kakao.com/o/g3MztXfh' },
   {
-    icon: <InstagramSvg className="w-8 h-8 m-2" />,
+    icon: <LogoGithubIcon className="w-8 h-8 m-2 text-gray-400" />,
+    title: '올클 github',
+    href: 'https://github.com/allcll',
+  },
+  {
+    icon: <LogoKakaoTalkIcon className="w-8 h-8 m-2 text-gray-400" />,
+    title: '올클 오픈채팅',
+    href: 'https://open.kakao.com/o/g3MztXfh',
+  },
+  {
+    icon: <LogoInstagramIcon className="w-8 h-8 m-2 text-gray-400" />,
     title: '올클 instagram',
     href: 'https://www.instagram.com/sejong_allcll',
   },
@@ -39,8 +45,8 @@ function Footer() {
       <div className="mx-auto max-w-7xl px-4 md:px-16 py-12 grid md:grid-cols-3 gap-6 text-center md:text-left">
         <div className="mx-auto md:mx-0">
           <div className="flex items-center mb-2 h-fit justify-center md:justify-start">
-            <LogoCI className="w-6 h-6 mr-2" />
-            <LogoName className="h-5 w-fit" />
+            <img src={logoCiUrl} alt="" className="w-6 h-6 mr-2" />
+            <img src={logoNameUrl} alt="" className="h-5 w-fit" />
           </div>
 
           <ul className="flex items-center">

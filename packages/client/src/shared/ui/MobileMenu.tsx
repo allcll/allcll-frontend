@@ -1,10 +1,10 @@
 import { useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import LogoCI from '@/assets/logo/ci-summer.svg?react';
-import LogoName from '@/assets/logo/logo-name-summer.svg?react';
-import CloseSvg from '@/assets/x.svg?react';
-import { Flex, IconButton, Badge } from '@allcll/allcll-ui';
+import logoCiUrl from '@/assets/logo/ci-summer.svg';
+import logoNameUrl from '@/assets/logo/logo-name-summer.svg';
+import { CloseIcon, Flex, IconButton, Badge } from '@allcll/allcll-ui';
 import { useBodyScrollLock } from '../lib/useBodyScrollLock';
 import { HeaderContents, ButtonContents } from './Header';
 
@@ -35,7 +35,8 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
 
   useBodyScrollLock(isOpen);
 
-  return (
+  // 헤더의 z-index에 갇히면 페이지의 FAB 등 floating UI 아래에 깔리므로 body에 렌더링
+  return createPortal(
     <>
       <CSSTransition in={isOpen} timeout={300} classNames="mobile-menu-overlay" unmountOnExit nodeRef={overlayRef}>
         <div ref={overlayRef} className="fixed inset-0 z-overlay md:hidden bg-black/30" aria-hidden="true" />
@@ -68,14 +69,14 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
               className="flex items-center gap-2"
               aria-label="메인 페이지"
             >
-              <LogoCI className="w-6 h-6" />
-              <LogoName className="h-5" />
+              <img src={logoCiUrl} alt="" className="w-6 h-6" />
+              <img src={logoNameUrl} alt="" className="h-5" />
             </Link>
 
             <IconButton
               className="p-2 hover:bg-gray-100 active:bg-gray-100"
               variant="plain"
-              icon={<CloseSvg className="w-6 h-6" />}
+              icon={<CloseIcon className="w-6 h-6 text-gray-700" />}
               label="메뉴 닫기"
               onClick={onClose}
             />
@@ -125,7 +126,8 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
           </Flex>
         </nav>
       </CSSTransition>
-    </>
+    </>,
+    document.body,
   );
 }
 
