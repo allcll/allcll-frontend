@@ -1,5 +1,4 @@
-import CheckSvg from '@/assets/checkbox-blue.svg?react';
-import { Flex, Heading } from '@allcll/allcll-ui';
+import { CheckmarkIcon, Flex, Heading } from '@allcll/allcll-ui';
 
 function GameTips() {
   return (
@@ -14,7 +13,7 @@ function GameTips() {
       ].map((tip, idx) => (
         <Flex key={idx} className="text-xs">
           <span className="text-blue-500 mr-2">
-            <CheckSvg />
+            <CheckmarkIcon className="w-3 h-3 text-blue-500" />
           </span>
           <span className={idx === 0 ? 'font-semibold text-blue-500 animate-bounce' : 'text-gray-600'}>{tip}</span>
         </Flex>

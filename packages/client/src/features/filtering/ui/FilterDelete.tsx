@@ -1,6 +1,5 @@
-import RemoveFilterSvg from '@/assets/filter-remove-primary.svg?react';
+import { FilterRemoveIcon, Chip, Flex } from '@allcll/allcll-ui';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
-import { Chip, Flex } from '@allcll/allcll-ui';
 import { isFilterEmpty } from '@/features/filtering/lib/filterUtils.ts';
 
 interface FilterDelete {
@@ -19,7 +18,7 @@ function FilterDelete({ filters, resetFilter }: FilterDelete) {
       label={
         <Flex align="items-center" gap="gap-1">
           <span>필터 제거</span>
-          <RemoveFilterSvg className="w-4 h-4" />
+          <FilterRemoveIcon className="w-4 h-4 text-blue-500" />
         </Flex>
       }
       selected={true}

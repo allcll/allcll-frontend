@@ -1,5 +1,4 @@
-import AlertSvg from '@/assets/alert.svg?react';
-import CloseSvg from '@/assets/x.svg?react';
+import { CloseIcon, WarningIcon } from '../../icons';
 import IconButton from '../icon-button/IconButton';
 import RowSlots from '../row/RowSlots';
 
@@ -18,13 +17,13 @@ function Banner({ variant = 'info', children, deleteBanner }: IBanner) {
     <RowSlots
       withPadding
       className={`${bannerColorClass} items-center`}
-      left={<AlertSvg className="text-gray-500 w-4 h-4" />}
-      center={<span className="text-xs">{children}</span>}
+      left={<WarningIcon className="text-gray-500 w-4 h-4" />}
+      center={<span className="block text-xs leading-5">{children}</span>}
       right={
         <IconButton
           label="알림 닫기"
           variant="plain"
-          icon={<CloseSvg className="text-gray-500 w-5 h-5" />}
+          icon={<CloseIcon className="text-gray-500 w-5 h-5" />}
           onClick={deleteBanner}
           className="rounded-full"
         />

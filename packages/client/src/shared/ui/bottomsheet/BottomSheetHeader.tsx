@@ -1,7 +1,5 @@
 import React from 'react';
-import XDarkGraySvg from '@/assets/x-darkgray.svg?react';
-import AddSvg from '@/assets/add.svg?react';
-import { Heading } from '@allcll/allcll-ui';
+import { AddIcon, CloseIcon, Heading } from '@allcll/allcll-ui';
 
 interface IBottomSheetHeader {
   title?: string;
@@ -42,7 +40,12 @@ interface IHeaderTypeIcon {
 }
 
 function HeaderTypeIcon({ headerType, onClick }: IHeaderTypeIcon) {
-  const icon = headerType === 'close' ? <XDarkGraySvg /> : <AddSvg className="text-gray-400" width={16} height={16} />;
+  const icon =
+    headerType === 'close' ? (
+      <CloseIcon className="w-4 h-4 text-gray-500" />
+    ) : (
+      <AddIcon className="w-4 h-4 text-gray-400" />
+    );
 
   return (
     <button

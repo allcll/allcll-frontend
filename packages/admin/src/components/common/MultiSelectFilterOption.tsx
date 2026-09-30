@@ -1,5 +1,4 @@
-import { Label } from '@allcll/allcll-ui';
-import ResetSvg from '@/assets/reset-blue.svg?react';
+import { Label, ResetIcon } from '@allcll/allcll-ui';
 
 export interface OptionType<VALUE extends string | number> {
   value: VALUE;
@@ -93,7 +92,7 @@ function MultiSelectFilterOption<VALUE extends string | number>({
           onClick={() => handleClickReset()}
           className="text-blue-500 cursor-pointer sm:text-sm text-xs px-1 py-0.5"
         >
-          <ResetSvg className="inline w-4 h-4 mr-1 mb-0.5" />
+          <ResetIcon className="inline w-4 h-4 mr-1 mb-0.5 text-blue-500" />
           필터 초기화
         </button>
       </div>

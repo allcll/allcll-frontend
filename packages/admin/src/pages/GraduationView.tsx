@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import { Button, Flex, Heading, SupportingText, ChevronLeftIcon } from '@allcll/allcll-ui';
 import {
   CategoryEarnedCoursesModal,
   CategoryProgressCard,
@@ -21,7 +21,6 @@ import {
 } from '@allcll/common';
 import { useAdminGraduationView } from '@/hooks/server/graduation/useAdminGraduationView';
 import PageHeader from '@/components/common/PageHeader';
-import ChevronLeftIcon from '@/assets/chevron-left.svg?react';
 
 function GraduationView() {
   const { studentId } = useParams<{ studentId: string }>();

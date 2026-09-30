@@ -1,11 +1,20 @@
-import { Button, Card, Checkbox, Flex, Heading, IconButton, SupportingText, TextField } from '@allcll/allcll-ui';
+import {
+  Button,
+  Card,
+  Checkbox,
+  Flex,
+  Heading,
+  IconButton,
+  SupportingText,
+  TextField,
+  ViewIcon as EyeOpenIcon,
+  ViewOffIcon as EyeClosedIcon,
+} from '@allcll/allcll-ui';
 import { useId, useState } from 'react';
 import useLoginForm from '../lib/useLoginForm';
 import useLoginConfirm from '../lib/useLoginConfirm';
 import { useLogin } from '@/entities/user/model/useAuth';
 import useToastNotification from '@/features/notification/model/useToastNotification';
-import EyeOpenIcon from '@/assets/eye-gray.svg?react';
-import EyeClosedIcon from '@/assets/eye-delete-gray.svg?react';
 import LoginConfirmationDialog from './LoginConformDialog';
 import LoginErrorNotice from './LoginErrorNotice';
 import { type ILoginErrorView, toLoginErrorView } from '../lib/loginErrors.ts';

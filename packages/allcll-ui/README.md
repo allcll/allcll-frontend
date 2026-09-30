@@ -15,7 +15,7 @@ AllcllUI 모듈은 `ALLCLL` 서비스의 디자인 시스템을 제공합니다.
 /packages/allcll-ui/
 ├── .storybook/         # Storybook 설정 파일
 ├── src/
-│   ├── assets/         # SVG 아이콘 등 정적 에셋
+│   ├── icons/          # 아이콘 (lucide-react 재export 및 커스텀 아이콘)
 │   ├── stories/        # Storybook 스토리 파일
 │   ├── index.css       # Tailwind CSS 기본 스타일 및 커스텀 스타일
 │
@@ -38,20 +38,24 @@ AllcllUI 모듈은 `ALLCLL` 서비스의 디자인 시스템을 제공합니다.
 - pnpm
 
 ### 의존성 설치
+
 ```bash
 pnpm install
 ```
 
 ### 개발 서버 실행 / Storybook 실행
+
 ```bash
 pnpm run allcllui
 ```
 
 ### 프로젝트에 설치
+
 프로젝트에 `@allcll/allcll-ui` 패키지를 설치합니다.
-   ```bash
-   pnpm install @allcll/allcll-ui
-   ```
+
+```bash
+pnpm install @allcll/allcll-ui
+```
 
 ## 🔵 기여하기
 
