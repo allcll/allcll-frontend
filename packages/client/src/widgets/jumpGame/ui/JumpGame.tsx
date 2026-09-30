@@ -1,7 +1,5 @@
-import LogoCI from '@/assets/logo/ci.svg?react';
-import LogoCIDead from '@/assets/logo/ci-dead.svg?react';
-import BellTowerSvg from '@/assets/jumpGame/bell-tower.svg?react';
-import CloudSvg from '@/assets/jumpGame/cloud.svg?react';
+import logoCiUrl from '@/assets/logo/ci.svg';
+import logoCiDeadUrl from '@/assets/logo/ci-dead.svg';
 import {
   CHARACTER_SIZE,
   CHARACTER_X,
@@ -17,6 +15,8 @@ import {
 } from '@/widgets/jumpGame/lib/gameConfig.ts';
 import { PALETTE } from '@/widgets/jumpGame/lib/palette.ts';
 import { useJumpGame } from '@/widgets/jumpGame/model/useJumpGame.ts';
+import BellTowerShape from '@/widgets/jumpGame/ui/BellTowerShape.tsx';
+import CloudShape from '@/widgets/jumpGame/ui/CloudShape.tsx';
 import GameResultOverlay from '@/widgets/jumpGame/ui/GameResultOverlay.tsx';
 import ObstacleShape from '@/widgets/jumpGame/ui/ObstacleShape.tsx';
 
@@ -56,7 +56,7 @@ function JumpGame() {
             style={{ transform: `translate(${cloud.x}px, ${cloud.y}px)`, willChange: 'transform' }}
             aria-hidden
           >
-            <CloudSvg width={CLOUD_WIDTH} height={CLOUD_HEIGHT} />
+            <CloudShape width={CLOUD_WIDTH} height={CLOUD_HEIGHT} />
           </div>
         ))}
 
@@ -104,11 +104,12 @@ function JumpGame() {
         }}
         aria-hidden
       >
-        {gameStatus === 'gameOver' ? (
-          <LogoCIDead width={CHARACTER_SIZE} height={CHARACTER_SIZE} />
-        ) : (
-          <LogoCI width={CHARACTER_SIZE} height={CHARACTER_SIZE} />
-        )}
+        <img
+          src={gameStatus === 'gameOver' ? logoCiDeadUrl : logoCiUrl}
+          alt=""
+          width={CHARACTER_SIZE}
+          height={CHARACTER_SIZE}
+        />
       </div>
 
       {/* 종탑은 캐릭터보다 뒤에 그리면 안 됩니다. 캐릭터가 그 뒤로 걸어 들어가며 가려져야 하기 때문입니다 */}
@@ -125,7 +126,7 @@ function JumpGame() {
           }}
           aria-hidden
         >
-          <BellTowerSvg width="100%" height="100%" />
+          <BellTowerShape width="100%" height="100%" />
         </div>
       )}
 
