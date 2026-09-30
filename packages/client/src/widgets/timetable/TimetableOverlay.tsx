@@ -1,4 +1,5 @@
-import { Button, AddIcon } from '@allcll/allcll-ui';
+import { AddIcon } from '@allcll/allcll-ui';
+import FloatingButton from '@/shared/ui/FloatingButton';
 import ScheduleSearchBottomSheet from '@/widgets/filtering/search/ui/ScheduleSearchBottomSheet';
 import FilterBottomSheet from '@/widgets/filtering/ui/FilterBottomSheet';
 import ScheduleFormModal from '@/features/timetable/ui/ScheduleFormModal.tsx';
@@ -72,11 +73,11 @@ function MobileTimetableOverlay() {
           !bottomSheetType.info.isOpen
         }
       >
-        <div className="fixed bottom-4 right-4 z-5">
-          <Button size="small" variant="circle" onClick={handleOpenSearch}>
-            <AddIcon fill="#ffffff" className="w-6 h-6 cursor-pointer" />
-          </Button>
-        </div>
+        <FloatingButton
+          label="과목 추가"
+          icon={<AddIcon className="w-6 h-6 text-primary-500" />}
+          onClick={handleOpenSearch}
+        />
       </RenderIf>
     </>
   );

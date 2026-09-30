@@ -5,6 +5,7 @@ import BannerNotification from '@/features/notification/ui/BannerNotification.ts
 import { Outlet } from 'react-router-dom';
 import Footer from '@/shared/ui/Footer.tsx';
 import ServiceEnabled from '@/entities/semester/ui/ServiceEnabled.tsx';
+import FeedbackFab from '@/features/feedback/ui/FeedbackFab';
 
 interface IServiceLayoutProps {
   serviceId: string;
@@ -24,6 +25,7 @@ function ServiceLayout({ serviceId }: IServiceLayoutProps) {
         </main>
       </ServiceEnabled>
       <Footer />
+      <FeedbackFab />
     </div>
   );
 }
