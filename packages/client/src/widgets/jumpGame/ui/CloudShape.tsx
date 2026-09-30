@@ -1,0 +1,16 @@
+import type { SVGProps } from 'react';
+
+function CloudShape(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 12" width={36} height={12} fill="currentColor" {...props}>
+      <rect x={6} y={0} width={18} height={2} />
+      <rect x={3} y={2} width={24} height={2} />
+      <rect x={0} y={4} width={30} height={2} />
+      <rect x={0} y={6} width={36} height={2} />
+      <rect x={3} y={8} width={33} height={2} />
+      <rect x={6} y={10} width={27} height={2} />
+    </svg>
+  );
+}
+
+export default CloudShape;
