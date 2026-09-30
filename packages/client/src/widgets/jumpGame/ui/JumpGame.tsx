@@ -130,7 +130,7 @@ function JumpGame() {
         </div>
       )}
 
-      {/* 스테이지 전체가 조작 영역입니다. 버튼으로 두면 포커스와 Space·Enter 입력을 브라우저가 처리합니다 */}
+      {/* 스테이지 전체가 조작 영역입니다. 버튼으로 두면 포커스와 Space, Enter 입력을 브라우저가 처리합니다 */}
       <button
         type="button"
         aria-label="올클 점프 미니게임"

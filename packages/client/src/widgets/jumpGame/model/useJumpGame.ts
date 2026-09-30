@@ -10,12 +10,12 @@ import {
 import { createGame, jump, updateGame } from '@/widgets/jumpGame/model/gameLogic.ts';
 import type { EndingPhase, GameStatus, ICloud, IGameState, IObstacle } from '@/widgets/jumpGame/model/types.ts';
 
-/** 키보드 조작이 페이지의 링크·버튼 동작을 가로채지 않도록 제외할 요소들 */
+/** 키보드 조작이 페이지의 링크나 버튼 동작을 가로채지 않도록 제외할 요소들 */
 const INTERACTIVE_SELECTOR = 'a, button, input, textarea, select';
 const JUMP_KEY_CODES = new Set(['Space', 'ArrowUp']);
 
 /**
- * 404 페이지 점프 게임의 진행을 관리하는 훅입니다.
+ * 점프 게임의 진행을 관리하는 훅입니다.
  *
  * 매 프레임 바뀌는 값은 리렌더링 비용이 크므로 게임 상태(IGameState)를 ref 에 두고 직접 수정하며,
  * 화면 갱신도 DOM 스타일을 직접 씁니다. 상태는 장애물이 생기고 사라질 때만 갱신합니다.
@@ -33,7 +33,7 @@ export function useJumpGame() {
   const towerRef = useRef<HTMLDivElement>(null);
   const gameRef = useRef<IGameState | null>(null);
 
-  // 장애물과 구름은 개수가 변하므로 id 로 찾아 쓸 수 있게 모아 둔다
+  // 장애물과 구름은 개수가 변하므로 id 로 찾아 쓸 수 있게 모아 둡니다
   const obstacleElements = useRef(new Map<number, HTMLDivElement>());
   const cloudElements = useRef(new Map<number, HTMLDivElement>());
 

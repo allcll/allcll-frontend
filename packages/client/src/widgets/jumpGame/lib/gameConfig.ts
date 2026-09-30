@@ -3,7 +3,7 @@ import type { IObstacleConfig } from '@/widgets/jumpGame/model/types.ts';
 
 /**
  * 점프 게임 설정값 모음입니다.
- * 거리는 px, 시간은 초 단위이며 속도·가속도는 px/s, px/s² 입니다.
+ * 거리는 px, 시간은 초 단위이며 속도와 가속도는 각각 px/s, px/s² 입니다.
  */
 
 // --- 스테이지 ---
@@ -97,7 +97,7 @@ export const TOWER_REST_MARGIN = 24;
 
 /** 엔딩이 시작되면 급정거처럼 보이지 않도록 이 속도까지 부드럽게 줄입니다 */
 export const ENDING_APPROACH_SPEED = 280;
-/** 감속·정지의 부드러움을 정하는 계수(1/s). 클수록 빨리 줄어듭니다 */
+/** 감속과 정지의 부드러움을 정하는 계수(1/s). 클수록 빨리 줄어듭니다 */
 export const ENDING_DECEL_EASE = 2.5;
 export const ENDING_STOP_EASE = 4;
 /** 이 속도 아래로 떨어지면 완전히 멈춘 것으로 봅니다 */
