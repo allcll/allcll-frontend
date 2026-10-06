@@ -1,4 +1,4 @@
-import useGlobalEffect from '@/shared/lib/useGlobalEffect.ts';
+import useGlobalEffect from '@/app/lib/useGlobalEffect.ts';
 import ToastNotification from '@/features/notification/ui/ToastNotification.tsx';
 import Header from '@/shared/ui/Header.tsx';
 import BannerNotification from '@/features/notification/ui/BannerNotification.tsx';

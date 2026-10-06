@@ -4,7 +4,7 @@ import Header from '@/shared/ui/Header.tsx';
 import BannerNotification from '@/features/notification/ui/BannerNotification.tsx';
 import ToastNotification from '@/features/notification/ui/ToastNotification.tsx';
 import Footer from '@/shared/ui/Footer.tsx';
-import useGlobalEffect from '@/shared/lib/useGlobalEffect.ts';
+import useGlobalEffect from '@/app/lib/useGlobalEffect.ts';
 import FeedbackFab from '@/features/feedback/ui/FeedbackFab';
 
 function MainLayout() {
