@@ -1,6 +1,8 @@
-import { MIN_Y, MAX_Y } from '@/shared/ui/bottomsheet/BottomSheet.tsx';
 import { useRef, useEffect } from 'react';
 import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
+
+export const MIN_Y = 0;
+export const MAX_Y = window.innerHeight - 300;
 
 interface BottomSheetMetrics {
   touchStart: {
@@ -153,7 +155,7 @@ export default function useBottomSheet() {
 
   const collapseToMin = (height?: number) => {
     const fixedHeight = height ? window.innerHeight - height : MIN_Y;
-    
+
     if (sheet.current) {
       sheet.current.style.setProperty('transform', `translateY(${fixedHeight}px)`);
     }

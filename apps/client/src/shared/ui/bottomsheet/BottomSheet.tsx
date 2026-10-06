@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import useBottomSheet from '@/shared/model/useBottomSheet.ts';
+import useBottomSheet, { MIN_Y, MAX_Y } from '@/shared/model/useBottomSheet.ts';
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import useCloseBottomSheetOnBackKey from '@/widgets/bottomSheet/lib/useCloseBottomSheetOnBackKey';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
@@ -12,8 +12,6 @@ interface IBottomSheet {
   children: IBottomSheetChildren;
 }
 
-export const MIN_Y = 0;
-export const MAX_Y = window.innerHeight - 300;
 export const BOTTOM_SHEET_HEIGHT = window.innerHeight - MIN_Y;
 
 function BottomSheet({ children }: IBottomSheet) {
