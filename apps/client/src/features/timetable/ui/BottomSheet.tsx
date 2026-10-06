@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useBottomSheet, { MIN_Y, MAX_Y } from '@/shared/model/useBottomSheet.ts';
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
-import useCloseBottomSheetOnBackKey from '@/widgets/bottomSheet/lib/useCloseBottomSheetOnBackKey';
+import useCloseBottomSheetOnBackKey from '@/features/timetable/lib/useCloseBottomSheetOnBackKey';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 
 type IBottomSheetChildren =

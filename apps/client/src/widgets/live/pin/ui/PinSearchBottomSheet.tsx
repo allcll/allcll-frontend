@@ -1,5 +1,5 @@
 import { useDeferredValue, useState } from 'react';
-import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet.tsx';
+import BottomSheet from '@/features/timetable/ui/BottomSheet.tsx';
 import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader.tsx';
 import useWishes from '@/entities/wishes/model/useWishes.ts';
 import { initialFilters } from '@/features/filtering/model/useFilterStore.ts';

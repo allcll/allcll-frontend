@@ -1,7 +1,7 @@
 import { HomeIcon, TimeIcon, Button, Flex, Heading } from '@allcll/allcll-ui';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib/useScheduleModal.ts';
-import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
+import BottomSheet from '@/features/timetable/ui/BottomSheet.tsx';
 import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
 import DeleteConfirmationActions from '@/features/timetable/ui/DeleteConfirmationActions';

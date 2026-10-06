@@ -3,7 +3,7 @@ import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib
 import { ScheduleMutateType } from '@/features/timetable/model/useScheduleState.ts';
 import { Button, Flex } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile.ts';
-import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
+import BottomSheet from '@/features/timetable/ui/BottomSheet.tsx';
 import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader';
 import ScheduleFormContent from '@/features/timetable/ui/ScheduleFormContent';
 import DeleteConfirmationActions from '@/features/timetable/ui/DeleteConfirmationActions';

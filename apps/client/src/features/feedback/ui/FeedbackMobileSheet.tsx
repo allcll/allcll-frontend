@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
+import BottomSheet from '@/features/timetable/ui/BottomSheet.tsx';
 import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader';
 import { FeedbackActions, FeedbackFields, FeedbackSuccess } from './FeedbackSharedContent';
 import { Flex } from '@allcll/allcll-ui';
