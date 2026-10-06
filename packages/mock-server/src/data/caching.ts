@@ -5,7 +5,7 @@ export const DataType = {
   LECTURES: { key: 'lectures', path: '../../public/subjects.json' },
 };
 
-const data: Record<string, any> = {};
+const data: Record<string, unknown> = {};
 
 export async function getData(dataType: (typeof DataType)[keyof typeof DataType]) {
   if (dataType.key in data) {
