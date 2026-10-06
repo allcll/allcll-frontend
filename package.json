@@ -53,11 +53,11 @@
     "@types/react": "^19.1.6"
   },
   "lint-staged": {
-    "packages/**/*.{ts,tsx}": [
+    "{apps,packages}/**/*.{ts,tsx}": [
       "eslint --fix",
       "prettier --write"
     ],
-    "packages/**/*.{js,jsx,json,css,md}": [
+    "{apps,packages}/**/*.{js,jsx,json,css,md}": [
       "prettier --write"
     ]
   },
