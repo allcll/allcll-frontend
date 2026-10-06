@@ -1,6 +1,6 @@
 // do not use path aliases here, they are not available in the mock server
 export const DataType = {
-  BASKETS: { key: 'baskets', path: '../../../client/public/baskets.json' },
+  BASKETS: { key: 'baskets', path: '../../public/baskets.json' },
   DEPARTMENTS: { key: 'departments', path: '../../public/departments.json' },
   LECTURES: { key: 'lectures', path: '../../public/subjects.json' },
 };
