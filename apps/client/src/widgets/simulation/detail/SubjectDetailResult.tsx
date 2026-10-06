@@ -1,4 +1,4 @@
-import { getStausColor } from '@/shared/config/colors.ts';
+import { getStausColor } from '@/features/simulation/lib/statusColor.ts';
 import { APPLY_STATUS } from '@/features/simulation/lib/simulation.ts';
 import { ExtendedResultResponse } from '@/pages/simulation/DashboardDetail.tsx';
 

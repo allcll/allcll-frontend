@@ -1,6 +1,6 @@
 import { ExtendedResultResponse } from '@/pages/simulation/DashboardDetail.tsx';
 import { BUTTON_EVENT } from '@/features/simulation/lib/simulation.ts';
-import { getStatusColorCode } from '@/shared/config/colors.ts';
+import { getStatusColorCode } from '@/features/simulation/lib/statusColor.ts';
 
 interface TimelineData {
   name: string;
