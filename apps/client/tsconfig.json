@@ -26,9 +26,9 @@
     "paths": {
       "@/*": ["src/*"],
       "@public/*": ["public/*"],
-      "@allcll/common": ["../common/index.ts"],
-      "@allcll/common/*": ["../common/src/*"]
+      "@allcll/common": ["../../packages/common/index.ts"],
+      "@allcll/common/*": ["../../packages/common/src/*"]
     }
   },
-  "include": ["src", "vite.config.ts", "tailwind.config.js", "../common/index.ts", "../common/src"]
+  "include": ["src", "vite.config.ts", "tailwind.config.js", "../../packages/common/index.ts", "../../packages/common/src"]
 }
