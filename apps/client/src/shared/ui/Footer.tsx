@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import { HeaderContents } from '@/shared/ui/Header.tsx';
+import { HeaderContents } from '@/shared/config/navigation.tsx';
 import { LogoGithubIcon, LogoInstagramIcon, LogoKakaoTalkIcon } from '@allcll/allcll-ui';
 import logoCiUrl from '@/assets/logo/ci-summer.svg';
 import logoNameUrl from '@/assets/logo/logo-name-summer.svg';

@@ -6,7 +6,7 @@ import logoCiUrl from '@/assets/logo/ci-summer.svg';
 import logoNameUrl from '@/assets/logo/logo-name-summer.svg';
 import { CloseIcon, Flex, IconButton, Badge } from '@allcll/allcll-ui';
 import { useBodyScrollLock } from '../lib/useBodyScrollLock';
-import { HeaderContents, ButtonContents } from './Header';
+import { HeaderContents, ButtonContents } from '@/shared/config/navigation.tsx';
 
 interface MobileMenuProps {
   isOpen: boolean;

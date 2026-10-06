@@ -2,31 +2,10 @@ import { useCallback, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import logoCiUrl from '@/assets/logo/ci-summer.svg';
 import logoNameUrl from '@/assets/logo/logo-name-summer.svg';
-import { ChatHelpIcon, HeadsetIcon, MenuIcon, IconButton, Badge } from '@allcll/allcll-ui';
+import { MenuIcon, IconButton, Badge } from '@allcll/allcll-ui';
 import NoticeBell from '@/features/notices/ui/NoticeBell';
 import MobileMenu from './MobileMenu';
-
-export const HeaderContents = [
-  // { title: '과목검색', path: '/wishes', end: false },
-  { title: '시간표', path: '/timetable', end: false },
-  { title: '관심과목', path: '/wishes', end: true },
-  { title: '올클연습', path: '/simulation', end: false },
-  { title: '실시간여석', path: '/live', end: false },
-  { title: '졸업요건검사', path: '/graduation', end: false, beta: true },
-];
-
-export const ButtonContents = [
-  {
-    icon: <HeadsetIcon className="w-4 h-4 text-gray-500" />,
-    title: '오류 및 제안',
-    path: 'https://forms.gle/bCDTVujEHunnvHe88',
-  },
-  {
-    icon: <ChatHelpIcon className="w-4 h-4 text-gray-500" />,
-    title: '공지 채팅방',
-    path: 'https://open.kakao.com/o/g3MztXfh',
-  },
-];
+import { HeaderContents, ButtonContents } from '@/shared/config/navigation.tsx';
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
