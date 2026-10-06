@@ -12,7 +12,7 @@ export interface ISemesterInfo {
 
 /**
  * 학기 목록 -> 0번째 인덱스가 최신 학기
- * @description 지난 학기 과목은 packages/client/public/<semesterCode>/subjects.json 스냅샷에서 읽으므로,
+ * @description 지난 학기 과목은 apps/client/public/<semesterCode>/subjects.json 스냅샷에서 읽으므로,
  * 새 학기를 맨 앞에 추가하기 전에 직전 학기 스냅샷 파일이 있어야 합니다.
  */
 export const SEMESTERS: ISemesterInfo[] = [
