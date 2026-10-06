@@ -82,14 +82,14 @@ importers:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.9.3)(vite@7.1.11(@types/node@20.19.33)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
 
-  packages/admin:
+  apps/admin:
     dependencies:
       '@allcll/allcll-ui':
         specifier: workspace:^
-        version: link:../allcll-ui
+        version: link:../../packages/allcll-ui
       '@allcll/common':
         specifier: workspace:^
-        version: link:../common
+        version: link:../../packages/common
       '@tanstack/react-query':
         specifier: ^5.83.0
         version: 5.90.21(react@18.3.1)
@@ -126,7 +126,7 @@ importers:
     devDependencies:
       '@allcll/mock-server':
         specifier: workspace:^
-        version: link:../mock-server
+        version: link:../../packages/mock-server
       '@types/node':
         specifier: '20'
         version: 20.19.33
@@ -137,72 +137,17 @@ importers:
         specifier: ^6.1.11
         version: 6.1.11
 
-  packages/allcll-ui:
-    dependencies:
-      '@radix-ui/react-slot':
-        specifier: ^1.2.4
-        version: 1.2.4(@types/react@19.2.14)(react@18.3.1)
-      lucide-react:
-        specifier: ^1.43.0
-        version: 1.43.0(react@18.3.1)
-    devDependencies:
-      '@chromatic-com/storybook':
-        specifier: 4.1.2
-        version: 4.1.2(storybook@10.1.10(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      '@storybook/addon-a11y':
-        specifier: 10.0.1
-        version: 10.0.1(storybook@10.1.10(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      '@storybook/addon-docs':
-        specifier: 10.0.1
-        version: 10.0.1(@types/react@19.2.14)(esbuild@0.27.3)(rollup@4.57.1)(storybook@10.1.10(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(vite@7.1.11(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
-      '@storybook/addon-vitest':
-        specifier: 10.0.1
-        version: 10.0.1(@vitest/browser-playwright@4.0.18)(@vitest/browser@4.0.18(msw@2.12.10(@types/node@24.10.13)(typescript@5.9.3))(vite@7.1.11(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))(vitest@4.0.18))(@vitest/runner@4.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@10.1.10(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(vitest@4.0.18)
-      '@storybook/react-vite':
-        specifier: 10.0.1
-        version: 10.0.1(esbuild@0.27.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.57.1)(storybook@10.1.10(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.9.3)(vite@7.1.11(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
-      '@tailwindcss/vite':
-        specifier: ^4.1.18
-        version: 4.1.18(vite@7.1.11(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
-      '@vitejs/plugin-react':
-        specifier: ^4.7.0
-        version: 4.7.0(vite@7.1.11(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
-      '@vitest/browser-playwright':
-        specifier: ^4.0.5
-        version: 4.0.18(msw@2.12.10(@types/node@24.10.13)(typescript@5.9.3))(playwright@1.58.2)(vite@7.1.11(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))(vitest@4.0.18)
-      '@vitest/coverage-v8':
-        specifier: ^4.0.5
-        version: 4.0.18(@vitest/browser@4.0.18(msw@2.12.10(@types/node@24.10.13)(typescript@5.9.3))(vite@7.1.11(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))(vitest@4.0.18))(vitest@4.0.18)
-      eslint-plugin-storybook:
-        specifier: 10.0.1
-        version: 10.0.1(eslint@9.39.2(jiti@2.6.1))(storybook@10.1.10(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.9.3)
-      playwright:
-        specifier: ^1.56.1
-        version: 1.58.2
-      storybook:
-        specifier: 10.1.10
-        version: 10.1.10(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      vite:
-        specifier: ^7.1.11
-        version: 7.1.11(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)
-      vite-tsconfig-paths:
-        specifier: 5.1.4
-        version: 5.1.4(typescript@5.9.3)(vite@7.1.11(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
-      vitest:
-        specifier: ^4.0.5
-        version: 4.0.18(@types/node@24.10.13)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(lightningcss@1.30.2)(msw@2.12.10(@types/node@24.10.13)(typescript@5.9.3))(yaml@2.8.2)
-
-  packages/client:
+  apps/client:
     dependencies:
       '@allcll/allcll-ui':
         specifier: workspace:^
-        version: link:../allcll-ui
+        version: link:../../packages/allcll-ui
       '@allcll/common':
         specifier: workspace:^
-        version: link:../common
+        version: link:../../packages/common
       '@allcll/sejong-ui':
         specifier: workspace:^
-        version: link:../sejong-ui
+        version: link:../../packages/sejong-ui
       '@amplitude/analytics-browser':
         specifier: ^2.20.1
         version: 2.34.1
@@ -278,7 +223,7 @@ importers:
     devDependencies:
       '@allcll/mock-server':
         specifier: workspace:^
-        version: link:../mock-server
+        version: link:../../packages/mock-server
       '@amplitude/plugin-session-replay-browser':
         specifier: ^1.21.1
         version: 1.25.11(@amplitude/rrweb@2.0.0-alpha.35)(rollup@4.57.1)
@@ -306,6 +251,61 @@ importers:
       rollup-plugin-visualizer:
         specifier: ^6.0.3
         version: 6.0.5(rollup@4.57.1)
+
+  packages/allcll-ui:
+    dependencies:
+      '@radix-ui/react-slot':
+        specifier: ^1.2.4
+        version: 1.2.4(@types/react@19.2.14)(react@18.3.1)
+      lucide-react:
+        specifier: ^1.43.0
+        version: 1.43.0(react@18.3.1)
+    devDependencies:
+      '@chromatic-com/storybook':
+        specifier: 4.1.2
+        version: 4.1.2(storybook@10.1.10(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+      '@storybook/addon-a11y':
+        specifier: 10.0.1
+        version: 10.0.1(storybook@10.1.10(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+      '@storybook/addon-docs':
+        specifier: 10.0.1
+        version: 10.0.1(@types/react@19.2.14)(esbuild@0.27.3)(rollup@4.57.1)(storybook@10.1.10(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(vite@7.1.11(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
+      '@storybook/addon-vitest':
+        specifier: 10.0.1
+        version: 10.0.1(@vitest/browser-playwright@4.0.18)(@vitest/browser@4.0.18(msw@2.12.10(@types/node@24.10.13)(typescript@5.9.3))(vite@7.1.11(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))(vitest@4.0.18))(@vitest/runner@4.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(storybook@10.1.10(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(vitest@4.0.18)
+      '@storybook/react-vite':
+        specifier: 10.0.1
+        version: 10.0.1(esbuild@0.27.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rollup@4.57.1)(storybook@10.1.10(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.9.3)(vite@7.1.11(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
+      '@tailwindcss/vite':
+        specifier: ^4.1.18
+        version: 4.1.18(vite@7.1.11(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
+      '@vitejs/plugin-react':
+        specifier: ^4.7.0
+        version: 4.7.0(vite@7.1.11(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
+      '@vitest/browser-playwright':
+        specifier: ^4.0.5
+        version: 4.0.18(msw@2.12.10(@types/node@24.10.13)(typescript@5.9.3))(playwright@1.58.2)(vite@7.1.11(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))(vitest@4.0.18)
+      '@vitest/coverage-v8':
+        specifier: ^4.0.5
+        version: 4.0.18(@vitest/browser@4.0.18(msw@2.12.10(@types/node@24.10.13)(typescript@5.9.3))(vite@7.1.11(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))(vitest@4.0.18))(vitest@4.0.18)
+      eslint-plugin-storybook:
+        specifier: 10.0.1
+        version: 10.0.1(eslint@9.39.2(jiti@2.6.1))(storybook@10.1.10(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@5.9.3)
+      playwright:
+        specifier: ^1.56.1
+        version: 1.58.2
+      storybook:
+        specifier: 10.1.10
+        version: 10.1.10(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      vite:
+        specifier: ^7.1.11
+        version: 7.1.11(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)
+      vite-tsconfig-paths:
+        specifier: 5.1.4
+        version: 5.1.4(typescript@5.9.3)(vite@7.1.11(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
+      vitest:
+        specifier: ^4.0.5
+        version: 4.0.18(@types/node@24.10.13)(@vitest/browser-playwright@4.0.18)(jiti@2.6.1)(lightningcss@1.30.2)(msw@2.12.10(@types/node@24.10.13)(typescript@5.9.3))(yaml@2.8.2)
 
   packages/common:
     dependencies:
