@@ -4,7 +4,7 @@ import logoCiUrl from '@/assets/logo/ci-summer.svg';
 import logoNameUrl from '@/assets/logo/logo-name-summer.svg';
 import { MenuIcon, IconButton, Badge } from '@allcll/allcll-ui';
 import NoticeBell from '@/features/notices/ui/NoticeBell';
-import MobileMenu from './MobileMenu';
+import MobileMenu from '@/shared/ui/MobileMenu';
 import { HeaderContents, ButtonContents } from '@/shared/config/navigation.tsx';
 
 function Header() {
