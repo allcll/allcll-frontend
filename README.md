@@ -50,8 +50,8 @@ packages/
 
 ### 사전 준비
 
-- Node.js (^18.0.0)
-- pnpm (패키지 매니저)
+- Node.js 20.19 이상. Vite 7이 요구하는 버전이고, CI는 Node 24로 돕니다.
+- pnpm 9.15.4. 루트 `package.json`의 `packageManager`에 적힌 버전입니다.
 
 ### 설치
 
