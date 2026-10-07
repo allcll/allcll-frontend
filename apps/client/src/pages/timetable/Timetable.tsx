@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet';
-import ContentPanel from '@/features/timetable/ui/ScheduleContentPanel.tsx';
+import ContentPanel from '@/widgets/filtering/search/ui/ScheduleContentPanel.tsx';
 import { Flex, Heading } from '@allcll/allcll-ui';
 import TimetableSemesterTabs from '@/features/timetable/ui/TimetableSemesterTabs.tsx';
 import TimetableBody from '@/features/timetable/ui/TimetableBody.tsx';
