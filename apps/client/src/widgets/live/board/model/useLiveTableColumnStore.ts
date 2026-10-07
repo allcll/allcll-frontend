@@ -1,4 +1,4 @@
-import { SseSubject } from '@/entities/subjectAggregate/model/useSSESeats';
+import { SseSubject } from '@/features/live/common/lib/useSSESeats';
 import { createColumnStore, HeadTitle } from '@/shared/model/createColumnStore';
 
 const LiveColumn: HeadTitle<SseSubject>[] = [

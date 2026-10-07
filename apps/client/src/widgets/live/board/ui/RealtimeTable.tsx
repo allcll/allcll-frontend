@@ -9,7 +9,7 @@ import TableColorInfo from '@/shared/ui/TableColorInfo.tsx';
 import LiveTableTitleModal from '@/shared/ui/TableTitleSettingModal.tsx';
 import { HeadTitle } from '@/shared/model/createColumnStore.ts';
 
-import useSSESeats, { SseSubject } from '@/entities/subjectAggregate/model/useSSESeats.ts';
+import useSSESeats, { SseSubject } from '@/features/live/common/lib/useSSESeats.ts';
 
 import useTick from '@/features/live/board/lib/useTick.ts';
 import { SSE_STATE, useSSEState } from '@/features/live/board/model/useSseState.ts';
