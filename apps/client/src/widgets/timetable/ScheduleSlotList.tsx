@@ -1,4 +1,5 @@
-import { useEmptyScheduleSlots, GeneralSchedule } from '@/entities/timetable/api/useTimetableSchedules.ts';
+import { GeneralSchedule } from '@/entities/timetable/api/useTimetableSchedules.ts';
+import { useEmptyScheduleSlots } from '@/features/timetable/model/useScheduleSlots.ts';
 import { CloseIcon, Flex, IconButton } from '@allcll/allcll-ui';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 

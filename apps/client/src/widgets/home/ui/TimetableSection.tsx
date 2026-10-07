@@ -1,7 +1,8 @@
 import Section from '@/widgets/home/ui/Section.tsx';
 import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
 import TimetableGridComponent from '@/widgets/timetable/TimetableGridComponent.tsx';
-import { GeneralSchedule, useScheduleSlots, ScheduleSlot } from '@/entities/timetable/api/useTimetableSchedules.ts';
+import { GeneralSchedule, ScheduleSlot } from '@/entities/timetable/api/useTimetableSchedules.ts';
+import { useScheduleSlots } from '@/features/timetable/model/useScheduleSlots.ts';
 import Schedule from '@/widgets/timetable/Schedule.tsx';
 import { Card } from '@allcll/allcll-ui';
 

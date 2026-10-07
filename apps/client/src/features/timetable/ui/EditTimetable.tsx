@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useCreateTimetable, useUpdateTimetable } from '@/entities/timetable/api/useTimetableSchedules.ts';
+import { useCreateTimetable, useUpdateTimetable } from '@/features/timetable/model/useTimetableMutations.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import useToastNotification from '@/features/notification/model/useToastNotification.ts';
 import { Button, Chip, Dialog, Grid, Label, TextField } from '@allcll/allcll-ui';

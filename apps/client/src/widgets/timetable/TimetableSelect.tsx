@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDeleteTimetable } from '@/entities/timetable/api/useTimetableSchedules.ts';
+import { useDeleteTimetable } from '@/features/timetable/model/useTimetableMutations.ts';
 import type { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { Button, Checkbox, Flex, Popover, SupportingText, usePopoverContext } from '@allcll/allcll-ui';

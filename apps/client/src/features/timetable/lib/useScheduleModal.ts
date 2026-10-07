@@ -7,10 +7,12 @@ import {
   OfficialSchedule,
   GeneralSchedule,
   Timetable,
+} from '@/entities/timetable/api/useTimetableSchedules.ts';
+import {
   useCreateSchedule,
   useDeleteSchedule,
   useUpdateSchedule,
-} from '@/entities/timetable/api/useTimetableSchedules.ts';
+} from '@/features/timetable/model/useTimetableMutations.ts';
 import { ScheduleMutateType, useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
