@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { getSimulationResult, ResultResponse } from '@/features/simulation/lib/result.ts';
 import { findSubjectsById } from '@/features/simulation/lib/subjectPicker.ts';
+import type { ExtendedResultResponse } from '@/features/simulation/lib/extendedResult.ts';
 import Timeline from '@/widgets/simulation/detail/Timeline.tsx';
 import RadarChart from '@/widgets/simulation/detail/RadarChart.tsx';
 import SubjectDetailResult from '@/widgets/simulation/detail/SubjectDetailResult.tsx';
@@ -67,12 +68,6 @@ function DashboardDetail() {
       </section>
     </>
   );
-}
-
-export interface ExtendedResultResponse extends ResultResponse {
-  subject_results: (ResultResponse['subject_results'][number] & { subjectInfo?: any })[];
-  timeline: (ResultResponse['timeline'][number] & { subjectInfo?: any })[];
-  result?: ExtendedResultResponse;
 }
 
 function joinSubjectInfo(subjects?: Lecture[], result?: ResultResponse | null): ExtendedResultResponse | undefined {

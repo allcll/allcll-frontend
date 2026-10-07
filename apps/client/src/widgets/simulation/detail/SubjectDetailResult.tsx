@@ -1,6 +1,6 @@
 import { getStausColor } from '@/features/simulation/lib/statusColor.ts';
 import { APPLY_STATUS } from '@/features/simulation/lib/simulation.ts';
-import { ExtendedResultResponse } from '@/pages/simulation/DashboardDetail.tsx';
+import { ExtendedResultResponse } from '@/features/simulation/lib/extendedResult.ts';
 
 function SubjectDetailResult({ result }: Readonly<{ result: ExtendedResultResponse }>) {
   const { subject_results, started_at } = result;

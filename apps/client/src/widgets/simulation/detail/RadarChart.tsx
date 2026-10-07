@@ -9,7 +9,7 @@ import {
   Legend,
 } from 'chart.js/auto';
 import { Radar as RadarChartJS } from 'react-chartjs-2';
-import { ExtendedResultResponse } from '@/pages/simulation/DashboardDetail.tsx';
+import { ExtendedResultResponse } from '@/features/simulation/lib/extendedResult.ts';
 import {
   getSearchBtnSpeedRank,
   getTotalSpeedRank,

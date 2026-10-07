@@ -1,9 +1,9 @@
-import { ExtendedResultResponse } from '@/pages/simulation/DashboardDetail.tsx';
+import { ExtendedResultResponse } from '@/features/simulation/lib/extendedResult.ts';
 import { BUTTON_EVENT } from '@/features/simulation/lib/simulation.ts';
 import { getStatusColorCode } from '@/features/simulation/lib/statusColor.ts';
 
 interface TimelineData {
-  name: string;
+  name: string | undefined;
   code: string;
   color: string;
   timelines: {
