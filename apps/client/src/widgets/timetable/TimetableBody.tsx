@@ -1,13 +1,13 @@
 import { TimetableHeaderActions } from '@/widgets/timetable/TimetableHeader';
 import TimetableSelect from '@/widgets/timetable/TimetableSelect';
 import { Card, Flex } from '@allcll/allcll-ui';
-import EditTimetable from './EditTimetable';
+import EditTimetable from '@/features/timetable/ui/EditTimetable';
 import TimetableComponent from '@/widgets/timetable/TimetableComponent';
 import { useGetTimetableSchedules, useTimetables } from '@/entities/timetable/api/useTimetableSchedules';
-import useSemesterTimetableSync from '../lib/useSemesterTimetableSync';
-import { useScheduleState } from '../model/useScheduleState';
+import useSemesterTimetableSync from '@/features/timetable/lib/useSemesterTimetableSync';
+import { useScheduleState } from '@/features/timetable/model/useScheduleState';
 import { useEffect, useState } from 'react';
-import useScheduleModal from '../lib/useScheduleModal';
+import useScheduleModal from '@/features/timetable/lib/useScheduleModal';
 
 type modalType = 'edit' | 'create' | null;
 
