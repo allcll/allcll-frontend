@@ -10,8 +10,7 @@ import useNotifyDeletedSchedule from '@/features/notification/lib/useNotifyDelet
 import TimetableGridComponent from '@/widgets/timetable/TimetableGridComponent.tsx';
 
 import { Day, DAYS } from '@/entities/timetable/model/types.ts';
-
-export const ROW_HEIGHT = 40;
+import { ROW_HEIGHT } from '@/entities/timetable/model/layout.ts';
 
 interface ITimetableComponentProps {
   schedules: GeneralSchedule[];

@@ -4,7 +4,7 @@ import {
   GeneralSchedule,
   TimeSlot,
 } from '@/entities/timetable/api/useTimetableSchedules.ts';
-import { ROW_HEIGHT } from '@/widgets/timetable/TimetableComponent.tsx';
+import { ROW_HEIGHT } from '@/entities/timetable/model/layout.ts';
 import { Subject } from '@/shared/model/types.ts';
 
 import { Day } from '@/entities/timetable/model/types.ts';
