@@ -13,7 +13,7 @@
     "admin": "pnpm -F @allcll/admin run dev",
     "build-client": "pnpm -F @allcll/client run build",
     "build-admin": "pnpm -F @allcll/admin run build",
-    "prettier": "npx prettier ./packages --write",
+    "prettier": "npx prettier ./apps ./packages --write",
     "test": "pnpm -F @allcll/e2e run test",
     "test:ui": "pnpm -F @allcll/e2e run test:ui",
     "test:gen": "pnpm -F @allcll/e2e run test:gen",
@@ -53,19 +53,18 @@
     "@types/react": "^19.1.6"
   },
   "lint-staged": {
-    "packages/**/*.{ts,tsx}": [
+    "{apps,packages}/**/*.{ts,tsx}": [
       "eslint --fix",
       "prettier --write"
     ],
-    "packages/**/*.{js,jsx,json,css,md}": [
+    "{apps,packages}/**/*.{js,jsx,json,css,md}": [
       "prettier --write"
     ]
   },
   "msw": {
     "workerDirectory": [
-      "..\\..\\..\\..\\packages\\mock-server",
-      "..\\..\\..\\..\\packages\\admin",
-      "..\\..\\..\\..\\packages\\client"
+      "apps/client/public",
+      "apps/admin/public"
     ]
   }
 }

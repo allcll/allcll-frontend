@@ -1,0 +1,134 @@
+import { useRef } from 'react';
+import { createPortal } from 'react-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { CSSTransition } from 'react-transition-group';
+import logoCiUrl from '@/assets/logo/ci-summer.svg';
+import logoNameUrl from '@/assets/logo/logo-name-summer.svg';
+import { CloseIcon, Flex, IconButton, Badge } from '@allcll/allcll-ui';
+import { useBodyScrollLock } from '../lib/useBodyScrollLock';
+import { HeaderContents, ButtonContents } from '@/shared/config/navigation.tsx';
+
+interface MobileMenuProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
+  const navigate = useNavigate();
+
+  const menuRef = useRef<HTMLElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const targetPath = useRef<string | null>(null);
+
+  const navigateWithClose = (path: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    targetPath.current = path;
+    onClose();
+  };
+
+  const handleExited = () => {
+    if (targetPath.current) {
+      navigate(targetPath.current);
+      targetPath.current = null;
+    }
+  };
+
+  useBodyScrollLock(isOpen);
+
+  // 헤더의 z-index에 갇히면 페이지의 FAB 등 floating UI 아래에 깔리므로 body에 렌더링
+  return createPortal(
+    <>
+      <CSSTransition in={isOpen} timeout={300} classNames="mobile-menu-overlay" unmountOnExit nodeRef={overlayRef}>
+        <div ref={overlayRef} className="fixed inset-0 z-overlay md:hidden bg-black/30" aria-hidden="true" />
+      </CSSTransition>
+
+      <CSSTransition
+        in={isOpen}
+        timeout={300}
+        classNames="mobile-menu"
+        unmountOnExit
+        nodeRef={menuRef}
+        onExited={handleExited}
+      >
+        <nav
+          ref={menuRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="mobile-menu-title"
+          tabIndex={-1}
+          className="fixed top-0 right-0 h-full w-full bg-white shadow-lg z-floating md:hidden flex flex-col"
+        >
+          <h2 id="mobile-menu-title" className="sr-only">
+            모바일 메뉴
+          </h2>
+
+          <Flex justify="justify-between" align="items-center" gap="gap-0" className="p-4">
+            <Link
+              to="/"
+              onClick={e => navigateWithClose('/', e)}
+              className="flex items-center gap-2"
+              aria-label="메인 페이지"
+            >
+              <img src={logoCiUrl} alt="" className="w-6 h-6" />
+              <img src={logoNameUrl} alt="" className="h-5" />
+            </Link>
+
+            <IconButton
+              className="p-2 hover:bg-gray-100 active:bg-gray-100"
+              variant="plain"
+              icon={<CloseIcon className="w-6 h-6 text-gray-700" />}
+              label="메뉴 닫기"
+              onClick={onClose}
+            />
+          </Flex>
+
+          <hr className="mx-4 border-gray-300" />
+
+          <Flex as="ul" direction="flex-col" gap="gap-1" className="flex-1 p-4">
+            {HeaderContents.map(({ title, path, end, beta }) => (
+              <li key={path}>
+                <NavLink
+                  to={path}
+                  end={end}
+                  onClick={e => navigateWithClose(path, e)}
+                  className={({ isActive }) =>
+                    `flex items-center gap-1.5 py-3 px-4 rounded-lg text-base font-medium transition-colors ${
+                      isActive ? 'bg-blue-50 text-blue-500' : 'text-gray-700 active:bg-gray-100'
+                    }`
+                  }
+                >
+                  {title}
+                  {beta && (
+                    <Badge variant="beta" appearance="outline" size="small">
+                      Beta
+                    </Badge>
+                  )}
+                </NavLink>
+              </li>
+            ))}
+          </Flex>
+
+          <hr className="mx-4 border-gray-300" />
+
+          <Flex gap="gap-2" className="p-4">
+            {ButtonContents.map(({ icon, title, path }) => (
+              <a
+                key={path}
+                href={path}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-1 items-center justify-center gap-2 py-3 px-4 rounded-lg border border-gray-200 text-gray-600 active:bg-gray-100 transition-colors"
+              >
+                {icon}
+                <span className="text-sm">{title}</span>
+              </a>
+            ))}
+          </Flex>
+        </nav>
+      </CSSTransition>
+    </>,
+    document.body,
+  );
+}
+
+export default MobileMenu;
