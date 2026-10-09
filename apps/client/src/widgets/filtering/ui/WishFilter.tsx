@@ -4,7 +4,7 @@ import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import { Filters, initialFilters, useWishSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import { TableSettingsIcon, StarFilledIcon, StarIcon, IconButton, Flex, Chip } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile.ts';
-import FilterBottomSheet from '@/widgets/filtering/ui/FilterBottomSheet.tsx';
+import FilterBottomSheet from '@/features/filtering/ui/FilterBottomSheet.tsx';
 import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
 import GenericSingleSelectFilter from '../../../features/filtering/ui/GenericSingleSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';

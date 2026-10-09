@@ -14,7 +14,7 @@ import useSubject from '@/entities/subjects/model/useSubject.ts';
 import { Chip, Flex, Label } from '@allcll/allcll-ui';
 import DetailFilterModal from '@/features/filtering/ui/DetailFilterModal';
 
-import FilterBottomSheet from '../../../filtering/ui/FilterBottomSheet';
+import FilterBottomSheet from '@/features/filtering/ui/FilterBottomSheet';
 
 function AlarmFilter() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);

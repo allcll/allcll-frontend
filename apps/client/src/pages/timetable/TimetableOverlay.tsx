@@ -1,7 +1,7 @@
 import { AddIcon } from '@allcll/allcll-ui';
 import FloatingButton from '@/shared/ui/FloatingButton';
 import ScheduleSearchBottomSheet from '@/widgets/filtering/search/ui/ScheduleSearchBottomSheet';
-import FilterBottomSheet from '@/widgets/filtering/ui/FilterBottomSheet';
+import FilterBottomSheet from '@/features/filtering/ui/FilterBottomSheet';
 import ScheduleFormModal from '@/features/timetable/ui/ScheduleFormModal.tsx';
 import ScheduleInfoModal from '@/features/timetable/ui/ScheduleInfoModal.tsx';
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
