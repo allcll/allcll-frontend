@@ -7,7 +7,7 @@ import { GeneralSchedule, ScheduleSlot } from '@/entities/timetable/api/useTimet
 import { useScheduleSlots } from '@/features/timetable/model/useScheduleSlots.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import useNotifyDeletedSchedule from '@/features/notification/lib/useNotifyDeletedSchedule.ts';
-import TimetableGridComponent from '@/widgets/timetable/TimetableGridComponent.tsx';
+import TimetableGridComponent from '@/features/timetable/ui/TimetableGridComponent.tsx';
 
 import { Day, DAYS } from '@/entities/timetable/model/types.ts';
 import { ROW_HEIGHT } from '@/entities/timetable/model/layout.ts';
