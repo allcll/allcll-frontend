@@ -7,8 +7,8 @@ import ScheduleInfoModal from '@/features/timetable/ui/ScheduleInfoModal.tsx';
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import { useScheduleSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import useMobile from '@/shared/lib/useMobile.ts';
-import ScheduleFormBottomSheet from '../bottomSheet/ui/ScheduleFormBottomSheet';
-import ScheduleInfoBottomSheet from '../bottomSheet/ui/ScheduleDetailBottomSheet';
+import ScheduleFormBottomSheet from '@/widgets/bottomSheet/ui/ScheduleFormBottomSheet';
+import ScheduleInfoBottomSheet from '@/widgets/bottomSheet/ui/ScheduleDetailBottomSheet';
 
 function TimetableOverlay() {
   const isMobile = useMobile();

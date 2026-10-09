@@ -3,7 +3,7 @@ import ContentPanel from '@/widgets/filtering/search/ui/ScheduleContentPanel.tsx
 import { Flex, Heading } from '@allcll/allcll-ui';
 import TimetableSemesterTabs from '@/features/timetable/ui/TimetableSemesterTabs.tsx';
 import TimetableBody from '@/widgets/timetable/TimetableBody.tsx';
-import TimetableOverlay from '@/widgets/timetable/TimetableOverlay';
+import TimetableOverlay from './TimetableOverlay';
 import { useTimetableSemester } from '@/features/timetable/lib/useTimetableSemester';
 
 function Timetable() {
