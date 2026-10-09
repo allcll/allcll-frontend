@@ -1,12 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import type {
-  CategoryProgress,
-  Certifications,
   ClassicCertCriteria,
   CodingCertCriteria,
-  CreditSummary,
   CriteriaCategory,
   EnglishCertCriteria,
+  GraduationCheckData,
   GraduationCourse,
 } from '@allcll/common';
 import { fetchJsonOnAPI } from '@/utils/api';
@@ -25,15 +23,6 @@ export interface AdminGraduationUser {
   doubleCollegeName: string | null;
   doubleDeptName: string | null;
   doubleDeptCode: string | null;
-}
-
-interface GraduationCheckData {
-  checkId: number;
-  createdAt: string;
-  isGraduatable: boolean;
-  summary: CreditSummary;
-  categories: CategoryProgress[];
-  certifications: Certifications;
 }
 
 interface GraduationCourses {
