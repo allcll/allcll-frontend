@@ -25,7 +25,7 @@ ESLint가 막는 규칙은 하나입니다. 아래 레이어에서 위 레이어
 
 나머지는 ESLint가 잡지 않아서 직접 지킵니다.
 
-- 같은 레이어의 다른 슬라이스는 entities와 features에서만 import 합니다. widgets끼리는 레이어 README에 허용 규칙이 없어서 새로 만들지 않고, 필요하면 pages에서 조립합니다.
+- 같은 레이어의 다른 슬라이스는 entities와 features에서만 import 합니다. widgets끼리는 import 하지 않습니다. 여러 위젯이 함께 쓰는 블록은 features로 내리고, 한 페이지에서만 쓰는 조립은 그 페이지에 둡니다.
 - 슬라이스끼리 서로 import 하는 순환을 새로 만들지 않습니다. `features/live`와 `features/notification`처럼 이미 있는 순환을 따라 하지 않습니다.
 - 슬라이스 밖은 `@/` 별칭으로, 같은 슬라이스 안은 상대경로로 import 합니다.
 - 앱 안 슬라이스에는 `index.ts` 배럴 파일이 없습니다. 도입할지는 이슈 #374에서 논의 중이라, 정해질 때까지 새로 만들지 않고 파일 경로로 직접 import 합니다. `@allcll/*` 패키지는 패키지 이름으로 import 합니다.
