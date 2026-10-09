@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
-import RadarChart from '@/widgets/simulation/detail/RadarChart.tsx';
+import RadarChart from '@/features/simulation/ui/RadarChart.tsx';
 import StatisticsChart from '@/widgets/simulation/detail/StatisticsChart.tsx';
 import SubjectAllResult from '@/widgets/simulation/detail/SubjectAllResult.tsx';
 import { getAggregatedSimulationResults } from '@/features/simulation/lib/result.ts';

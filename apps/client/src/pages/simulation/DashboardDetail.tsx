@@ -6,7 +6,7 @@ import { getSimulationResult, ResultResponse } from '@/features/simulation/lib/r
 import { findSubjectsById } from '@/features/simulation/lib/subjectPicker.ts';
 import type { ExtendedResultResponse } from '@/features/simulation/lib/extendedResult.ts';
 import Timeline from '@/widgets/simulation/detail/Timeline.tsx';
-import RadarChart from '@/widgets/simulation/detail/RadarChart.tsx';
+import RadarChart from '@/features/simulation/ui/RadarChart.tsx';
 import SubjectDetailResult from '@/widgets/simulation/detail/SubjectDetailResult.tsx';
 import useLectures, { Lecture } from '@/entities/subjects/model/useLectures.ts';
 
