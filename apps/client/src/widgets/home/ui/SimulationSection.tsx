@@ -75,7 +75,7 @@ function CaptchaInput({
   }
 
   function handleChangeInput(event: React.ChangeEvent<HTMLInputElement>) {
-    let inputValue = event.target.value;
+    const inputValue = event.target.value;
 
     captchaResult.updateResult();
 
