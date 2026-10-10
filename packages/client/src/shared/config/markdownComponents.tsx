@@ -17,7 +17,7 @@ const markdownComponents = {
     </h3>
   ),
   a: (props: JSX.IntrinsicElements['a']) => (
-    <a {...props} className="text-primary-500 underline">
+    <a {...props} className="text-primary-500 underline hover:text-primary-600">
       {props.children}
     </a>
   ),

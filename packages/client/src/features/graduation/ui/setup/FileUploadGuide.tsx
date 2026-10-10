@@ -20,7 +20,7 @@ const FileUploadGuide = () => {
                 to="https://sjpt.sejong.ac.kr/main/view/Login/doSsoLogin.do?p="
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary-500 underline font-semibold"
+                className="text-primary-500 underline font-semibold hover:text-primary-600"
               >
                 학사 정보 시스템
               </NavLink>
