@@ -4,8 +4,7 @@ import RadarChart from '@/widgets/simulation/detail/RadarChart.tsx';
 import StatisticsChart from '@/widgets/simulation/detail/StatisticsChart.tsx';
 import SubjectAllResult from '@/widgets/simulation/detail/SubjectAllResult.tsx';
 import { getAggregatedSimulationResults } from '@/features/simulation/lib/result.ts';
-import LoadingWithMessage from '@/shared/ui/Loading.tsx';
-import { Button, EmptyState, WarningIcon } from '@allcll/allcll-ui';
+import { Button, EmptyState, WarningIcon, LoadingState } from '@allcll/allcll-ui';
 
 function AllResult() {
   const simulationAllResult = useLiveQuery(async () => {
@@ -44,7 +43,7 @@ function AllResult() {
 
   return !modifiedResult || !simulationAllResult ? (
     <div className="flex flex-col w-full items-center justify-center h-120">
-      <LoadingWithMessage message="수강 연습 데이터 분석 중입니다..." />
+      <LoadingState title="수강 연습 데이터 분석 중입니다." />
     </div>
   ) : (
     <>

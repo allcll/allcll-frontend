@@ -50,8 +50,8 @@ function useUploading(nextStep: () => void, prevStep: () => void, file: File | n
   }, [isError, phase, addToast, prevStep]);
 
   const message = {
-    uploading: '파일을 업로드하는 중입니다...',
-    fetching: '업로드된 파일을 분석하고 있습니다...',
+    uploading: '파일을 업로드하는 중입니다.',
+    fetching: '업로드된 파일을 분석하고 있습니다.',
     done: '분석이 완료되었습니다. 검사 결과를 가져옵니다.',
   }[phase];
 

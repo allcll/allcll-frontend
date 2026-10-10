@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Card, Button, TextField, Label, Flex, Select, ArrowLeftIcon, SaveIcon } from '@allcll/allcll-ui';
+import { Card, Button, TextField, Label, Flex, Select, ArrowLeftIcon, SaveIcon, LoadingState } from '@allcll/allcll-ui';
 import PageHeader from '@/components/common/PageHeader';
 import MarkdownEditor from '@/components/notices/MarkdownEditor';
 import UnsavedModal from '@/components/notices/UnsavedModal';
@@ -94,9 +94,7 @@ function NoticeEditor() {
   if (isEditMode && isLoadingNotice) {
     return (
       <Flex direction="flex-col" gap="gap-5" className="h-full">
-        <Flex align="items-center" justify="justify-center" className="flex-1 text-gray-400">
-          불러오는 중...
-        </Flex>
+        <LoadingState className="flex-1" />
       </Flex>
     );
   }

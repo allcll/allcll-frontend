@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { getSimulationList } from '@/features/simulation/lib/result.ts';
 import { SimulationRun } from '@/shared/config/dbConfig.ts';
-import { CursorIcon, EmptyState } from '@allcll/allcll-ui';
+import { CursorIcon, EmptyState, LoadingState } from '@allcll/allcll-ui';
 
 function SimulationList() {
   return (
@@ -22,11 +22,7 @@ function SimulationBoard() {
   const isError = logs === null;
 
   if (isPending) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <span className="text-gray-500">로딩 중...</span>
-      </div>
-    );
+    return <LoadingState className="h-64" />;
   }
 
   if (isError) {

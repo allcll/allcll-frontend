@@ -1,6 +1,5 @@
 import {
   Card,
-  SupportingText,
   Badge,
   IconButton,
   Flex,
@@ -8,6 +7,7 @@ import {
   TrashCanIcon,
   DocumentIcon,
   EmptyState,
+  LoadingState,
 } from '@allcll/allcll-ui';
 import { CATEGORY_LABELS } from '@/hooks/server/useAdminNotices';
 import type { Notice } from '@/hooks/server/useAdminNotices';
@@ -38,7 +38,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
             {isLoading && (
               <tr>
                 <td colSpan={4} className="py-8 text-center">
-                  <SupportingText>불러오는 중...</SupportingText>
+                  <LoadingState />
                 </td>
               </tr>
             )}

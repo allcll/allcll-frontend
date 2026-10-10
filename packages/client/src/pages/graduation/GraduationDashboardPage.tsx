@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { Flex, Banner, Button, Heading, SupportingText } from '@allcll/allcll-ui';
+import { Flex, Banner, Button, Heading, SupportingText, LoadingState } from '@allcll/allcll-ui';
 import {
   CategoryEarnedCoursesModal,
   CategoryProgressCard,
@@ -38,16 +38,6 @@ import MobileTabs, { useMobileTabs } from '@/features/graduation/ui/dashboard/Mo
 import EditProfileModal from '@/features/graduation/ui/dashboard/EditProfileModal';
 import CertificationEditModal from '@/features/graduation/ui/dashboard/CertificationEditModal';
 import { useUpdateEnglishCertMutation } from '@/features/graduation/lib/useUpdateEnglishCertMutation';
-import LoadingWithMessage from '@/shared/ui/Loading';
-
-//TODO: API 연동 시간 측정 후, spinner로 변경 혹은 네트워크 지연 시간에 따른 스피너 타입 결정 훅 구현
-function LoadingState() {
-  return (
-    <Flex justify="justify-center" align="items-center" className="min-h-[50vh]">
-      <LoadingWithMessage message="졸업 요건 분석결과를 가져오는 중입니다." />
-    </Flex>
-  );
-}
 
 function GraduationDashboardPage() {
   const isMobile = useMobile();
@@ -130,7 +120,7 @@ function GraduationDashboardPage() {
         <Helmet>
           <title>ALLCLL | 졸업요건 분석</title>
         </Helmet>
-        <LoadingState />
+        <LoadingState title="졸업 요건 분석결과를 가져오는 중입니다." className="min-h-[50vh]" />
       </>
     );
   }

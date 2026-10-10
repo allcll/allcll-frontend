@@ -13,8 +13,7 @@ import useDepartments, { type DepartmentDict, useDepartmentDict } from '@/entiti
 import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes';
 import useDetailRegisters from '@/entities/wishes/model/useDetailRegisters';
 import { InitWishes } from '@/entities/wishes/model/useWishes';
-import LoadingWithMessage from '@/shared/ui/Loading';
-import { Flex, Heading, Label, Select, EmptyState } from '@allcll/allcll-ui';
+import { Flex, Heading, Label, Select, EmptyState, LoadingState } from '@allcll/allcll-ui';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -66,7 +65,7 @@ function DepartmentDoughnut({ wishesInfo }: IDepartmentDoughnutProps) {
 
       {isPending ? (
         <Flex justify="justify-center" align="items-center" className="h-48">
-          <LoadingWithMessage message="관심과목 현황을 불러오는 중입니다..." />
+          <LoadingState title="관심과목 현황을 불러오는 중입니다." />
         </Flex>
       ) : !totalCount ? (
         <Flex justify="justify-center" align="items-center" className="h-48">

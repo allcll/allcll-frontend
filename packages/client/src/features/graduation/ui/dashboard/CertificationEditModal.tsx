@@ -1,4 +1,4 @@
-import { Dialog, Button, Flex, SupportingText } from '@allcll/allcll-ui';
+import { Dialog, Button, Flex, LoadingState } from '@allcll/allcll-ui';
 import { EnglishCriteriaContent } from '@allcll/common';
 import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
 import type { CertificationCriteriaData } from '@/entities/graduation/api/graduation';
@@ -34,7 +34,7 @@ function CertificationEditModal({
       <Dialog.Content>
         <Flex direction="flex-col" gap="gap-4" className="min-w-64 md:min-w-96">
           <Flex direction="flex-col" gap="gap-3" className="max-h-52 overflow-y-auto pr-1">
-            {isCriteriaLoading && <SupportingText className="text-center py-8">불러오는 중...</SupportingText>}
+            {isCriteriaLoading && <LoadingState className="py-8" />}
             {isCriteriaError && (
               <p className="text-sm text-danger-500 text-center py-8">기준 정보를 불러올 수 없습니다.</p>
             )}

@@ -7,8 +7,7 @@ import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts
 import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 import { Subject } from '@/shared/model/types.ts';
 import FilteredSubjectCard from '@/features/timetable/ui/subject/TimetableSubjectCard.tsx';
-import { Flex } from '@allcll/allcll-ui';
-import LoadingSpinner from '@/shared/ui/LoadingSpinner.tsx';
+import { Flex, LoadingState } from '@allcll/allcll-ui';
 
 interface ISubjectCards {
   subjects: Subject[];
@@ -24,7 +23,7 @@ function TimetableSubjectCards({ subjects, expandToMax, isPending = false }: Rea
   const { openScheduleModal, cancelSchedule } = useScheduleModal();
 
   if (isPending) {
-    return <LoadingSpinner />;
+    return <LoadingState className="py-8" />;
   }
 
   if (!subjects.length) {

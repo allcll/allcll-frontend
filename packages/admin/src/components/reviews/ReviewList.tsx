@@ -1,4 +1,4 @@
-import { Card, Flex, SupportingText, EmptyState } from '@allcll/allcll-ui';
+import { Card, Flex, EmptyState, LoadingState } from '@allcll/allcll-ui';
 import type { Review } from '@/hooks/server/useAdminReviews';
 import ReviewItem from './ReviewItem';
 import SectionHeader from '@/components/common/SectionHeader';
@@ -42,7 +42,7 @@ function ReviewList({ reviews, isLoading, isError, filterBar }: Readonly<IReview
               {isLoading && (
                 <tr>
                   <td colSpan={COLUMNS.length} className="py-8 text-center">
-                    <SupportingText>불러오는 중...</SupportingText>
+                    <LoadingState />
                   </td>
                 </tr>
               )}

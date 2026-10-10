@@ -216,7 +216,7 @@ function getSubjectData(result: ExtendedResultResponse): TimelineData[] {
   // subject -> timelines -> events
 
   return subject_results.map(subject => ({
-    name: subject.subjectInfo?.subjectName,
+    name: subject.subjectInfo?.subjectName ?? '',
     code: subject.subjectInfo?.subjectCode + '-' + subject.subjectInfo?.classCode,
     color: getStatusColorCode(subject.status),
     timelines: timeline

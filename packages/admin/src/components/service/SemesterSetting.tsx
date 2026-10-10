@@ -1,4 +1,4 @@
-import { Card, Flex, SupportingText } from '@allcll/allcll-ui';
+import { Card, Flex, SupportingText, Spinner } from '@allcll/allcll-ui';
 import SectionHeader from '../common/SectionHeader';
 import { useSemester } from '@/hooks/server/service/useSemester';
 
@@ -19,7 +19,7 @@ function SemesterContent() {
   const { data, isLoading, isError } = useSemester();
 
   if (isLoading) {
-    return <SupportingText>불러오는 중...</SupportingText>;
+    return <Spinner size="small" />;
   }
 
   if (isError || !data) {

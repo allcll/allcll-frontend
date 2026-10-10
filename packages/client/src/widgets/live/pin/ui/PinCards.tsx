@@ -1,5 +1,5 @@
 import useInfScroll from '@/shared/lib/useInfScroll.ts';
-import { SearchIcon, Flex, Grid, EmptyState } from '@allcll/allcll-ui';
+import { SearchIcon, Flex, Grid, EmptyState, Skeleton } from '@allcll/allcll-ui';
 import { WishesWithSeat } from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
 import { Wishes } from '@/shared/model/types.ts';
 import PinCard from '@/features/live/pin/ui/PinCard';
@@ -25,9 +25,9 @@ function Cards({ subjects, isPending = false, isLive = false }: Readonly<IPinCar
 
   if (isPending || !subjects) {
     return (
-      <Grid columns={{ base: 1, md: 3 }} gap="gap-4" className="animate-pulse">
+      <Grid columns={{ base: 1, md: 3 }} gap="gap-4">
         {[0, 0, 0].map((_, idx) => (
-          <div key={'skeleton-card-' + idx} className="bg-gray-300 shadow-sm rounded-lg p-4 h-24" />
+          <Skeleton key={'skeleton-card-' + idx} className="h-24 rounded-lg" />
         ))}
       </Grid>
     );

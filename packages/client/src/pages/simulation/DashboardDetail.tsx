@@ -1,3 +1,4 @@
+import { LoadingState } from '@allcll/allcll-ui';
 import { useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
@@ -33,7 +34,7 @@ function DashboardDetail() {
           {resultInfo ? (
             <RadarChart result={resultInfo} />
           ) : (
-            <div className="text-center text-gray-500">데이터를 불러오는 중입니다...</div>
+            <LoadingState title="데이터를 불러오는 중입니다." className="py-8" />
           )}
         </div>
 
@@ -43,7 +44,7 @@ function DashboardDetail() {
           {resultInfo ? (
             <SubjectDetailResult result={resultInfo} />
           ) : (
-            <div className="text-center text-gray-500">데이터를 불러오는 중입니다...</div>
+            <LoadingState title="데이터를 불러오는 중입니다." className="py-8" />
           )}
         </div>
       </section>
@@ -62,7 +63,7 @@ function DashboardDetail() {
           // <SubjectTimeLine result={resultInfo} />
           <Timeline result={resultInfo} />
         ) : (
-          <div className="text-center text-gray-500">데이터를 불러오는 중입니다...</div>
+          <LoadingState title="데이터를 불러오는 중입니다." className="py-8" />
         )}
       </section>
     </>
@@ -70,8 +71,8 @@ function DashboardDetail() {
 }
 
 export interface ExtendedResultResponse extends ResultResponse {
-  subject_results: (ResultResponse['subject_results'][number] & { subjectInfo?: any })[];
-  timeline: (ResultResponse['timeline'][number] & { subjectInfo?: any })[];
+  subject_results: (ResultResponse['subject_results'][number] & { subjectInfo?: Lecture })[];
+  timeline: (ResultResponse['timeline'][number] & { subjectInfo?: Lecture })[];
   result?: ExtendedResultResponse;
 }
 

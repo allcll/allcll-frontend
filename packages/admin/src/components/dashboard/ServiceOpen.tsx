@@ -1,4 +1,4 @@
-import { Badge, Card, Flex, Grid, SupportingText } from '@allcll/allcll-ui';
+import { Badge, Card, Flex, Grid, SupportingText, Spinner } from '@allcll/allcll-ui';
 import SectionHeader from '../common/SectionHeader';
 import {
   SERVICE_OPERATION_LABEL,
@@ -25,7 +25,7 @@ function ServiceOpenContent() {
   const { data, isLoading, isError } = useOperationPeriods(today);
 
   if (isLoading) {
-    return <SupportingText>불러오는 중...</SupportingText>;
+    return <Spinner size="small" />;
   }
 
   if (isError) {

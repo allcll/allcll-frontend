@@ -1,6 +1,6 @@
 import { useCheckAdminSession } from '@/hooks/server/session/useAdminSession';
 import { formatTime } from '@/utils/formatTime';
-import { Badge, Card } from '@allcll/allcll-ui';
+import { Badge, Card, LoadingState } from '@allcll/allcll-ui';
 import SectionHeader from '../common/SectionHeader';
 
 function SessionList() {
@@ -23,8 +23,8 @@ function SessionList() {
           <tbody>
             {isLoading && (
               <tr>
-                <td colSpan={3} className="py-6 text-center text-gray-400 text-sm">
-                  불러오는 중...
+                <td colSpan={3} className="py-6">
+                  <LoadingState />
                 </td>
               </tr>
             )}
