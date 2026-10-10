@@ -3,6 +3,7 @@ import Label from '../label/Label';
 import Flex from '../flex/Flex';
 import IconButton from '../icon-button/IconButton';
 import { CloseIcon } from '../../icons';
+import { FIELD_BOX_CLASS, FIELD_TEXT_CLASS } from '../../config';
 
 interface TextFieldProps extends Omit<ComponentPropsWithoutRef<'input'>, 'size'> {
   label?: string;
@@ -41,7 +42,7 @@ function TextField({
           required={required}
           value={value}
           {...rest}
-          className={`rounded-md w-full bg-white border border-gray-300 py-2 px-3 focus:outline-none focus:ring-0 focus:border-primary-500 ${onClear ? 'pr-8' : ''} ${getSizeClass(size)}`}
+          className={`w-full pl-3 ${onClear ? 'pr-8' : 'pr-3'} ${FIELD_BOX_CLASS} ${getSizeClass(size)}`}
         />
         {onClear && value && (
           <IconButton
@@ -63,12 +64,11 @@ export default TextField;
 function getSizeClass(size: string) {
   switch (size) {
     case 'small':
-      return 'text-sm py-1';
-    case 'medium':
-      return 'text-base py-1';
+      return 'text-sm';
     case 'large':
-      return 'text-lg py-1';
+      return 'text-lg';
+    case 'medium':
     default:
-      return '';
+      return FIELD_TEXT_CLASS;
   }
 }

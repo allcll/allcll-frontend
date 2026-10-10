@@ -1,4 +1,13 @@
-import { AllcllFaceIcon, CheckmarkIcon, Button, Chip, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import {
+  AllcllFaceIcon,
+  CheckmarkIcon,
+  Button,
+  Chip,
+  Flex,
+  Heading,
+  SupportingText,
+  Textarea,
+} from '@allcll/allcll-ui';
 import { DETAIL_MAX_LENGTH } from '@/features/feedback/api/feedbackApi';
 import type { FeedbackCategory } from '@/features/feedback/api/feedbackApi';
 import type { FeedbackTitles } from '../lib/getFeedbackTitle';
@@ -46,8 +55,7 @@ export function FeedbackFields({
       <Heading level={4} className="block text-sm text-gray-600 mb-2">
         {titles.textareaTitle}
       </Heading>
-      <textarea
-        className="w-full min-h-20 resize-y text-sm border rounded-md border-gray-400 py-2 px-3 focus:outline-none focus:ring-0 focus:border-primary-500"
+      <Textarea
         placeholder={titles.textareaPlaceholder}
         name="detail"
         maxLength={DETAIL_MAX_LENGTH}

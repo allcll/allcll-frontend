@@ -18,29 +18,17 @@ const meta = {
   tags: ['autodocs'],
   args: {
     children: options,
+    className: 'w-48',
   },
 } satisfies Meta<typeof Select>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Medium: Story = {
-  args: {
-    size: 'medium',
-    className: 'w-48',
-  },
-};
-
-export const Small: Story = {
-  args: {
-    size: 'small',
-  },
-};
+export const Default: Story = {};
 
 export const Disabled: Story = {
   args: {
-    size: 'medium',
-    className: 'w-48',
     disabled: true,
   },
 };

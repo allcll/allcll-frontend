@@ -18,6 +18,7 @@ export { default as RowSlots } from './src/components/row/RowSlots';
 export { default as Tab } from './src/components/tab/Tab';
 export { default as Tabs } from './src/components/tabs/Tabs';
 export { default as TextField } from './src/components/textfield/TextField';
+export { default as Textarea } from './src/components/textarea/Textarea';
 export { default as Toast } from './src/components/toast/Toast';
 export { default as Toggle } from './src/components/toggle/toggle';
 export { default as Tooltip } from './src/components/tooltip/Tooltip';
