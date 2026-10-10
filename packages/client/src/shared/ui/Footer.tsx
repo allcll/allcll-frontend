@@ -65,7 +65,7 @@ function Footer() {
           <ul>
             {HeaderContents.map(({ title, path, end }) => (
               <li key={title} className="mb-1">
-                <NavLink to={path} end={end} className="hover:text-primary-500 hover:underline hover:font-bold">
+                <NavLink to={path} end={end} className="hover:text-primary-500 hover:underline">
                   {title}
                 </NavLink>
               </li>
@@ -82,15 +82,11 @@ function Footer() {
                   {!child.href ? (
                     <p>{child.title}</p>
                   ) : child.href.startsWith('http') ? (
-                    <a
-                      className="hover:text-primary-500 hover:underline hover:font-bold"
-                      href={child.href}
-                      target="_blank"
-                    >
+                    <a className="hover:text-primary-500 hover:underline" href={child.href} target="_blank">
                       {child.title}
                     </a>
                   ) : (
-                    <Link to={child.href} className="hover:text-primary-500 hover:underline hover:font-bold">
+                    <Link to={child.href} className="hover:text-primary-500 hover:underline">
                       {child.title}
                     </Link>
                   )}
