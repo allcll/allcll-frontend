@@ -26,7 +26,7 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
   if (isMobile && selectedNotice) {
     return (
       <Flex direction="flex-col" className="h-full">
-        <Flex align="items-center" justify="justify-between" className="p-4 border-b border-gray-100">
+        <Flex align="items-center" justify="justify-between" className="px-4 h-14 shrink-0 border-b border-gray-100">
           <Button variant="text" size="medium" textColor="gray" onClick={() => setSelectedNotice(null)}>
             <ChevronLeftIcon className="w-4 h-4 text-gray-700" />
             목록
@@ -35,7 +35,7 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
             className="p-2 hover:bg-gray-100 active:bg-gray-100"
             variant="plain"
             label="닫기"
-            icon={<CloseIcon className="w-6 h-6 text-gray-700" />}
+            icon={<CloseIcon className="w-5 h-5 text-gray-500" />}
             onClick={onClose}
           />
         </Flex>
@@ -60,13 +60,13 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
 
   return (
     <Flex direction="flex-col" className="h-full">
-      <Flex align="items-center" justify="justify-between" className="p-4 border-b border-gray-100">
+      <Flex align="items-center" justify="justify-between" className="px-4 h-14 shrink-0 border-b border-gray-100">
         <span className="text-base font-semibold text-gray-900">공지사항</span>
         <IconButton
           className="p-2 hover:bg-gray-100 active:bg-gray-100"
           variant="plain"
           label="닫기"
-          icon={<CloseIcon className="w-6 h-6 text-gray-700" />}
+          icon={<CloseIcon className={isMobile ? 'w-5 h-5 text-gray-500' : 'w-4 h-4 text-gray-500'} />}
           onClick={onClose}
         />
       </Flex>
