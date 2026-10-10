@@ -28,7 +28,7 @@ function ReviewItem({ review }: Readonly<IReviewItemProps>) {
       <td className="px-4 py-3 align-top w-28">
         {isGraduation ? (
           <button
-            className="text-primary-600 underline hover:text-primary-800 text-sm font-medium"
+            className="text-primary-500 underline hover:text-primary-600 text-sm font-medium"
             onClick={() => navigate(`/reviews/graduation/${review.studentId}`)}
             aria-label={`${review.studentId} 졸업요건 조회`}
           >

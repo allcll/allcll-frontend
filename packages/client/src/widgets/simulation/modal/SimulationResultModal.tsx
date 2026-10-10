@@ -5,7 +5,7 @@ import ProcessingModal from './Processing.tsx';
 import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
 import { getSummaryResult, SIMULATION_ERROR } from '@/features/simulation/lib/simulation.ts';
 import { getAggregatedSimulationResults } from '@/features/simulation/lib/result.ts';
-import { Dialog } from '@allcll/allcll-ui';
+import { Button, Dialog } from '@allcll/allcll-ui';
 import Image from '@/shared/ui/Image.tsx';
 
 function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number }>) {
@@ -150,26 +150,29 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
           </div>
 
           <div className="flex justify-center gap-3 mt-6">
-            <button
-              className="px-4 py-2 border border-gray-400 text-gray-800 rounded-md hover:bg-gray-100 text-sm"
+            <Button
+              variant="outlined"
+              color="gray"
+              size="medium"
               onClick={() => {
                 closeModal();
                 openModal('wish');
               }}
             >
               다시 하기
-            </button>
+            </Button>
 
-            <NavLink
-              to={`/simulation/logs/${logParam}`}
-              end={false}
-              className="px-4 py-2  bg-primary-500 text-white rounded-md hover:bg-primary-600 text-sm"
-              onClick={() => {
-                closeModal();
-              }}
-            >
-              내 능력 자세히 보기
-            </NavLink>
+            <Button asChild variant="solid" size="medium">
+              <NavLink
+                to={`/simulation/logs/${logParam}`}
+                end={false}
+                onClick={() => {
+                  closeModal();
+                }}
+              >
+                내 능력 자세히 보기
+              </NavLink>
+            </Button>
           </div>
         </div>
 

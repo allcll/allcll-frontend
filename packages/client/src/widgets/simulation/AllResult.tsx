@@ -5,7 +5,7 @@ import StatisticsChart from '@/widgets/simulation/detail/StatisticsChart.tsx';
 import SubjectAllResult from '@/widgets/simulation/detail/SubjectAllResult.tsx';
 import { getAggregatedSimulationResults } from '@/features/simulation/lib/result.ts';
 import LoadingWithMessage from '@/shared/ui/Loading.tsx';
-import { WarningIcon } from '@allcll/allcll-ui';
+import { Button, EmptyState, WarningIcon } from '@allcll/allcll-ui';
 
 function AllResult() {
   const simulationAllResult = useLiveQuery(async () => {
@@ -18,13 +18,11 @@ function AllResult() {
 
   if (simulationAllResult && 'error' in simulationAllResult) {
     return (
-      <div className="flex flex-col w-full items-center justify-center h-120 gap-3">
-        <WarningIcon className="h-12 w-12 text-gray-300" />
-        <div className="text-center text-gray-500">{simulationAllResult.error}</div>
-        <Link to="/simulation" className="bg-primary-500 text-white px-4 py-2 rounded-md hover:bg-primary-600">
-          수강 연습 시작하기
-        </Link>
-      </div>
+      <EmptyState icon={WarningIcon} title={simulationAllResult.error} className="w-full h-120">
+        <Button asChild variant="solid" size="medium">
+          <Link to="/simulation">수강 연습 시작하기</Link>
+        </Button>
+      </EmptyState>
     );
   }
 
