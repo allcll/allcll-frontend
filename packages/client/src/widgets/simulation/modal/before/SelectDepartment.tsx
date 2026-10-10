@@ -14,8 +14,7 @@ const isInit = false;
 function SelectDepartment({ department, setDepartment }: ISelectDepartment) {
   const { data: departments } = useDepartments();
 
-  const onSelectDepartment = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const departmentCode = e.target.value;
+  const onSelectDepartment = (departmentCode: string) => {
     const departmentName = departments?.find(d => d.departmentCode === departmentCode)?.departmentName ?? '';
 
     setDepartment({ departmentName, departmentCode });
@@ -39,11 +38,7 @@ function SelectDepartment({ department, setDepartment }: ISelectDepartment) {
     <div className="flex flex-col gap-2">
       <Label>학과 선택</Label>
 
-      <DepartmentSelect
-        className="rounded-sm px-2 py-1 w-50 sm:w-120 bg-white"
-        value={department.departmentCode}
-        onChange={onSelectDepartment}
-      />
+      <DepartmentSelect className="w-50 sm:w-120" value={department.departmentCode} onChange={onSelectDepartment} />
     </div>
   );
 }

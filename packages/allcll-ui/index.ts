@@ -9,6 +9,7 @@ export { default as IconButton } from './src/components/icon-button/IconButton';
 export { default as Input } from './src/components/input/Input';
 export { default as Label } from './src/components/label/Label';
 export { default as Select } from './src/components/select/Select';
+export { default as SearchableSelect } from './src/components/searchable-select/SearchableSelect';
 export { Popover, usePopoverContext } from './src/components/popover/popover/Popover';
 export { default as RowCenter } from './src/components/row/RowCenter';
 export { default as RowLeft } from './src/components/row/RowLeft';
@@ -27,6 +28,7 @@ export { default as SupportingText } from './src/components/supportingText/Suppo
 export { default as Flex } from './src/components/flex/Flex';
 export { default as Grid } from './src/components/grid/Grid';
 export { PopoverGroup, usePopoverGroup } from './src/components/popover/popover/PopoverGroup';
+export { default as Listbox } from './src/components/listbox/Listbox';
 export { default as ListboxOption } from './src/components/listbox/ListboxOption';
 export * from './colors';
 export * from './src/icons';
