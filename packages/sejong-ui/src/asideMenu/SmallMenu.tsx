@@ -14,7 +14,7 @@ function SmallMenu({ menu }: SmallMenuProps) {
         <NavLink
           to={menu.path ?? '#'}
           className={({ isActive }) =>
-            `block px-2 py-2 text-xs cursor-pointer hover:bg-blue-500 hover:text-white ${isActive ? 'bg-blue-500 text-white' : ''}`
+            `block px-2 py-2 text-xs cursor-pointer hover:bg-primary-500 hover:text-white ${isActive ? 'bg-primary-500 text-white' : ''}`
           }
           end
         >

@@ -106,7 +106,7 @@ function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
           onClick={handlePin}
         >
           {isPinned ? (
-            <NotificationFilledIcon className="w-4 h-4 text-blue-500" />
+            <NotificationFilledIcon className="w-4 h-4 text-primary-500" />
           ) : (
             <NotificationIcon className="w-4 h-4 text-gray-400" />
           )}

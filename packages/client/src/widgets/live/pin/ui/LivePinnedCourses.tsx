@@ -42,7 +42,7 @@ function PinCoursesHeader({ setIsAlarmSettingOpen }: { setIsAlarmSettingOpen: (o
       <Flex align="items-center" gap="gap-1">
         {isError && (
           <IconButton
-            icon={<RenewIcon className="w-5 h-5 text-blue-500" />}
+            icon={<RenewIcon className="w-5 h-5 text-primary-500" />}
             aria-label="알림 재연결"
             label="알림 재연결"
             onClick={refetch}

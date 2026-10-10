@@ -51,7 +51,7 @@ function Header() {
                   to={path}
                   end={end}
                   className={({ isActive }) =>
-                    `inline-flex items-center gap-1 ${isActive ? 'text-blue-500 font-semibold' : 'text-gray-500'}`
+                    `inline-flex items-center gap-1 ${isActive ? 'text-primary-500 font-semibold' : 'text-gray-500'}`
                   }
                 >
                   {title}

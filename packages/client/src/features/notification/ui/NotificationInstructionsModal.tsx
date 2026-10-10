@@ -58,14 +58,14 @@ function NotificationInstructionsModal() {
             )}
             {page < lastPage && (
               <button
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                className="px-4 py-2 bg-primary-500 text-white rounded hover:bg-primary-600"
                 onClick={() => setPage(page + 1)}
               >
                 다음
               </button>
             )}
             {page === lastPage && (
-              <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={onClose}>
+              <button className="px-4 py-2 bg-primary-500 text-white rounded hover:bg-primary-600" onClick={onClose}>
                 닫기
               </button>
             )}
@@ -144,7 +144,7 @@ const TabButton = ({
   onClick: (id: string) => void;
 }) => (
   <button
-    className={`px-4 py-2 text-sm ${selected === id ? 'border-b-2 border-blue-500 text-blue-600 font-semibold' : 'text-gray-500 font-medium'}`}
+    className={`px-4 py-2 text-sm ${selected === id ? 'border-b-2 border-primary-500 text-primary-600 font-semibold' : 'text-gray-500 font-medium'}`}
     onClick={() => onClick(id)}
   >
     {name}

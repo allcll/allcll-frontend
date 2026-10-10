@@ -27,7 +27,7 @@ function Select({ options, value, onChange, placeholder = '선택해주세요' }
                 key={option.value}
                 selected={option.value === value}
                 left={option.label}
-                right={option.value === value ? <CheckmarkIcon className="w-4 h-4 shrink-0 text-blue-500" /> : null}
+                right={option.value === value ? <CheckmarkIcon className="w-4 h-4 shrink-0 text-primary-500" /> : null}
                 onSelect={() => onChange(option.value)}
               />
             ))}

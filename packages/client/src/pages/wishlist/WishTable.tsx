@@ -25,7 +25,7 @@ function WishTable() {
           관심과목 분석
         </Heading>
         <SupportingText>
-          올클은 세종대학교의 <span className="text-blue-500 font-bold">실제 데이터</span>를 보여드립니다. 관심과목을
+          올클은 세종대학교의 <span className="text-primary-500 font-bold">실제 데이터</span>를 보여드립니다. 관심과목을
           선택하여 분석해보세요.
         </SupportingText>
 

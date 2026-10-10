@@ -37,11 +37,11 @@ function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
           {...rest}
         />
         {rest.checked && (
-          <CheckmarkIcon className="text-blue-500 w-4 h-4 absolute inset-0 m-auto pointer-events-none" />
+          <CheckmarkIcon className="text-primary-500 w-4 h-4 absolute inset-0 m-auto pointer-events-none" />
         )}
       </div>
 
-      {label && <span className={`${rest.checked ? 'text-blue-500' : 'text-gray-600'}`}>{label}</span>}
+      {label && <span className={`${rest.checked ? 'text-primary-500' : 'text-gray-600'}`}>{label}</span>}
     </label>
   );
 }
@@ -51,8 +51,8 @@ Checkbox.layout = 'flex' as const;
 function getCheckboxClass(checked: boolean) {
   return checked
     ? `
-      bg-blue-50
-      border-blue-500
+      bg-primary-50
+      border-primary-500
     `
     : `
       bg-white

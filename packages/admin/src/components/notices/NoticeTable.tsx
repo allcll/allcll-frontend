@@ -59,7 +59,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
                     </Badge>
                   </td>
                   <td
-                    className="px-4 py-3 text-sm text-gray-900 truncate cursor-pointer hover:text-blue-500 transition-colors"
+                    className="px-4 py-3 text-sm text-gray-900 truncate cursor-pointer hover:text-primary-500 transition-colors"
                     role="button"
                     tabIndex={0}
                     onClick={() => onView(notice)}
@@ -82,7 +82,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
                         label="수정"
                         variant="plain"
                         onClick={() => onEdit(notice)}
-                        className="p-1.5 text-gray-400 hover:text-blue-500 hover:bg-blue-50 transition-colors"
+                        className="p-1.5 text-gray-400 hover:text-primary-500 hover:bg-primary-50 transition-colors"
                       />
                       <IconButton
                         icon={<TrashCanIcon className="w-4 h-4" />}

@@ -93,7 +93,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
                   onClick={e => navigateWithClose(path, e)}
                   className={({ isActive }) =>
                     `flex items-center gap-1.5 py-3 px-4 rounded-lg text-base font-medium transition-colors ${
-                      isActive ? 'bg-blue-50 text-blue-500' : 'text-gray-700 active:bg-gray-100'
+                      isActive ? 'bg-primary-50 text-primary-500' : 'text-gray-700 active:bg-gray-100'
                     }`
                   }
                 >

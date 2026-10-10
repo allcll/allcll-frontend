@@ -70,7 +70,7 @@ function SimulationBoard() {
         </div>
         <div className="flex items-center justify-end gap-1 w-20">
           <p className="hidden">점수</p>
-          <CursorIcon className="w-4 h-4 text-blue-500" />
+          <CursorIcon className="w-4 h-4 text-primary-500" />
           <span className="font-bold">{log.score.toFixed(3)}</span>
         </div>
       </div>

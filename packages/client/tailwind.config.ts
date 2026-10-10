@@ -22,9 +22,6 @@ const config: Config = {
         primary: colors.primary,
         secondary: colors.secondary,
         text: colors.text,
-        blue: {
-          500: '#007aff',
-        },
         banner: {
           skysoft: '#F4F9FF',
         },

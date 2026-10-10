@@ -13,7 +13,12 @@ function CustomerService() {
         <meta name="description" content="서비스 이용 중 발생한 오류를 제보하거나, 건의사항을 남겨주세요." />
       </Helmet>
 
-      <Flex justify='justify-center' align='items-center' direction='flex-col' className="h-screen w-full pt-4 bg-blue-100">
+      <Flex
+        justify="justify-center"
+        align="items-center"
+        direction="flex-col"
+        className="h-screen w-full pt-4 bg-primary-100"
+      >
         <iframe
           src="https://docs.google.com/forms/d/e/1FAIpQLSdk7MxNYVyzPyJLecQdJU5wGSgdE7rUWtRfcrPBY2ioKbtW2Q/viewform?embedded=true"
           width="640"
@@ -22,7 +27,7 @@ function CustomerService() {
         >
           로드 중…
         </iframe>
-        {!isLoaded && <LoadingWithMessage message="페이지를 불러오는 중입니다." /> }
+        {!isLoaded && <LoadingWithMessage message="페이지를 불러오는 중입니다." />}
       </Flex>
     </>
   );

@@ -32,7 +32,7 @@ function SubjectTable({ subjects, handleRemakeSubjects, isLoadingLectures }: Rea
           )}
         </Flex>
         <SupportingText>
-          <span className="text-blue-500">{totalCredit}</span> 학점
+          <span className="text-primary-500">{totalCredit}</span> 학점
         </SupportingText>
       </Flex>
 

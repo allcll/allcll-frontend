@@ -174,7 +174,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
                             key={department.departmentCode}
                             selected={isSelected}
                             left={<span>{departmentName}</span>}
-                            right={isSelected ? <CheckmarkIcon className="w-4 h-4 shrink-0 text-blue-500" /> : null}
+                            right={isSelected ? <CheckmarkIcon className="w-4 h-4 shrink-0 text-primary-500" /> : null}
                             onSelect={() => handlePrimaryDeptSelect(department.departmentCode, departmentName)}
                           />
                         );
@@ -227,7 +227,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
                             key={department.departmentCode}
                             selected={isSelected}
                             left={<span>{departmentName}</span>}
-                            right={isSelected ? <CheckmarkIcon className="w-4 h-4 shrink-0 text-blue-500" /> : null}
+                            right={isSelected ? <CheckmarkIcon className="w-4 h-4 shrink-0 text-primary-500" /> : null}
                             onSelect={() => handleDoubleMajorSelect(department.departmentCode, departmentName)}
                           />
                         );

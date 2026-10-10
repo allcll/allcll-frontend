@@ -62,7 +62,7 @@ function SideNavBar() {
                 to={menu.link}
                 className={({ isActive }) =>
                   isActive
-                    ? 'flex items-center gap-4 px-4 py-3 text-blue-500 font-semibold bg-blue-50'
+                    ? 'flex items-center gap-4 px-4 py-3 text-primary-500 font-semibold bg-primary-50'
                     : 'flex items-center gap-4 px-4 py-3 text-gray-500'
                 }
               >

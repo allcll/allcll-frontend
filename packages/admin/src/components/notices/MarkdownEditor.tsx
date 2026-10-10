@@ -73,8 +73,8 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
             type="button"
             className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px ${
               tab === 'write'
-                ? 'border-blue-500 text-blue-500 bg-white'
-                : 'border-transparent text-gray-500 hover:text-blue-500'
+                ? 'border-primary-500 text-primary-500 bg-white'
+                : 'border-transparent text-gray-500 hover:text-primary-500'
             }`}
             onClick={() => setTab('write')}
           >
@@ -84,8 +84,8 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
             type="button"
             className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px ${
               tab === 'preview'
-                ? 'border-blue-500 text-blue-500 bg-white'
-                : 'border-transparent text-gray-500 hover:text-blue-500'
+                ? 'border-primary-500 text-primary-500 bg-white'
+                : 'border-transparent text-gray-500 hover:text-primary-500'
             }`}
             onClick={() => setTab('preview')}
           >

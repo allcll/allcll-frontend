@@ -12,7 +12,11 @@ const Navbar = () => {
         <ul className="flex space-x-4 px-4 py-2">
           {NavLinks.map(({ title, path, end }) => (
             <li key={path} className="font-bold">
-              <NavLink to={path} end={end} className={({ isActive }) => (isActive ? 'text-blue-500' : 'text-gray-700')}>
+              <NavLink
+                to={path}
+                end={end}
+                className={({ isActive }) => (isActive ? 'text-primary-500' : 'text-gray-700')}
+              >
                 {title}
               </NavLink>
             </li>

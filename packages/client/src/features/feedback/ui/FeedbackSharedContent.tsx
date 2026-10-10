@@ -148,7 +148,7 @@ function RateInputs({ rate, currentRate, label, onClick }: IRateButtonProps) {
       aria-checked={currentRate === rate}
       aria-label={label}
       className={`flex flex-col items-center gap-2 p-2 rounded-xl transition-colors duration-200 font-bold
-        ${currentRate === rate ? 'text-primary-500' : 'text-gray-300 hover:text-blue-300'}`}
+        ${currentRate === rate ? 'text-primary-500' : 'text-gray-300 hover:text-primary-300'}`}
       onClick={onClick}
     >
       {faces[rate]}

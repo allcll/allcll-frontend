@@ -6,9 +6,9 @@ function GotoLive() {
     <NavLink
       to="/live"
       state={{ openSearch: true }}
-      className="inline-flex items-center gap-2 rounded-md border border-blue-500 px-3 py-2 text-sm text-blue-500 hover:bg-blue-50"
+      className="inline-flex items-center gap-2 rounded-md border border-primary-500 px-3 py-2 text-sm text-primary-500 hover:bg-primary-50"
     >
-      <NotificationIcon className="w-4 h-4 text-blue-500" />
+      <NotificationIcon className="w-4 h-4 text-primary-500" />
       알림 등록하러 가기
     </NavLink>
   );

@@ -41,10 +41,10 @@ const ErrorPage = () => {
           </Button>
 
           <Flex gap="gap-4" className="mt-2">
-            <Link to="/" className="text-blue-500">
+            <Link to="/" className="text-primary-500">
               홈으로 돌아가기
             </Link>
-            <a href="https://forms.gle/bCDTVujEHunnvHe88" target="_blank" className="text-blue-500">
+            <a href="https://forms.gle/bCDTVujEHunnvHe88" target="_blank" className="text-primary-500">
               문의하기
             </a>
           </Flex>

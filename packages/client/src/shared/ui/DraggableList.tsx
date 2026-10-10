@@ -251,7 +251,7 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
       </ul>
 
       {draggingStyle && draggedItemInfo && (
-        <div style={draggingStyle} className="bg-blue-50 rounded-md shadow-lg w-full max-w-lg m-auto px-2">
+        <div style={draggingStyle} className="bg-primary-50 rounded-md shadow-lg w-full max-w-lg m-auto px-2">
           <div className="flex items-center gap-2">
             <span className="p-1 text-gray-700">⠿</span>
             <span className="font-medium">{draggedItemInfo.item.title}</span>

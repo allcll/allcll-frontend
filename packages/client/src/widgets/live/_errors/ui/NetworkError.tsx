@@ -13,7 +13,7 @@ function NetworkError({ onReload }: Readonly<NetworkErrorProps>) {
       icon={<WarningIcon className="w-7 h-7 text-gray-300" />}
     >
       <button
-        className="mt-4 flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-600"
+        className="mt-4 flex items-center gap-2 bg-primary-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-primary-600"
         onClick={onReload}
       >
         <RenewIcon className="w-3 h-3 text-white" />

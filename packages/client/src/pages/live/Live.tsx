@@ -33,7 +33,7 @@ function Live() {
               <a
                 href="https://forms.gle/bCDTVujEHunnvHe88"
                 target="_blank"
-                className="text-blue-500 underline hover:text-blue-600"
+                className="text-primary-500 underline hover:text-primary-600"
               >
                 문의사항
               </a>

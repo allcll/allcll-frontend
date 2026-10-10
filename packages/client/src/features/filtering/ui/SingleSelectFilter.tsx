@@ -69,7 +69,7 @@ function SingleSelectFilterOption<K extends keyof Filters>({
       {!isMobile && (
         <Flex justify="justify-end">
           <Button variant="text" size="small" textColor="gray" onClick={() => handleClickReset()}>
-            <ResetIcon className="inline w-3 h-3 mr-1 text-blue-500" />
+            <ResetIcon className="inline w-3 h-3 mr-1 text-primary-500" />
             초기화
           </Button>
         </Flex>

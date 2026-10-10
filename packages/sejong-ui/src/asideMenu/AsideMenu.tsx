@@ -18,7 +18,7 @@ function AsideMenu({ menus }: AsideMenuProps) {
   return (
     <aside
       className={
-        (isOpen ? 'relative z-content' : 'relative bg-blue-50 z-content') +
+        (isOpen ? 'relative z-content' : 'relative bg-primary-50 z-content') +
         (!isOpen || isMobile ? ' w-[20px] min-w-[20px] h-[calc(100vh-60px)]' : ' w-[230px] min-w-[230px]')
       }
     >
@@ -28,7 +28,7 @@ function AsideMenu({ menus }: AsideMenuProps) {
             isMobile ? 'absolute w-[300px] min-w-[300px] h-full bg-white shadow-gray-800 shadow-md' : 'bg-white'
           }
         >
-          <div className="h-12 bg-blue-500 text-white text-lg font-semibold flex items-center justify-between px-4">
+          <div className="h-12 bg-primary-500 text-white text-lg font-semibold flex items-center justify-between px-4">
             <span>학부생학사정보</span>
             <button
               className="text-white hover:text-gray-200 cursor-pointer"
@@ -48,7 +48,7 @@ function AsideMenu({ menus }: AsideMenuProps) {
       ) : (
         <div>
           <button
-            className="w-full h-12 bg-blue-500 text-white text-lg font-semibold text-center cursor-pointer hover:text-gray-200"
+            className="w-full h-12 bg-primary-500 text-white text-lg font-semibold text-center cursor-pointer hover:text-gray-200"
             onClick={toggleMenu}
             aria-label="메뉴 펼치기"
           >

@@ -91,10 +91,10 @@ function CaptchaInput() {
         <div className="grid grid-cols-2 gap-4 mt-4">
           <div className="flex flex-col px-1">
             <div className="text-sm font-semibold flex flex-row items-center">
-              <span className="inline-block w-1.5 h-5 bg-blue-500 mr-2 "></span>생성된 코드
+              <span className="inline-block w-1.5 h-5 bg-primary-500 mr-2 "></span>생성된 코드
               <button
                 onClick={handleRefreshCaptcha}
-                className="ml-2 px-2 py-1 bg-blue-500 text-white text-sm rounded-xs cursor-pointer hover:bg-blue-600"
+                className="ml-2 px-2 py-1 bg-primary-500 text-white text-sm rounded-xs cursor-pointer hover:bg-primary-600"
                 tabIndex={-1}
               >
                 재생성
@@ -108,7 +108,7 @@ function CaptchaInput() {
 
           <div>
             <div className="text-sm font-semibold flex flex-row items-center">
-              <span className="inline-block w-1.5 h-5 bg-blue-500"></span>생성된 코드 입력
+              <span className="inline-block w-1.5 h-5 bg-primary-500"></span>생성된 코드 입력
             </div>
             <SejongUI.Input
               value={captchaInput}

@@ -117,16 +117,16 @@ function WaitingModal() {
     <SejongUI.Modal noBorder>
       <div className="bg-white p-6 text-center space-y-6 max-w-md">
         <h2 className="text-lg md:text-xl font-semibold text-gray-800">
-          서비스 <span className="text-blue-600 font-bold">접속대기 중</span>입니다.
+          서비스 <span className="text-primary-600 font-bold">접속대기 중</span>입니다.
         </h2>
 
         <div className="text-sm md:text-base text-gray-600">
-          예상대기시간: <span className="text-blue-600 font-bold text-xl">{waitTime}</span>초
+          예상대기시간: <span className="text-primary-600 font-bold text-xl">{waitTime}</span>초
         </div>
 
         <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
           <div
-            className="h-full bg-blue-500 transition-all duration-300"
+            className="h-full bg-primary-500 transition-all duration-300"
             style={{ width: `${(timer / (waitTime + timer)) * 100}%` }}
           />
         </div>

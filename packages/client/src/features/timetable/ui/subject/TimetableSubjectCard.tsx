@@ -14,7 +14,7 @@ interface ISubjectCard {
 }
 
 function TimetableSubjectCard({ isActive, subject, onClick, forwardedRef }: Readonly<ISubjectCard>) {
-  const color = isActive ? 'text-blue-500 bg-blue-50' : 'text-gray-700 bg-white hover:bg-gray-50';
+  const color = isActive ? 'text-primary-500 bg-primary-50' : 'text-gray-700 bg-white hover:bg-gray-50';
   const { saveSchedule } = useScheduleModal();
   const { selectTargetOnly } = useSearchLogging();
 

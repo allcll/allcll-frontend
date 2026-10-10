@@ -148,7 +148,7 @@ function SubjectRow({ subject, HeadTitles }: Readonly<{ subject: SseSubject; Hea
 
   const isDeleted = subject.isDeleted;
   const isEng = subject.curiLangNm === '영어';
-  const bgColor = seatChanged ? 'bg-blue-50' : isDeleted ? 'bg-gray-100' : isEng ? 'bg-green-50' : '';
+  const bgColor = seatChanged ? 'bg-primary-50' : isDeleted ? 'bg-gray-100' : isEng ? 'bg-green-50' : '';
   const crawledAt = new Date(subject.queryTime ?? 0).getTime();
 
   useEffect(() => {

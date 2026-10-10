@@ -113,7 +113,7 @@ function SelectSubject({ departments, setFilter, selectedValue }: ISelectSubject
             key={department.departmentCode}
             selected={isSelected}
             left={departmentName}
-            right={isSelected ? <CheckmarkIcon className="w-4 h-4 shrink-0 text-blue-500" /> : null}
+            right={isSelected ? <CheckmarkIcon className="w-4 h-4 shrink-0 text-primary-500" /> : null}
             onSelect={() => handleChangeDepartment(department.departmentCode)}
           />
         );

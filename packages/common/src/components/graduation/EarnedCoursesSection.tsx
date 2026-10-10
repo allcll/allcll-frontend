@@ -120,7 +120,7 @@ function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) 
                             left={option.label}
                             right={
                               option.value === selectedCategory ? (
-                                <CheckmarkIcon className="w-4 h-4 shrink-0 text-blue-500" />
+                                <CheckmarkIcon className="w-4 h-4 shrink-0 text-primary-500" />
                               ) : null
                             }
                             onSelect={() => {

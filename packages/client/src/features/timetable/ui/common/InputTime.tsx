@@ -8,7 +8,9 @@ function InputTime({ className, onChange, ...props }: IInputTime) {
   return (
     <input
       type="time"
-      className={'px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:outline-blue-500 ' + className}
+      className={
+        'px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:outline-primary-500 ' + className
+      }
       placeholder="HH:MM"
       step={10 * 60} // 10 minutes step
       onChange={e => {

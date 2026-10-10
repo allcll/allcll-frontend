@@ -17,14 +17,14 @@ function Toast({ toast, closeToast }: IToast) {
     <RowSlots
       withPadding
       className="bg-white rounded-lg shadow-md"
-      left={<NotificationIcon className="w-4 h-4 text-blue-500" />}
+      left={<NotificationIcon className="w-4 h-4 text-primary-500" />}
       center={<span className="flex-1 text-sm font-bold truncate max-w-72">{toast.message}</span>}
       right={
         <IconButton
           label="닫기"
           variant="plain"
           icon={<CloseIcon className="text-gray-400 w-4 h-4" />}
-          className="p-2 rounded-full hover:bg-blue-100"
+          className="p-2 rounded-full hover:bg-primary-100"
           onClick={closeToast}
         />
       }

@@ -34,7 +34,9 @@ function ListboxOption({ selected = false, onSelect, left, right }: ListboxOptio
 }
 
 function getSelectedClass(selected: boolean) {
-  return selected ? 'bg-blue-50 text-blue-500 font-medium hover:bg-blue-100' : 'hover:bg-gray-50 text-gray-700';
+  return selected
+    ? 'bg-primary-50 text-primary-500 font-medium hover:bg-primary-100'
+    : 'hover:bg-gray-50 text-gray-700';
 }
 
 export default ListboxOption;

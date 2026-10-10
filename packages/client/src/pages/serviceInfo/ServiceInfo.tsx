@@ -12,7 +12,7 @@ function ServiceInfo() {
         <title>ALLCLL | 소개</title>
       </Helmet>
 
-      <Flex justify='justify-center' align='items-center' direction='flex-col' className="h-screen bg-blue-100">
+      <Flex justify="justify-center" align="items-center" direction="flex-col" className="h-screen bg-primary-100">
         <iframe
           src="https://resilient-may-c73.notion.site/ebd/1f2acf7c316280939afed2657259c817"
           // allowFullScreen
@@ -22,9 +22,7 @@ function ServiceInfo() {
         >
           로드 중…
         </iframe>
-        {!isLoaded && (
-          <LoadingWithMessage message="페이지를 불러오는 중입니다." />
-        )}
+        {!isLoaded && <LoadingWithMessage message="페이지를 불러오는 중입니다." />}
       </Flex>
     </>
   );
