@@ -88,10 +88,7 @@ function MultiSelectFilterOption<VALUE extends string | number>({
       </div>
 
       <div className="flex justify-end w-full mt-2">
-        <button
-          onClick={() => handleClickReset()}
-          className="text-primary-500 cursor-pointer sm:text-sm text-xs px-1 py-0.5"
-        >
+        <button onClick={() => handleClickReset()} className="text-primary-500 sm:text-sm text-xs px-1 py-0.5">
           <ResetIcon className="inline w-4 h-4 mr-1 mb-0.5 text-primary-500" />
           필터 초기화
         </button>

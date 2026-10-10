@@ -69,7 +69,7 @@ function FilterBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }
 
         <Flex direction="flex-col" justify="justify-center" gap="gap-8" className="w-full">
           <DepartmentSelect
-            className="cursor-pointer border-gray-100 rounded-sm py-1 text-sm"
+            className="border-gray-100 rounded-sm py-1 text-sm"
             value={filters.department}
             onChange={e => setFilter('department', e.target.value)}
           />

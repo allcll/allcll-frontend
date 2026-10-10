@@ -151,10 +151,7 @@ function CaptchaInput({
       </div>
 
       <div className="flex justify-end p-4">
-        <button
-          onClick={handleConfirmCaptcha}
-          className="px-4 py-2 bg-white hover:bg-primary-50 rounded-xs border cursor-pointer"
-        >
+        <button onClick={handleConfirmCaptcha} className="px-4 py-2 bg-white hover:bg-primary-50 rounded-xs border">
           코드입력
         </button>
       </div>
@@ -165,9 +162,7 @@ function CaptchaInput({
 function SmallButton({ className, children, ...props }: Readonly<ButtonHTMLAttributes<HTMLButtonElement>>) {
   return (
     <button
-      className={
-        'px-2 py-1 bg-primary-500 text-white text-sm rounded-xs cursor-pointer hover:bg-primary-600 ' + className
-      }
+      className={'px-2 py-1 bg-primary-500 text-white text-sm rounded-xs hover:bg-primary-600 ' + className}
       {...props}
     >
       {children}

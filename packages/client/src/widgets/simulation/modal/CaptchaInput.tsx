@@ -94,7 +94,7 @@ function CaptchaInput() {
               <span className="inline-block w-1.5 h-5 bg-primary-500 mr-2 "></span>생성된 코드
               <button
                 onClick={handleRefreshCaptcha}
-                className="ml-2 px-2 py-1 bg-primary-500 text-white text-sm rounded-xs cursor-pointer hover:bg-primary-600"
+                className="ml-2 px-2 py-1 bg-primary-500 text-white text-sm rounded-xs hover:bg-primary-600"
                 tabIndex={-1}
               >
                 재생성

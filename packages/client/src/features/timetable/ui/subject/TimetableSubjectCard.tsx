@@ -27,7 +27,7 @@ function TimetableSubjectCard({ isActive, subject, onClick, forwardedRef }: Read
   return (
     <button
       type="button"
-      className={`border border-gray-200 rounded-lg p-3 sm:p-4 gap-2 sm:gap-3 ${color} cursor-pointer w-full text-left`}
+      className={`border border-gray-200 rounded-lg p-3 sm:p-4 gap-2 sm:gap-3 ${color} w-full text-left`}
       onClick={onClick}
       ref={forwardedRef}
     >

@@ -48,10 +48,7 @@ function HeaderTypeIcon({ headerType, onClick }: IHeaderTypeIcon) {
     );
 
   return (
-    <button
-      className="w-6 h-6 cursor-pointer flex items-center justify-center bg-gray-100 rounded-full"
-      onClick={onClick}
-    >
+    <button className="w-6 h-6 flex items-center justify-center bg-gray-100 rounded-full" onClick={onClick}>
       {icon}
     </button>
   );

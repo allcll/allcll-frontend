@@ -9,7 +9,7 @@ interface ISelectDepartment {
   setDepartment: React.Dispatch<React.SetStateAction<Department>>;
 }
 
-let isInit = false;
+const isInit = false;
 
 function SelectDepartment({ department, setDepartment }: ISelectDepartment) {
   const { data: departments } = useDepartments();
@@ -40,7 +40,7 @@ function SelectDepartment({ department, setDepartment }: ISelectDepartment) {
       <Label>학과 선택</Label>
 
       <DepartmentSelect
-        className="cursor-pointer rounded-sm px-2 py-1 w-50 sm:w-120 bg-white"
+        className="rounded-sm px-2 py-1 w-50 sm:w-120 bg-white"
         value={department.departmentCode}
         onChange={onSelectDepartment}
       />

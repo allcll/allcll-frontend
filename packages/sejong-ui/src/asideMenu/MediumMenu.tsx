@@ -16,7 +16,7 @@ function MediumMenu({ menu }: MediumMenuProps) {
     <li className="">
       <button
         className={
-          'px-4 py-2 h-10 flex items-center gap-4 w-full border-b border-neutral-300 cursor-pointer hover:bg-gray-100 ' +
+          'px-4 py-2 h-10 flex items-center gap-4 w-full border-b border-neutral-300 hover:bg-gray-100 ' +
           (isOpen ? 'font-semibold' : 'font-normal')
         }
         onClick={() => setIsOpen(prev => !prev)}

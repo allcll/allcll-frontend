@@ -21,10 +21,7 @@ function AllResult() {
       <div className="flex flex-col w-full items-center justify-center h-120 gap-3">
         <WarningIcon className="h-12 w-12 text-gray-300" />
         <div className="text-center text-gray-500">{simulationAllResult.error}</div>
-        <Link
-          to="/simulation"
-          className="bg-primary-500 text-white px-4 py-2 rounded-md hover:bg-primary-600 cursor-pointer"
-        >
+        <Link to="/simulation" className="bg-primary-500 text-white px-4 py-2 rounded-md hover:bg-primary-600">
           수강 연습 시작하기
         </Link>
       </div>

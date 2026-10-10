@@ -10,7 +10,7 @@ function PreSeatWillAvailable() {
     >
       <Flex justify="justify-center">
         <a
-          className="bg-gray-50 rounded-full px-4 py-2 text-sm border border-gray-200 hover:shadow-md cursor-pointer"
+          className="bg-gray-50 rounded-full px-4 py-2 text-sm border border-gray-200 hover:shadow-md"
           href="https://open.kakao.com/o/g3MztXfh"
         >
           공지 채팅방 바로가기

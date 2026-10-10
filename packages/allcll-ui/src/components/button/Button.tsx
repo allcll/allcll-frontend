@@ -20,7 +20,7 @@ function Button({ variant, size, children, disabled, textColor, asChild, ...rest
   const buttonClass =
     variant === 'circle'
       ? ''
-      : `flex flex-row gap-1 items-center justify-center cursor-pointer disabled:cursor-not-allowed ${INTERACTION.hoverable} ${INTERACTION.pressable}`;
+      : `flex flex-row gap-1 items-center justify-center disabled:cursor-not-allowed ${INTERACTION.hoverable} ${INTERACTION.pressable}`;
 
   const variantClass = textColor ? getVariantClass(variant, textColor) : getVariantClass(variant, 'primary');
   const sizeClass = variant === 'circle' ? '' : getSizeClass(size);

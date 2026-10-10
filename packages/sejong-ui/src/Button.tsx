@@ -7,7 +7,7 @@ interface ButtonProps extends ComponentPropsWithRef<'button'> {
 }
 
 function Button({ variant = 'primary', size = 'md', className = '', children, ...rest }: ButtonProps) {
-  const baseClass = 'flex flex-row gap-1 cursor-pointer rounded';
+  const baseClass = 'flex flex-row gap-1 rounded';
   const variantClass = getVariantClass(variant);
   const sizeClass = getSizeClass(size);
   const finalClassName = `${baseClass} ${variantClass} ${sizeClass} ${className}`.trim();

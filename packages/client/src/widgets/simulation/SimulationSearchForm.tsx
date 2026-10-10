@@ -155,7 +155,7 @@ function SimulationSearchForm() {
             <button
               onClick={handleStartSimulation}
               className={`relative px-3 py-2 rounded flex flex-row items-center gap-1 text-white ${
-                isRunning ? 'bg-gradient-animation cursor-pointer' : 'bg-gray-400 cursor-not-allowed'
+                isRunning ? 'bg-gradient-animation' : 'bg-gray-400 cursor-not-allowed'
               }`}
               disabled={!isRunning}
             >

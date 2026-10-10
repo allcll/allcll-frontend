@@ -6,7 +6,7 @@ interface ModelButtonProps extends ComponentPropsWithRef<'button'> {
 }
 
 function ModelButton({ variant = 'primary', className = '', children, ...rest }: ModelButtonProps) {
-  const buttonClass = 'px-4 h-6 text-xs flex items-center gap-1 rounded-xs cursor-pointer';
+  const buttonClass = 'px-4 h-6 text-xs flex items-center gap-1 rounded-xs';
   const variantClass = getVariantClass(variant);
   const finalClassName = `${buttonClass} ${variantClass} ${className}`.trim();
 

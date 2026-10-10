@@ -15,7 +15,7 @@ function VisitTutorialButton({ onClick }: IVisitTutorial) {
 
   return (
     shouldSkipTutorial && (
-      <button className="text-gray-600 hover:text-primary-500 cursor-pointer" onClick={onClickHandler}>
+      <button className="text-gray-600 hover:text-primary-500" onClick={onClickHandler}>
         튜토리얼 활성화
       </button>
     )
