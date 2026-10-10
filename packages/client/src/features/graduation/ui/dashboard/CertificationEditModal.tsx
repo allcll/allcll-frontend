@@ -36,7 +36,7 @@ function CertificationEditModal({
           <Flex direction="flex-col" gap="gap-3" className="max-h-52 overflow-y-auto pr-1">
             {isCriteriaLoading && <SupportingText className="text-center py-8">불러오는 중...</SupportingText>}
             {isCriteriaError && (
-              <p className="text-sm text-secondary-500 text-center py-8">기준 정보를 불러올 수 없습니다.</p>
+              <p className="text-sm text-danger-500 text-center py-8">기준 정보를 불러올 수 없습니다.</p>
             )}
             {!isCriteriaLoading && !isCriteriaError && (
               <EnglishCriteriaContent data={criteriaData?.englishCertCriteria ?? null} />

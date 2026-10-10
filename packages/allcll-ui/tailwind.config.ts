@@ -12,7 +12,7 @@ const config: Config = {
       // colors 단일 관리: ./colors.ts (기존 인라인 중복 제거)
       colors: {
         primary: colors.primary,
-        secondary: colors.secondary,
+        danger: colors.danger,
         text: colors.text,
       },
     },

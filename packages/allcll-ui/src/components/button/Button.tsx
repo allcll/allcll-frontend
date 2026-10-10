@@ -40,7 +40,7 @@ function getTextVariant(textColor: TextColor) {
     case 'primary':
       return 'bg-transparent text-primary-500 hover:text-primary-600';
     case 'secondary':
-      return 'bg-transparent text-secondary-500 hover:text-secondary-600';
+      return 'bg-transparent text-danger-500 hover:text-danger-600';
     case 'gray':
       return 'bg-transparent text-gray-700 hover:text-gray-800';
     default:
@@ -57,7 +57,7 @@ function getVariantClass(variant: ButtonVariant, textColor: TextColor) {
     case 'outlined':
       return 'bg-transparent border border-gray-700 hover:bg-gray-100 rounded-md disabled:border-gray-200 disabled:text-gray-400';
     case 'danger':
-      return 'bg-secondary-500 text-white hover:bg-secondary-600 rounded-md disabled:bg-gray-100';
+      return 'bg-danger-500 text-white hover:bg-danger-600 rounded-md disabled:bg-gray-100';
     case 'ghost':
       return 'bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-200 rounded-full';
     case 'circle':

@@ -10,10 +10,10 @@ interface ILoginErrorNoticeProps {
 // 글자는 대비 4.5, 아이콘은 3 을 넘는 단계를 골랐습니다.
 const TONE_STYLE = {
   error: {
-    box: 'bg-secondary-50 border-secondary-200',
-    icon: 'text-secondary-700',
+    box: 'bg-danger-50 border-danger-200',
+    icon: 'text-danger-700',
     // Heading 이 붙이는 text-text-200 이 CSS 에서 뒤에 있어 ! 로 덮습니다.
-    title: '!text-secondary-700',
+    title: '!text-danger-700',
     button: 'danger',
   },
   neutral: {

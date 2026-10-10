@@ -54,7 +54,7 @@ function TextField({
         )}
       </div>
 
-      {isError && <span className="text-secondary-500 text-xs">{errorMessage}</span>}
+      {isError && <span className="text-danger-500 text-xs">{errorMessage}</span>}
     </Flex>
   );
 }

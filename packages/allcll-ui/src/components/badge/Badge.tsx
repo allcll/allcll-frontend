@@ -25,7 +25,7 @@ function getFilledClass(variant: BadgeVariants) {
     case 'warning':
       return 'bg-yellow-100 text-yellow-700';
     case 'danger':
-      return 'bg-secondary-100 text-secondary-700';
+      return 'bg-danger-100 text-danger-700';
     case 'primary':
       return 'bg-primary-100 text-primary-700';
     case 'default':
@@ -44,7 +44,7 @@ function getOutlineClass(variant: BadgeVariants) {
     case 'warning':
       return 'border border-yellow-400 text-yellow-600';
     case 'danger':
-      return 'border border-secondary-400 text-secondary-600';
+      return 'border border-danger-400 text-danger-600';
     case 'primary':
       return 'border border-primary-300 text-primary-400';
     case 'default':
