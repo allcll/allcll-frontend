@@ -1,4 +1,4 @@
-import { Flex } from '@allcll/allcll-ui';
+import { Tabs } from '@allcll/allcll-ui';
 import { Link } from 'react-router-dom';
 import { SEMESTERS } from '@/entities/semester/api/semester.ts';
 
@@ -9,24 +9,14 @@ const startIdx = SEMESTERS.findIndex(s => s.semesterCode === START_SEMESTER_CODE
 const TIMETABLE_SEMESTERS = startIdx !== -1 ? SEMESTERS.slice(0, startIdx + 1) : [];
 
 function TimetableSemesterTabs({ currentSemester }: { currentSemester?: string }) {
-  const activeClassName = 'border-b-2 border-primary-500 text-primary-500 pb-2';
-
   return (
-    <Flex gap="gap-4" className="border-b text-sm border-gray-200">
-      {TIMETABLE_SEMESTERS.map(semester => {
-        const isActive = currentSemester === semester.semesterCode;
-
-        return (
-          <Link
-            key={semester.semesterCode}
-            to={`/timetable?semester=${semester.semesterCode}`}
-            className={isActive ? activeClassName : 'text-gray-500 pb-2 hover:text-gray-700'}
-          >
-            {semester.semesterValue}학기
-          </Link>
-        );
-      })}
-    </Flex>
+    <Tabs aria-label="학기 선택">
+      {TIMETABLE_SEMESTERS.map(semester => (
+        <Tabs.Tab key={semester.semesterCode} asChild selected={currentSemester === semester.semesterCode}>
+          <Link to={`/timetable?semester=${semester.semesterCode}`}>{semester.semesterValue}학기</Link>
+        </Tabs.Tab>
+      ))}
+    </Tabs>
   );
 }
 

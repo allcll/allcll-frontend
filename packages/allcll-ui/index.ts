@@ -17,7 +17,6 @@ export { default as RowLeft } from './src/components/row/RowLeft';
 export { default as RowMain } from './src/components/row/RowMain';
 export { default as RowRight } from './src/components/row/RowRight';
 export { default as RowSlots } from './src/components/row/RowSlots';
-export { default as Tab } from './src/components/tab/Tab';
 export { default as Tabs } from './src/components/tabs/Tabs';
 export { default as TextField } from './src/components/textfield/TextField';
 export { default as Textarea } from './src/components/textarea/Textarea';
