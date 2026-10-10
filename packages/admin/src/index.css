@@ -33,11 +33,24 @@ body {
   font-weight: 600;
 }
 
-.prose h1 { font-size: 1.875rem; margin: 1rem 0 0.5rem; }
-.prose h2 { font-size: 1.5rem; margin: 1rem 0 0.5rem; }
-.prose h3 { font-size: 1.25rem; color: #202123; font-weight: 600; margin: 0.75rem 0 0.5rem; }
+.prose h1 {
+  font-size: 1.875rem;
+  margin: 1rem 0 0.5rem;
+}
+.prose h2 {
+  font-size: 1.5rem;
+  margin: 1rem 0 0.5rem;
+}
+.prose h3 {
+  font-size: 1.25rem;
+  color: #202123;
+  font-weight: 600;
+  margin: 0.75rem 0 0.5rem;
+}
 
-.prose p { margin: 0.75rem 0; }
+.prose p {
+  margin: 0.75rem 0;
+}
 
 .prose code {
   background: #eff6ff;
@@ -96,7 +109,9 @@ body {
   margin: 0.5rem 0;
 }
 
-.prose li { margin: 0.25rem 0; }
+.prose li {
+  margin: 0.25rem 0;
+}
 
 .prose table {
   width: 100%;
