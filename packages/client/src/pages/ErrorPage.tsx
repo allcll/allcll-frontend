@@ -36,7 +36,7 @@ const ErrorPage = () => {
           <Heading level={1}>문제가 발생했습니다</Heading>
           <SupportingText>화면을 다시 불러오면 해결되는 경우가 많습니다.</SupportingText>
 
-          <Button variant="primary" size="medium" className="mt-2" onClick={() => window.location.reload()}>
+          <Button variant="solid" size="medium" className="mt-2" onClick={() => window.location.reload()}>
             다시 시도
           </Button>
 

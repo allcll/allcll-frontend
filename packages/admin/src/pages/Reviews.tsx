@@ -101,7 +101,7 @@ function Reviews() {
         </div>
       </Filtering>
       <div className="ml-auto">
-        <Button variant="outlined" size="small" disabled={isFetching} onClick={() => refetch()}>
+        <Button variant="outlined" color="gray" size="small" disabled={isFetching} onClick={() => refetch()}>
           후기 불러오기
         </Button>
       </div>

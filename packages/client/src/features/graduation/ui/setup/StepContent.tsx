@@ -46,7 +46,7 @@ function DefaultStep({ nextStep, children }: { children: React.ReactNode } & Jol
     <div>
       <h1>{children}</h1>
 
-      <Button onClick={nextStep} variant="primary" size="small">
+      <Button onClick={nextStep} variant="solid" size="small">
         다음
       </Button>
     </div>

@@ -114,7 +114,7 @@ function NoticeEditor() {
           </button>
           <PageHeader title={isEditMode ? '공지사항 수정' : '새 공지 작성'} />
         </Flex>
-        <Button variant="primary" size="small" onClick={handleSave} disabled={isSaving || isOverLimit}>
+        <Button variant="solid" size="small" onClick={handleSave} disabled={isSaving || isOverLimit}>
           <SaveIcon className="w-4 h-4 mr-1" />
           {isSaving ? '저장 중...' : '저장하기'}
         </Button>

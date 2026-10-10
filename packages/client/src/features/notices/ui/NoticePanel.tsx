@@ -27,7 +27,7 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
     return (
       <Flex direction="flex-col" className="h-full">
         <Flex align="items-center" justify="justify-between" className="px-4 h-14 shrink-0 border-b border-gray-100">
-          <Button variant="text" size="medium" textColor="gray" onClick={() => setSelectedNotice(null)}>
+          <Button variant="text" size="medium" color="gray" onClick={() => setSelectedNotice(null)}>
             <ChevronLeftIcon className="w-4 h-4 text-gray-700" />
             목록
           </Button>

@@ -119,7 +119,7 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
         </Dialog.Content>
 
         <Dialog.Footer>
-          <Button type="submit" variant="primary" size="medium">
+          <Button type="submit" variant="solid" size="medium">
             저장
           </Button>
         </Dialog.Footer>

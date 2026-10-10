@@ -94,12 +94,18 @@ function CategoryProgressCard({
 
         <div className="w-full mt-auto flex gap-1">
           <div className="flex-1 [&>button]:w-full">
-            <Button variant="outlined" size="small" onClick={handleViewEarnedCourses}>
+            <Button variant="outlined" color="gray" size="small" onClick={handleViewEarnedCourses}>
               이수 과목
             </Button>
           </div>
           <div className="flex-1 [&>button]:w-full">
-            <Button variant="outlined" size="small" onClick={handleViewCourses} disabled={category.satisfied}>
+            <Button
+              variant="outlined"
+              color="gray"
+              size="small"
+              onClick={handleViewCourses}
+              disabled={category.satisfied}
+            >
               추천 과목
             </Button>
           </div>

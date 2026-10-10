@@ -36,7 +36,7 @@ function Notices() {
     <Flex direction="flex-col" gap="gap-5" className="h-full">
       <Flex align="items-center" justify="justify-between">
         <PageHeader title="공지사항 관리" description="등록된 공지사항을 관리합니다." />
-        <Button variant="primary" size="small" onClick={() => navigate('/notices/new')}>
+        <Button variant="solid" size="small" onClick={() => navigate('/notices/new')}>
           <AddIcon className="w-4 h-4 mr-1" />새 공지 작성
         </Button>
       </Flex>

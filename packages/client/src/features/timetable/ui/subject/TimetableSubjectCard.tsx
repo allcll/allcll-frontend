@@ -51,7 +51,7 @@ function TimetableSubjectCard({ isActive, subject, onClick, forwardedRef }: Read
             <BasketBadge wishCount={subject.totalCount ?? -1} formatter={value => `관심: ${value}명`} />
           )}
           {isActive && (
-            <Button variant="primary" size="medium" onClick={handleAddOfficialSchedule}>
+            <Button variant="solid" size="medium" onClick={handleAddOfficialSchedule}>
               추가하기
             </Button>
           )}

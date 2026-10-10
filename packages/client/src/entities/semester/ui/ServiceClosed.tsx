@@ -46,12 +46,12 @@ function ServiceClosed({ data }: IServiceClosed) {
           <Heading level={3}>문의</Heading>
 
           <SupportingText className="flex items-center justify-center gap-2 mt-2">allcllclla@google.com</SupportingText>
-          <Button variant="text" size="medium" textColor="primary" asChild>
+          <Button variant="text" size="medium" asChild>
             <a href="https://forms.gle/bCDTVujEHunnvHe88" target="_blank">
               오류 및 제안
             </a>
           </Button>
-          <Button variant="text" size="medium" textColor="primary" asChild>
+          <Button variant="text" size="medium" asChild>
             <a href="https://open.kakao.com/o/g3MztXfh" target="_blank">
               오픈 채팅
             </a>
@@ -59,7 +59,7 @@ function ServiceClosed({ data }: IServiceClosed) {
         </Card>
 
         <Flex className="mt-6" justify="justify-center">
-          <Button variant="primary" size="medium" asChild>
+          <Button variant="solid" size="medium" asChild>
             <Link to="/">
               <HomeIcon className="w-4 h-4 text-white" />
               메인 페이지로 이동

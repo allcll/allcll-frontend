@@ -130,7 +130,7 @@ function ServicePeriod() {
           )}
 
           <Flex justify="justify-end">
-            <Button type="submit" variant="primary" size="medium" disabled={isPending || !semester}>
+            <Button type="submit" variant="solid" size="medium" disabled={isPending || !semester}>
               {isPending ? '저장 중...' : '전체 저장'}
             </Button>
           </Flex>

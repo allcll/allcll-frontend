@@ -44,7 +44,7 @@ function LoginConfirmationDialog({ isOpen, onClose, onConfirm, isPending }: ILog
             onChange={e => setDoNotShowAgain(e.target.checked)}
           />
           <Flex gap="gap-2">
-            <Button variant="primary" size="medium" onClick={handleConfirm} disabled={isPending}>
+            <Button variant="solid" size="medium" onClick={handleConfirm} disabled={isPending}>
               {isPending ? '로그인 중...' : '계속 로그인'}
             </Button>
           </Flex>

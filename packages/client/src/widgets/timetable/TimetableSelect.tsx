@@ -27,7 +27,7 @@ function TimetableActions({ onEdit, onDelete }: { onEdit: () => void; onDelete: 
       <Button
         variant="text"
         size="small"
-        textColor="secondary"
+        color="danger"
         onClick={() => {
           close();
           onDelete();
@@ -90,7 +90,7 @@ const TimetableSelect = ({ setIsOpenModal, openCreateModal, timetables, currentT
 
   if (!currentTimetable && timetables.length === 0) {
     return (
-      <Button variant="primary" size="medium" onClick={openCreateModal}>
+      <Button variant="solid" size="medium" onClick={openCreateModal}>
         시간표 만들기
       </Button>
     );
@@ -122,7 +122,7 @@ const TimetableSelect = ({ setIsOpenModal, openCreateModal, timetables, currentT
             ))}
 
             {currentTimetable && (
-              <Button variant="text" size="small" textColor="gray" onClick={openCreateModal}>
+              <Button variant="text" size="small" color="gray" onClick={openCreateModal}>
                 + 시간표 추가하기
               </Button>
             )}

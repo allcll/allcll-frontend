@@ -76,7 +76,7 @@ function DepartmentFilter({ setFilter, selectedValue }: IDepartmentFilter) {
           <Button
             variant="text"
             size="small"
-            textColor="gray"
+            color="gray"
             disabled={!selectedValue}
             onClick={() => setFilter('department', '')}
           >

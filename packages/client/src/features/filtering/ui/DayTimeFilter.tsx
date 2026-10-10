@@ -56,12 +56,7 @@ function DayTimeFilter({ items, onChange }: Readonly<IDayTimeFilter>) {
         ))}
       </Flex>
 
-      <Button
-        variant="text"
-        size="small"
-        textColor="gray"
-        onClick={() => onChange([...items, { day: '', type: 'all' }])}
-      >
+      <Button variant="text" size="small" color="gray" onClick={() => onChange([...items, { day: '', type: 'all' }])}>
         요일 추가
       </Button>
     </>
@@ -100,7 +95,7 @@ function DayTime({ item, onChange, onDelete }: IDayTime) {
       {hasStart && <InputTime name="start" value={item.start || '00:00'} onChange={onChange} />}
       {hasEnd && <InputTime name="end" value={item.end || '00:00'} onChange={onChange} />}
 
-      <Button variant="text" size="small" textColor="secondary" onClick={onDelete}>
+      <Button variant="text" size="small" color="danger" onClick={onDelete}>
         삭제
       </Button>
     </div>

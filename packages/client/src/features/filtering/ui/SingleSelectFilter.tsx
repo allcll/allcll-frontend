@@ -71,7 +71,7 @@ function SingleSelectFilterOption<K extends keyof Filters>({
           <Button
             variant="text"
             size="small"
-            textColor="gray"
+            color="gray"
             disabled={selectedValue == null}
             onClick={() => handleClickReset()}
           >

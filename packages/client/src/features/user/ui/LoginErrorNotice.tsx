@@ -14,13 +14,13 @@ const TONE_STYLE = {
     icon: 'text-danger-700',
     // Heading 이 붙이는 text-text-200 이 CSS 에서 뒤에 있어 ! 로 덮습니다.
     title: '!text-danger-700',
-    button: 'danger',
+    buttonColor: 'danger',
   },
   neutral: {
     box: 'bg-gray-50 border-gray-200',
     icon: 'text-gray-700',
     title: '',
-    button: 'primary',
+    buttonColor: 'primary',
   },
 } as const;
 
@@ -45,10 +45,9 @@ function LoginErrorNotice({ view, descriptionId }: ILoginErrorNoticeProps) {
           {view.description}
         </p>
 
-        {/* Button 에 className 을 넘기면 variant 스타일이 지워져 여백은 바깥에서 줍니다. */}
         {view.action && (
           <div className="mt-2">
-            <Button asChild variant={tone.button} size="small">
+            <Button asChild variant="solid" color={tone.buttonColor} size="small">
               <a
                 href={view.action.href}
                 target="_blank"

@@ -54,7 +54,7 @@ function TimetableChipSelector({ semesterValue, timetables, selectedTimetableId,
           ))}
         </Grid>
 
-        <Button variant="text" size="small" textColor="primary">
+        <Button variant="text" size="small">
           <Link to="/timetable">+ 새 시간표 추가</Link>
         </Button>
       </Flex>
@@ -68,7 +68,7 @@ function TimetableChipEmpty({ semesterValue }: { semesterValue?: string }) {
       <Label>시간표 선택</Label>
 
       <EmptyState icon={WarningIcon} title={`${semesterValue}학기 시간표가 없어요.`}>
-        <Button asChild variant="secondary" size="small">
+        <Button asChild variant="solid" color="gray" size="small">
           <Link to="/timetable">새 시간표 추가</Link>
         </Button>
       </EmptyState>

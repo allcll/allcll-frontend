@@ -48,7 +48,7 @@ function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
         <SubAlarmOption />
 
         <div className="mt-4 flex justify-end">
-          <Button variant="outlined" size="medium" onClick={onTestAlarm} disabled={!hasPermission}>
+          <Button variant="outlined" color="gray" size="medium" onClick={onTestAlarm} disabled={!hasPermission}>
             알림테스트
           </Button>
         </div>

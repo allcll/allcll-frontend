@@ -13,7 +13,7 @@ function ZeroListError() {
       description="찾으시는 과목이 없으신가요? 커스텀 일정을 직접 등록해주세요."
       className="pt-5"
     >
-      <Button variant="primary" size="medium" onClick={() => openScheduleModal(initSchedule)}>
+      <Button variant="solid" size="medium" onClick={() => openScheduleModal(initSchedule)}>
         등록하기
       </Button>
     </EmptyState>

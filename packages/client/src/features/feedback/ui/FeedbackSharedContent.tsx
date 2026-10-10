@@ -84,11 +84,11 @@ export function FeedbackActions({ isPending, canSubmit, onSubmit, onDontShowAgai
   return (
     <>
       {onDontShowAgain && (
-        <Button variant="text" textColor="primary" size="medium" onClick={onDontShowAgain} disabled={isPending}>
+        <Button variant="text" size="medium" onClick={onDontShowAgain} disabled={isPending}>
           다시 보지 않기
         </Button>
       )}
-      <Button variant="primary" size="medium" onClick={onSubmit} disabled={isPending || !canSubmit}>
+      <Button variant="solid" size="medium" onClick={onSubmit} disabled={isPending || !canSubmit}>
         {isPending ? '제출중...' : '제출하기'}
       </Button>
     </>

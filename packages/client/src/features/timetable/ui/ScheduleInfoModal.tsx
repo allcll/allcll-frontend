@@ -49,7 +49,7 @@ function ScheduleInfoModal() {
             onConfirm={confirmDelete}
           />
         ) : (
-          <Button variant="text" size="medium" textColor="secondary" onClick={requestDeleteConfirmation}>
+          <Button variant="text" size="medium" color="danger" onClick={requestDeleteConfirmation}>
             삭제
           </Button>
         )}

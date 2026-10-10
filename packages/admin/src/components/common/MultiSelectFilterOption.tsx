@@ -91,7 +91,7 @@ function MultiSelectFilterOption<VALUE extends string | number>({
         <Button
           variant="text"
           size="small"
-          textColor="gray"
+          color="gray"
           disabled={selectedValues.length === 0}
           onClick={() => handleClickReset()}
         >

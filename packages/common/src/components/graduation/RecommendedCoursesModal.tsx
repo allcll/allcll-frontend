@@ -118,7 +118,7 @@ function RecommendedCoursesModal({
       </Dialog.Content>
 
       <Dialog.Footer>
-        <Button variant="primary" size="small" onClick={onClose}>
+        <Button variant="solid" size="small" onClick={onClose}>
           닫기
         </Button>
       </Dialog.Footer>

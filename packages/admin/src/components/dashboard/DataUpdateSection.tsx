@@ -42,7 +42,7 @@ function DataUpdateSection() {
                 <td className="px-4 py-2 border-b border-gray-200">{label}</td>
                 <td className="px-4 py-2 border-b border-gray-200">{time}</td>
                 <td className="px-4 py-2 border-b border-gray-200">
-                  <Button onClick={() => refetch()} variant="outlined" size="medium">
+                  <Button onClick={() => refetch()} variant="outlined" color="gray" size="medium">
                     업데이트
                   </Button>
                 </td>

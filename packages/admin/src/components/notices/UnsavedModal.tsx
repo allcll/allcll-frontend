@@ -20,10 +20,10 @@ function UnsavedModal({ onCancel, onConfirm }: IUnsavedModalProps) {
         </Flex>
       </Dialog.Content>
       <Dialog.Footer>
-        <Button variant="primary" size="small" onClick={onCancel}>
+        <Button variant="solid" size="small" onClick={onCancel}>
           계속 작성
         </Button>
-        <Button variant="outlined" size="small" onClick={onConfirm}>
+        <Button variant="outlined" color="gray" size="small" onClick={onConfirm}>
           나가기
         </Button>
       </Dialog.Footer>

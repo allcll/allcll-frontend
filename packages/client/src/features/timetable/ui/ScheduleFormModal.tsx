@@ -49,12 +49,18 @@ function ScheduleFormModal() {
           ) : (
             <>
               {(modalActionType === ScheduleMutateType.EDIT || modalActionType === ScheduleMutateType.VIEW) && (
-                <Button type="button" variant="secondary" size={buttonSize} onClick={requestDeleteConfirmation}>
+                <Button
+                  type="button"
+                  variant="solid"
+                  color="gray"
+                  size={buttonSize}
+                  onClick={requestDeleteConfirmation}
+                >
                   삭제
                 </Button>
               )}
 
-              <Button type="submit" variant="primary" size={buttonSize}>
+              <Button type="submit" variant="solid" size={buttonSize}>
                 저장
               </Button>
             </>

@@ -163,19 +163,19 @@ function CrawlerControlComponent() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <Button variant="outlined" size="medium" onClick={() => handleSubmit('department')}>
+            <Button variant="outlined" color="gray" size="medium" onClick={() => handleSubmit('department')}>
               학과 데이터 크롤링
             </Button>
 
-            <Button variant="outlined" size="medium" onClick={() => handleSubmit('subject')}>
+            <Button variant="outlined" color="gray" size="medium" onClick={() => handleSubmit('subject')}>
               과목 데이터 크롤링
             </Button>
 
-            <Button variant="outlined" size="medium" onClick={() => handleSubmit('pre-seat')}>
+            <Button variant="outlined" color="gray" size="medium" onClick={() => handleSubmit('pre-seat')}>
               PreSeat 데이터 크롤링
             </Button>
 
-            <Button variant="outlined" size="medium" onClick={() => handleSubmit('basket')}>
+            <Button variant="outlined" color="gray" size="medium" onClick={() => handleSubmit('basket')}>
               Basket 데이터 크롤링
             </Button>
           </div>

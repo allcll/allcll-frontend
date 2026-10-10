@@ -33,7 +33,7 @@ export const WithAction: Story = {
     title: '등록된 알림 과목이 없습니다',
     description: '관심있는 과목을 알림 과목으로 등록해보세요.',
     children: (
-      <Button variant="primary" size="small">
+      <Button variant="solid" size="small">
         과목 등록하기
       </Button>
     ),
