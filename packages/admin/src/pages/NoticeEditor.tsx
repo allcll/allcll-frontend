@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Card, Button, TextField, Label, Flex, ArrowLeftIcon, SaveIcon } from '@allcll/allcll-ui';
+import { Card, Button, TextField, Label, Flex, Select, ArrowLeftIcon, SaveIcon } from '@allcll/allcll-ui';
 import PageHeader from '@/components/common/PageHeader';
 import MarkdownEditor from '@/components/notices/MarkdownEditor';
 import UnsavedModal from '@/components/notices/UnsavedModal';
@@ -158,21 +158,21 @@ function NoticeEditor() {
 
         <Flex direction="flex-col" gap="gap-1.5">
           <Label id="notice-category">카테고리</Label>
-          <select
+          <Select
             id="notice-category"
             value={category}
             onChange={e => {
               setCategory(e.target.value as OperationType);
               setIsDirty(true);
             }}
-            className="w-48 p-2 rounded-md bg-white border border-gray-400 text-sm text-gray-900"
+            className="w-48"
           >
             {NOTICE_CATEGORIES.map(cat => (
               <option key={cat} value={cat}>
                 {CATEGORY_LABELS[cat]}
               </option>
             ))}
-          </select>
+          </Select>
         </Flex>
 
         <MarkdownEditor

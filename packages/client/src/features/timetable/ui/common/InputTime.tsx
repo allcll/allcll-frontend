@@ -4,12 +4,13 @@ interface IInputTime extends InputHTMLAttributes<HTMLInputElement> {
   value?: string;
 }
 
-function InputTime({ className, onChange, ...props }: IInputTime) {
+function InputTime({ className = '', onChange, ...props }: IInputTime) {
   return (
     <input
       type="time"
       className={
-        'px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:outline-primary-500 ' + className
+        'rounded-md bg-white border border-gray-300 text-sm text-gray-900 py-2 px-3 focus:outline-none focus:border-primary-500 ' +
+        className
       }
       placeholder="HH:MM"
       step={10 * 60} // 10 minutes step

@@ -8,7 +8,7 @@ import ToastNotification from '../lib/toastNotification';
 import { AlarmNotification } from '../lib/useNotification';
 import VibrationNotification from '../lib/vibrationNotification';
 import useAlarmSettings, { AlarmType, isSubAlarmActivated, SubAlarmType } from '../model/useAlarmSettings';
-import { Dialog, Button } from '@allcll/allcll-ui';
+import { Dialog, Button, Select } from '@allcll/allcll-ui';
 
 interface IAlarmOptionModal {
   isOpen: boolean;
@@ -72,18 +72,13 @@ function AlarmOptionContent() {
       <label className="block mb-2 font-bold text-md" htmlFor="alarm-type-select">
         알림 유형
       </label>
-      <select
-        id="alarm-type-select"
-        className="w-full mb-2 p-2 border border-gray-300 rounded"
-        value={alarmType}
-        onChange={onChange}
-      >
+      <Select id="alarm-type-select" className="w-full mb-2" value={alarmType} onChange={onChange}>
         {AlarmTypeNames.map(type => (
           <option className="disabled:text-gray-500" key={type.value} value={type.value} disabled={type.disabled()}>
             {type.title}
           </option>
         ))}
-      </select>
+      </Select>
 
       {(alarmType === AlarmType.BROWSER || alarmType === AlarmType.BOTH) && !hasPermission && (
         <p className="pl-2 pb-2 text-sm text-red-600">브라우저 알림을 허용해주세요.</p>

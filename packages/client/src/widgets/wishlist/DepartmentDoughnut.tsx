@@ -14,7 +14,7 @@ import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes';
 import useDetailRegisters from '@/entities/wishes/model/useDetailRegisters';
 import { InitWishes } from '@/entities/wishes/model/useWishes';
 import LoadingWithMessage from '@/shared/ui/Loading';
-import { Flex, Heading, Label } from '@allcll/allcll-ui';
+import { Flex, Heading, Label, Select } from '@allcll/allcll-ui';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -51,8 +51,7 @@ function DepartmentDoughnut({ wishesInfo }: IDepartmentDoughnutProps) {
         <Label className="hidden" htmlFor="doughnut-select">
           필터
         </Label>
-        <select
-          className="border px-3 py-1 rounded-md"
+        <Select
           id="doughnut-select"
           value={selectedFilter}
           onChange={e => setSelectedFilter(e.target.value as DoughnutSelectType)}
@@ -62,7 +61,7 @@ function DepartmentDoughnut({ wishesInfo }: IDepartmentDoughnutProps) {
               {type}
             </option>
           ))}
-        </select>
+        </Select>
       </Flex>
 
       {isPending ? (
