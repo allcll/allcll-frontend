@@ -20,7 +20,7 @@ function TimetableSemesterTabs({ currentSemester }: { currentSemester?: string }
           <Link
             key={semester.semesterCode}
             to={`/timetable?semester=${semester.semesterCode}`}
-            className={isActive ? activeClassName : 'text-gray-500 pb-2'}
+            className={isActive ? activeClassName : 'text-gray-500 pb-2 hover:text-gray-700'}
           >
             {semester.semesterValue}학기
           </Link>
