@@ -4,6 +4,7 @@ export { default as Button } from './src/components/button/Button';
 export { default as Card } from './src/components/card/Card';
 export { default as Checkbox } from './src/components/checkbox/Checkbox';
 export { default as Chip } from './src/components/chip/Chip';
+export { default as EmptyState } from './src/components/empty-state/EmptyState';
 export { Dialog } from './src/components/dialog/Dialog';
 export { default as IconButton } from './src/components/icon-button/IconButton';
 export { default as Input } from './src/components/input/Input';

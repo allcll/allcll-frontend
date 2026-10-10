@@ -128,7 +128,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
                 onChange={handlePrimaryDeptSelect}
                 placeholder="학과를 선택하세요"
                 searchPlaceholder="학과명을 검색하세요"
-                emptyMessage="검색 결과가 없습니다. 다른 학과 이름으로 검색해주세요."
+                emptyDescription="다른 학과 이름으로 검색해주세요."
                 filterOption={matchOptionKeyword}
               />
             </Flex>
@@ -145,7 +145,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
                 onChange={handleDoubleMajorSelect}
                 placeholder="학과를 선택하세요"
                 searchPlaceholder="학과명을 검색하세요"
-                emptyMessage="검색 결과가 없습니다. 다른 학과 이름으로 검색해주세요."
+                emptyDescription="다른 학과 이름으로 검색해주세요."
                 filterOption={matchOptionKeyword}
               />
             </Flex>

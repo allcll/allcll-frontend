@@ -14,7 +14,7 @@ import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes';
 import useDetailRegisters from '@/entities/wishes/model/useDetailRegisters';
 import { InitWishes } from '@/entities/wishes/model/useWishes';
 import LoadingWithMessage from '@/shared/ui/Loading';
-import { Flex, Heading, Label, Select } from '@allcll/allcll-ui';
+import { Flex, Heading, Label, Select, EmptyState } from '@allcll/allcll-ui';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -70,7 +70,7 @@ function DepartmentDoughnut({ wishesInfo }: IDepartmentDoughnutProps) {
         </Flex>
       ) : !totalCount ? (
         <Flex justify="justify-center" align="items-center" className="h-48">
-          <p className="text-center text-gray-500 font-semibold">관심과목을 담은 사람이 없습니다.</p>
+          <EmptyState title="관심과목을 담은 사람이 없습니다." />
         </Flex>
       ) : (
         <Doughnut data={doughnutData} />

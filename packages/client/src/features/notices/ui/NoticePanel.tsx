@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
-import { Badge, Button, Flex, Heading, IconButton, ChevronLeftIcon, CloseIcon } from '@allcll/allcll-ui';
+import { Badge, Button, Flex, Heading, IconButton, ChevronLeftIcon, CloseIcon, EmptyState } from '@allcll/allcll-ui';
 import { type Notice, getNoticeLabel } from '@/entities/notices/model/notice';
 import NoticeCard from './NoticeCard';
 import NoticeDetailModal from './NoticeDetailModal';
@@ -73,9 +73,7 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
 
       <div className="flex-1 overflow-y-auto divide-y divide-gray-100">
         {notices.length === 0 ? (
-          <Flex align="items-center" justify="justify-center" className="h-32 text-sm text-gray-400">
-            등록된 공지사항이 없습니다.
-          </Flex>
+          <EmptyState title="등록된 공지사항이 없습니다." className="h-32" />
         ) : (
           notices.map(notice => (
             <NoticeCard key={notice.id} notice={notice} isRead={isRead(notice)} onClick={handleCardClick} />

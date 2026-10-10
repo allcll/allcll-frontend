@@ -65,6 +65,7 @@ function EditProfileModal({ isOpen, onClose, user }: EditProfileModalProps) {
               options={deptOptions}
               onChange={setDeptNm}
               searchPlaceholder="학과 검색"
+              emptyDescription="다른 학과 이름으로 검색해주세요."
               filterOption={matchOptionKeyword}
             />
           </Flex>
@@ -79,6 +80,7 @@ function EditProfileModal({ isOpen, onClose, user }: EditProfileModalProps) {
                 options={deptOptions}
                 onChange={setDoubleDeptNm}
                 searchPlaceholder="학과 검색"
+                emptyDescription="다른 학과 이름으로 검색해주세요."
                 filterOption={matchOptionKeyword}
               />
             </Flex>

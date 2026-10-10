@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Dialog, Flex, Button, CheckmarkOutlineIcon, CircleOutlineIcon } from '@allcll/allcll-ui';
+import { Dialog, Flex, Button, CheckmarkOutlineIcon, CircleOutlineIcon, EmptyState } from '@allcll/allcll-ui';
 import type { BalanceRequiredArea, CategoryType, CriteriaCategory, MissingCourse } from '../../types/graduation';
 import { BALANCE_AREA_LABELS, CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
 
@@ -84,9 +84,7 @@ function DefaultContent({ categoryLabel, courses }: Readonly<{ categoryLabel: st
       </div>
     </Flex>
   ) : (
-    <Flex justify="justify-center" align="items-center" className="min-w-64 md:min-w-96 h-72">
-      <p className="text-sm text-gray-400">추천 정보가 없습니다.</p>
-    </Flex>
+    <EmptyState title="추천 정보가 없습니다." className="min-w-64 md:min-w-96 h-72" />
   );
 }
 

@@ -1,4 +1,4 @@
-import { Card, Flex, SupportingText } from '@allcll/allcll-ui';
+import { Card, Flex, SupportingText, EmptyState } from '@allcll/allcll-ui';
 import type { Review } from '@/hooks/server/useAdminReviews';
 import ReviewItem from './ReviewItem';
 import SectionHeader from '@/components/common/SectionHeader';
@@ -56,7 +56,7 @@ function ReviewList({ reviews, isLoading, isError, filterBar }: Readonly<IReview
               {!isLoading && !isError && reviews.length === 0 && (
                 <tr>
                   <td colSpan={COLUMNS.length} className="py-8 text-center">
-                    <SupportingText>등록된 후기가 없습니다.</SupportingText>
+                    <EmptyState title="등록된 후기가 없습니다." />
                   </td>
                 </tr>
               )}

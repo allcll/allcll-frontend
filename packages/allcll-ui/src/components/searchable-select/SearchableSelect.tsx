@@ -11,6 +11,7 @@ import {
 } from 'react';
 import { createPortal } from 'react-dom';
 import { CheckmarkIcon, ChevronDownIcon, SearchIcon } from '../../icons';
+import EmptyState from '../empty-state/EmptyState';
 import Listbox from '../listbox/Listbox';
 import ListboxOption from '../listbox/ListboxOption';
 import { Z_INDEX } from '../../../zIndex';
@@ -28,6 +29,7 @@ interface SearchableSelectProps {
   placeholder?: string;
   searchPlaceholder?: string;
   emptyMessage?: string;
+  emptyDescription?: string;
   filterOption?: (option: SearchableSelectOption, query: string) => boolean;
   disabled?: boolean;
   id?: string;
@@ -51,6 +53,7 @@ function SearchableSelect({
   placeholder = '선택해주세요',
   searchPlaceholder = '검색',
   emptyMessage = '검색 결과가 없습니다.',
+  emptyDescription,
   filterOption = defaultFilterOption,
   disabled,
   id,
@@ -248,7 +251,7 @@ function SearchableSelect({
                   />
                 ))
               ) : (
-                <p className="py-6 text-center text-sm text-gray-400">{emptyMessage}</p>
+                <EmptyState icon={SearchIcon} title={emptyMessage} description={emptyDescription} className="py-6" />
               )}
             </Listbox>
           </div>,

@@ -6,7 +6,7 @@ function PreSeatWillAvailable() {
     <NoneLayout
       title="수강 정정 기간이 종료되었습니다"
       description="수강 신청 고생 많으셨습니다. 다음 학기에 만나요."
-      icon={<NotificationIcon className="w-7 h-7 text-gray-400" />}
+      icon={NotificationIcon}
     >
       <Flex justify="justify-center">
         <a

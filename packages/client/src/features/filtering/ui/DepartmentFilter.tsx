@@ -2,9 +2,18 @@ import { useState } from 'react';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
-import { Button, Flex, Label, Listbox, ListboxOption, Select, CheckmarkIcon } from '@allcll/allcll-ui';
+import {
+  Button,
+  Flex,
+  Label,
+  Listbox,
+  ListboxOption,
+  Select,
+  CheckmarkIcon,
+  EmptyState,
+  SearchIcon,
+} from '@allcll/allcll-ui';
 import { useFilteringDepartment } from '../lib/useFilteringDepartment';
-import { ZeroContent } from '@/shared/ui/ZeroContent';
 import { Filtering } from '@allcll/common';
 import { DepartmentType } from '@/features/filtering/model/types.ts';
 
@@ -89,7 +98,7 @@ interface ISelectSubject {
 
 function SelectSubject({ departments, setFilter, selectedValue }: ISelectSubject) {
   if (!departments) {
-    return <ZeroContent title="학과 리스트들이 없습니다." />;
+    return <EmptyState icon={SearchIcon} title="학과 리스트들이 없습니다." className="h-full" />;
   }
 
   const handleChangeDepartment = (department: string) => {
@@ -97,7 +106,14 @@ function SelectSubject({ departments, setFilter, selectedValue }: ISelectSubject
   };
 
   if (departments.length === 0) {
-    return <ZeroContent title="검색 결과가 없습니다." description="다른 학과 이름으로 검색해주세요." />;
+    return (
+      <EmptyState
+        icon={SearchIcon}
+        title="검색 결과가 없습니다."
+        description="다른 학과 이름으로 검색해주세요."
+        className="h-full"
+      />
+    );
   }
 
   return (

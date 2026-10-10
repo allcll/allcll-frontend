@@ -34,6 +34,7 @@ function DepartmentSelect({ id, className = '', value = '', onChange, defaultVal
         value={value}
         onChange={onChange}
         searchPlaceholder="학과 검색"
+        emptyDescription="다른 학과 이름으로 검색해주세요."
         filterOption={matchOptionKeyword}
       />
     </>

@@ -1,4 +1,14 @@
-import { Card, SupportingText, Badge, IconButton, Flex, EditIcon, TrashCanIcon, DocumentIcon } from '@allcll/allcll-ui';
+import {
+  Card,
+  SupportingText,
+  Badge,
+  IconButton,
+  Flex,
+  EditIcon,
+  TrashCanIcon,
+  DocumentIcon,
+  EmptyState,
+} from '@allcll/allcll-ui';
 import { CATEGORY_LABELS } from '@/hooks/server/useAdminNotices';
 import type { Notice } from '@/hooks/server/useAdminNotices';
 
@@ -42,10 +52,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
             {!isLoading && !isError && notices.length === 0 && (
               <tr>
                 <td colSpan={4} className="py-12 text-center">
-                  <Flex direction="flex-col" align="items-center" gap="gap-2" className="text-gray-400">
-                    <DocumentIcon className="w-8 h-8" />
-                    <SupportingText>공지사항이 없습니다.</SupportingText>
-                  </Flex>
+                  <EmptyState icon={DocumentIcon} title="공지사항이 없습니다." />
                 </td>
               </tr>
             )}
