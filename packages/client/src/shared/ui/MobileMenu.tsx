@@ -62,11 +62,11 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
             모바일 메뉴
           </h2>
 
-          <Flex justify="justify-between" align="items-center" gap="gap-0" className="p-4">
+          <Flex justify="justify-between" align="items-center" gap="gap-0" className="px-4 h-14">
             <Link
               to="/"
               onClick={e => navigateWithClose('/', e)}
-              className="flex items-center gap-2"
+              className="flex items-center gap-1"
               aria-label="메인 페이지"
             >
               <img src={logoCiUrl} alt="" className="w-6 h-6" />
@@ -76,7 +76,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
             <IconButton
               className="p-2 hover:bg-gray-100 active:bg-gray-100"
               variant="plain"
-              icon={<CloseIcon className="w-6 h-6 text-gray-700" />}
+              icon={<CloseIcon className="w-5 h-5 text-gray-500" />}
               label="메뉴 닫기"
               onClick={onClose}
             />
