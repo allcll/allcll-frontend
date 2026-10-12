@@ -119,9 +119,9 @@ function NoticeEditor() {
       </Flex>
 
       {errors.length > 0 && (
-        <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+        <div className="bg-danger-50 border border-danger-200 rounded-lg px-4 py-3">
           {errors.map((e, i) => (
-            <p key={i} className="text-sm text-red-700">
+            <p key={i} className="text-sm text-danger-700">
               {e}
             </p>
           ))}
@@ -147,7 +147,7 @@ function NoticeEditor() {
           />
           <Flex justify="justify-end">
             <span
-              className={`text-xs ${title.length > MAX_TITLE_LENGTH ? 'text-red-600 font-semibold' : 'text-gray-400'}`}
+              className={`text-xs ${title.length > MAX_TITLE_LENGTH ? 'text-danger-600 font-semibold' : 'text-gray-400'}`}
             >
               {title.length} / {MAX_TITLE_LENGTH}자
             </span>

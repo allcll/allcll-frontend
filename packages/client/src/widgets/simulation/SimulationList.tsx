@@ -28,7 +28,7 @@ function SimulationBoard() {
   if (isError) {
     return (
       <div className="flex justify-center items-center h-64">
-        <span className="text-red-500">오류가 발생했습니다</span>
+        <span className="text-danger-500">오류가 발생했습니다</span>
       </div>
     );
   }

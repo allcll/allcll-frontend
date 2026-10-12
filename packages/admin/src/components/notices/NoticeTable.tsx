@@ -44,7 +44,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
             )}
             {!isLoading && isError && (
               <tr>
-                <td colSpan={4} className="py-8 text-center text-sm text-red-500">
+                <td colSpan={4} className="py-8 text-center text-sm text-danger-500">
                   공지사항을 불러오는데 실패했습니다.
                 </td>
               </tr>
@@ -96,7 +96,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
                         label="삭제"
                         variant="plain"
                         onClick={() => onDelete(notice)}
-                        className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+                        className="p-1.5 text-gray-400 hover:text-danger-500 hover:bg-danger-50 transition-colors"
                       />
                     </Flex>
                   </td>

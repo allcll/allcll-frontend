@@ -136,7 +136,7 @@ function getColorClass(color: string) {
     case 'green':
       return 'bg-green-100 border-green-500 text-green-700';
     case 'red':
-      return 'bg-red-100 border-red-500 text-red-700';
+      return 'bg-danger-100 border-danger-500 text-danger-700';
     case 'orange':
       return 'bg-orange-100 border-orange-500 text-orange-700';
     case 'yellow':
@@ -151,7 +151,7 @@ function getColorBorderText(color: string) {
     case 'green':
       return 'border-green-500 text-green-500 shadow-green-500';
     case 'red':
-      return 'border-red-500 text-red-500 shadow-red-500';
+      return 'border-danger-500 text-danger-500 shadow-danger-500';
     case 'orange':
       return 'border-orange-500 text-orange-500 shadow-orange-500';
     case 'yellow':
@@ -166,7 +166,7 @@ function getTextColor500(color: string) {
     case 'green':
       return 'text-green-500';
     case 'red':
-      return 'text-red-500';
+      return 'text-danger-500';
     case 'orange':
       return 'text-orange-500';
     case 'yellow':
@@ -181,7 +181,7 @@ function getTextColor600(color: string) {
     case 'green':
       return 'text-green-600';
     case 'red':
-      return 'text-red-600';
+      return 'text-danger-600';
     case 'orange':
       return 'text-orange-600';
     case 'yellow':

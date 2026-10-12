@@ -3,13 +3,13 @@ import { APPLY_STATUS } from '@/features/simulation/lib/simulation.ts';
 export function getSeatColor(seats: number) {
   if (seats > 5) return 'text-green-500 bg-green-100';
   if (seats > 0) return 'text-yellow-500 bg-yellow-100';
-  if (seats == 0) return 'text-red-500 bg-red-100';
+  if (seats == 0) return 'text-danger-500 bg-danger-100';
 
   return 'text-gray-500 bg-gray-100';
 }
 
 export function getWishesColor(wishCount: number) {
-  if (wishCount >= 100) return 'text-red-500 bg-red-100';
+  if (wishCount >= 100) return 'text-danger-500 bg-danger-100';
   if (wishCount >= 50) return 'text-yellow-500 bg-yellow-100';
   if (wishCount >= 0) return 'text-green-500 bg-green-100';
 
@@ -40,7 +40,7 @@ function getTextBgColor(color: string) {
     case 'green':
       return 'bg-green-100 text-green-500';
     case 'red':
-      return 'bg-red-100 text-red-500';
+      return 'bg-danger-100 text-danger-500';
     case 'orange':
       return 'bg-orange-100 text-orange-500';
     case 'yellow':

@@ -29,7 +29,7 @@ function SubjectAllResult({ result }: Readonly<{ result: AggregatedResultRespons
             <td className="py-2 px-1">{row.avgCompletionTime.toFixed(2) + ' sec'}</td>
             <td className="py-2 px-2">
               <span className="px-1 py-0.5 rounded-full text-xs font-bold text-green-500">{row.successCount}</span>/
-              <span className="px-1 py-0.5 rounded-full text-xs font-bold text-red-500">{row.failedCount}</span>/
+              <span className="px-1 py-0.5 rounded-full text-xs font-bold text-danger-500">{row.failedCount}</span>/
               <span className="px-1 py-0.5 rounded-full text-xs font-bold text-gray-500">{row.doubledCount}</span>/
               <span className="px-1 py-0.5 rounded-full text-xs font-bold text-black">{row.totalCount}</span>
             </td>

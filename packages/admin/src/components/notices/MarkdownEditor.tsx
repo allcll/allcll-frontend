@@ -61,7 +61,11 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
 
   const charCount = content.length;
   const charCountClass =
-    charCount > maxLength ? 'text-red-600 font-semibold' : charCount > warnLength ? 'text-amber-600' : 'text-gray-400';
+    charCount > maxLength
+      ? 'text-danger-600 font-semibold'
+      : charCount > warnLength
+        ? 'text-amber-600'
+        : 'text-gray-400';
 
   return (
     <Flex direction="flex-col" gap="gap-1.5">

@@ -85,7 +85,7 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
         <div className="relative z-content text-center">
           <h2 className="text-xl font-bold text-gray-900">
             수강 신청
-            <span className={isSuccessSimulation ? `text-primary-600` : `text-red-500`}>
+            <span className={isSuccessSimulation ? `text-primary-600` : `text-danger-500`}>
               {isSuccessSimulation ? ' 성공!' : ' 실패'}
             </span>
           </h2>

@@ -72,7 +72,7 @@ export function FeedbackFields({
       )}
 
       {error && (
-        <p className="text-red-600 text-sm mb-3" aria-live="assertive">
+        <p className="text-danger-600 text-sm mb-3" aria-live="assertive">
           {error}
         </p>
       )}

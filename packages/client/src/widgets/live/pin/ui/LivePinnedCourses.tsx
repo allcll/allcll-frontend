@@ -34,7 +34,7 @@ function PinCoursesHeader({ setIsAlarmSettingOpen }: { setIsAlarmSettingOpen: (o
         <Tooltip>
           <p className="text-sm">
             여석이 생기면 알림을 보내드려요 <br />
-            <span className="text-red-500">* 탭을 닫으면 알림이 울리지 않아요</span>
+            <span className="text-danger-500">* 탭을 닫으면 알림이 울리지 않아요</span>
           </p>
         </Tooltip>
       </Flex>

@@ -29,7 +29,7 @@ function ServiceOpenContent() {
   }
 
   if (isError) {
-    return <SupportingText className="text-red-500">불러오지 못했습니다.</SupportingText>;
+    return <SupportingText className="text-danger-500">불러오지 못했습니다.</SupportingText>;
   }
 
   const periods = (data ?? []).filter(period => SERVICE_OPERATION_TYPES.includes(period.operationType));

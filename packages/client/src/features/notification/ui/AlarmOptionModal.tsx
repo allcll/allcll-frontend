@@ -81,10 +81,10 @@ function AlarmOptionContent() {
       </Select>
 
       {(alarmType === AlarmType.BROWSER || alarmType === AlarmType.BOTH) && !hasPermission && (
-        <p className="pl-2 pb-2 text-sm text-red-600">브라우저 알림을 허용해주세요.</p>
+        <p className="pl-2 pb-2 text-sm text-danger-600">브라우저 알림을 허용해주세요.</p>
       )}
       {alarmType === AlarmType.TOAST && (
-        <p className="pl-2 pb-2 text-sm text-red-600">토스트 알림은 탭이 열려 있을 때에만 작동해요.</p>
+        <p className="pl-2 pb-2 text-sm text-danger-600">토스트 알림은 탭이 열려 있을 때에만 작동해요.</p>
       )}
       {!canBrowserNotify && (
         <p className="pl-2 pb-2 text-xs text-gray-600">이 브라우저는 브라우저 알림을 지원하지 않아요.</p>
@@ -133,7 +133,7 @@ function SubAlarmOption() {
             disabled={isVibrateDisabled}
           />
         </label>
-        {!canVibrate && <p className="pl-2 pb-2 text-sm text-red-600">이 기기는 진동 기능을 지원하지 않아요.</p>}
+        {!canVibrate && <p className="pl-2 pb-2 text-sm text-danger-600">이 기기는 진동 기능을 지원하지 않아요.</p>}
       </div>
     </div>
   );
