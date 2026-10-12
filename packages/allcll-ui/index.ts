@@ -24,7 +24,7 @@ export { default as Tabs } from './src/components/tabs/Tabs';
 export { default as TextField } from './src/components/textfield/TextField';
 export { default as Textarea } from './src/components/textarea/Textarea';
 export { default as Toast } from './src/components/toast/Toast';
-export { default as Toggle } from './src/components/toggle/toggle';
+export { default as Toggle } from './src/components/toggle/Toggle';
 export { default as Tooltip } from './src/components/tooltip/Tooltip';
 export { default as Heading } from './src/components/heading/Heading';
 export { default as SupportingText } from './src/components/supportingText/SupportingText';
