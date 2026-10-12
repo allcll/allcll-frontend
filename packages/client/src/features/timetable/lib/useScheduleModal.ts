@@ -1,7 +1,7 @@
+import { useToastNotification } from '@allcll/common';
 // This hook is used to manage the schedule modal state and actions
 import React, { useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import useToastNotification from '@/features/notification/model/useToastNotification.ts';
 import {
   CustomSchedule,
   OfficialSchedule,

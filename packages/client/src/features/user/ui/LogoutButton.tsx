@@ -1,6 +1,6 @@
 import { Button } from '@allcll/allcll-ui';
 import { useLogout } from '@/entities/user/model/useAuth';
-import useToastNotification from '@/features/notification/model/useToastNotification';
+import { useToastNotification } from '@allcll/common';
 
 interface LogoutButtonProps {
   onSuccess?: () => void;

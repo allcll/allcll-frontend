@@ -1,3 +1,4 @@
+import { useToastNotification } from '@allcll/common';
 import {
   Button,
   Card,
@@ -14,7 +15,6 @@ import { useId, useState } from 'react';
 import useLoginForm from '../lib/useLoginForm';
 import useLoginConfirm from '../lib/useLoginConfirm';
 import { useLogin } from '@/entities/user/model/useAuth';
-import useToastNotification from '@/features/notification/model/useToastNotification';
 import LoginConfirmationDialog from './LoginConformDialog';
 import LoginErrorNotice from './LoginErrorNotice';
 import { type ILoginErrorView, toLoginErrorView } from '../lib/loginErrors.ts';

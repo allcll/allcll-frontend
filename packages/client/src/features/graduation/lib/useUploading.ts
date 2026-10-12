@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { graduationQueryKeys, useGraduationCheck } from '@/entities/graduation/model/useGraduation';
 import { useGraduationCheckMutation } from './useGraduationCheckMutation';
-import useToastNotification from '@/features/notification/model/useToastNotification';
+import { useToastNotification } from '@allcll/common';
 
 type Phase = 'uploading' | 'fetching' | 'done';
 

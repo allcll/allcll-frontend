@@ -6,7 +6,7 @@ import { useFilteringDepartment } from '@/features/filtering/lib/useFilteringDep
 import { matchOptionKeyword } from '@/shared/lib/search.ts';
 import { JolupStepsProps } from '@/features/graduation/model/types.ts';
 import { updateMe } from '@/entities/user/api/user';
-import useToastNotification from '@/features/notification/model/useToastNotification';
+import { useToastNotification } from '@allcll/common';
 
 type MajorType = 'SINGLE' | 'DOUBLE'; // 단일전공 | 복수전공
 
