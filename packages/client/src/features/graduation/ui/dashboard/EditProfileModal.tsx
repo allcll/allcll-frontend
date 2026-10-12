@@ -1,5 +1,4 @@
 import { Dialog, Flex, Button, Label, Select, SearchableSelect } from '@allcll/allcll-ui';
-import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
 import { matchOptionKeyword } from '@/shared/lib/search.ts';
 import { useEditProfileForm } from '@/features/graduation/lib/useEditProfileForm';
 import type { UserResponse } from '@/entities/user/model/types';
@@ -30,8 +29,6 @@ function EditProfileModal({ isOpen, onClose, user }: EditProfileModalProps) {
     isSaving,
     isDeleting,
   } = useEditProfileForm(user, isOpen, onClose);
-
-  useBodyScrollLock(isOpen);
 
   return (
     <Dialog title="회원 정보 수정" onClose={onClose} isOpen={isOpen}>
