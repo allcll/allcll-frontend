@@ -1,4 +1,4 @@
-import { Card, Heading, Flex, WarningIcon } from '@allcll/allcll-ui';
+import { Card, Heading, Flex, WarningIcon, TextLink } from '@allcll/allcll-ui';
 import { NavLink } from 'react-router-dom';
 
 const FileUploadGuide = () => {
@@ -16,14 +16,15 @@ const FileUploadGuide = () => {
         <ul className="list-disc list-inside space-y-1 ml-1 text-gray-600">
           <li className="text-sm">
             <span className="text-xs sm:text-sm">
-              <NavLink
-                to="https://sjpt.sejong.ac.kr/main/view/Login/doSsoLogin.do?p="
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary-500 underline font-semibold hover:text-primary-600"
-              >
-                학사 정보 시스템
-              </NavLink>
+              <TextLink asChild className="font-semibold">
+                <NavLink
+                  to="https://sjpt.sejong.ac.kr/main/view/Login/doSsoLogin.do?p="
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  학사 정보 시스템
+                </NavLink>
+              </TextLink>
               에 로그인 후 <strong>[학부생 학사정보]</strong> 탭에 접속합니다.
             </span>
           </li>

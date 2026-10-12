@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { Flex, Banner, Button, Heading, SupportingText, LoadingState } from '@allcll/allcll-ui';
+import { Flex, Banner, Button, Heading, SupportingText, LoadingState, TextLink } from '@allcll/allcll-ui';
 import {
   CategoryEarnedCoursesModal,
   CategoryProgressCard,
@@ -226,12 +226,9 @@ function GraduationDashboardPage() {
         <Banner deleteBanner={handleDeleteBanner}>
           본 서비스는 베타 버전으로, 분석 결과는 공식적인 효력을 갖지 않습니다. 오류 또는 개선 사항이 있으시면
           알려주시면 서비스 개선에 도움이 됩니다.{' '}
-          <button
-            className="text-primary-500 font-semibold underline hover:text-primary-600"
-            onClick={() => openFeedback('manual')}
-          >
-            오류 제보
-          </button>
+          <TextLink asChild className="font-semibold">
+            <button onClick={() => openFeedback('manual')}>오류 제보</button>
+          </TextLink>
         </Banner>
       )}
 

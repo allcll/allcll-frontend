@@ -1,3 +1,4 @@
+import { TextLink } from '@allcll/allcll-ui';
 import { JSX } from 'react';
 
 const markdownComponents = {
@@ -16,11 +17,7 @@ const markdownComponents = {
       {props.children}
     </h3>
   ),
-  a: (props: JSX.IntrinsicElements['a']) => (
-    <a {...props} className="text-primary-500 underline hover:text-primary-600">
-      {props.children}
-    </a>
-  ),
+  a: (props: JSX.IntrinsicElements['a']) => <TextLink {...props}>{props.children}</TextLink>,
   p: (props: JSX.IntrinsicElements['p']) => (
     <p {...props} className="mb-5 md:text-md text-sm text-gray-700 leading-loose tracking-normal">
       {props.children}

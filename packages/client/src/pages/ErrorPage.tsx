@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/react';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, useRouteError } from 'react-router-dom';
-import { Button, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import { Button, Flex, Heading, SupportingText, TextLink } from '@allcll/allcll-ui';
 import JumpGame from '@/widgets/jumpGame/ui/JumpGame.tsx';
 
 const ErrorPage = () => {
@@ -41,16 +41,12 @@ const ErrorPage = () => {
           </Button>
 
           <Flex gap="gap-4" className="mt-2">
-            <Link to="/" className="text-primary-500 underline hover:text-primary-600">
-              홈으로 돌아가기
-            </Link>
-            <a
-              href="https://forms.gle/bCDTVujEHunnvHe88"
-              target="_blank"
-              className="text-primary-500 underline hover:text-primary-600"
-            >
+            <TextLink asChild>
+              <Link to="/">홈으로 돌아가기</Link>
+            </TextLink>
+            <TextLink href="https://forms.gle/bCDTVujEHunnvHe88" target="_blank">
               문의하기
-            </a>
+            </TextLink>
           </Flex>
         </Flex>
       </Flex>

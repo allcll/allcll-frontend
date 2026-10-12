@@ -22,6 +22,7 @@ export { default as Skeleton } from './src/components/skeleton/Skeleton';
 export { default as Spinner } from './src/components/spinner/Spinner';
 export { default as Tabs } from './src/components/tabs/Tabs';
 export { default as TextField } from './src/components/textfield/TextField';
+export { default as TextLink } from './src/components/text-link/TextLink';
 export { default as Textarea } from './src/components/textarea/Textarea';
 export { default as Toast } from './src/components/toast/Toast';
 export { default as Toggle } from './src/components/toggle/Toggle';
