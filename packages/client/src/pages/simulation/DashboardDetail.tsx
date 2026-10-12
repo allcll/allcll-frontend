@@ -1,4 +1,4 @@
-import { LoadingState } from '@allcll/allcll-ui';
+import { LoadingState, Heading } from '@allcll/allcll-ui';
 import { useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
@@ -25,12 +25,16 @@ function DashboardDetail() {
         <meta name="description" content="수강연습 결과를 분석하고, 부족한 부분을 알려 드려요." />
       </Helmet>
 
-      <h1 className="text-2xl font-bold mb-6">모의 수강 신청 로그</h1>
+      <Heading level={1} className="mb-6">
+        모의 수강 신청 로그
+      </Heading>
       {/* Top Grid: 능력분석 + 수강 신청자 리스트 */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* 사용자 능력 분석 */}
         <div className="relative bg-white p-6 rounded-2xl shadow-sm">
-          <h2 className="text-lg font-semibold mb-4">사용자 능력 분석</h2>
+          <Heading level={2} className="mb-4">
+            사용자 능력 분석
+          </Heading>
           {resultInfo ? (
             <RadarChart result={resultInfo} />
           ) : (
@@ -40,7 +44,9 @@ function DashboardDetail() {
 
         {/* 과목별 수강 신청 담은 사람 */}
         <div className="bg-white p-6 rounded-2xl shadow-sm overflow-x-auto">
-          <h2 className="text-lg font-semibold mb-4 min-w-[240px] overflow-x-auto">과목 별 분석</h2>
+          <Heading level={2} className="mb-4 min-w-[240px] overflow-x-auto">
+            과목 별 분석
+          </Heading>
           {resultInfo ? (
             <SubjectDetailResult result={resultInfo} />
           ) : (
@@ -52,7 +58,9 @@ function DashboardDetail() {
       {/* Timeline */}
       <section className="bg-white p-6 rounded-2xl shadow-sm">
         <div className="flex items-start justify-between mb-4">
-          <h2 className="text-lg font-semibold mb-4">내 모의 수강 신청 별 TimeLine</h2>
+          <Heading level={2} className="mb-4">
+            내 모의 수강 신청 별 TimeLine
+          </Heading>
 
           {/*<label className="flex items-center text-sm gap-1 text-gray-500">*/}
           {/*  <input type="checkbox" className="accent-gray-400" />*/}

@@ -1,3 +1,4 @@
+import { Heading } from '@allcll/allcll-ui';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import SejongUI from '@allcll/sejong-ui';
@@ -87,7 +88,7 @@ function Simulation() {
       <RenderModal />
       <div className="flex justify-between gap-5">
         <div className="flex gap-5">
-          <h1 className="font-bold text-lg">수강신청 연습</h1>
+          <Heading level={1}>수강신청 연습</Heading>
           <Stopwatch />
         </div>
 

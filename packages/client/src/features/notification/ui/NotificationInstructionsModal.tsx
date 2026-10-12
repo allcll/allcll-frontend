@@ -3,7 +3,7 @@
  */
 import { useEffect, useState } from 'react';
 import useNotificationInstruction from '../model/useNotificationInstruction.ts';
-import { Button, SettingsAdjustIcon, Dialog, Tabs } from '@allcll/allcll-ui';
+import { Button, SettingsAdjustIcon, Dialog, Tabs, Heading } from '@allcll/allcll-ui';
 
 // --- OS/Browser Detection Utilities ---
 
@@ -81,7 +81,7 @@ function BrowserPermissionGuide() {
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="font-bold text-base text-gray-800">1단계: 브라우저 알림 권한 설정</h3>
+        <Heading level={3}>1단계: 브라우저 알림 권한 설정</Heading>
         <p className="mt-1">브라우저에서 'ALLCLL' 사이트의 알림을 허용해야 합니다.</p>
       </div>
 
@@ -108,7 +108,7 @@ function SystemPermissionGuide() {
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="font-bold text-base text-gray-800">2단계: OS 및 모바일 기기 설정</h3>
+        <Heading level={3}>2단계: OS 및 모바일 기기 설정</Heading>
         <p className="mt-1">일부 기기에서는 OS의 알림도 허용해야 합니다.</p>
       </div>
 
@@ -147,7 +147,7 @@ const TabButton = ({
 
 const GuideStep = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <div className="space-y-1">
-    <h4 className="font-semibold text-gray-800">{title}</h4>
+    <Heading level={4}>{title}</Heading>
     <div className="pl-2 space-y-1 text-gray-600">{children}</div>
   </div>
 );

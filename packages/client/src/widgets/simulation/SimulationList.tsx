@@ -2,12 +2,14 @@ import { Link } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { getSimulationList } from '@/features/simulation/lib/result.ts';
 import { SimulationRun } from '@/shared/config/dbConfig.ts';
-import { CursorIcon, EmptyState, LoadingState } from '@allcll/allcll-ui';
+import { CursorIcon, EmptyState, LoadingState, Heading } from '@allcll/allcll-ui';
 
 function SimulationList() {
   return (
     <>
-      <h1 className="text-2xl font-bold mb-2">모의 수강 신청 로그</h1>
+      <Heading level={1} className="mb-2">
+        모의 수강 신청 로그
+      </Heading>
       <p className="text-gray-500 mb-4">수강 연습 결과를 상세히 분석해보세요.</p>
 
       <SimulationBoard />

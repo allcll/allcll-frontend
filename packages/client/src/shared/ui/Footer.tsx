@@ -1,6 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import { HeaderContents } from '@/shared/ui/Header.tsx';
-import { LogoGithubIcon, LogoInstagramIcon, LogoKakaoTalkIcon } from '@allcll/allcll-ui';
+import { LogoGithubIcon, LogoInstagramIcon, LogoKakaoTalkIcon, Heading } from '@allcll/allcll-ui';
 import logoCiUrl from '@/assets/logo/ci-summer.svg';
 import logoNameUrl from '@/assets/logo/logo-name-summer.svg';
 
@@ -61,7 +61,9 @@ function Footer() {
         </div>
 
         <div>
-          <h3 className="font-bold mb-4">서비스</h3>
+          <Heading level={3} className="mb-4">
+            서비스
+          </Heading>
           <ul>
             {HeaderContents.map(({ title, path, end }) => (
               <li key={title} className="mb-1">
@@ -75,7 +77,9 @@ function Footer() {
 
         {FooterItems.map((item, index) => (
           <div className="mb-4" key={index}>
-            <h3 className="font-bold mb-4">{item.title}</h3>
+            <Heading level={3} className="mb-4">
+              {item.title}
+            </Heading>
             <ul>
               {item.children.map((child, index) => (
                 <li key={index} className="mb-1">

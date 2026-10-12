@@ -6,7 +6,7 @@ import ToastNotification from '../lib/toastNotification';
 import { AlarmNotification } from '../lib/useNotification';
 import VibrationNotification from '../lib/vibrationNotification';
 import useAlarmSettings, { AlarmType, isSubAlarmActivated, SubAlarmType } from '../model/useAlarmSettings';
-import { Dialog, Button, Select, Toggle } from '@allcll/allcll-ui';
+import { Dialog, Button, Select, Toggle, Heading } from '@allcll/allcll-ui';
 
 interface IAlarmOptionModal {
   isOpen: boolean;
@@ -113,7 +113,9 @@ function SubAlarmOption() {
 
   return (
     <div>
-      <h3 className="block mb-2 font-bold text-md">추가 알림 옵션</h3>
+      <Heading level={3} className="mb-2">
+        추가 알림 옵션
+      </Heading>
       <div className="flex flex-col gap-2">
         <div className="my-1 flex items-center justify-between">
           <label htmlFor="select-sound" className={isSoundDisabled ? 'text-gray-300' : ''}>

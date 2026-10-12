@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Dialog, Flex, Button, CheckmarkOutlineIcon, CircleOutlineIcon, EmptyState } from '@allcll/allcll-ui';
+import { Dialog, Flex, Button, CheckmarkOutlineIcon, CircleOutlineIcon, EmptyState, Heading } from '@allcll/allcll-ui';
 import type { BalanceRequiredArea, CategoryType, CriteriaCategory, MissingCourse } from '../../types/graduation';
 import { BALANCE_AREA_LABELS, CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
 
@@ -50,7 +50,7 @@ function BalanceAreaContent({
           const isEarned = earnedAreas.includes(area.balanceRequiredArea);
           return (
             <div key={area.balanceRequiredArea}>
-              <h4 className="flex items-center gap-2 text-sm font-semibold mb-2">
+              <Heading level={4} className="flex items-center gap-2 mb-2">
                 {isEarned ? (
                   <CheckmarkOutlineIcon className="w-4 h-4 text-primary-500 shrink-0" />
                 ) : (
@@ -61,7 +61,7 @@ function BalanceAreaContent({
                 </span>
                 {!isEarned && <span className="text-xs text-gray-400">{area.requiredCourses.length}개 과목</span>}
                 {isEarned && <span className="text-xs text-primary-500">이수 완료</span>}
-              </h4>
+              </Heading>
               <CourseList courses={area.requiredCourses} />
             </div>
           );

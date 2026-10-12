@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Flex } from '@allcll/allcll-ui';
+import { Button, Flex, Heading } from '@allcll/allcll-ui';
 import { JolupSteps } from '@/features/graduation/lib/useJolupSteps.ts';
 import FileUploadGuide from '@/features/graduation/ui/setup/FileUploadGuide.tsx';
 import { JolupStepsProps } from '@/features/graduation/model/types.ts';
@@ -44,7 +44,7 @@ const StepContent = ({ step, nextStep, prevStep, isDepartmentNotFound, setIsDepa
 function DefaultStep({ nextStep, children }: { children: React.ReactNode } & JolupStepsProps) {
   return (
     <div>
-      <h1>{children}</h1>
+      <Heading level={1}>{children}</Heading>
 
       <Button onClick={nextStep} variant="solid" size="small">
         다음

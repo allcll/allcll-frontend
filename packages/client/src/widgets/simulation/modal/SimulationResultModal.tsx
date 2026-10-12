@@ -5,7 +5,7 @@ import ProcessingModal from './Processing.tsx';
 import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
 import { getSummaryResult, SIMULATION_ERROR } from '@/features/simulation/lib/simulation.ts';
 import { getAggregatedSimulationResults } from '@/features/simulation/lib/result.ts';
-import { Button, Dialog } from '@allcll/allcll-ui';
+import { Button, Dialog, Heading } from '@allcll/allcll-ui';
 import Image from '@/shared/ui/Image.tsx';
 
 function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number }>) {
@@ -83,12 +83,12 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
           </div>
         )}
         <div className="relative z-content text-center">
-          <h2 className="text-xl font-bold text-gray-900">
+          <Heading level={2} size="xxl">
             수강 신청
             <span className={isSuccessSimulation ? `text-primary-600` : `text-danger-500`}>
               {isSuccessSimulation ? ' 성공!' : ' 실패'}
             </span>
-          </h2>
+          </Heading>
           <span className="text-sm text-gray-700 mt-1">
             수강신청에 {isSuccessSimulation ? ' 성공' : ' 실패'}하셨어요
           </span>
