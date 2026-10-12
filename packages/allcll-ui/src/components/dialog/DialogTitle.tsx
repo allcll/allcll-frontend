@@ -1,6 +1,6 @@
-function DialogTitle({ children }: React.PropsWithChildren<{ id?: string }>) {
+function DialogTitle({ children, id }: React.PropsWithChildren<{ id?: string }>) {
   return (
-    <h2 id="dialog-title" className="font-semibold">
+    <h2 id={id} className="font-semibold">
       {children}
     </h2>
   );

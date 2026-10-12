@@ -39,13 +39,7 @@ function BottomSheet({ children }: IBottomSheet) {
 
   return (
     <div className="fixed inset-0 z-bottomSheet">
-      {type && (
-        <div
-          className="absolute inset-0 bg-black/5 bg-opacity-80"
-          role="presentation"
-          onClick={handleCloseBottomSheet}
-        />
-      )}
+      {type && <div className="absolute inset-0 bg-black/30" role="presentation" onClick={handleCloseBottomSheet} />}
 
       <div
         ref={sheet}

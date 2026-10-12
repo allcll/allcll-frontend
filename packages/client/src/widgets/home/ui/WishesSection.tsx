@@ -4,7 +4,7 @@ import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Lege
 import { DoughnutColors } from '@/features/wish/lib/doughnut';
 import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
 import BasketBadge from '@/entities/wishes/ui/BasketBadge.tsx';
-import { Heading } from '@allcll/allcll-ui';
+import { Card, Heading } from '@allcll/allcll-ui';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -25,7 +25,7 @@ function WishesSection() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         {/* 검색 창 */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <Card>
           <Heading level={3}>학과별 관심도</Heading>
 
           <div className="flex justify-center mt-4">
@@ -33,10 +33,10 @@ function WishesSection() {
               <Doughnut data={doughnut} />
             </div>
           </div>
-        </div>
+        </Card>
 
         {/* 대체 과목 추천 */}
-        <div className="bg-white p-6 shadow-md rounded-md">
+        <Card>
           <Heading level={3}>대체 과목 추천</Heading>
           {[
             { name: '데이터베이스개론', dept: '데이터베이스 시스템', status: 30 },
@@ -55,7 +55,7 @@ function WishesSection() {
               </span>
             </div>
           ))}
-        </div>
+        </Card>
       </div>
     </Section>
   );

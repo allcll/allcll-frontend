@@ -1,7 +1,7 @@
 import Section from '@/widgets/home/ui/Section.tsx';
 import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
 import SeatBadge from '@/entities/wishes/ui/SeatBadge.tsx';
-import { Flex, Heading, NotificationIcon, SupportingText } from '@allcll/allcll-ui';
+import { Card, Flex, Heading, NotificationIcon, SupportingText } from '@allcll/allcll-ui';
 
 function LiveSection() {
   return (
@@ -13,7 +13,7 @@ function LiveSection() {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <Card>
           <Heading level={3}>여석 과목 알림</Heading>
           <SupportingText>
             등록된 알림 과목에 대해서, 여석이 생기면 <span className="text-primary-500 font-bold">알림</span>을 드려요
@@ -35,9 +35,9 @@ function LiveSection() {
               </div>
             ))}
           </div>
-        </div>
+        </Card>
 
-        <div className="bg-white p-6 shadow-md rounded-md">
+        <Card>
           <Heading level={3}>여석 수 TOP 10</Heading>
           <SupportingText>여석이 많은 과목을 놓치지 마세요!</SupportingText>
           <div className="overflow-x-auto">
@@ -70,7 +70,7 @@ function LiveSection() {
               </tbody>
             </table>
           </div>
-        </div>
+        </Card>
       </div>
     </Section>
   );
