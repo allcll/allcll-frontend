@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import Toggle from './toggle';
+import Toggle from './Toggle';
 
 const meta = {
   title: 'AllcllUI/Toggle',
@@ -17,13 +17,28 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {
   args: {
     checked: false,
-    onChange: () => {},
+    onCheckedChange: () => {},
   },
 };
 
 export const Default: Story = {
   args: {
     checked: false,
-    onChange: () => {},
+    onCheckedChange: () => {},
+  },
+};
+
+export const Checked: Story = {
+  args: {
+    checked: true,
+    onCheckedChange: () => {},
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    checked: false,
+    disabled: true,
+    onCheckedChange: () => {},
   },
 };

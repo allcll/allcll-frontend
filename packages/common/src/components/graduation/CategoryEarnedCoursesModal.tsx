@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Dialog, Flex, Button } from '@allcll/allcll-ui';
+import { Dialog, Flex, Button, EmptyState } from '@allcll/allcll-ui';
 import type { CategoryType, GraduationCourse, ScopeType } from '../../types/graduation';
 import { CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
 
@@ -57,7 +57,7 @@ function CategoryEarnedCoursesModal({
       <Dialog.Content>
         <Flex direction="flex-col" gap="gap-3" className="min-w-64 md:min-w-96">
           {filtered.length === 0 ? (
-            <p className="text-sm text-gray-400 text-center py-8">해당 카테고리의 이수 과목이 없습니다.</p>
+            <EmptyState title="해당 카테고리의 이수 과목이 없습니다." className="py-8" />
           ) : (
             <>
               <Flex justify="justify-end">
@@ -76,7 +76,7 @@ function CategoryEarnedCoursesModal({
       </Dialog.Content>
 
       <Dialog.Footer>
-        <Button variant="primary" size="small" onClick={onClose}>
+        <Button variant="solid" size="small" onClick={onClose}>
           닫기
         </Button>
       </Dialog.Footer>

@@ -116,7 +116,7 @@ function TutorialModal() {
               checked={popupChecked}
               onChange={() => setPopupChecked(!popupChecked)}
             />
-            <Button variant="primary" size="medium" onClick={handleClickSkipTutorial}>
+            <Button variant="solid" size="medium" onClick={handleClickSkipTutorial}>
               튜토리얼 건너뛰기
             </Button>
           </SejongUI.Modal.ButtonContainer>

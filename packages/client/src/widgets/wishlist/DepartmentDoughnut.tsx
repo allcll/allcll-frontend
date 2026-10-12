@@ -13,8 +13,7 @@ import useDepartments, { type DepartmentDict, useDepartmentDict } from '@/entiti
 import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes';
 import useDetailRegisters from '@/entities/wishes/model/useDetailRegisters';
 import { InitWishes } from '@/entities/wishes/model/useWishes';
-import LoadingWithMessage from '@/shared/ui/Loading';
-import { Flex, Heading, Label } from '@allcll/allcll-ui';
+import { Flex, Heading, Label, Select, EmptyState, LoadingState } from '@allcll/allcll-ui';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -51,8 +50,7 @@ function DepartmentDoughnut({ wishesInfo }: IDepartmentDoughnutProps) {
         <Label className="hidden" htmlFor="doughnut-select">
           필터
         </Label>
-        <select
-          className="border px-3 py-1 rounded-md"
+        <Select
           id="doughnut-select"
           value={selectedFilter}
           onChange={e => setSelectedFilter(e.target.value as DoughnutSelectType)}
@@ -62,16 +60,16 @@ function DepartmentDoughnut({ wishesInfo }: IDepartmentDoughnutProps) {
               {type}
             </option>
           ))}
-        </select>
+        </Select>
       </Flex>
 
       {isPending ? (
         <Flex justify="justify-center" align="items-center" className="h-48">
-          <LoadingWithMessage message="관심과목 현황을 불러오는 중입니다..." />
+          <LoadingState title="관심과목 현황을 불러오는 중입니다." />
         </Flex>
       ) : !totalCount ? (
         <Flex justify="justify-center" align="items-center" className="h-48">
-          <p className="text-center text-gray-500 font-semibold">관심과목을 담은 사람이 없습니다.</p>
+          <EmptyState title="관심과목을 담은 사람이 없습니다." />
         </Flex>
       ) : (
         <Doughnut data={doughnutData} />

@@ -34,7 +34,7 @@ function PinCoursesHeader({ setIsAlarmSettingOpen }: { setIsAlarmSettingOpen: (o
         <Tooltip>
           <p className="text-sm">
             여석이 생기면 알림을 보내드려요 <br />
-            <span className="text-red-500">* 탭을 닫으면 알림이 울리지 않아요</span>
+            <span className="text-danger-500">* 탭을 닫으면 알림이 울리지 않아요</span>
           </p>
         </Tooltip>
       </Flex>
@@ -42,7 +42,7 @@ function PinCoursesHeader({ setIsAlarmSettingOpen }: { setIsAlarmSettingOpen: (o
       <Flex align="items-center" gap="gap-1">
         {isError && (
           <IconButton
-            icon={<RenewIcon className="w-5 h-5 text-blue-500" />}
+            icon={<RenewIcon className="w-5 h-5 text-primary-500" />}
             aria-label="알림 재연결"
             label="알림 재연결"
             onClick={refetch}

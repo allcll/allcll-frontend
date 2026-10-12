@@ -8,17 +8,17 @@ function PainPointSection() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
         {[
           {
-            icon: <TimeIcon className="w-6 h-6 text-blue-500" />,
+            icon: <TimeIcon className="w-6 h-6 text-primary-500" />,
             title: '6학점밖에 못 들었던 수강 신청 날...',
             text: '원하는 강의를 신청하지 못해 졸업이 늦춰질까 걱정했던 순간들',
           },
           {
-            icon: <ErrorIcon className="w-6 h-6 text-blue-500" />,
+            icon: <ErrorIcon className="w-6 h-6 text-primary-500" />,
             title: '원하던 강의는 전부 마감...',
             text: '꿈꾸던 학과로의 전과, 미리 수강하려고 했지만 수강신청의 벽은 높았습니다',
           },
           {
-            icon: <RenewIcon className="w-6 h-6 text-blue-500" />,
+            icon: <RenewIcon className="w-6 h-6 text-primary-500" />,
             title: '하루 종일 화면을 보며 여석을 기다렸던 시간들...',
             text: '수강신청 버튼만 수백 번, 그래도 원하는 강의는 잡지 못했습니다',
           },

@@ -8,9 +8,9 @@ interface IAlarmButton {
 
 function AlarmButton({ alarmOnly, setFilter }: IAlarmButton) {
   return (
-    <Button variant="outlined" size="medium" onClick={() => setFilter('alarmOnly', !alarmOnly)}>
+    <Button variant="outlined" color="gray" size="medium" onClick={() => setFilter('alarmOnly', !alarmOnly)}>
       {alarmOnly ? (
-        <NotificationFilledIcon className="w-4 h-4 text-blue-500" />
+        <NotificationFilledIcon className="w-4 h-4 text-primary-500" />
       ) : (
         <NotificationIcon className="w-4 h-4 text-gray-400" />
       )}

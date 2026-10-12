@@ -32,6 +32,8 @@ export const Z_INDEX = {
   bottomSheet: 200,
   /** 디자인 시스템 Dialog 컴포넌트 (최상위 모달, 바텀 시트 위) */
   dialog: 300,
+  /** 트리거에 앵커된 선택 목록 패널 (예: SearchableSelect, Dialog 위) */
+  dropdown: 350,
   /** 토스트 알림 (최상단) */
   toast: 400,
 } as const;

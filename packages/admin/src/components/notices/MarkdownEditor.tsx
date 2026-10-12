@@ -12,10 +12,11 @@ import {
   ListBulletedIcon,
   ListNumberedIcon,
   QuotesIcon,
+  Tabs,
 } from '@allcll/allcll-ui';
 import ToolbarButton from '@/components/notices/ToolbarButton';
 
-type Tab = 'write' | 'preview';
+type EditorTab = 'write' | 'preview';
 
 interface IMarkdownEditorProps {
   content: string;
@@ -24,7 +25,7 @@ interface IMarkdownEditorProps {
 }
 
 function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) {
-  const [tab, setTab] = useState<Tab>('write');
+  const [tab, setTab] = useState<EditorTab>('write');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const warnLength = Math.floor(maxLength * 0.9);
 
@@ -60,7 +61,11 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
 
   const charCount = content.length;
   const charCountClass =
-    charCount > maxLength ? 'text-red-600 font-semibold' : charCount > warnLength ? 'text-amber-600' : 'text-gray-400';
+    charCount > maxLength
+      ? 'text-danger-600 font-semibold'
+      : charCount > warnLength
+        ? 'text-amber-600'
+        : 'text-gray-400';
 
   return (
     <Flex direction="flex-col" gap="gap-1.5">
@@ -68,30 +73,14 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
 
       <div className="flex flex-col border border-gray-300 rounded-lg overflow-hidden">
         {/* 탭 헤더 */}
-        <div className="flex border-b border-gray-200 bg-gray-50">
-          <button
-            type="button"
-            className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px ${
-              tab === 'write'
-                ? 'border-blue-500 text-blue-500 bg-white'
-                : 'border-transparent text-gray-500 hover:text-blue-500'
-            }`}
-            onClick={() => setTab('write')}
-          >
+        <Tabs aria-label="편집 모드" className="bg-gray-50">
+          <Tabs.Tab selected={tab === 'write'} onClick={() => setTab('write')}>
             Write
-          </button>
-          <button
-            type="button"
-            className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px ${
-              tab === 'preview'
-                ? 'border-blue-500 text-blue-500 bg-white'
-                : 'border-transparent text-gray-500 hover:text-blue-500'
-            }`}
-            onClick={() => setTab('preview')}
-          >
+          </Tabs.Tab>
+          <Tabs.Tab selected={tab === 'preview'} onClick={() => setTab('preview')}>
             Preview
-          </button>
-        </div>
+          </Tabs.Tab>
+        </Tabs>
 
         {/* Write 탭 */}
         {tab === 'write' && (

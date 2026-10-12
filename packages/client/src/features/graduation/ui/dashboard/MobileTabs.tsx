@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Flex } from '@allcll/allcll-ui';
+import { Tabs } from '@allcll/allcll-ui';
 
 export type TabType = 'major' | 'general' | 'certification';
 
@@ -21,21 +21,13 @@ const TABS: TabItem[] = [
 
 function MobileTabs({ activeTab, onTabChange }: MobileTabsProps) {
   return (
-    <Flex className="border-b border-gray-200 mb-6">
+    <Tabs fullWidth aria-label="졸업요건 분류" className="mb-6">
       {TABS.map(tab => (
-        <button
-          key={tab.key}
-          type="button"
-          onClick={() => onTabChange(tab.key)}
-          className={`flex-1 py-3 text-sm font-medium transition-colors relative ${
-            activeTab === tab.key ? 'text-primary-500' : 'text-gray-500 hover:text-gray-700'
-          }`}
-        >
+        <Tabs.Tab key={tab.key} selected={activeTab === tab.key} onClick={() => onTabChange(tab.key)}>
           {tab.label}
-          {activeTab === tab.key && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-500" />}
-        </button>
+        </Tabs.Tab>
       ))}
-    </Flex>
+    </Tabs>
   );
 }
 

@@ -120,9 +120,9 @@ function ServicePeriod() {
           </Flex>
 
           {errors.length > 0 && (
-            <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+            <div className="bg-danger-50 border border-danger-200 rounded-lg px-4 py-3">
               {errors.map(error => (
-                <p key={error} className="text-sm text-red-700">
+                <p key={error} className="text-sm text-danger-700">
                   {error}
                 </p>
               ))}
@@ -130,7 +130,7 @@ function ServicePeriod() {
           )}
 
           <Flex justify="justify-end">
-            <Button type="submit" variant="primary" size="medium" disabled={isPending || !semester}>
+            <Button type="submit" variant="solid" size="medium" disabled={isPending || !semester}>
               {isPending ? '저장 중...' : '전체 저장'}
             </Button>
           </Flex>

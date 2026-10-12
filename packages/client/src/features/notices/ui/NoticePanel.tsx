@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
-import { Badge, Button, Flex, Heading, IconButton, ChevronLeftIcon, CloseIcon } from '@allcll/allcll-ui';
+import { Badge, Button, Flex, Heading, IconButton, ChevronLeftIcon, CloseIcon, EmptyState } from '@allcll/allcll-ui';
 import { type Notice, getNoticeLabel } from '@/entities/notices/model/notice';
 import NoticeCard from './NoticeCard';
 import NoticeDetailModal from './NoticeDetailModal';
@@ -26,8 +26,8 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
   if (isMobile && selectedNotice) {
     return (
       <Flex direction="flex-col" className="h-full">
-        <Flex align="items-center" justify="justify-between" className="p-4 border-b border-gray-100">
-          <Button variant="text" size="medium" textColor="gray" onClick={() => setSelectedNotice(null)}>
+        <Flex align="items-center" justify="justify-between" className="px-4 h-14 shrink-0 border-b border-gray-100">
+          <Button variant="text" size="medium" color="gray" onClick={() => setSelectedNotice(null)}>
             <ChevronLeftIcon className="w-4 h-4 text-gray-700" />
             목록
           </Button>
@@ -35,7 +35,7 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
             className="p-2 hover:bg-gray-100 active:bg-gray-100"
             variant="plain"
             label="닫기"
-            icon={<CloseIcon className="w-6 h-6 text-gray-700" />}
+            icon={<CloseIcon className="w-5 h-5 text-gray-500" />}
             onClick={onClose}
           />
         </Flex>
@@ -60,22 +60,20 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
 
   return (
     <Flex direction="flex-col" className="h-full">
-      <Flex align="items-center" justify="justify-between" className="p-4 border-b border-gray-100">
+      <Flex align="items-center" justify="justify-between" className="px-4 h-14 shrink-0 border-b border-gray-100">
         <span className="text-base font-semibold text-gray-900">공지사항</span>
         <IconButton
           className="p-2 hover:bg-gray-100 active:bg-gray-100"
           variant="plain"
           label="닫기"
-          icon={<CloseIcon className="w-6 h-6 text-gray-700" />}
+          icon={<CloseIcon className={isMobile ? 'w-5 h-5 text-gray-500' : 'w-4 h-4 text-gray-500'} />}
           onClick={onClose}
         />
       </Flex>
 
       <div className="flex-1 overflow-y-auto divide-y divide-gray-100">
         {notices.length === 0 ? (
-          <Flex align="items-center" justify="justify-center" className="h-32 text-sm text-gray-400">
-            등록된 공지사항이 없습니다.
-          </Flex>
+          <EmptyState title="등록된 공지사항이 없습니다." className="h-32" />
         ) : (
           notices.map(notice => (
             <NoticeCard key={notice.id} notice={notice} isRead={isRead(notice)} onClick={handleCardClick} />

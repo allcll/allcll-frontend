@@ -6,7 +6,7 @@ interface ModelButtonProps extends ComponentPropsWithRef<'button'> {
 }
 
 function ModelButton({ variant = 'primary', className = '', children, ...rest }: ModelButtonProps) {
-  const buttonClass = 'px-4 h-6 text-xs flex items-center gap-1 rounded-xs cursor-pointer';
+  const buttonClass = 'px-4 h-6 text-xs flex items-center gap-1 rounded-xs';
   const variantClass = getVariantClass(variant);
   const finalClassName = `${buttonClass} ${variantClass} ${className}`.trim();
 
@@ -20,11 +20,11 @@ function ModelButton({ variant = 'primary', className = '', children, ...rest }:
 function getVariantClass(variant: string) {
   switch (variant) {
     case 'primary':
-      return 'bg-blue-500 text-white hover:bg-blue-600';
+      return 'bg-primary-500 text-white hover:bg-primary-600';
     case 'secondary':
       return 'bg-gray-500 text-white hover:bg-gray-600';
     case 'cancel':
-      return 'bg-white border border-gray-700 hover:bg-blue-50 hover:border-blue-500';
+      return 'bg-white border border-gray-700 hover:bg-primary-50 hover:border-primary-500';
     case 'danger':
       return 'bg-red-500 text-white hover:bg-red-600';
     default:

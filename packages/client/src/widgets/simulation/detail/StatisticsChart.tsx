@@ -138,7 +138,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
       // },
       tooltip: {
         callbacks: {
-          label: function (context: { dataset: { label: string }; parsed: { y: any } }) {
+          label: function (context: { dataset: { label: string }; parsed: { y: number } }) {
             const label = context.dataset.label || '';
             const value = context.parsed.y;
             return `${label}: ${value.toFixed(2)}초`;
@@ -176,7 +176,6 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
           <input
             id="normal-data"
             type="checkbox"
-            className="cursor-pointer"
             onChange={e => setNormalData(e.target.checked)}
             checked={normalData}
           />

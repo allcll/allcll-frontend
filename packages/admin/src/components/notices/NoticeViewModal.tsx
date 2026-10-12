@@ -31,10 +31,10 @@ function NoticeViewModal({ notice, onClose, onEdit }: INoticeViewModalProps) {
         </Flex>
       </Dialog.Content>
       <Dialog.Footer>
-        <Button variant="outlined" size="small" onClick={onClose}>
+        <Button variant="outlined" color="gray" size="small" onClick={onClose}>
           닫기
         </Button>
-        <Button variant="primary" size="small" onClick={onEdit}>
+        <Button variant="solid" size="small" onClick={onEdit}>
           수정하기
         </Button>
       </Dialog.Footer>

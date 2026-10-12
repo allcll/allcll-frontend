@@ -67,7 +67,7 @@ function PinSearch() {
         <DepartmentFilter
           className="flex-auto"
           value={selectedDepartment}
-          onChange={e => setSelectedDepartment(e.target.value)}
+          onChange={code => setSelectedDepartment(code)}
         />
         <PinCards className="flex flex-full overflow-auto max-h-screen" subjects={filteredData} isPending={isPending} />
       </Flex>

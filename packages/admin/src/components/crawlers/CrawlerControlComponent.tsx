@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { CrawlersParams, useCrawlersDepartments } from '@/hooks/server/crawlers/useDepartmentCrawlers';
 import { useSubjectsCrawlers } from '@/hooks/server/crawlers/useSubjectCrawlers';
-import { Button, Card, Flex, Label, SupportingText } from '@allcll/allcll-ui';
+import { Button, Card, Flex, Label, Select, SupportingText } from '@allcll/allcll-ui';
 import SectionHeader from '../common/SectionHeader';
 import { useCrawlersPreseat } from '@/hooks/server/crawlers/usePreseatCrawlers';
 import { useCrawlersBasket } from '@/hooks/server/crawlers/useBasketCrawlers';
@@ -163,19 +163,19 @@ function CrawlerControlComponent() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <Button variant="outlined" size="medium" onClick={() => handleSubmit('department')}>
+            <Button variant="outlined" color="gray" size="medium" onClick={() => handleSubmit('department')}>
               학과 데이터 크롤링
             </Button>
 
-            <Button variant="outlined" size="medium" onClick={() => handleSubmit('subject')}>
+            <Button variant="outlined" color="gray" size="medium" onClick={() => handleSubmit('subject')}>
               과목 데이터 크롤링
             </Button>
 
-            <Button variant="outlined" size="medium" onClick={() => handleSubmit('pre-seat')}>
+            <Button variant="outlined" color="gray" size="medium" onClick={() => handleSubmit('pre-seat')}>
               PreSeat 데이터 크롤링
             </Button>
 
-            <Button variant="outlined" size="medium" onClick={() => handleSubmit('basket')}>
+            <Button variant="outlined" color="gray" size="medium" onClick={() => handleSubmit('basket')}>
               Basket 데이터 크롤링
             </Button>
           </div>
@@ -203,19 +203,13 @@ function ParamSelect({ id, label, value, onChange, placeholder, disabled, descri
         {label}
       </Label>
 
-      <select
-        id={id}
-        value={value}
-        onChange={e => onChange(e.target.value)}
-        disabled={disabled}
-        className="w-full p-2 rounded-md bg-white border border-gray-400 text-sm text-gray-900 disabled:bg-gray-100"
-      >
+      <Select id={id} value={value} onChange={e => onChange(e.target.value)} disabled={disabled} className="w-full">
         <option value="" disabled>
           {placeholder}
         </option>
 
         {children}
-      </select>
+      </Select>
 
       {description && <SupportingText>{description}</SupportingText>}
     </Flex>

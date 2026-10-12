@@ -49,7 +49,7 @@ function PinSearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
             <DepartmentSelect
               className="flex-auto"
               value={selectedDepartment}
-              onChange={e => setSelectedDepartment(e.target.value)}
+              onChange={code => setSelectedDepartment(code)}
             />
           </div>
 

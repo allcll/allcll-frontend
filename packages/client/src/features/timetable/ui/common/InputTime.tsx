@@ -1,14 +1,16 @@
 import { InputHTMLAttributes } from 'react';
+import { Input } from '@allcll/allcll-ui';
 
 interface IInputTime extends InputHTMLAttributes<HTMLInputElement> {
   value?: string;
 }
 
-function InputTime({ className, onChange, ...props }: IInputTime) {
+function InputTime({ className = '', onChange, ...props }: IInputTime) {
   return (
-    <input
+    <Input
       type="time"
-      className={'px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:outline-blue-500 ' + className}
+      fullWidth={false}
+      className={className}
       placeholder="HH:MM"
       step={10 * 60} // 10 minutes step
       onChange={e => {

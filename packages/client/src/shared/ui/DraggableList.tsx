@@ -238,7 +238,7 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
             <div className="flex items-center justify-between flex-auto">
               <span className="font-medium">{it.title}</span>
               <button
-                className="p-1 text-gray-500 hover:text-gray-700 cursor-pointer"
+                className="p-1 text-gray-500 hover:text-gray-700"
                 aria-label={it.visible ? '숨기기' : '보이기'}
                 title={it.visible ? '숨기기' : '보이기'}
                 onClick={() => onVisibleChange(i)}
@@ -251,7 +251,7 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
       </ul>
 
       {draggingStyle && draggedItemInfo && (
-        <div style={draggingStyle} className="bg-blue-50 rounded-md shadow-lg w-full max-w-lg m-auto px-2">
+        <div style={draggingStyle} className="bg-primary-50 rounded-md shadow-lg w-full max-w-lg m-auto px-2">
           <div className="flex items-center gap-2">
             <span className="p-1 text-gray-700">⠿</span>
             <span className="font-medium">{draggedItemInfo.item.title}</span>

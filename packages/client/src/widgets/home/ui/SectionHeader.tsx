@@ -16,7 +16,7 @@ function SectionHeader({ title, subtitle, href, disabled = false }: ISectionHead
       {isLink ? (
         <Link to={href} className="flex items-center gap-2 hover:underline focus:underline">
           <Heading level={2}>{title}</Heading>
-          <LaunchIcon className="w-5 h-5 text-blue-500" />
+          <LaunchIcon className="w-5 h-5 text-primary-500" />
         </Link>
       ) : (
         <Heading level={2}>{title}</Heading>

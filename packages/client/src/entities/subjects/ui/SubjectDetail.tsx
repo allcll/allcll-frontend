@@ -66,7 +66,7 @@ function getVariantClass(variant: ISquareBadgeProps['variant']) {
     case 'warning':
       return 'bg-yellow-100 text-yellow-500 ';
     case 'danger':
-      return 'bg-red-100 text-red-500 ';
+      return 'bg-danger-100 text-danger-500 ';
     case 'default':
       return 'bg-gray-100 text-gray-500 ';
     default:

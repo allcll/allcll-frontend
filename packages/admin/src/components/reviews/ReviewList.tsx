@@ -1,4 +1,4 @@
-import { Card, Flex, SupportingText } from '@allcll/allcll-ui';
+import { Card, Flex, EmptyState, LoadingState } from '@allcll/allcll-ui';
 import type { Review } from '@/hooks/server/useAdminReviews';
 import ReviewItem from './ReviewItem';
 import SectionHeader from '@/components/common/SectionHeader';
@@ -42,13 +42,13 @@ function ReviewList({ reviews, isLoading, isError, filterBar }: Readonly<IReview
               {isLoading && (
                 <tr>
                   <td colSpan={COLUMNS.length} className="py-8 text-center">
-                    <SupportingText>불러오는 중...</SupportingText>
+                    <LoadingState />
                   </td>
                 </tr>
               )}
               {!isLoading && isError && (
                 <tr>
-                  <td colSpan={COLUMNS.length} className="py-8 text-center text-sm text-red-500">
+                  <td colSpan={COLUMNS.length} className="py-8 text-center text-sm text-danger-500">
                     후기 데이터를 불러오는데 실패했습니다.
                   </td>
                 </tr>
@@ -56,7 +56,7 @@ function ReviewList({ reviews, isLoading, isError, filterBar }: Readonly<IReview
               {!isLoading && !isError && reviews.length === 0 && (
                 <tr>
                   <td colSpan={COLUMNS.length} className="py-8 text-center">
-                    <SupportingText>등록된 후기가 없습니다.</SupportingText>
+                    <EmptyState title="등록된 후기가 없습니다." />
                   </td>
                 </tr>
               )}

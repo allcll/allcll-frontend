@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Card, Button, TextField, Label, Flex, ArrowLeftIcon, SaveIcon } from '@allcll/allcll-ui';
+import { Card, Button, TextField, Label, Flex, Select, ArrowLeftIcon, SaveIcon, LoadingState } from '@allcll/allcll-ui';
 import PageHeader from '@/components/common/PageHeader';
 import MarkdownEditor from '@/components/notices/MarkdownEditor';
 import UnsavedModal from '@/components/notices/UnsavedModal';
@@ -94,9 +94,7 @@ function NoticeEditor() {
   if (isEditMode && isLoadingNotice) {
     return (
       <Flex direction="flex-col" gap="gap-5" className="h-full">
-        <Flex align="items-center" justify="justify-center" className="flex-1 text-gray-400">
-          불러오는 중...
-        </Flex>
+        <LoadingState className="flex-1" />
       </Flex>
     );
   }
@@ -114,16 +112,16 @@ function NoticeEditor() {
           </button>
           <PageHeader title={isEditMode ? '공지사항 수정' : '새 공지 작성'} />
         </Flex>
-        <Button variant="primary" size="small" onClick={handleSave} disabled={isSaving || isOverLimit}>
+        <Button variant="solid" size="small" onClick={handleSave} disabled={isSaving || isOverLimit}>
           <SaveIcon className="w-4 h-4 mr-1" />
           {isSaving ? '저장 중...' : '저장하기'}
         </Button>
       </Flex>
 
       {errors.length > 0 && (
-        <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+        <div className="bg-danger-50 border border-danger-200 rounded-lg px-4 py-3">
           {errors.map((e, i) => (
-            <p key={i} className="text-sm text-red-700">
+            <p key={i} className="text-sm text-danger-700">
               {e}
             </p>
           ))}
@@ -149,7 +147,7 @@ function NoticeEditor() {
           />
           <Flex justify="justify-end">
             <span
-              className={`text-xs ${title.length > MAX_TITLE_LENGTH ? 'text-red-600 font-semibold' : 'text-gray-400'}`}
+              className={`text-xs ${title.length > MAX_TITLE_LENGTH ? 'text-danger-600 font-semibold' : 'text-gray-400'}`}
             >
               {title.length} / {MAX_TITLE_LENGTH}자
             </span>
@@ -158,21 +156,21 @@ function NoticeEditor() {
 
         <Flex direction="flex-col" gap="gap-1.5">
           <Label id="notice-category">카테고리</Label>
-          <select
+          <Select
             id="notice-category"
             value={category}
             onChange={e => {
               setCategory(e.target.value as OperationType);
               setIsDirty(true);
             }}
-            className="w-48 p-2 rounded-md bg-white border border-gray-400 text-sm text-gray-900"
+            className="w-48"
           >
             {NOTICE_CATEGORIES.map(cat => (
               <option key={cat} value={cat}>
                 {CATEGORY_LABELS[cat]}
               </option>
             ))}
-          </select>
+          </Select>
         </Flex>
 
         <MarkdownEditor

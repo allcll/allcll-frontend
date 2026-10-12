@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useCreateTimetable, useUpdateTimetable } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
-import useToastNotification from '@/features/notification/model/useToastNotification.ts';
 import { Button, Chip, Dialog, Grid, Label, TextField } from '@allcll/allcll-ui';
 import { SEMESTERS } from '@/entities/semester/api/semester.ts';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 import { showTimetableApiErrorToast, showTimetableApiSuccessToast } from '../lib/showTimetableApiErrorToast';
+import { useToastNotification } from '@allcll/common';
 
 interface IEditTimetable {
   onClose: () => void;
@@ -119,7 +119,7 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
         </Dialog.Content>
 
         <Dialog.Footer>
-          <Button type="submit" variant="primary" size="medium">
+          <Button type="submit" variant="solid" size="medium">
             저장
           </Button>
         </Dialog.Footer>

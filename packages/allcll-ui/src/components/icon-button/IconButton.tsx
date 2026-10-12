@@ -9,7 +9,7 @@ interface IIconButton extends ComponentPropsWithoutRef<'button'> {
 
 function IconButton({ icon, variant = 'plain', label, className = '', ...rest }: IIconButton) {
   const variantClass = getVariantClass(variant);
-  const buttonClass = 'flex flex-row items-center justify-center gap-1 cursor-pointer rounded-md ';
+  const buttonClass = 'flex flex-row items-center justify-center gap-1 rounded-md ';
 
   const finalClassName = `${buttonClass} ${variantClass} ${className}`;
 

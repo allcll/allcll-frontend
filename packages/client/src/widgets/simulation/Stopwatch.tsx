@@ -81,7 +81,7 @@ function Stopwatch() {
     };
   }, [currentSimulation.simulationStatus, currentSimulation.simulationId]);
 
-  return <p className="font-semibold text-xl text-blue-500">{currentTime}</p>;
+  return <p className="font-semibold text-xl text-primary-500">{currentTime}</p>;
 }
 
 export default Stopwatch;

@@ -14,7 +14,11 @@ const meta = {
   argTypes: {
     variant: {
       control: { type: 'radio' },
-      options: ['primary', 'secondary', 'danger', 'text', 'outlined', 'ghost'],
+      options: ['solid', 'outlined', 'text', 'ghost', 'circle'],
+    },
+    color: {
+      control: { type: 'radio' },
+      options: ['primary', 'gray', 'danger'],
     },
     size: {
       control: { type: 'radio' },
@@ -28,7 +32,8 @@ const meta = {
     },
   },
   args: {
-    variant: 'primary',
+    variant: 'solid',
+    color: 'primary',
     size: 'medium',
     disabled: false,
     children: 'Button',
@@ -40,38 +45,15 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Variants: Story = {
-  render: ({ size }) => (
+  render: ({ size, color }) => (
     <ul className="flex flex-wrap gap-5">
-      <li className="flex flex-col items-center">
-        <Button variant="primary" size={size}>
-          Primary
-        </Button>
-      </li>
-      <li className="flex flex-col items-center">
-        <Button variant="secondary" size={size}>
-          Secondary
-        </Button>
-      </li>
-      <li className="flex flex-col items-center">
-        <Button variant="danger" size={size}>
-          Danger
-        </Button>
-      </li>
-      <li className="flex flex-col items-center">
-        <Button variant="text" size={size}>
-          Text
-        </Button>
-      </li>
-      <li className="flex flex-col items-center">
-        <Button variant="outlined" size={size}>
-          Outlined
-        </Button>
-      </li>
-      <li className="flex flex-col items-center">
-        <Button variant="ghost" size={size}>
-          Ghost
-        </Button>
-      </li>
+      {(['solid', 'outlined', 'text', 'ghost'] as const).map(variant => (
+        <li key={variant} className="flex flex-col items-center">
+          <Button variant={variant} color={color} size={size}>
+            {variant}
+          </Button>
+        </li>
+      ))}
     </ul>
   ),
   argTypes: {
@@ -128,14 +110,15 @@ export const WithIcon: Story = {
 
 export const Playground: Story = {};
 
-const createButtonStory = (variant: ButtonProps['variant']): Story => ({
-  args: { variant },
-  argTypes: { variant: { control: false } },
+const createButtonStory = (variant: ButtonProps['variant'], color: ButtonProps['color'] = 'primary'): Story => ({
+  args: { variant, color },
+  argTypes: { variant: { control: false }, color: { control: false } },
 });
 
-export const Primary: Story = createButtonStory('primary');
-export const Secondary: Story = createButtonStory('secondary');
-export const Danger: Story = createButtonStory('danger');
+export const SolidPrimary: Story = createButtonStory('solid');
+export const SolidGray: Story = createButtonStory('solid', 'gray');
+export const SolidDanger: Story = createButtonStory('solid', 'danger');
+export const OutlinedGray: Story = createButtonStory('outlined', 'gray');
+export const OutlinedPrimary: Story = createButtonStory('outlined', 'primary');
 export const Text: Story = createButtonStory('text');
-export const Outlined: Story = createButtonStory('outlined');
-export const Ghost: Story = createButtonStory('ghost');
+export const Ghost: Story = createButtonStory('ghost', 'gray');

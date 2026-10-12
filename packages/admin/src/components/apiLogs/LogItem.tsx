@@ -11,7 +11,7 @@ function LogItem({ log }: { log: AdminApiLogs }) {
           <p className="text-sm text-gray-800">{log.request_url}</p>
         </Flex>
         <DetailRow label="메서드">
-          <span className="text-md text-blue-500">{log.method}</span>
+          <span className="text-md text-primary-500">{log.method}</span>
         </DetailRow>
         <DetailRow label="요청시간">{log.timestamp}</DetailRow>
         <DetailRow label="요청 Body">

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Flex, Chip, ListboxOption, ChevronDownIcon, CheckmarkIcon } from '@allcll/allcll-ui';
+import { Flex, Chip, ListboxOption, ChevronDownIcon, CheckmarkIcon, EmptyState } from '@allcll/allcll-ui';
 import type { CategoryType, GraduationCourse } from '../../types/graduation';
 import { CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
 import { COURSE_CATEGORY_ORDER } from '../../lib/graduation/rules';
@@ -99,7 +99,7 @@ function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) 
         <div className="border-t border-gray-100 px-4 pb-4">
           <Flex direction="flex-col" gap="gap-3" className="pt-3">
             {courses.length === 0 ? (
-              <p className="text-sm text-gray-400 text-center py-4">이수 과목 정보가 없습니다.</p>
+              <EmptyState title="이수 과목 정보가 없습니다." className="py-4" />
             ) : (
               <>
                 <Flex align="items-center" justify="justify-between" gap="gap-3">
@@ -120,7 +120,7 @@ function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) 
                             left={option.label}
                             right={
                               option.value === selectedCategory ? (
-                                <CheckmarkIcon className="w-4 h-4 shrink-0 text-blue-500" />
+                                <CheckmarkIcon className="w-4 h-4 shrink-0 text-primary-500" />
                               ) : null
                             }
                             onSelect={() => {

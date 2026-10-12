@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Dialog, Flex, Button, CheckmarkOutlineIcon, CircleOutlineIcon } from '@allcll/allcll-ui';
+import { Dialog, Flex, Button, CheckmarkOutlineIcon, CircleOutlineIcon, EmptyState, Heading } from '@allcll/allcll-ui';
 import type { BalanceRequiredArea, CategoryType, CriteriaCategory, MissingCourse } from '../../types/graduation';
 import { BALANCE_AREA_LABELS, CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
 
@@ -50,7 +50,7 @@ function BalanceAreaContent({
           const isEarned = earnedAreas.includes(area.balanceRequiredArea);
           return (
             <div key={area.balanceRequiredArea}>
-              <h4 className="flex items-center gap-2 text-sm font-semibold mb-2">
+              <Heading level={4} className="flex items-center gap-2 mb-2">
                 {isEarned ? (
                   <CheckmarkOutlineIcon className="w-4 h-4 text-primary-500 shrink-0" />
                 ) : (
@@ -61,7 +61,7 @@ function BalanceAreaContent({
                 </span>
                 {!isEarned && <span className="text-xs text-gray-400">{area.requiredCourses.length}개 과목</span>}
                 {isEarned && <span className="text-xs text-primary-500">이수 완료</span>}
-              </h4>
+              </Heading>
               <CourseList courses={area.requiredCourses} />
             </div>
           );
@@ -84,9 +84,7 @@ function DefaultContent({ categoryLabel, courses }: Readonly<{ categoryLabel: st
       </div>
     </Flex>
   ) : (
-    <Flex justify="justify-center" align="items-center" className="min-w-64 md:min-w-96 h-72">
-      <p className="text-sm text-gray-400">추천 정보가 없습니다.</p>
-    </Flex>
+    <EmptyState title="추천 정보가 없습니다." className="min-w-64 md:min-w-96 h-72" />
   );
 }
 
@@ -120,7 +118,7 @@ function RecommendedCoursesModal({
       </Dialog.Content>
 
       <Dialog.Footer>
-        <Button variant="primary" size="small" onClick={onClose}>
+        <Button variant="solid" size="small" onClick={onClose}>
           닫기
         </Button>
       </Dialog.Footer>

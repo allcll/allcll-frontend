@@ -1,7 +1,7 @@
 import { QueryCache, QueryClient } from '@tanstack/react-query';
 import { ApiError } from '@/shared/lib/errors.ts';
-import useToastNotification from '@/features/notification/model/useToastNotification.ts';
 import { JolupSteps, useJolupStore } from '@/features/graduation/model/useJolupStore.ts';
+import { useToastNotification } from '@allcll/common';
 
 const SESSION_ENDED_TAG = 'session-ended';
 /** 서버는 세션이 끊긴 이유를 구분하지 못해 두 코드가 같은 상황에서 옵니다. */

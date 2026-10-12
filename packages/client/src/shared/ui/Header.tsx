@@ -51,7 +51,7 @@ function Header() {
                   to={path}
                   end={end}
                   className={({ isActive }) =>
-                    `inline-flex items-center gap-1 ${isActive ? 'text-blue-500 font-semibold' : 'text-gray-500'}`
+                    `inline-flex items-center gap-1 ${isActive ? 'text-primary-500' : 'text-gray-500 hover:text-gray-700'}`
                   }
                 >
                   {title}
@@ -86,7 +86,7 @@ function Header() {
           <IconButton
             className="p-2 hover:bg-gray-100 active:bg-gray-100"
             variant="plain"
-            icon={<MenuIcon className="w-6 h-6" />}
+            icon={<MenuIcon className="w-5 h-5 text-gray-500" />}
             label="메뉴 열기"
             onClick={openMenu}
             aria-expanded={isOpen}

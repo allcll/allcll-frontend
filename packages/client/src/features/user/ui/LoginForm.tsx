@@ -1,3 +1,4 @@
+import { useToastNotification } from '@allcll/common';
 import {
   Button,
   Card,
@@ -14,7 +15,6 @@ import { useId, useState } from 'react';
 import useLoginForm from '../lib/useLoginForm';
 import useLoginConfirm from '../lib/useLoginConfirm';
 import { useLogin } from '@/entities/user/model/useAuth';
-import useToastNotification from '@/features/notification/model/useToastNotification';
 import LoginConfirmationDialog from './LoginConformDialog';
 import LoginErrorNotice from './LoginErrorNotice';
 import { type ILoginErrorView, toLoginErrorView } from '../lib/loginErrors.ts';
@@ -141,7 +141,7 @@ function LoginForm({ onSuccess }: ILoginFormProps) {
                 onBlur={() => onBlur('agreeToTerms')}
               />
 
-              <Button asChild variant="text" textColor="gray" size="small">
+              <Button asChild variant="text" color="gray" size="small">
                 <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">
                   자세히 보기
                 </a>
@@ -149,7 +149,7 @@ function LoginForm({ onSuccess }: ILoginFormProps) {
             </Flex>
           </Flex>
 
-          <Button type="submit" variant="primary" size="medium" disabled={!isValid || isPending}>
+          <Button type="submit" variant="solid" size="medium" disabled={!isValid || isPending}>
             {isPending ? '로그인 중...' : '로그인'}
           </Button>
 

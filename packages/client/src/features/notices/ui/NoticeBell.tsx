@@ -29,9 +29,9 @@ function NoticeBell() {
         aria-label="공지사항"
         className="relative p-2 rounded-md hover:bg-gray-100 transition-colors"
       >
-        <NotificationIcon className="w-4 h-4 text-gray-600" />
+        <NotificationIcon className="w-4.5 h-4.5 md:w-4 md:h-4 text-gray-500" />
         {hasNew && (
-          <span className="absolute -top-0.5 -right-0.5 h-4 px-1 bg-blue-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none">
+          <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none">
             N
           </span>
         )}

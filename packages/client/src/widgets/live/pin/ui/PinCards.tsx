@@ -1,5 +1,5 @@
 import useInfScroll from '@/shared/lib/useInfScroll.ts';
-import { SearchIcon, Flex, Grid } from '@allcll/allcll-ui';
+import { SearchIcon, Flex, Grid, EmptyState, Skeleton } from '@allcll/allcll-ui';
 import { WishesWithSeat } from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
 import { Wishes } from '@/shared/model/types.ts';
 import PinCard from '@/features/live/pin/ui/PinCard';
@@ -25,9 +25,9 @@ function Cards({ subjects, isPending = false, isLive = false }: Readonly<IPinCar
 
   if (isPending || !subjects) {
     return (
-      <Grid columns={{ base: 1, md: 3 }} gap="gap-4" className="animate-pulse">
+      <Grid columns={{ base: 1, md: 3 }} gap="gap-4">
         {[0, 0, 0].map((_, idx) => (
-          <div key={'skeleton-card-' + idx} className="bg-gray-300 shadow-sm rounded-lg p-4 h-24" />
+          <Skeleton key={'skeleton-card-' + idx} className="h-24 rounded-lg" />
         ))}
       </Grid>
     );
@@ -35,11 +35,12 @@ function Cards({ subjects, isPending = false, isLive = false }: Readonly<IPinCar
 
   if (!subjects.length) {
     return (
-      <Flex direction="flex-col" align="items-center" gap="gap-2" className="text-center py-4">
-        <SearchIcon className="w-12 h-12 text-gray-400" />
-        <p className="text-gray-500 font-bold mt-4">검색된 과목이 없습니다.</p>
-        <p className="text-gray-400 text-xs mt-1">다른 검색어로 다시 시도해보세요.</p>
-      </Flex>
+      <EmptyState
+        icon={SearchIcon}
+        title="검색된 과목이 없습니다."
+        description="다른 검색어로 다시 시도해보세요."
+        className="py-4"
+      />
     );
   }
 

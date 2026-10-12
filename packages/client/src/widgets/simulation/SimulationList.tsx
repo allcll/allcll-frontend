@@ -2,12 +2,14 @@ import { Link } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { getSimulationList } from '@/features/simulation/lib/result.ts';
 import { SimulationRun } from '@/shared/config/dbConfig.ts';
-import { CursorIcon } from '@allcll/allcll-ui';
+import { CursorIcon, EmptyState, LoadingState, Heading } from '@allcll/allcll-ui';
 
 function SimulationList() {
   return (
     <>
-      <h1 className="text-2xl font-bold mb-2">모의 수강 신청 로그</h1>
+      <Heading level={1} className="mb-2">
+        모의 수강 신청 로그
+      </Heading>
       <p className="text-gray-500 mb-4">수강 연습 결과를 상세히 분석해보세요.</p>
 
       <SimulationBoard />
@@ -22,27 +24,19 @@ function SimulationBoard() {
   const isError = logs === null;
 
   if (isPending) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <span className="text-gray-500">로딩 중...</span>
-      </div>
-    );
+    return <LoadingState className="h-64" />;
   }
 
   if (isError) {
     return (
       <div className="flex justify-center items-center h-64">
-        <span className="text-red-500">오류가 발생했습니다</span>
+        <span className="text-danger-500">오류가 발생했습니다</span>
       </div>
     );
   }
 
   if (!searchedLogs.length) {
-    return (
-      <div className="flex justify-center items-center">
-        <span className="text-gray-500">로그가 없습니다</span>
-      </div>
-    );
+    return <EmptyState title="로그가 없습니다" className="py-4" />;
   }
 
   return searchedLogs.map(log => (
@@ -70,7 +64,7 @@ function SimulationBoard() {
         </div>
         <div className="flex items-center justify-end gap-1 w-20">
           <p className="hidden">점수</p>
-          <CursorIcon className="w-4 h-4 text-blue-500" />
+          <CursorIcon className="w-4 h-4 text-primary-500" />
           <span className="font-bold">{log.score.toFixed(3)}</span>
         </div>
       </div>

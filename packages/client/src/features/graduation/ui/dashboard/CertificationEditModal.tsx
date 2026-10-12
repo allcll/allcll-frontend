@@ -1,6 +1,5 @@
-import { Dialog, Button, Flex, SupportingText } from '@allcll/allcll-ui';
+import { Dialog, Button, Flex, LoadingState } from '@allcll/allcll-ui';
 import { EnglishCriteriaContent } from '@allcll/common';
-import { useBodyScrollLock } from '@/shared/lib/useBodyScrollLock';
 import type { CertificationCriteriaData } from '@/entities/graduation/api/graduation';
 
 interface ICertificationEditModalProps {
@@ -24,8 +23,6 @@ function CertificationEditModal({
   onClose,
   onConfirm,
 }: Readonly<ICertificationEditModalProps>) {
-  useBodyScrollLock(isOpen);
-
   const prompt = currentIsPassed ? '위 기준을 충족하지 못하셨나요?' : '위 기준을 충족하셨나요?';
   const confirmLabel = currentIsPassed ? '네, 충족하지 못했어요' : '네, 충족했어요';
 
@@ -34,9 +31,9 @@ function CertificationEditModal({
       <Dialog.Content>
         <Flex direction="flex-col" gap="gap-4" className="min-w-64 md:min-w-96">
           <Flex direction="flex-col" gap="gap-3" className="max-h-52 overflow-y-auto pr-1">
-            {isCriteriaLoading && <SupportingText className="text-center py-8">불러오는 중...</SupportingText>}
+            {isCriteriaLoading && <LoadingState className="py-8" />}
             {isCriteriaError && (
-              <p className="text-sm text-secondary-500 text-center py-8">기준 정보를 불러올 수 없습니다.</p>
+              <p className="text-sm text-danger-500 text-center py-8">기준 정보를 불러올 수 없습니다.</p>
             )}
             {!isCriteriaLoading && !isCriteriaError && (
               <EnglishCriteriaContent data={criteriaData?.englishCertCriteria ?? null} />
@@ -50,10 +47,10 @@ function CertificationEditModal({
       </Dialog.Content>
 
       <Dialog.Footer>
-        <Button variant="outlined" size="small" onClick={onClose} disabled={isPending}>
+        <Button variant="outlined" color="gray" size="small" onClick={onClose} disabled={isPending}>
           취소
         </Button>
-        <Button variant="primary" size="small" onClick={onConfirm} disabled={isPending}>
+        <Button variant="solid" size="small" onClick={onConfirm} disabled={isPending}>
           {confirmLabel}
         </Button>
       </Dialog.Footer>

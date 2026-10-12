@@ -1,14 +1,13 @@
 import { Button } from '@allcll/allcll-ui';
 import { useLogout } from '@/entities/user/model/useAuth';
-import useToastNotification from '@/features/notification/model/useToastNotification';
+import { useToastNotification } from '@allcll/common';
 
 interface LogoutButtonProps {
   onSuccess?: () => void;
-  variant?: 'primary' | 'secondary' | 'text' | 'outlined';
   size?: 'small' | 'medium' | 'large';
 }
 
-function LogoutButton({ onSuccess, variant = 'secondary', size = 'medium' }: LogoutButtonProps) {
+function LogoutButton({ onSuccess, size = 'medium' }: LogoutButtonProps) {
   const { mutate: logout, isPending } = useLogout();
   const showToast = useToastNotification.getState().addToast;
 
@@ -27,7 +26,7 @@ function LogoutButton({ onSuccess, variant = 'secondary', size = 'medium' }: Log
   };
 
   return (
-    <Button variant={variant} size={size} onClick={handleLogout} disabled={isPending}>
+    <Button variant="solid" color="gray" size={size} onClick={handleLogout} disabled={isPending}>
       {isPending ? '로그아웃 중...' : '로그아웃'}
     </Button>
   );

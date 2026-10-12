@@ -38,7 +38,7 @@ function ScheduleInfoBottomSheet() {
         <Flex>
           <span>{findSubjectById?.manageDeptNm}</span>
           <span> {findSubjectById?.studentYear + '학년'}</span>
-          <span className="text-blue-500 text-sm">{findSubjectById?.tmNum[0] + '학점'}</span>
+          <span className="text-primary-500 text-sm">{findSubjectById?.tmNum[0] + '학점'}</span>
         </Flex>
 
         <Flex>
@@ -55,7 +55,7 @@ function ScheduleInfoBottomSheet() {
               onConfirm={confirmDelete}
             />
           ) : (
-            <Button variant="text" size="medium" textColor="secondary" onClick={requestDeleteConfirmation}>
+            <Button variant="text" size="medium" color="danger" onClick={requestDeleteConfirmation}>
               삭제
             </Button>
           )}

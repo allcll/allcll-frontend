@@ -1,3 +1,4 @@
+import { Heading } from '@allcll/allcll-ui';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import SejongUI from '@allcll/sejong-ui';
@@ -87,7 +88,7 @@ function Simulation() {
       <RenderModal />
       <div className="flex justify-between gap-5">
         <div className="flex gap-5">
-          <h1 className="font-bold text-lg">수강신청 연습</h1>
+          <Heading level={1}>수강신청 연습</Heading>
           <Stopwatch />
         </div>
 
@@ -111,7 +112,7 @@ function Simulation() {
             </SejongUI.Button>
             <span className="text-xs font-bold text-black">
               수강 가능 학점: 18 /
-              <span className="text-blue-500">
+              <span className="text-primary-500">
                 신청 과목수: {currentSimulation.registeredSubjects.length} / 신청 학점수: {totalCredits}
               </span>
             </span>

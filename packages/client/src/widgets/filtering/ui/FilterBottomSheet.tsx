@@ -68,11 +68,7 @@ function FilterBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }
         </Flex>
 
         <Flex direction="flex-col" justify="justify-center" gap="gap-8" className="w-full">
-          <DepartmentSelect
-            className="cursor-pointer border-gray-100 rounded-sm py-1 text-sm"
-            value={filters.department}
-            onChange={e => setFilter('department', e.target.value)}
-          />
+          <DepartmentSelect value={filters.department} onChange={code => setFilter('department', code)} />
 
           <GenericSingleSelectFilter
             filterKey="wishRange"
@@ -130,10 +126,16 @@ function FilterBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }
           />
 
           <div className="sticky bottom-0 py-3 bg-white flex justify-end items-center gap-2 border-gray-200">
-            <Button variant="outlined" size="medium" onClick={resetFilter} disabled={allSelectedFilters.length === 0}>
+            <Button
+              variant="outlined"
+              color="gray"
+              size="medium"
+              onClick={resetFilter}
+              disabled={allSelectedFilters.length === 0}
+            >
               필터 초기화
             </Button>
-            <Button type="submit" variant="primary" size="medium" onClick={handleClickSave}>
+            <Button type="submit" variant="solid" size="medium" onClick={handleClickSave}>
               저장
             </Button>
           </div>

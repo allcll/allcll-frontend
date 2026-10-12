@@ -28,10 +28,10 @@ function ConfirmDialog({
       </Dialog.Content>
       <Dialog.Footer>
         <Flex gap="gap-2" justify="justify-end">
-          <Button variant="secondary" size="medium" onClick={onClose}>
+          <Button variant="solid" color="gray" size="medium" onClick={onClose}>
             {cancelLabel}
           </Button>
-          <Button variant={danger ? 'danger' : 'secondary'} size="medium" onClick={onConfirm}>
+          <Button variant="solid" color={danger ? 'danger' : 'gray'} size="medium" onClick={onConfirm}>
             {confirmLabel}
           </Button>
         </Flex>

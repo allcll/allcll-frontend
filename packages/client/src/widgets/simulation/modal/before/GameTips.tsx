@@ -12,10 +12,10 @@ function GameTips() {
         '모든 과목을 담은 즉시 종료됩니다.',
       ].map((tip, idx) => (
         <Flex key={idx} className="text-xs">
-          <span className="text-blue-500 mr-2">
-            <CheckmarkIcon className="w-3 h-3 text-blue-500" />
+          <span className="text-primary-500 mr-2">
+            <CheckmarkIcon className="w-3 h-3 text-primary-500" />
           </span>
-          <span className={idx === 0 ? 'font-semibold text-blue-500 animate-bounce' : 'text-gray-600'}>{tip}</span>
+          <span className={idx === 0 ? 'font-semibold text-primary-500 animate-bounce' : 'text-gray-600'}>{tip}</span>
         </Flex>
       ))}
     </div>

@@ -26,7 +26,7 @@ function Chip({
   ...rest
 }: Readonly<IChip>) {
   const baseClasses =
-    'flex flex-row justify-center items-center cursor-pointer gap-4 transition-colors duration-300 ease-out active:scale-[0.97]';
+    'flex flex-row justify-center items-center gap-4 transition-colors duration-300 ease-out active:scale-[0.97]';
 
   return (
     <button
@@ -42,14 +42,14 @@ function Chip({
       {variant === 'select' && (
         <ChevronDownIcon
           aria-hidden="true"
-          className={`w-5 h-5 pointer-events-none transition-transform duration-200 ${selected ? 'text-blue-500' : 'text-gray-400'} ${isChipOpen ? 'rotate-180' : 'rotate-0'}`}
+          className={`w-5 h-5 pointer-events-none transition-transform duration-200 ${selected ? 'text-primary-500' : 'text-gray-400'} ${isChipOpen ? 'rotate-180' : 'rotate-0'}`}
         />
       )}
 
       {variant === 'cancel' && (
         <CloseIcon
           aria-hidden="true"
-          className={`pointer-events-none w-4 h-4 ${selected ? 'text-blue-500' : 'text-gray-400'}`}
+          className={`pointer-events-none w-4 h-4 ${selected ? 'text-primary-500' : 'text-gray-400'}`}
         />
       )}
     </button>

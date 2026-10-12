@@ -2,7 +2,7 @@ import { createPortal } from 'react-dom';
 import DialogTitle from './DialogTitle';
 import DialogHeader from './DialogHeader';
 import DialogOverlay from './DialogOverlay';
-import DialogContents from './DialogContents';
+import DialogContents, { type DialogSize } from './DialogContents';
 import DialogContent from './DialogContent';
 import DialogFooter from './DialogFooter';
 import { useEffect, useId, useRef } from 'react';
@@ -11,10 +11,11 @@ interface IDialogMain {
   children: React.ReactNode;
   isOpen?: boolean;
   title?: string;
+  size?: DialogSize;
   onClose: () => void;
 }
 
-function DialogMain({ children, isOpen = true, title, onClose }: IDialogMain) {
+function DialogMain({ children, isOpen = true, title, size = 'medium', onClose }: IDialogMain) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
 
@@ -41,6 +42,7 @@ function DialogMain({ children, isOpen = true, title, onClose }: IDialogMain) {
   return createPortal(
     <dialog
       ref={dialogRef}
+      className="backdrop:bg-black/30"
       role="dialog"
       aria-labelledby={titleId}
       onCancel={e => {
@@ -49,7 +51,7 @@ function DialogMain({ children, isOpen = true, title, onClose }: IDialogMain) {
       }}
     >
       <DialogOverlay onClose={onClose}>
-        <DialogContents>
+        <DialogContents size={size}>
           <DialogHeader onClose={onClose}>
             <Dialog.Title id={titleId}>{title}</Dialog.Title>
           </DialogHeader>

@@ -18,7 +18,7 @@ function AlarmStatusIcon({ isAlarm }: Readonly<{ isAlarm: boolean }>) {
     <NotificationFilledIcon className="w-5 h-5 text-primary-500" />
   ) : (
     <>
-      <NotificationFilledIcon className="w-5 h-5 text-secondary-500 animate-pulse" />
+      <NotificationFilledIcon className="w-5 h-5 text-danger-500 animate-pulse" />
       {statusTooltip.length > 0 && (
         <span className="absolute left-full -bottom-2 transform -translate-x-full translate-y-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gray-900 text-white text-sm p-2 rounded w-64 h-fit text-center pointer-events-none">
           {statusTooltip.map((line, idx) => (

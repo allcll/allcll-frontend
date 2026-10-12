@@ -13,7 +13,6 @@
     "@allcll/allcll-ui": "workspace:^",
     "@allcll/common": "workspace:^",
     "@allcll/sejong-ui": "workspace:^",
-    "@amplitude/analytics-browser": "^2.20.1",
     "@microsoft/clarity": "^1.0.0",
     "@sentry/react": "^8.55.0",
     "@sentry/vite-plugin": "^3.6.1",
@@ -31,7 +30,6 @@
     "react-ga4": "^2.1.0",
     "react-helmet": "^6.1.0",
     "react-markdown": "^10.1.0",
-    "react-spinners": "^0.17.0",
     "react-transition-group": "^4.4.5",
     "react-youtube": "^10.1.0",
     "remark-breaks": "^4.0.0",
@@ -40,7 +38,6 @@
   },
   "devDependencies": {
     "@allcll/mock-server": "workspace:^",
-    "@amplitude/plugin-session-replay-browser": "^1.21.1",
     "@tailwindcss/typography": "^0.5.16",
     "@tanstack/query-core": "^5.83.0",
     "@types/canvas-confetti": "^1.9.0",

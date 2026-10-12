@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AllcllFaceIcon, Badge, Flex, IconButton, SupportingText, ChevronDownIcon } from '@allcll/allcll-ui';
+import { AllcllFaceIcon, Badge, Flex, IconButton, SupportingText, ChevronDownIcon, TextLink } from '@allcll/allcll-ui';
 import { OPERATION_TYPE_LABEL, MAX_RATE } from '@/hooks/server/useAdminReviews';
 import type { Review } from '@/hooks/server/useAdminReviews';
 import { formatDateTime } from '@/utils/formatTime';
@@ -27,13 +27,14 @@ function ReviewItem({ review }: Readonly<IReviewItemProps>) {
     <tr className="bg-white hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0">
       <td className="px-4 py-3 align-top w-28">
         {isGraduation ? (
-          <button
-            className="text-blue-600 underline hover:text-blue-800 text-sm font-medium"
-            onClick={() => navigate(`/reviews/graduation/${review.studentId}`)}
-            aria-label={`${review.studentId} 졸업요건 조회`}
-          >
-            {review.studentId}
-          </button>
+          <TextLink asChild className="text-sm font-medium">
+            <button
+              onClick={() => navigate(`/reviews/graduation/${review.studentId}`)}
+              aria-label={`${review.studentId} 졸업요건 조회`}
+            >
+              {review.studentId}
+            </button>
+          </TextLink>
         ) : (
           <SupportingText>{review.studentId}</SupportingText>
         )}

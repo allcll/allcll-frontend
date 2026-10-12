@@ -37,9 +37,9 @@ export default Banner;
 function getBannerColor(variant: BannerVariant) {
   switch (variant) {
     case 'warning':
-      return 'bg-secondary-100';
+      return 'bg-danger-100';
     case 'info':
-      return 'bg-blue-100';
+      return 'bg-primary-100';
     default:
       return 'bg-gray-100';
   }

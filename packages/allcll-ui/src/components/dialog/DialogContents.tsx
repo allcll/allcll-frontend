@@ -1,15 +1,19 @@
+export type DialogSize = 'medium' | 'large';
+
 interface IDialogContents {
   children: React.ReactNode;
-  width?: string;
-  height?: string;
+  size?: DialogSize;
 }
 
-function DialogContents({ children, width, height }: IDialogContents) {
-  const dialogSize = getDialogSizeClass(width, height);
+const SIZE_CLASS: Record<DialogSize, string> = {
+  medium: 'max-w-[90%]',
+  large: 'w-[90%] max-w-3xl',
+};
 
+function DialogContents({ children, size = 'medium' }: IDialogContents) {
   return (
     <div
-      className={`flex flex-col justify-center item bg-white min-w-80 max-w-[90%] max-h-[90vh] rounded-lg sm:${dialogSize}`}
+      className={`flex flex-col justify-center bg-white min-w-80 max-h-[90vh] rounded-lg ${SIZE_CLASS[size]}`}
       onClick={e => e.stopPropagation()}
     >
       {children}
@@ -18,9 +22,3 @@ function DialogContents({ children, width, height }: IDialogContents) {
 }
 
 export default DialogContents;
-
-function getDialogSizeClass(width?: string, height?: string) {
-  const widthClass = width ? `w-${width}` : 'max-w-[90%]';
-  const heightClass = height ? `h-${height}` : 'auto';
-  return `${widthClass} ${heightClass}`;
-}
