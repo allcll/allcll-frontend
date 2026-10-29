@@ -4,7 +4,6 @@ const PAGE_SIZE = 45;
 
 type UseInfiniteScrollMode = 'ref' | 'selector';
 
-// 목록의 길이만 쓰므로 어떤 목록이든 받습니다.
 function useInfScroll(
   data: readonly unknown[],
   mode: UseInfiniteScrollMode = 'ref',

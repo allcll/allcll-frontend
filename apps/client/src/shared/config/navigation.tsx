@@ -1,6 +1,5 @@
 import { ChatHelpIcon, HeadsetIcon } from '@allcll/allcll-ui';
 
-/** 헤더, 모바일 메뉴, 푸터가 함께 쓰는 메뉴 목록 */
 export const HeaderContents = [
   // { title: '과목검색', path: '/wishes', end: false },
   { title: '시간표', path: '/timetable', end: false },
