@@ -19,7 +19,7 @@
 
 /* Markdown prose styles */
 .prose {
-  color: #364153;
+  color: var(--color-gray-800);
   line-height: 1.75;
 }
 
@@ -32,15 +32,15 @@
 }
 
 .prose h1 {
-  font-size: 1.875rem;
-  margin: 1rem 0 0.5rem;
-}
-.prose h2 {
   font-size: 1.5rem;
   margin: 1rem 0 0.5rem;
 }
-.prose h3 {
+.prose h2 {
   font-size: 1.25rem;
+  margin: 1rem 0 0.5rem;
+}
+.prose h3 {
+  font-size: 1.125rem;
   color: #202123;
   font-weight: 600;
   margin: 0.75rem 0 0.5rem;
