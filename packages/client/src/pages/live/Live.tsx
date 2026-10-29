@@ -29,7 +29,7 @@ function Live() {
           <Flex direction="flex-col" gap="gap-0">
             <Heading level={1}>실시간 수강 여석</Heading>
             <SupportingText>
-              아직 기능이 안정적이지 않을 수 있습니다. 오류 발생 시 &nbsp;
+              아직 기능이 안정적이지 않을 수 있습니다. 오류 발생 시&nbsp;
               <TextLink href="https://forms.gle/bCDTVujEHunnvHe88" target="_blank">
                 문의사항
               </TextLink>
