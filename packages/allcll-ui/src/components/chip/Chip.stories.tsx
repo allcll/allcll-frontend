@@ -48,6 +48,14 @@ export const Chips: Story = {
         <Chip selected={false} label="Chip" variant="cancel" />
       </li>
       <li className="flex flex-col items-center">
+        <h6>fill + 선택됨</h6>
+        <Chip selected label="Chip" variant="fill" />
+      </li>
+      <li className="flex flex-col items-center">
+        <h6>fill + 선택 안 됨</h6>
+        <Chip selected={false} label="Chip" variant="fill" />
+      </li>
+      <li className="flex flex-col items-center">
         <h6>none + 선택됨</h6>
         <Chip selected label="Chip" variant="none" />
       </li>

@@ -183,17 +183,10 @@ function WishFilter() {
             />
           )}
         </div>
-        <FilterDelete filters={filters} resetFilter={resetFilter} />
-        <FilteringButton handleOpenFilter={handleOpenFilter} />
-
         <IconButton
           variant="contain"
           icon={
-            favoriteOnly ? (
-              <StarFilledIcon className="w-4 h-4 text-yellow-400" />
-            ) : (
-              <StarIcon className="w-4 h-4 text-gray-400" />
-            )
+            favoriteOnly ? <StarFilledIcon className="w-4 h-4 text-yellow-400" /> : <StarIcon className="w-4 h-4" />
           }
           aria-label={favoriteOnly ? '즐겨찾기 필터 제거' : '즐겨찾기 필터 추가'}
           label={favoriteOnly ? '즐겨찾기 필터 제거' : '즐겨찾기 필터 추가'}
@@ -203,9 +196,12 @@ function WishFilter() {
         <IconButton
           variant="contain"
           label="테이블 수정"
-          icon={<TableSettingsIcon className="w-4 h-4 text-gray-400" />}
+          icon={<TableSettingsIcon className="w-4 h-4" />}
           onClick={() => setIsModalOpen(true)}
         />
+
+        <FilteringButton handleOpenFilter={handleOpenFilter} />
+        <FilterDelete filters={filters} resetFilter={resetFilter} />
 
         <Flex direction="flex-wrap" gap="gap-2" className="w-fit md:hidden">
           {allSelectedFilters.map(filter => {

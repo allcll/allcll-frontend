@@ -26,7 +26,6 @@ function ScheduleFilter() {
 
   return (
     <Flex direction="flex-wrap" align="items-center" gap="gap-2" className="w-full">
-      <FilteringButton handleOpenFilter={() => setIsFilterModalOpen(true)} />
       <DepartmentFilter setFilter={setFilters} selectedValue={filters.department} />
 
       <GenericMultiSelectFilter
@@ -77,6 +76,7 @@ function ScheduleFilter() {
         />
       )}
 
+      <FilteringButton handleOpenFilter={() => setIsFilterModalOpen(true)} />
       <FilterDelete filters={filters} resetFilter={resetFilter} />
       {isFilterModalOpen && (
         <DetailFilterModal filterStore={useScheduleSearchStore} onClose={() => setIsFilterModalOpen(false)} />

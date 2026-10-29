@@ -2,7 +2,7 @@ import type { ComponentPropsWithoutRef, RefObject } from 'react';
 import { ChevronDownIcon, CloseIcon } from '../../icons';
 import type React from 'react';
 
-type ChipVariantType = 'select' | 'cancel' | 'none';
+type ChipVariantType = 'select' | 'cancel' | 'fill' | 'none';
 
 interface IChip extends ComponentPropsWithoutRef<'button'> {
   containerRef?: RefObject<HTMLButtonElement | null>;
