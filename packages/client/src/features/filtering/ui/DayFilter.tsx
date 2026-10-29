@@ -26,7 +26,7 @@ function DayFilter({ times, setFilter }: IDayFilter) {
   return isMobile ? (
     <DayTimeFilter items={times} onChange={items => setFilterWrapper('time', items)} />
   ) : (
-    <Filtering label={labelPrefix} selected={times.length > 0 && times[0].day !== ''} className="min-w-max">
+    <Filtering label={labelPrefix} selected={times.length > 0 && times[0].day !== ''} className="min-w-max w-72">
       <DayTimeFilter items={times} onChange={items => setFilterWrapper('time', items)} />
     </Filtering>
   );
