@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, Flex, Label, Select } from '@allcll/allcll-ui';
+import { AddIcon, Button, Flex, Label, Select } from '@allcll/allcll-ui';
 import InputTime from '@/features/timetable/ui/common/InputTime.tsx';
 import { Day } from '@/entities/timetable/model/types.ts';
 
@@ -42,24 +42,24 @@ function DayTimeFilter({ items, onChange }: Readonly<IDayTimeFilter>) {
   };
 
   return (
-    <>
-      <Flex direction="flex-col" gap="gap-2">
+    <Flex direction="flex-col" gap="gap-2">
+      <Flex justify="justify-between" align="items-center">
         <Label>시간</Label>
-
-        {items.map((item, index) => (
-          <DayTime
-            key={`${item.day}-${item.type}-${item.start}-${item.end}`}
-            item={item}
-            onChange={handleChange(index)}
-            onDelete={handleDelete(index)}
-          />
-        ))}
+        <Button variant="text" size="small" color="gray" onClick={() => onChange([...items, { day: '', type: 'all' }])}>
+          <AddIcon className="w-4 h-4" />
+          요일 추가
+        </Button>
       </Flex>
 
-      <Button variant="text" size="small" color="gray" onClick={() => onChange([...items, { day: '', type: 'all' }])}>
-        요일 추가
-      </Button>
-    </>
+      {items.map((item, index) => (
+        <DayTime
+          key={`${item.day}-${item.type}-${item.start}-${item.end}`}
+          item={item}
+          onChange={handleChange(index)}
+          onDelete={handleDelete(index)}
+        />
+      ))}
+    </Flex>
   );
 }
 
