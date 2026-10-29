@@ -271,11 +271,9 @@ function GraduationDashboardPage() {
                   분석
                 </span>
               )}
-              <div className="bg-white rounded-md">
-                <Button variant="outlined" color="gray" size="medium" onClick={handleStartOverGraduationCheck}>
-                  다시 검사하기
-                </Button>
-              </div>
+              <Button variant="solid" size="medium" onClick={handleStartOverGraduationCheck}>
+                다시 검사하기
+              </Button>
             </Flex>
           </Flex>
 
