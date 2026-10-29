@@ -28,7 +28,7 @@ function LoginConfirmationDialog({ isOpen, onClose, onConfirm, isPending }: ILog
             ALLCLL 로그인 시 <span className="text-danger-500 font-semibold">학사정보시스템에서 로그아웃</span>
             됩니다.
             <br />
-            진행중인 작업이 있다면 완료 후 로그인해주시기 바랍니다.
+            진행 중인 작업이 있다면 완료 후 로그인해주시기 바랍니다.
             <br />
             계속해서 로그인을 진행하시겠습니까?
           </SupportingText>

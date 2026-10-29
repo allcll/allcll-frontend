@@ -40,14 +40,14 @@ function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
   useBackSignal({ enabled: isOpen, onClose: onClose });
 
   return !isOpen ? null : (
-    <Dialog title="알림설정" onClose={onClose} isOpen={isOpen}>
+    <Dialog title="알림 설정" onClose={onClose} isOpen={isOpen}>
       <Dialog.Content>
         <AlarmOptionContent />
         <SubAlarmOption />
 
         <div className="mt-4 flex justify-end">
           <Button variant="outlined" color="gray" size="medium" onClick={onTestAlarm} disabled={!hasPermission}>
-            알림테스트
+            알림 테스트
           </Button>
         </div>
       </Dialog.Content>

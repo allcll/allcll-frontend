@@ -45,7 +45,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
             {!isLoading && isError && (
               <tr>
                 <td colSpan={4} className="py-8 text-center text-sm text-danger-500">
-                  공지사항을 불러오는데 실패했습니다.
+                  공지사항을 불러오는 데 실패했습니다.
                 </td>
               </tr>
             )}

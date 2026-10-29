@@ -15,7 +15,7 @@ function SubjectAllResult({ result }: Readonly<{ result: AggregatedResultRespons
           <th className="py-2 px-2">과목명</th>
           <th className="py-2 px-2">교수명</th>
           <th className="py-2 px-2">순위</th>
-          <th className="py-2 px-2">관심시간</th>
+          <th className="py-2 px-2">관심 시간</th>
           <th className="py-2 px-2">성공/실패</th>
         </tr>
       </thead>

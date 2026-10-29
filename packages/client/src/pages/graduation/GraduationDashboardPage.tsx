@@ -120,7 +120,7 @@ function GraduationDashboardPage() {
         <Helmet>
           <title>ALLCLL | 졸업요건 분석</title>
         </Helmet>
-        <LoadingState title="졸업 요건 분석결과를 가져오는 중입니다." className="min-h-[50vh]" />
+        <LoadingState title="졸업 요건 분석 결과를 가져오는 중입니다." className="min-h-[50vh]" />
       </>
     );
   }

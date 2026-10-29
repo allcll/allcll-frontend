@@ -10,7 +10,7 @@ interface IRecommendWishesProps {
 function RecommendWishes({ wishesInfo }: IRecommendWishesProps) {
   return (
     <>
-      <Heading level={2}>대체과목 추천</Heading>
+      <Heading level={2}>대체 과목 추천</Heading>
       <SupportingText>학수번호가 같은 과목을 알려드려요</SupportingText>
 
       <Flex direction="flex-col" className="overflow-x-auto">
@@ -21,7 +21,7 @@ function RecommendWishes({ wishesInfo }: IRecommendWishesProps) {
 }
 
 // Todo: 대체 과목 테이블, WishesTable 컴포넌트 합칠 수 있는지 확인
-// 대체과목 테이블 컴포넌트
+// 대체 과목 테이블 컴포넌트
 interface IRecommendationTableProps {
   wishesInfo: IWishesInfo;
 }

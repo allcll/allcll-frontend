@@ -35,7 +35,7 @@ function ScheduleSearchBottomSheet({ onCloseSearch, onOpenFiltering }: ISearchBo
       {({ expandToMax }) => (
         <>
           <BottomSheetHeader
-            title="과목검색"
+            title="과목 검색"
             headerType="add"
             onClose={onCloseSearch}
             onClick={() => openScheduleModal(initSchedule)}

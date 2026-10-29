@@ -16,7 +16,7 @@ function ServiceClosed({ data }: IServiceClosed) {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen min-w-[250px] bg-gray-100 px-4">
       <main className="text-center">
-        <Heading level={1}>{isSemesterExpired ? '수강신청 고생 많으셨습니다.' : '서비스 준비중입니다.'}</Heading>
+        <Heading level={1}>{isSemesterExpired ? '수강신청 고생 많으셨습니다.' : '서비스 준비 중입니다.'}</Heading>
         <SupportingText>
           현재는 서비스 기간이 아닙니다.
           <br />

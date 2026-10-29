@@ -146,7 +146,7 @@ function useNotification() {
     if (!isAlarm) {
       const alarmType = useAlarmSettings.getState().alarmType;
       if (alarmType === AlarmType.NONE) {
-        if (!confirm('알림 기능을 활성화 하시겠습니까?')) return;
+        if (!confirm('알림 기능을 활성화하시겠습니까?')) return;
         useAlarmSettings.getState().resetSettings();
       }
       AlarmNotification.requestPermission();

@@ -15,7 +15,7 @@ function AlarmButton({ alarmOnly, setFilter }: IAlarmButton) {
       label={
         <Flex align="items-center" gap="gap-1">
           {alarmOnly ? <NotificationFilledIcon className="w-4 h-4" /> : <NotificationIcon className="w-4 h-4" />}
-          알림과목
+          알림 과목
         </Flex>
       }
     />

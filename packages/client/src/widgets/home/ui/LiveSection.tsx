@@ -6,11 +6,7 @@ import { Card, Flex, Heading, NotificationIcon, SupportingText } from '@allcll/a
 function LiveSection() {
   return (
     <Section>
-      <SectionHeader
-        title="실시간 수강 여석 확인"
-        subtitle="이제 여석이 나올 때 까지, 편하게 기다리세요"
-        href="/live"
-      />
+      <SectionHeader title="실시간 수강 여석 확인" subtitle="이제 여석이 나올 때까지, 편하게 기다리세요" href="/live" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         <Card>

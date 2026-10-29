@@ -15,7 +15,7 @@ function UnsavedModal({ onCancel, onConfirm }: IUnsavedModalProps) {
           </div>
           <Flex direction="flex-col" gap="gap-1">
             <p className="text-sm font-medium text-gray-800">작성 중인 내용이 있습니다.</p>
-            <p className="text-sm text-gray-500">페이지를 나가면 작성 중인 내용이 사라집니다. 계속 하시겠습니까?</p>
+            <p className="text-sm text-gray-500">페이지를 나가면 작성 중인 내용이 사라집니다. 계속하시겠습니까?</p>
           </Flex>
         </Flex>
       </Dialog.Content>

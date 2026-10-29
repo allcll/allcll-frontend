@@ -39,7 +39,7 @@ function GraduationView() {
   if (isPending) {
     return (
       <Flex justify="justify-center" align="items-center" className="min-h-[50vh]">
-        <SupportingText>졸업 요건 분석결과를 가져오는 중입니다.</SupportingText>
+        <SupportingText>졸업 요건 분석 결과를 가져오는 중입니다.</SupportingText>
       </Flex>
     );
   }

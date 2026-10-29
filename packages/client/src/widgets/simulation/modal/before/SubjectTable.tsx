@@ -27,7 +27,7 @@ function SubjectTable({ subjects, handleRemakeSubjects, isLoadingLectures }: Rea
 
           {handleRemakeSubjects && (
             <Button onClick={handleRemakeSubjects} size="small" variant="text">
-              랜덤과목 재생성
+              랜덤 과목 재생성
             </Button>
           )}
         </Flex>

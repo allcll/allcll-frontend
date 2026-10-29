@@ -49,7 +49,7 @@ function ReviewList({ reviews, isLoading, isError, filterBar }: Readonly<IReview
               {!isLoading && isError && (
                 <tr>
                   <td colSpan={COLUMNS.length} className="py-8 text-center text-sm text-danger-500">
-                    후기 데이터를 불러오는데 실패했습니다.
+                    후기 데이터를 불러오는 데 실패했습니다.
                   </td>
                 </tr>
               )}

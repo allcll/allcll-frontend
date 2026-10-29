@@ -45,7 +45,7 @@ function DashboardDetail() {
         {/* 과목별 수강 신청 담은 사람 */}
         <div className="bg-white p-6 rounded-2xl shadow-sm overflow-x-auto">
           <Heading level={2} className="mb-4 min-w-[240px] overflow-x-auto">
-            과목 별 분석
+            과목별 분석
           </Heading>
           {resultInfo ? (
             <SubjectDetailResult result={resultInfo} />
@@ -59,7 +59,7 @@ function DashboardDetail() {
       <section className="bg-white p-6 rounded-2xl shadow-sm">
         <div className="flex items-start justify-between mb-4">
           <Heading level={2} className="mb-4">
-            내 모의 수강 신청 별 TimeLine
+            내 모의 수강 신청별 TimeLine
           </Heading>
 
           {/*<label className="flex items-center text-sm gap-1 text-gray-500">*/}

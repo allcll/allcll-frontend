@@ -33,10 +33,10 @@ const compareByCreatedAt =
 
 const SORT_OPTIONS: IReviewSortOption[] = [
   { value: 'latest', label: '최신순', compare: compareByCreatedAt('desc') },
-  { value: 'oldest', label: '오래된순', compare: compareByCreatedAt('asc') },
+  { value: 'oldest', label: '오래된 순', compare: compareByCreatedAt('asc') },
   { value: 'studentId', label: '학번순', compare: (a, b) => a.studentId.localeCompare(b.studentId) },
-  { value: 'rateDesc', label: '평점 높은순', compare: (a, b) => b.rate - a.rate },
-  { value: 'rateAsc', label: '평점 낮은순', compare: (a, b) => a.rate - b.rate },
+  { value: 'rateDesc', label: '평점 높은 순', compare: (a, b) => b.rate - a.rate },
+  { value: 'rateAsc', label: '평점 낮은 순', compare: (a, b) => a.rate - b.rate },
 ];
 
 function Reviews() {

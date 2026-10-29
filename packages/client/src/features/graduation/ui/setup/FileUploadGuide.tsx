@@ -30,7 +30,7 @@ const FileUploadGuide = () => {
           </li>
           <li className="text-sm">
             <span className="text-xs sm:text-sm">
-              좌측 사이드 바의 <strong>[수업/성적] &gt; [성적 및 강의평가] &gt; [기이수성적조회]</strong>를 클릭합니다.
+              좌측 사이드바의 <strong>[수업/성적] &gt; [성적 및 강의평가] &gt; [기이수성적조회]</strong>를 클릭합니다.
             </span>
           </li>
           <li className="text-sm">
