@@ -29,7 +29,7 @@ function PinCoursesHeader({ setIsAlarmSettingOpen }: { setIsAlarmSettingOpen: (o
 
   return (
     <Flex direction="flex-row" justify="justify-between" align="align-top" className="mb-4">
-      <Flex align="items-center" justify="justify-center" gap="gap-2">
+      <Flex align="items-center" justify="justify-center" gap="gap-1">
         <Heading level={3}>여석 과목 알림</Heading>
         <Tooltip>
           <p className="text-sm">
