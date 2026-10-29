@@ -8,6 +8,7 @@ import {
   IconButton,
   SupportingText,
   TextField,
+  TextLink,
   ViewIcon as EyeOpenIcon,
   ViewOffIcon as EyeClosedIcon,
 } from '@allcll/allcll-ui';
@@ -141,11 +142,9 @@ function LoginForm({ onSuccess }: ILoginFormProps) {
                 onBlur={() => onBlur('agreeToTerms')}
               />
 
-              <Button asChild variant="text" color="gray" size="small">
-                <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">
-                  자세히 보기
-                </a>
-              </Button>
+              <TextLink href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="py-1.5 text-sm">
+                자세히 보기
+              </TextLink>
             </Flex>
           </Flex>
 

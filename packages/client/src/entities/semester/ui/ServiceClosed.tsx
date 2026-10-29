@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { HomeIcon, Button, Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import { HomeIcon, Button, Card, Flex, Heading, SupportingText, TextLink } from '@allcll/allcll-ui';
 
 import { ServiceSemester } from '@/entities/semester/api/semester.ts';
 import { formatSchedulePeriod, useCourseSchedule } from '@/entities/operationPeriod/model/useCourseSchedule';
@@ -46,16 +46,12 @@ function ServiceClosed({ data }: IServiceClosed) {
           <Heading level={3}>문의</Heading>
 
           <SupportingText className="flex items-center justify-center gap-2 mt-2">allcllclla@google.com</SupportingText>
-          <Button variant="text" size="medium" asChild>
-            <a href="https://forms.gle/bCDTVujEHunnvHe88" target="_blank">
-              오류 및 제안
-            </a>
-          </Button>
-          <Button variant="text" size="medium" asChild>
-            <a href="https://open.kakao.com/o/g3MztXfh" target="_blank">
-              오픈 채팅
-            </a>
-          </Button>
+          <TextLink href="https://forms.gle/bCDTVujEHunnvHe88" target="_blank" className="block py-2 text-sm">
+            오류 및 제안
+          </TextLink>
+          <TextLink href="https://open.kakao.com/o/g3MztXfh" target="_blank" className="block py-2 text-sm">
+            오픈 채팅
+          </TextLink>
         </Card>
 
         <Flex className="mt-6" justify="justify-center">
