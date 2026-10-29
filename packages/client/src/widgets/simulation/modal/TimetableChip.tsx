@@ -1,7 +1,7 @@
 import { RECENT_SEMESTERS } from '@/entities/semester/api/semester';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 import { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
-import { Button, Chip, Flex, Grid, Label, WarningIcon, EmptyState } from '@allcll/allcll-ui';
+import { AddIcon, Button, Chip, Flex, Grid, Label, WarningIcon, EmptyState } from '@allcll/allcll-ui';
 import { Link } from 'react-router-dom';
 
 interface ITimetableChip {
@@ -54,8 +54,10 @@ function TimetableChipSelector({ semesterValue, timetables, selectedTimetableId,
           ))}
         </Grid>
 
-        <Button variant="text" size="small">
-          <Link to="/timetable">+ 새 시간표 추가</Link>
+        <Button asChild variant="text" size="small">
+          <Link to="/timetable">
+            <AddIcon className="w-4 h-4" />새 시간표 추가
+          </Link>
         </Button>
       </Flex>
     </Flex>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDeleteTimetable } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import type { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
-import { Button, Checkbox, Flex, Popover, SupportingText, usePopoverContext } from '@allcll/allcll-ui';
+import { AddIcon, Button, Checkbox, Flex, Popover, SupportingText, usePopoverContext } from '@allcll/allcll-ui';
 import ConfirmDialog from '@/shared/ui/ConfirmDialog.tsx';
 import {
   showTimetableApiErrorToast,
@@ -123,7 +123,8 @@ const TimetableSelect = ({ setIsOpenModal, openCreateModal, timetables, currentT
 
             {currentTimetable && (
               <Button variant="text" size="small" color="gray" onClick={openCreateModal}>
-                + 시간표 추가하기
+                <AddIcon className="w-4 h-4" />
+                시간표 추가하기
               </Button>
             )}
           </Flex>
