@@ -1,11 +1,11 @@
 // Todo:  widget/timetable로 옮기기
-import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
+import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
 import { useScheduleSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import { useState } from 'react';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
-import DepartmentFilter from '../../../features/filtering/ui/DepartmentFilter.tsx';
-import FilterDelete from '../../../features/filtering/ui/FilterDelete.tsx';
+import DepartmentFilter from '@/features/filtering/ui/DepartmentFilter.tsx';
+import FilterDelete from '@/features/filtering/ui/FilterDelete.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import { Flex } from '@allcll/allcll-ui';
 import DetailFilterModal from '@/features/filtering/ui/DetailFilterModal.tsx';

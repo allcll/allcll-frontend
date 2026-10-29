@@ -4,7 +4,7 @@ import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader.tsx';
 import useWishes from '@/entities/wishes/model/useWishes.ts';
 import { initialFilters } from '@/features/filtering/model/useFilterStore.ts';
 import PinCards from './PinCards';
-import DepartmentSelect from '../../../../entities/departments/ui/DepartmentSelect';
+import DepartmentSelect from '@/entities/departments/ui/DepartmentSelect';
 import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
 import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';

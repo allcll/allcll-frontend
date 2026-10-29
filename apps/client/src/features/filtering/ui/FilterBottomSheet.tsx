@@ -1,5 +1,5 @@
 import BottomSheet from '@/features/timetable/ui/BottomSheet.tsx';
-import BottomSheetHeader from '../../../shared/ui/bottomsheet/BottomSheetHeader.tsx';
+import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader.tsx';
 import { Filters, initialFilters } from '@/features/filtering/model/useFilterStore.ts';
 import DepartmentSelect from '@/entities/departments/ui/DepartmentSelect.tsx';
 import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';

@@ -12,7 +12,7 @@ import { Flex } from '@allcll/allcll-ui';
 import BasketBadge from '@/entities/wishes/ui/BasketBadge.tsx';
 import SeatBadge from '@/entities/wishes/ui/SeatBadge.tsx';
 import useHeaderSelector from '@/features/wish/lib/useHeaderSelector';
-import { ZeroElementRow } from '../../shared/ui/ZeroElementRow';
+import { ZeroElementRow } from '@/shared/ui/ZeroElementRow';
 import { getSubjectColorClass } from '@/entities/subjects/ui/subjectColor.ts';
 
 interface ITable {

@@ -5,12 +5,12 @@ import { Filters, initialFilters, useWishSearchStore } from '@/features/filterin
 import { TableSettingsIcon, StarFilledIcon, StarIcon, IconButton, Flex, Chip } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile.ts';
 import FilterBottomSheet from '@/features/filtering/ui/FilterBottomSheet.tsx';
-import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
-import GenericSingleSelectFilter from '../../../features/filtering/ui/GenericSingleSelectFilter.tsx';
+import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';
+import GenericSingleSelectFilter from '@/features/filtering/ui/GenericSingleSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
-import DepartmentFilter from '../../../features/filtering/ui/DepartmentFilter.tsx';
-import FilterDelete from '../../../features/filtering/ui/FilterDelete.tsx';
+import DepartmentFilter from '@/features/filtering/ui/DepartmentFilter.tsx';
+import FilterDelete from '@/features/filtering/ui/FilterDelete.tsx';
 import usePreSeatGate from '@/entities/seat/model/usePreSeatGate';
 import useWishesPreSeats from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
 import { useWishesTableStore } from '@/features/wish/model/useWishTableColumnStore.ts';

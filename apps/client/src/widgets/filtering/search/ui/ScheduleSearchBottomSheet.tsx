@@ -1,6 +1,6 @@
 import { useDeferredValue } from 'react';
 import BottomSheet from '@/features/timetable/ui/BottomSheet.tsx';
-import BottomSheetHeader from '../../../../shared/ui/bottomsheet/BottomSheetHeader.tsx';
+import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader.tsx';
 import TimetableSubjectCards from '@/features/timetable/ui/subject/TimetableSubjectCards.tsx';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
