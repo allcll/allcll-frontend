@@ -12,7 +12,7 @@ const fsdLayerRules = FSD_LAYERS.slice(0, -1).map((layer, index) => ({
   files: [`apps/client/src/${layer}/**/*.{ts,tsx}`],
   rules: {
     'no-restricted-imports': [
-      'error',
+      'warn',
       {
         patterns: FSD_LAYERS.slice(index + 1).map(upper => ({
           group: [`@/${upper}/*`, `**/${upper}/*`],

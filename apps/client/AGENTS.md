@@ -21,7 +21,7 @@ app → pages → widgets → features → entities → shared
 
 ## import 규칙
 
-ESLint가 막는 규칙은 하나입니다. 아래 레이어에서 위 레이어를 import 하면 루트 `eslint.config.js`의 FSD 규칙이 `no-restricted-imports` 오류를 내고, 커밋할 때 husky도 같은 검사를 돌립니다. 규칙을 끄지 말고 "위 레이어 코드가 필요할 때"의 방법으로 구조를 고칩니다.
+ESLint가 검사하는 규칙은 하나입니다. 아래 레이어에서 위 레이어를 import 하면 루트 `eslint.config.js`의 FSD 규칙이 `no-restricted-imports` 경고를 냅니다. 팀에서 도입 여부를 정하기 전이라 커밋은 막지 않지만, 경고가 뜨면 넘기지 말고 "위 레이어 코드가 필요할 때"의 방법으로 구조를 고칩니다.
 
 나머지는 ESLint가 잡지 않아서 직접 지킵니다.
 
