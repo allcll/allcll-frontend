@@ -32,24 +32,26 @@
 
 이 프로젝트는 메인 애플리케이션과 관리자 페이지, 그리고 UI 라이브러리를 포함하는 **Monorepo** 형태로 구성되어 있습니다.
 
+배포되는 앱은 `apps/`에, 앱이 가져다 쓰는 공용 코드와 개발 도구는 `packages/`에 둡니다.
+
 ```plaintext
-packages/
-├── admin/          # 관리자 대시보드 (크롤러 제어, 로그 확인 등)
+apps/
 ├── client/         # 학생용 메인 웹 애플리케이션
+└── admin/          # 관리자 대시보드 (크롤러 제어, 로그 확인 등)
+packages/
 ├── common/         # 패키지 간 공유되는 공통 컴포넌트 및 유틸리티
 ├── allcll-ui/      # 올클 서비스 전용 디자인 시스템 컴포넌트 라이브러리
 ├── sejong-ui/      # 세종대학교 스타일을 반영한 UI 라이브러리
 ├── e2e/            # Playwright 기반의 E2E(End-to-End) 테스트
-├── mock-server/    # MSW 기반 Mock API 서버
-└── nginx/          # 배포를 위한 Nginx 설정
+└── mock-server/    # MSW 기반 Mock API 서버
 ```
 
 ## 🔵 시작하기
 
 ### 사전 준비
 
-- Node.js (^18.0.0)
-- pnpm (패키지 매니저)
+- Node.js (^20.19.0 || >=22.12.0)
+- pnpm (9.15.4)
 
 ### 설치
 
