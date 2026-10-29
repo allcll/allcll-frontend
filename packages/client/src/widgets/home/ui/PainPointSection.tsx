@@ -32,7 +32,7 @@ function PainPointSection() {
           </div>
         ))}
       </div>
-      <div className="text-gray-900 mt-16">
+      <div className="mt-16">
         <p>그래서 우리는 올클을 만들었습니다.</p>
         <p>같은 고민을 했던 우리이기에, 진짜 도움이 되는 서비스를 만들고 싶었습니다. </p>
       </div>

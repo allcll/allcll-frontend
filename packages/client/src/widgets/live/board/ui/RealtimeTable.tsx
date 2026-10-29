@@ -162,7 +162,7 @@ function SubjectRow({ subject, HeadTitles }: Readonly<{ subject: SseSubject; Hea
 
   return (
     <tr
-      className={`border-t border-gray-200 text-black transition-colors duration-500 text-nowrap ${bgColor}`}
+      className={`border-t border-gray-200 transition-colors duration-500 text-nowrap ${bgColor}`}
       data-testid="crawl-row"
       data-crawled-at={crawledAt}
     >

@@ -98,7 +98,7 @@ function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
   };
 
   return (
-    <tr className={`border-t border-gray-200 text-black ${bgColor}`}>
+    <tr className={`border-t border-gray-200 ${bgColor}`}>
       <td className="px-4 py-2 text-center">
         <button aria-label={isPinned ? '알림 과목 해제' : '알림 과목 등록'} onClick={handlePin}>
           {isPinned ? (

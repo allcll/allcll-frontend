@@ -110,7 +110,7 @@ function Simulation() {
             <SejongUI.Button size="sm" onClick={reloadSimulationStatus}>
               재조회
             </SejongUI.Button>
-            <span className="text-xs font-bold text-black">
+            <span className="text-xs font-bold">
               수강 가능 학점: 18 /
               <span className="text-primary-500">
                 신청 과목수: {currentSimulation.registeredSubjects.length} / 신청 학점수: {totalCredits}

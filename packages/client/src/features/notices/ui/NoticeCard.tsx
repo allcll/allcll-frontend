@@ -25,7 +25,7 @@ function NoticeCard({ notice, isRead, onClick }: Readonly<NoticeCardProps>) {
             </Badge>
             <span className="text-xs text-gray-400">{date}</span>
           </Flex>
-          <p className="text-sm text-gray-900 font-medium truncate">{notice.title}</p>
+          <p className="text-sm font-medium truncate">{notice.title}</p>
         </Flex>
       </Flex>
     </button>

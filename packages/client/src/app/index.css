@@ -233,6 +233,7 @@
 
 body {
   margin: 0;
+  @apply text-text-200;
 }
 
 :root {

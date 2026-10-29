@@ -66,7 +66,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
                     </Badge>
                   </td>
                   <td
-                    className="px-4 py-3 text-sm text-gray-900 truncate hover:text-primary-500 transition-colors"
+                    className="px-4 py-3 text-sm truncate hover:text-primary-500 transition-colors"
                     role="button"
                     tabIndex={0}
                     onClick={() => onView(notice)}

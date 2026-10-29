@@ -66,7 +66,7 @@ function ClassicReadingTable({ domains }: Readonly<{ domains: ClassicDomain[] }>
             <tr key={domain.domainType}>
               <td className="py-1 text-gray-600">{CLASSIC_DOMAIN_LABELS[domain.domainType]}</td>
               <td className="py-1 text-right">
-                <span className={domain.satisfied ? 'text-primary-500' : 'text-gray-900'}>
+                <span className={domain.satisfied ? 'text-primary-500' : ''}>
                   {domain.myCount}/{domain.requiredCount}권
                 </span>
               </td>

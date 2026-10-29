@@ -8,9 +8,7 @@ const FileUploadGuide = () => {
         <Flex align="items-center" gap="gap-2">
           <WarningIcon className="w-5 h-5 text-gray-300" />
 
-          <Heading level={3} className="text-gray-800">
-            기이수 성적 파일 업로드 방법
-          </Heading>
+          <Heading level={3}>기이수 성적 파일 업로드 방법</Heading>
         </Flex>
 
         <ul className="list-disc list-inside space-y-1 ml-1 text-gray-600">

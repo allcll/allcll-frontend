@@ -33,7 +33,7 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
               icon={<ChevronLeftIcon className="w-5 h-5 text-gray-500" />}
               onClick={() => setSelectedNotice(null)}
             />
-            <span className="text-base font-semibold text-gray-900">공지사항</span>
+            <span className="text-base font-semibold">공지사항</span>
           </Flex>
           <IconButton
             className="p-2 hover:bg-gray-100 active:bg-gray-100"
@@ -54,7 +54,7 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
   return (
     <Flex direction="flex-col" className="h-full">
       <Flex align="items-center" justify="justify-between" className="px-4 h-14 shrink-0 border-b border-gray-100">
-        <span className="text-base font-semibold text-gray-900">공지사항</span>
+        <span className="text-base font-semibold">공지사항</span>
         <IconButton
           className="p-2 hover:bg-gray-100 active:bg-gray-100"
           variant="plain"

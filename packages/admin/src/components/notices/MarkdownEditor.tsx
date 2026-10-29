@@ -179,7 +179,7 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
                 }
               }}
               placeholder="내용을 입력하세요..."
-              className="w-full px-4 py-3 text-sm text-gray-900 placeholder-gray-400 resize-none focus:outline-none leading-relaxed min-h-[480px]"
+              className="w-full px-4 py-3 text-sm placeholder-gray-400 resize-none focus:outline-none leading-relaxed min-h-[480px]"
             />
           </>
         )}

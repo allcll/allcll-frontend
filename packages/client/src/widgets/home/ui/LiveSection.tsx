@@ -54,7 +54,7 @@ function LiveSection() {
                   { id: '009912-006', name: 'C프로그래밍및실습', prof: '김도년', seats: 5 },
                   { id: '007330-001', name: '확률및통계', prof: '김해광', seats: 4 },
                 ].map(({ id, name, prof, seats }, index) => (
-                  <tr key={'live-non-major-' + index} className="border-t border-gray-200 text-black">
+                  <tr key={'live-non-major-' + index} className="border-t border-gray-200">
                     <td className="px-4 py-2 text-center">{id}</td>
                     <td className="px-4 py-2 text-center">{name}</td>
                     <td className="px-4 py-2 text-center">{prof}</td>

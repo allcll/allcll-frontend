@@ -52,7 +52,7 @@ export function FeedbackFields({
         <RateInputs rate={3} currentRate={rate} label={titles.rateLabels[2]} onClick={() => setRate(3)} />
       </Flex>
 
-      <Heading level={4} className="block text-sm text-gray-600 mb-2">
+      <Heading level={4} className="mb-2">
         {titles.textareaTitle}
       </Heading>
       <Textarea
@@ -118,7 +118,7 @@ interface ICategoryChipsProps {
 function CategoryChips({ category, onChange }: ICategoryChipsProps) {
   return (
     <>
-      <Heading level={4} className="block text-sm text-gray-600 mb-2">
+      <Heading level={4} className="mb-2">
         어떤 서비스에 대한 의견인가요? (선택)
       </Heading>
       <Flex gap="gap-2" className="flex-wrap mb-4">

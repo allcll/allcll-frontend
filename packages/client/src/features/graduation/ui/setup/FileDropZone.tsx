@@ -132,7 +132,7 @@ const SelectedState = ({ file, onDelete }: { file: File; onDelete: (e: React.Mou
         </div>
 
         <div className="text-center">
-          <p className="text-base font-semibold text-gray-900">{file.name}</p>
+          <p className="text-base font-semibold">{file.name}</p>
           <p className="mt-1 text-sm text-gray-500">'다음 단계' 버튼을 누르면 분석이 시작됩니다</p>
           <p className="mt-0.5 text-xs text-gray-400">파일을 변경하려면 클릭하거나 드래그하세요</p>
         </div>
