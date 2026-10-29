@@ -44,7 +44,7 @@ function DetailFilterModal({ filterStore, onClose }: Readonly<IModalProps>) {
   };
 
   return (
-    <Dialog title="상세 필터링" onClose={onClose} isOpen={true}>
+    <Dialog title="필터" onClose={onClose} isOpen={true}>
       <Dialog.Content>
         <Flex direction="flex-col" gap="gap-4" className="w-130">
           {allSelectedFilters.length > 0 && (

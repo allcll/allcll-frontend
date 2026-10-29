@@ -33,7 +33,7 @@ function PinSearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
       {({ expandToMax }) => (
         <>
           <BottomSheetHeader
-            title="알림과목검색"
+            title="알림 과목 등록"
             headerType="close"
             onClose={() => onCloseSearch()}
             onClick={expandToMax}

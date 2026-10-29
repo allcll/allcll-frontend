@@ -48,7 +48,7 @@ function FilterBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }
     <BottomSheet>
       <BottomSheetHeader
         headerType="close"
-        title="필터링"
+        title="필터"
         onClose={() => {
           onCloseFiltering();
         }}

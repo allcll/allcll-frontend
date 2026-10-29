@@ -26,9 +26,9 @@ function PinSearchSideBar({ isOpen, onClose }: PinSearchSideBarProps) {
     <CSSTransition in={isOpen} timeout={100} classNames={transitionClasses} unmountOnExit>
       <Flex direction="flex-col" className="w-92 flex-auto bg-gray-50 shadow-lg z-content">
         <div className="flex justify-between items-center py-2 pl-4 pr-2 bg-white border-b border-gray-200">
-          <Heading level={2}>알림 설정</Heading>
+          <Heading level={2}>알림 과목 등록</Heading>
           <IconButton
-            aria-label="알림 설정 닫기"
+            aria-label="알림 과목 등록 닫기"
             icon={<CloseIcon className="w-4 h-4 text-gray-700" />}
             onClick={onClose}
           />
