@@ -1,5 +1,6 @@
 import { useId, type ComponentPropsWithRef, type KeyboardEvent } from 'react';
 import { CheckmarkIcon } from '../../icons';
+import { useIsInPopoverContent } from '../popover/popover-content/PopoverContentContext';
 
 interface ICheckbox extends ComponentPropsWithRef<'input'> {
   label?: string;
@@ -7,9 +8,10 @@ interface ICheckbox extends ComponentPropsWithRef<'input'> {
 
 function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
   const reactId = useId();
+  const isInPopover = useIsInPopoverContent();
   const inputId = label ? `checkbox-${label}` : `checkbox-${reactId}`;
 
-  const inputClass = `w-5 h-5 rounded-sm border flex-shrink-0 appearance-none flex items-center justify-center
+  const inputClass = `w-4 h-4 rounded-sm border flex-shrink-0 appearance-none flex items-center justify-center
     ${getCheckboxClass(!!rest.checked)}`;
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -24,9 +26,9 @@ function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
   return (
     <label
       htmlFor={inputId}
-      className="flex flex-row items-center gap-3 text-sm md:text-base cursor-pointer select-none"
+      className={`flex flex-row items-center cursor-pointer select-none ${isInPopover ? 'gap-1.5 text-sm' : 'gap-3 text-sm md:text-base'}`}
     >
-      <div className="relative w-5 h-5">
+      <div className="relative w-4 h-4">
         <input
           id={inputId}
           type="checkbox"
@@ -37,7 +39,7 @@ function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
           {...rest}
         />
         {rest.checked && (
-          <CheckmarkIcon className="text-primary-500 w-4 h-4 absolute inset-0 m-auto pointer-events-none" />
+          <CheckmarkIcon className="text-primary-500 w-3 h-3 absolute inset-0 m-auto pointer-events-none" />
         )}
       </div>
 

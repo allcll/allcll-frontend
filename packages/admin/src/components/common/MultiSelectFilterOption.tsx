@@ -67,7 +67,7 @@ function MultiSelectFilterOption<VALUE extends string | number>({
 
   return (
     <div className="relative inline-block">
-      <Label>{labelPrefix ?? ''}</Label>
+      <Label className="block mb-2">{labelPrefix ?? ''}</Label>
       <div
         className={`
           gap-y-2 
@@ -87,7 +87,7 @@ function MultiSelectFilterOption<VALUE extends string | number>({
         ))}
       </div>
 
-      <div className="flex justify-end w-full mt-2">
+      <div className="flex justify-end w-full mt-2 pt-2 border-t border-gray-100">
         <Button
           variant="text"
           size="small"

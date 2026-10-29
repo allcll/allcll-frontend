@@ -28,7 +28,7 @@ function ListboxOption({
     }
   };
 
-  const baseClass = `flex px-2 py-2 rounded-sm cursor-pointer text-sm ${INTERACTION.pressable} ${INTERACTION.hoverable}`;
+  const baseClass = `flex px-2 py-2 rounded-md cursor-pointer text-sm ${INTERACTION.pressable} ${INTERACTION.hoverable}`;
 
   return (
     <div

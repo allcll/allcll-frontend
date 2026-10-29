@@ -1,4 +1,4 @@
-import { Button, Flex, Grid, Label } from '@allcll/allcll-ui';
+import { Button, Flex, Grid, Label, useIsInPopoverContent } from '@allcll/allcll-ui';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { getLabelFormatter, labelPrefix } from '@/features/filtering/lib/getFilteringFormatter.ts';
 import MinMaxFilter from './MinMaxFilter.tsx';
@@ -25,6 +25,7 @@ function SingleSelectFilterOption<K extends keyof Filters>({
   isMinMax = false,
 }: Readonly<ISingleSelectFilter<K>>) {
   const isMobile = useMobile();
+  const footerClass = useIsInPopoverContent() ? 'mt-2 pt-2 border-t border-gray-100' : '';
 
   const handleChangeCheckbox = (optionValue: FilterValueType<K>) => {
     const checked = selectedValue === optionValue;
@@ -67,7 +68,7 @@ function SingleSelectFilterOption<K extends keyof Filters>({
       </Flex>
 
       {!isMobile && (
-        <Flex justify="justify-end">
+        <Flex justify="justify-end" className={footerClass}>
           <Button
             variant="text"
             size="small"

@@ -212,7 +212,7 @@ function SearchableSelect({
         createPortal(
           <div
             ref={panelRef}
-            className="fixed flex flex-col bg-white border border-gray-200 rounded-md shadow-lg overflow-hidden"
+            className="fixed flex flex-col bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden"
             style={{ ...panelStyle, zIndex: Z_INDEX.dropdown }}
           >
             <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-100 shrink-0">

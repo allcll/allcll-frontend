@@ -6,7 +6,7 @@ import { useAdminReviews, OPERATION_TYPE_LABEL } from '@/hooks/server/useAdminRe
 import type { Review } from '@/hooks/server/useAdminReviews';
 import { Filtering, CheckboxAdapter } from '@allcll/common';
 import MultiSelectFilterOption from '@/components/common/MultiSelectFilterOption';
-import { Button, Flex, ListboxOption } from '@allcll/allcll-ui';
+import { Button, Flex, Label, ListboxOption } from '@allcll/allcll-ui';
 
 const DOMAIN_OPTIONS = Object.entries(OPERATION_TYPE_LABEL).map(([value, label]) => ({ label, value }));
 const RATING_OPTIONS = [1, 2, 3].map(r => ({ label: `${r}점`, value: String(r) }));
@@ -89,15 +89,18 @@ function Reviews() {
         />
       </Filtering>
       <Filtering label={`정렬: ${activeSortOption.label}`} selected={sortKey !== 'latest'}>
-        <div className="flex flex-col gap-1 min-w-32">
-          {SORT_OPTIONS.map(option => (
-            <ListboxOption
-              key={option.value}
-              selected={sortKey === option.value}
-              onSelect={() => setSortKey(option.value)}
-              left={option.label}
-            />
-          ))}
+        <div>
+          <Label className="block mb-2 px-2">정렬</Label>
+          <div className="flex flex-col gap-1 min-w-32">
+            {SORT_OPTIONS.map(option => (
+              <ListboxOption
+                key={option.value}
+                selected={sortKey === option.value}
+                onSelect={() => setSortKey(option.value)}
+                left={option.label}
+              />
+            ))}
+          </div>
         </div>
       </Filtering>
       <div className="ml-auto">

@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { usePopoverContext } from '../popover/Popover';
 import useDetectClose from '../../../hooks/useDetectClose';
 import { Z_INDEX } from '../../../../zIndex';
+import { PopoverContentContext } from './PopoverContentContext';
 
 function PopoverContent({ children }: { children: React.ReactNode }) {
   const { isOpen, close, open, triggerRef } = usePopoverContext();
@@ -24,7 +25,7 @@ function PopoverContent({ children }: { children: React.ReactNode }) {
     <div
       ref={contentRef}
       className={`
-        fixed rounded-md bg-white shadow-lg border border-gray-200 px-4 py-4
+        fixed rounded-lg bg-white shadow-lg border border-gray-200 p-3
         transition-all duration-150 ease-out
         ${
           isOpen
@@ -36,11 +37,12 @@ function PopoverContent({ children }: { children: React.ReactNode }) {
         zIndex: Z_INDEX.popover,
         top: rect.bottom + 8,
         left: rect.left,
+        minWidth: rect.width,
       }}
       onMouseDown={e => e.stopPropagation()}
       onClick={e => e.stopPropagation()}
     >
-      {children}
+      <PopoverContentContext.Provider value={true}>{children}</PopoverContentContext.Provider>
     </div>,
     document.body,
   );
