@@ -45,7 +45,7 @@ function LoginForm({ onSuccess }: ILoginFormProps) {
   const handleLoginSuccess = () => {
     setErrorView(null);
     onSuccess?.();
-    addToast('로그인에 성공하셨습니다.', 'login-success');
+    addToast('로그인되었습니다.', 'login-success');
   };
 
   const handleLoginError = (error: Error) => {

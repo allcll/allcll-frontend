@@ -22,7 +22,7 @@ function SimulationSection() {
     <Section>
       <SectionHeader
         title="세종대 수강신청 연습 (올클연습)"
-        subtitle="세종대 수강신청 연습 부터, 결과 분석까지 한 번에"
+        subtitle="세종대 수강신청 연습부터, 결과 분석까지 한 번에"
         href="/simulation"
       />
 
@@ -109,7 +109,7 @@ function CaptchaInput({
   function handleConfirmCaptcha() {
     const RESET_TIME = 700;
     if (captchaInput?.toString() === codeRef.current) {
-      setInfoMessage({ message: '캡차가 성공적으로 입력되었습니다.', color: 'green' });
+      setInfoMessage({ message: '캡차가 입력되었습니다.', color: 'green' });
       captchaResult.endResult(true);
       setTimeout(resetCaptcha, RESET_TIME);
     } else {

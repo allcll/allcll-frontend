@@ -10,7 +10,7 @@ function ZeroListError() {
     <EmptyState
       icon={SearchIcon}
       title="검색 결과가 없습니다."
-      description="찾으시는 과목이 없으신가요? 커스텀 일정을 직접 등록해주세요."
+      description="찾는 과목이 없나요? 커스텀 일정을 직접 등록해주세요."
       className="pt-5"
     >
       <Button variant="solid" size="medium" onClick={() => openScheduleModal(initSchedule)}>

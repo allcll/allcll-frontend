@@ -89,9 +89,7 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
               {isSuccessSimulation ? ' 성공!' : ' 실패'}
             </span>
           </Heading>
-          <span className="text-sm text-gray-700 mt-1">
-            수강신청에 {isSuccessSimulation ? ' 성공' : ' 실패'}하셨어요
-          </span>
+          <span className="text-sm text-gray-700 mt-1">수강신청에 {isSuccessSimulation ? ' 성공' : ' 실패'}했어요</span>
 
           <div className="flex flex-col justify-center items-center">
             <div className="m-2 flex justify-center">
