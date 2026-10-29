@@ -47,9 +47,9 @@ const OUTLINED_CLASS: Record<ButtonColor, string> = {
 };
 
 const TEXT_CLASS: Record<ButtonColor, string> = {
-  primary: 'text-primary-500 hover:text-primary-600',
-  gray: 'text-gray-700 hover:text-gray-800',
-  danger: 'text-danger-500 hover:text-danger-600',
+  primary: 'text-primary-500 hover:text-primary-700',
+  gray: 'text-gray-800 enabled:hover:text-primary-500',
+  danger: 'text-danger-500 hover:text-danger-700',
 };
 
 function getVariantClass(variant: ButtonVariant, color: ButtonColor) {
