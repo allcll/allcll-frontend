@@ -37,7 +37,7 @@ function WishesDetail() {
             </Card>
           </Grid>
 
-          <Card className="mt-2">
+          <Card className="mt-6">
             <RecommendWishes wishesInfo={wishesInfo} />
           </Card>
         </Card>

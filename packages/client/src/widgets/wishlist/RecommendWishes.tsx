@@ -13,7 +13,7 @@ function RecommendWishes({ wishesInfo }: IRecommendWishesProps) {
       <Heading level={2}>대체 과목 추천</Heading>
       <SupportingText>학수번호가 같은 과목을 알려드려요</SupportingText>
 
-      <Flex direction="flex-col" className="overflow-x-auto">
+      <Flex direction="flex-col" className="mt-4 overflow-x-auto">
         <RecommendationTable wishesInfo={wishesInfo} />
       </Flex>
     </>
