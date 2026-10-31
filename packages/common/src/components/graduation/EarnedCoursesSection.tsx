@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
-import { Flex, Chip, ListboxOption, ChevronDownIcon, CheckmarkIcon, EmptyState } from '@allcll/allcll-ui';
+import { useState, useEffect } from 'react';
+import { Flex, Grid, Label, Chip, ChevronDownIcon, EmptyState, usePopoverContext } from '@allcll/allcll-ui';
+import Filtering from '../filtering/Filtering';
 import type { CategoryType, GraduationCourse } from '../../types/graduation';
 import { CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
 import { COURSE_CATEGORY_ORDER } from '../../lib/graduation/rules';
@@ -46,26 +47,10 @@ function CourseRow({ course }: Readonly<{ course: GraduationCourse }>) {
 function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | '전체'>('전체');
-  const [isSelectOpen, setIsSelectOpen] = useState(false);
-  const selectRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!isOpen) {
-      setSelectedCategory('전체');
-      setIsSelectOpen(false);
-    }
+    if (!isOpen) setSelectedCategory('전체');
   }, [isOpen]);
-
-  useEffect(() => {
-    if (!isSelectOpen) return;
-    const handleClickOutside = (e: MouseEvent) => {
-      if (selectRef.current && !selectRef.current.contains(e.target as Node)) {
-        setIsSelectOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isSelectOpen]);
 
   const categories = getUniqueCategories(courses);
   const visibleCourses = filterCourses(courses, selectedCategory);
@@ -103,35 +88,16 @@ function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) 
             ) : (
               <>
                 <Flex align="items-center" justify="justify-between" gap="gap-3">
-                  <div ref={selectRef} className="relative">
-                    <Chip
-                      label={selectedCategory === '전체' ? '전체' : CATEGORY_TYPE_LABELS[selectedCategory]}
-                      selected={isSelectOpen}
-                      variant="select"
-                      isChipOpen={isSelectOpen}
-                      onClick={() => setIsSelectOpen(prev => !prev)}
+                  <Filtering
+                    label={selectedCategory === '전체' ? '전체' : CATEGORY_TYPE_LABELS[selectedCategory]}
+                    selected={selectedCategory !== '전체'}
+                  >
+                    <CategoryOptions
+                      options={categoryOptions}
+                      selectedCategory={selectedCategory}
+                      onSelect={setSelectedCategory}
                     />
-                    {isSelectOpen && (
-                      <div className="absolute z-content mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto min-w-30">
-                        {categoryOptions.map(option => (
-                          <ListboxOption
-                            key={option.value}
-                            selected={option.value === selectedCategory}
-                            left={option.label}
-                            right={
-                              option.value === selectedCategory ? (
-                                <CheckmarkIcon className="w-4 h-4 shrink-0 text-primary-500" />
-                              ) : null
-                            }
-                            onSelect={() => {
-                              setSelectedCategory(option.value);
-                              setIsSelectOpen(false);
-                            }}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  </Filtering>
                   <span className="text-xs text-gray-500 shrink-0">
                     <span className="text-primary-500 font-semibold">{earnedCredits}학점</span> · {earnedCount}과목
                   </span>
@@ -157,6 +123,35 @@ function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) 
         </div>
       )}
     </div>
+  );
+}
+
+interface CategoryOptionsProps {
+  options: { value: CategoryType | '전체'; label: string }[];
+  selectedCategory: CategoryType | '전체';
+  onSelect: (category: CategoryType | '전체') => void;
+}
+
+function CategoryOptions({ options, selectedCategory, onSelect }: Readonly<CategoryOptionsProps>) {
+  const { close } = usePopoverContext();
+
+  return (
+    <Flex direction="flex-col" gap="gap-2">
+      <Label>이수 구분</Label>
+      <Grid columns={{ md: 3 }} gap="gap-2">
+        {options.map(option => (
+          <Chip
+            key={option.value}
+            label={option.label}
+            selected={option.value === selectedCategory}
+            onClick={() => {
+              onSelect(option.value);
+              close();
+            }}
+          />
+        ))}
+      </Grid>
+    </Flex>
   );
 }
 
