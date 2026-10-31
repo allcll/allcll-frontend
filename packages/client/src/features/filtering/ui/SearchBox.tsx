@@ -34,6 +34,7 @@ function SearchBox({ onDelete, ...props }: ISearchBox) {
           />
         ) : undefined
       }
+      ref={ref}
       {...props}
     />
   );

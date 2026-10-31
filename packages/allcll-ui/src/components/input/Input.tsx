@@ -1,4 +1,4 @@
-import { useRef, type ComponentPropsWithoutRef } from 'react';
+import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { FIELD_CLASS } from '../../config';
 
 interface IInput extends ComponentPropsWithoutRef<'input'> {
@@ -7,9 +7,10 @@ interface IInput extends ComponentPropsWithoutRef<'input'> {
   fullWidth?: boolean;
 }
 
-export function Input({ className = '', leftIcon, rightIcon, fullWidth = true, ...rest }: IInput) {
-  const ref = useRef<HTMLInputElement | null>(null);
-
+export const Input = forwardRef<HTMLInputElement, IInput>(function Input(
+  { className = '', leftIcon, rightIcon, fullWidth = true, ...rest },
+  ref,
+) {
   const paddingLeft = leftIcon ? 'pl-10' : 'pl-3';
   const paddingRight = rightIcon ? 'pr-10' : 'pr-3';
 
@@ -22,6 +23,6 @@ export function Input({ className = '', leftIcon, rightIcon, fullWidth = true, .
       {rightIcon && <div>{rightIcon}</div>}
     </div>
   );
-}
+});
 
 export default Input;
