@@ -7,7 +7,7 @@ function AlarmAddButton() {
   return (
     <Flex justify="justify-center" align="items-center">
       <Button variant="ghost" size="medium" onClick={() => setIsSearchOpen(true)}>
-        <AddIcon className="w-4 h-4" />
+        <AddIcon />
         알림 과목 등록
       </Button>
     </Flex>

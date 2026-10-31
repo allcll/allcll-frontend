@@ -38,7 +38,7 @@ function ScheduleContentPanel() {
 
         <ScheduleFilter />
         <Button variant="text" size="small" onClick={() => openScheduleModal(initSchedule)}>
-          <AddIcon className="w-4 h-4" />
+          <AddIcon />
           커스텀 일정 생성
         </Button>
 

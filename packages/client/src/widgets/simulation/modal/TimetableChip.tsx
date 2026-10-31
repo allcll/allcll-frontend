@@ -56,7 +56,7 @@ function TimetableChipSelector({ semesterValue, timetables, selectedTimetableId,
 
         <Button asChild variant="text" size="small">
           <Link to="/timetable">
-            <AddIcon className="w-4 h-4" />새 시간표 추가
+            <AddIcon />새 시간표 추가
           </Link>
         </Button>
       </Flex>

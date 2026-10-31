@@ -123,7 +123,7 @@ const TimetableSelect = ({ setIsOpenModal, openCreateModal, timetables, currentT
 
             {currentTimetable && (
               <Button variant="text" size="small" color="gray" onClick={openCreateModal}>
-                <AddIcon className="w-4 h-4" />
+                <AddIcon />
                 시간표 추가하기
               </Button>
             )}

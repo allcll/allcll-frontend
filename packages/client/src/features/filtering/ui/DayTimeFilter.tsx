@@ -52,7 +52,7 @@ function DayTimeFilter({ items, onChange }: Readonly<IDayTimeFilter>) {
           className="-my-1.5"
           onClick={() => onChange([...items, { day: '', type: 'all' }])}
         >
-          <AddIcon className="w-4 h-4" />
+          <AddIcon />
           요일 추가
         </Button>
       </Flex>

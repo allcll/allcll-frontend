@@ -5,7 +5,7 @@ function GotoLive() {
   return (
     <Button asChild variant="outlined" color="primary" size="medium" className="w-fit">
       <NavLink to="/live" state={{ openSearch: true }}>
-        <NotificationIcon className="w-4 h-4" />
+        <NotificationIcon />
         알림 등록하러 가기
       </NavLink>
     </Button>

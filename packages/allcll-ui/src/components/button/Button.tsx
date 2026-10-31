@@ -70,11 +70,11 @@ function getVariantClass(variant: ButtonVariant, color: ButtonColor) {
 function getSizeClass(size: ButtonSize, isText: boolean) {
   switch (size) {
     case 'small':
-      return isText ? 'py-1.5 text-sm' : 'px-3 py-1.5 text-sm';
+      return isText ? 'py-1.5 text-sm [&_svg]:size-3' : 'px-3 py-1.5 text-sm [&_svg]:size-3';
     case 'large':
-      return isText ? 'py-2.5 text-base' : 'px-5 py-2.5 text-base';
+      return isText ? 'py-2.5 text-base [&_svg]:size-4' : 'px-5 py-2.5 text-base [&_svg]:size-4';
     case 'medium':
     default:
-      return isText ? 'py-2 text-sm' : 'px-4 py-2 text-sm';
+      return isText ? 'py-2 text-sm [&_svg]:size-3.5' : 'px-4 py-2 text-sm [&_svg]:size-3.5';
   }
 }

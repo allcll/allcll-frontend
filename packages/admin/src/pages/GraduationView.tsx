@@ -87,7 +87,7 @@ function GraduationView() {
     <div className="flex flex-col gap-5">
       <div className="w-fit">
         <Button variant="outlined" color="gray" size="small" onClick={() => navigate('/reviews')}>
-          <ChevronLeftIcon className="w-4 h-4" />
+          <ChevronLeftIcon />
           후기 목록
         </Button>
       </div>

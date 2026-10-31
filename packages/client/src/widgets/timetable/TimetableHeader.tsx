@@ -47,7 +47,7 @@ export function TimetableHeaderActions({
 
       {!isMobile && timetables && timetables.length >= 0 && (
         <Button variant="text" size="medium" onClick={handleCreateTimetable}>
-          <AddIcon className="w-4 h-4" />
+          <AddIcon />
           시간표 만들기
         </Button>
       )}
