@@ -19,7 +19,7 @@ function Button({ variant, color = 'primary', size, children, disabled, asChild,
   const buttonClass =
     variant === 'circle'
       ? ''
-      : `flex flex-row gap-1 items-center justify-center disabled:cursor-not-allowed ${INTERACTION.hoverable} ${INTERACTION.pressable}`;
+      : `flex flex-row gap-1 items-center justify-center disabled:cursor-not-allowed disabled:opacity-40 ${INTERACTION.hoverable} ${INTERACTION.pressable}`;
 
   const variantClass = getVariantClass(variant, color);
   const sizeClass = variant === 'circle' ? '' : getSizeClass(size, variant === 'text');
@@ -35,21 +35,21 @@ function Button({ variant, color = 'primary', size, children, disabled, asChild,
 export default Button;
 
 const SOLID_CLASS: Record<ButtonColor, string> = {
-  primary: 'bg-primary-500 text-white hover:bg-primary-600 disabled:bg-gray-100 disabled:text-gray-300',
-  gray: 'bg-gray-100 hover:bg-gray-300 disabled:text-gray-400',
-  danger: 'bg-danger-500 text-white hover:bg-danger-600 disabled:bg-gray-100',
+  primary: 'bg-primary-500 text-white not-disabled:hover:bg-primary-600',
+  gray: 'bg-gray-100 not-disabled:hover:bg-gray-300',
+  danger: 'bg-danger-500 text-white not-disabled:hover:bg-danger-600',
 };
 
 const OUTLINED_CLASS: Record<ButtonColor, string> = {
-  primary: 'border-primary-500 text-primary-500 hover:bg-primary-50',
-  gray: 'border-gray-700 hover:bg-gray-100',
-  danger: 'border-danger-500 text-danger-500 hover:bg-danger-50',
+  primary: 'border-primary-500 text-primary-500 not-disabled:hover:bg-primary-50',
+  gray: 'border-gray-700 not-disabled:hover:bg-gray-100',
+  danger: 'border-danger-500 text-danger-500 not-disabled:hover:bg-danger-50',
 };
 
 const TEXT_CLASS: Record<ButtonColor, string> = {
-  primary: 'text-primary-500 hover:text-primary-700',
-  gray: 'text-gray-800 enabled:hover:text-primary-500',
-  danger: 'text-danger-500 hover:text-danger-700',
+  primary: 'text-primary-500 not-disabled:hover:text-primary-700',
+  gray: 'text-gray-800 not-disabled:hover:text-primary-500',
+  danger: 'text-danger-500 not-disabled:hover:text-danger-700',
 };
 
 function getVariantClass(variant: ButtonVariant, color: ButtonColor) {
@@ -57,13 +57,13 @@ function getVariantClass(variant: ButtonVariant, color: ButtonColor) {
     case 'solid':
       return `rounded-md ${SOLID_CLASS[color]}`;
     case 'outlined':
-      return `bg-transparent border rounded-md disabled:border-gray-200 disabled:text-gray-400 ${OUTLINED_CLASS[color]}`;
+      return `bg-transparent border rounded-md ${OUTLINED_CLASS[color]}`;
     case 'text':
-      return `bg-transparent disabled:text-gray-400 ${TEXT_CLASS[color]}`;
+      return `bg-transparent ${TEXT_CLASS[color]}`;
     case 'ghost':
-      return 'bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-200 rounded-full';
+      return 'bg-gray-50 border border-gray-200 text-gray-700 not-disabled:hover:bg-gray-200 rounded-full';
     case 'circle':
-      return 'px-2 py-2 bg-primary-500 text-white hover:bg-primary-600 rounded-full shadow-md';
+      return 'px-2 py-2 bg-primary-500 text-white not-disabled:hover:bg-primary-600 rounded-full shadow-md';
   }
 }
 

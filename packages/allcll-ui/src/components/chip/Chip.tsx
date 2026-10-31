@@ -20,7 +20,7 @@ const ChipBase = forwardRef<HTMLButtonElement, Readonly<IChip>>(function Chip(
   ref,
 ) {
   const baseClasses =
-    'flex flex-row justify-center items-center gap-4 transition-colors duration-300 ease-out active:scale-[0.97]';
+    'flex flex-row justify-center items-center gap-4 transition-colors duration-300 ease-out not-disabled:active:scale-[0.97]';
 
   return (
     <button
