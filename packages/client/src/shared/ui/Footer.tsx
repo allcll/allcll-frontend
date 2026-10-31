@@ -1,6 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import { HeaderContents } from '@/shared/ui/Header.tsx';
-import { LogoGithubIcon, LogoInstagramIcon, LogoKakaoTalkIcon, Heading } from '@allcll/allcll-ui';
+import { LogoGithubIcon, LogoInstagramIcon, LogoKakaoTalkIcon, Heading, Container } from '@allcll/allcll-ui';
 import logoCiUrl from '@/assets/logo/ci-summer.svg';
 import logoNameUrl from '@/assets/logo/logo-name-summer.svg';
 
@@ -42,7 +42,7 @@ const OuterLinks = [
 function Footer() {
   return (
     <footer className="bg-white border-t border-gray-200 text-center text-sm text-gray-500">
-      <div className="mx-auto max-w-7xl px-4 md:px-16 py-12 grid md:grid-cols-3 gap-6 text-center md:text-left">
+      <Container className="py-12 grid md:grid-cols-3 gap-6 text-center md:text-left">
         <div className="mx-auto md:mx-0">
           <div className="flex items-center mb-2 h-fit justify-center md:justify-start">
             <img src={logoCiUrl} alt="" className="w-6 h-6 mr-2" />
@@ -99,7 +99,7 @@ function Footer() {
             </ul>
           </div>
         ))}
-      </div>
+      </Container>
 
       <p className="pb-12">© 2026 ALLCLL. All rights reserved.</p>
     </footer>

@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import logoCiUrl from '@/assets/logo/ci-summer.svg';
 import logoNameUrl from '@/assets/logo/logo-name-summer.svg';
-import { ChatHelpIcon, HeadsetIcon, MenuIcon, IconButton, Badge } from '@allcll/allcll-ui';
+import { ChatHelpIcon, HeadsetIcon, MenuIcon, IconButton, Badge, Container } from '@allcll/allcll-ui';
 import NoticeBell from '@/features/notices/ui/NoticeBell';
 import MobileMenu from './MobileMenu';
 
@@ -36,7 +36,7 @@ function Header() {
 
   return (
     <header className="bg-white shadow-sm z-header sticky top-0">
-      <div className="container flex items-center justify-between mx-auto max-w-7xl px-4 md:px-16">
+      <Container className="flex items-center justify-between">
         <div className="flex items-center space-x-4 py-4">
           <Link to="/" className="flex items-center gap-1 space-x-2" aria-label="메인 페이지">
             <h2 className="hidden">ALLCLL</h2>
@@ -92,7 +92,7 @@ function Header() {
             aria-expanded={isOpen}
           />
         </div>
-      </div>
+      </Container>
 
       <MobileMenu isOpen={isOpen} onClose={closeMenu} />
     </header>

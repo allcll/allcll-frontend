@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Container } from '@allcll/allcll-ui';
 
 interface PageContainerProps {
   children: ReactNode;
@@ -6,7 +7,7 @@ interface PageContainerProps {
 }
 
 function PageContainer({ children, className = '' }: PageContainerProps) {
-  return <div className={`mx-auto w-full max-w-7xl px-4 md:px-16 pt-6 pb-12 ${className}`}>{children}</div>;
+  return <Container className={`py-6 ${className}`}>{children}</Container>;
 }
 
 export default PageContainer;
