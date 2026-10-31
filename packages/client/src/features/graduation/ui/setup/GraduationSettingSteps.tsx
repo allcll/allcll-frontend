@@ -3,6 +3,7 @@ import useJolupSteps from '@/features/graduation/lib/useJolupSteps.ts';
 import StepErrorBoundary from './StepErrorBoundary';
 import StepIndicator from './StepIndicator';
 import StepContent from './StepContent';
+import PageContainer from '@/shared/ui/PageContainer';
 
 function GraduationSettingSteps() {
   const { step, nextStep, prevStep, isLoading, isDepartmentNotFound, setIsDepartmentNotFound } = useJolupSteps();
@@ -12,19 +13,21 @@ function GraduationSettingSteps() {
   }
 
   return (
-    <Flex direction="flex-col" gap="gap-4" className="w-full max-w-4xl mx-auto p-4">
-      <StepIndicator currentStep={step} />
+    <PageContainer>
+      <Flex direction="flex-col" gap="gap-4" className="max-w-4xl mx-auto">
+        <StepIndicator currentStep={step} />
 
-      <StepErrorBoundary resetKey={step}>
-        <StepContent
-          step={step}
-          nextStep={nextStep}
-          prevStep={prevStep}
-          isDepartmentNotFound={isDepartmentNotFound}
-          setIsDepartmentNotFound={setIsDepartmentNotFound}
-        />
-      </StepErrorBoundary>
-    </Flex>
+        <StepErrorBoundary resetKey={step}>
+          <StepContent
+            step={step}
+            nextStep={nextStep}
+            prevStep={prevStep}
+            isDepartmentNotFound={isDepartmentNotFound}
+            setIsDepartmentNotFound={setIsDepartmentNotFound}
+          />
+        </StepErrorBoundary>
+      </Flex>
+    </PageContainer>
   );
 }
 
