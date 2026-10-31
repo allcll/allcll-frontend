@@ -36,7 +36,16 @@ function SimulationBoard() {
   }
 
   if (!searchedLogs.length) {
-    return <EmptyState title="연습 기록이 없습니다" className="py-4" />;
+    return (
+      <div className="bg-white rounded-md shadow-md shadow-gray-300">
+        <EmptyState
+          icon={CursorIcon}
+          title="연습 기록이 없습니다"
+          description="수강 연습을 마치면 이곳에 기록이 쌓여요."
+          className="py-10"
+        />
+      </div>
+    );
   }
 
   return searchedLogs.map(log => (
