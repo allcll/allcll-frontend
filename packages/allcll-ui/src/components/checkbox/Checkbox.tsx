@@ -1,6 +1,5 @@
 import { useId, type ComponentPropsWithRef, type KeyboardEvent } from 'react';
 import { CheckmarkIcon } from '../../icons';
-import { useIsInPopoverContent } from '../popover/popover-content/PopoverContentContext';
 
 interface ICheckbox extends ComponentPropsWithRef<'input'> {
   label?: string;
@@ -8,7 +7,6 @@ interface ICheckbox extends ComponentPropsWithRef<'input'> {
 
 function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
   const reactId = useId();
-  const isInPopover = useIsInPopoverContent();
   const inputId = label ? `checkbox-${label}` : `checkbox-${reactId}`;
 
   const inputClass = `w-4 h-4 rounded-sm border flex-shrink-0 appearance-none flex items-center justify-center
@@ -24,10 +22,7 @@ function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
   };
 
   return (
-    <label
-      htmlFor={inputId}
-      className={`flex flex-row items-center cursor-pointer select-none ${isInPopover ? 'gap-1.5 text-sm' : 'gap-3 text-sm md:text-base'}`}
-    >
+    <label htmlFor={inputId} className="flex flex-row items-center gap-1.5 text-sm cursor-pointer select-none">
       <div className="relative w-4 h-4">
         <input
           id={inputId}
