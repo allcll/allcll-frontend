@@ -4,11 +4,11 @@ import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import useFaq from '@/entities/faq/model/useFaq.ts';
-import { ChevronDownIcon, Chip, Flex, Heading } from '@allcll/allcll-ui';
+import { Accordion, Chip, EmptyState, Flex, Heading, LoadingState, SupportingText } from '@allcll/allcll-ui';
 import markdownComponents from '@/shared/config/markdownComponents.tsx';
 
 const Tags = {
-  all: '기타',
+  all: '일반',
   timetable: '시간표',
   wishes: '관심과목',
   simulation: '올클연습',
@@ -21,43 +21,23 @@ function unique(array: string[]) {
 
 function FAQ() {
   const location = useLocation();
-  const hash = location.hash;
-  const selectedIndex = hash ? Number.parseInt(hash.replace('#', '')) : null;
+  const hashId = location.hash ? location.hash.replace('#', '') : null;
 
-  const [openIndex, setOpenIndex] = useState<number | null>(selectedIndex);
-  const { data: faqItems } = useFaq();
+  const [openId, setOpenId] = useState<string | null>(hashId);
+  const { data: faqItems, isPending, isError } = useFaq();
 
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const faqItemsWithTags = unique(faqItems?.map(item => item.tag) ?? []);
 
   const filteredFaqItems = selectedTag ? faqItems?.filter(item => item.tag === selectedTag) : faqItems;
 
-  const toggleAnswer = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
+  // 질문 목록이 그려진 뒤에 스크롤해야 링크로 지정한 질문 위치를 찾을 수 있음
   useEffect(() => {
-    if (location.hash) {
-      const selectedIndex = Number.parseInt(location.hash.replace('#', ''));
+    if (!hashId || !faqItems) return;
 
-      setTimeout(() => {
-        const targetElement = document.getElementById('faq-container-' + selectedIndex);
-        if (targetElement) {
-          targetElement.scrollIntoView({ behavior: 'smooth' });
-          setOpenIndex(selectedIndex);
-        }
-      }, 300);
-    }
-  }, [location.hash]);
-
-  const selectTag = (tag: string | null) => {
-    setSelectedTag(prev => {
-      if (prev === tag) {
-        return null; // Deselect if the same tag is clicked
-      }
-      return tag;
-    });
-  };
+    setOpenId(hashId);
+    document.getElementById('faq-container-' + hashId)?.scrollIntoView({ behavior: 'smooth' });
+  }, [hashId, faqItems]);
 
   return (
     <>
@@ -68,69 +48,48 @@ function FAQ() {
 
       <div className="mx-auto max-w-7xl px-4 md:px-16 py-24">
         <Flex direction="flex-col" gap="gap-4">
-          <Heading level={1}>자주 묻는 질문</Heading>
+          <div>
+            <Heading level={1}>자주 묻는 질문</Heading>
+            <SupportingText>ALLCLL을 이용하면서 자주 묻는 질문과 답변을 모았어요.</SupportingText>
+          </div>
 
-          <Flex direction="flex-wrap" gap="gap-2" className="mb-6">
-            {faqItemsWithTags.length > 0 &&
-              faqItemsWithTags.map((item, index) => (
+          {faqItemsWithTags.length > 0 && (
+            <Flex direction="flex-wrap" gap="gap-2" className="mb-6">
+              <Chip label="전체" onClick={() => setSelectedTag(null)} selected={selectedTag === null} />
+              {faqItemsWithTags.map(tag => (
                 <Chip
-                  label={Tags[item as keyof typeof Tags] || item}
-                  key={'faq-chip-' + index}
-                  onClick={() => selectTag(item)}
-                  selected={selectedTag === item}
+                  label={Tags[tag as keyof typeof Tags] || tag}
+                  key={'faq-chip-' + tag}
+                  onClick={() => setSelectedTag(tag)}
+                  selected={selectedTag === tag}
                 />
               ))}
-          </Flex>
+            </Flex>
+          )}
 
-          {filteredFaqItems &&
-            filteredFaqItems.map(item => (
-              <FaqComponent
-                key={item.id}
-                item={item}
-                index={item.id}
-                isOpen={openIndex === item.id}
-                toggleAnswer={toggleAnswer}
-              />
-            ))}
+          {isPending ? (
+            <LoadingState title="질문을 불러오는 중이에요." className="py-16" />
+          ) : isError ? (
+            <EmptyState title="질문을 불러오지 못했어요." description="잠시 후 다시 시도해주세요." className="py-16" />
+          ) : (
+            <Accordion value={openId} onValueChange={setOpenId}>
+              {filteredFaqItems?.map(item => (
+                <Accordion.Item
+                  key={item.id}
+                  value={String(item.id)}
+                  id={'faq-container-' + item.id}
+                  title={item.question}
+                >
+                  <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                    {item.answer}
+                  </ReactMarkdown>
+                </Accordion.Item>
+              ))}
+            </Accordion>
+          )}
         </Flex>
       </div>
     </>
-  );
-}
-
-interface IFaqComponent {
-  item: { question: string; answer: string };
-  index: number;
-  isOpen: boolean;
-  toggleAnswer: (index: number) => void;
-}
-
-function FaqComponent({ item, index, isOpen, toggleAnswer }: IFaqComponent) {
-  return (
-    <div key={index} id={'faq-container-' + index} className="mb-4 rounded-md bg-white shadow-sm">
-      <button
-        onClick={() => toggleAnswer(index)}
-        className={
-          'flex items-center justify-between rounded-md w-full text-left font-semibold text-md p-4 hover:bg-primary-50 focus:outline-none ' +
-          (isOpen ? 'text-primary-600 font-bold' : '')
-        }
-      >
-        {item.question}
-
-        <ChevronDownIcon
-          className={
-            'w-4 h-4 text-gray-400 transform transition-transform duration-150 ' + (isOpen ? 'rotate-180' : '')
-          }
-        />
-      </button>
-      {isOpen && (
-        <div className="p-4 border-t border-gray-200 text-sm">
-          <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
-            {item.answer}
-          </ReactMarkdown>
-        </div>
-      )}
-    </div>
   );
 }
 
