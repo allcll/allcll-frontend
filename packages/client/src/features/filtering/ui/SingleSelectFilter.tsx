@@ -1,8 +1,7 @@
-import { ResetIcon, Button, Flex, Grid, Label } from '@allcll/allcll-ui';
+import { Button, Flex, Grid, Label } from '@allcll/allcll-ui';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { getLabelFormatter, labelPrefix } from '@/features/filtering/lib/getFilteringFormatter.ts';
 import MinMaxFilter from './MinMaxFilter.tsx';
-import useMobile from '@/shared/lib/useMobile.ts';
 import { FilterItemProps, RangeMinMaxFilter } from '@/features/filtering/model/types.ts';
 
 type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer U)[] ? U : Filters[K];
@@ -24,8 +23,6 @@ function SingleSelectFilterOption<K extends keyof Filters>({
   ItemComponent,
   isMinMax = false,
 }: Readonly<ISingleSelectFilter<K>>) {
-  const isMobile = useMobile();
-
   const handleChangeCheckbox = (optionValue: FilterValueType<K>) => {
     const checked = selectedValue === optionValue;
     const newValue = checked ? null : optionValue;
@@ -66,14 +63,17 @@ function SingleSelectFilterOption<K extends keyof Filters>({
         )}
       </Flex>
 
-      {!isMobile && (
-        <Flex justify="justify-end">
-          <Button variant="text" size="small" textColor="gray" onClick={() => handleClickReset()}>
-            <ResetIcon className="inline w-3 h-3 mr-1 text-blue-500" />
-            초기화
-          </Button>
-        </Flex>
-      )}
+      <Flex justify="justify-end" className="mt-3 pt-1.5 -mb-1.5 border-t border-gray-100">
+        <Button
+          variant="text"
+          size="small"
+          color="gray"
+          disabled={selectedValue == null}
+          onClick={() => handleClickReset()}
+        >
+          초기화
+        </Button>
+      </Flex>
     </div>
   );
 }

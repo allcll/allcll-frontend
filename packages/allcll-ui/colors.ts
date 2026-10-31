@@ -12,7 +12,7 @@ export const colors = {
     800: '#1E40AF',
     900: '#1E3A8A',
   },
-  secondary: {
+  danger: {
     50: '#FEF2F2',
     100: '#FEE2E2',
     200: '#FECACA',

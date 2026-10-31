@@ -39,7 +39,7 @@ function GraduationView() {
   if (isPending) {
     return (
       <Flex justify="justify-center" align="items-center" className="min-h-[50vh]">
-        <SupportingText>졸업 요건 분석결과를 가져오는 중입니다.</SupportingText>
+        <SupportingText>졸업 요건 분석 결과를 가져오는 중입니다.</SupportingText>
       </Flex>
     );
   }
@@ -48,7 +48,7 @@ function GraduationView() {
     return (
       <Flex direction="flex-col" justify="justify-center" align="items-center" gap="gap-3" className="min-h-[50vh]">
         <SupportingText>졸업요건 데이터를 불러올 수 없습니다.</SupportingText>
-        <Button variant="outlined" size="small" onClick={() => navigate('/reviews')}>
+        <Button variant="outlined" color="gray" size="small" onClick={() => navigate('/reviews')}>
           후기 목록으로 돌아가기
         </Button>
       </Flex>
@@ -86,8 +86,8 @@ function GraduationView() {
   return (
     <div className="flex flex-col gap-5">
       <div className="w-fit">
-        <Button variant="outlined" size="small" onClick={() => navigate('/reviews')}>
-          <ChevronLeftIcon className="w-4 h-4" />
+        <Button variant="outlined" color="gray" size="small" onClick={() => navigate('/reviews')}>
+          <ChevronLeftIcon />
           후기 목록
         </Button>
       </div>

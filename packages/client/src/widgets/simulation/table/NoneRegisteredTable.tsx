@@ -1,7 +1,8 @@
 import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
 import useSimulationProcessStore from '@/features/simulation/model/useSimulationProcess.ts';
 import useSimulationSubjectStore from '@/features/simulation/model/useSimulationSubject.ts';
-import { BUTTON_EVENT, triggerButtonEvent } from '@/features/simulation/lib/simulation.ts';
+import { BUTTON_EVENT, getSimulationErrorMessage, triggerButtonEvent } from '@/features/simulation/lib/simulation.ts';
+import { useToastNotification } from '@allcll/common';
 import useLectures from '@/entities/subjects/model/useLectures.ts';
 import SejongUI, { type ColumnDefinition } from '@allcll/sejong-ui';
 import { SimulationSubject } from '@/shared/model/types.ts';
@@ -96,7 +97,7 @@ const SubmitButton = ({ subjectId }: { subjectId: number }) => {
     triggerButtonEvent({ eventType: BUTTON_EVENT.APPLY, subjectId }, lectures)
       .then(result => {
         if ('errMsg' in result) {
-          alert(result.errMsg);
+          useToastNotification.getState().addToast(getSimulationErrorMessage(result.errMsg), 'simulation-error');
         }
       })
       .catch(e => {

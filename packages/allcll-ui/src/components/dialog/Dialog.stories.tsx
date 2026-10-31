@@ -49,7 +49,7 @@ export const Playground: Story = {
             <Button size="small" variant="text" onClick={() => setOpen(false)}>
               확인
             </Button>
-            <Button size="small" variant="outlined" onClick={() => setOpen(false)}>
+            <Button size="small" variant="outlined" color="gray" onClick={() => setOpen(false)}>
               취소
             </Button>
           </Dialog.Footer>

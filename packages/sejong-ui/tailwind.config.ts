@@ -14,9 +14,6 @@ const config: Config = {
       // colors 단일 관리: allcll-ui/colors (client 기준으로 통일)
       colors: {
         primary: colors.primary,
-        blue: {
-          500: '#007aff',
-        },
       },
     },
   },

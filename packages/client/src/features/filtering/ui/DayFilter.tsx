@@ -1,7 +1,6 @@
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import DayTimeFilter, { IDayTimeItem } from './DayTimeFilter.tsx';
 import useMobile from '@/shared/lib/useMobile.ts';
-import { Flex, Label } from '@allcll/allcll-ui';
 import { Filtering } from '@allcll/common';
 
 interface IDayFilter {
@@ -16,10 +15,10 @@ function DayFilter({ times, setFilter }: IDayFilter) {
   const isMobile = useMobile();
 
   const getLabelPrefix = () => {
-    if (times.length === 1 && times[0].type === 'all' && times[0].day === '') return '요일';
+    if (times.length === 1 && times[0].type === 'all' && times[0].day === '') return '시간';
     if (times.length === 1) return ` ${times[0].day}요일`;
     if (times.length > 1) return ` ${times[0].day}요일 외 ${times.length - 1}개`;
-    return '요일';
+    return '시간';
   };
 
   const labelPrefix = getLabelPrefix();
@@ -27,11 +26,8 @@ function DayFilter({ times, setFilter }: IDayFilter) {
   return isMobile ? (
     <DayTimeFilter items={times} onChange={items => setFilterWrapper('time', items)} />
   ) : (
-    <Filtering label={labelPrefix} selected={times.length > 0 && times[0].day !== ''} className="min-w-max">
-      <Flex direction="flex-col" gap="gap-2">
-        <Label>강의 시간</Label>
-        <DayTimeFilter items={times} onChange={items => setFilterWrapper('time', items)} />
-      </Flex>
+    <Filtering label={labelPrefix} selected={times.length > 0 && times[0].day !== ''} className="min-w-max w-72">
+      <DayTimeFilter items={times} onChange={items => setFilterWrapper('time', items)} />
     </Filtering>
   );
 }

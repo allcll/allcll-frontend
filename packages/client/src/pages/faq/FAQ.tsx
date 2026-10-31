@@ -111,8 +111,8 @@ function FaqComponent({ item, index, isOpen, toggleAnswer }: IFaqComponent) {
       <button
         onClick={() => toggleAnswer(index)}
         className={
-          'flex items-center justify-between rounded-md w-full text-left font-semibold text-md p-4 hover:bg-blue-50 focus:outline-none cursor-pointer ' +
-          (isOpen ? 'text-blue-600 font-bold' : '')
+          'flex items-center justify-between rounded-md w-full text-left font-semibold text-md p-4 hover:bg-primary-50 focus:outline-none ' +
+          (isOpen ? 'text-primary-600 font-bold' : '')
         }
       >
         {item.question}

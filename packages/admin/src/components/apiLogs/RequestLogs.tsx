@@ -35,19 +35,19 @@ function RequestLogs({ urlInput, setUrlInput, selectedStatusCodes, setSelectedSt
         </Card.Header>
 
         <Card.Content>
-          <Label id="filtering-option" className="font-semibold">
-            필터링 옵션
-          </Label>
-          <Flex direction="flex-col" gap="gap-1" className="w-30">
-            <Filtering label="상태" selected={selectedStatusCodes.length !== 0}>
-              <MultiSelectFilterOption
-                labelPrefix="상태 코드"
-                selectedValues={selectedStatusCodes}
-                setFilter={setFilterScheduleWrapper}
-                options={StatusCodes}
-                ItemComponent={CheckboxAdapter}
-              />
-            </Filtering>
+          <Flex direction="flex-col" gap="gap-1.5">
+            <Label id="filtering-option">필터링 옵션</Label>
+            <Flex direction="flex-col" gap="gap-1" className="w-30">
+              <Filtering label="상태" selected={selectedStatusCodes.length !== 0}>
+                <MultiSelectFilterOption
+                  labelPrefix="상태 코드"
+                  selectedValues={selectedStatusCodes}
+                  setFilter={setFilterScheduleWrapper}
+                  options={StatusCodes}
+                  ItemComponent={CheckboxAdapter}
+                />
+              </Filtering>
+            </Flex>
           </Flex>
 
           <TextField

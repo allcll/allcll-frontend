@@ -1,4 +1,13 @@
-import { AllcllFaceIcon, CheckmarkIcon, Button, Chip, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import {
+  AllcllFaceIcon,
+  CheckmarkIcon,
+  Button,
+  Chip,
+  Flex,
+  Heading,
+  SupportingText,
+  Textarea,
+} from '@allcll/allcll-ui';
 import { DETAIL_MAX_LENGTH } from '@/features/feedback/api/feedbackApi';
 import type { FeedbackCategory } from '@/features/feedback/api/feedbackApi';
 import type { FeedbackTitles } from '../lib/getFeedbackTitle';
@@ -43,11 +52,10 @@ export function FeedbackFields({
         <RateInputs rate={3} currentRate={rate} label={titles.rateLabels[2]} onClick={() => setRate(3)} />
       </Flex>
 
-      <Heading level={4} className="block text-sm text-gray-600 mb-2">
+      <Heading level={4} className="mb-2">
         {titles.textareaTitle}
       </Heading>
-      <textarea
-        className="w-full min-h-20 resize-y text-sm border rounded-md border-gray-400 py-2 px-3 focus:outline-none focus:ring-0 focus:border-primary-500"
+      <Textarea
         placeholder={titles.textareaPlaceholder}
         name="detail"
         maxLength={DETAIL_MAX_LENGTH}
@@ -64,7 +72,7 @@ export function FeedbackFields({
       )}
 
       {error && (
-        <p className="text-red-600 text-sm mb-3" aria-live="assertive">
+        <p className="text-danger-600 text-sm mb-3" aria-live="assertive">
           {error}
         </p>
       )}
@@ -76,12 +84,12 @@ export function FeedbackActions({ isPending, canSubmit, onSubmit, onDontShowAgai
   return (
     <>
       {onDontShowAgain && (
-        <Button variant="text" textColor="primary" size="medium" onClick={onDontShowAgain} disabled={isPending}>
+        <Button variant="text" size="medium" onClick={onDontShowAgain} disabled={isPending}>
           다시 보지 않기
         </Button>
       )}
-      <Button variant="primary" size="medium" onClick={onSubmit} disabled={isPending || !canSubmit}>
-        {isPending ? '제출중...' : '제출하기'}
+      <Button variant="solid" size="medium" onClick={onSubmit} disabled={isPending || !canSubmit}>
+        {isPending ? '제출 중...' : '제출하기'}
       </Button>
     </>
   );
@@ -110,7 +118,7 @@ interface ICategoryChipsProps {
 function CategoryChips({ category, onChange }: ICategoryChipsProps) {
   return (
     <>
-      <Heading level={4} className="block text-sm text-gray-600 mb-2">
+      <Heading level={4} className="mb-2">
         어떤 서비스에 대한 의견인가요? (선택)
       </Heading>
       <Flex gap="gap-2" className="flex-wrap mb-4">
@@ -136,9 +144,9 @@ interface IRateButtonProps {
 
 function RateInputs({ rate, currentRate, label, onClick }: IRateButtonProps) {
   const faces = {
-    1: <AllcllFaceIcon mood="sad" className="w-16 h-16" />,
-    2: <AllcllFaceIcon mood="normal" className="w-16 h-16" />,
-    3: <AllcllFaceIcon mood="smile" className="w-16 h-16" />,
+    1: <AllcllFaceIcon mood="sad" className="w-12 h-12" />,
+    2: <AllcllFaceIcon mood="normal" className="w-12 h-12" />,
+    3: <AllcllFaceIcon mood="smile" className="w-12 h-12" />,
   };
 
   return (
@@ -148,7 +156,7 @@ function RateInputs({ rate, currentRate, label, onClick }: IRateButtonProps) {
       aria-checked={currentRate === rate}
       aria-label={label}
       className={`flex flex-col items-center gap-2 p-2 rounded-xl transition-colors duration-200 font-bold
-        ${currentRate === rate ? 'text-primary-500' : 'text-gray-300 hover:text-blue-300'}`}
+        ${currentRate === rate ? 'text-primary-500' : 'text-gray-300 hover:text-primary-300'}`}
       onClick={onClick}
     >
       {faces[rate]}

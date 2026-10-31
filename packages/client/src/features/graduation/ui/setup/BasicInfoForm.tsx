@@ -1,24 +1,12 @@
 import { useState } from 'react';
-import {
-  Card,
-  Flex,
-  Heading,
-  SupportingText,
-  Label,
-  Chip,
-  Button,
-  ListboxOption,
-  Grid,
-  CheckmarkIcon,
-} from '@allcll/allcll-ui';
+import { Card, Flex, Heading, SupportingText, Label, Chip, Button, Grid, SearchableSelect } from '@allcll/allcll-ui';
 import { useMutation } from '@tanstack/react-query';
-import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import { useAdmissionYearDepartments } from '@/entities/graduation/model/useGraduation';
 import { useFilteringDepartment } from '@/features/filtering/lib/useFilteringDepartment.ts';
-import { ZeroContent } from '@/shared/ui/ZeroContent';
+import { matchOptionKeyword } from '@/shared/lib/search.ts';
 import { JolupStepsProps } from '@/features/graduation/model/types.ts';
 import { updateMe } from '@/entities/user/api/user';
-import useToastNotification from '@/features/notification/model/useToastNotification';
+import { useToastNotification } from '@allcll/common';
 
 type MajorType = 'SINGLE' | 'DOUBLE'; // 단일전공 | 복수전공
 
@@ -30,30 +18,23 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
   const [majorType, setMajorType] = useState<MajorType>('SINGLE');
   const [doubleMajorCode, setDoubleMajorCode] = useState<string>('');
   const [doubleMajorName, setDoubleMajorName] = useState<string>('');
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchKeywords, setSearchKeywords] = useState('');
 
   // 주전공 학과 (DEPARTMENT_NOT_FOUND 시)
   const [primaryDeptCode, setPrimaryDeptCode] = useState<string>('');
   const [primaryDeptName, setPrimaryDeptName] = useState<string>('');
-  const [isPrimarySearchOpen, setIsPrimarySearchOpen] = useState(false);
-  const [primarySearchKeywords, setPrimarySearchKeywords] = useState('');
 
   const { data: departments } = useAdmissionYearDepartments();
   const { mutate: saveBasicInfo, isPending } = useMutation({ mutationFn: updateMe });
   const showToast = useToastNotification.getState().addToast;
 
-  const { filteredDepartments: filteredDoubleDepartments } = useFilteringDepartment({
-    category: '전공',
-    searchKeywords,
-    departments,
-  });
-
-  const { filteredDepartments: filteredPrimaryDepartments } = useFilteringDepartment({
-    category: '전공',
-    searchKeywords: primarySearchKeywords,
-    departments,
-  });
+  const { filteredDepartments: majorDepartments } = useFilteringDepartment({ category: '전공', departments });
+  // '전체학과'(코드 '')는 선택지가 아니므로 제외
+  const departmentOptions = majorDepartments
+    .filter(department => department.departmentCode !== '')
+    .map(department => ({
+      value: department.departmentCode,
+      label: department.departmentName || '학과 정보 없음',
+    }));
 
   const handleMajorTypeChange = (type: MajorType) => {
     setMajorType(type);
@@ -63,18 +44,17 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
     }
   };
 
-  const handleDoubleMajorSelect = (departmentCode: string, departmentName: string) => {
+  const getDepartmentName = (departmentCode: string) =>
+    departmentOptions.find(option => option.value === departmentCode)?.label ?? '';
+
+  const handleDoubleMajorSelect = (departmentCode: string) => {
     setDoubleMajorCode(departmentCode);
-    setDoubleMajorName(departmentName);
-    setSearchKeywords(departmentName);
-    setIsSearchOpen(false);
+    setDoubleMajorName(getDepartmentName(departmentCode));
   };
 
-  const handlePrimaryDeptSelect = (departmentCode: string, departmentName: string) => {
+  const handlePrimaryDeptSelect = (departmentCode: string) => {
     setPrimaryDeptCode(departmentCode);
-    setPrimaryDeptName(departmentName);
-    setPrimarySearchKeywords(departmentName);
-    setIsPrimarySearchOpen(false);
+    setPrimaryDeptName(getDepartmentName(departmentCode));
   };
 
   const isFormValid =
@@ -117,7 +97,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
 
         <Flex direction="flex-col" gap="gap-6">
           {/* 이수 유형 선택 */}
-          <Flex direction="flex-col" gap="gap-2">
+          <Flex direction="flex-col" gap="gap-1.5">
             <Label required>이수 유형</Label>
             <Grid columns={{ base: 2 }} gap="gap-2">
               <Chip
@@ -135,120 +115,48 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
 
           {/* 주전공 학과 검색 (DEPARTMENT_NOT_FOUND 시) */}
           {isDepartmentNotFound && (
-            <Flex direction="flex-col" gap="gap-2">
+            <Flex direction="flex-col" gap="gap-1.5">
               <SupportingText>
                 <span className="text-primary-500">26학번의 계열 단위</span>는 특정한 졸업요건이 존재하지 않아, 학과를
-                선택해주셔야합니다.
+                선택해주셔야 합니다.
               </SupportingText>
               <Label required>주전공 학과</Label>
-              <div className="relative">
-                <SearchBox
-                  placeholder="학과명을 검색하세요"
-                  value={primarySearchKeywords}
-                  onChange={e => {
-                    setPrimarySearchKeywords(e.target.value);
-                    setIsPrimarySearchOpen(true);
-                    if (primaryDeptCode) {
-                      setPrimaryDeptCode('');
-                    }
-                  }}
-                  onFocus={() => setIsPrimarySearchOpen(true)}
-                  onDelete={() => {
-                    setPrimarySearchKeywords('');
-                    setPrimaryDeptCode('');
-                    setPrimaryDeptName('');
-                    setIsPrimarySearchOpen(false);
-                  }}
-                  className="w-full"
-                />
-
-                {isPrimarySearchOpen && (
-                  <div className="absolute z-content w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
-                    {filteredPrimaryDepartments && filteredPrimaryDepartments.length > 0 ? (
-                      filteredPrimaryDepartments.map(department => {
-                        const departmentName = department.departmentName || '학과 정보 없음';
-                        const isSelected = primaryDeptCode === department.departmentCode;
-
-                        return (
-                          <ListboxOption
-                            key={department.departmentCode}
-                            selected={isSelected}
-                            left={<span>{departmentName}</span>}
-                            right={isSelected ? <CheckmarkIcon className="w-4 h-4 shrink-0 text-blue-500" /> : null}
-                            onSelect={() => handlePrimaryDeptSelect(department.departmentCode, departmentName)}
-                          />
-                        );
-                      })
-                    ) : (
-                      <div className="p-4">
-                        <ZeroContent title="검색 결과가 없습니다." description="다른 학과 이름으로 검색해주세요." />
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
+              <SearchableSelect
+                className="w-full"
+                options={departmentOptions}
+                value={primaryDeptCode}
+                onChange={handlePrimaryDeptSelect}
+                placeholder="학과를 선택하세요"
+                searchPlaceholder="학과명을 검색하세요"
+                emptyDescription="다른 학과 이름으로 검색해주세요."
+                filterOption={matchOptionKeyword}
+              />
             </Flex>
           )}
 
           {/* 복수전공 학과 검색 (조건부 렌더링) */}
           {majorType === 'DOUBLE' && (
-            <Flex direction="flex-col" gap="gap-2">
+            <Flex direction="flex-col" gap="gap-1.5">
               <Label required>복수전공 학과</Label>
-              <div className="relative">
-                <SearchBox
-                  placeholder="학과명을 검색하세요"
-                  value={searchKeywords}
-                  onChange={e => {
-                    setSearchKeywords(e.target.value);
-                    setIsSearchOpen(true);
-                    if (doubleMajorCode) {
-                      setDoubleMajorCode('');
-                    }
-                  }}
-                  onFocus={() => setIsSearchOpen(true)}
-                  onDelete={() => {
-                    setSearchKeywords('');
-                    setDoubleMajorCode('');
-                    setDoubleMajorName('');
-                    setIsSearchOpen(false);
-                  }}
-                  className="w-full"
-                />
-
-                {isSearchOpen && (
-                  <div className="absolute z-content w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
-                    {filteredDoubleDepartments && filteredDoubleDepartments.length > 0 ? (
-                      filteredDoubleDepartments.map(department => {
-                        const departmentName = department.departmentName || '학과 정보 없음';
-                        const isSelected = doubleMajorCode === department.departmentCode;
-
-                        return (
-                          <ListboxOption
-                            key={department.departmentCode}
-                            selected={isSelected}
-                            left={<span>{departmentName}</span>}
-                            right={isSelected ? <CheckmarkIcon className="w-4 h-4 shrink-0 text-blue-500" /> : null}
-                            onSelect={() => handleDoubleMajorSelect(department.departmentCode, departmentName)}
-                          />
-                        );
-                      })
-                    ) : (
-                      <div className="p-4">
-                        <ZeroContent title="검색 결과가 없습니다." description="다른 학과 이름으로 검색해주세요." />
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
+              <SearchableSelect
+                className="w-full"
+                options={departmentOptions}
+                value={doubleMajorCode}
+                onChange={handleDoubleMajorSelect}
+                placeholder="학과를 선택하세요"
+                searchPlaceholder="학과명을 검색하세요"
+                emptyDescription="다른 학과 이름으로 검색해주세요."
+                filterOption={matchOptionKeyword}
+              />
             </Flex>
           )}
         </Flex>
 
         <Flex justify="justify-end" className="mt-4 w-full">
-          <Button onClick={prevStep} variant="secondary" size="small">
+          <Button onClick={prevStep} variant="solid" color="gray" size="medium">
             이전 단계
           </Button>
-          <Button variant="primary" size="medium" onClick={handleNextStep} disabled={!isFormValid || isPending}>
+          <Button variant="solid" size="medium" onClick={handleNextStep} disabled={!isFormValid || isPending}>
             {isPending ? '저장 중...' : '다음 단계'}
           </Button>
         </Flex>

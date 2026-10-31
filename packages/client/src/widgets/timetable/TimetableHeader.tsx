@@ -1,7 +1,7 @@
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { saveImageFromElement } from '@/shared/lib/saveImage.ts';
-import { Button, Flex, IconButton, DownloadIcon, SearchIcon } from '@allcll/allcll-ui';
+import { AddIcon, Button, Flex, IconButton, DownloadIcon, SearchIcon } from '@allcll/allcll-ui';
 
 import { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
 
@@ -47,7 +47,8 @@ export function TimetableHeaderActions({
 
       {!isMobile && timetables && timetables.length >= 0 && (
         <Button variant="text" size="medium" onClick={handleCreateTimetable}>
-          + 시간표 만들기
+          <AddIcon />
+          시간표 만들기
         </Button>
       )}
     </Flex>

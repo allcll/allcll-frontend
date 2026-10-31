@@ -46,12 +46,19 @@ function ScheduleFormBottomSheet() {
           ) : (
             <>
               {(modalActionType === ScheduleMutateType.EDIT || modalActionType === ScheduleMutateType.VIEW) && (
-                <Button type="button" variant="secondary" size={buttonSize} onClick={requestDeleteConfirmation}>
+                <Button
+                  type="button"
+                  variant="text"
+                  color="danger"
+                  size={buttonSize}
+                  className="mr-auto"
+                  onClick={requestDeleteConfirmation}
+                >
                   삭제
                 </Button>
               )}
 
-              <Button type="submit" variant="primary" size={buttonSize}>
+              <Button type="submit" variant="solid" size={buttonSize}>
                 저장
               </Button>
             </>

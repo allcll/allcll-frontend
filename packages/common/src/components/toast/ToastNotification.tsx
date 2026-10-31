@@ -1,39 +1,46 @@
+import { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { IToastMessage } from '../../store/useToastNotification';
-import { CloseIcon, NotificationIcon } from '@allcll/allcll-ui';
+import { Toast } from '@allcll/allcll-ui';
 import useToastNotification from '../../store/useToastNotification';
+
+const TOAST_TRANSITION = {
+  enter: 'opacity-0 translate-x-full',
+  enterActive: '!opacity-100 !translate-x-0 transition-[opacity,translate] duration-300',
+  exitActive: 'opacity-0 translate-x-full transition-[opacity,translate] duration-300',
+};
 
 function ToastNotification() {
   const messages = useToastNotification(state => state.messages);
   const closeToast = useToastNotification(state => state.clearToast);
+  const popoverRef = useRef<HTMLDivElement>(null);
 
-  return (
-    <div className="fixed top-2 right-2 z-toast max-w-screen">
-      <TransitionGroup className="flex gap-2 flex-col-reverse">
-        {messages.slice(-3).map((message, index) => (
-          <CSSTransition key={`${index} : ${message}`} timeout={300} classNames="toast">
-            <Toast toast={message} closeToast={() => closeToast(index)} />
-          </CSSTransition>
-        ))}
-      </TransitionGroup>
-    </div>
-  );
-}
+  // popover(top layer)로 띄워야 열린 Dialog(<dialog> top layer) 위에도 토스트가 보임
+  useEffect(() => {
+    const popover = popoverRef.current;
 
-interface IToast {
-  toast: IToastMessage;
-  closeToast: () => void;
-}
+    if (popover && 'showPopover' in popover && !popover.matches(':popover-open')) {
+      popover.showPopover();
+    }
+  }, []);
 
-function Toast({ toast, closeToast }: IToast) {
-  return (
-    <div className="flex justify-between items-center gap-2 p-4 ml-2 bg-white text-black rounded-lg shadow-md">
-      <NotificationIcon className="w-4 h-4 text-blue-500" />
-      <span className="flex-1 text-sm font-bold truncate max-w-72">{toast.message}</span>
-      <button aria-label="닫기" onClick={closeToast} className="p-2 rounded-full hover:bg-blue-100">
-        <CloseIcon className="w-4 h-4 text-gray-400" />
-      </button>
-    </div>
+  return createPortal(
+    <div
+      ref={popoverRef}
+      popover="manual"
+      className="m-0 p-0 border-0 bg-transparent overflow-visible pointer-events-none backdrop:hidden"
+    >
+      <div className="fixed top-2 right-2 z-toast max-w-screen pointer-events-auto">
+        <TransitionGroup className="flex gap-2 flex-col-reverse">
+          {messages.slice(-3).map(message => (
+            <CSSTransition key={message.id} timeout={300} classNames={TOAST_TRANSITION}>
+              <Toast message={message.message} onClose={() => closeToast(message.id)} />
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      </div>
+    </div>,
+    document.body,
   );
 }
 

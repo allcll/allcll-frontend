@@ -22,7 +22,7 @@ function MinMaxFilter<K extends keyof Filters>({ selectedValue, filterKey, setFi
   };
 
   return (
-    <div className="relative inline-block w-full space-y-2">
+    <div className="relative flex flex-col w-full gap-2">
       <Label>범위 설정</Label>
 
       <Flex gap="gap-2">

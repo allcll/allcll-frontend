@@ -99,11 +99,11 @@ function TutorialModal() {
         <div className="mt-4 flex flex-col justify-center items-center gap-2">
           <Flex justify="justify-center" align="items-center" className="gap-4">
             <Button variant="text" size="medium" aria-label="이전 튜토리얼" onClick={goToPreviousTutorial}>
-              {currentIndex !== 0 && <ChevronDownIcon className="w-5 h-5 transform rotate-90 text-gray-700" />}
+              {currentIndex !== 0 && <ChevronDownIcon className="size-5! transform rotate-90 text-gray-700" />}
             </Button>
             <Heading level={3}>{currentVideo.title}</Heading>
             <Button variant="text" size="medium" aria-label="이전 튜토리얼" onClick={goToNextTutorial}>
-              {currentIndex < 3 && <ChevronDownIcon className="w-5 h-5 transform -rotate-90 text-gray-700" />}
+              {currentIndex < 3 && <ChevronDownIcon className="size-5! transform -rotate-90 text-gray-700" />}
             </Button>
           </Flex>
           <SupportingText>
@@ -116,7 +116,7 @@ function TutorialModal() {
               checked={popupChecked}
               onChange={() => setPopupChecked(!popupChecked)}
             />
-            <Button variant="primary" size="medium" onClick={handleClickSkipTutorial}>
+            <Button variant="solid" size="medium" onClick={handleClickSkipTutorial}>
               튜토리얼 건너뛰기
             </Button>
           </SejongUI.Modal.ButtonContainer>

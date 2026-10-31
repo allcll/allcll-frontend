@@ -15,7 +15,7 @@ function SubjectAllResult({ result }: Readonly<{ result: AggregatedResultRespons
           <th className="py-2 px-2">과목명</th>
           <th className="py-2 px-2">교수명</th>
           <th className="py-2 px-2">순위</th>
-          <th className="py-2 px-2">관심시간</th>
+          <th className="py-2 px-2">관심 시간</th>
           <th className="py-2 px-2">성공/실패</th>
         </tr>
       </thead>
@@ -29,9 +29,9 @@ function SubjectAllResult({ result }: Readonly<{ result: AggregatedResultRespons
             <td className="py-2 px-1">{row.avgCompletionTime.toFixed(2) + ' sec'}</td>
             <td className="py-2 px-2">
               <span className="px-1 py-0.5 rounded-full text-xs font-bold text-green-500">{row.successCount}</span>/
-              <span className="px-1 py-0.5 rounded-full text-xs font-bold text-red-500">{row.failedCount}</span>/
+              <span className="px-1 py-0.5 rounded-full text-xs font-bold text-danger-500">{row.failedCount}</span>/
               <span className="px-1 py-0.5 rounded-full text-xs font-bold text-gray-500">{row.doubledCount}</span>/
-              <span className="px-1 py-0.5 rounded-full text-xs font-bold text-black">{row.totalCount}</span>
+              <span className="px-1 py-0.5 rounded-full text-xs font-bold">{row.totalCount}</span>
             </td>
           </tr>
         ))}

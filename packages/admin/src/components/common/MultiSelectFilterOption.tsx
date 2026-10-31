@@ -1,4 +1,4 @@
-import { Label, ResetIcon } from '@allcll/allcll-ui';
+import { Button, Label } from '@allcll/allcll-ui';
 
 export interface OptionType<VALUE extends string | number> {
   value: VALUE;
@@ -67,7 +67,7 @@ function MultiSelectFilterOption<VALUE extends string | number>({
 
   return (
     <div className="relative inline-block">
-      <Label>{labelPrefix ?? ''}</Label>
+      <Label className="block mb-2">{labelPrefix ?? ''}</Label>
       <div
         className={`
           gap-y-2 
@@ -87,14 +87,16 @@ function MultiSelectFilterOption<VALUE extends string | number>({
         ))}
       </div>
 
-      <div className="flex justify-end w-full mt-2">
-        <button
+      <div className="flex justify-end w-full mt-3 pt-1.5 -mb-1.5 border-t border-gray-100">
+        <Button
+          variant="text"
+          size="small"
+          color="gray"
+          disabled={selectedValues.length === 0}
           onClick={() => handleClickReset()}
-          className="text-blue-500 cursor-pointer sm:text-sm text-xs px-1 py-0.5"
         >
-          <ResetIcon className="inline w-4 h-4 mr-1 mb-0.5 text-blue-500" />
-          필터 초기화
-        </button>
+          초기화
+        </Button>
       </div>
     </div>
   );

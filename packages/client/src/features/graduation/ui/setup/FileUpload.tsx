@@ -33,10 +33,10 @@ function FileUpload({ nextStep, file, onFileSelected }: FileUploadProps) {
         />
 
         <Flex justify="justify-end" gap="gap-3" className="w-full mt-2">
-          <Button variant="secondary" size="medium" onClick={() => onFileSelected(null)}>
+          <Button variant="solid" color="gray" size="medium" onClick={() => onFileSelected(null)}>
             취소
           </Button>
-          <Button variant="primary" size="medium" onClick={handleNextStep} disabled={!file}>
+          <Button variant="solid" size="medium" onClick={handleNextStep} disabled={!file}>
             다음 단계
           </Button>
         </Flex>

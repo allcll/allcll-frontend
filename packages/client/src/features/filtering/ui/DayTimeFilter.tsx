@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, Flex, Label } from '@allcll/allcll-ui';
+import { AddIcon, Button, Flex, Label, Select } from '@allcll/allcll-ui';
 import InputTime from '@/features/timetable/ui/common/InputTime.tsx';
 import { Day } from '@/entities/timetable/model/types.ts';
 
@@ -42,29 +42,30 @@ function DayTimeFilter({ items, onChange }: Readonly<IDayTimeFilter>) {
   };
 
   return (
-    <>
-      <Flex direction="flex-col" gap="gap-2">
+    <Flex direction="flex-col" gap="gap-2">
+      <Flex justify="justify-between" align="items-center">
         <Label>시간</Label>
-
-        {items.map((item, index) => (
-          <DayTime
-            key={`${item.day}-${item.type}-${item.start}-${item.end}`}
-            item={item}
-            onChange={handleChange(index)}
-            onDelete={handleDelete(index)}
-          />
-        ))}
+        <Button
+          variant="text"
+          size="small"
+          color="gray"
+          className="-my-1.5"
+          onClick={() => onChange([...items, { day: '', type: 'all' }])}
+        >
+          <AddIcon />
+          요일 추가
+        </Button>
       </Flex>
 
-      <Button
-        variant="text"
-        size="small"
-        textColor="gray"
-        onClick={() => onChange([...items, { day: '', type: 'all' }])}
-      >
-        요일 추가
-      </Button>
-    </>
+      {items.map((item, index) => (
+        <DayTime
+          key={`${item.day}-${item.type}-${item.start}-${item.end}`}
+          item={item}
+          onChange={handleChange(index)}
+          onDelete={handleDelete(index)}
+        />
+      ))}
+    </Flex>
   );
 }
 
@@ -81,36 +82,26 @@ function DayTime({ item, onChange, onDelete }: IDayTime) {
 
   return (
     <div className="flex items-center gap-2">
-      <select
-        name="day"
-        value={item.day}
-        onChange={onChange}
-        className="bg-gray-100 px-3 py-2 rounded-md text-xs text-gray-600 w-fit"
-      >
+      <Select name="day" value={item.day} onChange={onChange}>
         <option value="">전체</option>
         {['월', '화', '수', '목', '금', '토', '일'].map(day => (
           <option key={day} value={day as Day}>
             {day}
           </option>
         ))}
-      </select>
+      </Select>
       {hasType && (
-        <select
-          name="type"
-          value={item.type}
-          onChange={onChange}
-          className="bg-gray-100 px-3 py-2 rounded-md text-xs text-gray-600 w-fit"
-        >
+        <Select name="type" value={item.type} onChange={onChange}>
           <option value="all">전체</option>
           <option value="before">이전</option>
           <option value="after">이후</option>
           <option value="between">사이</option>
-        </select>
+        </Select>
       )}
       {hasStart && <InputTime name="start" value={item.start || '00:00'} onChange={onChange} />}
       {hasEnd && <InputTime name="end" value={item.end || '00:00'} onChange={onChange} />}
 
-      <Button variant="text" size="small" textColor="secondary" onClick={onDelete}>
+      <Button variant="text" size="small" color="danger" onClick={onDelete}>
         삭제
       </Button>
     </div>

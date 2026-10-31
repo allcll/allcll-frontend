@@ -6,6 +6,7 @@ import {
   SIMULATION_TIME_LIMIT,
 } from '@/features/simulation/lib/simulation.ts';
 import { useState, useEffect, useRef } from 'react';
+import { alert, useToastNotification } from '@allcll/common';
 
 function Stopwatch() {
   const [currentTime, setCurrentTime] = useState('00:00');
@@ -24,10 +25,11 @@ function Stopwatch() {
     try {
       await forceStopSimulation();
       setCurrentSimulation({ simulationStatus: 'finish' });
+      await alert({ title: '연습 종료', description: '5분이 지나 수강신청 연습이 자동으로 종료되었습니다.' });
       openModal('result');
     } catch (error) {
       console.error(error);
-      alert('시뮬레이션 강제 종료에 실패했습니다.');
+      useToastNotification.getState().addToast('연습 종료에 실패했습니다. 다시 시도해주세요.', 'simulation-error');
     }
   };
 
@@ -54,7 +56,6 @@ function Stopwatch() {
 
           if (seconds >= SIMULATION_TIME_LIMIT) {
             clearInterval(intervalRef.current!);
-            alert('5분 경과로 시뮬레이션이 강제 종료되었습니다.');
             forceSimulation().then();
             return;
           }
@@ -81,7 +82,7 @@ function Stopwatch() {
     };
   }, [currentSimulation.simulationStatus, currentSimulation.simulationId]);
 
-  return <p className="font-semibold text-xl text-blue-500">{currentTime}</p>;
+  return <p className="font-semibold text-xl text-primary-500">{currentTime}</p>;
 }
 
 export default Stopwatch;

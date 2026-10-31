@@ -8,9 +8,9 @@ interface ITooltip {
 
 function Tooltip({ children }: ITooltip) {
   return (
-    <div className="relative inline-block">
-      <div className="group inline-block">
-        <IconButton label="Tooltip" variant="plain" icon={<HelpIcon className="w-6 h-6 text-gray-400" />} />
+    <div className="relative flex">
+      <div className="group flex">
+        <IconButton label="도움말" variant="plain" icon={<HelpIcon className="w-4 h-4 text-gray-400" />} />
 
         <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gray-900 text-white p-3 rounded w-64 text-center pointer-events-none">
           {children}

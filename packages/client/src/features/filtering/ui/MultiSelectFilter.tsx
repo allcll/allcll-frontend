@@ -1,7 +1,6 @@
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { getLabelFormatter, labelPrefix } from '@/features/filtering/lib/getFilteringFormatter.ts';
-import { Button, Flex, Grid, Label } from '@allcll/allcll-ui';
-import useMobile from '@/shared/lib/useMobile.ts';
+import { Button, ChevronDownIcon, Flex, Grid, Label } from '@allcll/allcll-ui';
 import { useState } from 'react';
 import { FilterItemProps, FilterValueType } from '@/features/filtering/model/types.ts';
 
@@ -29,7 +28,6 @@ function MultiSelectFilter<K extends keyof Filters>({
   const labelFormatters = getLabelFormatter();
   const layout = (ItemComponent as ItemWithLayout).layout ?? 'grid';
 
-  const isMobile = useMobile();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleChangeCheckbox = (optionValue: FilterValueType<K>) => {
@@ -77,25 +75,25 @@ function MultiSelectFilter<K extends keyof Filters>({
         )}
       </Flex>
 
-      {options.length > MAX_VISIBLE && (
-        <Button variant="text" size="small" textColor="gray" onClick={() => setIsExpanded(prev => !prev)}>
-          {isExpanded ? '- 간략히' : '+ 더보기'}
-        </Button>
-      )}
-
-      {!isMobile && (
-        <Flex justify="justify-end">
-          <Button
-            variant="text"
-            size="small"
-            textColor="gray"
-            disabled={selectedValues == null || selectedValues.length === 0}
-            onClick={() => handleClickReset()}
-          >
-            초기화
+      <Flex justify="justify-between" align="items-center" className="mt-3 pt-1.5 -mb-1.5 border-t border-gray-100">
+        {options.length > MAX_VISIBLE && (
+          <Button variant="text" size="small" color="gray" onClick={() => setIsExpanded(prev => !prev)}>
+            <ChevronDownIcon className={`w-4 h-4 ${isExpanded ? 'rotate-180' : ''}`} />
+            {isExpanded ? '간략히' : '더보기'}
           </Button>
-        </Flex>
-      )}
+        )}
+
+        <Button
+          variant="text"
+          size="small"
+          color="gray"
+          className="ml-auto"
+          disabled={selectedValues == null || selectedValues.length === 0}
+          onClick={() => handleClickReset()}
+        >
+          초기화
+        </Button>
+      </Flex>
     </div>
   );
 }

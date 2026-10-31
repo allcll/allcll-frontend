@@ -2,9 +2,18 @@ import { useState } from 'react';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
-import { Button, Flex, Label, ListboxOption, CheckmarkIcon } from '@allcll/allcll-ui';
+import {
+  Button,
+  Flex,
+  Label,
+  Listbox,
+  ListboxOption,
+  Select,
+  CheckmarkIcon,
+  EmptyState,
+  SearchIcon,
+} from '@allcll/allcll-ui';
 import { useFilteringDepartment } from '../lib/useFilteringDepartment';
-import { ZeroContent } from '@/shared/ui/ZeroContent';
 import { Filtering } from '@allcll/common';
 import { DepartmentType } from '@/features/filtering/model/types.ts';
 
@@ -28,12 +37,12 @@ function DepartmentFilter({ setFilter, selectedValue }: IDepartmentFilter) {
 
   return (
     <Filtering label={pickCollegeOrMajor(selectedValue, departmentsList)} selected={!!selectedValue}>
-      <Flex direction="flex-col" className="h-80 w-80 overflow-y-auto">
+      <Flex direction="flex-col" className="h-80 w-80">
         <Label>학과</Label>
         <Flex className="shrink-0 bg-white" gap="gap-2">
-          <select
+          <Select
+            className="shrink-0"
             value={category}
-            className="border border-gray-300 rounded-md text-sm text-gray-700 bg-white"
             onChange={e => {
               const value = e.target.value as '전체' | '전공' | '교양';
               setCategory(value);
@@ -42,7 +51,7 @@ function DepartmentFilter({ setFilter, selectedValue }: IDepartmentFilter) {
           >
             <option value="전공">전공</option>
             <option value="교양">교양</option>
-          </select>
+          </Select>
           <SearchBox
             type="text"
             placeholder="학과 검색"
@@ -57,23 +66,23 @@ function DepartmentFilter({ setFilter, selectedValue }: IDepartmentFilter) {
           />
         </Flex>
 
-        <div className="overflow-y-auto flex-1 py-2 ">
+        <Listbox bordered className="flex-1">
           {(category === '전공' || category === '교양') && (
             <SelectSubject departments={filteredDepartments} setFilter={setFilter} selectedValue={selectedValue} />
           )}
-        </div>
-      </Flex>
+        </Listbox>
 
-      <Flex justify="justify-end" className="w-full pt-1">
-        <Button
-          variant="text"
-          size="small"
-          textColor="gray"
-          disabled={!selectedValue}
-          onClick={() => setFilter('department', '')}
-        >
-          초기화
-        </Button>
+        <Flex justify="justify-end" className="shrink-0 mt-1 pt-1.5 -mb-1.5 border-t border-gray-100">
+          <Button
+            variant="text"
+            size="small"
+            color="gray"
+            disabled={!selectedValue}
+            onClick={() => setFilter('department', '')}
+          >
+            초기화
+          </Button>
+        </Flex>
       </Flex>
     </Filtering>
   );
@@ -89,7 +98,7 @@ interface ISelectSubject {
 
 function SelectSubject({ departments, setFilter, selectedValue }: ISelectSubject) {
   if (!departments) {
-    return <ZeroContent title="학과 리스트들이 없습니다." />;
+    return <EmptyState icon={SearchIcon} title="학과 리스트들이 없습니다." className="h-full" />;
   }
 
   const handleChangeDepartment = (department: string) => {
@@ -97,7 +106,14 @@ function SelectSubject({ departments, setFilter, selectedValue }: ISelectSubject
   };
 
   if (departments.length === 0) {
-    return <ZeroContent title="검색 결과가 없습니다." description="다른 학과 이름으로 검색해주세요." />;
+    return (
+      <EmptyState
+        icon={SearchIcon}
+        title="검색 결과가 없습니다."
+        description="다른 학과 이름으로 검색해주세요."
+        className="h-full"
+      />
+    );
   }
 
   return (
@@ -113,7 +129,7 @@ function SelectSubject({ departments, setFilter, selectedValue }: ISelectSubject
             key={department.departmentCode}
             selected={isSelected}
             left={departmentName}
-            right={isSelected ? <CheckmarkIcon className="w-4 h-4 shrink-0 text-blue-500" /> : null}
+            right={isSelected ? <CheckmarkIcon className="w-4 h-4 shrink-0 text-primary-500" /> : null}
             onSelect={() => handleChangeDepartment(department.departmentCode)}
           />
         );

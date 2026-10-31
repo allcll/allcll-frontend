@@ -20,19 +20,19 @@ function SubjectTable({ subjects, handleRemakeSubjects, isLoadingLectures }: Rea
   }, 0);
 
   return (
-    <>
+    <Flex direction="flex-col" gap="gap-1.5">
       <Flex direction="flex-row" justify="justify-between" align="items-center">
         <Flex align="items-center">
           <Label>수강신청 연습 과목 리스트</Label>
 
           {handleRemakeSubjects && (
-            <Button onClick={handleRemakeSubjects} size="small" variant="text">
-              랜덤과목 재생성
+            <Button onClick={handleRemakeSubjects} size="small" variant="text" className="-my-1.5">
+              랜덤 과목 재생성
             </Button>
           )}
         </Flex>
         <SupportingText>
-          <span className="text-blue-500">{totalCredit}</span> 학점
+          <span className="text-primary-500">{totalCredit}</span> 학점
         </SupportingText>
       </Flex>
 
@@ -52,7 +52,7 @@ function SubjectTable({ subjects, handleRemakeSubjects, isLoadingLectures }: Rea
           </tbody>
         </table>
       </div>
-    </>
+    </Flex>
   );
 }
 

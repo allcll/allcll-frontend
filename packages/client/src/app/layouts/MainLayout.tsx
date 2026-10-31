@@ -2,10 +2,10 @@ import { Helmet } from 'react-helmet';
 import { Outlet } from 'react-router-dom';
 import Header from '@/shared/ui/Header.tsx';
 import BannerNotification from '@/features/notification/ui/BannerNotification.tsx';
-import ToastNotification from '@/features/notification/ui/ToastNotification.tsx';
 import Footer from '@/shared/ui/Footer.tsx';
 import useGlobalEffect from '@/shared/lib/useGlobalEffect.ts';
 import FeedbackFab from '@/features/feedback/ui/FeedbackFab';
+import { GlobalConfirmDialog, ToastNotification } from '@allcll/common';
 
 function MainLayout() {
   useGlobalEffect();
@@ -17,6 +17,7 @@ function MainLayout() {
       </Helmet>
 
       <ToastNotification />
+      <GlobalConfirmDialog />
       <Header />
       <BannerNotification />
       <main>

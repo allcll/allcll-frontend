@@ -7,7 +7,7 @@ import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
 import useWishes from '@/entities/wishes/model/useWishes.ts';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import ScheduleFilter from '../../../widgets/filtering/ui/ScheduleFilter.tsx';
-import { Button, Card, Flex } from '@allcll/allcll-ui';
+import { AddIcon, Button, Card, Flex } from '@allcll/allcll-ui';
 import TimetableSubjectCards from '@/features/timetable/ui/subject/TimetableSubjectCards.tsx';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam.ts';
 
@@ -38,7 +38,8 @@ function ScheduleContentPanel() {
 
         <ScheduleFilter />
         <Button variant="text" size="small" onClick={() => openScheduleModal(initSchedule)}>
-          + 커스텀 일정 생성
+          <AddIcon />
+          커스텀 일정 생성
         </Button>
 
         <Flex direction="flex-col" className="h-full overflow-hidden overflow-y-auto">

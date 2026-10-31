@@ -84,7 +84,7 @@ export const SubjectCard: Story = {
       <li>
         <Card size="small" variant="elevated">
           <h3 className="text-lg font-semibold mb-2">알고리즘</h3>
-          <Button size="small" variant="outlined">
+          <Button size="small" variant="outlined" color="gray">
             상세보기
           </Button>
         </Card>

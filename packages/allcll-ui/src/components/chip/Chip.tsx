@@ -1,11 +1,10 @@
-import type { ComponentPropsWithoutRef, RefObject } from 'react';
+import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { ChevronDownIcon, CloseIcon } from '../../icons';
 import type React from 'react';
 
-type ChipVariantType = 'select' | 'cancel' | 'none';
+type ChipVariantType = 'select' | 'cancel' | 'fill' | 'none';
 
 interface IChip extends ComponentPropsWithoutRef<'button'> {
-  containerRef?: RefObject<HTMLButtonElement | null>;
   /**Chip의 텍스트 */
   label: string | React.ReactElement;
   /**Chip이 선택되었는지 여부 */
@@ -16,48 +15,43 @@ interface IChip extends ComponentPropsWithoutRef<'button'> {
   isChipOpen?: boolean;
 }
 
-function Chip({
-  label = 'Chip',
-  selected,
-  variant = 'none',
-  containerRef,
-  onClick,
-  isChipOpen,
-  ...rest
-}: Readonly<IChip>) {
+const ChipBase = forwardRef<HTMLButtonElement, Readonly<IChip>>(function Chip(
+  { label = 'Chip', selected, variant = 'none', onClick, isChipOpen, ...rest },
+  ref,
+) {
   const baseClasses =
-    'flex flex-row justify-center items-center cursor-pointer gap-4 transition-colors duration-300 ease-out active:scale-[0.97]';
+    'flex flex-row justify-center items-center gap-4 transition-colors duration-300 ease-out not-disabled:active:scale-[0.97]';
 
   return (
     <button
       type="button"
-      ref={containerRef}
+      ref={ref}
       className={`${baseClasses} ${getTypeRoundedClass(variant)} ${getColorClass(selected, variant)}`}
       aria-pressed={selected}
       onClick={onClick}
       {...rest}
     >
-      <span className="text-xs sm:text-sm">{label}</span>
+      <span className="text-sm">{label}</span>
 
       {variant === 'select' && (
         <ChevronDownIcon
           aria-hidden="true"
-          className={`w-5 h-5 pointer-events-none transition-transform duration-200 ${selected ? 'text-blue-500' : 'text-gray-400'} ${isChipOpen ? 'rotate-180' : 'rotate-0'}`}
+          className={`w-5 h-5 pointer-events-none transition-transform duration-200 ${selected ? 'text-primary-500' : 'text-gray-400'} ${isChipOpen ? 'rotate-180' : 'rotate-0'}`}
         />
       )}
 
       {variant === 'cancel' && (
         <CloseIcon
           aria-hidden="true"
-          className={`pointer-events-none w-4 h-4 ${selected ? 'text-blue-500' : 'text-gray-400'}`}
+          className={`pointer-events-none w-4 h-4 ${selected ? 'text-primary-500' : 'text-gray-400'}`}
         />
       )}
     </button>
   );
-}
+});
 
 /**Chip 컴포넌트의 기본 레이아웃은 그리드입니다. */
-Chip.layout = 'grid' as const;
+const Chip = Object.assign(ChipBase, { layout: 'grid' as const });
 
 export default Chip;
 

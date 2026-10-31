@@ -4,13 +4,12 @@ import { Helmet } from 'react-helmet';
 import markdownComponents from '@/shared/config/markdownComponents';
 import usePrivacyPolicy from '@/entities/privacyPolicy/model/usePrivacyPolicy';
 import PrivacyLabelGrid from '../../widgets/user/ui/PrivacyLabelGrid';
-import { Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
-import LoadingSpinner from '@/shared/ui/LoadingSpinner';
+import { Card, Flex, Heading, SupportingText, LoadingState } from '@allcll/allcll-ui';
 
 function PrivacyPolicy() {
   const { data: markdown, isLoading } = usePrivacyPolicy();
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return <LoadingState className="min-h-[50vh]" />;
   if (!markdown) return null;
 
   return (

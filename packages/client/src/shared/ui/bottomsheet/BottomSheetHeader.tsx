@@ -42,14 +42,16 @@ interface IHeaderTypeIcon {
 function HeaderTypeIcon({ headerType, onClick }: IHeaderTypeIcon) {
   const icon =
     headerType === 'close' ? (
-      <CloseIcon className="w-4 h-4 text-gray-500" />
+      <CloseIcon className="w-3 h-3 text-gray-600" />
     ) : (
       <AddIcon className="w-4 h-4 text-gray-400" />
     );
 
   return (
     <button
-      className="w-6 h-6 cursor-pointer flex items-center justify-center bg-gray-100 rounded-full"
+      type="button"
+      aria-label={headerType === 'close' ? '닫기' : '추가'}
+      className="w-6 h-6 flex items-center justify-center bg-gray-100 rounded-full"
       onClick={onClick}
     >
       {icon}

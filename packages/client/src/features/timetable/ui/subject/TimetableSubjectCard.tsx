@@ -14,7 +14,7 @@ interface ISubjectCard {
 }
 
 function TimetableSubjectCard({ isActive, subject, onClick, forwardedRef }: Readonly<ISubjectCard>) {
-  const color = isActive ? 'text-blue-500 bg-blue-50' : 'text-gray-700 bg-white hover:bg-gray-50';
+  const color = isActive ? 'text-primary-500 bg-primary-50' : 'text-gray-700 bg-white hover:bg-gray-50';
   const { saveSchedule } = useScheduleModal();
   const { selectTargetOnly } = useSearchLogging();
 
@@ -27,7 +27,7 @@ function TimetableSubjectCard({ isActive, subject, onClick, forwardedRef }: Read
   return (
     <button
       type="button"
-      className={`border border-gray-200 rounded-lg p-3 sm:p-4 gap-2 sm:gap-3 ${color} cursor-pointer w-full text-left`}
+      className={`border border-gray-200 rounded-lg p-3 sm:p-4 gap-2 sm:gap-3 ${color} w-full text-left`}
       onClick={onClick}
       ref={forwardedRef}
     >
@@ -51,7 +51,7 @@ function TimetableSubjectCard({ isActive, subject, onClick, forwardedRef }: Read
             <BasketBadge wishCount={subject.totalCount ?? -1} formatter={value => `관심: ${value}명`} />
           )}
           {isActive && (
-            <Button variant="primary" size="medium" onClick={handleAddOfficialSchedule}>
+            <Button variant="solid" size="medium" onClick={handleAddOfficialSchedule}>
               추가하기
             </Button>
           )}

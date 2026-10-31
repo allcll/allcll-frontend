@@ -1,3 +1,4 @@
+import { useToastNotification } from '@allcll/common';
 import {
   Button,
   Card,
@@ -7,6 +8,7 @@ import {
   IconButton,
   SupportingText,
   TextField,
+  TextLink,
   ViewIcon as EyeOpenIcon,
   ViewOffIcon as EyeClosedIcon,
 } from '@allcll/allcll-ui';
@@ -14,7 +16,6 @@ import { useId, useState } from 'react';
 import useLoginForm from '../lib/useLoginForm';
 import useLoginConfirm from '../lib/useLoginConfirm';
 import { useLogin } from '@/entities/user/model/useAuth';
-import useToastNotification from '@/features/notification/model/useToastNotification';
 import LoginConfirmationDialog from './LoginConformDialog';
 import LoginErrorNotice from './LoginErrorNotice';
 import { type ILoginErrorView, toLoginErrorView } from '../lib/loginErrors.ts';
@@ -44,7 +45,7 @@ function LoginForm({ onSuccess }: ILoginFormProps) {
   const handleLoginSuccess = () => {
     setErrorView(null);
     onSuccess?.();
-    addToast('로그인에 성공하셨습니다.', 'login-success');
+    addToast('로그인되었습니다.', 'login-success');
   };
 
   const handleLoginError = (error: Error) => {
@@ -95,27 +96,25 @@ function LoginForm({ onSuccess }: ILoginFormProps) {
             autoComplete="username"
             {...getTextFieldProps('studentId')}
           />
-          <div className="relative">
-            <TextField
-              label="비밀번호"
-              size="medium"
-              required
-              type={showPassword ? 'text' : 'password'}
-              placeholder="세종대 포털 비밀번호를 입력하세요."
-              autoComplete="current-password"
-              {...getTextFieldProps('password')}
-            />
-
-            {values.password && (
-              <IconButton
-                type="button"
-                onClick={() => setShowPassword(value => !value)}
-                aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
-                icon={!showPassword ? <EyeClosedIcon className="w-4 h-4" /> : <EyeOpenIcon className="w-4 h-4" />}
-                className="absolute right-8 top-11"
-              />
-            )}
-          </div>
+          <TextField
+            label="비밀번호"
+            size="medium"
+            required
+            type={showPassword ? 'text' : 'password'}
+            placeholder="세종대 포털 비밀번호를 입력하세요."
+            autoComplete="current-password"
+            {...getTextFieldProps('password')}
+            endAdornment={
+              values.password && (
+                <IconButton
+                  type="button"
+                  onClick={() => setShowPassword(value => !value)}
+                  aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+                  icon={!showPassword ? <EyeClosedIcon className="w-4 h-4" /> : <EyeOpenIcon className="w-4 h-4" />}
+                />
+              )
+            }
+          />
 
           <Flex direction="flex-col" gap="gap-2">
             <SupportingText className="break-keep">
@@ -141,15 +140,13 @@ function LoginForm({ onSuccess }: ILoginFormProps) {
                 onBlur={() => onBlur('agreeToTerms')}
               />
 
-              <Button asChild variant="text" textColor="gray" size="small">
-                <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">
-                  자세히 보기
-                </a>
-              </Button>
+              <TextLink href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="py-1.5 text-sm">
+                자세히 보기
+              </TextLink>
             </Flex>
           </Flex>
 
-          <Button type="submit" variant="primary" size="medium" disabled={!isValid || isPending}>
+          <Button type="submit" variant="solid" size="medium" disabled={!isValid || isPending}>
             {isPending ? '로그인 중...' : '로그인'}
           </Button>
 

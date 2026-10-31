@@ -1,4 +1,4 @@
-import { HomeIcon, TimeIcon, Button, Flex, Heading } from '@allcll/allcll-ui';
+import { HomeIcon, TimeIcon, Button, Flex } from '@allcll/allcll-ui';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib/useScheduleModal.ts';
 import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
@@ -20,9 +20,8 @@ function ScheduleInfoBottomSheet() {
 
   return (
     <BottomSheet>
-      <BottomSheetHeader headerType="close" onClose={cancelSchedule} />
+      <BottomSheetHeader title={schedule.subjectName} headerType="close" onClose={cancelSchedule} />
       <Flex direction="flex-col" className="px-2 py-3 w-full text-sm text-gray-500 gap-2">
-        <Heading level={3}>{schedule.subjectName}</Heading>
         <p className="text-sm text-gray-500">{schedule.professorName ?? '교수 정보 없음'}</p>
 
         <Flex align="items-center">
@@ -38,7 +37,7 @@ function ScheduleInfoBottomSheet() {
         <Flex>
           <span>{findSubjectById?.manageDeptNm}</span>
           <span> {findSubjectById?.studentYear + '학년'}</span>
-          <span className="text-blue-500 text-sm">{findSubjectById?.tmNum[0] + '학점'}</span>
+          <span className="text-primary-500 text-sm">{findSubjectById?.tmNum[0] + '학점'}</span>
         </Flex>
 
         <Flex>
@@ -55,7 +54,7 @@ function ScheduleInfoBottomSheet() {
               onConfirm={confirmDelete}
             />
           ) : (
-            <Button variant="text" size="medium" textColor="secondary" onClick={requestDeleteConfirmation}>
+            <Button variant="text" size="medium" color="danger" onClick={requestDeleteConfirmation}>
               삭제
             </Button>
           )}

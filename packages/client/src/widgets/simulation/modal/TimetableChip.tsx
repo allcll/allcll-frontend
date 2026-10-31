@@ -1,7 +1,7 @@
 import { RECENT_SEMESTERS } from '@/entities/semester/api/semester';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 import { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
-import { Button, Chip, Flex, Grid, Label, WarningIcon } from '@allcll/allcll-ui';
+import { AddIcon, Button, Chip, Flex, Grid, Label, WarningIcon, EmptyState } from '@allcll/allcll-ui';
 import { Link } from 'react-router-dom';
 
 interface ITimetableChip {
@@ -39,7 +39,7 @@ interface ITimetableChipSelector {
 
 function TimetableChipSelector({ semesterValue, timetables, selectedTimetableId, onSelect }: ITimetableChipSelector) {
   return (
-    <Flex direction="flex-col" gap="gap-2">
+    <Flex direction="flex-col" gap="gap-1.5">
       <Label>{semesterValue}학기 시간표</Label>
 
       <Flex gap="gap-2">
@@ -54,8 +54,10 @@ function TimetableChipSelector({ semesterValue, timetables, selectedTimetableId,
           ))}
         </Grid>
 
-        <Button variant="text" size="small" textColor="primary">
-          <Link to="/timetable">+ 새 시간표 추가</Link>
+        <Button asChild variant="text" size="small">
+          <Link to="/timetable">
+            <AddIcon />새 시간표 추가
+          </Link>
         </Button>
       </Flex>
     </Flex>
@@ -67,13 +69,11 @@ function TimetableChipEmpty({ semesterValue }: { semesterValue?: string }) {
     <Flex direction="flex-col" gap="gap-4">
       <Label>시간표 선택</Label>
 
-      <Flex direction="flex-col" gap="gap-2" align="items-center">
-        <WarningIcon className="w-7 h-7 text-[#C4C4C4]" />
-        <p className="text-gray-500 text-sm">{semesterValue}학기 시간표가 없어요.</p>
-        <Button asChild variant="secondary" size="small">
+      <EmptyState icon={WarningIcon} title={`${semesterValue}학기 시간표가 없어요.`}>
+        <Button asChild variant="solid" color="gray" size="small">
           <Link to="/timetable">새 시간표 추가</Link>
         </Button>
-      </Flex>
+      </EmptyState>
     </Flex>
   );
 }

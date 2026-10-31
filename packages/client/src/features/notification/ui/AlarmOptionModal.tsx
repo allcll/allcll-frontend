@@ -1,6 +1,4 @@
 import React from 'react';
-// Todo: Toggle 컴포넌트 - onChange state 반환 필요
-import { Toggle } from '@allcll/common';
 import useBackSignal from '@/shared/lib/useBackSignal.ts';
 import BrowserNotification from '../lib/browserNotification';
 import useNotificationInstruction from '../model/useNotificationInstruction';
@@ -8,7 +6,7 @@ import ToastNotification from '../lib/toastNotification';
 import { AlarmNotification } from '../lib/useNotification';
 import VibrationNotification from '../lib/vibrationNotification';
 import useAlarmSettings, { AlarmType, isSubAlarmActivated, SubAlarmType } from '../model/useAlarmSettings';
-import { Dialog, Button } from '@allcll/allcll-ui';
+import { Dialog, Button, Select, Toggle, Heading } from '@allcll/allcll-ui';
 
 interface IAlarmOptionModal {
   isOpen: boolean;
@@ -28,6 +26,7 @@ const AlarmTypeNames = [
 
 function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
   const hasPermission = useNotificationInstruction(state => state.isPermitted);
+  const alarmType = useAlarmSettings(state => state.alarmType);
 
   const onTestAlarm = () => {
     AlarmNotification.show('알림 기능을 테스트합니다', 'test-alarm');
@@ -42,14 +41,20 @@ function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
   useBackSignal({ enabled: isOpen, onClose: onClose });
 
   return !isOpen ? null : (
-    <Dialog title="알림설정" onClose={onClose} isOpen={isOpen}>
+    <Dialog title="알림 설정" onClose={onClose} isOpen={isOpen}>
       <Dialog.Content>
         <AlarmOptionContent />
         <SubAlarmOption />
 
         <div className="mt-4 flex justify-end">
-          <Button variant="outlined" size="medium" onClick={onTestAlarm} disabled={!hasPermission}>
-            알림테스트
+          <Button
+            variant="outlined"
+            color="primary"
+            size="medium"
+            onClick={onTestAlarm}
+            disabled={!hasPermission || alarmType === AlarmType.NONE}
+          >
+            알림 테스트
           </Button>
         </div>
       </Dialog.Content>
@@ -69,12 +74,13 @@ function AlarmOptionContent() {
 
   return (
     <div className="mb-4">
-      <label className="block mb-2 font-bold text-md" htmlFor="alarm-type-select">
+      <Heading level={3} size="md" id="alarm-type-heading" className="mb-2">
         알림 유형
-      </label>
-      <select
+      </Heading>
+      <Select
         id="alarm-type-select"
-        className="w-full mb-2 p-2 border border-gray-300 rounded"
+        aria-labelledby="alarm-type-heading"
+        className="w-full mb-2"
         value={alarmType}
         onChange={onChange}
       >
@@ -83,13 +89,13 @@ function AlarmOptionContent() {
             {type.title}
           </option>
         ))}
-      </select>
+      </Select>
 
       {(alarmType === AlarmType.BROWSER || alarmType === AlarmType.BOTH) && !hasPermission && (
-        <p className="pl-2 pb-2 text-sm text-red-600">브라우저 알림을 허용해주세요.</p>
+        <p className="pl-2 pb-2 text-sm text-danger-600">브라우저 알림을 허용해주세요.</p>
       )}
       {alarmType === AlarmType.TOAST && (
-        <p className="pl-2 pb-2 text-sm text-red-600">토스트 알림은 탭이 열려 있을 때에만 작동해요.</p>
+        <p className="pl-2 pb-2 text-sm text-danger-600">토스트 알림은 탭이 열려 있을 때에만 작동해요.</p>
       )}
       {!canBrowserNotify && (
         <p className="pl-2 pb-2 text-xs text-gray-600">이 브라우저는 브라우저 알림을 지원하지 않아요.</p>
@@ -111,34 +117,45 @@ function SubAlarmOption() {
   const isSoundDisabled = isAlarmDisabled;
   const isVibrateDisabled = isAlarmDisabled || !canVibrate;
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const toggleSubAlarm = (target: SubAlarmType, checked: boolean) => {
     // checked이면 비트 연산자로 플래그 추가, 아니면 제거
-    const target = e.target.id === 'select-sound' ? SubAlarmType.SOUND : SubAlarmType.VIBRATE;
-    const newType = e.target.checked ? subAlarmType | target : subAlarmType & ~target;
+    const newType = checked ? subAlarmType | target : subAlarmType & ~target;
 
     saveSettings({ subAlarmType: newType as SubAlarmType });
   };
 
   return (
     <div>
-      <h3 className="block mb-2 font-bold text-md">추가 알림 옵션</h3>
+      <Heading level={3} size="md" className="mb-2">
+        추가 알림 옵션
+      </Heading>
       <div className="flex flex-col gap-2">
-        <label className="my-1 flex items-center justify-between" htmlFor="select-sound">
-          <span className={isSoundDisabled ? 'text-gray-300' : ''}>소리</span>
-          <Toggle id="select-sound" name="sound" checked={isSound} onChange={onChange} disabled={isSoundDisabled} />
-        </label>
+        <div className="my-1 flex items-center justify-between">
+          <label htmlFor="select-sound" className={`text-sm ${isSoundDisabled ? 'text-gray-300' : ''}`}>
+            소리
+          </label>
+          <Toggle
+            id="select-sound"
+            name="sound"
+            checked={isSound}
+            onCheckedChange={checked => toggleSubAlarm(SubAlarmType.SOUND, checked)}
+            disabled={isSoundDisabled}
+          />
+        </div>
 
-        <label className="my-1 flex items-center justify-between" htmlFor="select-vibrate">
-          <span className={isVibrateDisabled ? 'text-gray-300' : ''}>진동</span>
+        <div className="my-1 flex items-center justify-between">
+          <label htmlFor="select-vibrate" className={`text-sm ${isVibrateDisabled ? 'text-gray-300' : ''}`}>
+            진동
+          </label>
           <Toggle
             id="select-vibrate"
             name="vibrate"
             checked={isVibrate}
-            onChange={onChange}
+            onCheckedChange={checked => toggleSubAlarm(SubAlarmType.VIBRATE, checked)}
             disabled={isVibrateDisabled}
           />
-        </label>
-        {!canVibrate && <p className="pl-2 pb-2 text-sm text-red-600">이 기기는 진동 기능을 지원하지 않아요.</p>}
+        </div>
+        {!canVibrate && <p className="pl-2 pb-2 text-sm text-danger-600">이 기기는 진동 기능을 지원하지 않아요.</p>}
       </div>
     </div>
   );

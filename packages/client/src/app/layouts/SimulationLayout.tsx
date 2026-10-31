@@ -1,6 +1,6 @@
 import useGlobalEffect from '@/shared/lib/useGlobalEffect.ts';
-import ToastNotification from '@/features/notification/ui/ToastNotification.tsx';
 import Header from '@/shared/ui/Header.tsx';
+import { GlobalConfirmDialog, ToastNotification } from '@allcll/common';
 // import BannerNotification from '@/components/banner/BannerNotification.tsx';
 import { Outlet } from 'react-router-dom';
 import Footer from '@/shared/ui/Footer.tsx';
@@ -15,6 +15,7 @@ function SimulationLayout() {
   return (
     <>
       <ToastNotification />
+      <GlobalConfirmDialog />
       <Header />
       <ServiceEnabled serviceId="simulation">
         {/*<BannerNotification />*/}

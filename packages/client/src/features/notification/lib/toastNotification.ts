@@ -1,5 +1,5 @@
 import { CustomNotification } from '../lib/useNotification';
-import useToastNotification from '../model/useToastNotification.ts';
+import { useToastNotification } from '@allcll/common';
 
 const ToastNotification: CustomNotification = {
   canNotify() {
@@ -8,7 +8,7 @@ const ToastNotification: CustomNotification = {
   isGranted() {
     return true;
   },
-  requestPermission(_?: (permission: NotificationPermission) => void) {},
+  requestPermission() {},
   getDeniedMessage() {
     return [];
   },

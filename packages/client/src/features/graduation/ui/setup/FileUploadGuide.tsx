@@ -1,4 +1,4 @@
-import { Card, Heading, Flex, WarningIcon } from '@allcll/allcll-ui';
+import { Card, Heading, Flex, WarningIcon, TextLink } from '@allcll/allcll-ui';
 import { NavLink } from 'react-router-dom';
 
 const FileUploadGuide = () => {
@@ -8,28 +8,27 @@ const FileUploadGuide = () => {
         <Flex align="items-center" gap="gap-2">
           <WarningIcon className="w-5 h-5 text-gray-300" />
 
-          <Heading level={3} className="text-gray-800">
-            기이수 성적 파일 업로드 방법
-          </Heading>
+          <Heading level={3}>기이수 성적 파일 업로드 방법</Heading>
         </Flex>
 
         <ul className="list-disc list-inside space-y-1 ml-1 text-gray-600">
           <li className="text-sm">
             <span className="text-xs sm:text-sm">
-              <NavLink
-                to="https://sjpt.sejong.ac.kr/main/view/Login/doSsoLogin.do?p="
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary-500 underline font-semibold"
-              >
-                학사 정보 시스템
-              </NavLink>
+              <TextLink asChild className="font-semibold">
+                <NavLink
+                  to="https://sjpt.sejong.ac.kr/main/view/Login/doSsoLogin.do?p="
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  학사 정보 시스템
+                </NavLink>
+              </TextLink>
               에 로그인 후 <strong>[학부생 학사정보]</strong> 탭에 접속합니다.
             </span>
           </li>
           <li className="text-sm">
             <span className="text-xs sm:text-sm">
-              좌측 사이드 바의 <strong>[수업/성적] &gt; [성적 및 강의평가] &gt; [기이수성적조회]</strong>를 클릭합니다.
+              좌측 사이드바의 <strong>[수업/성적] &gt; [성적 및 강의평가] &gt; [기이수성적조회]</strong>를 클릭합니다.
             </span>
           </li>
           <li className="text-sm">

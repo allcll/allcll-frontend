@@ -1,7 +1,7 @@
 import { usePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
 import useFindWishes from '@/entities/wishes/lib/useFindWishes.ts';
 import { SSEType, useSseData } from '@/features/live/common/api/useSSEManager';
-import { Grid } from '@allcll/allcll-ui';
+import { Grid, Skeleton } from '@allcll/allcll-ui';
 import RealtimeCard from '@/features/live/pin/ui/RealtimeCard';
 import AlarmAddButton from '@/features/live/pin/ui/AlarmAddButton';
 
@@ -56,10 +56,10 @@ export default PinCoursesBody;
 
 function SkeletonBox() {
   return (
-    <div className="animate-pulse grid grid-cols-1 md:grid-cols-3 gap-4">
+    <Grid columns={{ base: 1, md: 3 }} gap="gap-4">
       {[0, 0, 0].map((_, idx) => (
-        <div key={'skeleton-card-' + idx} className="bg-gray-300 shadow-sm rounded-lg p-4 h-24" />
+        <Skeleton key={'skeleton-card-' + idx} className="h-24 rounded-lg" />
       ))}
-    </div>
+    </Grid>
   );
 }

@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import remarkBreaks from 'remark-breaks';
-import { Badge, Button, Flex, Heading, IconButton, ChevronLeftIcon, CloseIcon } from '@allcll/allcll-ui';
-import { type Notice, getNoticeLabel } from '@/entities/notices/model/notice';
+import { Flex, IconButton, ChevronLeftIcon, CloseIcon, EmptyState } from '@allcll/allcll-ui';
+import { type Notice } from '@/entities/notices/model/notice';
 import NoticeCard from './NoticeCard';
+import NoticeDetailContent from './NoticeDetailContent';
 import NoticeDetailModal from './NoticeDetailModal';
 
 interface NoticePanelProps {
@@ -26,33 +24,28 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
   if (isMobile && selectedNotice) {
     return (
       <Flex direction="flex-col" className="h-full">
-        <Flex align="items-center" justify="justify-between" className="p-4 border-b border-gray-100">
-          <Button variant="text" size="medium" textColor="gray" onClick={() => setSelectedNotice(null)}>
-            <ChevronLeftIcon className="w-4 h-4 text-gray-700" />
-            목록
-          </Button>
+        <Flex align="items-center" justify="justify-between" className="px-4 h-14 shrink-0 border-b border-gray-100">
+          <Flex align="items-center" gap="gap-1">
+            <IconButton
+              className="p-2 -ml-2 hover:bg-gray-100 active:bg-gray-100"
+              variant="plain"
+              label="공지 목록으로"
+              icon={<ChevronLeftIcon className="w-5 h-5 text-gray-500" />}
+              onClick={() => setSelectedNotice(null)}
+            />
+            <span className="text-base font-semibold">공지사항</span>
+          </Flex>
           <IconButton
             className="p-2 hover:bg-gray-100 active:bg-gray-100"
             variant="plain"
             label="닫기"
-            icon={<CloseIcon className="w-6 h-6 text-gray-700" />}
+            icon={<CloseIcon className="w-5 h-5 text-gray-500" />}
             onClick={onClose}
           />
         </Flex>
 
-        <div className="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-3">
-          <Heading level={2} size="lg" className="text-gray-900">
-            {selectedNotice.title}
-          </Heading>
-          <Flex align="items-center" gap="gap-2">
-            <Badge variant="primary" size="small">
-              {getNoticeLabel(selectedNotice.operationType)}
-            </Badge>
-            <span className="text-xs text-gray-400">{selectedNotice.createdAt.slice(0, 10).replace(/-/g, '.')}</span>
-          </Flex>
-          <div className="prose max-w-none">
-            <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{selectedNotice.content}</ReactMarkdown>
-          </div>
+        <div className="flex-1 overflow-y-auto px-5 py-4">
+          <NoticeDetailContent notice={selectedNotice} />
         </div>
       </Flex>
     );
@@ -60,22 +53,20 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
 
   return (
     <Flex direction="flex-col" className="h-full">
-      <Flex align="items-center" justify="justify-between" className="p-4 border-b border-gray-100">
-        <span className="text-base font-semibold text-gray-900">공지사항</span>
+      <Flex align="items-center" justify="justify-between" className="px-4 h-14 shrink-0 border-b border-gray-100">
+        <span className="text-base font-semibold">공지사항</span>
         <IconButton
           className="p-2 hover:bg-gray-100 active:bg-gray-100"
           variant="plain"
           label="닫기"
-          icon={<CloseIcon className="w-6 h-6 text-gray-700" />}
+          icon={<CloseIcon className={isMobile ? 'w-5 h-5 text-gray-500' : 'w-4 h-4 text-gray-500'} />}
           onClick={onClose}
         />
       </Flex>
 
       <div className="flex-1 overflow-y-auto divide-y divide-gray-100">
         {notices.length === 0 ? (
-          <Flex align="items-center" justify="justify-center" className="h-32 text-sm text-gray-400">
-            등록된 공지사항이 없습니다.
-          </Flex>
+          <EmptyState title="등록된 공지사항이 없습니다." className="h-32" />
         ) : (
           notices.map(notice => (
             <NoticeCard key={notice.id} notice={notice} isRead={isRead(notice)} onClick={handleCardClick} />

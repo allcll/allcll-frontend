@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { QueryClient } from '@tanstack/react-query';
+import { confirm } from '@allcll/common';
 import useSSECondition from '@/features/live/board/model/useSSECondition.ts';
 import useAlarmSettings, {
   AlarmType,
@@ -141,12 +142,17 @@ function useNotification() {
     isInitialized = true;
   }, []);
 
-  const changeAlarm = () => {
+  const changeAlarm = async () => {
     // 알림 기능 활성화 할 때
     if (!isAlarm) {
       const alarmType = useAlarmSettings.getState().alarmType;
       if (alarmType === AlarmType.NONE) {
-        if (!confirm('알림 기능을 활성화 하시겠습니까?')) return;
+        const confirmed = await confirm({
+          title: '알림 활성화',
+          description: '알림 기능을 활성화하시겠습니까?',
+          confirmLabel: '활성화',
+        });
+        if (!confirmed) return;
         useAlarmSettings.getState().resetSettings();
       }
       AlarmNotification.requestPermission();

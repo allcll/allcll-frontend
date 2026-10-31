@@ -1,21 +1,12 @@
-import React from 'react';
+import type { ComponentProps } from 'react';
+import { EmptyState } from '@allcll/allcll-ui';
 
-interface NoneLayoutProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  children?: React.ReactNode;
-}
+type NoneLayoutProps = ComponentProps<typeof EmptyState>;
 
-function NoneLayout({ icon, title, description, children }: Readonly<NoneLayoutProps>) {
+function NoneLayout({ className = '', ...props }: Readonly<NoneLayoutProps>) {
   return (
     <div className="flex flex-col items-center justify-center w-full bg-gray-50 rounded-md">
-      <div className="flex flex-col items-center justify-center gap-2 p-12">
-        <div>{icon}</div>
-        <div className="text-gray-600">{title}</div>
-        <div className="text-xs text-gray-500">{description}</div>
-        {children}
-      </div>
+      <EmptyState {...props} className={`p-12 ${className}`} />
     </div>
   );
 }

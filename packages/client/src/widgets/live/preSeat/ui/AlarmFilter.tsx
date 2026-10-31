@@ -129,9 +129,9 @@ function AlarmFilter() {
           />
         </Flex>
 
-        <FilterDelete filters={filters} resetFilter={resetFilter} />
-        <FilteringButton handleOpenFilter={handleOpenFilter} />
         <AlarmButton alarmOnly={alarmOnly} setFilter={setFilters} />
+        <FilteringButton handleOpenFilter={handleOpenFilter} />
+        <FilterDelete filters={filters} resetFilter={resetFilter} />
       </Flex>
     </Flex>
   );

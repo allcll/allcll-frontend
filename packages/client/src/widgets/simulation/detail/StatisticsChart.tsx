@@ -14,6 +14,7 @@ import {
 } from 'chart.js/auto';
 import { Chart } from 'react-chartjs-2';
 import { useState } from 'react';
+import { Checkbox } from '@allcll/allcll-ui';
 import { AggregatedResultResponse } from '@/features/simulation/lib/result.ts';
 import { isNumber } from 'chart.js/helpers';
 
@@ -138,7 +139,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
       // },
       tooltip: {
         callbacks: {
-          label: function (context: { dataset: { label: string }; parsed: { y: any } }) {
+          label: function (context: { dataset: { label: string }; parsed: { y: number } }) {
             const label = context.dataset.label || '';
             const value = context.parsed.y;
             return `${label}: ${value.toFixed(2)}초`;
@@ -172,18 +173,7 @@ function StatisticsChart({ result }: { result: AggregatedResultResponse }) {
     <div className="w-full h-96 p-4 box-border">
       <div className="flex justify-between items-center mb-4">
         <div></div>
-        <div className="text-lg font-semibold">
-          <input
-            id="normal-data"
-            type="checkbox"
-            className="cursor-pointer"
-            onChange={e => setNormalData(e.target.checked)}
-            checked={normalData}
-          />
-          <label htmlFor="normal-data" className="text-sm pl-2 cursor-pointer">
-            이상치 제거
-          </label>
-        </div>
+        <Checkbox label="이상치 제거" checked={normalData} onChange={e => setNormalData(e.target.checked)} />
       </div>
       <div className="h-full pb-6 overflow-x-auto">
         <Chart type="bar" data={data} options={options} />

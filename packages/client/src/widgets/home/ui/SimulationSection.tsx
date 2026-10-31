@@ -22,7 +22,7 @@ function SimulationSection() {
     <Section>
       <SectionHeader
         title="세종대 수강신청 연습 (올클연습)"
-        subtitle="세종대 수강신청 연습 부터, 결과 분석까지 한 번에"
+        subtitle="세종대 수강신청 연습부터, 결과 분석까지 한 번에"
         href="/simulation"
       />
 
@@ -75,7 +75,7 @@ function CaptchaInput({
   }
 
   function handleChangeInput(event: React.ChangeEvent<HTMLInputElement>) {
-    let inputValue = event.target.value;
+    const inputValue = event.target.value;
 
     captchaResult.updateResult();
 
@@ -109,7 +109,7 @@ function CaptchaInput({
   function handleConfirmCaptcha() {
     const RESET_TIME = 700;
     if (captchaInput?.toString() === codeRef.current) {
-      setInfoMessage({ message: '캡차가 성공적으로 입력되었습니다.', color: 'green' });
+      setInfoMessage({ message: '캡차가 입력되었습니다.', color: 'green' });
       captchaResult.endResult(true);
       setTimeout(resetCaptcha, RESET_TIME);
     } else {
@@ -124,7 +124,7 @@ function CaptchaInput({
       <div className="grid grid-cols-2 gap-4 mt-4 p-4">
         <div className="flex flex-col">
           <div className="text-sm font-semibold flex flex-row items-center gap-2">
-            <span className="inline-block w-1.5 h-5 bg-blue-500 mr-2 "></span>생성된 코드
+            <span className="inline-block w-1.5 h-5 bg-primary-500 mr-2 "></span>생성된 코드
             <SmallButton onClick={handleRefreshCaptcha}>재생성</SmallButton>
           </div>
 
@@ -135,7 +135,7 @@ function CaptchaInput({
 
         <div>
           <div className="text-sm font-semibold  flex flex-row items-center">
-            <span className="inline-block w-1.5 h-5 bg-blue-500 mr-2 "></span>생성된 코드 입력
+            <span className="inline-block w-1.5 h-5 bg-primary-500 mr-2 "></span>생성된 코드 입력
           </div>
           <SejongUI.Input
             value={captchaInput}
@@ -151,10 +151,7 @@ function CaptchaInput({
       </div>
 
       <div className="flex justify-end p-4">
-        <button
-          onClick={handleConfirmCaptcha}
-          className="px-4 py-2 bg-white hover:bg-blue-50 rounded-xs border cursor-pointer"
-        >
+        <button onClick={handleConfirmCaptcha} className="px-4 py-2 bg-white hover:bg-primary-50 rounded-xs border">
           코드입력
         </button>
       </div>
@@ -165,7 +162,7 @@ function CaptchaInput({
 function SmallButton({ className, children, ...props }: Readonly<ButtonHTMLAttributes<HTMLButtonElement>>) {
   return (
     <button
-      className={'px-2 py-1 bg-blue-500 text-white text-sm rounded-xs cursor-pointer hover:bg-blue-600 ' + className}
+      className={'px-2 py-1 bg-primary-500 text-white text-sm rounded-xs hover:bg-primary-600 ' + className}
       {...props}
     >
       {children}

@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { NotificationIcon } from '@allcll/allcll-ui';
 import { useNotices } from '@/entities/notices/api/useNotices';
 import useMobile from '@/shared/lib/useMobile';
@@ -7,7 +7,6 @@ import NoticeDropdown from './NoticeDropdown';
 import NoticeMobileView from './NoticeMobileView';
 
 function NoticeBell() {
-  const triggerRef = useRef<HTMLButtonElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useMobile();
 
@@ -17,40 +16,36 @@ function NoticeBell() {
 
   const hasNew = notices.some(n => !isRead(n));
 
-  const toggle = () => setIsOpen(prev => !prev);
   const close = useCallback(() => setIsOpen(false), []);
+
+  const bellButton = (
+    <button
+      type="button"
+      onClick={isMobile ? () => setIsOpen(prev => !prev) : undefined}
+      aria-label="공지사항"
+      className="relative p-2 rounded-md hover:bg-gray-100 transition-colors"
+    >
+      <NotificationIcon className="w-4.5 h-4.5 md:w-4 md:h-4 text-gray-500" />
+      {hasNew && (
+        <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none">
+          N
+        </span>
+      )}
+    </button>
+  );
+
+  if (!isMobile) {
+    return (
+      <NoticeDropdown notices={notices} isRead={isRead} onRead={markAsRead}>
+        {bellButton}
+      </NoticeDropdown>
+    );
+  }
 
   return (
     <>
-      <button
-        ref={triggerRef}
-        type="button"
-        onClick={toggle}
-        aria-label="공지사항"
-        className="relative p-2 rounded-md hover:bg-gray-100 transition-colors"
-      >
-        <NotificationIcon className="w-4 h-4 text-gray-600" />
-        {hasNew && (
-          <span className="absolute -top-0.5 -right-0.5 h-4 px-1 bg-blue-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none">
-            N
-          </span>
-        )}
-      </button>
-
-      {!isMobile && (
-        <NoticeDropdown
-          notices={notices}
-          isOpen={isOpen}
-          triggerRef={triggerRef}
-          isRead={isRead}
-          onRead={markAsRead}
-          onClose={close}
-        />
-      )}
-
-      {isMobile && (
-        <NoticeMobileView notices={notices} isOpen={isOpen} isRead={isRead} onRead={markAsRead} onClose={close} />
-      )}
+      {bellButton}
+      <NoticeMobileView notices={notices} isOpen={isOpen} isRead={isRead} onRead={markAsRead} onClose={close} />
     </>
   );
 }

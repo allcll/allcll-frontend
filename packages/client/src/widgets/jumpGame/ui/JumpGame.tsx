@@ -135,7 +135,7 @@ function JumpGame() {
         type="button"
         aria-label="올클 점프 미니게임"
         onClick={handleAction}
-        className="absolute inset-0 cursor-pointer touch-manipulation"
+        className="absolute inset-0 touch-manipulation"
       />
 
       {gameStatus === 'gameOver' && <GameResultOverlay message="GAME OVER" onRestart={handleAction} />}

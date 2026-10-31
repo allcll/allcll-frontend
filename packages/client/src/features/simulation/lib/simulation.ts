@@ -36,6 +36,21 @@ export enum SIMULATION_ERROR {
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }
 
+const SIMULATION_ERROR_MESSAGE: Record<SIMULATION_ERROR, string> = {
+  [SIMULATION_ERROR.SNAPSHOT_NOT_EXIST]: '연습할 과목 목록이 없습니다. 과목을 먼저 선택해주세요.',
+  [SIMULATION_ERROR.ONGOING_SIMULATION_NOT_FOUND]: '진행 중인 연습이 없습니다. 연습을 다시 시작해주세요.',
+  [SIMULATION_ERROR.SELECTION_NOT_FOUND]: '신청 중인 과목 정보를 찾을 수 없습니다. 다시 시도해주세요.',
+  [SIMULATION_ERROR.SIMULATION_NOT_FOUND]: '연습 기록을 찾을 수 없습니다.',
+  [SIMULATION_ERROR.MULTIPLE_SIMULATION_FOUND]: '연습 기록에 문제가 있습니다. 연습을 다시 시작해주세요.',
+  [SIMULATION_ERROR.SIMULATION_IS_NOT_FINISHED]: '아직 끝나지 않은 연습입니다.',
+  [SIMULATION_ERROR.MULTIPLE_SIMULATION_RUNNING]: '진행 중인 연습이 여러 개 있습니다. 연습을 다시 시작해주세요.',
+  [SIMULATION_ERROR.UNKNOWN_ERROR]: '문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
+};
+
+export function getSimulationErrorMessage(code: unknown) {
+  return SIMULATION_ERROR_MESSAGE[code as SIMULATION_ERROR] ?? SIMULATION_ERROR_MESSAGE[SIMULATION_ERROR.UNKNOWN_ERROR];
+}
+
 export const SIMULATION_TIME_LIMIT = 5 * 60; // 5분
 export const SIMULATION_TIME_LIMIT_MS = SIMULATION_TIME_LIMIT * 1000; // 5분, 시뮬레이션 시간 제한
 
@@ -209,7 +224,10 @@ export async function triggerButtonEvent(
   input: ButtonEventSubmitReq,
   lectures: Lecture[],
 ): Promise<{ status: APPLY_STATUS }>;
-export async function triggerButtonEvent(input: ButtonEventApplyReq, lectures: Lecture[]): Promise<{}>;
+export async function triggerButtonEvent(
+  input: ButtonEventApplyReq,
+  lectures: Lecture[],
+): Promise<Record<string, unknown>>;
 export async function triggerButtonEvent(input: ButtonEventEndReq, lectures: Lecture[]): Promise<{ finished: boolean }>;
 export async function triggerButtonEvent(
   input: ButtonEventSearchReq | ButtonEventSubmitReq | ButtonEventApplyReq | ButtonEventEndReq,

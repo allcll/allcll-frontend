@@ -6,7 +6,7 @@ import { useAdminReviews, OPERATION_TYPE_LABEL } from '@/hooks/server/useAdminRe
 import type { Review } from '@/hooks/server/useAdminReviews';
 import { Filtering, CheckboxAdapter } from '@allcll/common';
 import MultiSelectFilterOption from '@/components/common/MultiSelectFilterOption';
-import { Button, Flex, ListboxOption } from '@allcll/allcll-ui';
+import { Button, Flex, Label, ListboxOption } from '@allcll/allcll-ui';
 
 const DOMAIN_OPTIONS = Object.entries(OPERATION_TYPE_LABEL).map(([value, label]) => ({ label, value }));
 const RATING_OPTIONS = [1, 2, 3].map(r => ({ label: `${r}점`, value: String(r) }));
@@ -33,10 +33,10 @@ const compareByCreatedAt =
 
 const SORT_OPTIONS: IReviewSortOption[] = [
   { value: 'latest', label: '최신순', compare: compareByCreatedAt('desc') },
-  { value: 'oldest', label: '오래된순', compare: compareByCreatedAt('asc') },
+  { value: 'oldest', label: '오래된 순', compare: compareByCreatedAt('asc') },
   { value: 'studentId', label: '학번순', compare: (a, b) => a.studentId.localeCompare(b.studentId) },
-  { value: 'rateDesc', label: '평점 높은순', compare: (a, b) => b.rate - a.rate },
-  { value: 'rateAsc', label: '평점 낮은순', compare: (a, b) => a.rate - b.rate },
+  { value: 'rateDesc', label: '평점 높은 순', compare: (a, b) => b.rate - a.rate },
+  { value: 'rateAsc', label: '평점 낮은 순', compare: (a, b) => a.rate - b.rate },
 ];
 
 function Reviews() {
@@ -89,19 +89,22 @@ function Reviews() {
         />
       </Filtering>
       <Filtering label={`정렬: ${activeSortOption.label}`} selected={sortKey !== 'latest'}>
-        <div className="flex flex-col gap-1 min-w-32">
-          {SORT_OPTIONS.map(option => (
-            <ListboxOption
-              key={option.value}
-              selected={sortKey === option.value}
-              onSelect={() => setSortKey(option.value)}
-              left={option.label}
-            />
-          ))}
+        <div>
+          <Label className="block mb-2 px-2">정렬</Label>
+          <div className="flex flex-col gap-1 min-w-32">
+            {SORT_OPTIONS.map(option => (
+              <ListboxOption
+                key={option.value}
+                selected={sortKey === option.value}
+                onSelect={() => setSortKey(option.value)}
+                left={option.label}
+              />
+            ))}
+          </div>
         </div>
       </Filtering>
       <div className="ml-auto">
-        <Button variant="outlined" size="small" disabled={isFetching} onClick={() => refetch()}>
+        <Button variant="outlined" color="gray" size="small" disabled={isFetching} onClick={() => refetch()}>
           후기 불러오기
         </Button>
       </div>

@@ -1,34 +1,19 @@
-import IconButton from '../icon-button/IconButton';
-import RowSlots from '../row/RowSlots';
 import { CloseIcon, NotificationIcon } from '../../icons';
 
-export interface IToastMessage {
+interface ToastProps {
   message: string;
-  tag?: string;
+  onClose: () => void;
 }
 
-interface IToast {
-  toast: IToastMessage;
-  closeToast: () => void;
-}
-
-function Toast({ toast, closeToast }: IToast) {
+function Toast({ message, onClose }: ToastProps) {
   return (
-    <RowSlots
-      withPadding
-      className="bg-white rounded-lg shadow-md"
-      left={<NotificationIcon className="w-4 h-4 text-blue-500" />}
-      center={<span className="flex-1 text-sm font-bold truncate max-w-72">{toast.message}</span>}
-      right={
-        <IconButton
-          label="닫기"
-          variant="plain"
-          icon={<CloseIcon className="text-gray-400 w-4 h-4" />}
-          className="p-2 rounded-full hover:bg-blue-100"
-          onClick={closeToast}
-        />
-      }
-    />
+    <div className="flex justify-between items-center gap-2 p-4 ml-2 bg-white rounded-lg shadow-md">
+      <NotificationIcon className="w-4 h-4 text-primary-500" />
+      <span className="flex-1 text-sm font-bold truncate max-w-72">{message}</span>
+      <button type="button" aria-label="닫기" onClick={onClose} className="p-2 rounded-full hover:bg-primary-100">
+        <CloseIcon className="w-4 h-4 text-gray-400" />
+      </button>
+    </div>
   );
 }
 

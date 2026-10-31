@@ -1,3 +1,5 @@
+import { Heading } from '@allcll/allcll-ui';
+import { alert, useToastNotification } from '@allcll/common';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import SejongUI from '@allcll/sejong-ui';
@@ -30,15 +32,15 @@ function Simulation() {
   const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
   const { reloadSimulationStatus } = useReloadSimulation();
 
-  const forceSimulation = async () => {
+  const forceSimulation = async (simulationId: number) => {
     try {
       await forceStopSimulation();
-      setCurrentSimulation({ simulationStatus: 'finish' });
-      alert('5분 경과로 시뮬레이션이 강제 종료되었습니다.');
+      setCurrentSimulation({ simulationId, simulationStatus: 'finish' });
+      await alert({ title: '연습 종료', description: '5분이 지나 수강신청 연습이 자동으로 종료되었습니다.' });
       openModal('result');
     } catch (error) {
       console.error(error);
-      alert('시뮬레이션 강제 종료에 실패했습니다.');
+      useToastNotification.getState().addToast('연습 종료에 실패했습니다. 다시 시도해주세요.', 'simulation-error');
     }
   };
 
@@ -54,7 +56,7 @@ function Simulation() {
         const seconds = Math.floor((now - start) / 1000);
 
         if (seconds > SIMULATION_TIME_LIMIT) {
-          forceSimulation().then();
+          forceSimulation(simulation.simulationId).then();
         } else {
           reloadSimulationStatus();
         }
@@ -87,7 +89,7 @@ function Simulation() {
       <RenderModal />
       <div className="flex justify-between gap-5">
         <div className="flex gap-5">
-          <h1 className="font-bold text-lg">수강신청 연습</h1>
+          <Heading level={1}>수강신청 연습</Heading>
           <Stopwatch />
         </div>
 
@@ -109,9 +111,9 @@ function Simulation() {
             <SejongUI.Button size="sm" onClick={reloadSimulationStatus}>
               재조회
             </SejongUI.Button>
-            <span className="text-xs font-bold text-black">
+            <span className="text-xs font-bold">
               수강 가능 학점: 18 /
-              <span className="text-blue-500">
+              <span className="text-primary-500">
                 신청 과목수: {currentSimulation.registeredSubjects.length} / 신청 학점수: {totalCredits}
               </span>
             </span>

@@ -1,3 +1,4 @@
+import { Button } from '@allcll/allcll-ui';
 import useTutorialStore from '@/features/simulation/model/useTutorialStore.ts';
 
 interface IVisitTutorial {
@@ -15,9 +16,9 @@ function VisitTutorialButton({ onClick }: IVisitTutorial) {
 
   return (
     shouldSkipTutorial && (
-      <button className="text-gray-600 hover:text-blue-500 cursor-pointer" onClick={onClickHandler}>
+      <Button variant="text" color="gray" size="medium" onClick={onClickHandler}>
         튜토리얼 활성화
-      </button>
+      </Button>
     )
   );
 }

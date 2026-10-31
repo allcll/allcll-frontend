@@ -1,4 +1,4 @@
-import { ZeroContent } from './ZeroContent';
+import { EmptyState, SearchIcon } from '@allcll/allcll-ui';
 
 interface IZeroElementRow {
   col: number;
@@ -10,7 +10,7 @@ export function ZeroElementRow({ col, title, description }: IZeroElementRow) {
   return (
     <tr>
       <td colSpan={col} className="py-4 text-center">
-        <ZeroContent title={title} description={description} />
+        <EmptyState icon={SearchIcon} title={title} description={description} className="mt-2" />
       </td>
     </tr>
   );

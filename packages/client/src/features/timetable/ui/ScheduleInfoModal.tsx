@@ -35,7 +35,7 @@ function ScheduleInfoModal() {
           </Flex>
           <p>
             {findSubjectById?.manageDeptNm} {findSubjectById?.studentYear + '학년'}{' '}
-            <span className="text-blue-500">{findSubjectById?.tmNum[0] + '학점'}</span>
+            <span className="text-primary-500">{findSubjectById?.tmNum[0] + '학점'}</span>
           </p>
         </Flex>
       </Dialog.Content>
@@ -49,7 +49,7 @@ function ScheduleInfoModal() {
             onConfirm={confirmDelete}
           />
         ) : (
-          <Button variant="text" size="medium" textColor="secondary" onClick={requestDeleteConfirmation}>
+          <Button variant="text" size="medium" color="danger" onClick={requestDeleteConfirmation}>
             삭제
           </Button>
         )}

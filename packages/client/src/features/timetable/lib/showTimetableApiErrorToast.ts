@@ -1,5 +1,5 @@
-import useToastNotification from '@/features/notification/model/useToastNotification.ts';
 import { ApiError } from '@/shared/lib/errors.ts';
+import { useToastNotification } from '@allcll/common';
 
 interface TimetableApiErrorResponse {
   success?: boolean;

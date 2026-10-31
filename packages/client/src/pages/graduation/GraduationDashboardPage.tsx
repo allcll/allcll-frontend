@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { Flex, Banner, Button, Heading, SupportingText } from '@allcll/allcll-ui';
+import { Flex, Banner, Button, Heading, SupportingText, LoadingState, TextLink } from '@allcll/allcll-ui';
 import {
   CategoryEarnedCoursesModal,
   CategoryProgressCard,
@@ -20,6 +20,7 @@ import {
   type CategoryType,
   type CriteriaCategory,
   type ScopeType,
+  confirm,
 } from '@allcll/common';
 import useMobile from '@/shared/lib/useMobile';
 import {
@@ -38,16 +39,6 @@ import MobileTabs, { useMobileTabs } from '@/features/graduation/ui/dashboard/Mo
 import EditProfileModal from '@/features/graduation/ui/dashboard/EditProfileModal';
 import CertificationEditModal from '@/features/graduation/ui/dashboard/CertificationEditModal';
 import { useUpdateEnglishCertMutation } from '@/features/graduation/lib/useUpdateEnglishCertMutation';
-import LoadingWithMessage from '@/shared/ui/Loading';
-
-//TODO: API 연동 시간 측정 후, spinner로 변경 혹은 네트워크 지연 시간에 따른 스피너 타입 결정 훅 구현
-function LoadingState() {
-  return (
-    <Flex justify="justify-center" align="items-center" className="min-h-[50vh]">
-      <LoadingWithMessage message="졸업 요건 분석결과를 가져오는 중입니다." />
-    </Flex>
-  );
-}
 
 function GraduationDashboardPage() {
   const isMobile = useMobile();
@@ -88,8 +79,13 @@ function GraduationDashboardPage() {
 
   useGraduationConfetti(graduationData?.isGraduatable ?? false);
 
-  const handleStartOverGraduationCheck = () => {
-    if (!window.confirm('졸업 요건을 다시 검사하시겠습니까?')) return;
+  const handleStartOverGraduationCheck = async () => {
+    const confirmed = await confirm({
+      title: '졸업 요건 다시 검사',
+      description: '졸업 요건을 다시 검사하시겠습니까?',
+      confirmLabel: '다시 검사하기',
+    });
+    if (!confirmed) return;
     navigate('/graduation?retry=true&skipInfo=true');
   };
 
@@ -130,7 +126,7 @@ function GraduationDashboardPage() {
         <Helmet>
           <title>ALLCLL | 졸업요건 분석</title>
         </Helmet>
-        <LoadingState />
+        <LoadingState title="졸업 요건 분석 결과를 가져오는 중입니다." className="min-h-[50vh]" />
       </>
     );
   }
@@ -236,9 +232,9 @@ function GraduationDashboardPage() {
         <Banner deleteBanner={handleDeleteBanner}>
           본 서비스는 베타 버전으로, 분석 결과는 공식적인 효력을 갖지 않습니다. 오류 또는 개선 사항이 있으시면
           알려주시면 서비스 개선에 도움이 됩니다.{' '}
-          <button className="text-blue-700 font-semibold underline" onClick={() => openFeedback('manual')}>
-            오류 제보
-          </button>
+          <TextLink asChild>
+            <button onClick={() => openFeedback('manual')}>오류 제보</button>
+          </TextLink>
         </Banner>
       )}
 
@@ -281,11 +277,9 @@ function GraduationDashboardPage() {
                   분석
                 </span>
               )}
-              <div className="bg-white rounded-md">
-                <Button variant="outlined" size="medium" onClick={handleStartOverGraduationCheck}>
-                  다시 검사하기
-                </Button>
-              </div>
+              <Button variant="solid" size="medium" onClick={handleStartOverGraduationCheck}>
+                다시 검사하기
+              </Button>
             </Flex>
           </Flex>
 

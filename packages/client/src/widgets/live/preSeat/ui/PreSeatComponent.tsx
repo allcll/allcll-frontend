@@ -45,10 +45,10 @@ function PreSeatComponent() {
       </Helmet>
 
       <Flex direction="flex-col" className="mb-4">
-        <Heading level={2}>전체학년 여석</Heading>
+        <Heading level={2}>전체 학년 여석</Heading>
 
         <SupportingText>
-          변경기간 수강신청 전, 전체 학년의 여석을 보여줍니다.
+          변경 기간 수강신청 전, 전체 학년의 여석을 보여줍니다.
           {liveOpenDate && (
             <>
               <br />

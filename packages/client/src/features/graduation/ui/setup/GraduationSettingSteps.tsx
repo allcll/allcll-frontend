@@ -1,19 +1,14 @@
-import { Flex } from '@allcll/allcll-ui';
+import { Flex, LoadingState } from '@allcll/allcll-ui';
 import useJolupSteps from '@/features/graduation/lib/useJolupSteps.ts';
 import StepErrorBoundary from './StepErrorBoundary';
 import StepIndicator from './StepIndicator';
 import StepContent from './StepContent';
-import LoadingSpinner from '@/shared/ui/LoadingSpinner';
 
 function GraduationSettingSteps() {
   const { step, nextStep, prevStep, isLoading, isDepartmentNotFound, setIsDepartmentNotFound } = useJolupSteps();
 
   if (isLoading) {
-    return (
-      <Flex direction="flex-col" justify="justify-center" align="items-center" className="min-h-[50vh]">
-        <LoadingSpinner />
-      </Flex>
-    );
+    return <LoadingState className="min-h-[50vh]" />;
   }
 
   return (

@@ -20,13 +20,11 @@ export default function FeedbackDesktopModal({
 }: IFeedbackViewProps) {
   return (
     <div className="fixed bottom-6 right-6 z-floating">
-      <div className="w-80 bg-white rounded-2xl shadow-lg">
+      <div className="w-80 bg-white rounded-lg border border-gray-200 shadow-lg">
         {!success ? (
           <>
             <Dialog.Header onClose={onClose}>
-              <Heading level={3} size="xl" className="font-bold">
-                {titles.title}
-              </Heading>
+              <Heading level={3}>{titles.title}</Heading>
             </Dialog.Header>
 
             <Dialog.Content>

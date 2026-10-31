@@ -1,4 +1,14 @@
-import { Card, SupportingText, Badge, IconButton, Flex, EditIcon, TrashCanIcon, DocumentIcon } from '@allcll/allcll-ui';
+import {
+  Card,
+  Badge,
+  IconButton,
+  Flex,
+  EditIcon,
+  TrashCanIcon,
+  DocumentIcon,
+  EmptyState,
+  LoadingState,
+} from '@allcll/allcll-ui';
 import { CATEGORY_LABELS } from '@/hooks/server/useAdminNotices';
 import type { Notice } from '@/hooks/server/useAdminNotices';
 
@@ -28,24 +38,21 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
             {isLoading && (
               <tr>
                 <td colSpan={4} className="py-8 text-center">
-                  <SupportingText>불러오는 중...</SupportingText>
+                  <LoadingState />
                 </td>
               </tr>
             )}
             {!isLoading && isError && (
               <tr>
-                <td colSpan={4} className="py-8 text-center text-sm text-red-500">
-                  공지사항을 불러오는데 실패했습니다.
+                <td colSpan={4} className="py-8 text-center text-sm text-danger-500">
+                  공지사항을 불러오는 데 실패했습니다.
                 </td>
               </tr>
             )}
             {!isLoading && !isError && notices.length === 0 && (
               <tr>
                 <td colSpan={4} className="py-12 text-center">
-                  <Flex direction="flex-col" align="items-center" gap="gap-2" className="text-gray-400">
-                    <DocumentIcon className="w-8 h-8" />
-                    <SupportingText>공지사항이 없습니다.</SupportingText>
-                  </Flex>
+                  <EmptyState icon={DocumentIcon} title="공지사항이 없습니다." />
                 </td>
               </tr>
             )}
@@ -59,7 +66,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
                     </Badge>
                   </td>
                   <td
-                    className="px-4 py-3 text-sm text-gray-900 truncate cursor-pointer hover:text-blue-500 transition-colors"
+                    className="px-4 py-3 text-sm truncate hover:text-primary-500 transition-colors"
                     role="button"
                     tabIndex={0}
                     onClick={() => onView(notice)}
@@ -82,14 +89,14 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
                         label="수정"
                         variant="plain"
                         onClick={() => onEdit(notice)}
-                        className="p-1.5 text-gray-400 hover:text-blue-500 hover:bg-blue-50 transition-colors"
+                        className="p-1.5 text-gray-400 hover:text-primary-500 hover:bg-primary-50 transition-colors"
                       />
                       <IconButton
                         icon={<TrashCanIcon className="w-4 h-4" />}
                         label="삭제"
                         variant="plain"
                         onClick={() => onDelete(notice)}
-                        className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+                        className="p-1.5 text-gray-400 hover:text-danger-500 hover:bg-danger-50 transition-colors"
                       />
                     </Flex>
                   </td>

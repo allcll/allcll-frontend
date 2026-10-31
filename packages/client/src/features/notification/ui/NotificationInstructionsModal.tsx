@@ -3,7 +3,7 @@
  */
 import { useEffect, useState } from 'react';
 import useNotificationInstruction from '../model/useNotificationInstruction.ts';
-import { SettingsAdjustIcon, Dialog } from '@allcll/allcll-ui';
+import { Button, SettingsAdjustIcon, Dialog, Tabs, Heading } from '@allcll/allcll-ui';
 
 // --- OS/Browser Detection Utilities ---
 
@@ -52,22 +52,19 @@ function NotificationInstructionsModal() {
           </span>
           <div className="flex justify-end gap-2">
             {page > 0 && (
-              <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300" onClick={() => setPage(page - 1)}>
+              <Button variant="solid" color="gray" size="medium" onClick={() => setPage(page - 1)}>
                 이전
-              </button>
+              </Button>
             )}
             {page < lastPage && (
-              <button
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                onClick={() => setPage(page + 1)}
-              >
+              <Button variant="solid" size="medium" onClick={() => setPage(page + 1)}>
                 다음
-              </button>
+              </Button>
             )}
             {page === lastPage && (
-              <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={onClose}>
+              <Button variant="solid" size="medium" onClick={onClose}>
                 닫기
-              </button>
+              </Button>
             )}
           </div>
         </div>
@@ -84,16 +81,16 @@ function BrowserPermissionGuide() {
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="font-bold text-base text-gray-800">1단계: 브라우저 알림 권한 설정</h3>
+        <Heading level={3}>1단계: 브라우저 알림 권한 설정</Heading>
         <p className="mt-1">브라우저에서 'ALLCLL' 사이트의 알림을 허용해야 합니다.</p>
       </div>
 
-      <div className="flex border-b border-gray-500">
+      <Tabs aria-label="브라우저 선택">
         <TabButton name="Chrome" id="chrome" selected={browser} onClick={setBrowser} />
         <TabButton name="Firefox" id="firefox" selected={browser} onClick={setBrowser} />
         <TabButton name="Safari" id="safari" selected={browser} onClick={setBrowser} />
         <TabButton name="Edge" id="edge" selected={browser} onClick={setBrowser} />
-      </div>
+      </Tabs>
 
       <div className="p-2 bg-gray-50 rounded-md h-64 overflow-y-auto">
         {browser === 'chrome' && <ChromeGuide />}
@@ -111,15 +108,15 @@ function SystemPermissionGuide() {
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="font-bold text-base text-gray-800">2단계: OS 및 모바일 기기 설정</h3>
+        <Heading level={3}>2단계: OS 및 모바일 기기 설정</Heading>
         <p className="mt-1">일부 기기에서는 OS의 알림도 허용해야 합니다.</p>
       </div>
 
-      <div className="flex border-b border-gray-500">
+      <Tabs aria-label="기기 선택">
         <TabButton name="macOS" id="macos" selected={os} onClick={setOs} />
         <TabButton name="Windows" id="windows" selected={os} onClick={setOs} />
         <TabButton name="모바일" id="mobile" selected={os} onClick={setOs} />
-      </div>
+      </Tabs>
 
       <div className="p-2 bg-gray-50 rounded-md h-64 overflow-y-auto">
         {os === 'macos' && <MacGuide />}
@@ -143,17 +140,14 @@ const TabButton = ({
   selected: string;
   onClick: (id: string) => void;
 }) => (
-  <button
-    className={`px-4 py-2 text-sm ${selected === id ? 'border-b-2 border-blue-500 text-blue-600 font-semibold' : 'text-gray-500 font-medium'}`}
-    onClick={() => onClick(id)}
-  >
+  <Tabs.Tab selected={selected === id} onClick={() => onClick(id)}>
     {name}
-  </button>
+  </Tabs.Tab>
 );
 
 const GuideStep = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <div className="space-y-1">
-    <h4 className="font-semibold text-gray-800">{title}</h4>
+    <Heading level={4}>{title}</Heading>
     <div className="pl-2 space-y-1 text-gray-600">{children}</div>
   </div>
 );
