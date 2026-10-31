@@ -232,7 +232,7 @@ function SearchableSelect({
                 }}
                 onKeyDown={handleInputKeyDown}
                 placeholder={searchPlaceholder}
-                className="w-full text-base sm:text-sm outline-none bg-transparent placeholder:text-gray-400"
+                className="w-full text-sm max-sm:pointer-coarse:text-base outline-none bg-transparent placeholder:text-gray-400"
               />
             </div>
 

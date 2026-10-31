@@ -10,8 +10,8 @@ export const INTERACTION = {
 export const FIELD_BOX_CLASS =
   'rounded-md bg-white border border-gray-300 py-2 placeholder:text-gray-400 focus:outline-none focus:border-primary-500 disabled:bg-gray-100 disabled:text-gray-400';
 
-/** 입력 필드 기본 글자 크기 */
-export const FIELD_TEXT_CLASS = 'text-base sm:text-sm';
+/** 입력 필드 기본 글자 크기 (iOS가 16px 미만 입력칸을 누르면 확대하므로 좁은 터치 기기에서만 16px) */
+export const FIELD_TEXT_CLASS = 'text-sm max-sm:pointer-coarse:text-base';
 
 /** 입력 필드 공통 스타일 (박스 + 기본 글자 크기) */
 export const FIELD_CLASS = `${FIELD_BOX_CLASS} ${FIELD_TEXT_CLASS}`;
