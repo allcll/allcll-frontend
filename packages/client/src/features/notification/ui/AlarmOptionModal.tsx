@@ -26,6 +26,7 @@ const AlarmTypeNames = [
 
 function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
   const hasPermission = useNotificationInstruction(state => state.isPermitted);
+  const alarmType = useAlarmSettings(state => state.alarmType);
 
   const onTestAlarm = () => {
     AlarmNotification.show('알림 기능을 테스트합니다', 'test-alarm');
@@ -46,7 +47,13 @@ function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
         <SubAlarmOption />
 
         <div className="mt-4 flex justify-end">
-          <Button variant="outlined" color="gray" size="medium" onClick={onTestAlarm} disabled={!hasPermission}>
+          <Button
+            variant="outlined"
+            color="primary"
+            size="medium"
+            onClick={onTestAlarm}
+            disabled={!hasPermission || alarmType === AlarmType.NONE}
+          >
             알림 테스트
           </Button>
         </div>
@@ -67,10 +74,16 @@ function AlarmOptionContent() {
 
   return (
     <div className="mb-4">
-      <label className="block mb-2 font-bold text-md" htmlFor="alarm-type-select">
+      <Heading level={3} size="md" id="alarm-type-heading" className="mb-2">
         알림 유형
-      </label>
-      <Select id="alarm-type-select" className="w-full mb-2" value={alarmType} onChange={onChange}>
+      </Heading>
+      <Select
+        id="alarm-type-select"
+        aria-labelledby="alarm-type-heading"
+        className="w-full mb-2"
+        value={alarmType}
+        onChange={onChange}
+      >
         {AlarmTypeNames.map(type => (
           <option className="disabled:text-gray-500" key={type.value} value={type.value} disabled={type.disabled()}>
             {type.title}
@@ -113,12 +126,12 @@ function SubAlarmOption() {
 
   return (
     <div>
-      <Heading level={3} className="mb-2">
+      <Heading level={3} size="md" className="mb-2">
         추가 알림 옵션
       </Heading>
       <div className="flex flex-col gap-2">
         <div className="my-1 flex items-center justify-between">
-          <label htmlFor="select-sound" className={isSoundDisabled ? 'text-gray-300' : ''}>
+          <label htmlFor="select-sound" className={`text-sm ${isSoundDisabled ? 'text-gray-300' : ''}`}>
             소리
           </label>
           <Toggle
@@ -131,7 +144,7 @@ function SubAlarmOption() {
         </div>
 
         <div className="my-1 flex items-center justify-between">
-          <label htmlFor="select-vibrate" className={isVibrateDisabled ? 'text-gray-300' : ''}>
+          <label htmlFor="select-vibrate" className={`text-sm ${isVibrateDisabled ? 'text-gray-300' : ''}`}>
             진동
           </label>
           <Toggle
