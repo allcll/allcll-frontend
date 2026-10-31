@@ -51,7 +51,6 @@ function SearchableSelect({
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(-1);
-  const [container, setContainer] = useState<HTMLElement | null>(null);
   const [side, setSide] = useState<'top' | 'bottom'>('bottom');
 
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -73,8 +72,6 @@ function SearchableSelect({
       // 아래 공간이 최대 높이보다 조금 모자란 정도면 위로 뒤집지 않고 높이를 줄여 아래로 엶
       setSide(spaceBelow < MIN_SPACE_BELOW && rect.top > spaceBelow ? 'top' : 'bottom');
     }
-    // 네이티브 <dialog>는 top layer라서 body로 portal할 경우 패널이 그 뒤에 가려지고 클릭도 막히기 때문에 해당 Dialog로 portal
-    setContainer(triggerRef.current?.closest('dialog') ?? null);
     setActiveIndex(options.findIndex(option => option.value === value));
     setIsOpen(true);
   };
@@ -119,12 +116,6 @@ function SearchableSelect({
         e.preventDefault();
         if (filteredOptions[activeIndex]) handleSelect(filteredOptions[activeIndex]);
         break;
-      case 'Escape':
-        // 감싸고 있는 Dialog의 닫기까지 번지지 않게 막음
-        e.preventDefault();
-        e.stopPropagation();
-        close();
-        break;
       case 'Tab':
         e.preventDefault();
         close();
@@ -155,7 +146,7 @@ function SearchableSelect({
         />
       </div>
 
-      <RadixPopover.Portal container={container}>
+      <RadixPopover.Portal>
         <RadixPopover.Content
           side={side}
           align="start"

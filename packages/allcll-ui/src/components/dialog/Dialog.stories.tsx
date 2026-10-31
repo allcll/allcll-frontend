@@ -35,25 +35,23 @@ export const Playground: Story = {
 
     return (
       <Dialog {...args} isOpen={open} onClose={() => setOpen(false)}>
-        <Dialog.Contents>
-          <Dialog.Content>
-            <h2>타이틀</h2>
-            <Chip variant="none" label="칩" selected />
-            <TextField size="medium" placeholder="텍스트 필드" />
+        <Dialog.Content>
+          <h2>타이틀</h2>
+          <Chip variant="none" label="칩" selected />
+          <TextField size="medium" placeholder="텍스트 필드" />
 
-            <h2>타이틀</h2>
-            <Chip variant="none" label="칩" selected />
-            <TextField size="medium" placeholder="텍스트 필드" />
-          </Dialog.Content>
-          <Dialog.Footer>
-            <Button size="small" variant="text" onClick={() => setOpen(false)}>
-              확인
-            </Button>
-            <Button size="small" variant="outlined" color="gray" onClick={() => setOpen(false)}>
-              취소
-            </Button>
-          </Dialog.Footer>
-        </Dialog.Contents>
+          <h2>타이틀</h2>
+          <Chip variant="none" label="칩" selected />
+          <TextField size="medium" placeholder="텍스트 필드" />
+        </Dialog.Content>
+        <Dialog.Footer>
+          <Button size="small" variant="text" onClick={() => setOpen(false)}>
+            확인
+          </Button>
+          <Button size="small" variant="outlined" color="gray" onClick={() => setOpen(false)}>
+            취소
+          </Button>
+        </Dialog.Footer>
       </Dialog>
     );
   },
