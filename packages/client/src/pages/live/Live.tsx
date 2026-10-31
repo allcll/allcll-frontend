@@ -9,6 +9,7 @@ import RealtimeTable from '@/widgets/live/board/ui/RealtimeTable';
 import useAlarmModalStore from '@/features/live/pin/model/useAlarmModalStore';
 import usePreSeatGate from '@/entities/seat/model/usePreSeatGate';
 import usePreRealSeats from '@/entities/seat/api/usePreRealSeats';
+import PageContainer from '@/shared/ui/PageContainer';
 
 function Live() {
   const isSearchOpen = useAlarmModalStore(state => state.isSearchOpen);
@@ -25,7 +26,7 @@ function Live() {
       </Helmet>
 
       <Flex className="overflow-hidden min-h-screen">
-        <Flex direction="flex-col" className="max-w-screen-xl mx-auto p-4 mb-8 container">
+        <PageContainer className="flex flex-col gap-2">
           <Flex direction="flex-col" gap="gap-0">
             <Heading level={1}>실시간 수강 여석</Heading>
             <SupportingText>
@@ -41,7 +42,7 @@ function Live() {
           <Grid columns={{ base: 1 }} gap="gap-4">
             <LiveMainContent isPreSeatAvailable={isPreSeatAvailable} />
           </Grid>
-        </Flex>
+        </PageContainer>
 
         <SearchOverlay isMobile={isMobile} isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
       </Flex>

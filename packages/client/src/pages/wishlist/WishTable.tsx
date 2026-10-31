@@ -11,6 +11,7 @@ import { useJoinPreSeats } from '@/entities/subjectAggregate/lib/joinSubjects.ts
 import { useWishSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import ScrollToTopButton from '@/shared/ui/ScrollTopButton.tsx';
 import { Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import PageContainer from '@/shared/ui/PageContainer';
 
 function WishTable() {
   return (
@@ -20,10 +21,8 @@ function WishTable() {
         <meta name="description" content="세종대학교 관심과목의 실제 데이터를 분석해보세요." />
       </Helmet>
 
-      <div className="mx-auto max-w-7xl px-4 md:px-16 mb-8 min-h-screen">
-        <Heading level={1} className="mt-2">
-          관심과목 분석
-        </Heading>
+      <PageContainer className="min-h-screen">
+        <Heading level={1}>관심과목 분석</Heading>
         <SupportingText>
           올클은 세종대학교의 <span className="text-primary-500 font-bold">실제 데이터</span>를 보여드립니다. 관심과목을
           선택하여 분석해보세요.
@@ -42,7 +41,7 @@ function WishTable() {
 
           <ScrollToTopButton />
         </Flex>
-      </div>
+      </PageContainer>
     </>
   );
 }

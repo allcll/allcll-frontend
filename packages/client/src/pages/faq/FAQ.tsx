@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import useFaq from '@/entities/faq/model/useFaq.ts';
 import { Accordion, Chip, EmptyState, Flex, Heading, LoadingState, SupportingText } from '@allcll/allcll-ui';
 import markdownComponents from '@/shared/config/markdownComponents.tsx';
+import PageContainer from '@/shared/ui/PageContainer';
 
 const Tags = {
   all: '일반',
@@ -46,7 +47,7 @@ function FAQ() {
         <meta name="description" content="자주 묻는 질문과 답변을 확인해보세요." />
       </Helmet>
 
-      <div className="mx-auto max-w-7xl px-4 md:px-16 py-24">
+      <PageContainer>
         <Flex direction="flex-col" gap="gap-4">
           <div>
             <Heading level={1}>자주 묻는 질문</Heading>
@@ -88,7 +89,7 @@ function FAQ() {
             </Accordion>
           )}
         </Flex>
-      </div>
+      </PageContainer>
     </>
   );
 }
