@@ -1,12 +1,18 @@
 import { Button, Card } from '@allcll/allcll-ui';
+import { confirm } from '@allcll/common';
 import SectionHeader from '@/components/common/SectionHeader';
 import useGraduationSync from '@/hooks/server/graduation/useGraduationSync';
 
 function GraduationSync() {
   const { mutate: sync, isPending } = useGraduationSync();
 
-  const handleSync = () => {
-    if (!window.confirm('구글 시트 데이터를 DB에 동기화하시겠습니까?')) return;
+  const handleSync = async () => {
+    const confirmed = await confirm({
+      title: '구글 시트 동기화',
+      description: '구글 시트 데이터를 DB에 동기화하시겠습니까?',
+      confirmLabel: '동기화',
+    });
+    if (!confirmed) return;
     sync();
   };
 

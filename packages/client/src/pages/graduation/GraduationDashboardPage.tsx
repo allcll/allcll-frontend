@@ -20,6 +20,7 @@ import {
   type CategoryType,
   type CriteriaCategory,
   type ScopeType,
+  confirm,
 } from '@allcll/common';
 import useMobile from '@/shared/lib/useMobile';
 import {
@@ -78,8 +79,13 @@ function GraduationDashboardPage() {
 
   useGraduationConfetti(graduationData?.isGraduatable ?? false);
 
-  const handleStartOverGraduationCheck = () => {
-    if (!window.confirm('졸업 요건을 다시 검사하시겠습니까?')) return;
+  const handleStartOverGraduationCheck = async () => {
+    const confirmed = await confirm({
+      title: '졸업 요건 다시 검사',
+      description: '졸업 요건을 다시 검사하시겠습니까?',
+      confirmLabel: '다시 검사하기',
+    });
+    if (!confirmed) return;
     navigate('/graduation?retry=true&skipInfo=true');
   };
 

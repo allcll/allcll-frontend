@@ -1,6 +1,6 @@
 import { Button } from '@allcll/allcll-ui';
 import { useLogout } from '@/entities/user/model/useAuth';
-import { useToastNotification } from '@allcll/common';
+import { confirm, useToastNotification } from '@allcll/common';
 
 interface LogoutButtonProps {
   onSuccess?: () => void;
@@ -11,8 +11,13 @@ function LogoutButton({ onSuccess, size = 'medium' }: LogoutButtonProps) {
   const { mutate: logout, isPending } = useLogout();
   const showToast = useToastNotification.getState().addToast;
 
-  const handleLogout = () => {
-    if (!window.confirm('로그아웃하시겠습니까?')) return;
+  const handleLogout = async () => {
+    const confirmed = await confirm({
+      title: '로그아웃',
+      description: '로그아웃하시겠습니까?',
+      confirmLabel: '로그아웃',
+    });
+    if (!confirmed) return;
 
     logout(undefined, {
       onSuccess: () => {
