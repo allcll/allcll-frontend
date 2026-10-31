@@ -96,7 +96,7 @@ function ServicePeriod() {
             {SERVICE_OPERATIONS.map(({ operationType, label }, index) => (
               <Flex key={operationType} gap="gap-4">
                 <div>
-                  <Label className="block text-sm font-medium mb-1">{label} 시작일</Label>
+                  <Label className="block mb-1.5">{label} 시작일</Label>
                   <DatePicker
                     selected={periods[index].startDate ? fromDateString(periods[index].startDate) : null}
                     onChange={date => updateDate(index, 'startDate', date)}
@@ -106,7 +106,7 @@ function ServicePeriod() {
                   />
                 </div>
                 <div>
-                  <Label className="block text-sm font-medium mb-1">{label} 종료일</Label>
+                  <Label className="block mb-1.5">{label} 종료일</Label>
                   <DatePicker
                     selected={periods[index].endDate ? fromDateString(periods[index].endDate) : null}
                     onChange={date => updateDate(index, 'endDate', date)}
