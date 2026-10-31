@@ -19,7 +19,7 @@ function Tab({ selected, asChild = false, className = '', children, ...rest }: T
       aria-selected={selected}
       {...(asChild ? {} : { type: 'button' as const })}
       {...rest}
-      className={`px-4 py-2 -mb-px border-b-2 transition-colors ${stateClass} ${className}`}
+      className={`shrink-0 whitespace-nowrap px-4 py-2 border-b-2 transition-colors ${stateClass} ${className}`}
     >
       {children}
     </Comp>
