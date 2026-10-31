@@ -25,6 +25,8 @@ function DialogMain({ children, isOpen = true, title, size = 'medium', onClose }
 
     if (isOpen) {
       dialog.showModal();
+      // 브라우저가 첫 버튼(닫기)에 포커스를 줘 테두리가 생기지 않도록 상자 자체에 포커스
+      dialog.focus();
     } else {
       dialog.close();
     }
@@ -46,7 +48,8 @@ function DialogMain({ children, isOpen = true, title, size = 'medium', onClose }
   return createPortal(
     <dialog
       ref={dialogRef}
-      className="backdrop:bg-black/30"
+      className="backdrop:bg-black/30 outline-none"
+      tabIndex={-1}
       role="dialog"
       aria-labelledby={titleId}
       onCancel={e => {
