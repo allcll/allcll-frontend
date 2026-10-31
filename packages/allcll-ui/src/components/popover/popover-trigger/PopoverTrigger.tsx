@@ -1,3 +1,4 @@
+import * as RadixPopover from '@radix-ui/react-popover';
 import Chip from '../../chip/Chip';
 import { usePopoverContext } from '../popover/Popover';
 
@@ -7,26 +8,12 @@ interface IPopoverTrigger {
 }
 
 function PopoverTrigger({ label, selected }: IPopoverTrigger) {
-  const { isOpen, triggerRef, open, close } = usePopoverContext();
-
-  const handleClick = () => {
-    if (isOpen) {
-      close();
-    } else {
-      open();
-    }
-  };
+  const { isOpen, triggerRef } = usePopoverContext();
 
   return (
-    <Chip
-      type="button"
-      label={label}
-      isChipOpen={isOpen}
-      variant="select"
-      selected={selected ?? false}
-      onClick={handleClick}
-      containerRef={triggerRef}
-    />
+    <RadixPopover.Trigger asChild ref={triggerRef}>
+      <Chip type="button" label={label} isChipOpen={isOpen} variant="select" selected={selected ?? false} />
+    </RadixPopover.Trigger>
   );
 }
 

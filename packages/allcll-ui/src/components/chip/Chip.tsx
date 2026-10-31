@@ -1,11 +1,10 @@
-import type { ComponentPropsWithoutRef, RefObject } from 'react';
+import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { ChevronDownIcon, CloseIcon } from '../../icons';
 import type React from 'react';
 
 type ChipVariantType = 'select' | 'cancel' | 'fill' | 'none';
 
 interface IChip extends ComponentPropsWithoutRef<'button'> {
-  containerRef?: RefObject<HTMLButtonElement | null>;
   /**Chip의 텍스트 */
   label: string | React.ReactElement;
   /**Chip이 선택되었는지 여부 */
@@ -16,22 +15,17 @@ interface IChip extends ComponentPropsWithoutRef<'button'> {
   isChipOpen?: boolean;
 }
 
-function Chip({
-  label = 'Chip',
-  selected,
-  variant = 'none',
-  containerRef,
-  onClick,
-  isChipOpen,
-  ...rest
-}: Readonly<IChip>) {
+const ChipBase = forwardRef<HTMLButtonElement, Readonly<IChip>>(function Chip(
+  { label = 'Chip', selected, variant = 'none', onClick, isChipOpen, ...rest },
+  ref,
+) {
   const baseClasses =
     'flex flex-row justify-center items-center gap-4 transition-colors duration-300 ease-out active:scale-[0.97]';
 
   return (
     <button
       type="button"
-      ref={containerRef}
+      ref={ref}
       className={`${baseClasses} ${getTypeRoundedClass(variant)} ${getColorClass(selected, variant)}`}
       aria-pressed={selected}
       onClick={onClick}
@@ -54,10 +48,10 @@ function Chip({
       )}
     </button>
   );
-}
+});
 
 /**Chip 컴포넌트의 기본 레이아웃은 그리드입니다. */
-Chip.layout = 'grid' as const;
+const Chip = Object.assign(ChipBase, { layout: 'grid' as const });
 
 export default Chip;
 
