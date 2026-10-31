@@ -7,8 +7,8 @@ import { CursorIcon, EmptyState, LoadingState, Heading } from '@allcll/allcll-ui
 function SimulationList() {
   return (
     <>
-      <Heading level={1} className="mb-2">
-        모의 수강 신청 로그
+      <Heading level={2} className="mb-2">
+        연습 기록
       </Heading>
       <p className="text-gray-500 mb-4">수강 연습 결과를 상세히 분석해보세요.</p>
 
@@ -36,7 +36,7 @@ function SimulationBoard() {
   }
 
   if (!searchedLogs.length) {
-    return <EmptyState title="로그가 없습니다" className="py-4" />;
+    return <EmptyState title="연습 기록이 없습니다" className="py-4" />;
   }
 
   return searchedLogs.map(log => (

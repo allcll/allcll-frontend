@@ -7,11 +7,11 @@ function Dashboard() {
   return (
     <>
       <Helmet>
-        <title>ALLCLL | 올클연습 - 결과 분석</title>
+        <title>ALLCLL | 올클연습 - 수강신청 결과</title>
         <meta name="description" content="수강연습 결과를 분석하고, 부족한 부분을 알려 드려요." />
       </Helmet>
 
-      <section className="max-w-7xl mx-auto">
+      <section>
         <Heading level={1} className="mb-2">
           수강신청 결과
         </Heading>
@@ -22,7 +22,7 @@ function Dashboard() {
         </div>
       </section>
 
-      <section className="max-w-3xl mx-auto mt-12">
+      <section className="mt-12">
         <SimulationList />
       </section>
     </>

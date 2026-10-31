@@ -21,12 +21,12 @@ function DashboardDetail() {
   return (
     <>
       <Helmet>
-        <title>ALLCLL | 올클연습 - 결과 분석 상세</title>
+        <title>ALLCLL | 올클연습 - 연습 결과 상세</title>
         <meta name="description" content="수강연습 결과를 분석하고, 부족한 부분을 알려 드려요." />
       </Helmet>
 
       <Heading level={1} className="mb-6">
-        모의 수강 신청 로그
+        연습 결과 상세
       </Heading>
       {/* Top Grid: 능력분석 + 수강 신청자 리스트 */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
