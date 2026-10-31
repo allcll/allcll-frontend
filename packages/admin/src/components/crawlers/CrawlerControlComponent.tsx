@@ -8,6 +8,7 @@ import { useCrawlersBasket } from '@/hooks/server/crawlers/useBasketCrawlers';
 import { useCheckAdminSession } from '@/hooks/server/session/useAdminSession';
 import { useSemester } from '@/hooks/server/service/useSemester';
 import { getSessionConfig } from '@/utils/sessionConfig';
+import { useToastNotification } from '@allcll/common';
 
 type crawlerType = 'department' | 'subject' | 'pre-seat' | 'basket';
 
@@ -76,14 +77,14 @@ function CrawlerControlComponent() {
 
   const validParamsForm = (type: crawlerType) => {
     if (!crawlersParams.userId) {
-      alert('학번을 선택해주세요.');
+      useToastNotification.getState().addToast('학번을 선택해주세요.', 'crawler-params');
       return false;
     }
 
     const needsSemester = type === 'department' || type === 'subject';
 
     if (needsSemester && (!crawlersParams.year || !crawlersParams.semesterCode)) {
-      alert('연도와 학기를 모두 선택해주세요.');
+      useToastNotification.getState().addToast('연도와 학기를 모두 선택해주세요.', 'crawler-params');
       return false;
     }
 

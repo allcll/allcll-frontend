@@ -1,7 +1,6 @@
 import SessionAdmin from '@/components/crawlers/AuthTokenViewer';
 import Control from '@/components/crawlers/Control';
 import CrawlerControl from '@/components/crawlers/CrawlerControlComponent';
-import { ToastNotification } from '@allcll/common';
 import { SetupStep } from '@/utils/type';
 import SetupProgress from '../components/crawlers/SetupProgress';
 import TokenSetting from '@/components/crawlers/AuthTokenSetting';
@@ -21,8 +20,6 @@ function CrawlerSettings() {
 
   return (
     <>
-      <ToastNotification />
-
       <PageHeader title="크롤러 설정" description="크롤러 관련 설정을 변경합니다." />
 
       <main className="space-y-5">

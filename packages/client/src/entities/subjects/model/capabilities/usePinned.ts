@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useToastNotification } from '@allcll/common';
 import {
   addPinnedSubject,
   fetchPinnedSubjects,
@@ -48,11 +49,12 @@ export const useAddPinned = () => {
       queryClient.invalidateQueries({ queryKey: ['pinnedSubjects'] }).then();
     },
     onError: error => {
+      const addToast = useToastNotification.getState().addToast;
       try {
         const e = JSON.parse(error.message);
-        alert(e.message);
+        addToast(e.message, 'pin-error');
       } catch {
-        alert('Error adding pinned subject');
+        addToast('알림 과목 추가에 실패했습니다. 다시 시도해주세요.', 'pin-error');
       }
     },
   });
@@ -83,4 +85,3 @@ export const useRemovePinned = () => {
     },
   });
 };
-
