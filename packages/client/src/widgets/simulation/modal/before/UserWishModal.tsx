@@ -166,8 +166,8 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
   return (
     <Dialog title="수강 신청 연습 시작" onClose={() => setIsModalOpen(false)}>
       <div className="flex flex-col overflow-y-auto max-h-[90vh] w-[600px] max-w-[90vw]">
-        <div className="flex flex-col gap-2 p-2 sm:p-4">
-          <div className="flex flex-col gap-1.5 pb-2">
+        <div className="flex flex-col gap-4 p-2 sm:p-4">
+          <div className="flex flex-col gap-1.5">
             <Label>어떤 과목으로 진행하시겠습니까?</Label>
             <div className="flex gap-2">
               {prevSnapshot && (
