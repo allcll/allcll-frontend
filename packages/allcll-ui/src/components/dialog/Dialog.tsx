@@ -32,7 +32,11 @@ function DialogMain({ children, isOpen = true, title, size = 'medium', onClose }
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      // 겹친 모달에서 맨 위만 닫히도록 포커스가 든 모달만 반응하고, cancel이 아래 모달로 넘어가지 않게 막음
+      if (e.key === 'Escape' && dialogRef.current?.contains(document.activeElement)) {
+        e.preventDefault();
+        onClose();
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
