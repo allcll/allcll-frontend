@@ -1,4 +1,4 @@
-import { Flex, Heading, TextLink } from '@allcll/allcll-ui';
+import { Button, Flex, Heading, SupportingText, TextLink } from '@allcll/allcll-ui';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import JumpGame from '@/widgets/jumpGame/ui/JumpGame.tsx';
@@ -21,10 +21,17 @@ const NotFound = () => {
 
         <Flex direction="flex-col" align="items-center" gap="gap-2">
           <Heading level={1}>404 - 페이지를 찾을 수 없습니다</Heading>
-          <p className="text-lg mb-4">현재 페이지는 존재하지 않습니다</p>
-          <TextLink asChild>
+          <SupportingText>현재 페이지는 존재하지 않습니다</SupportingText>
+
+          <Button asChild variant="solid" size="medium" className="mt-2">
             <Link to="/">홈으로 돌아가기</Link>
-          </TextLink>
+          </Button>
+
+          <Flex gap="gap-4" className="mt-4 text-sm">
+            <TextLink href="https://forms.gle/bCDTVujEHunnvHe88" target="_blank">
+              문의하기
+            </TextLink>
+          </Flex>
         </Flex>
       </Flex>
     </>

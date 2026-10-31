@@ -40,7 +40,7 @@ const ErrorPage = () => {
             다시 시도
           </Button>
 
-          <Flex gap="gap-4" className="mt-2">
+          <Flex gap="gap-4" className="mt-4 text-sm">
             <TextLink asChild>
               <Link to="/">홈으로 돌아가기</Link>
             </TextLink>
