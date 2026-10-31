@@ -49,7 +49,7 @@ function Footer() {
             <img src={logoNameUrl} alt="" className="h-5 w-fit" />
           </div>
 
-          <ul className="flex items-center">
+          <ul className="flex items-center md:-ml-2">
             {OuterLinks.map(({ icon, title, href }) => (
               <li key={title}>
                 <a href={href} className="h-fit rounded-md hover:bg-gray-200" aria-label={title} title={title}>

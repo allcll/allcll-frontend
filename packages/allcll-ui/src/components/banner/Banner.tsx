@@ -25,7 +25,7 @@ function Banner({ variant = 'info', children, deleteBanner }: IBanner) {
             <IconButton
               label="알림 닫기"
               variant="plain"
-              icon={<CloseIcon className="text-gray-500 w-5 h-5" />}
+              icon={<CloseIcon className="text-gray-500 w-4 h-4" />}
               onClick={deleteBanner}
               className="rounded-full"
             />
