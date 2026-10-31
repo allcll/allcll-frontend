@@ -16,7 +16,11 @@ function ToastNotification() {
 
   return createPortal(
     // 토스트를 눌러도 열린 모달, 시트가 바깥 클릭으로 닫히지 않도록 Radix 레이어의 일부로 등록
-    <DismissableLayerBranch className="fixed top-2 right-2 z-toast max-w-screen pointer-events-auto">
+    <DismissableLayerBranch
+      role="status"
+      aria-live="polite"
+      className="fixed top-2 right-2 z-toast max-w-screen pointer-events-auto"
+    >
       <TransitionGroup className="flex gap-2 flex-col-reverse">
         {messages.slice(-3).map(message => (
           <CSSTransition key={message.id} timeout={300} classNames={TOAST_TRANSITION}>
