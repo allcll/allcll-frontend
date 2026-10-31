@@ -1,55 +1,40 @@
-import { useRef, useEffect } from 'react';
-import { createPortal } from 'react-dom';
+import { Popover, usePopoverContext } from '@allcll/allcll-ui';
 import { type Notice } from '@/entities/notices/model/notice';
 import NoticePanel from './NoticePanel';
 
 interface NoticeDropdownProps {
   notices: Notice[];
-  isOpen: boolean;
-  triggerRef: React.RefObject<HTMLButtonElement | null>;
   isRead: (notice: Notice) => boolean;
   onRead: (notice: Notice) => void;
-  onClose: () => void;
+  children: React.ReactNode;
 }
 
-function NoticeDropdown({ notices, isOpen, triggerRef, isRead, onRead, onClose }: Readonly<NoticeDropdownProps>) {
-  const panelRef = useRef<HTMLDivElement>(null);
+// 패널에서 연 공지 상세 Dialog는 최상단 레이어에 따로 떠서, 그 안의 클릭, 포커스, Esc로 패널이 닫히지 않게 함
+const keepOpenWhileDialog = (e: Event) => {
+  if (document.querySelector('dialog[open]')) e.preventDefault();
+};
 
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleClick = (e: MouseEvent) => {
-      // 드롭다운에서 연 공지 상세 Dialog는 body에 떠 있어서, 그 안의 클릭은 바깥 클릭으로 보지 않음
-      if ((e.target as Element).closest('dialog[open]')) return;
-      if (
-        panelRef.current &&
-        !panelRef.current.contains(e.target as Node) &&
-        triggerRef.current &&
-        !triggerRef.current.contains(e.target as Node)
-      ) {
-        onClose();
-      }
-    };
-    window.addEventListener('mousedown', handleClick);
-    return () => window.removeEventListener('mousedown', handleClick);
-  }, [isOpen, onClose, triggerRef]);
-
-  if (!isOpen || !triggerRef.current) return null;
-
-  const rect = triggerRef.current.getBoundingClientRect();
-
-  return createPortal(
-    <div
-      ref={panelRef}
-      className="fixed w-120 h-120 bg-white rounded-xl shadow-xl border border-gray-100 flex flex-col z-floating"
-      style={{
-        top: rect.bottom + 8,
-        right: window.innerWidth - rect.right,
-      }}
-    >
-      <NoticePanel notices={notices} isRead={isRead} onRead={onRead} onClose={onClose} />
-    </div>,
-    document.body,
+function NoticeDropdown({ notices, isRead, onRead, children }: Readonly<NoticeDropdownProps>) {
+  return (
+    <Popover>
+      <Popover.Trigger>{children}</Popover.Trigger>
+      <Popover.Content
+        align="end"
+        layer="floating"
+        className="w-120 h-120 flex flex-col overflow-hidden"
+        onInteractOutside={keepOpenWhileDialog}
+        onEscapeKeyDown={keepOpenWhileDialog}
+      >
+        <NoticeDropdownPanel notices={notices} isRead={isRead} onRead={onRead} />
+      </Popover.Content>
+    </Popover>
   );
+}
+
+function NoticeDropdownPanel(props: Readonly<Omit<NoticeDropdownProps, 'children'>>) {
+  const { close } = usePopoverContext();
+
+  return <NoticePanel {...props} onClose={close} />;
 }
 
 export default NoticeDropdown;
