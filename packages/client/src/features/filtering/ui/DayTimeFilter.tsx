@@ -45,7 +45,13 @@ function DayTimeFilter({ items, onChange }: Readonly<IDayTimeFilter>) {
     <Flex direction="flex-col" gap="gap-2">
       <Flex justify="justify-between" align="items-center">
         <Label>시간</Label>
-        <Button variant="text" size="small" color="gray" onClick={() => onChange([...items, { day: '', type: 'all' }])}>
+        <Button
+          variant="text"
+          size="small"
+          color="gray"
+          className="-my-1.5"
+          onClick={() => onChange([...items, { day: '', type: 'all' }])}
+        >
           <AddIcon className="w-4 h-4" />
           요일 추가
         </Button>
