@@ -56,7 +56,7 @@ function Simulation() {
         const seconds = Math.floor((now - start) / 1000);
 
         if (seconds > SIMULATION_TIME_LIMIT) {
-          forceSimulation(simulation.simulationId).then();
+          void forceSimulation(simulation.simulationId);
         } else {
           reloadSimulationStatus();
         }

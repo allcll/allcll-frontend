@@ -56,7 +56,7 @@ function Stopwatch() {
 
           if (seconds >= SIMULATION_TIME_LIMIT) {
             clearInterval(intervalRef.current!);
-            forceSimulation().then();
+            void forceSimulation();
             return;
           }
 
