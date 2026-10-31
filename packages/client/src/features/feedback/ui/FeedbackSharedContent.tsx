@@ -144,9 +144,9 @@ interface IRateButtonProps {
 
 function RateInputs({ rate, currentRate, label, onClick }: IRateButtonProps) {
   const faces = {
-    1: <AllcllFaceIcon mood="sad" className="w-16 h-16" />,
-    2: <AllcllFaceIcon mood="normal" className="w-16 h-16" />,
-    3: <AllcllFaceIcon mood="smile" className="w-16 h-16" />,
+    1: <AllcllFaceIcon mood="sad" className="w-12 h-12" />,
+    2: <AllcllFaceIcon mood="normal" className="w-12 h-12" />,
+    3: <AllcllFaceIcon mood="smile" className="w-12 h-12" />,
   };
 
   return (
