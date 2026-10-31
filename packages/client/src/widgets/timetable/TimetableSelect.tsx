@@ -3,7 +3,7 @@ import { useDeleteTimetable } from '@/entities/timetable/api/useTimetableSchedul
 import type { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { AddIcon, Button, Checkbox, Flex, Popover, SupportingText, usePopoverContext } from '@allcll/allcll-ui';
-import ConfirmDialog from '@/shared/ui/ConfirmDialog.tsx';
+import { ConfirmDialog } from '@allcll/common';
 import {
   showTimetableApiErrorToast,
   showTimetableApiSuccessToast,

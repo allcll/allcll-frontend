@@ -5,6 +5,10 @@ export { default as CheckboxAdapter } from './src/components/checkbox/CheckboxAd
 export { default as ToastNotification } from './src/components/toast/ToastNotification';
 export { default as useToastNotification } from './src/store/useToastNotification';
 export type { IToastMessage } from './src/store/useToastNotification';
+export { default as ConfirmDialog } from './src/components/confirm/ConfirmDialog';
+export { default as GlobalConfirmDialog } from './src/components/confirm/GlobalConfirmDialog';
+export { confirm } from './src/store/useConfirm';
+export type { ConfirmOptions } from './src/store/useConfirm';
 
 export * from './src/types/graduation';
 export * from './src/lib/graduation/mappers';

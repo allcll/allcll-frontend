@@ -31,7 +31,7 @@ function ConfirmDialog({
           <Button variant="solid" color="gray" size="medium" onClick={onClose}>
             {cancelLabel}
           </Button>
-          <Button variant="solid" color={danger ? 'danger' : 'gray'} size="medium" onClick={onConfirm}>
+          <Button variant="solid" color={danger ? 'danger' : 'primary'} size="medium" onClick={onConfirm}>
             {confirmLabel}
           </Button>
         </Flex>

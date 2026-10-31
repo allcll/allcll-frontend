@@ -5,7 +5,7 @@ import BannerNotification from '@/features/notification/ui/BannerNotification.ts
 import Footer from '@/shared/ui/Footer.tsx';
 import useGlobalEffect from '@/shared/lib/useGlobalEffect.ts';
 import FeedbackFab from '@/features/feedback/ui/FeedbackFab';
-import { ToastNotification } from '@allcll/common';
+import { GlobalConfirmDialog, ToastNotification } from '@allcll/common';
 
 function MainLayout() {
   useGlobalEffect();
@@ -17,6 +17,7 @@ function MainLayout() {
       </Helmet>
 
       <ToastNotification />
+      <GlobalConfirmDialog />
       <Header />
       <BannerNotification />
       <main>

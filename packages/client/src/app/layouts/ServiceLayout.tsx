@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 import Footer from '@/shared/ui/Footer.tsx';
 import ServiceEnabled from '@/entities/semester/ui/ServiceEnabled.tsx';
 import FeedbackFab from '@/features/feedback/ui/FeedbackFab';
-import { ToastNotification } from '@allcll/common';
+import { GlobalConfirmDialog, ToastNotification } from '@allcll/common';
 
 interface IServiceLayoutProps {
   serviceId: string;
@@ -17,6 +17,7 @@ function ServiceLayout({ serviceId }: IServiceLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col">
       <ToastNotification />
+      <GlobalConfirmDialog />
       <Header />
       <ServiceEnabled serviceId={serviceId}>
         <BannerNotification />
