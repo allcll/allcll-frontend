@@ -47,7 +47,7 @@ function DepartmentDoughnut({ wishesInfo }: IDepartmentDoughnutProps) {
     <>
       <Flex justify="justify-between" align="items-center">
         <Heading level={2}>관심과목 현황</Heading>
-        <Label className="hidden" htmlFor="doughnut-select">
+        <Label className="sr-only" htmlFor="doughnut-select">
           필터
         </Label>
         <Select

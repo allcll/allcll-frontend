@@ -41,7 +41,7 @@ function AlarmFilter() {
 
   return (
     <Flex direction="flex-wrap" gap="gap-2">
-      <Label className="hidden" htmlFor="searchOption">
+      <Label className="sr-only" htmlFor="searchOption">
         검색 옵션
       </Label>
 
