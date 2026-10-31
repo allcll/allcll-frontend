@@ -10,8 +10,9 @@ import useWishes, { InitWishes } from '@/entities/wishes/model/useWishes.ts';
 import { useJoinPreSeats } from '@/entities/subjectAggregate/lib/joinSubjects.ts';
 import { useWishSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import ScrollToTopButton from '@/shared/ui/ScrollTopButton.tsx';
-import { Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import { Card, Flex } from '@allcll/allcll-ui';
 import PageContainer from '@/shared/ui/PageContainer';
+import PageHeader from '@/shared/ui/PageHeader';
 
 function WishTable() {
   return (
@@ -22,13 +23,17 @@ function WishTable() {
       </Helmet>
 
       <PageContainer className="min-h-screen">
-        <Heading level={1}>관심과목 분석</Heading>
-        <SupportingText>
-          올클은 세종대학교의 <span className="text-primary-500 font-bold">실제 데이터</span>를 보여드립니다. 관심과목을
-          선택하여 분석해보세요.
-        </SupportingText>
+        <PageHeader
+          title="관심과목 분석"
+          description={
+            <>
+              올클은 세종대학교의 <span className="text-primary-500 font-bold">실제 데이터</span>를 보여드립니다.
+              관심과목을 선택하여 분석해보세요.
+            </>
+          }
+        />
 
-        <Flex gap="gap-4" direction="flex-col" className="mt-6">
+        <Flex gap="gap-4" direction="flex-col">
           <Card>
             <GotoLive />
             <WishFilter />

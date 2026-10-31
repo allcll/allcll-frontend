@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { Flex, Banner, Button, Heading, SupportingText, LoadingState, TextLink } from '@allcll/allcll-ui';
+import { Flex, Banner, Button, Heading, LoadingState, TextLink } from '@allcll/allcll-ui';
 import {
   CategoryEarnedCoursesModal,
   CategoryProgressCard,
@@ -39,6 +39,8 @@ import MobileTabs, { useMobileTabs } from '@/features/graduation/ui/dashboard/Mo
 import EditProfileModal from '@/features/graduation/ui/dashboard/EditProfileModal';
 import CertificationEditModal from '@/features/graduation/ui/dashboard/CertificationEditModal';
 import { useUpdateEnglishCertMutation } from '@/features/graduation/lib/useUpdateEnglishCertMutation';
+import PageContainer from '@/shared/ui/PageContainer';
+import PageHeader from '@/shared/ui/PageHeader';
 
 function GraduationDashboardPage() {
   const isMobile = useMobile();
@@ -238,27 +240,29 @@ function GraduationDashboardPage() {
         </Banner>
       )}
 
-      <div className="max-w-5xl mx-auto mt-2 px-4">
-        <Flex justify="justify-between" align="items-center">
-          <Heading level={1}>졸업요건 분석</Heading>
-          <Flex gap="gap-2">
-            <Button variant="text" size="small" onClick={handleEditProfile}>
-              회원 정보 수정
-            </Button>
-            <LogoutButton
-              size="small"
-              onSuccess={() => {
-                // 스텝이 남아 있으면 뒤따르는 401 이 세션 만료로 안내됩니다.
-                useJolupStore.getState().reset();
-                queryClient.removeQueries({ queryKey: graduationQueryKeys.all });
-                navigate('/graduation');
-              }}
-            />
-          </Flex>
-        </Flex>
-        <SupportingText>{user.name}님의 졸업요건 분석 결과입니다.</SupportingText>
+      <PageContainer>
+        <PageHeader
+          title="졸업요건 분석"
+          description={`${user.name}님의 졸업요건 분석 결과입니다.`}
+          actions={
+            <Flex gap="gap-2">
+              <Button variant="text" size="small" onClick={handleEditProfile}>
+                회원 정보 수정
+              </Button>
+              <LogoutButton
+                size="small"
+                onSuccess={() => {
+                  // 스텝이 남아 있으면 뒤따르는 401 이 세션 만료로 안내됩니다.
+                  useJolupStore.getState().reset();
+                  queryClient.removeQueries({ queryKey: graduationQueryKeys.all });
+                  navigate('/graduation');
+                }}
+              />
+            </Flex>
+          }
+        />
 
-        <Flex direction="flex-col" gap="gap-2" className="mb-4 mt-2">
+        <Flex direction="flex-col" gap="gap-2">
           <OverallSummaryCard user={user} checkData={graduationData} />
 
           <EarnedCoursesSection courses={courses} />
@@ -327,7 +331,7 @@ function GraduationDashboardPage() {
             </Flex>
           )}
         </Flex>
-      </div>
+      </PageContainer>
 
       {selectedCategory && (
         <RecommendedCoursesModal

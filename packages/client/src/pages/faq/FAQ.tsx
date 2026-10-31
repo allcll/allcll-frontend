@@ -4,9 +4,10 @@ import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import useFaq from '@/entities/faq/model/useFaq.ts';
-import { Accordion, Chip, EmptyState, Flex, Heading, LoadingState, SupportingText } from '@allcll/allcll-ui';
+import { Accordion, Chip, EmptyState, Flex, LoadingState } from '@allcll/allcll-ui';
 import markdownComponents from '@/shared/config/markdownComponents.tsx';
 import PageContainer from '@/shared/ui/PageContainer';
+import PageHeader from '@/shared/ui/PageHeader';
 
 const Tags = {
   all: '일반',
@@ -48,12 +49,9 @@ function FAQ() {
       </Helmet>
 
       <PageContainer>
-        <Flex direction="flex-col" gap="gap-4">
-          <div>
-            <Heading level={1}>자주 묻는 질문</Heading>
-            <SupportingText>ALLCLL을 이용하면서 자주 묻는 질문과 답변을 모았어요.</SupportingText>
-          </div>
+        <PageHeader title="자주 묻는 질문" description="ALLCLL을 이용하면서 자주 묻는 질문과 답변을 모았어요." />
 
+        <Flex direction="flex-col" gap="gap-4">
           {faqItemsWithTags.length > 0 && (
             <Flex direction="flex-wrap" gap="gap-2" className="mb-6">
               <Chip label="전체" onClick={() => setSelectedTag(null)} selected={selectedTag === null} />
