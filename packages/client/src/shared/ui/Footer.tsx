@@ -41,7 +41,7 @@ const OuterLinks = [
 
 function Footer() {
   return (
-    <footer className="bg-white text-center text-sm text-gray-500">
+    <footer className="bg-white border-t border-gray-200 text-center text-sm text-gray-500">
       <div className="mx-auto max-w-7xl px-4 md:px-16 py-12 grid md:grid-cols-3 gap-6 text-center md:text-left">
         <div className="mx-auto md:mx-0">
           <div className="flex items-center mb-2 h-fit justify-center md:justify-start">
