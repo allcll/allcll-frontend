@@ -20,7 +20,7 @@ const ErrorPage = () => {
   return (
     <>
       <Helmet>
-        <title>ALLCLL | 오류가 발생했습니다</title>
+        <title>ALLCLL | 문제가 발생했습니다</title>
       </Helmet>
 
       <Flex

@@ -6,6 +6,7 @@ import WishesDetailInfo from '@/widgets/wishlist/WishesDetailInfo';
 import WishesSemesterBanner from '@/widgets/wishlist/WishesSemesterBanner';
 import useWishesInfo from '@/features/wish/model/useWishesInfo';
 import useDetailRegisters from '@/entities/wishes/model/useDetailRegisters';
+import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes';
 import { Card, Grid } from '@allcll/allcll-ui';
 import PageContainer from '@/shared/ui/PageContainer';
 
@@ -13,12 +14,13 @@ function WishesDetail() {
   const wishesInfo = useWishesInfo();
 
   const { error } = useDetailRegisters(wishesInfo);
+  const { data: wishes } = useDetailWishes(wishesInfo);
   if (error) throw error;
 
   return (
     <>
       <Helmet>
-        <title>ALLCLL | 관심과목 분석 상세</title>
+        <title>{`ALLCLL | ${wishes ? `${wishes.subjectName} - ` : ''}관심과목 분석`}</title>
         <meta name="description" content="세종대학교 관심과목의 상세 정보를 확인해보세요." />
       </Helmet>
 

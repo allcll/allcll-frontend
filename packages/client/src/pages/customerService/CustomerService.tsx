@@ -8,7 +8,7 @@ function CustomerService() {
   return (
     <>
       <Helmet>
-        <title>ALLCLL | 오류 및 제보</title>
+        <title>ALLCLL | 오류 및 제안</title>
         <meta name="description" content="서비스 이용 중 발생한 오류를 제보하거나, 건의사항을 남겨주세요." />
       </Helmet>
 
