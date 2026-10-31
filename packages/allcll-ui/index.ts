@@ -1,3 +1,4 @@
+export { default as Accordion } from './src/components/accordion/Accordion';
 export { default as Badge } from './src/components/badge/Badge';
 export { default as Banner } from './src/components/banner/Banner';
 export { default as Button } from './src/components/button/Button';
