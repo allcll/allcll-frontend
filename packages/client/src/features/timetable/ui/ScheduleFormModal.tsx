@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import ScheduleFormContent from './ScheduleFormContent.tsx';
 import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib/useScheduleModal.ts';
 import { ScheduleMutateType } from '@/features/timetable/model/useScheduleState.ts';
@@ -15,17 +14,6 @@ function ScheduleFormModal() {
   const buttonSize = isMobile ? 'small' : 'medium';
   const { isDeleteConfirming, requestDeleteConfirmation, cancelDeleteConfirmation, confirmDelete } =
     useDeleteConfirmation(deleteSchedule);
-
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') cancelSchedule(e);
-    };
-
-    document.addEventListener('keydown', onKeyDown);
-    return () => {
-      document.removeEventListener('keydown', onKeyDown);
-    };
-  }, [cancelSchedule]);
 
   const handleSubmit = (e: React.FormEvent) => {
     saveSchedule(e);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useCreateTimetable, useUpdateTimetable } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { Button, Chip, Dialog, Flex, Grid, Label, TextField } from '@allcll/allcll-ui';
@@ -70,17 +70,6 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
       onClose();
     }
   };
-
-  const onKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') onClose();
-  };
-
-  useEffect(() => {
-    window.addEventListener('keydown', onKeyDown);
-    return () => {
-      window.removeEventListener('keydown', onKeyDown);
-    };
-  }, []);
 
   const handleTimetableSemester = (semesterCode: string) => {
     if (type === 'edit') {
