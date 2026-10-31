@@ -119,7 +119,7 @@ function TimelineDot({
 
       {/* Tooltip wrapper */}
       <div
-        className={`absolute z-content ${tooltipPos} left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-black text-white text-nowrap text-xs text-center opacity-0 peer-hover:opacity-100 transition-opacity duration-200`}
+        className={`absolute z-content ${tooltipPos} left-1/2 -translate-x-1/2 px-2 py-1 rounded bg-gray-900 text-white text-nowrap text-xs text-center opacity-0 peer-hover:opacity-100 transition-opacity duration-200`}
       >
         {eventTitle}
         <br />
