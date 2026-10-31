@@ -41,9 +41,9 @@ const SOLID_CLASS: Record<ButtonColor, string> = {
 };
 
 const OUTLINED_CLASS: Record<ButtonColor, string> = {
-  primary: 'border-primary-500 text-primary-500 not-disabled:hover:bg-primary-50',
-  gray: 'border-gray-700 not-disabled:hover:bg-gray-100',
-  danger: 'border-danger-500 text-danger-500 not-disabled:hover:bg-danger-50',
+  primary: 'bg-transparent border-primary-500 text-primary-500 not-disabled:hover:bg-primary-50',
+  gray: 'bg-white border-gray-300 text-gray-800 not-disabled:hover:bg-gray-50',
+  danger: 'bg-transparent border-danger-500 text-danger-500 not-disabled:hover:bg-danger-50',
 };
 
 const TEXT_CLASS: Record<ButtonColor, string> = {
@@ -57,7 +57,7 @@ function getVariantClass(variant: ButtonVariant, color: ButtonColor) {
     case 'solid':
       return `rounded-md ${SOLID_CLASS[color]}`;
     case 'outlined':
-      return `bg-transparent border rounded-md ${OUTLINED_CLASS[color]}`;
+      return `border rounded-md ${OUTLINED_CLASS[color]}`;
     case 'text':
       return `bg-transparent ${TEXT_CLASS[color]}`;
     case 'ghost':
