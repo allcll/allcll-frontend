@@ -96,27 +96,25 @@ function LoginForm({ onSuccess }: ILoginFormProps) {
             autoComplete="username"
             {...getTextFieldProps('studentId')}
           />
-          <div className="relative">
-            <TextField
-              label="비밀번호"
-              size="medium"
-              required
-              type={showPassword ? 'text' : 'password'}
-              placeholder="세종대 포털 비밀번호를 입력하세요."
-              autoComplete="current-password"
-              {...getTextFieldProps('password')}
-            />
-
-            {values.password && (
-              <IconButton
-                type="button"
-                onClick={() => setShowPassword(value => !value)}
-                aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
-                icon={!showPassword ? <EyeClosedIcon className="w-4 h-4" /> : <EyeOpenIcon className="w-4 h-4" />}
-                className="absolute right-8 top-11"
-              />
-            )}
-          </div>
+          <TextField
+            label="비밀번호"
+            size="medium"
+            required
+            type={showPassword ? 'text' : 'password'}
+            placeholder="세종대 포털 비밀번호를 입력하세요."
+            autoComplete="current-password"
+            {...getTextFieldProps('password')}
+            endAdornment={
+              values.password && (
+                <IconButton
+                  type="button"
+                  onClick={() => setShowPassword(value => !value)}
+                  aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+                  icon={!showPassword ? <EyeClosedIcon className="w-4 h-4" /> : <EyeOpenIcon className="w-4 h-4" />}
+                />
+              )
+            }
+          />
 
           <Flex direction="flex-col" gap="gap-2">
             <SupportingText className="break-keep">

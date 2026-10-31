@@ -35,7 +35,7 @@ function SelectDepartment({ department, setDepartment }: ISelectDepartment) {
   }, [departments]);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-1.5">
       <Label>학과 선택</Label>
 
       <DepartmentSelect className="w-50 sm:w-120" value={department.departmentCode} onChange={onSelectDepartment} />

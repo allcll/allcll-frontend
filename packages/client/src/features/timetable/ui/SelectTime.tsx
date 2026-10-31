@@ -28,8 +28,8 @@ function SelectTime({ timeRange, onChange, day }: Readonly<ISelectTime>) {
   };
 
   return (
-    <div className=" w-full h-3 flex gap-2 flex-col justify-center">
-      <div className="relative w-full flex gap-2 flex-wrap">
+    <div className="w-full">
+      <div className="relative w-full flex items-center gap-2 flex-wrap">
         <Select
           name="startHour"
           value={timeRange.startHour ?? HOURS[8]}

@@ -167,25 +167,27 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
     <Dialog title="수강 신청 연습 시작" onClose={() => setIsModalOpen(false)}>
       <div className="flex flex-col overflow-y-auto max-h-[90vh] w-[600px] max-w-[90vw]">
         <div className="flex flex-col gap-2 p-2 sm:p-4">
-          <Label>어떤 과목으로 진행하시겠습니까?</Label>
-          <div className="flex gap-2 py-2">
-            {prevSnapshot && (
+          <div className="flex flex-col gap-1.5 pb-2">
+            <Label>어떤 과목으로 진행하시겠습니까?</Label>
+            <div className="flex gap-2">
+              {prevSnapshot && (
+                <Chip
+                  label="기존 과목"
+                  selected={subjectMode === 'previous'}
+                  onClick={() => handleClickSubjectMode('previous')}
+                />
+              )}
               <Chip
-                label="기존 과목"
-                selected={subjectMode === 'previous'}
-                onClick={() => handleClickSubjectMode('previous')}
+                label="시간표 과목"
+                selected={subjectMode === 'timetable'}
+                onClick={() => handleClickSubjectMode('timetable')}
               />
-            )}
-            <Chip
-              label="시간표 과목"
-              selected={subjectMode === 'timetable'}
-              onClick={() => handleClickSubjectMode('timetable')}
-            />
-            <Chip
-              label="랜덤 과목"
-              selected={subjectMode === 'random'}
-              onClick={() => handleClickSubjectMode('random')}
-            />
+              <Chip
+                label="랜덤 과목"
+                selected={subjectMode === 'random'}
+                onClick={() => handleClickSubjectMode('random')}
+              />
+            </div>
           </div>
 
           {subjectMode === 'timetable' && (

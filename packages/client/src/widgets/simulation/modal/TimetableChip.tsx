@@ -39,7 +39,7 @@ interface ITimetableChipSelector {
 
 function TimetableChipSelector({ semesterValue, timetables, selectedTimetableId, onSelect }: ITimetableChipSelector) {
   return (
-    <Flex direction="flex-col" gap="gap-2">
+    <Flex direction="flex-col" gap="gap-1.5">
       <Label>{semesterValue}학기 시간표</Label>
 
       <Flex gap="gap-2">

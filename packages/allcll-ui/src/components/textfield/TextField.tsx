@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef } from 'react';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import Label from '../label/Label';
 import Flex from '../flex/Flex';
 import IconButton from '../icon-button/IconButton';
@@ -12,6 +12,7 @@ interface TextFieldProps extends Omit<ComponentPropsWithoutRef<'input'>, 'size'>
   size: 'small' | 'medium' | 'large';
   className?: string;
   onClear?: () => void;
+  endAdornment?: ReactNode;
 }
 
 function TextField({
@@ -24,10 +25,13 @@ function TextField({
   className = '',
   value,
   onClear,
+  endAdornment,
   ...rest
 }: TextFieldProps) {
+  const paddingRight = onClear && endAdornment ? 'pr-14' : onClear || endAdornment ? 'pr-8' : 'pr-3';
+
   return (
-    <Flex direction="flex-col" gap="gap-2" className={className}>
+    <Flex direction="flex-col" gap="gap-1.5" className={className}>
       {label && (
         <Label required={required} id={id}>
           {label}
@@ -42,7 +46,7 @@ function TextField({
           required={required}
           value={value}
           {...rest}
-          className={`w-full pl-3 ${onClear ? 'pr-8' : 'pr-3'} ${FIELD_BOX_CLASS} ${getSizeClass(size)}`}
+          className={`w-full pl-3 ${paddingRight} ${FIELD_BOX_CLASS} ${getSizeClass(size)}`}
         />
         {onClear && value && (
           <IconButton
@@ -51,6 +55,11 @@ function TextField({
             onClick={onClear}
             className=" absolute right-2 top-1/2 transform -translate-y-1/2 "
           />
+        )}
+        {endAdornment && (
+          <div className={`absolute ${onClear ? 'right-8' : 'right-2'} top-1/2 -translate-y-1/2 flex`}>
+            {endAdornment}
+          </div>
         )}
       </div>
 

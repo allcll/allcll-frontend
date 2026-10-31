@@ -97,7 +97,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
 
         <Flex direction="flex-col" gap="gap-6">
           {/* 이수 유형 선택 */}
-          <Flex direction="flex-col" gap="gap-2">
+          <Flex direction="flex-col" gap="gap-1.5">
             <Label required>이수 유형</Label>
             <Grid columns={{ base: 2 }} gap="gap-2">
               <Chip
@@ -115,7 +115,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
 
           {/* 주전공 학과 검색 (DEPARTMENT_NOT_FOUND 시) */}
           {isDepartmentNotFound && (
-            <Flex direction="flex-col" gap="gap-2">
+            <Flex direction="flex-col" gap="gap-1.5">
               <SupportingText>
                 <span className="text-primary-500">26학번의 계열 단위</span>는 특정한 졸업요건이 존재하지 않아, 학과를
                 선택해주셔야 합니다.
@@ -136,7 +136,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
 
           {/* 복수전공 학과 검색 (조건부 렌더링) */}
           {majorType === 'DOUBLE' && (
-            <Flex direction="flex-col" gap="gap-2">
+            <Flex direction="flex-col" gap="gap-1.5">
               <Label required>복수전공 학과</Label>
               <SearchableSelect
                 className="w-full"

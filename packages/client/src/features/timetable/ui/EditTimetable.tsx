@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useCreateTimetable, useUpdateTimetable } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
-import { Button, Chip, Dialog, Grid, Label, TextField } from '@allcll/allcll-ui';
+import { Button, Chip, Dialog, Flex, Grid, Label, TextField } from '@allcll/allcll-ui';
 import { SEMESTERS } from '@/entities/semester/api/semester.ts';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 import { showTimetableApiErrorToast, showTimetableApiSuccessToast } from '../lib/showTimetableApiErrorToast';
@@ -95,17 +95,19 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
     <Dialog title={`${type === 'edit' ? '시간표 수정' : '시간표 생성'}`} onClose={onClose} isOpen={true}>
       <form onSubmit={handleSubmit}>
         <Dialog.Content>
-          <Label>학기 선택</Label>
-          <Grid columns={{ base: 2 }} gap="gap-2">
-            {SEMESTERS.map(semester => (
-              <Chip
-                key={semester.semesterCode}
-                label={semester.semesterValue}
-                selected={semester.semesterCode === selectedSemester}
-                onClick={() => handleTimetableSemester(semester.semesterCode)}
-              />
-            ))}
-          </Grid>
+          <Flex direction="flex-col" gap="gap-1.5">
+            <Label>학기 선택</Label>
+            <Grid columns={{ base: 2 }} gap="gap-2">
+              {SEMESTERS.map(semester => (
+                <Chip
+                  key={semester.semesterCode}
+                  label={semester.semesterValue}
+                  selected={semester.semesterCode === selectedSemester}
+                  onClick={() => handleTimetableSemester(semester.semesterCode)}
+                />
+              ))}
+            </Grid>
+          </Flex>
 
           <TextField
             key="timetableName"

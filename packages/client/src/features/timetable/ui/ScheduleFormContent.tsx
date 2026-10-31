@@ -73,7 +73,7 @@ function ScheduleFormContent() {
         />
       ))}
 
-      <Flex gap="gap-2" direction="flex-col">
+      <Flex gap="gap-1.5" direction="flex-col">
         <Label>요일</Label>
         <Flex direction="flex-wrap">
           {DAYS.map(day => (
@@ -88,7 +88,7 @@ function ScheduleFormContent() {
       </Flex>
 
       {scheduleForm.timeSlots.map(slot => (
-        <Flex key={slot.dayOfWeeks} direction="flex-col" gap="gap-4">
+        <Flex key={slot.dayOfWeeks} direction="flex-col" gap="gap-1.5">
           <Label>{slot.dayOfWeeks}</Label>
           <SelectTime
             day={slot.dayOfWeeks}
