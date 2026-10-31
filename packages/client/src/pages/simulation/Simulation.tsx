@@ -32,10 +32,10 @@ function Simulation() {
   const setCurrentSimulation = useSimulationProcessStore(state => state.setCurrentSimulation);
   const { reloadSimulationStatus } = useReloadSimulation();
 
-  const forceSimulation = async () => {
+  const forceSimulation = async (simulationId: number) => {
     try {
       await forceStopSimulation();
-      setCurrentSimulation({ simulationStatus: 'finish' });
+      setCurrentSimulation({ simulationId, simulationStatus: 'finish' });
       await alert({ title: '연습 종료', description: '5분이 지나 수강신청 연습이 자동으로 종료되었습니다.' });
       openModal('result');
     } catch (error) {
@@ -56,7 +56,7 @@ function Simulation() {
         const seconds = Math.floor((now - start) / 1000);
 
         if (seconds > SIMULATION_TIME_LIMIT) {
-          forceSimulation().then();
+          forceSimulation(simulation.simulationId).then();
         } else {
           reloadSimulationStatus();
         }
