@@ -87,10 +87,10 @@ function EditProfileModal({ isOpen, onClose, user }: EditProfileModalProps) {
 
       <Dialog.Footer>
         <Flex justify="justify-between" className="w-full">
-          <Button variant="solid" color="gray" size="small" onClick={handleDelete} disabled={isDeleting}>
+          <Button variant="text" color="danger" size="medium" onClick={handleDelete} disabled={isDeleting}>
             {isDeleting ? '처리 중...' : '회원 탈퇴'}
           </Button>
-          <Button variant="solid" size="small" onClick={handleSave} disabled={!canSave || isSaving}>
+          <Button variant="solid" size="medium" onClick={handleSave} disabled={!canSave || isSaving}>
             {isSaving ? '저장 중...' : '저장'}
           </Button>
         </Flex>

@@ -153,7 +153,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
         </Flex>
 
         <Flex justify="justify-end" className="mt-4 w-full">
-          <Button onClick={prevStep} variant="solid" color="gray" size="small">
+          <Button onClick={prevStep} variant="solid" color="gray" size="medium">
             이전 단계
           </Button>
           <Button variant="solid" size="medium" onClick={handleNextStep} disabled={!isFormValid || isPending}>

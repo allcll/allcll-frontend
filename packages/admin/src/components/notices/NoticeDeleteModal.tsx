@@ -24,10 +24,10 @@ function NoticeDeleteModal({ notice, onCancel, onConfirm, isDeleting }: INoticeD
         </Flex>
       </Dialog.Content>
       <Dialog.Footer>
-        <Button variant="solid" color="gray" size="small" onClick={onCancel} disabled={isDeleting}>
+        <Button variant="solid" color="gray" size="medium" onClick={onCancel} disabled={isDeleting}>
           취소
         </Button>
-        <Button variant="solid" color="danger" size="small" onClick={onConfirm} disabled={isDeleting}>
+        <Button variant="solid" color="danger" size="medium" onClick={onConfirm} disabled={isDeleting}>
           {isDeleting ? '삭제 중...' : '삭제하기'}
         </Button>
       </Dialog.Footer>
