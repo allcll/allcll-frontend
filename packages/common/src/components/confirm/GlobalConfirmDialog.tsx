@@ -12,6 +12,7 @@ function GlobalConfirmDialog() {
       confirmLabel={request?.confirmLabel}
       cancelLabel={request?.cancelLabel}
       danger={request?.danger}
+      hideCancel={request?.hideCancel}
       onConfirm={() => settleConfirm(true)}
       onClose={() => settleConfirm(false)}
     />

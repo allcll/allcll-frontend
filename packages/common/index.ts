@@ -7,8 +7,8 @@ export { default as useToastNotification } from './src/store/useToastNotificatio
 export type { IToastMessage } from './src/store/useToastNotification';
 export { default as ConfirmDialog } from './src/components/confirm/ConfirmDialog';
 export { default as GlobalConfirmDialog } from './src/components/confirm/GlobalConfirmDialog';
-export { confirm } from './src/store/useConfirm';
-export type { ConfirmOptions } from './src/store/useConfirm';
+export { confirm, alert } from './src/store/useConfirm';
+export type { ConfirmOptions, AlertOptions } from './src/store/useConfirm';
 
 export * from './src/types/graduation';
 export * from './src/lib/graduation/mappers';

@@ -6,6 +6,7 @@ export interface ConfirmOptions {
   confirmLabel?: string;
   cancelLabel?: string;
   danger?: boolean;
+  hideCancel?: boolean;
 }
 
 interface IUseConfirm {
@@ -19,6 +20,12 @@ export function confirm(options: ConfirmOptions) {
     useConfirm.getState().request?.resolve(false);
     useConfirm.setState({ request: { ...options, resolve } });
   });
+}
+
+export type AlertOptions = Pick<ConfirmOptions, 'title' | 'description' | 'confirmLabel'>;
+
+export async function alert(options: AlertOptions) {
+  await confirm({ ...options, hideCancel: true });
 }
 
 export function settleConfirm(confirmed: boolean) {
