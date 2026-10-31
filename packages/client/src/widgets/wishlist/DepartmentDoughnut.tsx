@@ -72,7 +72,9 @@ function DepartmentDoughnut({ wishesInfo }: IDepartmentDoughnutProps) {
           <EmptyState title="관심과목을 담은 사람이 없습니다." />
         </Flex>
       ) : (
-        <Doughnut data={doughnutData} />
+        <div className="mx-auto w-full max-w-72">
+          <Doughnut data={doughnutData} />
+        </div>
       )}
     </>
   );

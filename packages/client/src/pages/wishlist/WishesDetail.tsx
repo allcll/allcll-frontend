@@ -7,6 +7,7 @@ import WishesSemesterBanner from '@/widgets/wishlist/WishesSemesterBanner';
 import useWishesInfo from '@/features/wish/model/useWishesInfo';
 import useDetailRegisters from '@/entities/wishes/model/useDetailRegisters';
 import { Card, Grid } from '@allcll/allcll-ui';
+import PageContainer from '@/shared/ui/PageContainer';
 
 function WishesDetail() {
   const wishesInfo = useWishesInfo();
@@ -23,8 +24,8 @@ function WishesDetail() {
 
       <WishesSemesterBanner wishesInfo={wishesInfo} />
 
-      <div className="min-h-screen bg-gray-50 p-6">
-        <Card className="max-w-5xl mx-auto">
+      <PageContainer>
+        <Card>
           <WishesDetailInfo wishesInfo={wishesInfo} />
 
           {/* Analytics Section */}
@@ -41,7 +42,7 @@ function WishesDetail() {
             <RecommendWishes wishesInfo={wishesInfo} />
           </Card>
         </Card>
-      </div>
+      </PageContainer>
     </>
   );
 }
