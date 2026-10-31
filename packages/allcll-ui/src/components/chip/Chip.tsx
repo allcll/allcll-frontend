@@ -31,7 +31,7 @@ const ChipBase = forwardRef<HTMLButtonElement, Readonly<IChip>>(function Chip(
       onClick={onClick}
       {...rest}
     >
-      <span className="text-xs sm:text-sm">{label}</span>
+      <span className="text-sm">{label}</span>
 
       {variant === 'select' && (
         <ChevronDownIcon
