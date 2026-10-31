@@ -8,14 +8,6 @@ export function getSeatColor(seats: number) {
   return 'text-gray-500 bg-gray-100';
 }
 
-export function getWishesColor(wishCount: number) {
-  if (wishCount >= 100) return 'text-danger-500 bg-danger-100';
-  if (wishCount >= 50) return 'text-yellow-500 bg-yellow-100';
-  if (wishCount >= 0) return 'text-green-500 bg-green-100';
-
-  return 'text-gray-500 bg-gray-100';
-}
-
 export function getStausColor(status: APPLY_STATUS) {
   return getTextBgColor(getStatusColorCode(status));
 }
