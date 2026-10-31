@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { HomeIcon, Button, Card, Flex, Heading, SupportingText, TextLink } from '@allcll/allcll-ui';
+import { Button, Card, Flex, Heading, SupportingText, TextLink } from '@allcll/allcll-ui';
 
 import { ServiceSemester } from '@/entities/semester/api/semester.ts';
 import { formatSchedulePeriod, useCourseSchedule } from '@/entities/operationPeriod/model/useCourseSchedule';
@@ -56,10 +56,7 @@ function ServiceClosed({ data }: IServiceClosed) {
 
         <Flex className="mt-6" justify="justify-center">
           <Button variant="solid" size="medium" asChild>
-            <Link to="/">
-              <HomeIcon className="w-4 h-4 text-white" />
-              메인 페이지로 이동
-            </Link>
+            <Link to="/">홈으로 돌아가기</Link>
           </Button>
         </Flex>
       </main>
