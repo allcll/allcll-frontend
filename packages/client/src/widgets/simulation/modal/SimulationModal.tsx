@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import SejongUI from '@allcll/sejong-ui';
 import { CheckmarkOutlineIcon, WarningIcon } from '@allcll/allcll-ui';
+import { useToastNotification } from '@allcll/common';
 import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
 import useSimulationSubjectStore from '@/features/simulation/model/useSimulationSubject.ts';
 import useSimulationProcessStore from '@/features/simulation/model/useSimulationProcess.ts';
@@ -8,6 +9,7 @@ import {
   APPLY_STATUS,
   BUTTON_EVENT,
   forceStopSimulation,
+  getSimulationErrorMessage,
   triggerButtonEvent,
 } from '@/features/simulation/lib/simulation.ts';
 import useLectures from '@/entities/subjects/model/useLectures.ts';
@@ -81,7 +83,7 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
   /** 에러 체크 해주고, 에러 있으면 throw */
   const checkErrorValue = (res: Record<string, unknown>, forceFinish: boolean = false) => {
     if ('errMsg' in res) {
-      alert(res.errMsg);
+      useToastNotification.getState().addToast(getSimulationErrorMessage(res.errMsg), 'simulation-error');
 
       if (forceFinish) {
         forceStopSimulation().then(() => {
@@ -95,7 +97,9 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
 
   const catchAction = (e: unknown) => {
     console.error('예외 발생:', e);
-    alert('예외 발생:' + String(e));
+    useToastNotification
+      .getState()
+      .addToast(getSimulationErrorMessage(e instanceof Error ? e.message : undefined), 'simulation-error');
   };
 
   const handleProgress = async (subjectId: number) => {
@@ -125,7 +129,7 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
     try {
       const result = await triggerButtonEvent({ eventType: BUTTON_EVENT.SKIP_REFRESH, subjectId }, lectures);
       if ('errMsg' in result) {
-        alert(result.errMsg);
+        useToastNotification.getState().addToast(getSimulationErrorMessage(result.errMsg), 'simulation-error');
         await forceStopSimulation();
 
         setCurrentSimulation({
@@ -182,7 +186,7 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
         );
 
         if ('errMsg' in result) {
-          alert(result.errMsg);
+          useToastNotification.getState().addToast(getSimulationErrorMessage(result.errMsg), 'simulation-error');
           await forceStopSimulation();
 
           setCurrentSimulation({

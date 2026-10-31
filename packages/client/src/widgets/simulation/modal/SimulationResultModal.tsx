@@ -3,7 +3,8 @@ import { NavLink } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import ProcessingModal from './Processing.tsx';
 import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
-import { getSummaryResult, SIMULATION_ERROR } from '@/features/simulation/lib/simulation.ts';
+import { getSimulationErrorMessage, getSummaryResult, SIMULATION_ERROR } from '@/features/simulation/lib/simulation.ts';
+import { useToastNotification } from '@allcll/common';
 import { getAggregatedSimulationResults } from '@/features/simulation/lib/result.ts';
 import { Button, Dialog, Heading } from '@allcll/allcll-ui';
 import Image from '@/shared/ui/Image.tsx';
@@ -30,7 +31,7 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
         if ('errMsg' in result) {
           if (result.errMsg === SIMULATION_ERROR.SIMULATION_NOT_FOUND) {
             closeModal();
-          } else alert(result.errMsg);
+          } else useToastNotification.getState().addToast(getSimulationErrorMessage(result.errMsg), 'simulation-error');
         } else {
           setResult(result);
           setLogParam(simulationId);

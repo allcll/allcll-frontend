@@ -12,6 +12,7 @@ import {
   triggerButtonEvent,
 } from '@/features/simulation/lib/simulation.ts';
 import { SearchIcon } from '@allcll/allcll-ui';
+import { useToastNotification } from '@allcll/common';
 import logoCiUrl from '@/assets/logo/ci.svg';
 
 function SimulationSearchForm() {
@@ -52,7 +53,9 @@ function SimulationSearchForm() {
     triggerButtonEvent({ eventType: BUTTON_EVENT.SEARCH }, lectures)
       .then(result => {
         if ('errMsg' in result) {
-          alert('시뮬레이션이 존재하지 않습니다. 학과 검색을 먼저 진행해주세요!');
+          useToastNotification
+            .getState()
+            .addToast('진행 중인 연습이 없습니다. 연습 과목을 먼저 선택해주세요.', 'simulation-error');
         } else {
           const elapsedSeconds = result.elapsed_time / 1000;
 
@@ -77,7 +80,7 @@ function SimulationSearchForm() {
       openModal('result');
     } catch (error) {
       console.error(error);
-      alert('데이터베이스 삭제에 실패했습니다.');
+      useToastNotification.getState().addToast('연습 중지에 실패했습니다. 다시 시도해주세요.', 'simulation-error');
     }
   };
 

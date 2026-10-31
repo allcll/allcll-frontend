@@ -61,11 +61,6 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
 
   /**시뮬레이션 시작버튼 클릭 */
   const handleStartGame = async () => {
-    if (simulationSubjects.length === 0) {
-      alert('과목 리스트가 비어 있습니다. 게임을 시작할 수 없습니다.');
-      return;
-    }
-
     try {
       closeModal();
 

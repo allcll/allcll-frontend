@@ -1,4 +1,5 @@
 import { Heading } from '@allcll/allcll-ui';
+import { alert, useToastNotification } from '@allcll/common';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import SejongUI from '@allcll/sejong-ui';
@@ -35,11 +36,11 @@ function Simulation() {
     try {
       await forceStopSimulation();
       setCurrentSimulation({ simulationStatus: 'finish' });
-      alert('5분 경과로 시뮬레이션이 강제 종료되었습니다.');
+      await alert({ title: '연습 종료', description: '5분이 지나 수강신청 연습이 자동으로 종료되었습니다.' });
       openModal('result');
     } catch (error) {
       console.error(error);
-      alert('시뮬레이션 강제 종료에 실패했습니다.');
+      useToastNotification.getState().addToast('연습 종료에 실패했습니다. 다시 시도해주세요.', 'simulation-error');
     }
   };
 
