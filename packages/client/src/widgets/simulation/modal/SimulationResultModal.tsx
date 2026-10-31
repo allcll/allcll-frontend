@@ -149,7 +149,7 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
 
           <div className="flex justify-center gap-3 mt-6">
             <Button
-              variant="outlined"
+              variant="solid"
               color="gray"
               size="medium"
               onClick={() => {

@@ -106,7 +106,7 @@ function DetailFilterModal({ filterStore, onClose }: Readonly<IModalProps>) {
         <Flex direction="flex-col" gap="gap-2">
           <Flex justify="justify-end">
             <Button
-              variant="outlined"
+              variant="solid"
               color="gray"
               size="medium"
               onClick={resetFilters}

@@ -24,7 +24,7 @@ function NoticeDeleteModal({ notice, onCancel, onConfirm, isDeleting }: INoticeD
         </Flex>
       </Dialog.Content>
       <Dialog.Footer>
-        <Button variant="outlined" color="gray" size="small" onClick={onCancel} disabled={isDeleting}>
+        <Button variant="solid" color="gray" size="small" onClick={onCancel} disabled={isDeleting}>
           취소
         </Button>
         <Button variant="solid" color="danger" size="small" onClick={onConfirm} disabled={isDeleting}>

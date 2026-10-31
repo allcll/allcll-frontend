@@ -47,7 +47,7 @@ function CertificationEditModal({
       </Dialog.Content>
 
       <Dialog.Footer>
-        <Button variant="outlined" color="gray" size="small" onClick={onClose} disabled={isPending}>
+        <Button variant="solid" color="gray" size="small" onClick={onClose} disabled={isPending}>
           취소
         </Button>
         <Button variant="solid" size="small" onClick={onConfirm} disabled={isPending}>
