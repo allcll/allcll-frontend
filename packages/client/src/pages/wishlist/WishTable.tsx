@@ -22,7 +22,7 @@ function WishTable() {
         <meta name="description" content="세종대학교 관심과목의 실제 데이터를 분석해보세요." />
       </Helmet>
 
-      <PageContainer className="min-h-screen">
+      <PageContainer>
         <PageHeader
           title="관심과목 분석"
           description={
@@ -40,7 +40,7 @@ function WishTable() {
             <TableColorInfo />
           </Card>
 
-          <Card variant="elevated" className="mt-6 overflow-x-auto">
+          <Card variant="elevated" className="overflow-x-auto">
             <WishTableComponent />
           </Card>
 

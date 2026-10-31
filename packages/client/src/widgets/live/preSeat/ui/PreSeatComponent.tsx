@@ -44,25 +44,29 @@ function PreSeatComponent() {
         <title>ALLCLL | 전체 여석</title>
       </Helmet>
 
-      <Flex direction="flex-col" className="mb-4">
-        <Heading level={2}>전체 학년 여석</Heading>
+      <Flex direction="flex-col">
+        <div>
+          <Heading level={2}>전체 학년 여석</Heading>
 
-        <SupportingText>
-          변경 기간 수강신청 전, 전체 학년의 여석을 보여줍니다.
-          {liveOpenDate && (
-            <>
-              <br />
-              실시간 기능은 {liveOpenDate}, {PRESEAT_CLOSE_TIME}에 시작될 예정입니다.
-            </>
-          )}
-        </SupportingText>
+          <SupportingText>
+            변경 기간 수강신청 전, 전체 학년의 여석을 보여줍니다.
+            {liveOpenDate && (
+              <>
+                <br />
+                실시간 기능은 {liveOpenDate}, {PRESEAT_CLOSE_TIME}에 시작될 예정입니다.
+              </>
+            )}
+          </SupportingText>
+        </div>
 
-        <Card>
-          <AlarmFilter />
-          <TableColorInfo />
-        </Card>
+        <Flex direction="flex-col" gap="gap-4">
+          <Card>
+            <AlarmFilter />
+            <TableColorInfo />
+          </Card>
 
-        <PreSeatBody filters={filters} />
+          <PreSeatBody filters={filters} />
+        </Flex>
         <ScrollToTopButton />
       </Flex>
     </>
