@@ -3,7 +3,7 @@ import * as RadixPopover from '@radix-ui/react-popover';
 import { usePopoverContext } from '../popover/Popover';
 import { Z_INDEX, type ZIndexLayer } from '../../../../zIndex';
 
-type PopoverContentProps = Pick<RadixPopover.PopoverContentProps, 'align' | 'onInteractOutside' | 'onEscapeKeyDown'> & {
+type PopoverContentProps = Pick<RadixPopover.PopoverContentProps, 'align'> & {
   children: React.ReactNode;
   className?: string;
   layer?: ZIndexLayer;
