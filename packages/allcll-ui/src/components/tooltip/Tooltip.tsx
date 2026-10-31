@@ -1,6 +1,7 @@
 import React from 'react';
+import * as RadixPopover from '@radix-ui/react-popover';
 import { HelpIcon } from '../../icons';
-import IconButton from '../icon-button/IconButton';
+import { Z_INDEX } from '../../../zIndex';
 
 interface ITooltip {
   children: React.ReactNode;
@@ -8,15 +9,26 @@ interface ITooltip {
 
 function Tooltip({ children }: ITooltip) {
   return (
-    <div className="relative flex">
-      <div className="group flex">
-        <IconButton label="도움말" variant="plain" icon={<HelpIcon className="w-4 h-4 text-gray-400" />} />
+    <RadixPopover.Root>
+      <RadixPopover.Trigger
+        aria-label="도움말"
+        className="flex rounded-md text-gray-400 transition-colors hover:text-gray-600 data-[state=open]:text-gray-600"
+      >
+        <HelpIcon className="w-4 h-4" />
+      </RadixPopover.Trigger>
 
-        <span className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gray-900 text-white p-3 rounded w-64 text-center pointer-events-none">
+      <RadixPopover.Portal>
+        <RadixPopover.Content
+          side="top"
+          sideOffset={8}
+          collisionPadding={8}
+          className="w-64 p-3 rounded bg-gray-900 text-white text-center outline-none"
+          style={{ zIndex: Z_INDEX.popover }}
+        >
           {children}
-        </span>
-      </div>
-    </div>
+        </RadixPopover.Content>
+      </RadixPopover.Portal>
+    </RadixPopover.Root>
   );
 }
 
