@@ -1,6 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Card, Button, TextField, Label, Flex, Select, ArrowLeftIcon, SaveIcon, LoadingState } from '@allcll/allcll-ui';
+import {
+  Card,
+  Button,
+  IconButton,
+  TextField,
+  Label,
+  Flex,
+  Select,
+  ArrowLeftIcon,
+  SaveIcon,
+  LoadingState,
+} from '@allcll/allcll-ui';
 import PageHeader from '@/components/common/PageHeader';
 import MarkdownEditor from '@/components/notices/MarkdownEditor';
 import UnsavedModal from '@/components/notices/UnsavedModal';
@@ -103,13 +114,12 @@ function NoticeEditor() {
     <Flex direction="flex-col" gap="gap-5" className="h-full">
       <Flex align="items-center" justify="justify-between">
         <Flex align="items-center" gap="gap-2">
-          <button
-            type="button"
+          <IconButton
+            label="뒤로 가기"
             onClick={handleBack}
-            className="p-1 rounded-md text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
-          >
-            <ArrowLeftIcon className="w-5 h-5" />
-          </button>
+            icon={<ArrowLeftIcon className="w-5 h-5 text-gray-400 group-hover:text-gray-700" />}
+            className="group p-1 hover:bg-gray-100 transition-colors"
+          />
           <PageHeader title={isEditMode ? '공지사항 수정' : '새 공지 작성'} />
         </Flex>
         <Button variant="solid" size="small" onClick={handleSave} disabled={isSaving || isOverLimit}>
