@@ -14,7 +14,7 @@ const FileUploadGuide = () => {
         <ul className="list-disc list-inside space-y-1 ml-1 text-gray-600">
           <li className="text-sm">
             <span className="text-xs sm:text-sm">
-              <TextLink asChild className="font-semibold">
+              <TextLink asChild>
                 <NavLink
                   to="https://sjpt.sejong.ac.kr/main/view/Login/doSsoLogin.do?p="
                   target="_blank"
