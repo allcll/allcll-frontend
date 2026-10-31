@@ -84,7 +84,14 @@ export function FeedbackActions({ isPending, canSubmit, onSubmit, onDontShowAgai
   return (
     <>
       {onDontShowAgain && (
-        <Button variant="text" size="medium" onClick={onDontShowAgain} disabled={isPending}>
+        <Button
+          variant="text"
+          color="gray"
+          size="medium"
+          className="mr-auto"
+          onClick={onDontShowAgain}
+          disabled={isPending}
+        >
           다시 보지 않기
         </Button>
       )}
