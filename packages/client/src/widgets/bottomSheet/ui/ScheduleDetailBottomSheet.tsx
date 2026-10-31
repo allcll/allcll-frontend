@@ -2,7 +2,7 @@ import { HomeIcon, TimeIcon, Button, Flex } from '@allcll/allcll-ui';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib/useScheduleModal.ts';
 import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
-import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader';
+import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
 import DeleteConfirmationActions from '@/features/timetable/ui/DeleteConfirmationActions';
 import useDeleteConfirmation from '@/features/timetable/lib/useDeleteConfirmation';
@@ -12,15 +12,20 @@ function ScheduleInfoBottomSheet() {
 
   const { schedule } = useScheduleModalData();
   const { deleteSchedule, cancelSchedule } = useScheduleModal();
+  const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
   const { data: subjects } = useSubject(semester);
   const { isDeleteConfirming, requestDeleteConfirmation, cancelDeleteConfirmation, confirmDelete } =
     useDeleteConfirmation(deleteSchedule);
 
   const findSubjectById = subjects?.find(subject => subject.subjectId === schedule.subjectId);
 
+  const handleClose = () => {
+    cancelSchedule(undefined, false);
+    closeBottomSheet('info');
+  };
+
   return (
-    <BottomSheet>
-      <BottomSheetHeader title={schedule.subjectName} headerType="close" onClose={cancelSchedule} />
+    <BottomSheet title={schedule.subjectName} onClose={handleClose}>
       <Flex direction="flex-col" className="px-2 py-3 w-full text-sm text-gray-500 gap-2">
         <p className="text-sm text-gray-500">{schedule.professorName ?? '교수 정보 없음'}</p>
 

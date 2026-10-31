@@ -1,10 +1,9 @@
-import React from 'react';
+import type { FormEvent } from 'react';
 import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib/useScheduleModal.ts';
 import { ScheduleMutateType } from '@/features/timetable/model/useScheduleState.ts';
 import { Button, Flex } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile.ts';
 import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
-import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader';
 import ScheduleFormContent from '@/features/timetable/ui/ScheduleFormContent';
 import DeleteConfirmationActions from '@/features/timetable/ui/DeleteConfirmationActions';
 import useDeleteConfirmation from '@/features/timetable/lib/useDeleteConfirmation';
@@ -13,25 +12,20 @@ function ScheduleFormBottomSheet() {
   const { modalActionType } = useScheduleModalData();
   const { cancelSchedule, deleteSchedule, saveSchedule } = useScheduleModal();
 
-  const handleCancelSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
-    cancelSchedule(e);
-  };
-
   const title = modalActionType === ScheduleMutateType.CREATE ? '생성' : '수정';
   const isMobile = useMobile();
   const buttonSize = isMobile ? 'small' : 'medium';
   const { isDeleteConfirming, requestDeleteConfirmation, cancelDeleteConfirmation, confirmDelete } =
     useDeleteConfirmation(deleteSchedule);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     saveSchedule(e);
   };
 
   return (
-    <BottomSheet>
-      <BottomSheetHeader title={`커스텀 일정 ${title}`} headerType="close" onClose={handleCancelSchedule} />
+    <BottomSheet title={`커스텀 일정 ${title}`} onClose={() => cancelSchedule()}>
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-        <Flex direction="flex-col" className="py-5 px-2 overflow-y-auto max-h-[80vh]">
+        <Flex direction="flex-col" className="py-5 px-4">
           <ScheduleFormContent />
         </Flex>
 

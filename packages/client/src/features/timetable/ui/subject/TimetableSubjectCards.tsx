@@ -12,10 +12,10 @@ import { Flex, LoadingState } from '@allcll/allcll-ui';
 interface ISubjectCards {
   subjects: Subject[];
   isPending?: boolean;
-  expandToMax?: () => void;
+  collapseSheet?: () => void;
 }
 
-function TimetableSubjectCards({ subjects, expandToMax, isPending = false }: Readonly<ISubjectCards>) {
+function TimetableSubjectCards({ subjects, collapseSheet, isPending = false }: Readonly<ISubjectCards>) {
   const { visibleRows, loadMoreRef } = useInfScroll(subjects, 'ref');
 
   const selectedCardRef = useRef<HTMLButtonElement>(null);
@@ -52,8 +52,8 @@ function TimetableSubjectCards({ subjects, expandToMax, isPending = false }: Rea
     const timeslotUI = new TimeslotAdapter(subject.lesnTime).toUiData(MIN_TIME);
     const top = timeslotUI[0]?.top;
 
-    if (expandToMax) {
-      expandToMax();
+    if (collapseSheet) {
+      collapseSheet();
 
       setTimeout(() => {
         if (top) {

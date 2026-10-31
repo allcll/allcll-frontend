@@ -1,5 +1,4 @@
 import BottomSheet from '../../../shared/ui/bottomsheet/BottomSheet.tsx';
-import BottomSheetHeader from '../../../shared/ui/bottomsheet/BottomSheetHeader.tsx';
 import { Filters, initialFilters } from '@/features/filtering/model/useFilterStore.ts';
 import DepartmentSelect from '@/entities/departments/ui/DepartmentSelect.tsx';
 import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';
@@ -45,16 +44,8 @@ function FilterBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }
   };
 
   return (
-    <BottomSheet>
-      <BottomSheetHeader
-        headerType="close"
-        title="필터"
-        onClose={() => {
-          onCloseFiltering();
-        }}
-      />
-
-      <div className="w-full flex px-4 flex-col h-[85vh] gap-5 overflow-y-auto overscroll-contain">
+    <BottomSheet title="필터" onClose={onCloseFiltering}>
+      <div className="w-full flex px-4 pb-4 flex-col gap-5">
         <Flex direction="flex-wrap" gap="gap-2">
           {allSelectedFilters.map(filter => (
             <Chip
