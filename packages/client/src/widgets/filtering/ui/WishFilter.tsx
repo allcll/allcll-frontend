@@ -2,13 +2,14 @@
 import { useState } from 'react';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import { Filters, initialFilters, useWishSearchStore } from '@/features/filtering/model/useFilterStore.ts';
-import { TableSettingsIcon, StarFilledIcon, StarIcon, IconButton, Flex, Chip } from '@allcll/allcll-ui';
+import { TableSettingsIcon, IconButton, Flex, Chip } from '@allcll/allcll-ui';
 import useMobile from '@/shared/lib/useMobile.ts';
 import FilterBottomSheet from '@/widgets/filtering/ui/FilterBottomSheet.tsx';
 import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
 import GenericSingleSelectFilter from '../../../features/filtering/ui/GenericSingleSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
+import FavoriteFilterButton from '@/features/filtering/ui/button/FavoriteFilterButton.tsx';
 import DepartmentFilter from '../../../features/filtering/ui/DepartmentFilter.tsx';
 import FilterDelete from '../../../features/filtering/ui/FilterDelete.tsx';
 import usePreSeatGate from '@/entities/seat/model/usePreSeatGate';
@@ -51,8 +52,6 @@ function WishFilter() {
 
   const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
   const isWishesAvailable = subjects && subjects[0] && 'totalCount' in subjects[0];
-
-  const setToggleFavorite = () => setFilter('favoriteOnly', !favoriteOnly);
 
   const handleOpenFilter = () => {
     if (isMobile) {
@@ -181,15 +180,7 @@ function WishFilter() {
             />
           )}
         </div>
-        <IconButton
-          variant="contain"
-          icon={
-            favoriteOnly ? <StarFilledIcon className="w-4 h-4 text-yellow-400" /> : <StarIcon className="w-4 h-4" />
-          }
-          aria-label={favoriteOnly ? '즐겨찾기 필터 제거' : '즐겨찾기 필터 추가'}
-          label={favoriteOnly ? '즐겨찾기 필터 제거' : '즐겨찾기 필터 추가'}
-          onClick={setToggleFavorite}
-        />
+        <FavoriteFilterButton favoriteOnly={favoriteOnly} setFilter={setFilter} />
 
         <IconButton
           variant="contain"
