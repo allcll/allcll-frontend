@@ -8,7 +8,7 @@ interface FilterDelete {
 }
 
 function FilterDelete({ filters, resetFilter }: FilterDelete) {
-  const Keys = Object.keys(filters) as (keyof Filters)[];
+  const Keys = (Object.keys(filters) as (keyof Filters)[]).filter(key => key !== 'keywords');
   const isFiltered = Keys.some(key => !isFilterEmpty(key, filters[key]));
 
   if (!isFiltered) return null;
