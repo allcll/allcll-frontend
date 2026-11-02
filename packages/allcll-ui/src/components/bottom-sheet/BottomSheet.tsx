@@ -8,7 +8,6 @@ type SnapPoint = number | string;
 interface BottomSheetProps {
   title?: string;
   onClose: () => void;
-  headerLeft?: ReactNode;
   snapPoints?: SnapPoint[];
   activeSnapPoint?: SnapPoint | null;
   setActiveSnapPoint?: (snapPoint: SnapPoint | null) => void;
@@ -18,7 +17,6 @@ interface BottomSheetProps {
 function BottomSheetMain({
   title,
   onClose,
-  headerLeft,
   snapPoints,
   activeSnapPoint,
   setActiveSnapPoint,
@@ -46,7 +44,7 @@ function BottomSheetMain({
           </div>
 
           <header className="grid grid-cols-[1fr_auto_1fr] items-center px-4 pb-6 shrink-0">
-            <div className="justify-self-start">{headerLeft}</div>
+            <div />
             <Drawer.Title className="text-base font-semibold text-text-200">{title}</Drawer.Title>
             <button
               type="button"
