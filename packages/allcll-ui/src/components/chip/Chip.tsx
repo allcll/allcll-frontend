@@ -69,7 +69,7 @@ function getColorClass(selected: boolean, variant: ChipVariantType) {
     return `
       bg-transparent
       text-gray-700
-      border border-gray-200
+      ring-1 ring-inset ring-gray-200
       hover:bg-gray-100
       focus:outline-gray-400
     `;
