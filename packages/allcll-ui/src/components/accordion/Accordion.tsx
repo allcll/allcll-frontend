@@ -34,7 +34,7 @@ function AccordionItem({ value, title, children, id }: AccordionItemProps) {
   return (
     <RadixAccordion.Item value={value} id={id} className="rounded-md bg-white shadow-sm">
       <RadixAccordion.Header>
-        <RadixAccordion.Trigger className="group flex items-center justify-between gap-3 w-full p-4 rounded-md text-left font-semibold hover:bg-primary-50 data-[state=open]:font-bold data-[state=open]:text-primary-600">
+        <RadixAccordion.Trigger className="group flex items-center justify-between gap-3 w-full p-4 rounded-md text-left font-semibold hover:bg-gray-50 data-[state=open]:text-primary-500">
           {title}
           <ChevronDownIcon
             aria-hidden="true"
