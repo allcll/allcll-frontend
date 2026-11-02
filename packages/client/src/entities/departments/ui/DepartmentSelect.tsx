@@ -1,6 +1,6 @@
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { matchOptionKeyword } from '@/shared/lib/search.ts';
-import { SearchableSelect, Label } from '@allcll/allcll-ui';
+import { Flex, SearchableSelect, Label } from '@allcll/allcll-ui';
 
 interface IDepartmentSelect {
   id?: string;
@@ -8,9 +8,17 @@ interface IDepartmentSelect {
   value?: string;
   onChange: (departmentCode: string) => void;
   defaultValue?: string;
+  showLabel?: boolean;
 }
 
-function DepartmentSelect({ id, className = '', value = '', onChange, defaultValue = '전체' }: IDepartmentSelect) {
+function DepartmentSelect({
+  id,
+  className = '',
+  value = '',
+  onChange,
+  defaultValue = '전체',
+  showLabel = false,
+}: IDepartmentSelect) {
   const { data: departments } = useDepartments();
   const options = [
     { value: '', label: defaultValue },
@@ -22,21 +30,34 @@ function DepartmentSelect({ id, className = '', value = '', onChange, defaultVal
 
   const customId = id ?? 'department-filter';
 
+  const select = (
+    <SearchableSelect
+      id={customId}
+      className={className || 'w-full'}
+      options={options}
+      value={value}
+      onChange={onChange}
+      searchPlaceholder="학과 검색"
+      emptyDescription="다른 학과 이름으로 검색해주세요."
+      filterOption={matchOptionKeyword}
+    />
+  );
+
+  if (showLabel) {
+    return (
+      <Flex direction="flex-col" gap="gap-2">
+        <Label htmlFor={customId}>학과</Label>
+        {select}
+      </Flex>
+    );
+  }
+
   return (
     <>
       <Label htmlFor={customId} hidden>
         학과
       </Label>
-      <SearchableSelect
-        id={customId}
-        className={className || 'w-full'}
-        options={options}
-        value={value}
-        onChange={onChange}
-        searchPlaceholder="학과 검색"
-        emptyDescription="다른 학과 이름으로 검색해주세요."
-        filterOption={matchOptionKeyword}
-      />
+      {select}
     </>
   );
 }

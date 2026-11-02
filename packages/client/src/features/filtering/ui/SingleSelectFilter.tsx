@@ -12,6 +12,7 @@ interface ISingleSelectFilter<K extends keyof Filters> {
   setFilter: (field: K, value: FilterValueType<K> | null) => void;
   options: FilterValueType<K>[];
   ItemComponent: React.ComponentType<FilterItemProps>;
+  showReset?: boolean;
 }
 
 function SingleSelectFilterOption<K extends keyof Filters>({
@@ -20,6 +21,7 @@ function SingleSelectFilterOption<K extends keyof Filters>({
   setFilter,
   options,
   ItemComponent,
+  showReset = true,
 }: Readonly<ISingleSelectFilter<K>>) {
   const handleChangeCheckbox = (optionValue: FilterValueType<K>) => {
     const checked = isSameOption(selectedValue, optionValue);
@@ -60,17 +62,19 @@ function SingleSelectFilterOption<K extends keyof Filters>({
         )}
       </Flex>
 
-      <Flex justify="justify-end" className="mt-3 pt-1.5 -mb-1.5 border-t border-gray-100">
-        <Button
-          variant="text"
-          size="small"
-          color="gray"
-          disabled={selectedValue == null}
-          onClick={() => handleClickReset()}
-        >
-          초기화
-        </Button>
-      </Flex>
+      {showReset && (
+        <Flex justify="justify-end" className="mt-3 pt-1.5 -mb-1.5 border-t border-gray-100">
+          <Button
+            variant="text"
+            size="small"
+            color="gray"
+            disabled={selectedValue == null}
+            onClick={() => handleClickReset()}
+          >
+            초기화
+          </Button>
+        </Flex>
+      )}
     </div>
   );
 }

@@ -33,6 +33,7 @@ function GenericSingleSelectFilter<K extends keyof Filters>({
       setFilter={(filterKey, value) => setFilter(filterKey, value)}
       options={options}
       ItemComponent={ItemComponent}
+      showReset={!isMobile}
     />
   );
 

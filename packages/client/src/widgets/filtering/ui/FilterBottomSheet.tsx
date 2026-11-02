@@ -55,20 +55,8 @@ function FilterBottomSheet({
   return (
     <BottomSheet title="필터" onClose={onCloseFiltering}>
       <div className="w-full flex px-4 pb-4 flex-col gap-5">
-        <Flex direction="flex-wrap" gap="gap-2">
-          {allSelectedFilters.map(filter => (
-            <Chip
-              key={`${filter.filterKey}-${filter.values}`}
-              variant="cancel"
-              label={filter.label}
-              selected={true}
-              onClick={() => handleDeleteFilter(filter.filterKey, filter.values)}
-            />
-          ))}
-        </Flex>
-
         <Flex direction="flex-col" justify="justify-center" gap="gap-8" className="w-full">
-          <DepartmentSelect value={filters.department} onChange={code => setFilter('department', code)} />
+          <DepartmentSelect showLabel value={filters.department} onChange={code => setFilter('department', code)} />
 
           {showWishRange && (
             <GenericSingleSelectFilter
@@ -129,19 +117,36 @@ function FilterBottomSheet({
             setFilter={setFilter}
           />
 
-          <div className="sticky bottom-0 py-3 bg-white flex justify-end items-center gap-2 border-gray-200">
-            <Button
-              variant="solid"
-              color="gray"
-              size="medium"
-              onClick={resetFilter}
-              disabled={allSelectedFilters.length === 0}
-            >
-              필터 초기화
-            </Button>
-            <Button type="submit" variant="solid" size="medium" onClick={handleClickSave}>
-              저장
-            </Button>
+          <div className="sticky bottom-0 -mx-4 px-4 py-3 bg-white border-t border-gray-100 flex flex-col gap-3">
+            {allSelectedFilters.length > 0 && (
+              <div className="flex gap-2 overflow-x-auto [scrollbar-width:none]">
+                {allSelectedFilters.map(filter => (
+                  <div key={`${filter.filterKey}-${filter.values}`} className="shrink-0">
+                    <Chip
+                      variant="cancel"
+                      label={filter.label}
+                      selected={true}
+                      onClick={() => handleDeleteFilter(filter.filterKey, filter.values)}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="flex justify-end items-center gap-2">
+              <Button
+                variant="solid"
+                color="gray"
+                size="medium"
+                onClick={resetFilter}
+                disabled={allSelectedFilters.length === 0}
+              >
+                필터 초기화
+              </Button>
+              <Button type="submit" variant="solid" size="medium" onClick={handleClickSave}>
+                저장
+              </Button>
+            </div>
           </div>
         </Flex>
       </div>

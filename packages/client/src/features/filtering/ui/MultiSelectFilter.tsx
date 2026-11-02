@@ -12,6 +12,7 @@ interface IMultiSelectFilter<K extends keyof Filters> {
   setFilter: (field: K, value: FilterValueType<K>[] | null) => void;
   options: FilterValueType<K>[];
   ItemComponent: React.ComponentType<FilterItemProps>;
+  showReset?: boolean;
 }
 
 type ItemWithLayout = React.ComponentType<FilterItemProps> & {
@@ -24,6 +25,7 @@ function MultiSelectFilter<K extends keyof Filters>({
   setFilter,
   options,
   ItemComponent,
+  showReset = true,
 }: Readonly<IMultiSelectFilter<K>>) {
   const labelFormatters = getLabelFormatter();
   const layout = (ItemComponent as ItemWithLayout).layout ?? 'grid';
@@ -75,25 +77,33 @@ function MultiSelectFilter<K extends keyof Filters>({
         )}
       </Flex>
 
-      <Flex justify="justify-between" align="items-center" className="mt-3 pt-1.5 -mb-1.5 border-t border-gray-100">
-        {options.length > MAX_VISIBLE && (
-          <Button variant="text" size="small" color="gray" onClick={() => setIsExpanded(prev => !prev)}>
-            <ChevronDownIcon className={`w-4 h-4 ${isExpanded ? 'rotate-180' : ''}`} />
-            {isExpanded ? '간략히' : '더보기'}
-          </Button>
-        )}
-
-        <Button
-          variant="text"
-          size="small"
-          color="gray"
-          className="ml-auto"
-          disabled={selectedValues == null || selectedValues.length === 0}
-          onClick={() => handleClickReset()}
+      {(showReset || options.length > MAX_VISIBLE) && (
+        <Flex
+          justify="justify-between"
+          align="items-center"
+          className={showReset ? 'mt-3 pt-1.5 -mb-1.5 border-t border-gray-100' : 'mt-1'}
         >
-          초기화
-        </Button>
-      </Flex>
+          {options.length > MAX_VISIBLE && (
+            <Button variant="text" size="small" color="gray" onClick={() => setIsExpanded(prev => !prev)}>
+              <ChevronDownIcon className={`w-4 h-4 ${isExpanded ? 'rotate-180' : ''}`} />
+              {isExpanded ? '간략히' : '더보기'}
+            </Button>
+          )}
+
+          {showReset && (
+            <Button
+              variant="text"
+              size="small"
+              color="gray"
+              className="ml-auto"
+              disabled={selectedValues == null || selectedValues.length === 0}
+              onClick={() => handleClickReset()}
+            >
+              초기화
+            </Button>
+          )}
+        </Flex>
+      )}
     </div>
   );
 }
