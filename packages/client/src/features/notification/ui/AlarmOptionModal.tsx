@@ -14,7 +14,6 @@ interface IAlarmOptionModal {
 }
 
 const AlarmTypeNames = [
-  { title: '알림 없음', value: AlarmType.NONE, disabled: () => false },
   { title: '브라우저 알림', value: AlarmType.BROWSER, disabled: () => !BrowserNotification.canNotify() },
   { title: '토스트 알림', value: AlarmType.TOAST, disabled: () => !ToastNotification.canNotify() },
   {
@@ -26,7 +25,6 @@ const AlarmTypeNames = [
 
 function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
   const hasPermission = useNotificationInstruction(state => state.isPermitted);
-  const alarmType = useAlarmSettings(state => state.alarmType);
 
   const onTestAlarm = () => {
     AlarmNotification.show('알림 기능을 테스트합니다', 'test-alarm');
@@ -47,13 +45,7 @@ function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
         <SubAlarmOption />
 
         <div className="mt-4 flex justify-end">
-          <Button
-            variant="outlined"
-            color="primary"
-            size="medium"
-            onClick={onTestAlarm}
-            disabled={!hasPermission || alarmType === AlarmType.NONE}
-          >
+          <Button variant="outlined" color="primary" size="medium" onClick={onTestAlarm} disabled={!hasPermission}>
             알림 테스트
           </Button>
         </div>
@@ -105,8 +97,6 @@ function AlarmOptionContent() {
 }
 
 function SubAlarmOption() {
-  const alarmType = useAlarmSettings(state => state.alarmType);
-  const isAlarmDisabled = alarmType === AlarmType.NONE;
   const isSound = isSubAlarmActivated(SubAlarmType.SOUND);
   const isVibrate = isSubAlarmActivated(SubAlarmType.VIBRATE);
   const canVibrate = VibrationNotification.canNotify();
@@ -114,8 +104,7 @@ function SubAlarmOption() {
   const subAlarmType = useAlarmSettings(state => state.subAlarmType);
   const saveSettings = useAlarmSettings(state => state.saveSettings);
 
-  const isSoundDisabled = isAlarmDisabled;
-  const isVibrateDisabled = isAlarmDisabled || !canVibrate;
+  const isVibrateDisabled = !canVibrate;
 
   const toggleSubAlarm = (target: SubAlarmType, checked: boolean) => {
     // checked이면 비트 연산자로 플래그 추가, 아니면 제거
@@ -131,7 +120,7 @@ function SubAlarmOption() {
       </Heading>
       <div className="flex flex-col gap-2">
         <div className="my-1 flex items-center justify-between">
-          <label htmlFor="select-sound" className={`text-sm ${isSoundDisabled ? 'text-gray-300' : ''}`}>
+          <label htmlFor="select-sound" className="text-sm">
             소리
           </label>
           <Toggle
@@ -139,7 +128,6 @@ function SubAlarmOption() {
             name="sound"
             checked={isSound}
             onCheckedChange={checked => toggleSubAlarm(SubAlarmType.SOUND, checked)}
-            disabled={isSoundDisabled}
           />
         </div>
 

@@ -19,8 +19,8 @@ export enum SubAlarmType {
 interface IUseAlarmSettings {
   alarmType: AlarmType;
   subAlarmType: SubAlarmType;
-  saveSettings: (settings: Partial<Exclude<IUseAlarmSettings, 'saveSettings' | 'resetSettings'>>) => void;
-  resetSettings: () => void;
+  isEnabled: boolean;
+  saveSettings: (settings: Partial<Omit<IUseAlarmSettings, 'saveSettings'>>) => void;
 }
 
 const isMobileDevice = () => {
@@ -31,7 +31,8 @@ const getDefaultAlarmType = () => {
   const canNotify = 'Notification' in window;
   const isMobile = isMobileDevice();
 
-  return (AlarmType.BROWSER * Number(canNotify) + AlarmType.TOAST * Number(isMobile)) as AlarmType;
+  const alarmType = AlarmType.BROWSER * Number(canNotify) + AlarmType.TOAST * Number(isMobile);
+  return (alarmType || AlarmType.TOAST) as AlarmType;
 };
 
 const getDefaultSubAlarmType = () => {
@@ -44,17 +45,23 @@ const useAlarmSettings = create<IUseAlarmSettings>()(
     set => ({
       alarmType: getDefaultAlarmType(),
       subAlarmType: getDefaultSubAlarmType(),
+      isEnabled: true,
       saveSettings: settings => set(prev => ({ ...prev, ...settings })),
-      resetSettings: () =>
-        set(() => ({
-          alarmType: getDefaultAlarmType(),
-          subAlarmType: getDefaultSubAlarmType(),
-        })),
     }),
     {
       name: 'AlarmSettings',
-      partialize: state => ({ alarmType: state.alarmType, subAlarmType: state.subAlarmType }),
-      // merge: (persistedState, currentState) => ({ ...currentState, ...persistedState }),
+      version: 1,
+      partialize: state => ({
+        alarmType: state.alarmType,
+        subAlarmType: state.subAlarmType,
+        isEnabled: state.isEnabled,
+      }),
+      // 알림 유형의 '알림 없음'을 없애면서, 그 설정을 쓰던 사용자는 기본 유형에 알림 꺼짐으로 옮김
+      migrate: persisted => {
+        const state = persisted as Pick<IUseAlarmSettings, 'alarmType' | 'subAlarmType'>;
+        if (state.alarmType === AlarmType.NONE) return { ...state, alarmType: getDefaultAlarmType(), isEnabled: false };
+        return { ...state, isEnabled: true };
+      },
     },
   ),
 );

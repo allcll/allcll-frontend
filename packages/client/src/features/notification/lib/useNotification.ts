@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { QueryClient } from '@tanstack/react-query';
-import { confirm, useToastNotification } from '@allcll/common';
+import { useToastNotification } from '@allcll/common';
 import useSSECondition from '@/features/live/board/model/useSSECondition.ts';
 import useAlarmSettings, {
   AlarmType,
@@ -134,7 +134,7 @@ function useNotification() {
   useEffect(() => {
     if (isInitialized) return;
 
-    if (AlarmNotification.isGranted()) {
+    if (useAlarmSettings.getState().isEnabled && AlarmNotification.isGranted()) {
       setGlobalNotification('알림 기능이 활성화되었습니다. 여석이 생기면 이렇게 알림을 보내드려요');
       setAlwaysReload(true);
     }
@@ -142,23 +142,11 @@ function useNotification() {
     isInitialized = true;
   }, []);
 
-  const changeAlarm = async () => {
-    // 알림 기능 활성화 할 때
-    if (!isAlarm) {
-      const alarmType = useAlarmSettings.getState().alarmType;
-      if (alarmType === AlarmType.NONE) {
-        const confirmed = await confirm({
-          title: '알림 활성화',
-          description: '알림 기능을 활성화하시겠습니까?',
-          confirmLabel: '활성화',
-        });
-        if (!confirmed) return;
-        useAlarmSettings.getState().resetSettings();
-      }
-      AlarmNotification.requestPermission();
-    }
+  const changeAlarm = () => {
+    if (!isAlarm) AlarmNotification.requestPermission();
 
     setAlwaysReload(!isAlarm);
+    useAlarmSettings.getState().saveSettings({ isEnabled: !isAlarm });
 
     if (isAlarm) {
       // 끄는 안내에는 소리, 진동, 브라우저 알림이 울리지 않도록 화면 토스트로만 알림
