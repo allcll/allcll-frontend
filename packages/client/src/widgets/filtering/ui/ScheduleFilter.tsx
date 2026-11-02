@@ -2,19 +2,18 @@
 import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
 import { useScheduleSearchStore } from '@/features/filtering/model/useFilterStore.ts';
-import { useState } from 'react';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
 import DepartmentFilter from '../../../features/filtering/ui/DepartmentFilter.tsx';
 import FilterDelete from '../../../features/filtering/ui/FilterDelete.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import { Flex } from '@allcll/allcll-ui';
-import DetailFilterModal from '@/features/filtering/ui/DetailFilterModal.tsx';
+import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam.ts';
 
 function ScheduleFilter() {
   const semester = useSemesterParam();
 
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
   const filters = useScheduleSearchStore(state => state.filters);
   const setFilters = useScheduleSearchStore(state => state.setFilter);
   const resetFilter = useScheduleSearchStore(state => state.resetFilters);
@@ -76,11 +75,8 @@ function ScheduleFilter() {
         />
       )}
 
-      <FilteringButton handleOpenFilter={() => setIsFilterModalOpen(true)} />
+      <FilteringButton handleOpenFilter={() => openBottomSheet('filter')} />
       <FilterDelete filters={filters} resetFilter={resetFilter} />
-      {isFilterModalOpen && (
-        <DetailFilterModal filterStore={useScheduleSearchStore} onClose={() => setIsFilterModalOpen(false)} />
-      )}
     </Flex>
   );
 }

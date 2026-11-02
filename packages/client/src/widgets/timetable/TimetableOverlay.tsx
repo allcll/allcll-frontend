@@ -1,7 +1,7 @@
 import { AddIcon } from '@allcll/allcll-ui';
 import FloatingButton from '@/shared/ui/FloatingButton';
 import ScheduleSearchBottomSheet from '@/widgets/filtering/search/ui/ScheduleSearchBottomSheet';
-import FilterBottomSheet from '@/widgets/filtering/ui/FilterBottomSheet';
+import FilterOverlay from '@/widgets/filtering/ui/FilterOverlay';
 import ScheduleFormModal from '@/features/timetable/ui/ScheduleFormModal.tsx';
 import ScheduleInfoModal from '@/features/timetable/ui/ScheduleInfoModal.tsx';
 import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
@@ -26,11 +26,6 @@ function MobileTimetableOverlay() {
     closeBottomSheet('search');
   };
 
-  const handleCloseFiltering = () => {
-    closeBottomSheet('filter');
-    openBottomSheet('search');
-  };
-
   const handleOpenSearch = () => {
     openBottomSheet('search');
   };
@@ -39,9 +34,10 @@ function MobileTimetableOverlay() {
     openBottomSheet('filter');
   };
 
-  const filters = useScheduleSearchStore(state => state.filters);
-  const setFilter = useScheduleSearchStore(state => state.setFilter);
-  const resetFilter = useScheduleSearchStore(state => state.resetFilters);
+  const handleCloseFilter = () => {
+    closeBottomSheet('filter');
+    openBottomSheet('search');
+  };
 
   return (
     <>
@@ -49,15 +45,8 @@ function MobileTimetableOverlay() {
         <ScheduleSearchBottomSheet onCloseSearch={handleCloseSearch} onOpenFiltering={handleOpenFiltering} />
       </RenderIf>
 
-      <RenderIf when={bottomSheetType.filter.isOpen}>
-        <FilterBottomSheet
-          onCloseFiltering={handleCloseFiltering}
-          filters={filters}
-          setFilter={setFilter}
-          resetFilter={resetFilter}
-          showSeatRange={false}
-        />
-      </RenderIf>
+      {/* 과목 검색 시트 위에 쌓이도록 검색 시트 다음에 둠 */}
+      <TimetableFilter onClose={handleCloseFilter} />
 
       <RenderIf when={bottomSheetType.edit.isOpen}>
         <ScheduleFormBottomSheet />
@@ -86,6 +75,7 @@ function MobileTimetableOverlay() {
 
 function DesktopTimetableOverlay() {
   const bottomSheetType = useBottomSheetStore(state => state.type);
+  const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
 
   return (
     <>
@@ -95,8 +85,15 @@ function DesktopTimetableOverlay() {
       <RenderIf when={bottomSheetType.info.isOpen}>
         <ScheduleInfoModal />
       </RenderIf>
+      <TimetableFilter onClose={() => closeBottomSheet('filter')} />
     </>
   );
+}
+
+function TimetableFilter({ onClose }: { onClose: () => void }) {
+  const isOpen = useBottomSheetStore(state => state.type.filter.isOpen);
+
+  return <FilterOverlay isOpen={isOpen} onClose={onClose} filterStore={useScheduleSearchStore} showSeatRange={false} />;
 }
 
 function RenderIf({ when, children }: { when: boolean; children: React.ReactNode }) {
