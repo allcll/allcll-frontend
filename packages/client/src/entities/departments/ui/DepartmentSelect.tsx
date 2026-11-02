@@ -16,7 +16,7 @@ function DepartmentSelect({
   className = '',
   value = '',
   onChange,
-  defaultValue = '전체',
+  defaultValue = '전체 학과',
   showLabel = false,
 }: IDepartmentSelect) {
   const { data: departments } = useDepartments();

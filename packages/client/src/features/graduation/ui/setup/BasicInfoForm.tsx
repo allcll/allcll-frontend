@@ -28,7 +28,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
   const showToast = useToastNotification.getState().addToast;
 
   const { filteredDepartments: majorDepartments } = useFilteringDepartment({ category: '전공', departments });
-  // '전체학과'(코드 '')는 선택지가 아니므로 제외
+  // '전체 학과'(코드 '')는 선택지가 아니므로 제외
   const departmentOptions = majorDepartments
     .filter(department => department.departmentCode !== '')
     .map(department => ({

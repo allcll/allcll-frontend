@@ -13,7 +13,7 @@ import {
   EmptyState,
   SearchIcon,
 } from '@allcll/allcll-ui';
-import { useFilteringDepartment } from '../lib/useFilteringDepartment';
+import { ALL_DEPARTMENT, useFilteringDepartment } from '../lib/useFilteringDepartment';
 import { Filtering } from '@allcll/common';
 import { DepartmentType } from '@/features/filtering/model/types.ts';
 
@@ -120,9 +120,12 @@ function SelectSubject({ departments, setFilter, selectedValue }: ISelectSubject
     <>
       {departments.map(department => {
         const isSelected = pickCollegeOrMajor(selectedValue, departments) === department.departmentName;
-        const departmentName = department.departmentName
-          ? department.departmentName.split(' ').slice(-1)[0]
-          : '학과 정보 없음';
+        const departmentName =
+          department === ALL_DEPARTMENT
+            ? department.departmentName
+            : department.departmentName
+              ? department.departmentName.split(' ').slice(-1)[0]
+              : '학과 정보 없음';
 
         return (
           <ListboxOption
