@@ -11,16 +11,28 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  render: function Render(args) {
+  args: {
+    value: ITEMS[0],
+    onValueChange: () => {},
+    children: null,
+  },
+  render: function Render() {
     const [selected, setSelected] = useState(ITEMS[0]);
 
     return (
       <div className="w-80">
-        <Tabs {...args}>
+        <Tabs value={selected} onValueChange={setSelected}>
+          <Tabs.List aria-label="분류">
+            {ITEMS.map(item => (
+              <Tabs.Tab key={item} value={item}>
+                {item}
+              </Tabs.Tab>
+            ))}
+          </Tabs.List>
           {ITEMS.map(item => (
-            <Tabs.Tab key={item} selected={selected === item} onClick={() => setSelected(item)}>
-              {item}
-            </Tabs.Tab>
+            <Tabs.Panel key={item} value={item} className="p-4">
+              {item} 내용
+            </Tabs.Panel>
           ))}
         </Tabs>
       </div>
@@ -32,9 +44,3 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
-
-export const FullWidth: Story = {
-  args: {
-    fullWidth: true,
-  },
-};

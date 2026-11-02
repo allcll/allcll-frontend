@@ -72,19 +72,13 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
       <Label>내용</Label>
 
       <div className="flex flex-col border border-gray-300 rounded-lg overflow-hidden">
-        {/* 탭 헤더 */}
-        <Tabs aria-label="편집 모드" className="bg-gray-50">
-          <Tabs.Tab selected={tab === 'write'} onClick={() => setTab('write')}>
-            Write
-          </Tabs.Tab>
-          <Tabs.Tab selected={tab === 'preview'} onClick={() => setTab('preview')}>
-            Preview
-          </Tabs.Tab>
-        </Tabs>
+        <Tabs value={tab} onValueChange={value => setTab(value as EditorTab)}>
+          <Tabs.List aria-label="편집 모드" className="bg-gray-50">
+            <Tabs.Tab value="write">Write</Tabs.Tab>
+            <Tabs.Tab value="preview">Preview</Tabs.Tab>
+          </Tabs.List>
 
-        {/* Write 탭 */}
-        {tab === 'write' && (
-          <>
+          <Tabs.Panel value="write">
             {/* 툴바 */}
             <div className="flex items-center gap-0.5 px-2 py-1.5 bg-gray-50 border-b border-gray-200">
               <ToolbarButton title="굵게 (Bold)" onClick={() => insertMarkdown('**', '**')}>
@@ -181,12 +175,9 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
               placeholder="내용을 입력하세요..."
               className="w-full px-4 py-3 text-sm placeholder-gray-400 resize-none focus:outline-none leading-relaxed min-h-[480px]"
             />
-          </>
-        )}
+          </Tabs.Panel>
 
-        {/* Preview 탭 */}
-        {tab === 'preview' && (
-          <div className="min-h-[480px] px-5 py-4">
+          <Tabs.Panel value="preview" className="min-h-[480px] px-5 py-4">
             {content.trim() ? (
               <div className="prose max-w-none">
                 <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{content}</ReactMarkdown>
@@ -194,8 +185,8 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
             ) : (
               <p className="text-sm text-gray-400 italic">미리보기할 내용이 없습니다.</p>
             )}
-          </div>
-        )}
+          </Tabs.Panel>
+        </Tabs>
       </div>
 
       <Flex align="items-center" justify="justify-end" className="text-xs">

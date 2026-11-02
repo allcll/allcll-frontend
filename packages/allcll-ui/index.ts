@@ -24,6 +24,7 @@ export { default as RowRight } from './src/components/row/RowRight';
 export { default as RowSlots } from './src/components/row/RowSlots';
 export { default as Skeleton } from './src/components/skeleton/Skeleton';
 export { default as Spinner } from './src/components/spinner/Spinner';
+export { default as TabNav } from './src/components/tabs/TabNav';
 export { default as Tabs } from './src/components/tabs/Tabs';
 export { default as TextField } from './src/components/textfield/TextField';
 export { default as TextLink } from './src/components/text-link/TextLink';

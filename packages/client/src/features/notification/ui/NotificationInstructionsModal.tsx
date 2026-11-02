@@ -85,19 +85,27 @@ function BrowserPermissionGuide() {
         <p className="mt-1">브라우저에서 'ALLCLL' 사이트의 알림을 허용해야 합니다.</p>
       </div>
 
-      <Tabs aria-label="브라우저 선택">
-        <TabButton name="Chrome" id="chrome" selected={browser} onClick={setBrowser} />
-        <TabButton name="Firefox" id="firefox" selected={browser} onClick={setBrowser} />
-        <TabButton name="Safari" id="safari" selected={browser} onClick={setBrowser} />
-        <TabButton name="Edge" id="edge" selected={browser} onClick={setBrowser} />
-      </Tabs>
+      <Tabs value={browser} onValueChange={setBrowser} className="space-y-4">
+        <Tabs.List aria-label="브라우저 선택">
+          <Tabs.Tab value="chrome">Chrome</Tabs.Tab>
+          <Tabs.Tab value="firefox">Firefox</Tabs.Tab>
+          <Tabs.Tab value="safari">Safari</Tabs.Tab>
+          <Tabs.Tab value="edge">Edge</Tabs.Tab>
+        </Tabs.List>
 
-      <div className="p-2 bg-gray-50 rounded-md h-64 overflow-y-auto">
-        {browser === 'chrome' && <ChromeGuide />}
-        {browser === 'firefox' && <FirefoxGuide />}
-        {browser === 'safari' && <SafariGuide />}
-        {browser === 'edge' && <EdgeGuide />}
-      </div>
+        <GuidePanel value="chrome">
+          <ChromeGuide />
+        </GuidePanel>
+        <GuidePanel value="firefox">
+          <FirefoxGuide />
+        </GuidePanel>
+        <GuidePanel value="safari">
+          <SafariGuide />
+        </GuidePanel>
+        <GuidePanel value="edge">
+          <EdgeGuide />
+        </GuidePanel>
+      </Tabs>
     </div>
   );
 }
@@ -112,37 +120,33 @@ function SystemPermissionGuide() {
         <p className="mt-1">일부 기기에서는 OS의 알림도 허용해야 합니다.</p>
       </div>
 
-      <Tabs aria-label="기기 선택">
-        <TabButton name="macOS" id="macos" selected={os} onClick={setOs} />
-        <TabButton name="Windows" id="windows" selected={os} onClick={setOs} />
-        <TabButton name="모바일" id="mobile" selected={os} onClick={setOs} />
-      </Tabs>
+      <Tabs value={os} onValueChange={setOs} className="space-y-4">
+        <Tabs.List aria-label="기기 선택">
+          <Tabs.Tab value="macos">macOS</Tabs.Tab>
+          <Tabs.Tab value="windows">Windows</Tabs.Tab>
+          <Tabs.Tab value="mobile">모바일</Tabs.Tab>
+        </Tabs.List>
 
-      <div className="p-2 bg-gray-50 rounded-md h-64 overflow-y-auto">
-        {os === 'macos' && <MacGuide />}
-        {os === 'windows' && <WindowsGuide />}
-        {os === 'mobile' && <MobileGuide />}
-      </div>
+        <GuidePanel value="macos">
+          <MacGuide />
+        </GuidePanel>
+        <GuidePanel value="windows">
+          <WindowsGuide />
+        </GuidePanel>
+        <GuidePanel value="mobile">
+          <MobileGuide />
+        </GuidePanel>
+      </Tabs>
     </div>
   );
 }
 
 // --- Helper Components ---
 
-const TabButton = ({
-  name,
-  id,
-  selected,
-  onClick,
-}: {
-  name: string;
-  id: string;
-  selected: string;
-  onClick: (id: string) => void;
-}) => (
-  <Tabs.Tab selected={selected === id} onClick={() => onClick(id)}>
-    {name}
-  </Tabs.Tab>
+const GuidePanel = ({ value, children }: { value: string; children: React.ReactNode }) => (
+  <Tabs.Panel value={value} className="p-2 bg-gray-50 rounded-md h-64 overflow-y-auto">
+    {children}
+  </Tabs.Panel>
 );
 
 const GuideStep = ({ title, children }: { title: string; children: React.ReactNode }) => (

@@ -3,11 +3,6 @@ import { Tabs } from '@allcll/allcll-ui';
 
 export type TabType = 'major' | 'general' | 'certification';
 
-interface MobileTabsProps {
-  activeTab: TabType;
-  onTabChange: (tab: TabType) => void;
-}
-
 interface TabItem {
   key: TabType;
   label: string;
@@ -19,15 +14,15 @@ const TABS: TabItem[] = [
   { key: 'certification', label: '졸업인증' },
 ];
 
-function MobileTabs({ activeTab, onTabChange }: MobileTabsProps) {
+function MobileTabs() {
   return (
-    <Tabs fullWidth aria-label="졸업요건 분류" className="mb-6">
+    <Tabs.List fullWidth aria-label="졸업요건 분류" className="mb-6">
       {TABS.map(tab => (
-        <Tabs.Tab key={tab.key} selected={activeTab === tab.key} onClick={() => onTabChange(tab.key)}>
+        <Tabs.Tab key={tab.key} value={tab.key}>
           {tab.label}
         </Tabs.Tab>
       ))}
-    </Tabs>
+    </Tabs.List>
   );
 }
 

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { Flex, Banner, Button, Heading, LoadingState, TextLink } from '@allcll/allcll-ui';
+import { Flex, Banner, Button, Heading, LoadingState, Tabs, TextLink } from '@allcll/allcll-ui';
 import {
   CategoryEarnedCoursesModal,
   CategoryProgressCard,
@@ -35,7 +35,7 @@ import { useGraduationDashboard } from '@/features/graduation/model/useGraduatio
 import { useGraduationConfetti } from '@/features/graduation/lib/useGraduationConfetti';
 import useFeedbackTrigger from '@/features/feedback/lib/FeedbackTrigger';
 import FeedbackModal from '@/features/feedback/ui/FeedbackModal';
-import MobileTabs, { useMobileTabs } from '@/features/graduation/ui/dashboard/MobileTabs';
+import MobileTabs, { type TabType, useMobileTabs } from '@/features/graduation/ui/dashboard/MobileTabs';
 import EditProfileModal from '@/features/graduation/ui/dashboard/EditProfileModal';
 import CertificationEditModal from '@/features/graduation/ui/dashboard/CertificationEditModal';
 import { useUpdateEnglishCertMutation } from '@/features/graduation/lib/useUpdateEnglishCertMutation';
@@ -288,10 +288,10 @@ function GraduationDashboardPage() {
           </Flex>
 
           {isMobile ? (
-            <>
-              <MobileTabs activeTab={activeTab} onTabChange={setActiveTab} />
-              {renderMobileContent()}
-            </>
+            <Tabs value={activeTab} onValueChange={value => setActiveTab(value as TabType)}>
+              <MobileTabs />
+              <Tabs.Panel value={activeTab}>{renderMobileContent()}</Tabs.Panel>
+            </Tabs>
           ) : (
             <Flex direction="flex-col" gap="gap-4">
               {isSingleMajor ? (

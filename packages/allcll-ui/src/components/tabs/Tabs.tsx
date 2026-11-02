@@ -1,25 +1,49 @@
-import type { ComponentPropsWithoutRef } from 'react';
-import Tab from './Tab';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import * as RadixTabs from '@radix-ui/react-tabs';
+import { TAB_FULL_WIDTH_CLASS, TAB_ITEM_CLASS, TAB_LIST_CLASS } from './tabStyles';
 
-interface TabsProps extends ComponentPropsWithoutRef<'div'> {
-  fullWidth?: boolean;
+interface TabsProps {
+  value: string;
+  onValueChange: (value: string) => void;
+  children: ReactNode;
   className?: string;
 }
 
-function TabsRoot({ fullWidth = false, className = '', children, ...rest }: TabsProps) {
+function TabsRoot({ value, onValueChange, children, className }: TabsProps) {
   return (
-    <div
-      role="tablist"
-      {...rest}
-      className={`flex overflow-x-auto [scrollbar-width:none] [contain:inline-size] shadow-[inset_0_-1px_0_var(--color-gray-200)] text-sm ${fullWidth ? '*:flex-1 *:text-center' : ''} ${className}`}
-    >
+    <RadixTabs.Root value={value} onValueChange={onValueChange} className={className}>
       {children}
-    </div>
+    </RadixTabs.Root>
   );
 }
 
+interface TabsListProps extends ComponentPropsWithoutRef<typeof RadixTabs.List> {
+  fullWidth?: boolean;
+}
+
+function TabsList({ fullWidth = false, className = '', ...rest }: TabsListProps) {
+  return (
+    <RadixTabs.List {...rest} className={`${TAB_LIST_CLASS} ${fullWidth ? TAB_FULL_WIDTH_CLASS : ''} ${className}`} />
+  );
+}
+
+function Tab({ className = '', ...rest }: ComponentPropsWithoutRef<typeof RadixTabs.Trigger>) {
+  return (
+    <RadixTabs.Trigger
+      {...rest}
+      className={`${TAB_ITEM_CLASS} data-[state=active]:border-primary-500 data-[state=active]:text-primary-500 data-[state=inactive]:border-transparent data-[state=inactive]:text-gray-500 data-[state=inactive]:hover:text-gray-700 ${className}`}
+    />
+  );
+}
+
+function TabsPanel({ className = '', ...rest }: ComponentPropsWithoutRef<typeof RadixTabs.Content>) {
+  return <RadixTabs.Content {...rest} className={`outline-none ${className}`} />;
+}
+
 const Tabs = Object.assign(TabsRoot, {
+  List: TabsList,
   Tab,
+  Panel: TabsPanel,
 });
 
 export default Tabs;

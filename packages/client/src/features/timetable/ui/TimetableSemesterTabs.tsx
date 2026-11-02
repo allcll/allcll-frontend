@@ -1,4 +1,4 @@
-import { Tabs } from '@allcll/allcll-ui';
+import { TabNav } from '@allcll/allcll-ui';
 import { Link } from 'react-router-dom';
 import { SEMESTERS } from '@/entities/semester/api/semester.ts';
 
@@ -10,13 +10,13 @@ const TIMETABLE_SEMESTERS = startIdx !== -1 ? SEMESTERS.slice(0, startIdx + 1) :
 
 function TimetableSemesterTabs({ currentSemester }: { currentSemester?: string }) {
   return (
-    <Tabs aria-label="학기 선택">
+    <TabNav aria-label="학기 선택">
       {TIMETABLE_SEMESTERS.map(semester => (
-        <Tabs.Tab key={semester.semesterCode} asChild selected={currentSemester === semester.semesterCode}>
+        <TabNav.Item key={semester.semesterCode} asChild selected={currentSemester === semester.semesterCode}>
           <Link to={`/timetable?semester=${semester.semesterCode}`}>{semester.semesterValue}학기</Link>
-        </Tabs.Tab>
+        </TabNav.Item>
       ))}
-    </Tabs>
+    </TabNav>
   );
 }
 
