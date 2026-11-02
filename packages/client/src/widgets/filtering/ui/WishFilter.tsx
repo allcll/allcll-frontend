@@ -16,6 +16,7 @@ import useWishesPreSeats from '@/entities/subjectAggregate/model/useWishesPreSea
 import { useWishesTableStore } from '@/features/wish/model/useWishTableColumnStore.ts';
 import TableTitleSettingModal from '@/shared/ui/TableTitleSettingModal.tsx';
 import { getAllSelectedLabels } from '@/features/filtering/lib/filterUtils.ts';
+import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { FilterValueType } from '@/features/filtering/model/types.ts';
 
 export interface WishSearchParams {
@@ -41,7 +42,8 @@ function WishFilter() {
   const categoryOptions = getCategories(subjects ?? [])
     .sort((a, b) => a.localeCompare(b))
     .map(cat => cat);
-  const allSelectedFilters = getAllSelectedLabels(filters);
+  const { data: departments } = useDepartments();
+  const allSelectedFilters = getAllSelectedLabels(filters, departments);
 
   const hasPreSeats = !!(subjects && subjects[0] && 'seat' in subjects[0]);
 
