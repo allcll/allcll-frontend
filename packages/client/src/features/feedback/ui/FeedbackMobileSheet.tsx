@@ -23,7 +23,7 @@ export default function FeedbackMobileSheet({
     <BottomSheet title={titles.title} onClose={onClose}>
       <div>
         {!success ? (
-          <>
+          <Flex direction="flex-col" gap="gap-6">
             <FeedbackFields
               titles={titles}
               rate={rate}
@@ -34,15 +34,15 @@ export default function FeedbackMobileSheet({
               onCategoryChange={onCategoryChange}
               error={error}
             />
-            <Flex justify="justify-end" className="gap-2 pt-3">
+            <BottomSheet.Footer>
               <FeedbackActions
                 isPending={isPending}
                 canSubmit={canSubmit}
                 onDontShowAgain={onDontShowAgain}
                 onSubmit={onSubmit}
               />
-            </Flex>
-          </>
+            </BottomSheet.Footer>
+          </Flex>
         ) : (
           <FeedbackSuccess />
         )}

@@ -15,7 +15,7 @@ interface BottomSheetProps {
   children: ReactNode;
 }
 
-function BottomSheet({
+function BottomSheetMain({
   title,
   onClose,
   headerLeft,
@@ -64,5 +64,22 @@ function BottomSheet({
     </Drawer.Root>
   );
 }
+
+interface BottomSheetFooterProps {
+  above?: ReactNode;
+  children: ReactNode;
+}
+
+// 시트 내용 영역의 아래 여백을 하단 고정 영역이 대신하므로, 여백만큼 내려 붙여 그 틈으로 뒤 내용이 비치지 않게 함
+function BottomSheetFooter({ above, children }: BottomSheetFooterProps) {
+  return (
+    <div className="sticky -bottom-4 -mx-4 -mb-4 px-4 py-3 bg-white border-t border-gray-100 flex flex-col gap-3">
+      {above}
+      <div className="flex justify-end items-center gap-2">{children}</div>
+    </div>
+  );
+}
+
+const BottomSheet = Object.assign(BottomSheetMain, { Footer: BottomSheetFooter });
 
 export default BottomSheet;

@@ -8,4 +8,4 @@ function BottomSheet(props: ComponentProps<typeof BaseBottomSheet>) {
   return <BaseBottomSheet {...props} />;
 }
 
-export default BottomSheet;
+export default Object.assign(BottomSheet, { Footer: BaseBottomSheet.Footer });

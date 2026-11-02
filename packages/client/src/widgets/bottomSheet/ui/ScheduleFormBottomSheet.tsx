@@ -2,7 +2,6 @@ import type { FormEvent } from 'react';
 import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib/useScheduleModal.ts';
 import { ScheduleMutateType } from '@/features/timetable/model/useScheduleState.ts';
 import { Button, Flex } from '@allcll/allcll-ui';
-import useMobile from '@/shared/lib/useMobile.ts';
 import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
 import ScheduleFormContent from '@/features/timetable/ui/ScheduleFormContent';
 import DeleteConfirmationActions from '@/features/timetable/ui/DeleteConfirmationActions';
@@ -13,8 +12,6 @@ function ScheduleFormBottomSheet() {
   const { cancelSchedule, deleteSchedule, saveSchedule } = useScheduleModal();
 
   const title = modalActionType === ScheduleMutateType.CREATE ? '생성' : '수정';
-  const isMobile = useMobile();
-  const buttonSize = isMobile ? 'small' : 'medium';
   const { isDeleteConfirming, requestDeleteConfirmation, cancelDeleteConfirmation, confirmDelete } =
     useDeleteConfirmation(deleteSchedule);
 
@@ -29,11 +26,11 @@ function ScheduleFormBottomSheet() {
           <ScheduleFormContent />
         </Flex>
 
-        <Flex justify="justify-end" align="items-center" gap={isMobile ? 'gap-2' : 'gap-4'}>
+        <BottomSheet.Footer>
           {isDeleteConfirming ? (
             <DeleteConfirmationActions
               message="커스텀 일정을 삭제하시겠습니까?"
-              size={buttonSize}
+              size="medium"
               onCancel={cancelDeleteConfirmation}
               onConfirm={confirmDelete}
             />
@@ -44,7 +41,7 @@ function ScheduleFormBottomSheet() {
                   type="button"
                   variant="text"
                   color="danger"
-                  size={buttonSize}
+                  size="medium"
                   className="mr-auto"
                   onClick={requestDeleteConfirmation}
                 >
@@ -52,12 +49,12 @@ function ScheduleFormBottomSheet() {
                 </Button>
               )}
 
-              <Button type="submit" variant="solid" size={buttonSize}>
+              <Button type="submit" variant="solid" size="medium">
                 저장
               </Button>
             </>
           )}
-        </Flex>
+        </BottomSheet.Footer>
       </form>
     </BottomSheet>
   );

@@ -26,31 +26,33 @@ function ScheduleInfoBottomSheet() {
 
   return (
     <BottomSheet title={schedule.subjectName} onClose={handleClose}>
-      <Flex direction="flex-col" className="w-full text-sm text-gray-500 gap-2">
-        <p className="text-sm text-gray-500">{schedule.professorName ?? '교수 정보 없음'}</p>
+      <Flex direction="flex-col" gap="gap-6">
+        <Flex direction="flex-col" className="w-full text-sm text-gray-500 gap-2">
+          <p className="text-sm text-gray-500">{schedule.professorName ?? '교수 정보 없음'}</p>
 
-        <Flex align="items-center">
-          <TimeIcon className="w-4 h-4 text-gray-400" />
-          <span>{findSubjectById?.lesnTime}</span>
+          <Flex align="items-center">
+            <TimeIcon className="w-4 h-4 text-gray-400" />
+            <span>{findSubjectById?.lesnTime}</span>
+          </Flex>
+
+          <Flex align="items-center">
+            <HomeIcon className="w-4 h-4 text-gray-400" />
+            <span>{findSubjectById?.lesnRoom ?? '장소 정보 없음'}</span>
+          </Flex>
+
+          <Flex>
+            <span>{findSubjectById?.manageDeptNm}</span>
+            <span> {findSubjectById?.studentYear + '학년'}</span>
+            <span className="text-primary-500 text-sm">{findSubjectById?.tmNum[0] + '학점'}</span>
+          </Flex>
+
+          <Flex>
+            <span>{findSubjectById?.curiTypeCdNm ?? ''} </span>
+            <span>{findSubjectById?.remark ?? ''}</span>
+          </Flex>
         </Flex>
 
-        <Flex align="items-center">
-          <HomeIcon className="w-4 h-4 text-gray-400" />
-          <span>{findSubjectById?.lesnRoom ?? '장소 정보 없음'}</span>
-        </Flex>
-
-        <Flex>
-          <span>{findSubjectById?.manageDeptNm}</span>
-          <span> {findSubjectById?.studentYear + '학년'}</span>
-          <span className="text-primary-500 text-sm">{findSubjectById?.tmNum[0] + '학점'}</span>
-        </Flex>
-
-        <Flex>
-          <span>{findSubjectById?.curiTypeCdNm ?? ''} </span>
-          <span>{findSubjectById?.remark ?? ''}</span>
-        </Flex>
-
-        <Flex justify="justify-end" align="items-center" gap="gap-2">
+        <BottomSheet.Footer>
           {isDeleteConfirming ? (
             <DeleteConfirmationActions
               message="과목을 삭제하시겠습니까?"
@@ -63,7 +65,7 @@ function ScheduleInfoBottomSheet() {
               삭제
             </Button>
           )}
-        </Flex>
+        </BottomSheet.Footer>
       </Flex>
     </BottomSheet>
   );
