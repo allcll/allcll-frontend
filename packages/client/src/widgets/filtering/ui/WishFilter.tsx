@@ -62,7 +62,7 @@ function WishFilter() {
   };
 
   return (
-    <div className="flex flex-wrap gap-2 mt-4 lg:flex-wrap lg:flex-row lg:items-center lg:gap-y-0 lg:gap-x-2">
+    <div className="flex flex-wrap gap-2 mt-4">
       {isModalOpen && (
         <TableTitleSettingModal
           initialItems={tableTitles}
@@ -87,7 +87,7 @@ function WishFilter() {
         className="w-full"
       />
 
-      <div className="flex items-center flex-wrap mt-2 gap-2">
+      <div className="flex items-center flex-wrap gap-2">
         <div className="hidden md:flex flex-wrap gap-2">
           <DepartmentFilter setFilter={setFilter} selectedValue={filters.department ?? ''} />
 

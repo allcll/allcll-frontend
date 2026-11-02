@@ -5,6 +5,7 @@ import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelect
 import GenericSingleSelectFilter from '@/features/filtering/ui/GenericSingleSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
 import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
+import SelectedFilterChips from '@/features/filtering/ui/SelectedFilterChips.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { Button, Chip, Flex } from '@allcll/allcll-ui';
@@ -78,10 +79,6 @@ function FilterBottomSheet({
             />
           )}
 
-          <Flex direction="flex-col" gap="gap-2">
-            <DayFilter times={filters.time} setFilter={setFilter} />
-          </Flex>
-
           <GenericMultiSelectFilter
             filterKey="credits"
             options={FilterDomains.credits}
@@ -97,6 +94,17 @@ function FilterBottomSheet({
           />
 
           <GenericMultiSelectFilter
+            filterKey="categories"
+            options={categoryOptions}
+            selectedValues={(filters.categories as string[]) ?? []}
+            setFilter={setFilter}
+          />
+
+          <Flex direction="flex-col" gap="gap-2">
+            <DayFilter times={filters.time} setFilter={setFilter} />
+          </Flex>
+
+          <GenericMultiSelectFilter
             filterKey="classroom"
             options={FilterDomains.classRoom}
             selectedValues={filters.classroom ?? []}
@@ -110,30 +118,7 @@ function FilterBottomSheet({
             setFilter={setFilter}
           />
 
-          <GenericMultiSelectFilter
-            filterKey="categories"
-            options={categoryOptions}
-            selectedValues={(filters.categories as string[]) ?? []}
-            setFilter={setFilter}
-          />
-
-          <BottomSheet.Footer
-            above={
-              allSelectedFilters.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {allSelectedFilters.map(filter => (
-                    <Chip
-                      key={`${filter.filterKey}-${filter.values}`}
-                      variant="cancel"
-                      label={filter.label}
-                      selected={true}
-                      onClick={() => handleDeleteFilter(filter.filterKey, filter.values)}
-                    />
-                  ))}
-                </div>
-              )
-            }
-          >
+          <BottomSheet.Footer above={<SelectedFilterChips items={allSelectedFilters} onDelete={handleDeleteFilter} />}>
             <Button
               variant="solid"
               color="gray"
