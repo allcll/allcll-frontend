@@ -55,6 +55,7 @@ function MobileTimetableOverlay() {
           filters={filters}
           setFilter={setFilter}
           resetFilter={resetFilter}
+          showSeatRange={false}
         />
       </RenderIf>
 

@@ -18,6 +18,7 @@ interface FilterBottomSheetProps {
   setFilter: (field: keyof Filters, value: Filters[keyof Filters]) => void;
   resetFilter: () => void;
   showWishRange?: boolean;
+  showSeatRange?: boolean;
 }
 
 function FilterBottomSheet({
@@ -26,6 +27,7 @@ function FilterBottomSheet({
   setFilter,
   resetFilter,
   showWishRange = true,
+  showSeatRange = true,
 }: FilterBottomSheetProps) {
   const handleClickSave = () => {
     onCloseFiltering();
@@ -78,13 +80,15 @@ function FilterBottomSheet({
             />
           )}
 
-          <GenericSingleSelectFilter
-            filterKey="seatRange"
-            options={FilterDomains.seatRange}
-            selectedValue={filters.seatRange ?? null}
-            setFilter={setFilter}
-            ItemComponent={Chip}
-          />
+          {showSeatRange && (
+            <GenericSingleSelectFilter
+              filterKey="seatRange"
+              options={FilterDomains.seatRange}
+              selectedValue={filters.seatRange ?? null}
+              setFilter={setFilter}
+              ItemComponent={Chip}
+            />
+          )}
 
           <Flex direction="flex-col" gap="gap-2">
             <DayFilter times={filters.time} setFilter={setFilter} />

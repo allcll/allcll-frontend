@@ -94,6 +94,7 @@ function WishFilter() {
           filters={filters}
           setFilter={setFilter}
           resetFilter={resetFilter}
+          showSeatRange={isPreSeatAvailable}
         />
       )}
 
