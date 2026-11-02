@@ -25,6 +25,7 @@ const AlarmTypeNames = [
 
 function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
   const hasPermission = useNotificationInstruction(state => state.isPermitted);
+  const usesToast = useAlarmSettings(state => Boolean(state.alarmType & AlarmType.TOAST));
 
   const onTestAlarm = () => {
     AlarmNotification.show('알림 기능을 테스트합니다', 'test-alarm');
@@ -45,7 +46,13 @@ function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
         <SubAlarmOption />
 
         <div className="mt-4 flex justify-end">
-          <Button variant="outlined" color="primary" size="medium" onClick={onTestAlarm} disabled={!hasPermission}>
+          <Button
+            variant="outlined"
+            color="primary"
+            size="medium"
+            onClick={onTestAlarm}
+            disabled={!hasPermission && !usesToast}
+          >
             알림 테스트
           </Button>
         </div>
@@ -69,29 +76,29 @@ function AlarmOptionContent() {
       <Heading level={3} size="md" id="alarm-type-heading" className="mb-2">
         알림 유형
       </Heading>
-      <Select
-        id="alarm-type-select"
-        aria-labelledby="alarm-type-heading"
-        className="w-full mb-2"
-        value={alarmType}
-        onChange={onChange}
-      >
-        {AlarmTypeNames.map(type => (
-          <option className="disabled:text-gray-500" key={type.value} value={type.value} disabled={type.disabled()}>
-            {type.title}
-          </option>
-        ))}
-      </Select>
+      <div className="flex flex-col gap-1.5">
+        <Select
+          id="alarm-type-select"
+          aria-labelledby="alarm-type-heading"
+          className="w-full"
+          value={alarmType}
+          onChange={onChange}
+        >
+          {AlarmTypeNames.map(type => (
+            <option className="disabled:text-gray-500" key={type.value} value={type.value} disabled={type.disabled()}>
+              {type.title}
+            </option>
+          ))}
+        </Select>
 
-      {(alarmType === AlarmType.BROWSER || alarmType === AlarmType.BOTH) && !hasPermission && (
-        <p className="pl-2 pb-2 text-sm text-danger-600">브라우저 알림을 허용해주세요.</p>
-      )}
-      {alarmType === AlarmType.TOAST && (
-        <p className="pl-2 pb-2 text-sm text-danger-600">토스트 알림은 탭이 열려 있을 때에만 작동해요.</p>
-      )}
-      {!canBrowserNotify && (
-        <p className="pl-2 pb-2 text-xs text-gray-600">이 브라우저는 브라우저 알림을 지원하지 않아요.</p>
-      )}
+        {(alarmType === AlarmType.BROWSER || alarmType === AlarmType.BOTH) && !hasPermission && (
+          <p className="text-xs text-danger-500">브라우저 알림을 허용해주세요.</p>
+        )}
+        {alarmType === AlarmType.TOAST && (
+          <p className="text-xs text-gray-500">토스트 알림은 탭이 열려 있을 때에만 작동해요.</p>
+        )}
+        {!canBrowserNotify && <p className="text-xs text-gray-500">이 브라우저는 브라우저 알림을 지원하지 않아요.</p>}
+      </div>
     </div>
   );
 }
@@ -143,7 +150,7 @@ function SubAlarmOption() {
             disabled={isVibrateDisabled}
           />
         </div>
-        {!canVibrate && <p className="pl-2 pb-2 text-sm text-danger-600">이 기기는 진동 기능을 지원하지 않아요.</p>}
+        {!canVibrate && <p className="text-xs text-gray-500">이 기기는 진동 기능을 지원하지 않아요.</p>}
       </div>
     </div>
   );
