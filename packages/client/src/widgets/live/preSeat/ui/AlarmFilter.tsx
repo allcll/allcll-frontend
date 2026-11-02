@@ -63,6 +63,7 @@ function AlarmFilter() {
           filters={filters}
           setFilter={setFilters}
           resetFilter={resetFilter}
+          showWishRange={false}
         />
       )}
 
@@ -111,14 +112,6 @@ function AlarmFilter() {
               className="min-w-max"
             />
           )}
-
-          <GenericSingleSelectFilter
-            filterKey="wishRange"
-            options={FilterDomains.wishRange}
-            selectedValue={filters.wishRange ?? null}
-            setFilter={setFilters}
-            ItemComponent={Chip}
-          />
 
           <GenericSingleSelectFilter
             filterKey="seatRange"

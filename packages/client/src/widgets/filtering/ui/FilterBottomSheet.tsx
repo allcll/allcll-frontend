@@ -17,9 +17,16 @@ interface FilterBottomSheetProps {
   filters: Filters;
   setFilter: (field: keyof Filters, value: Filters[keyof Filters]) => void;
   resetFilter: () => void;
+  showWishRange?: boolean;
 }
 
-function FilterBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }: FilterBottomSheetProps) {
+function FilterBottomSheet({
+  onCloseFiltering,
+  filters,
+  setFilter,
+  resetFilter,
+  showWishRange = true,
+}: FilterBottomSheetProps) {
   const handleClickSave = () => {
     onCloseFiltering();
   };
@@ -61,13 +68,15 @@ function FilterBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }
         <Flex direction="flex-col" justify="justify-center" gap="gap-8" className="w-full">
           <DepartmentSelect value={filters.department} onChange={code => setFilter('department', code)} />
 
-          <GenericSingleSelectFilter
-            filterKey="wishRange"
-            options={FilterDomains.wishRange}
-            selectedValue={filters.wishRange ?? null}
-            setFilter={setFilter}
-            ItemComponent={Chip}
-          />
+          {showWishRange && (
+            <GenericSingleSelectFilter
+              filterKey="wishRange"
+              options={FilterDomains.wishRange}
+              selectedValue={filters.wishRange ?? null}
+              setFilter={setFilter}
+              ItemComponent={Chip}
+            />
+          )}
 
           <GenericSingleSelectFilter
             filterKey="seatRange"
