@@ -144,7 +144,7 @@ function FilterBottomSheet({
               필터 초기화
             </Button>
             <Button type="submit" variant="solid" size="medium" onClick={handleClickSave}>
-              저장
+              완료
             </Button>
           </BottomSheet.Footer>
         </Flex>

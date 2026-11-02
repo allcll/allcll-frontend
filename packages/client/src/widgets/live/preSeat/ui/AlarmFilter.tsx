@@ -1,5 +1,4 @@
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
-import useMobile from '@/shared/lib/useMobile.ts';
 import { useAlarmSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import { useState } from 'react';
 import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';
@@ -12,32 +11,19 @@ import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
 import FilterDelete from '@/features/filtering/ui/FilterDelete.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import { Chip, Flex, Label } from '@allcll/allcll-ui';
-import DetailFilterModal from '@/features/filtering/ui/DetailFilterModal';
-
-import FilterBottomSheet from '../../../filtering/ui/FilterBottomSheet';
+import FilterOverlay from '@/widgets/filtering/ui/FilterOverlay.tsx';
 
 function AlarmFilter() {
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const setFilters = useAlarmSearchStore(state => state.setFilter);
   const { keywords, alarmOnly, time } = useAlarmSearchStore(state => state.filters);
   const filters = useAlarmSearchStore(state => state.filters);
   const resetFilter = useAlarmSearchStore(state => state.resetFilters);
-  const isMobile = useMobile();
 
   const { data: subjects } = useSubject();
   const categoryOptions = getCategories(subjects ?? [])
     .sort((a, b) => a.localeCompare(b))
     .map(cat => cat);
-
-  const handleOpenFilter = () => {
-    if (isMobile) {
-      setIsBottomSheetOpen(true);
-    } else {
-      setIsFilterModalOpen(true);
-    }
-  };
 
   return (
     <Flex direction="flex-wrap" gap="gap-2">
@@ -53,19 +39,12 @@ function AlarmFilter() {
         onChange={e => setFilters('keywords', e.target.value)}
       />
 
-      {isFilterModalOpen && (
-        <DetailFilterModal filterStore={useAlarmSearchStore} onClose={() => setIsFilterModalOpen(false)} />
-      )}
-
-      {isBottomSheetOpen && (
-        <FilterBottomSheet
-          onCloseFiltering={() => setIsBottomSheetOpen(false)}
-          filters={filters}
-          setFilter={setFilters}
-          resetFilter={resetFilter}
-          showWishRange={false}
-        />
-      )}
+      <FilterOverlay
+        isOpen={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+        filterStore={useAlarmSearchStore}
+        showWishRange={false}
+      />
 
       <Flex align="items-center" direction="flex-wrap" gap="gap-2">
         <Flex direction="flex-wrap" gap="gap-2" className="hidden md:flex">
@@ -123,7 +102,7 @@ function AlarmFilter() {
         </Flex>
 
         <AlarmButton alarmOnly={alarmOnly} setFilter={setFilters} />
-        <FilteringButton handleOpenFilter={handleOpenFilter} />
+        <FilteringButton handleOpenFilter={() => setIsFilterOpen(true)} />
         <FilterDelete filters={filters} resetFilter={resetFilter} />
       </Flex>
     </Flex>

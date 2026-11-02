@@ -3,8 +3,7 @@ import { useState } from 'react';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import { Filters, initialFilters, useWishSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import { TableSettingsIcon, IconButton, Flex, Chip } from '@allcll/allcll-ui';
-import useMobile from '@/shared/lib/useMobile.ts';
-import FilterBottomSheet from '@/widgets/filtering/ui/FilterBottomSheet.tsx';
+import FilterOverlay from '@/widgets/filtering/ui/FilterOverlay.tsx';
 import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
 import GenericSingleSelectFilter from '../../../features/filtering/ui/GenericSingleSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
@@ -16,7 +15,6 @@ import usePreSeatGate from '@/entities/seat/model/usePreSeatGate';
 import useWishesPreSeats from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
 import { useWishesTableStore } from '@/features/wish/model/useWishTableColumnStore.ts';
 import TableTitleSettingModal from '@/shared/ui/TableTitleSettingModal.tsx';
-import DetailFilterModal from '@/features/filtering/ui/DetailFilterModal.tsx';
 import { getAllSelectedLabels } from '@/features/filtering/lib/filterUtils.ts';
 import { FilterValueType } from '@/features/filtering/model/types.ts';
 
@@ -28,7 +26,7 @@ export interface WishSearchParams {
 
 function WishFilter() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const filters = useWishSearchStore(state => state.filters);
   const setFilter = useWishSearchStore(state => state.setFilter);
@@ -38,9 +36,6 @@ function WishFilter() {
 
   const tableTitles = useWishesTableStore(state => state.tableTitles);
   const setTableTitles = useWishesTableStore(state => state.setTableTitles);
-  const isMobile = useMobile();
-
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
   const { data: subjects } = useWishesPreSeats([]);
   const categoryOptions = getCategories(subjects ?? [])
@@ -52,14 +47,6 @@ function WishFilter() {
 
   const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
   const isWishesAvailable = subjects && subjects[0] && 'totalCount' in subjects[0];
-
-  const handleOpenFilter = () => {
-    if (isMobile) {
-      setIsBottomSheetOpen(true);
-    } else {
-      setIsFilterModalOpen(true);
-    }
-  };
 
   const handleDeleteFilter = (filterKey: keyof Filters, value: FilterValueType<keyof Filters>) => {
     const currentValue = filters[filterKey];
@@ -84,19 +71,12 @@ function WishFilter() {
         />
       )}
 
-      {isFilterModalOpen && (
-        <DetailFilterModal filterStore={useWishSearchStore} onClose={() => setIsFilterModalOpen(false)} />
-      )}
-
-      {isBottomSheetOpen && (
-        <FilterBottomSheet
-          onCloseFiltering={() => setIsBottomSheetOpen(false)}
-          filters={filters}
-          setFilter={setFilter}
-          resetFilter={resetFilter}
-          showSeatRange={isPreSeatAvailable}
-        />
-      )}
+      <FilterOverlay
+        isOpen={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+        filterStore={useWishSearchStore}
+        showSeatRange={isPreSeatAvailable}
+      />
 
       <SearchBox
         type="text"
@@ -190,7 +170,7 @@ function WishFilter() {
           onClick={() => setIsModalOpen(true)}
         />
 
-        <FilteringButton handleOpenFilter={handleOpenFilter} />
+        <FilteringButton handleOpenFilter={() => setIsFilterOpen(true)} />
         <FilterDelete filters={filters} resetFilter={resetFilter} />
 
         <Flex direction="flex-wrap" gap="gap-2" className="w-fit md:hidden">
