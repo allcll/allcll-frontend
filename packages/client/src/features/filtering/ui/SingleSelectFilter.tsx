@@ -24,7 +24,7 @@ function SingleSelectFilterOption<K extends keyof Filters>({
   isMinMax = false,
 }: Readonly<ISingleSelectFilter<K>>) {
   const handleChangeCheckbox = (optionValue: FilterValueType<K>) => {
-    const checked = selectedValue === optionValue;
+    const checked = isSameOption(selectedValue, optionValue);
     const newValue = checked ? null : optionValue;
 
     setFilter(filterKey, newValue);
@@ -37,7 +37,7 @@ function SingleSelectFilterOption<K extends keyof Filters>({
   const labelFormatters = getLabelFormatter();
 
   return (
-    <div className="relative inline-block">
+    <div className="relative w-full">
       <Flex direction="flex-col" gap="gap-2">
         <Label>{labelPrefix[filterKey]}</Label>
         <Grid columns={{ md: 3 }} gap="gap-2">
@@ -45,7 +45,7 @@ function SingleSelectFilterOption<K extends keyof Filters>({
             <ItemComponent
               key={String(option)}
               label={labelFormatters[filterKey]?.(option) ?? String(option)}
-              selected={selectedValue === option}
+              selected={isSameOption(selectedValue, option)}
               onClick={() => handleChangeCheckbox(option)}
             />
           ))}
@@ -57,7 +57,6 @@ function SingleSelectFilterOption<K extends keyof Filters>({
               selectedValue={selectedValue as RangeMinMaxFilter | null}
               filterKey={filterKey}
               setFilter={(filterKey, value) => setFilter(filterKey, value as FilterValueType<K> | null)}
-              options={options}
             />
           </div>
         )}
@@ -76,6 +75,16 @@ function SingleSelectFilterOption<K extends keyof Filters>({
       </Flex>
     </div>
   );
+}
+
+// 범위 필터는 슬라이더가 새 객체를 만들기 때문에 같은 값인지로 비교
+function isSameOption(a: unknown, b: unknown) {
+  if (a === b) return true;
+  if (!a || !b || typeof a !== 'object' || typeof b !== 'object') return false;
+
+  const rangeA = a as RangeMinMaxFilter;
+  const rangeB = b as RangeMinMaxFilter;
+  return rangeA.min === rangeB.min && rangeA.max === rangeB.max;
 }
 
 export default SingleSelectFilterOption;

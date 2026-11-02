@@ -122,8 +122,8 @@ export function getLabelFormatter(departments?: DepartmentType[]): Partial<{
     grades: value => getLabelWithSuffix(value, labelPrefix.grades),
     credits: value => getLabelWithSuffix(value, labelPrefix.credits),
     classroom: getClassRoomLabel,
-    seatRange: getRangeLabel,
-    wishRange: getRangeLabel,
+    seatRange: value => getRangeLabel(value, '개'),
+    wishRange: value => getRangeLabel(value, '명'),
     time: getTimesLabel,
     days: getDaysLabel,
     categories: value => value,
@@ -144,7 +144,7 @@ const getClassRoomLabel = (value: string) => {
  * @param value
  * @returns
  */
-const getRangeLabel = (value: RangeMinMaxFilter | null) => {
+const getRangeLabel = (value: RangeMinMaxFilter | null, unit: string) => {
   if (!value) {
     return '';
   }
@@ -152,14 +152,14 @@ const getRangeLabel = (value: RangeMinMaxFilter | null) => {
   const { min, max } = value;
 
   if (min !== undefined && max !== undefined) {
-    return `${min}개 이상 ~ ${max}개 이하`;
+    return min === max ? `${min}${unit}` : `${min}~${max}${unit}`;
   }
 
   if (min !== undefined) {
-    return `${min}개 이상`;
+    return `${min}${unit} 이상`;
   }
   if (max !== undefined) {
-    return `${max}개 이하`;
+    return `${max}${unit} 이하`;
   }
 
   return '';

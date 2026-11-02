@@ -43,7 +43,7 @@ function GenericSingleSelectFilter<K extends keyof Filters>({
     SingleSelectContent
   ) : (
     <Filtering label={selectedSingleChipLabel} selected={!!selectedValue} className={className}>
-      {SingleSelectContent}
+      <div className="min-w-88">{SingleSelectContent}</div>
     </Filtering>
   );
 }
