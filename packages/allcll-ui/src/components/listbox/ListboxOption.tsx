@@ -1,5 +1,4 @@
 import type { ReactNode, KeyboardEvent } from 'react';
-import RowSlots from '../row/RowSlots';
 import { INTERACTION } from '../../config';
 
 interface ListboxOptionProps {
@@ -40,7 +39,10 @@ function ListboxOption({
       onKeyDown={handleKeyDown}
       className={`${baseClass} ${getSelectedClass(selected, active)}`}
     >
-      <RowSlots left={<div className="flex items-center">{left}</div>} right={selected ? right : null} />
+      <div className="flex items-center gap-3 w-full">
+        <div className="flex-1 min-w-0 break-keep">{left}</div>
+        {right && <div className={`shrink-0 flex items-center ${selected ? '' : 'invisible'}`}>{right}</div>}
+      </div>
     </div>
   );
 }
