@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { QueryClient } from '@tanstack/react-query';
-import { confirm } from '@allcll/common';
+import { confirm, useToastNotification } from '@allcll/common';
 import useSSECondition from '@/features/live/board/model/useSSECondition.ts';
 import useAlarmSettings, {
   AlarmType,
@@ -158,9 +158,20 @@ function useNotification() {
       AlarmNotification.requestPermission();
     }
 
-    const message = !isAlarm ? '알림 기능이 활성화되었습니다' : '알림 기능이 비활성화되었습니다';
     setAlwaysReload(!isAlarm);
+
+    if (isAlarm) {
+      // 끄는 안내에는 소리, 진동, 브라우저 알림이 울리지 않도록 화면 토스트로만 알림
+      useToastNotification.getState().addToast('알림 기능이 비활성화되었습니다', 'alarm-status');
+      return;
+    }
+
+    const message = '알림 기능이 활성화되었습니다';
     setGlobalNotification(message);
+    // 고른 방식에 토스트가 없으면 켜진 것을 화면에서 확인할 수 없어 따로 띄움
+    if (!isAlarmActivated(AlarmType.TOAST)) {
+      useToastNotification.getState().addToast(message, 'alarm-status');
+    }
   };
 
   return { isAlarm, changeAlarm };
