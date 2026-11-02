@@ -6,7 +6,8 @@ import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
 import { useScheduleSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import { ScheduleAdapter } from '@/entities/timetable/model/adapter.ts';
-import { AddIcon, FilterIcon, Flex, IconButton } from '@allcll/allcll-ui';
+import { AddIcon, Flex } from '@allcll/allcll-ui';
+import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
 import useWishes from '@/entities/wishes/model/useWishes.ts';
 import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam.ts';
@@ -61,13 +62,7 @@ function ScheduleSearchBottomSheet({ onCloseSearch, onOpenFiltering }: ISearchBo
           className="w-full"
         />
 
-        <IconButton
-          aria-label="filter"
-          variant="plain"
-          label="filter"
-          icon={<FilterIcon className="w-6 h-6 text-gray-400" />}
-          onClick={() => onOpenFiltering()}
-        />
+        <FilteringButton handleOpenFilter={onOpenFiltering} />
       </div>
 
       <Flex direction="flex-col" className="px-4">
