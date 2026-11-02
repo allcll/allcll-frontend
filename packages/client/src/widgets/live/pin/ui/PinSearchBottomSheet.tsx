@@ -33,6 +33,7 @@ function PinSearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
       <div className="sticky py-3 px-4 top-0 bg-white z-content flex flex-col gap-2 mb-4">
         <SearchBox
           placeholder="과목명 교수명 검색"
+          value={searchInput}
           onChange={e => setSearchInput(e.target.value)}
           onDelete={() => setSearchInput('')}
           className="w-full"
