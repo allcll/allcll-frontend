@@ -1,6 +1,6 @@
 import { FilterIcon, IconButton } from '@allcll/allcll-ui';
 
-function FilteringButton({ handleOpenFilter }: { handleOpenFilter: () => void }) {
+function FilteringButton({ handleOpenFilter, className }: { handleOpenFilter: () => void; className?: string }) {
   return (
     <IconButton
       aria-label="필터 수정"
@@ -9,6 +9,7 @@ function FilteringButton({ handleOpenFilter }: { handleOpenFilter: () => void })
       variant="contain"
       icon={<FilterIcon className="w-4 h-4" />}
       onClick={handleOpenFilter}
+      className={className}
     />
   );
 }

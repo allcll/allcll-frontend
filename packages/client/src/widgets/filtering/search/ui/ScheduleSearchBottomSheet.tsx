@@ -52,7 +52,7 @@ function ScheduleSearchBottomSheet({ onCloseSearch, onOpenFiltering }: ISearchBo
       activeSnapPoint={snapPoint}
       setActiveSnapPoint={setSnapPoint}
     >
-      <div className="sticky -mx-4 px-4 top-0 bg-white z-content flex items-center gap-2 pb-3">
+      <div className="sticky -mx-4 px-4 top-0 bg-white z-content flex items-stretch gap-2 pb-3 mb-4 border-b border-gray-100">
         <SearchBox
           type="text"
           placeholder="과목명 및 교수명 검색"
@@ -62,7 +62,10 @@ function ScheduleSearchBottomSheet({ onCloseSearch, onOpenFiltering }: ISearchBo
           className="w-full"
         />
 
-        <FilteringButton handleOpenFilter={onOpenFiltering} />
+        <FilteringButton
+          handleOpenFilter={onOpenFiltering}
+          className="shrink-0 w-[38px] max-sm:pointer-coarse:w-[42px]"
+        />
       </div>
 
       <Flex direction="flex-col">
