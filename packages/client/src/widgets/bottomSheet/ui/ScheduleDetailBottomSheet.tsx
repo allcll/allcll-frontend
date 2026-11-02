@@ -2,7 +2,7 @@ import { HomeIcon, TimeIcon, Button, Flex } from '@allcll/allcll-ui';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib/useScheduleModal.ts';
 import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
-import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
+import { useOverlayStore } from '@/shared/model/useOverlayStore.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
 import DeleteConfirmationActions from '@/features/timetable/ui/DeleteConfirmationActions';
 import useDeleteConfirmation from '@/features/timetable/lib/useDeleteConfirmation';
@@ -12,7 +12,7 @@ function ScheduleInfoBottomSheet() {
 
   const { schedule } = useScheduleModalData();
   const { deleteSchedule, cancelSchedule } = useScheduleModal();
-  const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
+  const closeOverlay = useOverlayStore(state => state.closeOverlay);
   const { data: subjects } = useSubject(semester);
   const { isDeleteConfirming, requestDeleteConfirmation, cancelDeleteConfirmation, confirmDelete } =
     useDeleteConfirmation(deleteSchedule);
@@ -21,7 +21,7 @@ function ScheduleInfoBottomSheet() {
 
   const handleClose = () => {
     cancelSchedule(undefined, false);
-    closeBottomSheet('info');
+    closeOverlay('info');
   };
 
   return (

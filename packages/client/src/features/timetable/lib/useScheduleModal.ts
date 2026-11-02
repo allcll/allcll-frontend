@@ -12,7 +12,7 @@ import {
   useUpdateSchedule,
 } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { ScheduleMutateType, useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
-import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
+import { useOverlayStore } from '@/shared/model/useOverlayStore.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
 import { showTimetableApiErrorToast, showTimetableApiSuccessToast } from './showTimetableApiErrorToast';
@@ -29,8 +29,8 @@ function useScheduleModal() {
   const currentTimetable = useScheduleState(state => state.currentTimetable);
   const timetableId = currentTimetable?.timeTableId ?? -1;
 
-  const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
-  const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
+  const openOverlay = useOverlayStore(state => state.openOverlay);
+  const closeOverlay = useOverlayStore(state => state.closeOverlay);
   const [, startTransition] = useTransition();
 
   const { mutate: createScheduleData } = useCreateSchedule(timetableId, currentSemester, {
@@ -69,15 +69,15 @@ function useScheduleModal() {
     if (!targetSchedule.scheduleId || targetSchedule.scheduleId <= 0) {
       currentMode = ScheduleMutateType.CREATE;
       if (targetSchedule.scheduleType !== 'official') {
-        openBottomSheet('edit');
+        openOverlay('edit');
       }
     } else if (targetSchedule.scheduleType === 'official') {
       currentMode = ScheduleMutateType.VIEW;
       console.log(globalPrevTimetable);
-      openBottomSheet('info');
+      openOverlay('info');
     } else {
       currentMode = ScheduleMutateType.EDIT;
-      openBottomSheet('edit');
+      openOverlay('edit');
     }
     changeScheduleData(targetSchedule, currentMode);
   };
@@ -162,7 +162,7 @@ function useScheduleModal() {
     }
 
     // 모달 state 초기화
-    if (close) closeBottomSheet('edit');
+    if (close) closeOverlay('edit');
   };
 
   const deleteSchedule = (e?: React.MouseEvent<HTMLButtonElement>) => {
@@ -184,8 +184,8 @@ function useScheduleModal() {
 
     // 모달 state 초기화
     changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);
-    closeBottomSheet('edit');
-    closeBottomSheet('info');
+    closeOverlay('edit');
+    closeOverlay('info');
   };
 
   const cancelSchedule = (
@@ -196,7 +196,7 @@ function useScheduleModal() {
 
     // 모달 state 초기화
     changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);
-    if (close) closeBottomSheet('edit');
+    if (close) closeOverlay('edit');
   };
 
   return {

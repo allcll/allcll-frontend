@@ -7,13 +7,13 @@ import DepartmentFilter from '../../../features/filtering/ui/DepartmentFilter.ts
 import FilterDelete from '../../../features/filtering/ui/FilterDelete.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import { Flex } from '@allcll/allcll-ui';
-import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
+import { useOverlayStore } from '@/shared/model/useOverlayStore.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam.ts';
 
 function ScheduleFilter() {
   const semester = useSemesterParam();
 
-  const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
+  const openOverlay = useOverlayStore(state => state.openOverlay);
   const filters = useScheduleSearchStore(state => state.filters);
   const setFilters = useScheduleSearchStore(state => state.setFilter);
   const resetFilter = useScheduleSearchStore(state => state.resetFilters);
@@ -75,7 +75,7 @@ function ScheduleFilter() {
         />
       )}
 
-      <FilteringButton handleOpenFilter={() => openBottomSheet('filter')} />
+      <FilteringButton handleOpenFilter={() => openOverlay('filter')} />
       <FilterDelete filters={filters} resetFilter={resetFilter} />
     </Flex>
   );

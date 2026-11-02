@@ -1,4 +1,4 @@
-import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
+import { useOverlayStore } from '@/shared/model/useOverlayStore.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { saveImageFromElement } from '@/shared/lib/saveImage.ts';
 import { AddIcon, Button, Flex, IconButton, DownloadIcon, SearchIcon } from '@allcll/allcll-ui';
@@ -15,7 +15,7 @@ export function TimetableHeaderActions({
   timetables?: TimetableType[];
 }) {
   const isMobile = useScheduleState(state => state.options.isMobile);
-  const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
+  const openOverlay = useOverlayStore(state => state.openOverlay);
 
   const handleSaveImage = () => {
     const name = useScheduleState.getState()?.currentTimetable?.timeTableName;
@@ -41,7 +41,7 @@ export function TimetableHeaderActions({
           icon={<SearchIcon className="w-5 h-5 text-gray-400" />}
           variant="plain"
           label="과목 검색"
-          onClick={() => openBottomSheet('search')}
+          onClick={() => openOverlay('search')}
         />
       )}
 
