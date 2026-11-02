@@ -41,14 +41,17 @@ function SingleSelectFilterOption<K extends keyof Filters>({
       <Flex direction="flex-col" gap="gap-2">
         <Label>{labelPrefix[filterKey]}</Label>
         <Grid columns={{ md: 3 }} gap="gap-2">
-          {options.map(option => (
-            <ItemComponent
-              key={String(option)}
-              label={labelFormatters[filterKey]?.(option) ?? String(option)}
-              selected={isSameOption(selectedValue, option)}
-              onClick={() => handleChangeCheckbox(option)}
-            />
-          ))}
+          {options.map(option => {
+            const label = labelFormatters[filterKey]?.(option) ?? String(option);
+            return (
+              <ItemComponent
+                key={label}
+                label={label}
+                selected={isSameOption(selectedValue, option)}
+                onClick={() => handleChangeCheckbox(option)}
+              />
+            );
+          })}
         </Grid>
 
         {(filterKey === 'wishRange' || filterKey === 'seatRange') && (
