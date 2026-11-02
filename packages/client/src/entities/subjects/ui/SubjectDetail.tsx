@@ -18,17 +18,23 @@ function SubjectDetail({ wishes }: ISubjectDetailProps) {
 
   const isEng = wishes?.curiLangNm === '영어';
   const isDeleted = wishes?.isDeleted ?? false;
+  const credit = Number.parseInt(data.tmNum?.split('/')[0] ?? '');
 
   return (
     <>
       <p className="text-gray-600">
-        {data.subjectCode}-{data.classCode} | {data.departmentName} | {data.professorName}
+        {joinPresent([`${data.subjectCode}-${data.classCode}`, data.departmentName, data.professorName])}
       </p>
 
       <Flex gap="gap-2" align="items-center" direction="flex-wrap" className="text-gray-600 text-sm">
         <span>
-          {data.studentYear}학년 | {data.curiTypeCdNm} | {Number(data.tmNum.split('/')[0].trim())}학점 | {data.lesnRoom}{' '}
-          | {data.lesnTime}
+          {joinPresent([
+            data.studentYear && `${data.studentYear}학년`,
+            data.curiTypeCdNm,
+            !Number.isNaN(credit) && `${credit}학점`,
+            data.lesnRoom,
+            data.lesnTime,
+          ])}
         </span>
 
         {isPreSeatAvailable && <SeatBadge seat={seats ?? -1} formatter={value => `여석 ${value}`} />}
@@ -38,6 +44,10 @@ function SubjectDetail({ wishes }: ISubjectDetailProps) {
       <p className="text-sm text-gray-500">{data.remark}</p>
     </>
   );
+}
+
+function joinPresent(parts: (string | number | false | null | undefined)[]) {
+  return parts.filter(Boolean).join(' | ');
 }
 
 export default SubjectDetail;
