@@ -32,7 +32,7 @@ function PinSearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
     <BottomSheet title="알림 과목 등록" onClose={onCloseSearch} snapPoints={[1]}>
       <div className="sticky -mx-4 pb-3 px-4 top-0 bg-white z-content flex flex-col gap-2 mb-4 border-b border-gray-100">
         <SearchBox
-          placeholder="과목명 교수명 검색"
+          placeholder="과목명, 교수명, 학수번호 검색"
           value={searchInput}
           onChange={e => setSearchInput(e.target.value)}
           onDelete={() => setSearchInput('')}

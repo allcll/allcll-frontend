@@ -61,7 +61,7 @@ function PinSearch() {
     <Flex direction="flex-col" className="flex-1 p-2">
       <Flex direction="flex-col" className="mb-4" gap="gap-2">
         <SearchBox
-          placeholder="과목명 교수명 검색"
+          placeholder="과목명, 교수명, 학수번호 검색"
           value={searchInput}
           onChange={e => setSearchInput(e.target.value)}
           onDelete={() => setSearchInput('')}

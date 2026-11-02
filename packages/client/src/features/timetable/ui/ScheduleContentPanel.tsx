@@ -30,7 +30,7 @@ function ScheduleContentPanel() {
         <SearchBox
           type="text"
           value={filters.keywords}
-          placeholder="과목명 검색"
+          placeholder="과목명, 교수명, 학수번호 검색"
           onDelete={() => setFilters('keywords', '')}
           onChange={e => setFilters('keywords', e.target.value)}
           className="w-full"

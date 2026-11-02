@@ -100,7 +100,7 @@ function WishFilter() {
 
       <SearchBox
         type="text"
-        placeholder="과목명, 교수명 또는 학수번호 및 분반 검색"
+        placeholder="과목명, 교수명, 학수번호 검색"
         value={keywords}
         onDelete={() => setFilter('keywords', '')}
         onChange={event => setFilter('keywords', event.target.value)}
