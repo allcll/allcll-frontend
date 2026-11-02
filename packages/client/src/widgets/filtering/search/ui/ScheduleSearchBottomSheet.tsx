@@ -6,7 +6,7 @@ import useScheduleModal from '@/features/timetable/lib/useScheduleModal.ts';
 import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.ts';
 import { useScheduleSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import { ScheduleAdapter } from '@/entities/timetable/model/adapter.ts';
-import { AddIcon, Flex } from '@allcll/allcll-ui';
+import { AddIcon, Button, Flex } from '@allcll/allcll-ui';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
 import useWishes from '@/entities/wishes/model/useWishes.ts';
 import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
@@ -38,16 +38,6 @@ function ScheduleSearchBottomSheet({ onCloseSearch, onOpenFiltering }: ISearchBo
     <BottomSheet
       title="과목 검색"
       onClose={onCloseSearch}
-      headerLeft={
-        <button
-          type="button"
-          aria-label="커스텀 일정 추가"
-          className="w-6 h-6 flex items-center justify-center bg-gray-100 rounded-full"
-          onClick={() => openScheduleModal(initSchedule)}
-        >
-          <AddIcon className="w-4 h-4 text-gray-600" />
-        </button>
-      }
       snapPoints={[previewSnapPoint, 1]}
       activeSnapPoint={snapPoint}
       setActiveSnapPoint={setSnapPoint}
@@ -68,7 +58,12 @@ function ScheduleSearchBottomSheet({ onCloseSearch, onOpenFiltering }: ISearchBo
         />
       </div>
 
-      <Flex direction="flex-col">
+      <Flex direction="flex-col" gap="gap-3">
+        <Button variant="text" size="small" onClick={() => openScheduleModal(initSchedule)}>
+          <AddIcon />
+          커스텀 일정 생성
+        </Button>
+
         <TimetableSubjectCards
           collapseSheet={() => setSnapPoint(previewSnapPoint)}
           subjects={filteredData}
