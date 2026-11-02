@@ -31,7 +31,7 @@ function PinSearchSideBar({ isOpen, onClose }: PinSearchSideBarProps) {
           </Heading>
           <IconButton
             className="p-2 hover:bg-gray-100 active:bg-gray-100"
-            aria-label="알림 과목 등록 닫기"
+            label="알림 과목 등록 닫기"
             icon={<CloseIcon className="w-4 h-4 text-gray-500" />}
             onClick={onClose}
           />
