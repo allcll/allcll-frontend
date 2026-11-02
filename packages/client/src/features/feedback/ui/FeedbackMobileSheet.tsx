@@ -21,7 +21,7 @@ export default function FeedbackMobileSheet({
 }: IFeedbackViewProps) {
   return (
     <BottomSheet title={titles.title} onClose={onClose}>
-      <div className="px-4 pb-4">
+      <div>
         {!success ? (
           <>
             <FeedbackFields

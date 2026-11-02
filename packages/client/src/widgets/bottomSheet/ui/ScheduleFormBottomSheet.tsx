@@ -24,12 +24,12 @@ function ScheduleFormBottomSheet() {
 
   return (
     <BottomSheet title={`커스텀 일정 ${title}`} onClose={() => cancelSchedule()}>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-        <Flex direction="flex-col" className="py-5 px-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        <Flex direction="flex-col">
           <ScheduleFormContent />
         </Flex>
 
-        <Flex justify="justify-end" align="items-center" gap={isMobile ? 'gap-2' : 'gap-4'} className="p-4">
+        <Flex justify="justify-end" align="items-center" gap={isMobile ? 'gap-2' : 'gap-4'}>
           {isDeleteConfirming ? (
             <DeleteConfirmationActions
               message="커스텀 일정을 삭제하시겠습니까?"

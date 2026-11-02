@@ -54,7 +54,7 @@ function FilterBottomSheet({
 
   return (
     <BottomSheet title="필터" onClose={onCloseFiltering}>
-      <div className="w-full flex px-4 pb-4 flex-col gap-5">
+      <div className="w-full flex flex-col gap-5 -mb-4">
         <Flex direction="flex-col" justify="justify-center" gap="gap-8" className="w-full">
           <DepartmentSelect showLabel value={filters.department} onChange={code => setFilter('department', code)} />
 
@@ -117,7 +117,8 @@ function FilterBottomSheet({
             setFilter={setFilter}
           />
 
-          <div className="sticky bottom-0 -mx-4 px-4 py-3 bg-white border-t border-gray-100 flex flex-col gap-3">
+          {/* 시트 내용 영역의 아래 여백을 하단 고정 영역이 대신하므로, 여백만큼 내려 붙여 그 틈으로 뒤 내용이 비치지 않게 함 */}
+          <div className="sticky -bottom-4 -mx-4 px-4 py-3 bg-white border-t border-gray-100 flex flex-col gap-3">
             {allSelectedFilters.length > 0 && (
               <div className="flex gap-2 overflow-x-auto [scrollbar-width:none]">
                 {allSelectedFilters.map(filter => (

@@ -36,7 +36,7 @@ function BottomSheet({
         <Drawer.Overlay className="fixed inset-0 bg-black/30" style={{ zIndex: Z_INDEX.bottomSheet }} />
         <Drawer.Content
           aria-describedby={undefined}
-          className={`fixed inset-x-0 bottom-0 flex flex-col rounded-t-xl bg-white outline-none ${
+          className={`fixed inset-x-0 bottom-0 flex flex-col pb-[env(safe-area-inset-bottom)] rounded-t-xl bg-white outline-none ${
             snapPoints ? 'h-[95dvh]' : 'max-h-[90dvh]'
           }`}
           style={{ zIndex: Z_INDEX.bottomSheet }}
@@ -45,7 +45,7 @@ function BottomSheet({
             <div className="w-20 h-1.5 bg-gray-300 rounded-full" />
           </div>
 
-          <header className="grid grid-cols-[1fr_auto_1fr] items-center px-4 pb-2 shrink-0">
+          <header className="grid grid-cols-[1fr_auto_1fr] items-center px-4 pb-6 shrink-0">
             <div className="justify-self-start">{headerLeft}</div>
             <Drawer.Title className="text-base font-semibold text-text-200">{title}</Drawer.Title>
             <button
@@ -58,7 +58,7 @@ function BottomSheet({
             </button>
           </header>
 
-          <div className="flex-1 min-h-0 overflow-y-auto">{children}</div>
+          <div className="flex-1 min-h-0 overflow-y-auto px-4 pb-4">{children}</div>
         </Drawer.Content>
       </Drawer.Portal>
     </Drawer.Root>

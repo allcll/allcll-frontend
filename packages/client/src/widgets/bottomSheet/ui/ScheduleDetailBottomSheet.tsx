@@ -26,7 +26,7 @@ function ScheduleInfoBottomSheet() {
 
   return (
     <BottomSheet title={schedule.subjectName} onClose={handleClose}>
-      <Flex direction="flex-col" className="px-2 py-3 w-full text-sm text-gray-500 gap-2">
+      <Flex direction="flex-col" className="w-full text-sm text-gray-500 gap-2">
         <p className="text-sm text-gray-500">{schedule.professorName ?? '교수 정보 없음'}</p>
 
         <Flex align="items-center">
@@ -50,7 +50,7 @@ function ScheduleInfoBottomSheet() {
           <span>{findSubjectById?.remark ?? ''}</span>
         </Flex>
 
-        <Flex justify="justify-end" align="items-center" gap="gap-2" className="px-2">
+        <Flex justify="justify-end" align="items-center" gap="gap-2">
           {isDeleteConfirming ? (
             <DeleteConfirmationActions
               message="과목을 삭제하시겠습니까?"
