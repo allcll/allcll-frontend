@@ -118,7 +118,6 @@ function WishFilter() {
               selectedValue={filters.wishRange ?? null}
               setFilter={setFilter}
               ItemComponent={Chip}
-              isMinMax={true}
             />
           )}
 
@@ -129,7 +128,6 @@ function WishFilter() {
               selectedValue={filters.seatRange ?? null}
               setFilter={setFilter}
               ItemComponent={Chip}
-              isMinMax={true}
             />
           )}
 

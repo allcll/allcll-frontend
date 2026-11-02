@@ -30,6 +30,8 @@ function RangeSlider({
       minStepsBetweenThumbs={0}
       onValueChange={next => onValueChange(next as [number, number])}
       onValueCommit={next => onValueCommit?.(next as [number, number])}
+      // 바텀시트 안에서 좌우로 끌 때 시트까지 끌리지 않도록 함
+      data-vaul-no-drag
       className={`relative flex items-center w-full h-5 touch-none select-none ${className}`}
     >
       <RadixSlider.Track className="relative grow h-1.5 rounded-full bg-gray-200">

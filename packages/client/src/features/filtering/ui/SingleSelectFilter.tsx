@@ -12,7 +12,6 @@ interface ISingleSelectFilter<K extends keyof Filters> {
   setFilter: (field: K, value: FilterValueType<K> | null) => void;
   options: FilterValueType<K>[];
   ItemComponent: React.ComponentType<FilterItemProps>;
-  isMinMax?: boolean;
 }
 
 function SingleSelectFilterOption<K extends keyof Filters>({
@@ -21,7 +20,6 @@ function SingleSelectFilterOption<K extends keyof Filters>({
   setFilter,
   options,
   ItemComponent,
-  isMinMax = false,
 }: Readonly<ISingleSelectFilter<K>>) {
   const handleChangeCheckbox = (optionValue: FilterValueType<K>) => {
     const checked = isSameOption(selectedValue, optionValue);
@@ -51,7 +49,7 @@ function SingleSelectFilterOption<K extends keyof Filters>({
           ))}
         </Grid>
 
-        {isMinMax && (
+        {(filterKey === 'wishRange' || filterKey === 'seatRange') && (
           <div className="mt-2">
             <MinMaxFilter
               selectedValue={selectedValue as RangeMinMaxFilter | null}
