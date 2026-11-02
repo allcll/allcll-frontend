@@ -6,6 +6,7 @@ import { useScheduleState } from '../model/useScheduleState.ts';
 import SelectTime from './SelectTime.tsx';
 
 import { Day, DAYS } from '@/entities/timetable/model/types.ts';
+import { josa } from 'es-hangul';
 
 interface TimeRange {
   startHour: string;
@@ -65,7 +66,7 @@ function ScheduleFormContent() {
           key={id}
           size="medium"
           id={id}
-          placeholder={`${name}을 입력해주세요`}
+          placeholder={`${josa(name, '을/를')} 입력해주세요`}
           value={value}
           label={name}
           onChange={e => setScheduleForm(prev => ({ ...prev, [id]: e.target.value }))}
