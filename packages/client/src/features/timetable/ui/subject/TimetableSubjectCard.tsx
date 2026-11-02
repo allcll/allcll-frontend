@@ -5,6 +5,7 @@ import useSearchLogging from '@/features/filtering/lib/useSearchLogging.ts';
 import { loggingDepartment } from '@/features/filtering/lib/useSearchRank.ts';
 import { Wishes } from '@/shared/model/types.ts';
 import BasketBadge from '@/entities/wishes/ui/BasketBadge';
+import { joinPresent } from '@/shared/lib/stringFormats.ts';
 
 interface ISubjectCard {
   isActive?: boolean;
@@ -17,6 +18,7 @@ function TimetableSubjectCard({ isActive, subject, onClick, forwardedRef }: Read
   const color = isActive ? 'text-primary-500 bg-primary-50' : 'text-gray-700 bg-white hover:bg-gray-50';
   const { saveSchedule } = useScheduleModal();
   const { selectTargetOnly } = useSearchLogging();
+  const credit = Number.parseInt(subject.tmNum?.split('/')[0] ?? '');
 
   const handleAddOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
     saveSchedule(e, false);
@@ -38,15 +40,15 @@ function TimetableSubjectCard({ isActive, subject, onClick, forwardedRef }: Read
         </Flex>
 
         <Flex direction="flex-col" justify="justify-start" align="items-start" gap="gap-2 ">
-          <span className="text-xs sm:text-sm text-gray-500">{subject.lesnTime}</span>
-          <span className="text-xs sm:text-sm text-gray-500">{subject.lesnRoom}</span>
+          {subject.lesnTime && <span className="text-xs sm:text-sm text-gray-500">{subject.lesnTime}</span>}
+          {subject.lesnRoom && <span className="text-xs sm:text-sm text-gray-500">{subject.lesnRoom}</span>}
           <span className="text-xs sm:text-sm text-gray-500">
-            {subject.studentYear}학년/{subject.manageDeptNm}
+            {joinPresent([subject.studentYear && `${subject.studentYear}학년`, subject.manageDeptNm])}
           </span>
         </Flex>
 
         <Flex justify="justify-between" align="items-center">
-          <Badge variant="default">{subject.tmNum[0]}학점</Badge>
+          {credit ? <Badge variant="default">{credit}학점</Badge> : <span />}
           {!isActive && subject.totalCount !== -1 && (
             <BasketBadge wishCount={subject.totalCount ?? -1} formatter={value => `관심: ${value}명`} />
           )}

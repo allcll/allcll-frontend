@@ -3,6 +3,7 @@ import { WishesWithSeat } from '@/entities/subjectAggregate/model/useWishesPreSe
 import usePreSeatGate from '@/entities/seat/model/usePreSeatGate';
 import SeatBadge from '@/entities/wishes/ui/SeatBadge.tsx';
 import { Badge, Flex } from '@allcll/allcll-ui';
+import { joinPresent } from '@/shared/lib/stringFormats.ts';
 
 interface ISubjectDetailProps {
   wishes: WishesWithSeat | undefined;
@@ -44,10 +45,6 @@ function SubjectDetail({ wishes }: ISubjectDetailProps) {
       <p className="text-sm text-gray-500">{data.remark}</p>
     </>
   );
-}
-
-function joinPresent(parts: (string | number | false | null | undefined)[]) {
-  return parts.filter(Boolean).join(' | ');
 }
 
 export default SubjectDetail;
