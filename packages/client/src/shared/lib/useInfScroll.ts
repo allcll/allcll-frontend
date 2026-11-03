@@ -24,7 +24,8 @@ function useInfScroll<T extends HTMLElement = HTMLDivElement>(data: Wishes[] | S
           }
         });
       },
-      { root: null, rootMargin: '0px', threshold: 0.5 },
+      // 끝에 닿은 뒤 불러오면 페이지 길이가 잠깐 짧아져 sticky 요소가 밀려 올라가므로 미리 불러옴
+      { root: null, rootMargin: '0px 0px 800px 0px', threshold: 0.5 },
     );
 
     if (loadMoreRef.current) {
