@@ -40,26 +40,25 @@ interface ITimetableChipSelector {
 function TimetableChipSelector({ semesterValue, timetables, selectedTimetableId, onSelect }: ITimetableChipSelector) {
   return (
     <Flex direction="flex-col" gap="gap-1.5">
-      <Label>{semesterValue}학기 시간표</Label>
-
-      <Flex gap="gap-2">
-        <Grid columns={{ sm: 2, md: 3 }} gap="gap-2" className="flex-1">
-          {timetables.map(t => (
-            <Chip
-              key={t.timeTableId}
-              label={t.timeTableName}
-              selected={selectedTimetableId === t.timeTableId}
-              onClick={() => onSelect(t.timeTableId)}
-            />
-          ))}
-        </Grid>
-
-        <Button asChild variant="text" size="small">
+      <Flex justify="justify-between" align="items-center">
+        <Label>{semesterValue}학기 시간표</Label>
+        <Button asChild variant="text" size="small" className="-my-1.5">
           <Link to="/timetable">
             <AddIcon />새 시간표 추가
           </Link>
         </Button>
       </Flex>
+
+      <Grid columns={{ sm: 2, md: 3 }} gap="gap-2">
+        {timetables.map(t => (
+          <Chip
+            key={t.timeTableId}
+            label={t.timeTableName}
+            selected={selectedTimetableId === t.timeTableId}
+            onClick={() => onSelect(t.timeTableId)}
+          />
+        ))}
+      </Grid>
     </Flex>
   );
 }
