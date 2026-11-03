@@ -24,7 +24,7 @@ function SubjectDetailResult({ result }: Readonly<{ result: ExtendedResultRespon
             <td className="py-2 px-1">{row.subjectInfo?.subjectName}</td>
             <td className="py-2 px-1">{row.subjectInfo?.professorName}</td>
             <td className="py-2 px-1">{row.selected_index}</td>
-            <td className="py-2 px-1">{((row.ended_at - started_at) / 1000).toFixed(2) + ' sec'}</td>
+            <td className="py-2 px-1">{((row.ended_at - started_at) / 1000).toFixed(2)}초</td>
             <td className="py-2 px-2">
               <span className={`px-2 py-0.5 rounded-full text-xs ${getStausColor(row.status)}`}>
                 {row.status === APPLY_STATUS.SUCCESS ? '성공' : '실패'}
