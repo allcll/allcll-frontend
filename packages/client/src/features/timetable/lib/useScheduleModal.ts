@@ -1,6 +1,6 @@
 import { useToastNotification } from '@allcll/common';
 // This hook is used to manage the schedule modal state and actions
-import React, { useTransition } from 'react';
+import React, { useCallback, useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   CustomSchedule,
@@ -188,16 +188,16 @@ function useScheduleModal() {
     closeOverlay('info');
   };
 
-  const cancelSchedule = (
-    e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent,
-    close: boolean | undefined = true,
-  ) => {
-    if (e) e.preventDefault();
+  const cancelSchedule = useCallback(
+    (e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent, close: boolean | undefined = true) => {
+      if (e) e.preventDefault();
 
-    // 모달 state 초기화
-    changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);
-    if (close) closeOverlay('edit');
-  };
+      // 모달 state 초기화
+      changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);
+      if (close) closeOverlay('edit');
+    },
+    [changeScheduleData, closeOverlay],
+  );
 
   return {
     setOptimisticSchedule,
