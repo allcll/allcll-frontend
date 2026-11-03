@@ -22,7 +22,7 @@ function SubjectTable({ subjects, handleRemakeSubjects, isLoadingLectures }: Rea
   return (
     <Flex direction="flex-col" gap="gap-1.5">
       <Flex direction="flex-row" justify="justify-between" align="items-center">
-        <Flex align="items-center">
+        <Flex align="items-center" gap="gap-1">
           <Label>수강신청 연습 과목 리스트</Label>
 
           {handleRemakeSubjects && (
