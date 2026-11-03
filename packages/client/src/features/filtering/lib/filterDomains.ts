@@ -127,7 +127,7 @@ export function getDayOptions(subjects: Subject[]) {
   return [...FilterDomains.days, ...weekend];
 }
 
-function hasLessonOn(lesnTime: string | undefined, day: Day) {
+export function hasLessonOn(lesnTime: string | undefined, day: Day) {
   return (lesnTime?.match(/[월화수목금토일]+(?=\d)/g) ?? []).some(days => days.includes(day));
 }
 

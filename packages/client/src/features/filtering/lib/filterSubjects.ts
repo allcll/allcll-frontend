@@ -10,7 +10,7 @@ import { Time } from '@/shared/lib/time.ts';
 import { isFilterEmpty } from '@/features/filtering/lib/filterUtils.ts';
 import { Grade, RangeFilter, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
-import { getCredit, MIN_HIGH_CREDIT } from '@/features/filtering/lib/filterDomains.ts';
+import { getCredit, hasLessonOn, MIN_HIGH_CREDIT } from '@/features/filtering/lib/filterDomains.ts';
 
 type FilteringFunctions = {
   [K in keyof Filters]: (subject: Subject, value: NonNullable<Filters[K]>) => boolean;
@@ -75,18 +75,9 @@ function filterMatches<T>(value: T, matchList: T[]) {
   return !matchList.length || matchList.includes(value);
 }
 export function filterDays(subject: Wishes | Subject, selectedDays: Day[]) {
-  if (!subject.lesnTime || !selectedDays || selectedDays.length === 0) {
-    return true;
-  }
+  if (!subject.lesnTime || !selectedDays || selectedDays.length === 0) return true;
 
-  const timeMatchResult = RegExp(/^([가-힣]+)/).exec(subject.lesnTime);
-
-  if (!timeMatchResult) {
-    return true;
-  }
-
-  const lessonDays = timeMatchResult[1].split('');
-  return selectedDays.some(selectedDay => lessonDays.includes(selectedDay));
+  return selectedDays.some(day => hasLessonOn(subject.lesnTime, day));
 }
 
 function filterGrades(subject: Wishes | Subject, selectedGrades: (Grade | '전체')[]) {
