@@ -1,5 +1,5 @@
 import { useCheckAdminSession } from '@/hooks/server/session/useAdminSession';
-import { formatTime } from '@/utils/formatTime';
+import { formatDateTime } from '@/utils/formatTime';
 import { Badge, Card, LoadingState } from '@allcll/allcll-ui';
 import SectionHeader from '../common/SectionHeader';
 
@@ -51,7 +51,7 @@ function SessionList() {
                 className="text-sm text-gray-700 border-b border-gray-500 hover:bg-gray-50 transition"
               >
                 <td className="px-3 py-2 text-center">{data?.userId}</td>
-                <td className="px-3 py-2 text-center">{formatTime(data?.startTime ?? '')}</td>
+                <td className="px-3 py-2 text-center">{formatDateTime(data?.startTime ?? '')}</td>
                 <td className="px-3 py-2 text-center">
                   <Badge variant={data?.isActive ? 'success' : 'danger'}>{data?.isActive ? 'ON' : 'OFF'}</Badge>
                 </td>
