@@ -16,6 +16,7 @@ import { useOverlayStore } from '@/shared/model/useOverlayStore.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
 import { showTimetableApiErrorToast, showTimetableApiSuccessToast } from './showTimetableApiErrorToast';
+import { formatHourMinute } from '@/shared/lib/time.ts';
 
 const getInitCustomSchedule = () => new ScheduleAdapter().toUiData();
 let globalPrevTimetable: Timetable | undefined = undefined;
@@ -253,7 +254,7 @@ function getTimeHM(minTime: number, time: number) {
 
   if (hour > 23) return '23:50';
 
-  return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+  return formatHourMinute(hour, minute);
 }
 
 function getUniqueNegativeId(schedules: (CustomSchedule | OfficialSchedule)[]) {

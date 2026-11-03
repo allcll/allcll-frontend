@@ -2,6 +2,10 @@ export function timeSleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+export function formatHourMinute(hours: number, minutes: number) {
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+}
+
 export interface TimeObject {
   hours: number;
   minutes: number;
@@ -46,10 +50,7 @@ export class Time {
 
   toString(): string {
     const { hours, minutes } = this.toObject();
-
-    const h = hours.toString().padStart(2, '0');
-    const m = minutes.toString().padStart(2, '0');
-    return `${h}:${m}`;
+    return formatHourMinute(hours, minutes);
   }
 
   /** referenceTime < compareTime 이면 음수

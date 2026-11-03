@@ -1,5 +1,6 @@
 import { InputHTMLAttributes } from 'react';
 import { Input } from '@allcll/allcll-ui';
+import { formatHourMinute } from '@/shared/lib/time.ts';
 
 interface IInputTime extends InputHTMLAttributes<HTMLInputElement> {
   value?: string;
@@ -30,9 +31,7 @@ function reconcileTime(value: string) {
 
   const min = (Math.round(minutes / 10) % 6) * 10;
 
-  const normalizedHours = String(hours).padStart(2, '0');
-  const normalizedMinutes = String(min).padStart(2, '0');
-  return `${normalizedHours}:${normalizedMinutes}`;
+  return formatHourMinute(hours, min);
 }
 
 export default InputTime;
