@@ -12,6 +12,10 @@ import { isFilterEmpty } from '@/features/filtering/lib/filterUtils.ts';
 import { Grade, RangeFilter, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
 
+type FilteringFunctions = {
+  [K in keyof Filters]: (subject: Subject, value: NonNullable<Filters[K]>) => boolean;
+};
+
 /** 활성화 된 필터만 실행하는 함수를 반환 (최적화) */
 export function useFilterFunctions(filters: Filters) {
   const { data: pinnedSubjects } = usePinned();
@@ -23,10 +27,10 @@ export function useFilterFunctions(filters: Filters) {
 
   return <T extends Subject>(subject: T, filters: Filters) => {
     return active.every(key => {
-      const func = filteringFunctions[key];
+      const func = filteringFunctions[key] as (subject: Subject, value: Filters[keyof Filters]) => boolean;
       if (!func) return true;
 
-      return func(subject, filters[key]!);
+      return func(subject, filters[key]);
     });
   };
 }
@@ -35,7 +39,7 @@ function getFilteringFunctions(
   filters: Filters,
   pinnedSubjects: { subjectId: number }[] | undefined,
   pickedFavorites: (id: number) => boolean,
-): Record<keyof Filters, Function> {
+): FilteringFunctions {
   const matchesPinned = (id: number) => pinnedSubjects?.some(({ subjectId }) => subjectId === id) ?? true;
 
   const cleanedKeyword = getNormalizedKeyword(filters.keywords);
@@ -70,7 +74,6 @@ function filterMinmax(value: number, range: RangeMinMaxFilter | null) {
 function filterMatches<T>(value: T, matchList: T[]) {
   return !matchList.length || matchList.includes(value);
 }
-
 
 export function filterDays(subject: Wishes | Subject, selectedDays: Day[]) {
   if (!subject.lesnTime || !selectedDays || selectedDays.length === 0) {
