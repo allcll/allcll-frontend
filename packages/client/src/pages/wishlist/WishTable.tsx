@@ -35,8 +35,10 @@ function WishTable() {
 
         <Flex gap="gap-4" direction="flex-col">
           <Card>
-            <GotoLive />
-            <WishFilter />
+            <Flex direction="flex-col" gap="gap-4">
+              <GotoLive />
+              <WishFilter />
+            </Flex>
             <TableColorInfo />
           </Card>
 
