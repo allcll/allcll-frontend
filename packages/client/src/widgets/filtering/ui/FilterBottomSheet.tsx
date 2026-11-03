@@ -3,7 +3,13 @@ import { Filters, initialFilters } from '@/features/filtering/model/useFilterSto
 import DepartmentSelect from '@/entities/departments/ui/DepartmentSelect.tsx';
 import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';
 import GenericSingleSelectFilter from '@/features/filtering/ui/GenericSingleSelectFilter.tsx';
-import { FilterDomains, getCategories, getDayOptions } from '@/features/filtering/lib/filterDomains.ts';
+import {
+  FilterDomains,
+  getCategories,
+  getCreditOptions,
+  getDayOptions,
+  getGradeOptions,
+} from '@/features/filtering/lib/filterDomains.ts';
 import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
 import SelectedFilterChips from '@/features/filtering/ui/SelectedFilterChips.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
@@ -81,14 +87,14 @@ function FilterBottomSheet({
 
           <GenericMultiSelectFilter
             filterKey="credits"
-            options={FilterDomains.credits}
+            options={getCreditOptions(subjects ?? [])}
             selectedValues={filters.credits ?? []}
             setFilter={setFilter}
           />
 
           <GenericMultiSelectFilter
             filterKey="grades"
-            options={FilterDomains.grades}
+            options={getGradeOptions(subjects ?? [])}
             selectedValues={filters.grades ?? []}
             setFilter={setFilter}
           />

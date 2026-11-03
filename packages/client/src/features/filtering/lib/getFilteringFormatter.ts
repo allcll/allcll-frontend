@@ -1,5 +1,5 @@
 import { Time } from '@/shared/lib/time.ts';
-import { FilterOptions } from './filterDomains.ts';
+import { FilterOptions, MIN_HIGH_CREDIT } from './filterDomains.ts';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { Credit, DepartmentType, Grade, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
@@ -120,7 +120,10 @@ export function getLabelFormatter(departments?: DepartmentType[]): Partial<{
     keywords: value => (typeof value === 'string' ? value : ''),
     department: value => getDepartmentLabel(value),
     grades: value => getLabelWithSuffix(value, labelPrefix.grades),
-    credits: value => getLabelWithSuffix(value, labelPrefix.credits),
+    credits: value =>
+      value === MIN_HIGH_CREDIT
+        ? `${value}${labelPrefix.credits} 이상`
+        : getLabelWithSuffix(value, labelPrefix.credits),
     classroom: getClassRoomLabel,
     seatRange: value => getRangeLabel(value, '개'),
     wishRange: value => getRangeLabel(value, '명'),

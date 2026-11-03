@@ -1,6 +1,12 @@
 // Todo:  widget/timetable로 옮기기
 import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
-import { FilterDomains, getCategories, getDayOptions } from '@/features/filtering/lib/filterDomains.ts';
+import {
+  FilterDomains,
+  getCategories,
+  getCreditOptions,
+  getDayOptions,
+  getGradeOptions,
+} from '@/features/filtering/lib/filterDomains.ts';
 import { useScheduleSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
@@ -37,14 +43,14 @@ function ScheduleFilter() {
 
       <GenericMultiSelectFilter
         filterKey="credits"
-        options={FilterDomains.credits}
+        options={getCreditOptions(subjects ?? [])}
         selectedValues={filters.credits ?? []}
         setFilter={setFilters}
       />
 
       <GenericMultiSelectFilter
         filterKey="grades"
-        options={FilterDomains.grades}
+        options={getGradeOptions(subjects ?? [])}
         selectedValues={filters.grades ?? []}
         setFilter={setFilters}
       />

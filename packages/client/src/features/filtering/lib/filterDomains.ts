@@ -106,6 +106,22 @@ export function getCategories(subjects: Subject[]) {
   return categories.filter(category => !!category);
 }
 
+export const MIN_HIGH_CREDIT = 4;
+
+export function getCreditOptions(subjects: Subject[]): Credit[] {
+  const hasHighCredit = subjects.some(s => getCredit(s) >= MIN_HIGH_CREDIT);
+  return hasHighCredit ? [...FilterDomains.credits, MIN_HIGH_CREDIT] : FilterDomains.credits;
+}
+
+export function getGradeOptions(subjects: Subject[]): Grade[] {
+  const hasFifthGrade = subjects.some(s => Number(s.studentYear) === 5);
+  return hasFifthGrade ? [...FilterDomains.grades, 5] : FilterDomains.grades;
+}
+
+export function getCredit(subject: Subject) {
+  return Number(subject.tmNum?.split('/')[0]);
+}
+
 export function getDayOptions(subjects: Subject[]) {
   const weekend = (['토', '일'] as Day[]).filter(day => subjects.some(s => hasLessonOn(s.lesnTime, day)));
   return [...FilterDomains.days, ...weekend];

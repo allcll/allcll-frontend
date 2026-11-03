@@ -2,7 +2,13 @@ import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import { useAlarmSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import { useState } from 'react';
 import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';
-import { FilterDomains, getCategories, getDayOptions } from '@/features/filtering/lib/filterDomains.ts';
+import {
+  FilterDomains,
+  getCategories,
+  getCreditOptions,
+  getDayOptions,
+  getGradeOptions,
+} from '@/features/filtering/lib/filterDomains.ts';
 import GenericSingleSelectFilter from '@/features/filtering/ui/GenericSingleSelectFilter.tsx';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
 import AlarmButton from '@/features/filtering/ui/button/AlarmButton.tsx';
@@ -58,14 +64,14 @@ function AlarmFilter() {
 
           <GenericMultiSelectFilter
             filterKey="credits"
-            options={FilterDomains.credits}
+            options={getCreditOptions(subjects ?? [])}
             selectedValues={filters.credits ?? []}
             setFilter={setFilters}
           />
 
           <GenericMultiSelectFilter
             filterKey="grades"
-            options={FilterDomains.grades}
+            options={getGradeOptions(subjects ?? [])}
             selectedValues={filters.grades ?? []}
             setFilter={setFilters}
           />
