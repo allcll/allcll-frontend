@@ -58,12 +58,7 @@ function DayTimeFilter({ items, onChange }: Readonly<IDayTimeFilter>) {
       </Flex>
 
       {items.map((item, index) => (
-        <DayTime
-          key={`${item.day}-${item.type}-${item.start}-${item.end}`}
-          item={item}
-          onChange={handleChange(index)}
-          onDelete={handleDelete(index)}
-        />
+        <DayTime key={index} item={item} onChange={handleChange(index)} onDelete={handleDelete(index)} />
       ))}
     </Flex>
   );
