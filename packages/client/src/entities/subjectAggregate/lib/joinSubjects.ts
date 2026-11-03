@@ -50,6 +50,9 @@ export function useJoinPreSeats<T extends Subject>(
 
   return useMemo(() => {
     if (!data || !preSeats?.length) return data;
-    return joinData(data, preSeats, dummy ?? InitSubject, InitPreRealSeat) as (IPreRealSeat & T)[];
+    // 여석에만 있고 과목 정보가 없는 행은 보여줄 수 없어 제외
+    const subjectIds = new Set(data.map(subject => subject.subjectId));
+    const joined = joinData(data, preSeats, dummy ?? InitSubject, InitPreRealSeat) as (IPreRealSeat & T)[];
+    return joined.filter(subject => subjectIds.has(subject.subjectId));
   }, [data, preSeats, dummy]);
 }
