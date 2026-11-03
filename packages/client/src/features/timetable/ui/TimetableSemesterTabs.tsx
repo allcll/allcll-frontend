@@ -1,12 +1,6 @@
 import { TabNav } from '@allcll/allcll-ui';
 import { Link } from 'react-router-dom';
-import { SEMESTERS } from '@/entities/semester/api/semester.ts';
-
-// FALL_25 ~ 최신학기
-const START_SEMESTER_CODE = 'FALL_25';
-
-const startIdx = SEMESTERS.findIndex(s => s.semesterCode === START_SEMESTER_CODE);
-const TIMETABLE_SEMESTERS = startIdx !== -1 ? SEMESTERS.slice(0, startIdx + 1) : [];
+import { TIMETABLE_SEMESTERS } from '@/features/timetable/lib/useTimetableSemester.ts';
 
 function TimetableSemesterTabs({ currentSemester }: { currentSemester?: string }) {
   return (
