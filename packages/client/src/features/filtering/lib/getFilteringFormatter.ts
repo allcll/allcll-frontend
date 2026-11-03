@@ -1,4 +1,4 @@
-import { IDayTimeItem } from '@/features/filtering/ui/DayTimeFilter.tsx';
+import { Time } from '@/shared/lib/time.ts';
 import { FilterOptions } from './filterDomains.ts';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { Credit, DepartmentType, Grade, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
@@ -29,7 +29,7 @@ export type FiltersValueMap = {
   categories: string;
   seatRange: RangeMinMaxFilter | null;
   wishRange: RangeMinMaxFilter | null;
-  time: IDayTimeItem;
+  time: RangeMinMaxFilter | null;
   days: Day;
   classroom: string;
   note: RemarkType;
@@ -124,7 +124,7 @@ export function getLabelFormatter(departments?: DepartmentType[]): Partial<{
     classroom: getClassRoomLabel,
     seatRange: value => getRangeLabel(value, '개'),
     wishRange: value => getRangeLabel(value, '명'),
-    time: getTimesLabel,
+    time: getTimeRangeLabel,
     days: getDaysLabel,
     categories: value => value,
     note: value => value,
@@ -144,6 +144,18 @@ const getClassRoomLabel = (value: string) => {
  * @param value
  * @returns
  */
+export function getTimeRangeLabel(range: RangeMinMaxFilter | null) {
+  if (!range) return '';
+
+  const { min, max } = range;
+  const format = (minutes: number) => new Time(minutes).toString();
+
+  if (min !== undefined && max !== undefined) return `${format(min)}~${format(max)}`;
+  if (min !== undefined) return `${format(min)} 이후`;
+  if (max !== undefined) return `${format(max)} 이전`;
+  return '';
+}
+
 const getRangeLabel = (value: RangeMinMaxFilter | null, unit: string) => {
   if (!value) {
     return '';
@@ -163,10 +175,6 @@ const getRangeLabel = (value: RangeMinMaxFilter | null, unit: string) => {
   }
 
   return '';
-};
-
-const getTimesLabel = (value: IDayTimeItem) => {
-  return `${value.day}${labelPrefix.time} ${value.start}~${value.end}`;
 };
 
 const getDaysLabel = (value: Day) => {

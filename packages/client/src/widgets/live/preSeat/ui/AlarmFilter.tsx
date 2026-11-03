@@ -16,7 +16,7 @@ import FilterOverlay from '@/widgets/filtering/ui/FilterOverlay.tsx';
 function AlarmFilter() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const setFilters = useAlarmSearchStore(state => state.setFilter);
-  const { keywords, alarmOnly, time } = useAlarmSearchStore(state => state.filters);
+  const { keywords, alarmOnly } = useAlarmSearchStore(state => state.filters);
   const filters = useAlarmSearchStore(state => state.filters);
   const resetFilter = useAlarmSearchStore(state => state.resetFilters);
 
@@ -49,7 +49,7 @@ function AlarmFilter() {
       <Flex align="items-center" direction="flex-wrap" gap="gap-2">
         <Flex direction="flex-wrap" gap="gap-2" className="hidden md:flex">
           <DepartmentFilter selectedValue={filters.department ?? ''} setFilter={setFilters} />
-          <DayFilter times={time} setFilter={setFilters} />
+          <DayFilter days={filters.days ?? []} time={filters.time} setFilter={setFilters} />
 
           <GenericMultiSelectFilter
             filterKey="credits"

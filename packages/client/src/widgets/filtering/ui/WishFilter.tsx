@@ -3,6 +3,7 @@ import { useState } from 'react';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 import { Filters, initialFilters, useWishSearchStore } from '@/features/filtering/model/useFilterStore.ts';
 import { TableSettingsIcon, IconButton, Flex, Chip } from '@allcll/allcll-ui';
+import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
 import FilterOverlay from '@/widgets/filtering/ui/FilterOverlay.tsx';
 import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
 import GenericSingleSelectFilter from '../../../features/filtering/ui/GenericSingleSelectFilter.tsx';
@@ -113,12 +114,7 @@ function WishFilter() {
             />
           )}
 
-          <GenericMultiSelectFilter
-            filterKey="days"
-            options={FilterDomains.days}
-            selectedValues={filters.days ?? []}
-            setFilter={setFilter}
-          />
+          <DayFilter days={filters.days ?? []} time={filters.time} setFilter={setFilter} />
 
           <GenericMultiSelectFilter
             filterKey="credits"

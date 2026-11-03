@@ -2,6 +2,7 @@
 import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
 import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
 import { useScheduleSearchStore } from '@/features/filtering/model/useFilterStore.ts';
+import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
 import DepartmentFilter from '../../../features/filtering/ui/DepartmentFilter.tsx';
 import FilterDelete from '../../../features/filtering/ui/FilterDelete.tsx';
@@ -27,12 +28,7 @@ function ScheduleFilter() {
     <Flex direction="flex-wrap" align="items-center" gap="gap-2" className="w-full">
       <DepartmentFilter setFilter={setFilters} selectedValue={filters.department} />
 
-      <GenericMultiSelectFilter
-        filterKey="days"
-        options={FilterDomains.days}
-        selectedValues={filters.days ?? []}
-        setFilter={setFilters}
-      />
+      <DayFilter days={filters.days ?? []} time={filters.time} setFilter={setFilters} />
 
       <GenericMultiSelectFilter
         filterKey="credits"

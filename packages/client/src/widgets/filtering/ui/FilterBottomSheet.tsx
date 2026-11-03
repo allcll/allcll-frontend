@@ -101,7 +101,7 @@ function FilterBottomSheet({
           />
 
           <Flex direction="flex-col" gap="gap-2">
-            <DayFilter times={filters.time} setFilter={setFilter} />
+            <DayFilter days={filters.days ?? []} time={filters.time} setFilter={setFilter} />
           </Flex>
 
           <GenericMultiSelectFilter

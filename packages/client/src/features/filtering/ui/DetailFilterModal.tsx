@@ -2,7 +2,6 @@ import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDom
 import { Filters, FilterStore, initialFilters } from '@/features/filtering/model/useFilterStore.ts';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import MultiSelectFilter from '../../../features/filtering/ui/MultiSelectFilter.tsx';
-import DayTimeFilter from '../../../features/filtering/ui/DayTimeFilter.tsx';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { Button, Card, Chip, Dialog, Flex } from '@allcll/allcll-ui';
 import SelectedFilterChips from '@/features/filtering/ui/SelectedFilterChips.tsx';
@@ -19,7 +18,7 @@ type FilterValueType<K extends keyof Filters> = Filters[K] extends (infer U)[] ?
 function DetailFilterModal({ filterStore, onClose }: Readonly<IModalProps>) {
   const semester = useSemesterParam();
 
-  const { classroom, note, categories, time } = filterStore(state => state.filters);
+  const { classroom, note, categories } = filterStore(state => state.filters);
   const departments = useDepartments();
   const filters = filterStore(state => state.filters);
   const setFilter = filterStore(state => state.setFilter);
@@ -56,10 +55,6 @@ function DetailFilterModal({ filterStore, onClose }: Readonly<IModalProps>) {
               setFilter={setFilter}
               ItemComponent={Chip}
             />
-          </Card>
-
-          <Card variant="outlined">
-            <DayTimeFilter items={time} onChange={items => setFilter('time', items)} />
           </Card>
 
           <Card variant="outlined">

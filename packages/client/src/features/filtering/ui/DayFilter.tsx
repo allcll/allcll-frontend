@@ -1,33 +1,59 @@
-import { Filters } from '@/features/filtering/model/useFilterStore.ts';
-import DayTimeFilter, { IDayTimeItem } from './DayTimeFilter.tsx';
-import useMobile from '@/shared/lib/useMobile.ts';
+import { Button, Chip, Flex } from '@allcll/allcll-ui';
 import { Filtering } from '@allcll/common';
+import { Day } from '@/entities/timetable/model/types.ts';
+import { Filters } from '@/features/filtering/model/useFilterStore.ts';
+import { RangeMinMaxFilter } from '@/features/filtering/model/types.ts';
+import { FilterDomains } from '@/features/filtering/lib/filterDomains.ts';
+import { getTimeRangeLabel } from '@/features/filtering/lib/getFilteringFormatter.ts';
+import useMobile from '@/shared/lib/useMobile.ts';
+import MultiSelectFilter from './MultiSelectFilter.tsx';
+import TimeRangeFilter from './TimeRangeFilter.tsx';
 
 interface IDayFilter {
-  times: IDayTimeItem[];
-  setFilter: (field: keyof Filters, value: IDayTimeItem[]) => void;
+  days: Day[];
+  time: RangeMinMaxFilter | null;
+  setFilter: (field: keyof Filters, value: Filters[keyof Filters]) => void;
 }
 
-function DayFilter({ times, setFilter }: IDayFilter) {
-  const setFilterWrapper = (_: keyof Filters, value: IDayTimeItem[]) => {
-    setFilter('time', value);
-  };
+function DayFilter({ days, time, setFilter }: Readonly<IDayFilter>) {
   const isMobile = useMobile();
+  const hasValue = days.length > 0 || !!time;
 
-  const getLabelPrefix = () => {
-    if (times.length === 1 && times[0].type === 'all' && times[0].day === '') return '시간';
-    if (times.length === 1) return ` ${times[0].day}요일`;
-    if (times.length > 1) return ` ${times[0].day}요일 외 ${times.length - 1}개`;
-    return '시간';
-  };
+  const content = (
+    <Flex direction="flex-col" gap="gap-6" className="w-full">
+      <MultiSelectFilter
+        filterKey="days"
+        options={FilterDomains.days}
+        selectedValues={days}
+        setFilter={(_, value) => setFilter('days', value ?? [])}
+        ItemComponent={Chip}
+        showReset={false}
+      />
+      <TimeRangeFilter value={time} onChange={value => setFilter('time', value)} />
+    </Flex>
+  );
 
-  const labelPrefix = getLabelPrefix();
+  if (isMobile) return content;
 
-  return isMobile ? (
-    <DayTimeFilter items={times} onChange={items => setFilterWrapper('time', items)} />
-  ) : (
-    <Filtering label={labelPrefix} selected={times.length > 0 && times[0].day !== ''} className="min-w-max w-72">
-      <DayTimeFilter items={times} onChange={items => setFilterWrapper('time', items)} />
+  const label = [days.join(', '), getTimeRangeLabel(time)].filter(Boolean).join(' ') || '시간';
+
+  return (
+    <Filtering label={label} selected={hasValue} className="w-80">
+      {content}
+      <Flex justify="justify-end" className="mt-3 pt-1.5 -mb-1.5 border-t border-gray-100">
+        <Button
+          variant="text"
+          size="small"
+          color="gray"
+          disabled={!hasValue}
+          onClick={() => {
+            setFilter('days', []);
+            setFilter('time', null);
+          }}
+        >
+          초기화
+        </Button>
+      </Flex>
     </Filtering>
   );
 }
