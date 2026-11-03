@@ -75,7 +75,7 @@ function filterMatches<T>(value: T, matchList: T[]) {
   return !matchList.length || matchList.includes(value);
 }
 export function filterDays(subject: Wishes | Subject, selectedDays: Day[]) {
-  if (!subject.lesnTime || !selectedDays || selectedDays.length === 0) return true;
+  if (!selectedDays || selectedDays.length === 0) return true;
 
   return selectedDays.some(day => hasLessonOn(subject.lesnTime, day));
 }
@@ -162,7 +162,7 @@ function filterRemark(subject: Wishes | Subject, selectedNotes: RemarkType[]) {
 }
 
 function filterTimeRange(subject: Wishes | Subject, range: RangeMinMaxFilter, selectedDays: Day[]) {
-  if (!subject.lesnTime) return true;
+  if (!subject.lesnTime) return false;
 
   const slots = new TimeslotAdapter(subject.lesnTime)
     .toApiData()
