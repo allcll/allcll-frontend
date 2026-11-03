@@ -10,7 +10,7 @@ const steps = [
   { id: JolupSteps.LOGIN, label: '로그인' },
   { id: JolupSteps.DEPARTMENT_INFO, label: '기본 정보' },
   { id: JolupSteps.FILE_UPLOAD, label: '파일 업로드' },
-  { id: JolupSteps.UPLOADING, label: '업로드 중' },
+  { id: JolupSteps.UPLOADING, label: '요건 검사' },
 ];
 
 const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
