@@ -73,7 +73,6 @@ function useScheduleModal() {
       }
     } else if (targetSchedule.scheduleType === 'official') {
       currentMode = ScheduleMutateType.VIEW;
-      console.log(globalPrevTimetable);
       openOverlay('info');
     } else {
       currentMode = ScheduleMutateType.EDIT;

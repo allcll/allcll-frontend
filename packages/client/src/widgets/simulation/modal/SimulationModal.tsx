@@ -120,7 +120,6 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
       setCurrentSimulation({
         simulationStatus: 'finish',
       });
-      console.log('시뮬레이션 완료');
       openModal('result');
     }
   };

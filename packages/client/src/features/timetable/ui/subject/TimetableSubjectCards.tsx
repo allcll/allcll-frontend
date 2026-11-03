@@ -46,7 +46,6 @@ function TimetableSubjectCards({ subjects, collapseSheet, isPending = false }: R
     );
 
     openScheduleModal(newSchedule.toUiData());
-    console.log('official', selectedSubjectId);
 
     const MIN_TIME = 9;
     const timeslotUI = new TimeslotAdapter(subject.lesnTime).toUiData(MIN_TIME);

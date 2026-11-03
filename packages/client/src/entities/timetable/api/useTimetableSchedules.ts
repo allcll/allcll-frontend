@@ -448,7 +448,6 @@ export function useDeleteSchedule(timetableId?: number, options?: IScheduleMutat
       console.error(error);
     },
     onSuccess: async (_, { schedule }, context) => {
-      console.log('스케줄 삭제 성공! timetableId:', timetableId);
       if (!context?.prevTimetableSchedules) {
         await queryClient.invalidateQueries({ queryKey: ['timetableList'] });
         await queryClient.invalidateQueries({ queryKey: ['timetableData', timetableId] });
@@ -456,7 +455,6 @@ export function useDeleteSchedule(timetableId?: number, options?: IScheduleMutat
         return;
       }
 
-      console.log('스케줄 삭제 성공! 이전 데이터 있음. timetableId:', timetableId, context.prevTimetableSchedules);
       queryClient.setQueryData(['timetableData', timetableId], {
         ...context.prevTimetableSchedules,
         schedules: context.prevTimetableSchedules.schedules.filter(sch => sch.scheduleId !== schedule.scheduleId),

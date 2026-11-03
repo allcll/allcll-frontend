@@ -52,7 +52,6 @@ function MultiSelectFilterOption<VALUE extends string | number>({
     }
 
     const checked = selectedValues.includes(optionValue);
-    console.log('checked', checked);
 
     const newValues = checked
       ? selectedValues.filter(selected => selected !== optionValue)

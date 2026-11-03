@@ -15,7 +15,6 @@ function InputTime({ className = '', onChange, ...props }: IInputTime) {
       step={10 * 60} // 10 minutes step
       onChange={e => {
         e.target.value = reconcileTime(e.target.value);
-        console.log('Time changed:', e.target.value);
         if (onChange) onChange(e);
       }}
       {...props}

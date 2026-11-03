@@ -234,7 +234,6 @@ export async function triggerButtonEvent(
   lectures: Lecture[],
 ) {
   const { eventType } = input;
-  console.log('BUTTON EVENT', input);
   let ongoing;
   try {
     ongoing = await getOngoingSimulation();
@@ -307,7 +306,6 @@ export async function triggerButtonEvent(
 
     const saveStatus = async (status: APPLY_STATUS) => {
       await db.simulation_run_selections.update(latestSelection.run_selections_id, { status });
-      console.log('saved section', latestSelection.run_selections_id, status);
       return { status };
     };
 

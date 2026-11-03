@@ -77,7 +77,6 @@ export const useRemovePinned = () => {
       return { previousData };
     },
     onSettled: () => {
-      console.log('pin removed onSettled');
       queryClient.invalidateQueries({ queryKey: ['pinnedSubjects'] }).then();
     },
     onError: error => {
