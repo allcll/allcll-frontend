@@ -18,7 +18,7 @@ import { TimetableType, useGetTimetableSchedules } from '@/entities/timetable/ap
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import SubjectTable from './SubjectTable.tsx';
 import ActionButtons from './ActionButton.tsx';
-import { Chip, Dialog, Label } from '@allcll/allcll-ui';
+import { Chip, Dialog, Label, Tooltip } from '@allcll/allcll-ui';
 import { RECENT_SEMESTERS } from '@/entities/semester/api/semester.ts';
 import { getInitSimulationMode } from '@/features/simulation/lib/getSimulationMode.ts';
 
@@ -51,7 +51,6 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
   const prevSnapshot = useLiveQuery(getRecentInterestedSnapshot);
 
   const [subjectMode, setSubjectMode] = useState<ModeType>(getInitSimulationMode(!!prevSnapshot, timetables));
-  const [toggleTip, setToggleTip] = useState(false);
 
   const { data: schedules, isLoading: isSchedulesLoading } = useGetTimetableSchedules(selectedTimetable?.timeTableId);
 
@@ -196,17 +195,17 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
             subjects={simulationSubjects}
             handleRemakeSubjects={subjectMode === 'random' ? handleRemakeSubjects : undefined}
           />
-
-          {toggleTip && <GameTips />}
         </div>
       </Dialog.Content>
 
       <Dialog.Footer>
-        <ActionButtons
-          simulationSubjects={simulationSubjects}
-          handleStartGame={handleStartGame}
-          setToggleTip={setToggleTip}
-        />
+        <div className="mr-auto self-center flex items-center gap-1 text-sm text-gray-500">
+          수강신청 팁
+          <Tooltip layer="dropdown">
+            <GameTips />
+          </Tooltip>
+        </div>
+        <ActionButtons simulationSubjects={simulationSubjects} handleStartGame={handleStartGame} />
       </Dialog.Footer>
     </Dialog>
   );
