@@ -56,7 +56,7 @@ function Cards({ subjects, isPending = false, isLive = false }: Readonly<IPinCar
           isLive={isLive}
         />
       ))}
-      <div ref={loadMoreRef} className="load-more-trigger opacity-0">
+      <div ref={loadMoreRef} className="opacity-0">
         불러오는 중
       </div>
     </>

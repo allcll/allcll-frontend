@@ -4,16 +4,9 @@ import { Lecture } from '@/entities/subjects/model/useLectures.ts';
 
 const PAGE_SIZE = 45;
 
-type UseInfiniteScrollMode = 'ref' | 'selector';
-
-function useInfScroll(
-  data: Wishes[] | Subject[] | Lecture[],
-  mode: UseInfiniteScrollMode = 'ref',
-  selector: string = '.load-more-trigger',
-) {
+function useInfScroll<T extends HTMLElement = HTMLDivElement>(data: Wishes[] | Subject[] | Lecture[]) {
   const [visibleRows, setVisibleRows] = useState(PAGE_SIZE);
-  const loadMoreRef = useRef<HTMLDivElement | null>(null);
-  const observerRef = useRef<IntersectionObserver | null>(null);
+  const loadMoreRef = useRef<T | null>(null);
 
   useEffect(() => {
     setVisibleRows(PAGE_SIZE);
@@ -34,24 +27,16 @@ function useInfScroll(
       { root: null, rootMargin: '0px', threshold: 0.5 },
     );
 
-    observerRef.current = observer;
-
-    if (mode === 'ref' && loadMoreRef.current) {
+    if (loadMoreRef.current) {
       observer.observe(loadMoreRef.current);
-    } else if (mode === 'selector') {
-      const targets = document.querySelectorAll(selector);
-      targets.forEach(target => observer.observe(target));
     }
 
     return () => {
       observer.disconnect();
     };
-  }, [data, mode, selector]);
+  }, [data]);
 
-  return {
-    visibleRows,
-    ...(mode === 'ref' ? { loadMoreRef } : {}),
-  };
+  return { visibleRows, loadMoreRef };
 }
 
 export default useInfScroll;

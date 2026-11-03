@@ -16,7 +16,7 @@ interface ISubjectCards {
 }
 
 function TimetableSubjectCards({ subjects, collapseSheet, isPending = false }: Readonly<ISubjectCards>) {
-  const { visibleRows, loadMoreRef } = useInfScroll(subjects, 'ref');
+  const { visibleRows, loadMoreRef } = useInfScroll(subjects);
 
   const selectedCardRef = useRef<HTMLButtonElement>(null);
   const selectedSubjectId = useScheduleState(state => state.schedule.subjectId);
@@ -79,7 +79,7 @@ function TimetableSubjectCards({ subjects, collapseSheet, isPending = false }: R
         );
       })}
 
-      {visibleRows < subjects.length && <div ref={loadMoreRef} className="load-more-trigger w-full h-10"></div>}
+      {visibleRows < subjects.length && <div ref={loadMoreRef} className="w-full h-10"></div>}
     </Flex>
   );
 }

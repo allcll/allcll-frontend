@@ -49,7 +49,7 @@ function WishlistTable({ data, isPending = false, placeholder }: Readonly<ITable
 }
 
 function TableBody({ headers, data, isPending = false, placeholder }: Readonly<IBody>) {
-  const { visibleRows } = useInfScroll(data ?? [], 'selector');
+  const { visibleRows, loadMoreRef } = useInfScroll<HTMLTableRowElement>(data ?? []);
   const wishes = data ? data.slice(0, visibleRows) : [];
 
   if (isPending || !data) {
@@ -69,7 +69,7 @@ function TableBody({ headers, data, isPending = false, placeholder }: Readonly<I
           tableHeaders={headers}
         />
       ))}
-      <tr className="load-more-trigger" />
+      <tr ref={loadMoreRef} />
     </>
   );
 }

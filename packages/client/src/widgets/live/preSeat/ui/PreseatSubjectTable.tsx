@@ -36,7 +36,7 @@ function PreseatSubjectTable({ titles, subjects, isPending = false }: Readonly<I
 }
 
 function TableBody({ titles, subjects, isPending = false }: Readonly<ISubjectTable>) {
-  const { visibleRows } = useInfScroll(subjects ?? [], 'selector');
+  const { visibleRows, loadMoreRef } = useInfScroll<HTMLTableRowElement>(subjects ?? []);
   const filteredSubjects = (subjects ?? []).filter(subject => !subject.isDeleted);
 
   const data = filteredSubjects ? filteredSubjects.slice(0, visibleRows) : [];
@@ -60,7 +60,7 @@ function TableBody({ titles, subjects, isPending = false }: Readonly<ISubjectTab
       {data.map((subject: WishesWithSeat) => (
         <TableRow key={`${subject.subjectCode} ${subject.subjectId} ${subject.professorName}`} subject={subject} />
       ))}
-      <tr className="load-more-trigger" />
+      <tr ref={loadMoreRef} />
     </>
   );
 }
