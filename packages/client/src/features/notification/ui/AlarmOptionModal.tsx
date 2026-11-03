@@ -44,19 +44,19 @@ function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
       <Dialog.Content>
         <AlarmOptionContent />
         <SubAlarmOption />
-
-        <div className="mt-4 flex justify-end">
-          <Button
-            variant="outlined"
-            color="primary"
-            size="medium"
-            onClick={onTestAlarm}
-            disabled={!hasPermission && !usesToast}
-          >
-            알림 테스트
-          </Button>
-        </div>
       </Dialog.Content>
+
+      <Dialog.Footer>
+        <Button
+          variant="outlined"
+          color="primary"
+          size="medium"
+          onClick={onTestAlarm}
+          disabled={!hasPermission && !usesToast}
+        >
+          알림 테스트
+        </Button>
+      </Dialog.Footer>
     </Dialog>
   );
 }
