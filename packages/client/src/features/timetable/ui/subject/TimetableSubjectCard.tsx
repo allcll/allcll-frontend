@@ -18,7 +18,7 @@ function TimetableSubjectCard({ isActive, subject, onClick, forwardedRef }: Read
   const color = isActive ? 'text-primary-500 bg-primary-50' : 'text-gray-700 bg-white hover:bg-gray-50';
   const { saveSchedule } = useScheduleModal();
   const { selectTargetOnly } = useSearchLogging();
-  const credit = Number.parseInt(subject.tmNum?.split('/')[0] ?? '');
+  const credit = Number(subject.tmNum?.split('/')[0]);
 
   const handleAddOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
     saveSchedule(e, false);

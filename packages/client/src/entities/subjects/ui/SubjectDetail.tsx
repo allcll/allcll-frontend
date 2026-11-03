@@ -19,7 +19,7 @@ function SubjectDetail({ wishes }: ISubjectDetailProps) {
 
   const isEng = wishes?.curiLangNm === '영어';
   const isDeleted = wishes?.isDeleted ?? false;
-  const credit = Number.parseInt(data.tmNum?.split('/')[0] ?? '');
+  const credit = Number(data.tmNum?.split('/')[0]);
 
   return (
     <>
