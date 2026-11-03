@@ -32,6 +32,7 @@ export { default as Textarea } from './src/components/textarea/Textarea';
 export { default as Toast } from './src/components/toast/Toast';
 export { default as Toggle } from './src/components/toggle/Toggle';
 export { default as Tooltip } from './src/components/tooltip/Tooltip';
+export { default as Table } from './src/components/table/Table';
 export { default as Heading } from './src/components/heading/Heading';
 export { default as SupportingText } from './src/components/supportingText/SupportingText';
 export { default as Flex } from './src/components/flex/Flex';
