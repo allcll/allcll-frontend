@@ -1,7 +1,6 @@
-import { useOverlayStore } from '@/shared/model/useOverlayStore.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
 import { saveImageFromElement } from '@/shared/lib/saveImage.ts';
-import { AddIcon, Button, Flex, IconButton, DownloadIcon, SearchIcon } from '@allcll/allcll-ui';
+import { AddIcon, Button, Flex, IconButton, DownloadIcon } from '@allcll/allcll-ui';
 
 import { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
 
@@ -15,7 +14,6 @@ export function TimetableHeaderActions({
   timetables?: TimetableType[];
 }) {
   const isMobile = useScheduleState(state => state.options.isMobile);
-  const openOverlay = useOverlayStore(state => state.openOverlay);
 
   const handleSaveImage = () => {
     const name = useScheduleState.getState()?.currentTimetable?.timeTableName;
@@ -35,15 +33,6 @@ export function TimetableHeaderActions({
         label="시간표 이미지 저장"
         onClick={handleSaveImage}
       />
-
-      {isMobile && (
-        <IconButton
-          icon={<SearchIcon className="w-5 h-5 text-gray-400" />}
-          variant="plain"
-          label="과목 검색"
-          onClick={() => openOverlay('search')}
-        />
-      )}
 
       {!isMobile && timetables && timetables.length >= 0 && (
         <Button variant="text" size="medium" onClick={handleCreateTimetable}>
