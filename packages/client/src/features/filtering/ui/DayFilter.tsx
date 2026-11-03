@@ -3,19 +3,19 @@ import { Filtering } from '@allcll/common';
 import { Day } from '@/entities/timetable/model/types.ts';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { RangeMinMaxFilter } from '@/features/filtering/model/types.ts';
-import { FilterDomains } from '@/features/filtering/lib/filterDomains.ts';
 import { getTimeRangeLabel } from '@/features/filtering/lib/getFilteringFormatter.ts';
 import useMobile from '@/shared/lib/useMobile.ts';
 import MultiSelectFilter from './MultiSelectFilter.tsx';
 import TimeRangeFilter from './TimeRangeFilter.tsx';
 
 interface IDayFilter {
+  options: Day[];
   days: Day[];
   time: RangeMinMaxFilter | null;
   setFilter: (field: keyof Filters, value: Filters[keyof Filters]) => void;
 }
 
-function DayFilter({ days, time, setFilter }: Readonly<IDayFilter>) {
+function DayFilter({ options, days, time, setFilter }: Readonly<IDayFilter>) {
   const isMobile = useMobile();
   const hasValue = days.length > 0 || !!time;
 
@@ -23,7 +23,7 @@ function DayFilter({ days, time, setFilter }: Readonly<IDayFilter>) {
     <Flex direction="flex-col" gap="gap-6" className="w-full">
       <MultiSelectFilter
         filterKey="days"
-        options={FilterDomains.days}
+        options={options}
         selectedValues={days}
         setFilter={(_, value) => setFilter('days', value ?? [])}
         ItemComponent={Chip}

@@ -106,6 +106,15 @@ export function getCategories(subjects: Subject[]) {
   return categories.filter(category => !!category);
 }
 
+export function getDayOptions(subjects: Subject[]) {
+  const weekend = (['토', '일'] as Day[]).filter(day => subjects.some(s => hasLessonOn(s.lesnTime, day)));
+  return [...FilterDomains.days, ...weekend];
+}
+
+function hasLessonOn(lesnTime: string | undefined, day: Day) {
+  return (lesnTime?.match(/[월화수목금토일]+(?=\d)/g) ?? []).some(days => days.includes(day));
+}
+
 function unique<T>(array: T[]) {
   return Array.from(new Set(array));
 }

@@ -7,7 +7,7 @@ import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
 import FilterOverlay from '@/widgets/filtering/ui/FilterOverlay.tsx';
 import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
 import GenericSingleSelectFilter from '../../../features/filtering/ui/GenericSingleSelectFilter.tsx';
-import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
+import { FilterDomains, getCategories, getDayOptions } from '@/features/filtering/lib/filterDomains.ts';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
 import FavoriteFilterButton from '@/features/filtering/ui/button/FavoriteFilterButton.tsx';
 import DepartmentFilter from '../../../features/filtering/ui/DepartmentFilter.tsx';
@@ -114,7 +114,12 @@ function WishFilter() {
             />
           )}
 
-          <DayFilter days={filters.days ?? []} time={filters.time} setFilter={setFilter} />
+          <DayFilter
+            options={getDayOptions(subjects ?? [])}
+            days={filters.days ?? []}
+            time={filters.time}
+            setFilter={setFilter}
+          />
 
           <GenericMultiSelectFilter
             filterKey="credits"

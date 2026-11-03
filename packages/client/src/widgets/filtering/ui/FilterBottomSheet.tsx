@@ -3,7 +3,7 @@ import { Filters, initialFilters } from '@/features/filtering/model/useFilterSto
 import DepartmentSelect from '@/entities/departments/ui/DepartmentSelect.tsx';
 import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';
 import GenericSingleSelectFilter from '@/features/filtering/ui/GenericSingleSelectFilter.tsx';
-import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
+import { FilterDomains, getCategories, getDayOptions } from '@/features/filtering/lib/filterDomains.ts';
 import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
 import SelectedFilterChips from '@/features/filtering/ui/SelectedFilterChips.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
@@ -101,7 +101,12 @@ function FilterBottomSheet({
           />
 
           <Flex direction="flex-col" gap="gap-2">
-            <DayFilter days={filters.days ?? []} time={filters.time} setFilter={setFilter} />
+            <DayFilter
+              options={getDayOptions(subjects ?? [])}
+              days={filters.days ?? []}
+              time={filters.time}
+              setFilter={setFilter}
+            />
           </Flex>
 
           <GenericMultiSelectFilter
