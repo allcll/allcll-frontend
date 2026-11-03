@@ -24,7 +24,10 @@ const transitionClasses = {
 function PinSearchSideBar({ isOpen, onClose }: PinSearchSideBarProps) {
   return (
     <CSSTransition in={isOpen} timeout={100} classNames={transitionClasses} unmountOnExit>
-      <Flex direction="flex-col" className="w-92 flex-auto bg-gray-50 shadow-lg z-content">
+      <Flex
+        direction="flex-col"
+        className="sticky top-14 self-start h-[calc(100dvh-3.5rem)] w-92 shrink-0 bg-gray-50 shadow-lg z-content"
+      >
         <div className="flex justify-between items-center px-4 h-14 shrink-0 bg-white border-b border-gray-100">
           <Heading level={2} size="lg">
             알림 과목 등록
@@ -58,8 +61,8 @@ function PinSearch() {
   );
 
   return (
-    <Flex direction="flex-col" className="flex-1 p-2">
-      <Flex direction="flex-col" className="mb-4" gap="gap-2">
+    <Flex direction="flex-col" className="flex-1 min-h-0 p-2">
+      <Flex direction="flex-col" className="flex-1 min-h-0" gap="gap-2">
         <SearchBox
           placeholder="과목명, 교수명, 학수번호 검색"
           value={searchInput}
@@ -67,12 +70,8 @@ function PinSearch() {
           onDelete={() => setSearchInput('')}
           className="w-full"
         />
-        <DepartmentSelect
-          className="flex-auto"
-          value={selectedDepartment}
-          onChange={code => setSelectedDepartment(code)}
-        />
-        <PinCards className="flex flex-full overflow-auto max-h-screen" subjects={filteredData} isPending={isPending} />
+        <DepartmentSelect value={selectedDepartment} onChange={code => setSelectedDepartment(code)} />
+        <PinCards className="flex-1 min-h-0 overflow-y-auto" subjects={filteredData} isPending={isPending} />
       </Flex>
     </Flex>
   );

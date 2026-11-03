@@ -26,7 +26,7 @@ function Live() {
         <meta name="description" content="실시간 수강 여석 현황을 확인하고, 원하는 강의를 즐겨찾기 해보세요!" />
       </Helmet>
 
-      <Flex className="overflow-hidden min-h-screen">
+      <Flex className="overflow-x-clip min-h-screen">
         <PageContainer>
           <PageHeader
             title="실시간 수강 여석"
