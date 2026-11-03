@@ -4,6 +4,7 @@ import remarkBreaks from 'remark-breaks';
 import { Button, Dialog, Badge, Flex, Heading } from '@allcll/allcll-ui';
 import { CATEGORY_LABELS } from '@/hooks/server/useAdminNotices';
 import type { Notice } from '@/hooks/server/useAdminNotices';
+import { formatDate } from '@allcll/common';
 
 interface INoticeViewModalProps {
   notice: Notice;
@@ -24,9 +25,9 @@ function NoticeViewModal({ notice, onClose, onEdit }: INoticeViewModalProps) {
               <Badge variant="primary" size="small">
                 {CATEGORY_LABELS[notice.operationType]}
               </Badge>
-              <span>작성 {notice.createdAt.slice(0, 10).replace(/-/g, '.')}</span>
-              {notice.updatedAt.slice(0, 10) !== notice.createdAt.slice(0, 10) && (
-                <span className="text-gray-400">· 수정 {notice.updatedAt.slice(0, 10).replace(/-/g, '.')}</span>
+              <span>작성 {formatDate(notice.createdAt)}</span>
+              {formatDate(notice.updatedAt) !== formatDate(notice.createdAt) && (
+                <span className="text-gray-400">· 수정 {formatDate(notice.updatedAt)}</span>
               )}
             </Flex>
           </Flex>

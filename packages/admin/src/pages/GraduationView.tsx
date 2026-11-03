@@ -18,6 +18,7 @@ import {
   type CategoryType,
   type CriteriaCategory,
   type ScopeType,
+  formatDate,
 } from '@allcll/common';
 import { useAdminGraduationView } from '@/hooks/server/graduation/useAdminGraduationView';
 import PageHeader from '@/components/common/PageHeader';
@@ -64,9 +65,7 @@ function GraduationView() {
   const isSingleMajor = user.majorType === 'SINGLE';
   const scopeTypes = getScopeTypes(user.majorType);
 
-  const analyzedAt = courses.createdAt
-    ? new Date(courses.createdAt).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })
-    : null;
+  const analyzedAt = courses.createdAt ? formatDate(courses.createdAt) : null;
 
   const getCriteriaCategory = (categoryType: CategoryType, majorScope: ScopeType) =>
     data.criteriaCategories.categories.find(c => c.categoryType === categoryType && c.majorScope === majorScope);

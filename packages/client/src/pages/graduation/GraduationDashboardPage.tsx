@@ -21,6 +21,7 @@ import {
   type CriteriaCategory,
   type ScopeType,
   confirm,
+  formatDateLong,
 } from '@allcll/common';
 import useMobile from '@/shared/lib/useMobile';
 import {
@@ -271,16 +272,7 @@ function GraduationDashboardPage() {
             <div></div>
 
             <Flex justify="justify-end" align="items-center" gap="gap-2">
-              {analyzedAt && (
-                <span className="text-sm text-gray-400">
-                  {new Date(analyzedAt).toLocaleDateString('ko-KR', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}{' '}
-                  분석
-                </span>
-              )}
+              {analyzedAt && <span className="text-sm text-gray-400">{formatDateLong(analyzedAt)} 분석</span>}
               <Button variant="solid" size="medium" onClick={handleStartOverGraduationCheck}>
                 다시 검사하기
               </Button>

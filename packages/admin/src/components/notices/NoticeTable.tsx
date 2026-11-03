@@ -11,6 +11,7 @@ import {
 } from '@allcll/allcll-ui';
 import { CATEGORY_LABELS } from '@/hooks/server/useAdminNotices';
 import type { Notice } from '@/hooks/server/useAdminNotices';
+import { formatDate } from '@allcll/common';
 
 interface INoticeTableProps {
   notices: Notice[];
@@ -79,9 +80,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
                   >
                     {notice.title}
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-500 whitespace-nowrap">
-                    {notice.createdAt.slice(0, 10).replace(/-/g, '.')}
-                  </td>
+                  <td className="px-4 py-3 text-sm text-gray-500 whitespace-nowrap">{formatDate(notice.createdAt)}</td>
                   <td className="px-4 py-3">
                     <Flex align="items-center" gap="gap-1">
                       <IconButton

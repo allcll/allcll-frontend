@@ -47,7 +47,7 @@ function PreSeatComponent() {
           {liveOpenDate && (
             <>
               <br />
-              실시간 기능은 {liveOpenDate}, {PRESEAT_CLOSE_TIME}에 시작될 예정입니다.
+              실시간 기능은 {liveOpenDate} {PRESEAT_CLOSE_TIME}에 시작될 예정입니다.
             </>
           )}
         </SupportingText>

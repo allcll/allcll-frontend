@@ -3,9 +3,10 @@ import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import { Badge, Flex, Heading } from '@allcll/allcll-ui';
 import { type Notice, getNoticeLabel } from '@/entities/notices/model/notice';
+import { formatDateLong } from '@allcll/common';
 
 function NoticeDetailContent({ notice }: Readonly<{ notice: Notice }>) {
-  const date = notice.createdAt.slice(0, 10).replace(/-/g, '.');
+  const date = formatDateLong(notice.createdAt);
 
   return (
     <Flex direction="flex-col" gap="gap-4">

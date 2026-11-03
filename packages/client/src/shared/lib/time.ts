@@ -77,10 +77,10 @@ export function getTodayKST(): string {
 
 const DAY_NAMES = ['일', '월', '화', '수', '목', '금', '토'];
 
-/** 'YYYY-MM-DD' 또는 'YYYY-MM-DDTHH:mm:ss' 를 '08/14(금)' 형태로 바꿉니다. */
+/** 'YYYY-MM-DD' 또는 'YYYY-MM-DDTHH:mm:ss' 를 '8월 14일(금)' 형태로 바꿉니다. */
 export function formatMonthDayWithDay(dateString: string): string {
   const [year, month, day] = dateString.split('T')[0].split('-').map(Number);
   const dayName = DAY_NAMES[new Date(year, month - 1, day).getDay()];
 
-  return `${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}(${dayName})`;
+  return `${month}월 ${day}일(${dayName})`;
 }

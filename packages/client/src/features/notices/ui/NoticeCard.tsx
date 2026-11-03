@@ -1,5 +1,6 @@
 import { Badge, Flex } from '@allcll/allcll-ui';
 import { type Notice, getNoticeLabel } from '@/entities/notices/model/notice';
+import { formatDate } from '@allcll/common';
 
 interface NoticeCardProps {
   notice: Notice;
@@ -8,7 +9,7 @@ interface NoticeCardProps {
 }
 
 function NoticeCard({ notice, isRead, onClick }: Readonly<NoticeCardProps>) {
-  const date = notice.createdAt.slice(0, 10).replace(/-/g, '.');
+  const date = formatDate(notice.createdAt);
 
   return (
     <button
