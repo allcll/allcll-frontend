@@ -1,6 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AllcllFaceIcon, Badge, Flex, IconButton, SupportingText, ChevronDownIcon, TextLink } from '@allcll/allcll-ui';
+import {
+  AllcllFaceIcon,
+  Badge,
+  Flex,
+  IconButton,
+  SupportingText,
+  ChevronDownIcon,
+  TextLink,
+  Table,
+} from '@allcll/allcll-ui';
 import { OPERATION_TYPE_LABEL, MAX_RATE } from '@/hooks/server/useAdminReviews';
 import type { Review } from '@/hooks/server/useAdminReviews';
 import { formatDateTime } from '@/utils/formatTime';
@@ -24,8 +33,8 @@ function ReviewItem({ review }: Readonly<IReviewItemProps>) {
   const isGraduation = review.operationType === 'GRADUATION';
 
   return (
-    <tr className="bg-white hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0">
-      <td className="px-4 py-3 align-top w-28">
+    <Table.Row className="bg-white hover:bg-gray-50 transition-colors">
+      <Table.Cell align="left" className="align-top w-28">
         {isGraduation ? (
           <TextLink asChild className="text-sm font-medium">
             <button
@@ -38,13 +47,13 @@ function ReviewItem({ review }: Readonly<IReviewItemProps>) {
         ) : (
           <SupportingText>{review.studentId}</SupportingText>
         )}
-      </td>
-      <td className="px-4 py-3 align-top w-32">
+      </Table.Cell>
+      <Table.Cell align="left" className="align-top w-32">
         <Badge variant="primary" appearance="outline">
           {OPERATION_TYPE_LABEL[review.operationType]}
         </Badge>
-      </td>
-      <td className="px-4 py-3 align-top w-24">
+      </Table.Cell>
+      <Table.Cell align="left" className="align-top w-24">
         <Flex align="items-center" gap="gap-0.5">
           {Array.from({ length: review.rate }).map((_, i) => (
             <AllcllFaceIcon key={`filled-${i}`} mood="smile" className="h-4 w-4 text-primary-500" />
@@ -53,8 +62,8 @@ function ReviewItem({ review }: Readonly<IReviewItemProps>) {
             <AllcllFaceIcon key={`empty-${i}`} mood="smile" className="h-4 w-4 text-gray-300" />
           ))}
         </Flex>
-      </td>
-      <td className="px-4 py-3 align-top">
+      </Table.Cell>
+      <Table.Cell align="left" className="align-top whitespace-normal">
         <Flex align="items-start" gap="gap-2">
           <p
             ref={detailRef}
@@ -76,11 +85,11 @@ function ReviewItem({ review }: Readonly<IReviewItemProps>) {
             />
           )}
         </Flex>
-      </td>
-      <td className="px-4 py-3 align-top w-36">
+      </Table.Cell>
+      <Table.Cell align="left" className="align-top w-36">
         <SupportingText className="whitespace-nowrap">{formatDateTime(review.createdAt)}</SupportingText>
-      </td>
-    </tr>
+      </Table.Cell>
+    </Table.Row>
   );
 }
 

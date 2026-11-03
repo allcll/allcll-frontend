@@ -1,4 +1,4 @@
-import { Card, Flex, EmptyState, LoadingState } from '@allcll/allcll-ui';
+import { Card, Flex, EmptyState, LoadingState, Table } from '@allcll/allcll-ui';
 import type { Review } from '@/hooks/server/useAdminReviews';
 import ReviewItem from './ReviewItem';
 import SectionHeader from '@/components/common/SectionHeader';
@@ -27,43 +27,43 @@ function ReviewList({ reviews, isLoading, isError, filterBar }: Readonly<IReview
       {filterBar}
 
       <Card className="overflow-hidden flex flex-col flex-1 min-h-0">
-        <div className="overflow-y-auto flex-1">
-          <table className="w-full border-collapse table-fixed">
-            <thead className="sticky top-0 z-content">
-              <tr className="bg-gray-50 text-sm text-gray-500">
-                {COLUMNS.map(column => (
-                  <th key={column.label} className={`text-left px-4 py-2 font-medium ${column.width}`}>
-                    {column.label}
-                  </th>
-                ))}
+        <Table
+          wrapperClassName="flex flex-col flex-1 min-h-0"
+          scrollClassName="h-full overflow-y-auto"
+          className="table-fixed"
+        >
+          <Table.Head sticky>
+            {COLUMNS.map(column => (
+              <Table.HeaderCell key={column.label} align="left" className={column.width}>
+                {column.label}
+              </Table.HeaderCell>
+            ))}
+          </Table.Head>
+          <Table.Body>
+            {isLoading && (
+              <tr>
+                <td colSpan={COLUMNS.length} className="py-8 text-center">
+                  <LoadingState />
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {isLoading && (
-                <tr>
-                  <td colSpan={COLUMNS.length} className="py-8 text-center">
-                    <LoadingState />
-                  </td>
-                </tr>
-              )}
-              {!isLoading && isError && (
-                <tr>
-                  <td colSpan={COLUMNS.length} className="py-8 text-center text-sm text-danger-500">
-                    후기 데이터를 불러오는 데 실패했습니다.
-                  </td>
-                </tr>
-              )}
-              {!isLoading && !isError && reviews.length === 0 && (
-                <tr>
-                  <td colSpan={COLUMNS.length} className="py-8 text-center">
-                    <EmptyState title="등록된 후기가 없습니다." />
-                  </td>
-                </tr>
-              )}
-              {!isLoading && !isError && reviews.map(review => <ReviewItem key={review.id} review={review} />)}
-            </tbody>
-          </table>
-        </div>
+            )}
+            {!isLoading && isError && (
+              <tr>
+                <td colSpan={COLUMNS.length} className="py-8 text-center text-sm text-danger-500">
+                  후기 데이터를 불러오는 데 실패했습니다.
+                </td>
+              </tr>
+            )}
+            {!isLoading && !isError && reviews.length === 0 && (
+              <tr>
+                <td colSpan={COLUMNS.length} className="py-8 text-center">
+                  <EmptyState title="등록된 후기가 없습니다." />
+                </td>
+              </tr>
+            )}
+            {!isLoading && !isError && reviews.map(review => <ReviewItem key={review.id} review={review} />)}
+          </Table.Body>
+        </Table>
       </Card>
       <div className="pb-6" />
     </Flex>
