@@ -1,7 +1,7 @@
 import { Lecture } from '@/entities/subjects/model/useLectures.ts';
 import SkeletonRows from '@/shared/ui/SkeletonRows';
 import { ZeroElementRow } from '@/shared/ui/ZeroElementRow';
-import { Button, Flex, Label, SupportingText } from '@allcll/allcll-ui';
+import { Button, Flex, Label, SupportingText, Table } from '@allcll/allcll-ui';
 
 interface ISubjectTable {
   isLoadingLectures: boolean;
@@ -36,22 +36,18 @@ function SubjectTable({ subjects, handleRemakeSubjects, isLoadingLectures }: Rea
         </SupportingText>
       </Flex>
 
-      <div className="overflow-x-auto overflow-y-auto sm:max-w-full">
-        <table className="min-w-full table-fixed sm:text-sm text-xs text-left whitespace-nowrap border-t border-b border-gray-200">
-          <thead className="bg-gray-100 text-gray-700">
-            <tr>
-              <th className="px-4 py-2">학수번호</th>
-              <th className="px-4 py-2">분반</th>
-              <th className="px-4 py-2">개설학과</th>
-              <th className="px-4 py-2">과목명</th>
-              <th className="px-4 py-2">교수명</th>
-            </tr>
-          </thead>
-          <tbody className="h-[250px]">
-            <SubjectTableBody subjects={subjects} isLoadingLectures={isLoadingLectures} />
-          </tbody>
-        </table>
-      </div>
+      <Table scrollClassName="h-[290px] overflow-y-auto">
+        <Table.Head sticky>
+          <Table.HeaderCell>학수번호</Table.HeaderCell>
+          <Table.HeaderCell>분반</Table.HeaderCell>
+          <Table.HeaderCell>개설학과</Table.HeaderCell>
+          <Table.HeaderCell>과목명</Table.HeaderCell>
+          <Table.HeaderCell>교수명</Table.HeaderCell>
+        </Table.Head>
+        <Table.Body>
+          <SubjectTableBody subjects={subjects} isLoadingLectures={isLoadingLectures} />
+        </Table.Body>
+      </Table>
     </Flex>
   );
 }
@@ -74,13 +70,13 @@ function SubjectTableBody({ subjects, isLoadingLectures }: { subjects: Lecture[]
   return (
     <>
       {subjects.map((subject, index) => (
-        <tr key={subject.subjectId ?? index} className="border border-gray-200 h-[40px]">
-          <td className="px-4 py-2 w-[30px] truncate">{subject.subjectCode}</td>
-          <td className="px-4 py-2 w-[30px] truncate">{subject.classCode}</td>
-          <td className="px-4 py-2 w-[100px] truncate">{subject.departmentName}</td>
-          <td className="px-4 py-2  w-[150px] truncate">{subject.subjectName}</td>
-          <td className="px-4 py-2">{subject.professorName}</td>
-        </tr>
+        <Table.Row key={subject.subjectId ?? index} className="last:border-b">
+          <Table.Cell>{subject.subjectCode}</Table.Cell>
+          <Table.Cell>{subject.classCode}</Table.Cell>
+          <Table.Cell>{subject.departmentName}</Table.Cell>
+          <Table.Cell>{subject.subjectName}</Table.Cell>
+          <Table.Cell>{subject.professorName}</Table.Cell>
+        </Table.Row>
       ))}
     </>
   );

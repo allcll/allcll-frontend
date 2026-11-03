@@ -1,6 +1,6 @@
 import { useDeferredValue } from 'react';
 import { Helmet } from 'react-helmet';
-import Table from '@/widgets/wishlist/Table.tsx';
+import WishlistTable from '@/widgets/wishlist/WishlistTable.tsx';
 import WishFilter from '@/widgets/filtering/ui/WishFilter';
 import GotoLive from '@/widgets/wishlist/GotoLive.tsx';
 import TableColorInfo from '@/shared/ui/TableColorInfo';
@@ -40,7 +40,7 @@ function WishTable() {
             <TableColorInfo />
           </Card>
 
-          <Card variant="elevated" className="overflow-x-auto">
+          <Card variant="elevated">
             <WishTableComponent />
           </Card>
 
@@ -63,7 +63,7 @@ function WishTableComponent() {
     description: '다른 검색어로 다시 시도해보세요.',
   };
 
-  return <Table data={filteredData} isPending={isPending} placeholder={placeholder} />;
+  return <WishlistTable data={filteredData} isPending={isPending} placeholder={placeholder} />;
 }
 
 export default WishTable;

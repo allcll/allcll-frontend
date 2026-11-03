@@ -1,7 +1,7 @@
 import Section from '@/widgets/home/ui/Section.tsx';
 import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
 import SeatBadge from '@/entities/wishes/ui/SeatBadge.tsx';
-import { Card, Flex, Heading, NotificationIcon, SupportingText } from '@allcll/allcll-ui';
+import { Card, Flex, Heading, NotificationIcon, SupportingText, Table } from '@allcll/allcll-ui';
 
 function LiveSection() {
   return (
@@ -36,36 +36,32 @@ function LiveSection() {
         <Card>
           <Heading level={3}>여석 수 TOP 10</Heading>
           <SupportingText>여석이 많은 과목을 놓치지 마세요!</SupportingText>
-          <div className="overflow-x-auto">
-            <table className="w-full bg-white rounded-lg text-sm">
-              <thead>
-                <tr className="bg-gray-50 z-content text-nowrap">
-                  <th className="px-4 py-2">학수번호</th>
-                  <th className="px-4 py-2">과목명</th>
-                  <th className="px-4 py-2">교수명</th>
-                  <th className="px-4 py-2">여석</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { id: '004310-004', name: '운영체제', prof: '이수정', seats: 22 },
-                  { id: '003281-001', name: '컴퓨터그래픽스', prof: '최수미', seats: 15 },
-                  { id: '004118-007', name: '디지털시스템', prof: 'Rajendra Dhakal', seats: 6 },
-                  { id: '009912-006', name: 'C프로그래밍및실습', prof: '김도년', seats: 5 },
-                  { id: '007330-001', name: '확률및통계', prof: '김해광', seats: 4 },
-                ].map(({ id, name, prof, seats }, index) => (
-                  <tr key={'live-non-major-' + index} className="border-t border-gray-200">
-                    <td className="px-4 py-2 text-center">{id}</td>
-                    <td className="px-4 py-2 text-center">{name}</td>
-                    <td className="px-4 py-2 text-center">{prof}</td>
-                    <td className="px-4 py-2 text-center">
-                      <SeatBadge seat={seats} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <Table>
+            <Table.Head>
+              <Table.HeaderCell>학수번호</Table.HeaderCell>
+              <Table.HeaderCell>과목명</Table.HeaderCell>
+              <Table.HeaderCell>교수명</Table.HeaderCell>
+              <Table.HeaderCell>여석</Table.HeaderCell>
+            </Table.Head>
+            <Table.Body>
+              {[
+                { id: '004310-004', name: '운영체제', prof: '이수정', seats: 22 },
+                { id: '003281-001', name: '컴퓨터그래픽스', prof: '최수미', seats: 15 },
+                { id: '004118-007', name: '디지털시스템', prof: 'Rajendra Dhakal', seats: 6 },
+                { id: '009912-006', name: 'C프로그래밍및실습', prof: '김도년', seats: 5 },
+                { id: '007330-001', name: '확률및통계', prof: '김해광', seats: 4 },
+              ].map(({ id, name, prof, seats }, index) => (
+                <Table.Row key={'live-non-major-' + index}>
+                  <Table.Cell>{id}</Table.Cell>
+                  <Table.Cell>{name}</Table.Cell>
+                  <Table.Cell>{prof}</Table.Cell>
+                  <Table.Cell>
+                    <SeatBadge seat={seats} />
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
         </Card>
       </div>
     </Section>

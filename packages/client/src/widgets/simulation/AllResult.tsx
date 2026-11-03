@@ -51,7 +51,7 @@ function AllResult() {
         <div className="relative flex-1 min-w-[240px]">
           <RadarChart result={modifiedResult} />
         </div>
-        <div className="flex-1 min-w-[240px] overflow-x-auto">
+        <div className="flex-1 min-w-[240px]">
           <SubjectAllResult result={simulationAllResult} />
         </div>
       </div>

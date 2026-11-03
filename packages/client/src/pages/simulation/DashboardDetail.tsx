@@ -43,8 +43,8 @@ function DashboardDetail() {
         </div>
 
         {/* 과목별 수강 신청 담은 사람 */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm overflow-x-auto">
-          <Heading level={2} className="mb-4 min-w-[240px] overflow-x-auto">
+        <div className="bg-white p-6 rounded-2xl shadow-sm">
+          <Heading level={2} className="mb-4">
             과목별 분석
           </Heading>
           {resultInfo ? (
