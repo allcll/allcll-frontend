@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Dialog, Flex, Button, CheckmarkOutlineIcon, CircleOutlineIcon, EmptyState, Heading } from '@allcll/allcll-ui';
 import type { BalanceRequiredArea, CategoryType, CriteriaCategory, MissingCourse } from '../../types/graduation';
 import { BALANCE_AREA_LABELS, CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
@@ -97,15 +96,6 @@ function RecommendedCoursesModal({
 }: Readonly<RecommendedCoursesModalProps>) {
   const categoryLabel = CATEGORY_TYPE_LABELS[categoryType];
   const isBalanceRequired = categoryType === 'BALANCE_REQUIRED' && criteriaCategory?.balanceAreaCourses != null;
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const original = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = original;
-    };
-  }, [isOpen]);
 
   return (
     <Dialog title={`${categoryLabel} 추천 과목`} onClose={onClose} isOpen={isOpen}>

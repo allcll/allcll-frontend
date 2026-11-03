@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Dialog, Flex, Button, EmptyState } from '@allcll/allcll-ui';
 import type { CategoryType, GraduationCourse, ScopeType } from '../../types/graduation';
 import { CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
@@ -38,15 +37,6 @@ function CategoryEarnedCoursesModal({
   majorScope,
   courses,
 }: Readonly<CategoryEarnedCoursesModalProps>) {
-  useEffect(() => {
-    if (!isOpen) return;
-    const original = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = original;
-    };
-  }, [isOpen]);
-
   const filtered = courses.filter(c => c.categoryType === categoryType && c.majorScope === majorScope && c.isEarned);
   const earnedCredits = filtered.reduce((sum, c) => sum + c.credits, 0);
   const earnedCount = filtered.length;
