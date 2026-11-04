@@ -1,92 +1,41 @@
-import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-  AllcllFaceIcon,
-  Badge,
-  Flex,
-  IconButton,
-  SupportingText,
-  ChevronDownIcon,
-  TextLink,
-  Table,
-} from '@allcll/allcll-ui';
-import { OPERATION_TYPE_LABEL, MAX_RATE } from '@/hooks/server/useAdminReviews';
+import { SupportingText, Table } from '@allcll/allcll-ui';
+import OperationTypeBadge from '@/components/common/OperationTypeBadge';
+import ReviewAuthor from './ReviewAuthor';
+import ReviewRate from './ReviewRate';
 import type { Review } from '@/hooks/server/useAdminReviews';
 import { formatDateTime } from '@/utils/formatTime';
 
 interface IReviewItemProps {
   review: Review;
+  onView: (review: Review) => void;
 }
 
-function ReviewItem({ review }: Readonly<IReviewItemProps>) {
-  const navigate = useNavigate();
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isClamped, setIsClamped] = useState(false);
-  const detailRef = useRef<HTMLParagraphElement>(null);
-
-  useEffect(() => {
-    const detailParagraph = detailRef.current;
-    if (!detailParagraph) return;
-    setIsClamped(detailParagraph.scrollHeight > detailParagraph.clientHeight);
-  }, []);
-
-  const isGraduation = review.operationType === 'GRADUATION';
-
+function ReviewItem({ review, onView }: Readonly<IReviewItemProps>) {
   return (
-    <Table.Row className="bg-white hover:bg-gray-50 transition-colors">
-      <Table.Cell align="left" className="align-top w-28">
-        {isGraduation ? (
-          <TextLink asChild className="text-sm font-medium">
-            <button
-              onClick={() => navigate(`/reviews/graduation/${review.studentId}`)}
-              aria-label={`${review.studentId} 졸업요건 조회`}
-            >
-              {review.studentId}
-            </button>
-          </TextLink>
-        ) : (
-          <SupportingText>{review.studentId}</SupportingText>
-        )}
+    <Table.Row
+      className="bg-white hover:bg-gray-50 transition-colors cursor-pointer"
+      tabIndex={0}
+      onClick={() => onView(review)}
+      onKeyDown={e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onView(review);
+        }
+      }}
+    >
+      <Table.Cell align="left" className="w-28">
+        <ReviewAuthor review={review} className="text-sm text-gray-500" />
       </Table.Cell>
-      <Table.Cell align="left" className="align-top w-32">
-        <Badge variant="primary" appearance="outline">
-          {OPERATION_TYPE_LABEL[review.operationType]}
-        </Badge>
+      <Table.Cell align="left" className="w-32">
+        <OperationTypeBadge operationType={review.operationType} />
       </Table.Cell>
-      <Table.Cell align="left" className="align-top w-24">
-        <Flex align="items-center" gap="gap-0.5">
-          {Array.from({ length: review.rate }).map((_, i) => (
-            <AllcllFaceIcon key={`filled-${i}`} mood="smile" className="h-4 w-4 text-primary-500" />
-          ))}
-          {Array.from({ length: MAX_RATE - review.rate }).map((_, i) => (
-            <AllcllFaceIcon key={`empty-${i}`} mood="smile" className="h-4 w-4 text-gray-300" />
-          ))}
-        </Flex>
+      <Table.Cell align="left" className="w-24">
+        <ReviewRate rate={review.rate} />
       </Table.Cell>
-      <Table.Cell align="left" className="align-top whitespace-normal">
-        <Flex align="items-start" gap="gap-2">
-          <p
-            ref={detailRef}
-            className={`text-sm text-gray-700 leading-relaxed flex-1 ${isExpanded ? '' : 'line-clamp-2'}`}
-          >
-            {review.detail}
-          </p>
-          {isClamped && (
-            <IconButton
-              variant="plain"
-              icon={
-                <ChevronDownIcon
-                  className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}
-                />
-              }
-              label={isExpanded ? '접기' : '더보기'}
-              onClick={() => setIsExpanded(prev => !prev)}
-              className="shrink-0 mt-0.5 text-gray-400 hover:text-gray-600"
-            />
-          )}
-        </Flex>
+      <Table.Cell align="left" className={`truncate ${review.detail ? 'text-gray-700' : 'text-gray-400'}`}>
+        {review.detail || '내용 없음'}
       </Table.Cell>
-      <Table.Cell align="left" className="align-top w-36">
+      <Table.Cell align="left" className="w-36">
         <SupportingText className="whitespace-nowrap">{formatDateTime(review.createdAt)}</SupportingText>
       </Table.Cell>
     </Table.Row>

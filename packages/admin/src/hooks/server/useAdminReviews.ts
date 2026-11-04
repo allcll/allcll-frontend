@@ -35,7 +35,6 @@ export function useAdminReviews() {
     queryKey: ['reviews'],
     queryFn: fetchAdminReviews,
     select: (data: ReviewsResponse) => data.reviews,
-    staleTime: Infinity,
   });
 }
 
