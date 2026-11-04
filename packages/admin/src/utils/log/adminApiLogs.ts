@@ -7,7 +7,7 @@ import { AdminApiLogs, db } from '../dbConfig';
  * @param request_body
  * @returns
  */
-export async function addRequestLog(response: Response, method: string, request_body: any) {
+export async function addRequestLog(response: Response, method: string, request_body: unknown) {
   const { status: statusCode, url, body } = response;
 
   await db.admin_api_logs.add({
