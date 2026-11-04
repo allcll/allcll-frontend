@@ -30,27 +30,7 @@ function MultiSelectFilterOption<VALUE extends string | number>({
   className,
   ItemComponent,
 }: Readonly<IMultiSelectFilter<VALUE>>) {
-  const isAllSelected = selectedValues.includes(0 as VALUE);
-
-  const checkSelected = (value: VALUE) => {
-    if (isAllSelected) return true;
-    return selectedValues.includes(value);
-  };
-
   const handleChangeCheckbox = (optionValue: VALUE) => {
-    const isCurrentlyAll = selectedValues.includes(0 as VALUE);
-
-    if (optionValue === (0 as VALUE)) {
-      if (isCurrentlyAll) {
-        setFilter([]);
-        return;
-      } else {
-        const allValues = options.map(option => option.value);
-        setFilter(allValues);
-        return;
-      }
-    }
-
     const checked = selectedValues.includes(optionValue);
 
     const newValues = checked
@@ -67,19 +47,12 @@ function MultiSelectFilterOption<VALUE extends string | number>({
   return (
     <div className="relative inline-block">
       <Label className="block mb-2">{labelPrefix ?? ''}</Label>
-      <div
-        className={`
-          gap-y-2 
-          ${options.length > 6 ? 'sm:grid grid-cols-2 gap-x-4' : 'sm:flex flex-col'}
-          ${className}
-          grid grid-cols-2 gap-x-4
-        `}
-      >
+      <div className={`grid gap-x-4 gap-y-2 ${options.length >= 4 ? 'grid-cols-2' : 'grid-cols-1'} ${className}`}>
         {options.map(option => (
           <ItemComponent
             key={String(option.value)}
             label={option.label}
-            selected={checkSelected(option.value)}
+            selected={selectedValues.includes(option.value)}
             onClick={() => handleChangeCheckbox(option.value)}
             value={option.value}
           />
