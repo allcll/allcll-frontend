@@ -1,3 +1,4 @@
+import { formatMultiSelectedLabel } from '@allcll/common';
 import { Time } from '@/shared/lib/time.ts';
 import { FilterOptions, MIN_HIGH_CREDIT } from './filterDomains.ts';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
@@ -46,16 +47,7 @@ export function getMultiSelectedLabel<K extends keyof Filters>(
   filterKey: K,
   selectedValues: FilterValueType<K>[],
 ): string {
-  if (selectedValues.length === 0) {
-    return labelPrefix[filterKey];
-  }
-
-  const firstValue = selectedValues[0];
-  if (selectedValues.length === 1) {
-    return getLabelFormatter()[filterKey]?.(firstValue) ?? labelPrefix[filterKey];
-  }
-
-  return `${getLabelFormatter()[filterKey]?.(firstValue) ?? labelPrefix[filterKey]} 외 ${selectedValues.length - 1}개`;
+  return formatMultiSelectedLabel(labelPrefix[filterKey], selectedValues, getLabelFormatter()[filterKey]);
 }
 
 export function getSingleSelectedLabel<K extends keyof Filters>(

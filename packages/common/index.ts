@@ -16,6 +16,7 @@ export * from './src/lib/graduation/rules';
 export * from './src/lib/semester/config';
 export * from './src/lib/date';
 export * from './src/lib/operationType';
+export * from './src/lib/filterLabel';
 
 export { default as ProgressDoughnut } from './src/components/graduation/ProgressDoughnut';
 export { default as OverallSummaryCard } from './src/components/graduation/OverallSummaryCard';
