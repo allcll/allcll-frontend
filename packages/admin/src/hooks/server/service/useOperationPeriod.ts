@@ -2,21 +2,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useToastNotification } from '@allcll/common';
 import { fetchJsonOnAPI, fetchOnAPI } from '@/utils/api';
 import { addRequestLog } from '@/utils/log/adminApiLogs';
-import type { OperationType } from '@/hooks/server/useAdminReviews';
+import { OPERATION_TYPE_LABEL, type OperationType } from '@allcll/common';
 
-export const SERVICE_OPERATIONS: { operationType: OperationType; label: string }[] = [
-  { operationType: 'TIMETABLE', label: '시간표' },
-  { operationType: 'BASKETS', label: '관심과목' },
-  { operationType: 'SIMULATION', label: '올클연습' },
-  { operationType: 'LIVE', label: '실시간' },
-  { operationType: 'PRESEAT', label: 'pre seat' },
-];
+export const SERVICE_OPERATION_TYPES: OperationType[] = ['TIMETABLE', 'BASKETS', 'SIMULATION', 'LIVE', 'PRESEAT'];
 
-export const SERVICE_OPERATION_TYPES = SERVICE_OPERATIONS.map(({ operationType }) => operationType);
-
-export const SERVICE_OPERATION_LABEL: Record<string, string> = Object.fromEntries(
-  SERVICE_OPERATIONS.map(({ operationType, label }) => [operationType, label]),
-);
+export const SERVICE_OPERATIONS = SERVICE_OPERATION_TYPES.map(operationType => ({
+  operationType,
+  label: OPERATION_TYPE_LABEL[operationType],
+}));
 
 export interface IOperationPeriodDetail {
   operationType: OperationType;

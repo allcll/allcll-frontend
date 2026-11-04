@@ -15,8 +15,8 @@ import {
 import PageHeader from '@/components/common/PageHeader';
 import MarkdownEditor from '@/components/notices/MarkdownEditor';
 import UnsavedModal from '@/components/notices/UnsavedModal';
-import { useAdminNotice, useSaveNotice, CATEGORY_LABELS, NOTICE_CATEGORIES } from '@/hooks/server/useAdminNotices';
-import type { OperationType } from '@/hooks/server/useAdminReviews';
+import { OPERATION_TYPE_LABEL, OPERATION_TYPES, type OperationType } from '@allcll/common';
+import { useAdminNotice, useSaveNotice } from '@/hooks/server/useAdminNotices';
 
 const MAX_LENGTH = 1000;
 const MAX_TITLE_LENGTH = 250;
@@ -175,9 +175,9 @@ function NoticeEditor() {
             }}
             className="w-48"
           >
-            {NOTICE_CATEGORIES.map(cat => (
+            {OPERATION_TYPES.map(cat => (
               <option key={cat} value={cat}>
-                {CATEGORY_LABELS[cat]}
+                {OPERATION_TYPE_LABEL[cat]}
               </option>
             ))}
           </Select>
