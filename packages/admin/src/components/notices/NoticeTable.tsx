@@ -1,6 +1,5 @@
 import {
   Card,
-  Badge,
   IconButton,
   Flex,
   EditIcon,
@@ -10,7 +9,7 @@ import {
   LoadingState,
   Table,
 } from '@allcll/allcll-ui';
-import { CATEGORY_LABELS } from '@/hooks/server/useAdminNotices';
+import OperationTypeBadge from '@/components/common/OperationTypeBadge';
 import type { Notice } from '@/hooks/server/useAdminNotices';
 import { formatDate } from '@allcll/common';
 
@@ -68,9 +67,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
             notices.map(notice => (
               <Table.Row key={notice.id} className="hover:bg-gray-50 transition-colors">
                 <Table.Cell align="left">
-                  <Badge variant="primary" size="small">
-                    {CATEGORY_LABELS[notice.operationType]}
-                  </Badge>
+                  <OperationTypeBadge operationType={notice.operationType} />
                 </Table.Cell>
                 <Table.Cell
                   align="left"

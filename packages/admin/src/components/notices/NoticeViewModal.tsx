@@ -1,8 +1,8 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
-import { Button, Dialog, Badge, Flex, Heading } from '@allcll/allcll-ui';
-import { CATEGORY_LABELS } from '@/hooks/server/useAdminNotices';
+import { Button, Dialog, Flex, Heading } from '@allcll/allcll-ui';
+import OperationTypeBadge from '@/components/common/OperationTypeBadge';
 import type { Notice } from '@/hooks/server/useAdminNotices';
 import { formatDate } from '@allcll/common';
 
@@ -22,9 +22,7 @@ function NoticeViewModal({ notice, onClose, onEdit }: INoticeViewModalProps) {
               {notice.title}
             </Heading>
             <Flex align="items-center" gap="gap-2" className="text-xs text-gray-500">
-              <Badge variant="primary" size="small">
-                {CATEGORY_LABELS[notice.operationType]}
-              </Badge>
+              <OperationTypeBadge operationType={notice.operationType} />
               <span>작성 {formatDate(notice.createdAt)}</span>
               {formatDate(notice.updatedAt) !== formatDate(notice.createdAt) && (
                 <span className="text-gray-400">· 수정 {formatDate(notice.updatedAt)}</span>
