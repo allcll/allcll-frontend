@@ -19,7 +19,10 @@ function TableRoot({ wrapperClassName = '', scrollClassName = '', className = ''
   return (
     <div className={`relative border border-gray-200 rounded-md overflow-hidden ${wrapperClassName}`}>
       <div ref={scrollRef} className={`overflow-x-auto ${scrollClassName}`}>
-        <table className={`w-full text-sm whitespace-nowrap ${className}`} {...rest}>
+        <table
+          className={`w-full text-sm whitespace-nowrap has-[[data-table-row]]:shadow-[0_1px_0_var(--color-gray-200)] ${className}`}
+          {...rest}
+        >
           {children}
         </table>
       </div>
@@ -63,7 +66,7 @@ function TableBody(props: ComponentPropsWithoutRef<'tbody'>) {
 }
 
 function TableRow({ className = '', ...rest }: ComponentPropsWithoutRef<'tr'>) {
-  return <tr className={`h-10 border-t border-gray-200 ${className}`} {...rest} />;
+  return <tr data-table-row className={`h-10 border-t border-gray-200 ${className}`} {...rest} />;
 }
 
 function TableCell({ align = 'center', className = '', ...rest }: TableCellProps & ComponentPropsWithoutRef<'td'>) {

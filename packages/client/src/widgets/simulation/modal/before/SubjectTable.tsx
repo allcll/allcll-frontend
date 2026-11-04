@@ -70,7 +70,7 @@ function SubjectTableBody({ subjects, isLoadingLectures }: { subjects: Lecture[]
   return (
     <>
       {subjects.map((subject, index) => (
-        <Table.Row key={subject.subjectId ?? index} className="last:border-b">
+        <Table.Row key={subject.subjectId ?? index}>
           <Table.Cell>{subject.subjectCode}</Table.Cell>
           <Table.Cell>{subject.classCode}</Table.Cell>
           <Table.Cell>{subject.departmentName}</Table.Cell>
