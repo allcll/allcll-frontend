@@ -70,7 +70,7 @@ function TableHeaderCell({
   children,
   ...rest
 }: TableHeaderCellProps) {
-  const cellClassName = `px-4 py-2 font-bold ${ALIGN_CLASS[align]} ${className}`;
+  const cellClassName = `px-4 py-2 font-semibold ${ALIGN_CLASS[align]} ${className}`;
 
   if (!onSort) {
     return (
