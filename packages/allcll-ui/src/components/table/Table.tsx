@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ComponentPropsWithoutRef, type RefObject } from 'react';
+import { ChevronDownIcon, ChevronsUpDownIcon, ChevronUpIcon } from '../../icons';
 
 type Align = 'left' | 'center';
 
@@ -53,12 +54,44 @@ interface TableCellProps {
   align?: Align;
 }
 
+type SortDirection = 'asc' | 'desc';
+
+type TableHeaderCellProps = TableCellProps &
+  ComponentPropsWithoutRef<'th'> & {
+    sortDirection?: SortDirection | null;
+    onSort?: () => void;
+  };
+
 function TableHeaderCell({
   align = 'center',
+  sortDirection,
+  onSort,
   className = '',
+  children,
   ...rest
-}: TableCellProps & ComponentPropsWithoutRef<'th'>) {
-  return <th className={`px-4 py-2 font-bold ${ALIGN_CLASS[align]} ${className}`} {...rest} />;
+}: TableHeaderCellProps) {
+  const cellClassName = `px-4 py-2 font-bold ${ALIGN_CLASS[align]} ${className}`;
+
+  if (!onSort) {
+    return (
+      <th className={cellClassName} {...rest}>
+        {children}
+      </th>
+    );
+  }
+
+  const SortIcon =
+    sortDirection === 'asc' ? ChevronUpIcon : sortDirection === 'desc' ? ChevronDownIcon : ChevronsUpDownIcon;
+  const ariaSort = sortDirection === 'asc' ? 'ascending' : sortDirection === 'desc' ? 'descending' : 'none';
+
+  return (
+    <th aria-sort={ariaSort} className={cellClassName} {...rest}>
+      <button type="button" onClick={onSort} className="inline-flex items-center gap-1 font-bold cursor-pointer">
+        {children}
+        <SortIcon className={`w-3.5 h-3.5 ${sortDirection ? 'text-gray-500' : 'text-gray-300'}`} />
+      </button>
+    </th>
+  );
 }
 
 function TableBody(props: ComponentPropsWithoutRef<'tbody'>) {

@@ -39,6 +39,8 @@ export {
 
   /* 방향 --------------------------------------------------------------- */
   ChevronDown as ChevronDownIcon,
+  ChevronUp as ChevronUpIcon,
+  ChevronsUpDown as ChevronsUpDownIcon,
   ChevronLeft as ChevronLeftIcon,
   ArrowLeft as ArrowLeftIcon,
   ArrowRight as ArrowRightIcon,
