@@ -41,25 +41,3 @@ export async function getRequestLogs(): Promise<AdminApiLogs[]> {
     throw e;
   }
 }
-
-/**
- *IndexedDB에 저장된 API로그 중 method를 선택하여 필터링 합니다.
- * @param statusCode
- * @param request_url
- * @returns
- */
-export async function filterRequestLogs(statusCodes?: number[], request_url?: string) {
-  try {
-    if (statusCodes) {
-      return (await db.admin_api_logs.toArray()).filter(log => {
-        return statusCodes.includes(log.statusCode) && log.request_url.includes(request_url ?? '');
-      });
-    }
-
-    const logs = await db.admin_api_logs.toArray();
-    return logs.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
-  } catch (e) {
-    console.error('Failed to get logs from IndexedDB:', e);
-    throw e;
-  }
-}
