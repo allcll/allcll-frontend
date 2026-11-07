@@ -24,13 +24,9 @@ interface INoticeTableProps {
 
 function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: INoticeTableProps) {
   return (
-    <Card className="overflow-hidden flex flex-col flex-1 min-h-0">
-      <Table
-        wrapperClassName="flex flex-col flex-1 min-h-0"
-        scrollClassName="h-full overflow-y-auto"
-        className="table-fixed"
-      >
-        <Table.Head sticky>
+    <Card className="overflow-hidden flex flex-col">
+      <Table className="table-fixed">
+        <Table.Head>
           <Table.HeaderCell align="left" className="w-28">
             카테고리
           </Table.HeaderCell>

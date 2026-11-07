@@ -34,18 +34,14 @@ function ReviewList({ reviews, isLoading, isError, sort, onSort, filterBar }: Re
   const [viewTarget, setViewTarget] = useState<Review | null>(null);
 
   return (
-    <Flex direction="flex-col" gap="gap-2" className="h-full">
+    <Flex direction="flex-col" gap="gap-2">
       <SectionHeader title="후기 목록" description="서비스별 사용자 후기를 확인합니다." />
 
       {filterBar}
 
-      <Card className="overflow-hidden flex flex-col flex-1 min-h-0">
-        <Table
-          wrapperClassName="flex flex-col flex-1 min-h-0"
-          scrollClassName="h-full overflow-y-auto"
-          className="table-fixed"
-        >
-          <Table.Head sticky>
+      <Card className="overflow-hidden flex flex-col">
+        <Table className="table-fixed">
+          <Table.Head>
             {COLUMNS.map(column => (
               <Table.HeaderCell
                 key={column.label}

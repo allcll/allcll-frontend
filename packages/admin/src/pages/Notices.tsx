@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Flex, AddIcon } from '@allcll/allcll-ui';
+import { Button, Flex, AddIcon, Pagination } from '@allcll/allcll-ui';
 import {
   Filtering,
   CheckboxAdapter,
@@ -16,6 +16,7 @@ import NoticeViewModal from '@/components/notices/NoticeViewModal';
 import NoticeDeleteModal from '@/components/notices/NoticeDeleteModal';
 import { useAdminNotices, useDeleteNotice } from '@/hooks/server/useAdminNotices';
 import type { Notice } from '@/hooks/server/useAdminNotices';
+import { usePagination } from '@/hooks/usePagination';
 
 const CATEGORY_OPTIONS = OPERATION_TYPES.map(value => ({ label: OPERATION_TYPE_LABEL[value], value }));
 
@@ -30,6 +31,7 @@ function Notices() {
 
   const filtered =
     selectedCategories.length === 0 ? notices : notices.filter(n => selectedCategories.includes(n.operationType));
+  const { page, totalPages, setPage, pageItems } = usePagination(filtered, selectedCategories.join());
 
   const handleDeleteConfirm = () => {
     if (!deleteTarget) return;
@@ -47,8 +49,8 @@ function Notices() {
         </Button>
       </Flex>
 
-      <Flex as="main" direction="flex-col" gap="gap-4" className="flex-1 min-h-0">
-        <Flex align="items-center" gap="gap-2">
+      <Flex as="main" direction="flex-col" gap="gap-4">
+        <Flex align="items-center" justify="justify-between" gap="gap-2" className="flex-wrap">
           <Filtering
             label={formatMultiSelectedLabel('카테고리', selectedCategories, type => OPERATION_TYPE_LABEL[type])}
             selected={selectedCategories.length > 0}
@@ -61,10 +63,11 @@ function Notices() {
               ItemComponent={CheckboxAdapter}
             />
           </Filtering>
+          <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
         </Flex>
 
         <NoticeTable
-          notices={filtered}
+          notices={pageItems}
           isLoading={isLoading}
           isError={isError}
           onView={setViewTarget}

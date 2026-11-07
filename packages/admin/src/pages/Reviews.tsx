@@ -13,7 +13,8 @@ import {
   type OperationType,
 } from '@allcll/common';
 import MultiSelectFilterOption from '@/components/common/MultiSelectFilterOption';
-import { Flex } from '@allcll/allcll-ui';
+import { Flex, Pagination } from '@allcll/allcll-ui';
+import { usePagination } from '@/hooks/usePagination';
 
 const getRatingLabel = (rate: string) => `${rate}점`;
 const RATING_OPTIONS = ['1', '2', '3'].map(value => ({ label: getRatingLabel(value), value }));
@@ -82,44 +83,52 @@ function Reviews() {
     .filter(r => !selectedRatings.length || selectedRatings.includes(String(r.rate)))
     .sort(getReviewComparator(sort ?? { key: 'createdAt', direction: 'desc' }));
 
+  const { page, totalPages, setPage, pageItems } = usePagination(
+    filteredReviews,
+    JSON.stringify([selectedOperationTypes, selectedYears, selectedRatings, sort]),
+  );
+
   const filterBar = (
-    <Flex align="items-center" gap="gap-2">
-      <Filtering
-        label={formatMultiSelectedLabel('카테고리', selectedOperationTypes, type => OPERATION_TYPE_LABEL[type])}
-        selected={selectedOperationTypes.length > 0}
-      >
-        <MultiSelectFilterOption
-          labelPrefix="카테고리"
-          selectedValues={selectedOperationTypes}
-          setFilter={setSelectedOperationTypes}
-          options={categoryOptions}
-          ItemComponent={CheckboxAdapter}
-        />
-      </Filtering>
-      <Filtering
-        label={formatMultiSelectedLabel('학번', selectedYears, getYearLabel)}
-        selected={selectedYears.length > 0}
-      >
-        <MultiSelectFilterOption
-          labelPrefix="학번"
-          selectedValues={selectedYears}
-          setFilter={setSelectedYears}
-          options={yearOptions}
-          ItemComponent={CheckboxAdapter}
-        />
-      </Filtering>
-      <Filtering
-        label={formatMultiSelectedLabel('평점', selectedRatings, getRatingLabel)}
-        selected={selectedRatings.length > 0}
-      >
-        <MultiSelectFilterOption
-          labelPrefix="평점"
-          selectedValues={selectedRatings}
-          setFilter={setSelectedRatings}
-          options={RATING_OPTIONS}
-          ItemComponent={CheckboxAdapter}
-        />
-      </Filtering>
+    <Flex align="items-center" justify="justify-between" gap="gap-2" className="flex-wrap">
+      <Flex align="items-center" gap="gap-2">
+        <Filtering
+          label={formatMultiSelectedLabel('카테고리', selectedOperationTypes, type => OPERATION_TYPE_LABEL[type])}
+          selected={selectedOperationTypes.length > 0}
+        >
+          <MultiSelectFilterOption
+            labelPrefix="카테고리"
+            selectedValues={selectedOperationTypes}
+            setFilter={setSelectedOperationTypes}
+            options={categoryOptions}
+            ItemComponent={CheckboxAdapter}
+          />
+        </Filtering>
+        <Filtering
+          label={formatMultiSelectedLabel('학번', selectedYears, getYearLabel)}
+          selected={selectedYears.length > 0}
+        >
+          <MultiSelectFilterOption
+            labelPrefix="학번"
+            selectedValues={selectedYears}
+            setFilter={setSelectedYears}
+            options={yearOptions}
+            ItemComponent={CheckboxAdapter}
+          />
+        </Filtering>
+        <Filtering
+          label={formatMultiSelectedLabel('평점', selectedRatings, getRatingLabel)}
+          selected={selectedRatings.length > 0}
+        >
+          <MultiSelectFilterOption
+            labelPrefix="평점"
+            selectedValues={selectedRatings}
+            setFilter={setSelectedRatings}
+            options={RATING_OPTIONS}
+            ItemComponent={CheckboxAdapter}
+          />
+        </Filtering>
+      </Flex>
+      <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
     </Flex>
   );
 
@@ -127,10 +136,10 @@ function Reviews() {
     <div className="flex flex-col h-full gap-5">
       <PageHeader title="사용자 후기" description="사용자들이 남긴 후기를 확인합니다." />
 
-      <main className="flex flex-col flex-1 min-h-0 gap-5">
+      <main className="flex flex-col gap-5">
         <ReviewStats reviews={filteredReviews} />
         <ReviewList
-          reviews={filteredReviews}
+          reviews={pageItems}
           isLoading={isLoading}
           isError={isError}
           sort={sort}
