@@ -2,7 +2,14 @@ import { formatMultiSelectedLabel } from '@allcll/common';
 import { Time } from '@/shared/lib/time.ts';
 import { FilterOptions, MIN_HIGH_CREDIT } from './filterDomains.ts';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
-import { Credit, DepartmentType, Grade, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
+import {
+  Credit,
+  DayTimeRanges,
+  DepartmentType,
+  Grade,
+  RangeMinMaxFilter,
+  RemarkType,
+} from '@/features/filtering/model/types.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
 
 export const labelPrefix: Record<keyof Filters, string> = {
@@ -14,6 +21,7 @@ export const labelPrefix: Record<keyof Filters, string> = {
   seatRange: '여석',
   wishRange: '관심 인원',
   time: '시간',
+  dayTimes: '요일별 시간',
   days: '요일',
   categories: '수업 유형',
   note: '비고',
@@ -31,6 +39,7 @@ export type FiltersValueMap = {
   seatRange: RangeMinMaxFilter | null;
   wishRange: RangeMinMaxFilter | null;
   time: RangeMinMaxFilter | null;
+  dayTimes: DayTimeRanges | null;
   days: Day;
   classroom: string;
   note: RemarkType;

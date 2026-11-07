@@ -1,5 +1,6 @@
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { FilterDomainsType } from '@/features/filtering/lib/filterDomains.ts';
+import { Day } from '@/entities/timetable/model/types.ts';
 
 export interface DepartmentType {
   departmentCode: string;
@@ -15,6 +16,8 @@ export interface RangeMinMaxFilter {
   min?: number;
   max?: number;
 }
+
+export type DayTimeRanges = Partial<Record<Day, RangeMinMaxFilter>>;
 
 export type RemarkType = '외국인대상' | 'SHP대상' | '기타';
 export type Grade = 1 | 2 | 3 | 4 | 5;

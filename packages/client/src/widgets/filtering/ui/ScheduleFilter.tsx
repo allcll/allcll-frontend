@@ -38,6 +38,7 @@ function ScheduleFilter() {
         options={getDayOptions(subjects ?? [])}
         days={filters.days ?? []}
         time={filters.time}
+        dayTimes={filters.dayTimes}
         setFilter={setFilters}
       />
 

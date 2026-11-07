@@ -8,7 +8,7 @@ import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 import { Time } from '@/shared/lib/time.ts';
 import { isFilterEmpty } from '@/features/filtering/lib/filterUtils.ts';
-import { Grade, RangeFilter, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
+import { DayTimeRanges, Grade, RangeFilter, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
 import { hasLessonOn, MIN_HIGH_CREDIT } from '@/features/filtering/lib/filterDomains.ts';
 import { parseCredit } from '@/shared/lib/parser.ts';
@@ -55,6 +55,7 @@ function getFilteringFunctions(
     seatRange: filterSeatRange,
     wishRange: filterWishRange,
     time: (subject: Subject, range: RangeMinMaxFilter) => filterTimeRange(subject, range, filters.days),
+    dayTimes: (subject: Subject, dayTimes: DayTimeRanges) => filterDayTimes(subject, dayTimes, filters.days),
     days: filterDays,
     classroom: filterClassroom,
     note: filterRemark,
@@ -169,11 +170,24 @@ function filterTimeRange(subject: Wishes | Subject, range: RangeMinMaxFilter, se
     .toApiData()
     .filter(slot => !selectedDays.length || selectedDays.includes(slot.dayOfWeeks));
 
-  return slots.every(slot => {
-    const start = new Time(slot.startTime).time;
-    const end = new Time(slot.endTime).time;
-    return (range.min === undefined || range.min <= start) && (range.max === undefined || end <= range.max);
+  return slots.every(slot => isSlotInRange(slot, range));
+}
+
+function filterDayTimes(subject: Wishes | Subject, dayTimes: DayTimeRanges, selectedDays: Day[]) {
+  if (!selectedDays.length) return true;
+  if (!subject.lesnTime) return false;
+
+  const slots = new TimeslotAdapter(subject.lesnTime).toApiData();
+  return selectedDays.some(day => {
+    const range = dayTimes[day];
+    return slots.some(slot => slot.dayOfWeeks === day && (!range || isSlotInRange(slot, range)));
   });
+}
+
+function isSlotInRange(slot: { startTime: string; endTime: string }, range: RangeMinMaxFilter) {
+  const start = new Time(slot.startTime).time;
+  const end = new Time(slot.endTime).time;
+  return (range.min === undefined || range.min <= start) && (range.max === undefined || end <= range.max);
 }
 
 function filterCategories(subject: Wishes | Subject, selectedCategories: string[]) {

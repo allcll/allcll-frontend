@@ -1,4 +1,4 @@
-import { getLabelByFilters } from '@/features/filtering/lib/getFilteringFormatter.ts';
+import { getLabelByFilters, getTimeRangeLabel } from '@/features/filtering/lib/getFilteringFormatter.ts';
 import { Filters, initialFilters } from '@/features/filtering/model/useFilterStore.ts';
 import { DepartmentType } from '@/features/filtering/model/types.ts';
 
@@ -19,6 +19,18 @@ export function getAllSelectedLabels(filters: Filters, departments?: DepartmentT
     const values = filters[key as keyof Filters];
 
     if (key === 'keywords' || key === 'favoriteOnly' || key === 'alarmOnly') continue;
+    if (key === 'dayTimes') continue;
+    if (key === 'days') {
+      filters.days.forEach(day => {
+        const range = getTimeRangeLabel(filters.dayTimes?.[day] ?? null);
+        result.push({
+          filterKey: key as keyof Filters,
+          values: day,
+          label: range ? `${day} ${range}` : getLabelByFilters('days', day, departments),
+        });
+      });
+      continue;
+    }
     if (Array.isArray(values) && values.length > 0) {
       values.forEach(value => {
         if (isValidFilterValue(value)) {
