@@ -12,7 +12,7 @@ function WishesSemesterBanner({ wishesInfo }: IWishesSemesterBannerProps) {
   if (!wishesInfo.isPastSemester || !showBanner) return null;
 
   return (
-    <Banner variant="warning" deleteBanner={() => setShowBanner(false)}>
+    <Banner variant="danger" onClose={() => setShowBanner(false)}>
       {wishesInfo.semesterValue}학기의 과목입니다. 수강 신청에 유의해주세요.
     </Banner>
   );

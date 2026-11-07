@@ -1,32 +1,37 @@
-import { CloseIcon, WarningIcon } from '../../icons';
+import { CloseIcon, InfoIcon, WarningIcon } from '../../icons';
 import IconButton from '../icon-button/IconButton';
 import RowSlots from '../row/RowSlots';
 import Container from '../container/Container';
 
-type BannerVariant = 'warning' | 'info';
+type BannerVariant = 'info' | 'danger';
 
 interface IBanner {
   variant?: BannerVariant;
   children: React.ReactNode;
-  deleteBanner: () => void;
+  onClose: () => void;
 }
 
-function Banner({ variant = 'info', children, deleteBanner }: IBanner) {
-  const bannerColorClass = getBannerColor(variant);
+const BANNER_STYLE = {
+  info: { container: 'bg-primary-100 border-b border-primary-200', icon: InfoIcon, iconColor: 'text-primary-500' },
+  danger: { container: 'bg-danger-100 border-b border-danger-200', icon: WarningIcon, iconColor: 'text-danger-500' },
+} satisfies Record<BannerVariant, object>;
+
+function Banner({ variant = 'info', children, onClose }: IBanner) {
+  const { container, icon: Icon, iconColor } = BANNER_STYLE[variant];
 
   return (
-    <div className={bannerColorClass}>
+    <div className={container}>
       <Container>
         <RowSlots
           className="items-center py-3"
-          left={<WarningIcon className="text-gray-500 w-4 h-4" />}
+          left={<Icon className={`w-4 h-4 ${iconColor}`} />}
           center={<span className="block text-xs leading-5">{children}</span>}
           right={
             <IconButton
               label="알림 닫기"
               variant="plain"
               icon={<CloseIcon className="text-gray-500 w-4 h-4" />}
-              onClick={deleteBanner}
+              onClick={onClose}
               className="rounded-full"
             />
           }
@@ -37,14 +42,3 @@ function Banner({ variant = 'info', children, deleteBanner }: IBanner) {
 }
 
 export default Banner;
-
-function getBannerColor(variant: BannerVariant) {
-  switch (variant) {
-    case 'warning':
-      return 'bg-danger-100 border-b border-danger-200';
-    case 'info':
-      return 'bg-primary-100 border-b border-primary-200';
-    default:
-      return 'bg-gray-100 border-b border-gray-200';
-  }
-}

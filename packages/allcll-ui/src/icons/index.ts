@@ -31,6 +31,7 @@ export {
   Circle as CircleOutlineIcon,
   CircleX as MisuseIcon,
   CircleAlert as WarningIcon,
+  Info as InfoIcon,
   LoaderCircle as SpinnerIcon,
   TriangleAlert as WarningAltIcon,
   Ban as ErrorIcon,
