@@ -21,7 +21,7 @@ interface TabsListProps extends ComponentPropsWithoutRef<typeof RadixTabs.List> 
   fullWidth?: boolean;
 }
 
-function TabsList({ fullWidth = false, className = '', ...rest }: TabsListProps) {
+export function TabsList({ fullWidth = false, className = '', ...rest }: TabsListProps) {
   return (
     <RadixTabs.List {...rest} className={`${TAB_LIST_CLASS} ${fullWidth ? TAB_FULL_WIDTH_CLASS : ''} ${className}`} />
   );

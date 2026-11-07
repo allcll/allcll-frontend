@@ -21,7 +21,7 @@ interface TabNavItemProps extends ComponentPropsWithoutRef<'a'> {
   asChild?: boolean;
 }
 
-function TabNavItem({ selected, asChild = false, className = '', ...rest }: TabNavItemProps) {
+export function TabNavItem({ selected, asChild = false, className = '', ...rest }: TabNavItemProps) {
   const Comp = asChild ? Slot : 'a';
 
   return (
