@@ -21,7 +21,7 @@ function Logs() {
   const [selectedPaths, setSelectedPaths] = useState<string[]>([]);
 
   useEffect(() => {
-    getRequestLogs().then(logs => setLogs(logs.sort((a, b) => b.timestamp.localeCompare(a.timestamp))));
+    void getRequestLogs().then(logs => setLogs(logs.sort((a, b) => b.timestamp.localeCompare(a.timestamp))));
   }, []);
 
   const statusOptions = useMemo(
