@@ -2,7 +2,7 @@ import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { ChevronDownIcon, CloseIcon } from '../../icons';
 import type React from 'react';
 
-type ChipVariantType = 'select' | 'cancel' | 'fill' | 'none';
+type ChipVariantType = 'select' | 'cancel' | 'filled' | 'outlined';
 
 interface IChip extends ComponentPropsWithoutRef<'button'> {
   /**Chip의 텍스트 */
@@ -12,11 +12,11 @@ interface IChip extends ComponentPropsWithoutRef<'button'> {
   /**Chip의 종류 */
   variant?: ChipVariantType;
   /**Chip이 열려있는지 여부 */
-  isChipOpen?: boolean;
+  isOpen?: boolean;
 }
 
 const ChipBase = forwardRef<HTMLButtonElement, Readonly<IChip>>(function Chip(
-  { label = 'Chip', selected, variant = 'none', onClick, isChipOpen, ...rest },
+  { label = 'Chip', selected, variant = 'outlined', onClick, isOpen, ...rest },
   ref,
 ) {
   const baseClasses =
@@ -36,7 +36,7 @@ const ChipBase = forwardRef<HTMLButtonElement, Readonly<IChip>>(function Chip(
       {variant === 'select' && (
         <ChevronDownIcon
           aria-hidden="true"
-          className={`w-5 h-5 pointer-events-none transition-transform duration-200 ${selected ? 'text-primary-500' : 'text-gray-400'} ${isChipOpen ? 'rotate-180' : 'rotate-0'}`}
+          className={`w-5 h-5 pointer-events-none transition-transform duration-200 ${selected ? 'text-primary-500' : 'text-gray-400'} ${isOpen ? 'rotate-180' : 'rotate-0'}`}
         />
       )}
 
@@ -65,7 +65,7 @@ function getColorClass(selected: boolean, variant: ChipVariantType) {
     `;
   }
 
-  if (variant === 'none') {
+  if (variant === 'outlined') {
     return `
       bg-transparent
       text-gray-700

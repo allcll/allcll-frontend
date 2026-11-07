@@ -9,7 +9,7 @@ interface IAlarmButton {
 function AlarmButton({ alarmOnly, setFilter }: IAlarmButton) {
   return (
     <Chip
-      variant="fill"
+      variant="filled"
       selected={alarmOnly}
       onClick={() => setFilter('alarmOnly', !alarmOnly)}
       label={

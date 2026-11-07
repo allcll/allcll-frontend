@@ -17,7 +17,7 @@ function PopoverTrigger({ label = '', selected, children }: IPopoverTrigger) {
       <span className="inline-flex">
         <RadixPopover.Trigger asChild ref={triggerRef}>
           {children ?? (
-            <Chip type="button" label={label} isChipOpen={isOpen} variant="select" selected={selected ?? false} />
+            <Chip type="button" label={label} isOpen={isOpen} variant="select" selected={selected ?? false} />
           )}
         </RadixPopover.Trigger>
       </span>

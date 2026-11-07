@@ -9,7 +9,7 @@ interface IFavoriteFilterButton {
 function FavoriteFilterButton({ favoriteOnly, setFilter }: IFavoriteFilterButton) {
   return (
     <Chip
-      variant="fill"
+      variant="filled"
       selected={favoriteOnly}
       onClick={() => setFilter('favoriteOnly', !favoriteOnly)}
       label={
