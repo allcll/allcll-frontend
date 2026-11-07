@@ -46,9 +46,9 @@ function PinCard({ subject, seats, queryTime, disableSeat = false, isLive = fals
           <p className={`text-sm px-2 py-1 rounded-full font-bold ${getSeatColor(seats)}`}>
             여석: {seats < 0 ? '???' : seats}
           </p>
-          {!isLive && <Badge variant="default">{getTimeDiffString(queryTime)}</Badge>}
-          {isDeleted && <Badge variant="danger">폐강</Badge>}
-          {isEng && <Badge variant="success">영어</Badge>}
+          {!isLive && <Badge color="gray">{getTimeDiffString(queryTime)}</Badge>}
+          {isDeleted && <Badge color="danger">폐강</Badge>}
+          {isEng && <Badge color="success">영어</Badge>}
         </Flex>
       )}
     </Card>

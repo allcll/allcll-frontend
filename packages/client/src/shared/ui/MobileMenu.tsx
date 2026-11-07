@@ -99,7 +99,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
                 >
                   {title}
                   {beta && (
-                    <Badge variant="beta" appearance="outline" size="small">
+                    <Badge color="danger" variant="outlined" size="small">
                       Beta
                     </Badge>
                   )}

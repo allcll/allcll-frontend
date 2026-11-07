@@ -46,7 +46,7 @@ function OverallSummaryCard({ user, checkData }: Readonly<OverallSummaryCardProp
         <Flex direction="flex-col" gap="gap-3" className="md:flex-1">
           <Flex align="items-center" gap="gap-3">
             <SupportingText>전체 진행률</SupportingText>
-            <Badge variant={checkData.isGraduatable ? 'success' : 'warning'}>
+            <Badge color={checkData.isGraduatable ? 'success' : 'warning'}>
               {checkData.isGraduatable ? '졸업 가능' : '진행 중'}
             </Badge>
           </Flex>

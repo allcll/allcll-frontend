@@ -13,10 +13,8 @@ function JoluphajaSection() {
   return (
     <Section>
       <div className="flex items-center gap-2 mb-2">
-        <Badge variant="primary" appearance="filled">
-          새로운 서비스
-        </Badge>
-        <Badge variant="beta" appearance="outline" size="small">
+        <Badge color="primary">새로운 서비스</Badge>
+        <Badge color="danger" variant="outlined" size="small">
           Beta
         </Badge>
       </div>

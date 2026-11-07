@@ -11,11 +11,9 @@ function NoticeDetailContent({ notice }: Readonly<{ notice: Notice }>) {
   return (
     <Flex direction="flex-col" gap="gap-4">
       <Flex direction="flex-col" gap="gap-2" className="pb-4 border-b border-gray-100">
-        <Heading level={3} size="lg">
-          {notice.title}
-        </Heading>
+        <Heading level={3}>{notice.title}</Heading>
         <Flex align="items-center" gap="gap-2">
-          <Badge variant="primary" size="small">
+          <Badge color="primary" size="small">
             {getNoticeLabel(notice.operationType)}
           </Badge>
           <span className="text-xs text-gray-400">{date}</span>

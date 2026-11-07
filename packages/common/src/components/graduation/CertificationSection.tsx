@@ -35,12 +35,12 @@ function CertificationCard({
   children,
 }: Readonly<ICertificationCardProps>) {
   const statusText = isPassed ? '인증' : (customStatus ?? '미인증');
-  const badgeVariant = isPassed ? 'success' : overallSatisfied ? 'default' : 'danger';
+  const badgeColor = isPassed ? 'success' : overallSatisfied ? 'gray' : 'danger';
 
   return (
     <Card variant="outlined" className="h-full relative">
       <div className="absolute top-3 right-3">
-        <Badge variant={badgeVariant}>{statusText}</Badge>
+        <Badge color={badgeColor}>{statusText}</Badge>
       </div>
       <Flex direction="flex-col" gap="gap-4" className="h-full">
         <div className="text-center">
@@ -127,7 +127,7 @@ function CertificationSection({
     <section>
       <Flex align="items-center" gap="gap-3">
         <Heading level={2}>졸업인증</Heading>
-        <Badge variant={certifications.isSatisfied ? 'success' : 'danger'}>
+        <Badge color={certifications.isSatisfied ? 'success' : 'danger'}>
           {passedCount}/{requiredPassCount}
         </Badge>
       </Flex>

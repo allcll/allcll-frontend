@@ -48,22 +48,22 @@ export function getSelectedColor(selected: boolean) {
     : 'bg-gray-100 text-gray-700 focus:outline-gray-400';
 }
 
-export function getSeatVariant(seats: number | undefined | null) {
-  if (seats === undefined || seats === null) return 'default';
+export function getSeatBadgeColor(seats: number | undefined | null) {
+  if (seats === undefined || seats === null) return 'gray';
 
   if (seats > 5) return 'success';
   if (seats > 0) return 'warning';
   if (seats == 0) return 'danger';
 
-  return 'default';
+  return 'gray';
 }
 
-export function getWishesVariant(wishCount: number | undefined | null) {
-  if (wishCount === undefined || wishCount === null) return 'default';
+export function getWishesBadgeColor(wishCount: number | undefined | null) {
+  if (wishCount === undefined || wishCount === null) return 'gray';
 
   if (wishCount >= 100) return 'danger';
   if (wishCount >= 50) return 'warning';
   if (wishCount >= 0) return 'success';
 
-  return 'default';
+  return 'gray';
 }

@@ -48,7 +48,7 @@ function ServiceOpenContent() {
               <span className="text-sm font-medium text-gray-700">
                 {OPERATION_TYPE_LABEL[operationType] ?? operationType}
               </span>
-              <Badge variant={open ? 'success' : 'danger'}>{open ? 'OPEN' : 'CLOSED'}</Badge>
+              <Badge color={open ? 'success' : 'danger'}>{open ? 'OPEN' : 'CLOSED'}</Badge>
             </Flex>
 
             <SupportingText>시작: {formatDateTime(startDate)}</SupportingText>

@@ -49,7 +49,7 @@ function TimetableSubjectCard({ isActive, subject, onClick, forwardedRef }: Read
         </Flex>
 
         <Flex justify="justify-between" align="items-center">
-          {credit ? <Badge variant="default">{credit}학점</Badge> : <span />}
+          {credit ? <Badge color="gray">{credit}학점</Badge> : <span />}
           {!isActive && subject.totalCount !== -1 && (
             <BasketBadge wishCount={subject.totalCount ?? -1} formatter={value => `관심: ${value}명`} />
           )}

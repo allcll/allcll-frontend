@@ -14,7 +14,7 @@ function StatusCard({ title, status, description }: IStatusCard) {
 
         {description && <p className="text-sm text-gray-500">{description}</p>}
 
-        <Badge variant={status === 'ON' ? 'success' : 'danger'}>{status}</Badge>
+        <Badge color={status === 'ON' ? 'success' : 'danger'}>{status}</Badge>
       </Flex>
     </Card>
   );

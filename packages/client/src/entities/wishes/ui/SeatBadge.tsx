@@ -1,4 +1,4 @@
-import { getSeatVariant } from '@/shared/config/colors';
+import { getSeatBadgeColor } from '@/shared/config/colors';
 import { Badge } from '@allcll/allcll-ui';
 
 interface SeatBadgeProps {
@@ -8,10 +8,10 @@ interface SeatBadgeProps {
 
 function SeatBadge({ seat, formatter = value => value }: Readonly<SeatBadgeProps>) {
   const isValid = seat !== null && seat !== undefined && seat >= 0;
-  const variant = getSeatVariant(seat);
+  const color = getSeatBadgeColor(seat);
   const value = isValid ? seat : '-';
 
-  return <Badge variant={variant}>{formatter(value)}</Badge>;
+  return <Badge color={color}>{formatter(value)}</Badge>;
 }
 
 export default SeatBadge;

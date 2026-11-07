@@ -40,8 +40,8 @@ function SubjectDetail({ wishes }: ISubjectDetailProps) {
         </span>
 
         {isPreSeatAvailable && <SeatBadge seat={seats ?? -1} formatter={value => `여석 ${value}`} />}
-        {isEng && <Badge variant="success">영어</Badge>}
-        {isDeleted && <Badge variant="danger">폐강</Badge>}
+        {isEng && <Badge color="success">영어</Badge>}
+        {isDeleted && <Badge color="danger">폐강</Badge>}
       </Flex>
       <p className="text-sm text-gray-500">{data.remark}</p>
     </>

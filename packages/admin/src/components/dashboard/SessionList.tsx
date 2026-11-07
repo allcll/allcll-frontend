@@ -48,7 +48,7 @@ function SessionList() {
                 <Table.Cell>{data?.userId}</Table.Cell>
                 <Table.Cell>{formatDateTime(data?.startTime ?? '')}</Table.Cell>
                 <Table.Cell>
-                  <Badge variant={data?.isActive ? 'success' : 'danger'}>{data?.isActive ? 'ON' : 'OFF'}</Badge>
+                  <Badge color={data?.isActive ? 'success' : 'danger'}>{data?.isActive ? 'ON' : 'OFF'}</Badge>
                 </Table.Cell>
               </Table.Row>
             ))}

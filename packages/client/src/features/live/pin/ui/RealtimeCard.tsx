@@ -2,7 +2,7 @@ import { CloseIcon, Badge, Card, Flex, Heading, IconButton } from '@allcll/allcl
 import useTick from '@/features/live/board/lib/useTick.ts';
 import { useRemovePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
 import { getTimeDiffString } from '@/shared/lib/stringFormats.ts';
-import { getSeatVariant } from '@/shared/config/colors.ts';
+import { getSeatBadgeColor } from '@/shared/config/colors.ts';
 import { Subject, Wishes } from '@/shared/model/types.ts';
 
 interface IPinCard {
@@ -56,10 +56,10 @@ function QueryTimeComponent({ queryTime }: Readonly<{ queryTime?: string }>) {
 
 function SeatBadge({ seats }: Readonly<{ seats: number }>) {
   const isValid = seats !== null && seats !== undefined && seats >= 0;
-  const variant = getSeatVariant(seats);
+  const color = getSeatBadgeColor(seats);
   const value = isValid ? seats : '???';
 
-  return <Badge variant={variant}>여석: {value}</Badge>;
+  return <Badge color={color}>여석: {value}</Badge>;
 }
 
 export default RealtimeCard;

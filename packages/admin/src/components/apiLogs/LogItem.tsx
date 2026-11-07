@@ -7,7 +7,7 @@ function LogItem({ log }: { log: AdminApiLogs }) {
     <Card key={log.request_id}>
       <Flex direction="flex-col" gap="gap-3">
         <Flex>
-          <Badge variant={log.statusCode === 200 ? 'success' : 'danger'}>{log.statusCode}</Badge>
+          <Badge color={log.statusCode === 200 ? 'success' : 'danger'}>{log.statusCode}</Badge>
           <p className="text-sm text-gray-800">{log.request_url}</p>
         </Flex>
         <DetailRow label="메서드">
