@@ -13,11 +13,15 @@ function PopoverTrigger({ label = '', selected, children }: IPopoverTrigger) {
   const { isOpen, triggerRef } = usePopoverContext();
 
   return (
-    <RadixPopover.Trigger asChild ref={triggerRef}>
-      {children ?? (
-        <Chip type="button" label={label} isChipOpen={isOpen} variant="select" selected={selected ?? false} />
-      )}
-    </RadixPopover.Trigger>
+    <RadixPopover.Anchor asChild>
+      <span className="inline-flex">
+        <RadixPopover.Trigger asChild ref={triggerRef}>
+          {children ?? (
+            <Chip type="button" label={label} isChipOpen={isOpen} variant="select" selected={selected ?? false} />
+          )}
+        </RadixPopover.Trigger>
+      </span>
+    </RadixPopover.Anchor>
   );
 }
 
