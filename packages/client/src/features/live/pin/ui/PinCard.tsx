@@ -3,6 +3,7 @@ import { getTimeDiffString, joinPresent } from '@/shared/lib/stringFormats.ts';
 import { Subject, Wishes } from '@/shared/model/types.ts';
 import { getSeatColor } from '@/shared/config/colors.ts';
 import { Badge, Card, Flex, Heading } from '@allcll/allcll-ui';
+import { parseCredit } from '@/shared/lib/parser.ts';
 
 interface IPinCard {
   subject: Subject | Wishes;
@@ -17,7 +18,7 @@ function PinCard({ subject, seats, queryTime, disableSeat = false, isLive = fals
   const isDeleted = subject.isDeleted;
   const isEng = subject.curiLangNm === '영어';
 
-  const credit = typeof subject.tmNum === 'string' ? Number(subject.tmNum.split('/')[0]) || 0 : 0;
+  const credit = parseCredit(subject.tmNum);
 
   return (
     <Card variant="elevated">

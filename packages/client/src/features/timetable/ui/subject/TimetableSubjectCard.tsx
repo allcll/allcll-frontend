@@ -6,6 +6,7 @@ import { loggingDepartment } from '@/features/filtering/lib/useSearchRank.ts';
 import { Wishes } from '@/shared/model/types.ts';
 import BasketBadge from '@/entities/wishes/ui/BasketBadge';
 import { joinPresent } from '@/shared/lib/stringFormats.ts';
+import { parseCredit } from '@/shared/lib/parser.ts';
 
 interface ISubjectCard {
   isActive?: boolean;
@@ -18,7 +19,7 @@ function TimetableSubjectCard({ isActive, subject, onClick, forwardedRef }: Read
   const color = isActive ? 'text-primary-500 bg-primary-50' : 'text-gray-700 bg-white hover:bg-gray-50';
   const { saveSchedule } = useScheduleModal();
   const { selectTargetOnly } = useSearchLogging();
-  const credit = Number(subject.tmNum?.split('/')[0]);
+  const credit = parseCredit(subject.tmNum);
 
   const handleAddOfficialSchedule = (e: React.MouseEvent<HTMLButtonElement>) => {
     saveSchedule(e, false);

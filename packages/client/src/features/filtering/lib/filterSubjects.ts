@@ -10,7 +10,8 @@ import { Time } from '@/shared/lib/time.ts';
 import { isFilterEmpty } from '@/features/filtering/lib/filterUtils.ts';
 import { Grade, RangeFilter, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
-import { getCredit, hasLessonOn, MIN_HIGH_CREDIT } from '@/features/filtering/lib/filterDomains.ts';
+import { hasLessonOn, MIN_HIGH_CREDIT } from '@/features/filtering/lib/filterDomains.ts';
+import { parseCredit } from '@/shared/lib/parser.ts';
 
 type FilteringFunctions = {
   [K in keyof Filters]: (subject: Subject, value: NonNullable<Filters[K]>) => boolean;
@@ -95,8 +96,8 @@ function filterGrades(subject: Wishes | Subject, selectedGrades: (Grade | 'ì „ì²
 }
 
 function filterCredits(subject: Wishes | Subject, selectedCredits: number[]) {
-  const credit = getCredit(subject);
-  if (!credit || Number.isNaN(credit)) return true;
+  const credit = parseCredit(subject.tmNum);
+  if (!credit) return true;
 
   return filterMatches(credit >= MIN_HIGH_CREDIT ? MIN_HIGH_CREDIT : credit, selectedCredits);
 }

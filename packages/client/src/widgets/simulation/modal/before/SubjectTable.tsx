@@ -2,6 +2,7 @@ import { Lecture } from '@/entities/subjects/model/useLectures.ts';
 import SkeletonRows from '@/shared/ui/SkeletonRows';
 import { ZeroElementRow } from '@/shared/ui/ZeroElementRow';
 import { Button, Flex, Label, SupportingText, Table } from '@allcll/allcll-ui';
+import { parseCredit } from '@/shared/lib/parser.ts';
 
 interface ISubjectTable {
   isLoadingLectures: boolean;
@@ -10,14 +11,7 @@ interface ISubjectTable {
 }
 
 function SubjectTable({ subjects, handleRemakeSubjects, isLoadingLectures }: Readonly<ISubjectTable>) {
-  const totalCredit = subjects?.reduce((acc, subject) => {
-    if (!subject.tm_num) return acc;
-
-    const credit = subject?.tm_num.split('/')[0] ?? '0';
-    const subjectCredit = Number(credit) || 0;
-
-    return acc + subjectCredit;
-  }, 0);
+  const totalCredit = subjects?.reduce((acc, subject) => acc + parseCredit(subject.tm_num), 0);
 
   return (
     <Flex direction="flex-col" gap="gap-1.5">

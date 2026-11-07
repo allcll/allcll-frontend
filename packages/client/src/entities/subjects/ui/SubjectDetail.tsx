@@ -4,6 +4,7 @@ import usePreSeatGate from '@/entities/seat/model/usePreSeatGate';
 import SeatBadge from '@/entities/wishes/ui/SeatBadge.tsx';
 import { Badge, Flex } from '@allcll/allcll-ui';
 import { joinPresent } from '@/shared/lib/stringFormats.ts';
+import { parseCredit } from '@/shared/lib/parser.ts';
 
 interface ISubjectDetailProps {
   wishes: WishesWithSeat | undefined;
@@ -19,7 +20,7 @@ function SubjectDetail({ wishes }: ISubjectDetailProps) {
 
   const isEng = wishes?.curiLangNm === '영어';
   const isDeleted = wishes?.isDeleted ?? false;
-  const credit = Number(data.tmNum?.split('/')[0]);
+  const credit = parseCredit(data.tmNum);
 
   return (
     <>
@@ -32,7 +33,7 @@ function SubjectDetail({ wishes }: ISubjectDetailProps) {
           {joinPresent([
             data.studentYear && `${data.studentYear}학년`,
             data.curiTypeCdNm,
-            !Number.isNaN(credit) && `${credit}학점`,
+            credit > 0 && `${credit}학점`,
             data.lesnRoom,
             data.lesnTime,
           ])}

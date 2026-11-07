@@ -4,6 +4,7 @@
 import { Subject } from '@/shared/model/types.ts';
 import { Credit, Grade, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
+import { parseCredit } from '@/shared/lib/parser.ts';
 
 /** Filtering 기능도 2가지로 정의 가능
  * 1. 키워드 Search: string[] 에 속해있는 string 과 비교
@@ -109,17 +110,13 @@ export function getCategories(subjects: Subject[]) {
 export const MIN_HIGH_CREDIT = 4;
 
 export function getCreditOptions(subjects: Subject[]): Credit[] {
-  const hasHighCredit = subjects.some(s => getCredit(s) >= MIN_HIGH_CREDIT);
+  const hasHighCredit = subjects.some(s => parseCredit(s.tmNum) >= MIN_HIGH_CREDIT);
   return hasHighCredit ? [...FilterDomains.credits, MIN_HIGH_CREDIT] : FilterDomains.credits;
 }
 
 export function getGradeOptions(subjects: Subject[]): Grade[] {
   const hasFifthGrade = subjects.some(s => Number(s.studentYear) === 5);
   return hasFifthGrade ? [...FilterDomains.grades, 5] : FilterDomains.grades;
-}
-
-export function getCredit(subject: Subject) {
-  return Number(subject.tmNum?.split('/')[0]);
 }
 
 export function getDayOptions(subjects: Subject[]) {
