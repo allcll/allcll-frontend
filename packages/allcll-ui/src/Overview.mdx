@@ -1,0 +1,217 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs/blocks';
+import { colors } from '../colors';
+import { Z_INDEX } from '../zIndex';
+
+<Meta title="Overview" />
+
+export const TAILWIND_GRAY = {
+  50: '#F9FAFB',
+  100: '#F3F4F6',
+  200: '#E5E7EB',
+  300: '#D1D5DB',
+  400: '#9CA3AF',
+  500: '#6B7280',
+  600: '#4B5563',
+  700: '#374151',
+  800: '#1F2937',
+  900: '#111827',
+};
+
+export const TAILWIND_GREEN = {
+  50: '#F0FDF4',
+  100: '#DCFCE7',
+  200: '#BBF7D0',
+  300: '#86EFAC',
+  400: '#4ADE80',
+  500: '#22C55E',
+  600: '#16A34A',
+  700: '#15803D',
+  800: '#166534',
+  900: '#14532D',
+};
+
+export const TAILWIND_YELLOW = {
+  50: '#FEFCE8',
+  100: '#FEF9C3',
+  200: '#FEF08A',
+  300: '#FDE047',
+  400: '#FACC15',
+  500: '#EAB308',
+  600: '#CA8A04',
+  700: '#A16207',
+  800: '#854D0E',
+  900: '#713F12',
+};
+
+export const Z_INDEX_USAGE = {
+  content: 'sticky 표 헤더, 사이드바처럼 흐름 위로 살짝 띄우는 요소',
+  loading: '영역 위를 덮는 로딩 표시',
+  elevated: '메인 배너, 강조된 시간표 칸',
+  popover: '트리거 아래에 뜨는 팝오버',
+  overlay: '메뉴, 드로어 뒤를 덮는 어두운 배경',
+  header: '상단 고정 헤더',
+  floating: '드롭다운 패널, 드로어, 떠 있는 버튼',
+  modal: '앱 자체 중앙 모달',
+  bottomSheet: '바텀 시트, 전체 화면 상세 창',
+  dialog: 'Dialog 컴포넌트',
+  dropdown: 'Dialog 위에서도 보여야 하는 선택 목록',
+  toast: '토스트 알림',
+};
+
+export const shades = palette => Object.fromEntries(Object.entries(palette).filter(([key]) => key !== 'DEFAULT'));
+
+export const CATEGORIES = [
+  {
+    name: 'Actions',
+    items: [
+      ['Button', '동작을 실행하는 버튼'],
+      ['IconButton', '아이콘만 있는 버튼'],
+      ['TextLink', '문장 안 링크'],
+      ['Chip', '선택을 켜고 끄는 칩'],
+    ],
+  },
+  {
+    name: 'Form',
+    items: [
+      ['Input', '기본 입력창'],
+      ['TextField', '라벨이 있는 입력 필드'],
+      ['Textarea', '여러 줄 입력'],
+      ['Select', '목록에서 하나를 고르는 선택 상자'],
+      ['SearchableSelect', '검색해서 고르는 선택 상자'],
+      ['Checkbox', '여러 개를 고르는 체크박스'],
+      ['Toggle', '켜고 끄는 스위치'],
+      ['SegmentedControl', '선택지 중 하나를 바로 고르는 전환'],
+      ['Label', '입력 요소 위에 붙는 이름'],
+      ['Listbox', '여러 선택지 중 하나를 고르는 목록'],
+      ['RangeSlider', '범위를 고르는 슬라이더', false],
+    ],
+  },
+  {
+    name: 'Feedback',
+    items: [
+      ['Banner', '페이지 상단 안내 띠'],
+      ['Toast', '잠깐 떴다 사라지는 알림'],
+      ['Tooltip', '보조 설명 말풍선'],
+      ['EmptyState', '내용이 없을 때 안내'],
+      ['LoadingState', '불러오는 중 안내'],
+      ['Spinner', '작은 로딩 표시'],
+      ['Skeleton', '자리를 미리 잡는 로딩 표시'],
+    ],
+  },
+  {
+    name: 'Overlay',
+    items: [
+      ['Dialog', '화면 위에 뜨는 창'],
+      ['Popover', '버튼 아래에 뜨는 패널'],
+      ['BottomSheet', '화면 아래에서 올라오는 시트', false],
+    ],
+  },
+  {
+    name: 'Navigation',
+    items: [
+      ['Tabs', '같은 화면 안 패널 전환'],
+      ['Pagination', '목록 페이지 이동'],
+      ['TabNav', '주소가 바뀌는 탭 메뉴'],
+    ],
+  },
+  {
+    name: 'Display',
+    items: [
+      ['Badge', '상태나 수치를 보여주는 작은 표시'],
+      ['Card', '내용을 묶는 상자'],
+      ['Heading', '페이지나 구역의 제목'],
+      ['SupportingText', '제목이나 입력 요소 아래 설명'],
+      ['Table', '표', false],
+      ['Accordion', '펼치고 접는 영역', false],
+    ],
+  },
+  {
+    name: 'Layout',
+    items: [
+      ['Container', '페이지 최대 폭과 좌우 여백', false],
+      ['Flex', '가로, 세로 정렬 묶음', false],
+      ['Grid', '열 단위 배치', false],
+      ['RowSlots', '왼쪽, 가운데, 오른쪽 칸으로 나눈 한 줄', false],
+      ['RowMain', 'RowLeft, RowCenter, RowRight 칸을 직접 배치하는 줄', false],
+    ],
+  },
+];
+
+export const docsHref = (category, name) =>
+  `./?path=/docs/${category.toLowerCase()}-${name.toLowerCase()}--docs`;
+
+# ALLCLL UI
+
+ALLCLL 서비스에 사용하는 디자인 시스템입니다. 화면에서 반복되는 요소는 이곳의 컴포넌트를 먼저 찾아 사용하고, 없으면 이곳에 추가해 서비스 전반이 같은 모양을 유지하도록 합니다.
+
+```tsx
+import { Button, Pagination, CheckmarkIcon } from '@allcll/allcll-ui';
+```
+
+- 스타일은 Tailwind CSS 4를 사용하고, 색상과 z-index는 패키지 루트의 `colors.ts`, `zIndex.ts`에서 관리합니다.
+- 아이콘은 lucide-react를 서비스에 맞는 이름으로 다시 내보내어 사용합니다(`src/icons`).
+
+## 색상 토큰
+
+`primary`, `danger`, `text`는 `colors.ts`에서 정의한 ALLCLL 색상이고, 이외의 색상은 Tailwind 기본 팔레트를 사용합니다.
+
+<ColorPalette>
+  <ColorItem title="primary" subtitle="주요 동작, 선택 상태" colors={shades(colors.primary)} />
+  <ColorItem title="danger" subtitle="오류, 삭제" colors={colors.danger} />
+  <ColorItem title="gray" subtitle="본문, 테두리, 배경 (Tailwind 기본)" colors={TAILWIND_GRAY} />
+  <ColorItem title="text" subtitle="제목, 진한 본문" colors={colors.text} />
+</ColorPalette>
+
+## z-index 단계
+
+겹침 순서는 `zIndex.ts`의 단계로만 정합니다. Tailwind 클래스는 `z-content`, `z-modal`처럼 쓰고, `z-[123]` 같은 임의 값은 사용하지 않습니다. 새 단계가 필요하면 `zIndex.ts`에 먼저 추가합니다.
+
+<table>
+  <thead>
+    <tr>
+      <th>단계</th>
+      <th>값</th>
+      <th>용도</th>
+    </tr>
+  </thead>
+  <tbody>
+    {Object.entries(Z_INDEX).map(([layer, value]) => (
+      <tr key={layer}>
+        <td>
+          <code>{layer}</code>
+        </td>
+        <td>{value}</td>
+        <td>{Z_INDEX_USAGE[layer]}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+## 컴포넌트
+
+이름을 누르면 문서로 이동합니다. 회색 이름은 아직 문서가 없는 컴포넌트입니다.
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 16 }}>
+  {CATEGORIES.map(category => (
+    <section
+      key={category.name}
+      style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: '12px 16px' }}
+    >
+      <h3 style={{ margin: '0 0 8px', fontSize: 14 }}>{category.name}</h3>
+      <ul style={{ margin: 0, paddingLeft: 0, listStyle: 'none' }}>
+        {category.items.map(([name, description, hasDocs = true]) => (
+          <li key={name} style={{ margin: '6px 0', fontSize: 13, lineHeight: 1.5 }}>
+            {hasDocs ? (
+              <a href={docsHref(category.name, name)} target="_top" style={{ fontSize: 13 }}>
+                {name}
+              </a>
+            ) : (
+              <span style={{ color: '#9ca3af', fontSize: 13 }}>{name}</span>
+            )}
+            <span style={{ color: '#6b7280', fontSize: 13 }}> {description}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</div>
