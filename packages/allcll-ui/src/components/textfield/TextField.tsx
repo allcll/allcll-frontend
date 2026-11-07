@@ -46,7 +46,7 @@ function TextField({
           required={required}
           value={value}
           {...rest}
-          className={`w-full pl-3 ${paddingRight} ${FIELD_BOX_CLASS} ${getSizeClass(size)}`}
+          className={`w-full pl-3 ${paddingRight} ${FIELD_BOX_CLASS} aria-invalid:border-danger-500 aria-invalid:focus:border-danger-500 ${getSizeClass(size)}`}
         />
         {onClear && value && (
           <IconButton
