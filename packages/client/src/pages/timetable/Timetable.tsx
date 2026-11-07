@@ -12,7 +12,7 @@ function Timetable() {
   const { currentSemester } = useTimetableSemester();
 
   return (
-    <PageContainer fluid>
+    <PageContainer>
       <Helmet>
         <title>ALLCLL | 시간표</title>
         <meta name="description" content="나만의 시간표를 만들고, 관리해보세요!" />
