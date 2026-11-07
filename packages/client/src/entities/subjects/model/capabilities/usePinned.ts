@@ -40,15 +40,17 @@ export const useAddPinned = () => {
         queryClient.setQueryData<PinnedSubjectResponse>(['pinnedSubjects'], {
           subjects: [...previousPined, newPin],
         });
-        previousPined.push(newPin);
       }
-
-      return { previousUsers: previousPined };
     },
-    onSuccess: () => {
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['pinnedSubjects'] }).then();
     },
-    onError: error => {
+    onError: (error, subjectId) => {
+      queryClient.setQueryData<PinnedSubjectResponse>(
+        ['pinnedSubjects'],
+        prev => prev && { subjects: prev.subjects.filter(subject => subject.subjectId !== subjectId) },
+      );
+
       const addToast = useToastNotification.getState().addToast;
       try {
         const e = JSON.parse(error.message);
@@ -79,7 +81,10 @@ export const useRemovePinned = () => {
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['pinnedSubjects'] }).then();
     },
-    onError: error => {
+    onError: (error, _subjectId, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData<PinnedSubjectResponse>(['pinnedSubjects'], context.previousData);
+      }
       console.error('Error removing pinned subject:', error);
     },
   });
