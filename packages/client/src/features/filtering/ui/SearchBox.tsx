@@ -12,8 +12,8 @@ function SearchBox({ onDelete, ...props }: ISearchBox) {
       leftIcon={
         <IconButton
           variant="plain"
+          label="검색창으로 이동"
           icon={<SearchIcon className="w-4 h-4 text-gray-400" />}
-          className="absolute left-3 top-1/2 -translate-y-1/2"
           onClick={e => {
             e.preventDefault();
             ref.current?.focus();
@@ -25,8 +25,7 @@ function SearchBox({ onDelete, ...props }: ISearchBox) {
           <IconButton
             variant="plain"
             icon={<CloseIcon className="w-4 h-4 text-gray-400" />}
-            aria-label="입력 내용 삭제"
-            className="absolute right-3 top-1/2 -translate-y-1/2"
+            label="입력 내용 삭제"
             onClick={() => {
               onDelete();
               ref.current?.focus();

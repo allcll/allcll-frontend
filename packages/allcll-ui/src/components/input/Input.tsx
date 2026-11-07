@@ -16,11 +16,11 @@ export const Input = forwardRef<HTMLInputElement, IInput>(function Input(
 
   return (
     <div className={`relative items-center ${fullWidth ? 'flex w-full' : 'inline-flex'}`}>
-      {leftIcon && <div>{leftIcon}</div>}
+      {leftIcon && <div className="absolute inset-y-0 left-3 flex items-center">{leftIcon}</div>}
 
       <input ref={ref} type="text" className={`${FIELD_CLASS} ${paddingLeft} ${paddingRight} ${className}`} {...rest} />
 
-      {rightIcon && <div>{rightIcon}</div>}
+      {rightIcon && <div className="absolute inset-y-0 right-3 flex items-center">{rightIcon}</div>}
     </div>
   );
 });
