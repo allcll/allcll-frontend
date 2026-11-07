@@ -1,6 +1,16 @@
 import { useState } from 'react';
 import YouTube from 'react-youtube';
-import { Button, Checkbox, Dialog, Flex, Heading, SupportingText, ChevronDownIcon } from '@allcll/allcll-ui';
+import {
+  Button,
+  Checkbox,
+  Dialog,
+  Flex,
+  Heading,
+  IconButton,
+  SupportingText,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from '@allcll/allcll-ui';
 import useTutorialStore from '@/features/simulation/model/useTutorialStore.ts';
 import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
 import useMobile from '@/shared/lib/useMobile.ts';
@@ -62,6 +72,8 @@ function TutorialModal() {
   };
 
   const currentVideo = tutorialVideos[currentIndex];
+  const hasPrevious = currentIndex > 0;
+  const hasNext = currentIndex < tutorialVideos.length - 1;
 
   const handleCloseModal = () => {
     closeModal();
@@ -97,13 +109,21 @@ function TutorialModal() {
 
         <div className="mt-4 flex flex-col justify-center items-center gap-2">
           <Flex justify="justify-center" align="items-center" className="gap-4">
-            <Button variant="text" size="medium" aria-label="이전 튜토리얼" onClick={goToPreviousTutorial}>
-              {currentIndex !== 0 && <ChevronDownIcon className="size-5! transform rotate-90 text-gray-700" />}
-            </Button>
+            <IconButton
+              label="이전 튜토리얼"
+              icon={<ChevronLeftIcon className="w-5 h-5" />}
+              onClick={goToPreviousTutorial}
+              disabled={!hasPrevious}
+              className={`p-2 ${hasPrevious ? '' : 'invisible'}`}
+            />
             <Heading level={3}>{currentVideo.title}</Heading>
-            <Button variant="text" size="medium" aria-label="다음 튜토리얼" onClick={goToNextTutorial}>
-              {currentIndex < 3 && <ChevronDownIcon className="size-5! transform -rotate-90 text-gray-700" />}
-            </Button>
+            <IconButton
+              label="다음 튜토리얼"
+              icon={<ChevronRightIcon className="w-5 h-5" />}
+              onClick={goToNextTutorial}
+              disabled={!hasNext}
+              className={`p-2 ${hasNext ? '' : 'invisible'}`}
+            />
           </Flex>
           <SupportingText>
             각 영상을 통해 연습 과목 선택, 연습 시작 방법, 연습 종료 및 결과 분석 방법을 배울 수 있습니다.
