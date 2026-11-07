@@ -15,7 +15,7 @@ const SIZE_CLASS: Record<DialogSize, string> = {
 interface IDialogMain {
   children: React.ReactNode;
   isOpen?: boolean;
-  title?: string;
+  title: string;
   size?: DialogSize;
   onClose: () => void;
 }
