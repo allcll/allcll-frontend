@@ -5,6 +5,7 @@ import { useOverlayStore } from '@/shared/model/useOverlayStore.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
 import DeleteConfirmationActions from '@/features/timetable/ui/DeleteConfirmationActions.tsx';
 import useDeleteConfirmation from '@/features/timetable/lib/useDeleteConfirmation.ts';
+import { parseCredit } from '@/shared/lib/parser.ts';
 
 function ScheduleInfoModal() {
   const semester = useSemesterParam();
@@ -35,7 +36,7 @@ function ScheduleInfoModal() {
           </Flex>
           <p>
             {findSubjectById?.manageDeptNm} {findSubjectById?.studentYear + '학년'}{' '}
-            <span className="text-primary-500">{findSubjectById?.tmNum[0] + '학점'}</span>
+            <span className="text-primary-500">{parseCredit(findSubjectById?.tmNum) + '학점'}</span>
           </p>
         </Flex>
       </Dialog.Content>

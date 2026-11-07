@@ -25,6 +25,7 @@ import {
 } from '@/features/simulation/lib/simulation.ts';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 import { RECENT_SEMESTERS } from '@/entities/semester/api/semester';
+import { parseCredit } from '@/shared/lib/parser.ts';
 
 function Simulation() {
   const openModal = useSimulationModalStore(state => state.openModal);
@@ -75,8 +76,7 @@ function Simulation() {
   }, [currentSimulation.simulationStatus]);
 
   const totalCredits = currentSimulation.registeredSubjects.reduce((acc, subject) => {
-    const firstNumber = subject.tm_num.split('/')[0];
-    return acc + Number.parseInt(firstNumber, 10);
+    return acc + parseCredit(subject.tm_num);
   }, 0);
 
   return (
