@@ -125,7 +125,7 @@ export function getDayOptions(subjects: Subject[]) {
 }
 
 export function hasLessonOn(lesnTime: string | undefined, day: Day) {
-  return (lesnTime?.match(/[월화수목금토일]+(?=\d)/g) ?? []).some(days => days.includes(day));
+  return (lesnTime?.match(/(?<![월화수목금토일])[월화수목금토일]+(?=\d)/g) ?? []).some(days => days.includes(day));
 }
 
 function unique<T>(array: T[]) {
