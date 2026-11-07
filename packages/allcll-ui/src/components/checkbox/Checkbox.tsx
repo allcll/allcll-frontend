@@ -1,4 +1,4 @@
-import { useId, type ComponentPropsWithRef, type KeyboardEvent } from 'react';
+import type { ComponentPropsWithRef, KeyboardEvent } from 'react';
 import { CheckmarkIcon } from '../../icons';
 
 interface ICheckbox extends ComponentPropsWithRef<'input'> {
@@ -6,9 +6,6 @@ interface ICheckbox extends ComponentPropsWithRef<'input'> {
 }
 
 function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
-  const reactId = useId();
-  const inputId = label ? `checkbox-${label}` : `checkbox-${reactId}`;
-
   const inputClass = `w-4 h-4 rounded-sm border flex-shrink-0 appearance-none flex items-center justify-center
     ${getCheckboxClass(!!rest.checked)}`;
 
@@ -22,17 +19,9 @@ function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
   };
 
   return (
-    <label htmlFor={inputId} className="flex flex-row items-center gap-1.5 text-sm cursor-pointer select-none">
+    <label className="flex flex-row items-center gap-1.5 text-sm cursor-pointer select-none has-disabled:cursor-not-allowed has-disabled:opacity-40">
       <div className="relative w-4 h-4">
-        <input
-          id={inputId}
-          type="checkbox"
-          aria-checked={rest.checked}
-          aria-label={label ? undefined : 'toggle checkbox'}
-          className={inputClass}
-          onKeyDown={handleKeyDown}
-          {...rest}
-        />
+        <input type="checkbox" {...rest} className={inputClass} onKeyDown={handleKeyDown} />
         {rest.checked && (
           <CheckmarkIcon className="text-primary-500 w-3 h-3 absolute inset-0 m-auto pointer-events-none" />
         )}
