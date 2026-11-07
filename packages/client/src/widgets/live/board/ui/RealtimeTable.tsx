@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { TableSettingsIcon, Card, Flex, Heading, IconButton } from '@allcll/allcll-ui';
+import { TableSettingsIcon, Card, Flex, Heading, IconButton, Table } from '@allcll/allcll-ui';
 
 import SkeletonRows from '@/shared/ui/SkeletonRows.tsx';
 import { getTimeDiffString } from '@/shared/lib/stringFormats.ts';
@@ -53,24 +53,18 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
         />
       </Flex>
 
-      <div className="overflow-x-auto">
-        <table className="w-full bg-white rounded-lg text-sm">
-          <thead>
-            <tr className="bg-gray-50 sticky top-0 z-content text-nowrap">
-              {tableTitles
-                .filter(t => t.visible)
-                .map(({ title }) => (
-                  <th key={title} className="px-4 py-2">
-                    {title}
-                  </th>
-                ))}
-            </tr>
-          </thead>
-          <tbody>
-            <SubjectBody tableTitles={tableTitles} />
-          </tbody>
-        </table>
-      </div>
+      <Table>
+        <Table.Head sticky>
+          {tableTitles
+            .filter(t => t.visible)
+            .map(({ title }) => (
+              <Table.HeaderCell key={title}>{title}</Table.HeaderCell>
+            ))}
+        </Table.Head>
+        <Table.Body>
+          <SubjectBody tableTitles={tableTitles} />
+        </Table.Body>
+      </Table>
 
       <TableColorInfo />
     </Card>
@@ -148,7 +142,7 @@ function SubjectRow({ subject, HeadTitles }: Readonly<{ subject: SseSubject; Hea
 
   const isDeleted = subject.isDeleted;
   const isEng = subject.curiLangNm === '영어';
-  const bgColor = seatChanged ? 'bg-blue-50' : isDeleted ? 'bg-gray-100' : isEng ? 'bg-green-50' : '';
+  const bgColor = seatChanged ? 'bg-primary-50' : isDeleted ? 'bg-gray-100' : isEng ? 'bg-green-50' : '';
   const crawledAt = new Date(subject.queryTime ?? 0).getTime();
 
   useEffect(() => {
@@ -161,8 +155,8 @@ function SubjectRow({ subject, HeadTitles }: Readonly<{ subject: SseSubject; Hea
   }, [subject.seat]);
 
   return (
-    <tr
-      className={`border-t border-gray-200 text-black transition-colors duration-500 text-nowrap ${bgColor}`}
+    <Table.Row
+      className={`transition-colors duration-500 ${bgColor}`}
       data-testid="crawl-row"
       data-crawled-at={crawledAt}
     >
@@ -170,23 +164,19 @@ function SubjectRow({ subject, HeadTitles }: Readonly<{ subject: SseSubject; Hea
         switch (key) {
           case 'seat':
             return (
-              <td key={key} className="px-4 py-2 text-center">
+              <Table.Cell key={key}>
                 <span className={'px-3 py-1 rounded-full text-xs font-bold ' + getSeatColor(subject.seat ?? -1)}>
                   {subject[key]}
                 </span>
-              </td>
+              </Table.Cell>
             );
           case 'queryTime':
             return <QueryTimeTd key={key} queryTime={subject.queryTime} />;
           default:
-            return (
-              <td key={key} className="px-4 py-2 text-center">
-                {subject[key as keyof SseSubject]}
-              </td>
-            );
+            return <Table.Cell key={key}>{subject[key as keyof SseSubject]}</Table.Cell>;
         }
       })}
-    </tr>
+    </Table.Row>
   );
 }
 
@@ -194,9 +184,9 @@ function QueryTimeTd({ queryTime }: Readonly<{ queryTime?: string }>) {
   useTick();
 
   return (
-    <td className="w-18 px-4 py-2 text-center text-xs">
+    <Table.Cell className="w-18 text-xs">
       <span className="text-gray-500">{getTimeDiffString(queryTime)}</span>
-    </td>
+    </Table.Cell>
   );
 }
 

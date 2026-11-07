@@ -3,7 +3,7 @@
  */
 import { useEffect, useState } from 'react';
 import useNotificationInstruction from '../model/useNotificationInstruction.ts';
-import { SettingsAdjustIcon, Dialog } from '@allcll/allcll-ui';
+import { Button, SettingsAdjustIcon, Dialog, Tabs, Heading } from '@allcll/allcll-ui';
 
 // --- OS/Browser Detection Utilities ---
 
@@ -42,36 +42,31 @@ function NotificationInstructionsModal() {
 
   return (
     <Dialog title="알림 설정 방법" onClose={onClose} isOpen={isOpen}>
-      <div className="p-4 text-sm text-gray-700 w-lg max-w-full">
+      <Dialog.Content className="text-sm text-gray-700 w-lg max-w-full">
         {page === 0 && <BrowserPermissionGuide />}
         {page === 1 && <SystemPermissionGuide />}
+      </Dialog.Content>
 
-        <div className="flex justify-between items-center mt-6">
-          <span className="text-xs text-gray-500">
-            {page + 1} / {lastPage + 1}
-          </span>
-          <div className="flex justify-end gap-2">
-            {page > 0 && (
-              <button className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300" onClick={() => setPage(page - 1)}>
-                이전
-              </button>
-            )}
-            {page < lastPage && (
-              <button
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                onClick={() => setPage(page + 1)}
-              >
-                다음
-              </button>
-            )}
-            {page === lastPage && (
-              <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={onClose}>
-                닫기
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
+      <Dialog.Footer>
+        <span className="mr-auto self-center text-xs text-gray-500">
+          {page + 1} / {lastPage + 1}
+        </span>
+        {page > 0 && (
+          <Button variant="solid" color="gray" size="medium" onClick={() => setPage(page - 1)}>
+            이전
+          </Button>
+        )}
+        {page < lastPage && (
+          <Button variant="solid" size="medium" onClick={() => setPage(page + 1)}>
+            다음
+          </Button>
+        )}
+        {page === lastPage && (
+          <Button variant="solid" size="medium" onClick={onClose}>
+            닫기
+          </Button>
+        )}
+      </Dialog.Footer>
     </Dialog>
   );
 }
@@ -84,23 +79,31 @@ function BrowserPermissionGuide() {
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="font-bold text-base text-gray-800">1단계: 브라우저 알림 권한 설정</h3>
+        <Heading level={3}>1단계: 브라우저 알림 권한 설정</Heading>
         <p className="mt-1">브라우저에서 'ALLCLL' 사이트의 알림을 허용해야 합니다.</p>
       </div>
 
-      <div className="flex border-b border-gray-500">
-        <TabButton name="Chrome" id="chrome" selected={browser} onClick={setBrowser} />
-        <TabButton name="Firefox" id="firefox" selected={browser} onClick={setBrowser} />
-        <TabButton name="Safari" id="safari" selected={browser} onClick={setBrowser} />
-        <TabButton name="Edge" id="edge" selected={browser} onClick={setBrowser} />
-      </div>
+      <Tabs value={browser} onValueChange={setBrowser} className="space-y-4">
+        <Tabs.List aria-label="브라우저 선택">
+          <Tabs.Tab value="chrome">Chrome</Tabs.Tab>
+          <Tabs.Tab value="firefox">Firefox</Tabs.Tab>
+          <Tabs.Tab value="safari">Safari</Tabs.Tab>
+          <Tabs.Tab value="edge">Edge</Tabs.Tab>
+        </Tabs.List>
 
-      <div className="p-2 bg-gray-50 rounded-md h-64 overflow-y-auto">
-        {browser === 'chrome' && <ChromeGuide />}
-        {browser === 'firefox' && <FirefoxGuide />}
-        {browser === 'safari' && <SafariGuide />}
-        {browser === 'edge' && <EdgeGuide />}
-      </div>
+        <GuidePanel value="chrome">
+          <ChromeGuide />
+        </GuidePanel>
+        <GuidePanel value="firefox">
+          <FirefoxGuide />
+        </GuidePanel>
+        <GuidePanel value="safari">
+          <SafariGuide />
+        </GuidePanel>
+        <GuidePanel value="edge">
+          <EdgeGuide />
+        </GuidePanel>
+      </Tabs>
     </div>
   );
 }
@@ -111,49 +114,42 @@ function SystemPermissionGuide() {
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="font-bold text-base text-gray-800">2단계: OS 및 모바일 기기 설정</h3>
+        <Heading level={3}>2단계: OS 및 모바일 기기 설정</Heading>
         <p className="mt-1">일부 기기에서는 OS의 알림도 허용해야 합니다.</p>
       </div>
 
-      <div className="flex border-b border-gray-500">
-        <TabButton name="macOS" id="macos" selected={os} onClick={setOs} />
-        <TabButton name="Windows" id="windows" selected={os} onClick={setOs} />
-        <TabButton name="모바일" id="mobile" selected={os} onClick={setOs} />
-      </div>
+      <Tabs value={os} onValueChange={setOs} className="space-y-4">
+        <Tabs.List aria-label="기기 선택">
+          <Tabs.Tab value="macos">macOS</Tabs.Tab>
+          <Tabs.Tab value="windows">Windows</Tabs.Tab>
+          <Tabs.Tab value="mobile">모바일</Tabs.Tab>
+        </Tabs.List>
 
-      <div className="p-2 bg-gray-50 rounded-md h-64 overflow-y-auto">
-        {os === 'macos' && <MacGuide />}
-        {os === 'windows' && <WindowsGuide />}
-        {os === 'mobile' && <MobileGuide />}
-      </div>
+        <GuidePanel value="macos">
+          <MacGuide />
+        </GuidePanel>
+        <GuidePanel value="windows">
+          <WindowsGuide />
+        </GuidePanel>
+        <GuidePanel value="mobile">
+          <MobileGuide />
+        </GuidePanel>
+      </Tabs>
     </div>
   );
 }
 
 // --- Helper Components ---
 
-const TabButton = ({
-  name,
-  id,
-  selected,
-  onClick,
-}: {
-  name: string;
-  id: string;
-  selected: string;
-  onClick: (id: string) => void;
-}) => (
-  <button
-    className={`px-4 py-2 text-sm ${selected === id ? 'border-b-2 border-blue-500 text-blue-600 font-semibold' : 'text-gray-500 font-medium'}`}
-    onClick={() => onClick(id)}
-  >
-    {name}
-  </button>
+const GuidePanel = ({ value, children }: { value: string; children: React.ReactNode }) => (
+  <Tabs.Panel value={value} className="p-2 bg-gray-50 rounded-md h-64 overflow-y-auto">
+    {children}
+  </Tabs.Panel>
 );
 
 const GuideStep = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <div className="space-y-1">
-    <h4 className="font-semibold text-gray-800">{title}</h4>
+    <Heading level={4}>{title}</Heading>
     <div className="pl-2 space-y-1 text-gray-600">{children}</div>
   </div>
 );
@@ -175,7 +171,7 @@ const ChromeGuide = () => (
       <ol className="list-decimal list-inside">
         <li>오른쪽 위 점 3개(⋮) 메뉴 &gt; '설정'으로 이동합니다.</li>
         <li>'개인정보 및 보안' &gt; '사이트 설정' &gt; '알림'으로 이동합니다.</li>
-        <li>'알림 전송이 허용됨' 섹션에서 '추가' 버튼을 누르고 'allcll.com'을 입력합니다.</li>
+        <li>'알림 전송이 허용됨' 섹션에서 '추가' 버튼을 누르고 'allcll.kr'을 입력합니다.</li>
       </ol>
     </GuideStep>
   </div>
@@ -193,7 +189,7 @@ const EdgeGuide = () => (
       <ol className="list-decimal list-inside">
         <li>오른쪽 위 점 3개(⋯) 메뉴 &gt; '설정'으로 이동합니다.</li>
         <li>'쿠키 및 사이트 권한' &gt; '알림'으로 이동합니다.</li>
-        <li>'허용' 섹션에서 '추가' 버튼을 누르고 'allcll.com'을 입력합니다.</li>
+        <li>'허용' 섹션에서 '추가' 버튼을 누르고 'allcll.kr'을 입력합니다.</li>
       </ol>
     </GuideStep>
   </div>
@@ -212,7 +208,7 @@ const FirefoxGuide = () => (
         <li>오른쪽 위 줄 3개(≡) 메뉴 &gt; '설정'으로 이동합니다.</li>
         <li>'개인정보 및 보안' 패널에서 '권한' 섹션으로 스크롤합니다.</li>
         <li>'알림' 옆의 '설정...' 버튼을 클릭합니다.</li>
-        <li>'allcll.com'을 찾아 상태를 '허용'으로 변경하고 '변경 내용 저장'을 누릅니다.</li>
+        <li>'allcll.kr'을 찾아 상태를 '허용'으로 변경하고 '변경 내용 저장'을 누릅니다.</li>
       </ol>
     </GuideStep>
   </div>
@@ -225,7 +221,7 @@ const SafariGuide = () => (
         <li>화면 상단 메뉴 막대에서 'Safari' &gt; '설정...' (또는 '환경설정...')으로 이동합니다.</li>
         <li>'웹사이트' 탭을 클릭합니다.</li>
         <li>왼쪽 메뉴에서 '알림'을 선택합니다.</li>
-        <li>목록에서 'allcll.com'을 찾아 권한을 '허용'으로 변경합니다.</li>
+        <li>목록에서 'allcll.kr'을 찾아 권한을 '허용'으로 변경합니다.</li>
       </ol>
     </GuideStep>
   </div>

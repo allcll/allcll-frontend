@@ -1,20 +1,26 @@
 // Todo:  widget/timetable로 옮기기
 import GenericMultiSelectFilter from '../../../features/filtering/ui/GenericMultiSelectFilter.tsx';
-import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
+import {
+  FilterDomains,
+  getCategories,
+  getCreditOptions,
+  getDayOptions,
+  getGradeOptions,
+} from '@/features/filtering/lib/filterDomains.ts';
 import { useScheduleSearchStore } from '@/features/filtering/model/useFilterStore.ts';
-import { useState } from 'react';
+import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
 import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
 import DepartmentFilter from '../../../features/filtering/ui/DepartmentFilter.tsx';
 import FilterDelete from '../../../features/filtering/ui/FilterDelete.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import { Flex } from '@allcll/allcll-ui';
-import DetailFilterModal from '@/features/filtering/ui/DetailFilterModal.tsx';
+import { useOverlayStore } from '@/shared/model/useOverlayStore.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam.ts';
 
 function ScheduleFilter() {
   const semester = useSemesterParam();
 
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const openOverlay = useOverlayStore(state => state.openOverlay);
   const filters = useScheduleSearchStore(state => state.filters);
   const setFilters = useScheduleSearchStore(state => state.setFilter);
   const resetFilter = useScheduleSearchStore(state => state.resetFilters);
@@ -26,26 +32,26 @@ function ScheduleFilter() {
 
   return (
     <Flex direction="flex-wrap" align="items-center" gap="gap-2" className="w-full">
-      <FilteringButton handleOpenFilter={() => setIsFilterModalOpen(true)} />
       <DepartmentFilter setFilter={setFilters} selectedValue={filters.department} />
 
-      <GenericMultiSelectFilter
-        filterKey="days"
-        options={FilterDomains.days}
-        selectedValues={filters.days ?? []}
+      <DayFilter
+        options={getDayOptions(subjects ?? [])}
+        days={filters.days ?? []}
+        time={filters.time}
+        dayTimes={filters.dayTimes}
         setFilter={setFilters}
       />
 
       <GenericMultiSelectFilter
         filterKey="credits"
-        options={FilterDomains.credits}
+        options={getCreditOptions(subjects ?? [])}
         selectedValues={filters.credits ?? []}
         setFilter={setFilters}
       />
 
       <GenericMultiSelectFilter
         filterKey="grades"
-        options={FilterDomains.grades}
+        options={getGradeOptions(subjects ?? [])}
         selectedValues={filters.grades ?? []}
         setFilter={setFilters}
       />
@@ -77,10 +83,8 @@ function ScheduleFilter() {
         />
       )}
 
+      <FilteringButton handleOpenFilter={() => openOverlay('filter')} />
       <FilterDelete filters={filters} resetFilter={resetFilter} />
-      {isFilterModalOpen && (
-        <DetailFilterModal filterStore={useScheduleSearchStore} onClose={() => setIsFilterModalOpen(false)} />
-      )}
     </Flex>
   );
 }

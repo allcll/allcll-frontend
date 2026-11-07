@@ -1,25 +1,28 @@
 import { useMemo, useState } from 'react';
 import PageHeader from '@/components/common/PageHeader';
-import ReviewList from '@/components/reviews/ReviewList';
+import ReviewList, { type IReviewSort, type ReviewSortKey } from '@/components/reviews/ReviewList';
 import ReviewStats from '@/components/reviews/ReviewStats';
-import { useAdminReviews, OPERATION_TYPE_LABEL } from '@/hooks/server/useAdminReviews';
+import { useAdminReviews } from '@/hooks/server/useAdminReviews';
 import type { Review } from '@/hooks/server/useAdminReviews';
-import { Filtering, CheckboxAdapter } from '@allcll/common';
+import {
+  Filtering,
+  CheckboxAdapter,
+  formatMultiSelectedLabel,
+  OPERATION_TYPE_LABEL,
+  OPERATION_TYPES,
+  type OperationType,
+} from '@allcll/common';
 import MultiSelectFilterOption from '@/components/common/MultiSelectFilterOption';
-import { Button, Flex, ListboxOption } from '@allcll/allcll-ui';
+import { Flex } from '@allcll/allcll-ui';
 
-const DOMAIN_OPTIONS = Object.entries(OPERATION_TYPE_LABEL).map(([value, label]) => ({ label, value }));
-const RATING_OPTIONS = [1, 2, 3].map(r => ({ label: `${r}점`, value: String(r) }));
+const getRatingLabel = (rate: string) => `${rate}점`;
+const RATING_OPTIONS = ['1', '2', '3'].map(value => ({ label: getRatingLabel(value), value }));
+const ANONYMOUS_YEAR = 'anonymous';
 
-type ReviewSortKey = 'latest' | 'oldest' | 'studentId' | 'rateDesc' | 'rateAsc';
+const getStudentYear = (studentId: string) => (/^\d{8}$/.test(studentId) ? studentId.substring(0, 2) : ANONYMOUS_YEAR);
+const getYearLabel = (year: string) => (year === ANONYMOUS_YEAR ? '비로그인' : `${year}학번`);
 
 type ReviewComparator = (a: Review, b: Review) => number;
-
-interface IReviewSortOption {
-  value: ReviewSortKey;
-  label: string;
-  compare: ReviewComparator;
-}
 
 // createdAt 누락 데이터는 정렬 방향과 무관하게 항상 맨 뒤로. ISO 문자열은 사전순 = 시간순.
 const compareByCreatedAt =
@@ -31,46 +34,72 @@ const compareByCreatedAt =
     return direction === 'asc' ? compared : -compared;
   };
 
-const SORT_OPTIONS: IReviewSortOption[] = [
-  { value: 'latest', label: '최신순', compare: compareByCreatedAt('desc') },
-  { value: 'oldest', label: '오래된순', compare: compareByCreatedAt('asc') },
-  { value: 'studentId', label: '학번순', compare: (a, b) => a.studentId.localeCompare(b.studentId) },
-  { value: 'rateDesc', label: '평점 높은순', compare: (a, b) => b.rate - a.rate },
-  { value: 'rateAsc', label: '평점 낮은순', compare: (a, b) => a.rate - b.rate },
-];
+const DEFAULT_SORT_DIRECTION: Record<ReviewSortKey, IReviewSort['direction']> = {
+  createdAt: 'desc',
+  studentId: 'asc',
+  rate: 'desc',
+};
+
+const getReviewComparator = ({ key, direction }: IReviewSort): ReviewComparator => {
+  if (key === 'createdAt') return compareByCreatedAt(direction);
+  const sign = direction === 'asc' ? 1 : -1;
+  if (key === 'rate') return (a, b) => sign * (a.rate - b.rate);
+  return (a, b) => sign * a.studentId.localeCompare(b.studentId);
+};
 
 function Reviews() {
-  const { data: reviews = [], isLoading, isFetching, isError, refetch } = useAdminReviews();
-  const [selectedOperationTypes, setSelectedOperationTypes] = useState<string[]>([]);
+  const { data: reviews = [], isLoading, isError } = useAdminReviews();
+  const [selectedOperationTypes, setSelectedOperationTypes] = useState<OperationType[]>([]);
   const [selectedYears, setSelectedYears] = useState<string[]>([]);
   const [selectedRatings, setSelectedRatings] = useState<string[]>([]);
-  const [sortKey, setSortKey] = useState<ReviewSortKey>('latest');
+  const [sort, setSort] = useState<IReviewSort | null>(null);
 
-  const yearOptions = useMemo(() => {
-    const years = [...new Set(reviews.map(r => r.studentId.substring(0, 2)))].sort((a, b) => a.localeCompare(b));
-    return years.map(y => ({ label: `${y}학번`, value: y }));
+  const categoryOptions = useMemo(() => {
+    const categories = new Set(reviews.map(r => r.operationType));
+    return OPERATION_TYPES.filter(type => categories.has(type)).map(value => ({
+      label: OPERATION_TYPE_LABEL[value],
+      value,
+    }));
   }, [reviews]);
 
-  const activeSortOption = SORT_OPTIONS.find(option => option.value === sortKey) ?? SORT_OPTIONS[0];
+  const yearOptions = useMemo(() => {
+    const years = [...new Set(reviews.map(r => getStudentYear(r.studentId)))].sort((a, b) => a.localeCompare(b));
+    return years.map(value => ({ label: getYearLabel(value), value }));
+  }, [reviews]);
+
+  const handleSort = (key: ReviewSortKey) => {
+    setSort(prev => {
+      if (prev?.key !== key) return { key, direction: DEFAULT_SORT_DIRECTION[key] };
+      if (prev.direction === DEFAULT_SORT_DIRECTION[key])
+        return { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' };
+      return null;
+    });
+  };
 
   const filteredReviews = reviews
     .filter(r => !selectedOperationTypes.length || selectedOperationTypes.includes(r.operationType))
-    .filter(r => !selectedYears.length || selectedYears.includes(r.studentId.substring(0, 2)))
+    .filter(r => !selectedYears.length || selectedYears.includes(getStudentYear(r.studentId)))
     .filter(r => !selectedRatings.length || selectedRatings.includes(String(r.rate)))
-    .sort(activeSortOption.compare);
+    .sort(getReviewComparator(sort ?? { key: 'createdAt', direction: 'desc' }));
 
   const filterBar = (
     <Flex align="items-center" gap="gap-2">
-      <Filtering label="도메인" selected={selectedOperationTypes.length > 0}>
+      <Filtering
+        label={formatMultiSelectedLabel('카테고리', selectedOperationTypes, type => OPERATION_TYPE_LABEL[type])}
+        selected={selectedOperationTypes.length > 0}
+      >
         <MultiSelectFilterOption
-          labelPrefix="도메인"
+          labelPrefix="카테고리"
           selectedValues={selectedOperationTypes}
           setFilter={setSelectedOperationTypes}
-          options={DOMAIN_OPTIONS}
+          options={categoryOptions}
           ItemComponent={CheckboxAdapter}
         />
       </Filtering>
-      <Filtering label="학번" selected={selectedYears.length > 0}>
+      <Filtering
+        label={formatMultiSelectedLabel('학번', selectedYears, getYearLabel)}
+        selected={selectedYears.length > 0}
+      >
         <MultiSelectFilterOption
           labelPrefix="학번"
           selectedValues={selectedYears}
@@ -79,7 +108,10 @@ function Reviews() {
           ItemComponent={CheckboxAdapter}
         />
       </Filtering>
-      <Filtering label="평점" selected={selectedRatings.length > 0}>
+      <Filtering
+        label={formatMultiSelectedLabel('평점', selectedRatings, getRatingLabel)}
+        selected={selectedRatings.length > 0}
+      >
         <MultiSelectFilterOption
           labelPrefix="평점"
           selectedValues={selectedRatings}
@@ -88,23 +120,6 @@ function Reviews() {
           ItemComponent={CheckboxAdapter}
         />
       </Filtering>
-      <Filtering label={`정렬: ${activeSortOption.label}`} selected={sortKey !== 'latest'}>
-        <div className="flex flex-col gap-1 min-w-32">
-          {SORT_OPTIONS.map(option => (
-            <ListboxOption
-              key={option.value}
-              selected={sortKey === option.value}
-              onSelect={() => setSortKey(option.value)}
-              left={option.label}
-            />
-          ))}
-        </div>
-      </Filtering>
-      <div className="ml-auto">
-        <Button variant="outlined" size="small" disabled={isFetching} onClick={() => refetch()}>
-          후기 불러오기
-        </Button>
-      </div>
     </Flex>
   );
 
@@ -114,7 +129,14 @@ function Reviews() {
 
       <main className="flex flex-col flex-1 min-h-0 gap-5">
         <ReviewStats reviews={filteredReviews} />
-        <ReviewList reviews={filteredReviews} isLoading={isLoading} isError={isError} filterBar={filterBar} />
+        <ReviewList
+          reviews={filteredReviews}
+          isLoading={isLoading}
+          isError={isError}
+          sort={sort}
+          onSort={handleSort}
+          filterBar={filterBar}
+        />
       </main>
     </div>
   );

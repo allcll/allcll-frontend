@@ -32,7 +32,7 @@ function EmptyScheduleSlot({ schedule, selected }: Readonly<{ schedule: GeneralS
       key={schedule.scheduleId}
       className={
         'h-10 w-full p-4 flex justify-between items-center rounded border ' +
-        (selected ? 'bg-blue-100 border-blue-500' : 'border-gray-200')
+        (selected ? 'bg-primary-100 border-primary-500' : 'border-gray-200')
       }
     >
       <Flex gap="gap-5">

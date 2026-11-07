@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { HomeIcon, Button, Card, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import { Button, Card, Flex, Heading, SupportingText, TextLink } from '@allcll/allcll-ui';
 
 import { ServiceSemester } from '@/entities/semester/api/semester.ts';
 import { formatSchedulePeriod, useCourseSchedule } from '@/entities/operationPeriod/model/useCourseSchedule';
@@ -16,7 +16,7 @@ function ServiceClosed({ data }: IServiceClosed) {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen min-w-[250px] bg-gray-100 px-4">
       <main className="text-center">
-        <Heading level={1}>{isSemesterExpired ? '수강신청 고생 많으셨습니다.' : '서비스 준비중입니다.'}</Heading>
+        <Heading level={1}>{isSemesterExpired ? '수강신청 고생 많으셨습니다.' : '서비스 준비 중입니다.'}</Heading>
         <SupportingText>
           현재는 서비스 기간이 아닙니다.
           <br />
@@ -46,24 +46,17 @@ function ServiceClosed({ data }: IServiceClosed) {
           <Heading level={3}>문의</Heading>
 
           <SupportingText className="flex items-center justify-center gap-2 mt-2">allcllclla@google.com</SupportingText>
-          <Button variant="text" size="medium" textColor="primary" asChild>
-            <a href="https://forms.gle/bCDTVujEHunnvHe88" target="_blank">
-              오류 및 제안
-            </a>
-          </Button>
-          <Button variant="text" size="medium" textColor="primary" asChild>
-            <a href="https://open.kakao.com/o/g3MztXfh" target="_blank">
-              오픈 채팅
-            </a>
-          </Button>
+          <TextLink href="https://forms.gle/bCDTVujEHunnvHe88" target="_blank" className="block py-2 text-sm">
+            오류 및 제안
+          </TextLink>
+          <TextLink href="https://open.kakao.com/o/g3MztXfh" target="_blank" className="block py-2 text-sm">
+            오픈 채팅
+          </TextLink>
         </Card>
 
         <Flex className="mt-6" justify="justify-center">
-          <Button variant="primary" size="medium" asChild>
-            <Link to="/">
-              <HomeIcon className="w-4 h-4 text-white" />
-              메인 페이지로 이동
-            </Link>
+          <Button variant="solid" size="medium" asChild>
+            <Link to="/">홈으로 돌아가기</Link>
           </Button>
         </Flex>
       </main>

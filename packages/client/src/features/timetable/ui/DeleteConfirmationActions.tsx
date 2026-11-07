@@ -12,10 +12,10 @@ function DeleteConfirmationActions({ message, size, onCancel, onConfirm }: Delet
   return (
     <>
       <span className="self-center text-sm text-gray-600">{message}</span>
-      <Button type="button" variant="secondary" size={size} onClick={onCancel}>
+      <Button type="button" variant="solid" color="gray" size={size} onClick={onCancel}>
         취소
       </Button>
-      <Button type="button" variant="danger" size={size} onClick={onConfirm}>
+      <Button type="button" variant="solid" color="danger" size={size} onClick={onConfirm}>
         삭제
       </Button>
     </>

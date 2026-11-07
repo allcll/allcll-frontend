@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
 import SideNavBar from '@/components/SideNavBar';
+import { GlobalConfirmDialog, ToastNotification } from '@allcll/common';
 
 function MainLayout() {
   // session 입력하는 기능
@@ -31,6 +32,9 @@ function MainLayout() {
           </div>
         </div>
       </div>
+
+      <ToastNotification />
+      <GlobalConfirmDialog />
     </>
   );
 }

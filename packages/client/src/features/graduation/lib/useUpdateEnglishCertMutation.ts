@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateEnglishCertPass } from '@/entities/graduation/api/graduation';
 import { graduationQueryKeys } from '@/entities/graduation/model/useGraduation';
-import useToastNotification from '@/features/notification/model/useToastNotification';
+import { useToastNotification } from '@allcll/common';
 
 export const useUpdateEnglishCertMutation = () => {
   const queryClient = useQueryClient();

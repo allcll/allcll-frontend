@@ -1,17 +1,18 @@
 import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib/useScheduleModal.ts';
 import { HomeIcon, TimeIcon, Button, Dialog, Flex } from '@allcll/allcll-ui';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
-import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
+import { useOverlayStore } from '@/shared/model/useOverlayStore.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
 import DeleteConfirmationActions from '@/features/timetable/ui/DeleteConfirmationActions.tsx';
 import useDeleteConfirmation from '@/features/timetable/lib/useDeleteConfirmation.ts';
+import { parseCredit } from '@/shared/lib/parser.ts';
 
 function ScheduleInfoModal() {
   const semester = useSemesterParam();
 
   const { schedule } = useScheduleModalData();
   const { deleteSchedule } = useScheduleModal();
-  const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
+  const closeOverlay = useOverlayStore(state => state.closeOverlay);
   const { data: subjects } = useSubject(semester);
   const { isDeleteConfirming, requestDeleteConfirmation, cancelDeleteConfirmation, confirmDelete } =
     useDeleteConfirmation(deleteSchedule);
@@ -19,7 +20,7 @@ function ScheduleInfoModal() {
   const findSubjectById = subjects?.find(subject => subject.subjectId === schedule.subjectId);
 
   return (
-    <Dialog title={schedule.subjectName} onClose={() => closeBottomSheet('info')} isOpen={true}>
+    <Dialog title={schedule.subjectName} onClose={() => closeOverlay('info')} isOpen={true}>
       <Dialog.Content>
         <Flex direction="flex-col" gap="gap-1" className="w-80 text-sm text-gray-500">
           <p>{schedule.professorName ?? '교수 정보 없음'}</p>
@@ -35,7 +36,7 @@ function ScheduleInfoModal() {
           </Flex>
           <p>
             {findSubjectById?.manageDeptNm} {findSubjectById?.studentYear + '학년'}{' '}
-            <span className="text-blue-500">{findSubjectById?.tmNum[0] + '학점'}</span>
+            <span className="text-primary-500">{parseCredit(findSubjectById?.tmNum) + '학점'}</span>
           </p>
         </Flex>
       </Dialog.Content>
@@ -49,7 +50,7 @@ function ScheduleInfoModal() {
             onConfirm={confirmDelete}
           />
         ) : (
-          <Button variant="text" size="medium" textColor="secondary" onClick={requestDeleteConfirmation}>
+          <Button variant="text" size="medium" color="danger" onClick={requestDeleteConfirmation}>
             삭제
           </Button>
         )}

@@ -1,10 +1,7 @@
-import { Badge, Card, Flex, Grid, SupportingText } from '@allcll/allcll-ui';
+import { Badge, Card, Flex, Grid, SupportingText, Spinner } from '@allcll/allcll-ui';
 import SectionHeader from '../common/SectionHeader';
-import {
-  SERVICE_OPERATION_LABEL,
-  SERVICE_OPERATION_TYPES,
-  useOperationPeriods,
-} from '@/hooks/server/service/useOperationPeriod';
+import { OPERATION_TYPE_LABEL } from '@allcll/common';
+import { SERVICE_OPERATION_TYPES, useOperationPeriods } from '@/hooks/server/service/useOperationPeriod';
 import { formatDateTime, toDateString } from '@/utils/formatTime';
 
 const isOpen = (now: Date, startDate: string, endDate: string) => {
@@ -25,11 +22,11 @@ function ServiceOpenContent() {
   const { data, isLoading, isError } = useOperationPeriods(today);
 
   if (isLoading) {
-    return <SupportingText>불러오는 중...</SupportingText>;
+    return <Spinner size="small" />;
   }
 
   if (isError) {
-    return <SupportingText className="text-red-500">불러오지 못했습니다.</SupportingText>;
+    return <SupportingText className="text-danger-500">불러오지 못했습니다.</SupportingText>;
   }
 
   const periods = (data ?? []).filter(period => SERVICE_OPERATION_TYPES.includes(period.operationType));
@@ -49,7 +46,7 @@ function ServiceOpenContent() {
           <Card key={operationType}>
             <Flex align="items-start" justify="justify-between">
               <span className="text-sm font-medium text-gray-700">
-                {SERVICE_OPERATION_LABEL[operationType] ?? operationType}
+                {OPERATION_TYPE_LABEL[operationType] ?? operationType}
               </span>
               <Badge variant={open ? 'success' : 'danger'}>{open ? 'OPEN' : 'CLOSED'}</Badge>
             </Flex>

@@ -1,6 +1,7 @@
 import { CloseIcon, WarningIcon } from '../../icons';
 import IconButton from '../icon-button/IconButton';
 import RowSlots from '../row/RowSlots';
+import Container from '../container/Container';
 
 type BannerVariant = 'warning' | 'info';
 
@@ -14,21 +15,24 @@ function Banner({ variant = 'info', children, deleteBanner }: IBanner) {
   const bannerColorClass = getBannerColor(variant);
 
   return (
-    <RowSlots
-      withPadding
-      className={`${bannerColorClass} items-center`}
-      left={<WarningIcon className="text-gray-500 w-4 h-4" />}
-      center={<span className="block text-xs leading-5">{children}</span>}
-      right={
-        <IconButton
-          label="알림 닫기"
-          variant="plain"
-          icon={<CloseIcon className="text-gray-500 w-5 h-5" />}
-          onClick={deleteBanner}
-          className="rounded-full"
+    <div className={bannerColorClass}>
+      <Container>
+        <RowSlots
+          className="items-center py-3"
+          left={<WarningIcon className="text-gray-500 w-4 h-4" />}
+          center={<span className="block text-xs leading-5">{children}</span>}
+          right={
+            <IconButton
+              label="알림 닫기"
+              variant="plain"
+              icon={<CloseIcon className="text-gray-500 w-4 h-4" />}
+              onClick={deleteBanner}
+              className="rounded-full"
+            />
+          }
         />
-      }
-    />
+      </Container>
+    </div>
   );
 }
 
@@ -37,10 +41,10 @@ export default Banner;
 function getBannerColor(variant: BannerVariant) {
   switch (variant) {
     case 'warning':
-      return 'bg-secondary-100';
+      return 'bg-danger-100 border-b border-danger-200';
     case 'info':
-      return 'bg-blue-100';
+      return 'bg-primary-100 border-b border-primary-200';
     default:
-      return 'bg-gray-100';
+      return 'bg-gray-100 border-b border-gray-200';
   }
 }

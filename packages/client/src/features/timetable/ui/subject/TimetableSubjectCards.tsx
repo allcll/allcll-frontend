@@ -7,24 +7,23 @@ import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts
 import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 import { Subject } from '@/shared/model/types.ts';
 import FilteredSubjectCard from '@/features/timetable/ui/subject/TimetableSubjectCard.tsx';
-import { Flex } from '@allcll/allcll-ui';
-import LoadingSpinner from '@/shared/ui/LoadingSpinner.tsx';
+import { Flex, LoadingState } from '@allcll/allcll-ui';
 
 interface ISubjectCards {
   subjects: Subject[];
   isPending?: boolean;
-  expandToMax?: () => void;
+  collapseSheet?: () => void;
 }
 
-function TimetableSubjectCards({ subjects, expandToMax, isPending = false }: Readonly<ISubjectCards>) {
-  const { visibleRows, loadMoreRef } = useInfScroll(subjects, 'ref');
+function TimetableSubjectCards({ subjects, collapseSheet, isPending = false }: Readonly<ISubjectCards>) {
+  const { visibleRows, loadMoreRef } = useInfScroll(subjects);
 
   const selectedCardRef = useRef<HTMLButtonElement>(null);
   const selectedSubjectId = useScheduleState(state => state.schedule.subjectId);
   const { openScheduleModal, cancelSchedule } = useScheduleModal();
 
   if (isPending) {
-    return <LoadingSpinner />;
+    return <LoadingState className="py-8" />;
   }
 
   if (!subjects.length) {
@@ -47,14 +46,13 @@ function TimetableSubjectCards({ subjects, expandToMax, isPending = false }: Rea
     );
 
     openScheduleModal(newSchedule.toUiData());
-    console.log('official', selectedSubjectId);
 
     const MIN_TIME = 9;
     const timeslotUI = new TimeslotAdapter(subject.lesnTime).toUiData(MIN_TIME);
     const top = timeslotUI[0]?.top;
 
-    if (expandToMax) {
-      expandToMax();
+    if (collapseSheet) {
+      collapseSheet();
 
       setTimeout(() => {
         if (top) {
@@ -81,7 +79,7 @@ function TimetableSubjectCards({ subjects, expandToMax, isPending = false }: Rea
         );
       })}
 
-      {visibleRows < subjects.length && <div ref={loadMoreRef} className="load-more-trigger w-full h-10"></div>}
+      {visibleRows < subjects.length && <div ref={loadMoreRef} className="w-full h-10"></div>}
     </Flex>
   );
 }

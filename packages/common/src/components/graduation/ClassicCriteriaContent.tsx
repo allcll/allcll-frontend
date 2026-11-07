@@ -20,7 +20,7 @@ function ClassicCriteriaContent({ data }: Readonly<{ data: ClassicCertCriteria }
       />
       <Flex justify="justify-between" align="items-center" className="bg-gray-50 rounded-md px-3 py-2">
         <span className="text-sm text-gray-600 font-medium">합계</span>
-        <span className="text-sm font-bold text-primary-600">{data.totalRequiredCount}권</span>
+        <span className="text-sm font-bold text-primary-500">{data.totalRequiredCount}권</span>
       </Flex>
     </>
   );

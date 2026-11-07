@@ -47,3 +47,7 @@ export function levenshtein(str1: string, str2: string) {
 
   return matrix[len1][len2];
 }
+
+export function joinPresent(parts: (string | number | false | null | undefined)[], separator = ' | ') {
+  return parts.filter(Boolean).join(separator);
+}

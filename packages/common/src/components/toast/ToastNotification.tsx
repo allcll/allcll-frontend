@@ -1,39 +1,35 @@
+import { createPortal } from 'react-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { IToastMessage } from '../../store/useToastNotification';
-import { CloseIcon, NotificationIcon } from '@allcll/allcll-ui';
+import { Branch as DismissableLayerBranch } from '@radix-ui/react-dismissable-layer';
+import { Toast } from '@allcll/allcll-ui';
 import useToastNotification from '../../store/useToastNotification';
+
+const TOAST_TRANSITION = {
+  enter: 'opacity-0 translate-x-full',
+  enterActive: '!opacity-100 !translate-x-0 transition-[opacity,translate] duration-300',
+  exitActive: 'opacity-0 translate-x-full transition-[opacity,translate] duration-300',
+};
 
 function ToastNotification() {
   const messages = useToastNotification(state => state.messages);
   const closeToast = useToastNotification(state => state.clearToast);
 
-  return (
-    <div className="fixed top-2 right-2 z-toast max-w-screen">
+  return createPortal(
+    // 토스트를 눌러도 열린 모달, 시트가 바깥 클릭으로 닫히지 않도록 Radix 레이어의 일부로 등록
+    <DismissableLayerBranch
+      role="status"
+      aria-live="polite"
+      className="fixed top-2 right-2 z-toast max-w-screen pointer-events-auto"
+    >
       <TransitionGroup className="flex gap-2 flex-col-reverse">
-        {messages.slice(-3).map((message, index) => (
-          <CSSTransition key={`${index} : ${message}`} timeout={300} classNames="toast">
-            <Toast toast={message} closeToast={() => closeToast(index)} />
+        {messages.slice(-3).map(message => (
+          <CSSTransition key={message.id} timeout={300} classNames={TOAST_TRANSITION}>
+            <Toast message={message.message} onClose={() => closeToast(message.id)} />
           </CSSTransition>
         ))}
       </TransitionGroup>
-    </div>
-  );
-}
-
-interface IToast {
-  toast: IToastMessage;
-  closeToast: () => void;
-}
-
-function Toast({ toast, closeToast }: IToast) {
-  return (
-    <div className="flex justify-between items-center gap-2 p-4 ml-2 bg-white text-black rounded-lg shadow-md">
-      <NotificationIcon className="w-4 h-4 text-blue-500" />
-      <span className="flex-1 text-sm font-bold truncate max-w-72">{toast.message}</span>
-      <button aria-label="닫기" onClick={closeToast} className="p-2 rounded-full hover:bg-blue-100">
-        <CloseIcon className="w-4 h-4 text-gray-400" />
-      </button>
-    </div>
+    </DismissableLayerBranch>,
+    document.body,
   );
 }
 

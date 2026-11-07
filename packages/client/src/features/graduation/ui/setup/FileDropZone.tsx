@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { CloseIcon, DocumentIcon, UploadIcon, IconButton, Flex } from '@allcll/allcll-ui';
-import useToastNotification from '../../../notification/model/useToastNotification';
+import { useToastNotification } from '@allcll/common';
 
 interface FileDropZoneProps {
   onFileSelect: (file: File) => void;
@@ -69,7 +69,7 @@ const FileDropZone = ({ onFileSelect, selectedFile, onDeleteFile, accept }: File
       type="button"
       className={`
         relative w-full border-2 rounded-lg p-10 text-left
-        transition-colors duration-200 cursor-pointer outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+        transition-colors duration-200 outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
         ${selectedFile ? 'border-solid bg-green-50 border-green-400 hover:bg-green-100 hover:border-green-500' : 'border-dashed'}
         ${isDragging ? 'border-primary-500 bg-primary-50' : ''}
         ${!isDragging && !selectedFile ? 'border-gray-300 hover:border-primary-400 hover:bg-gray-50' : ''}
@@ -132,7 +132,7 @@ const SelectedState = ({ file, onDelete }: { file: File; onDelete: (e: React.Mou
         </div>
 
         <div className="text-center">
-          <p className="text-base font-semibold text-gray-900">{file.name}</p>
+          <p className="text-base font-semibold">{file.name}</p>
           <p className="mt-1 text-sm text-gray-500">'다음 단계' 버튼을 누르면 분석이 시작됩니다</p>
           <p className="mt-0.5 text-xs text-gray-400">파일을 변경하려면 클릭하거나 드래그하세요</p>
         </div>

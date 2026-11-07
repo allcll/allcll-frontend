@@ -1,6 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import { HeaderContents } from '@/shared/ui/Header.tsx';
-import { LogoGithubIcon, LogoInstagramIcon, LogoKakaoTalkIcon } from '@allcll/allcll-ui';
+import { LogoGithubIcon, LogoInstagramIcon, LogoKakaoTalkIcon, Heading, Container } from '@allcll/allcll-ui';
 import logoCiUrl from '@/assets/logo/ci-summer.svg';
 import logoNameUrl from '@/assets/logo/logo-name-summer.svg';
 
@@ -41,15 +41,15 @@ const OuterLinks = [
 
 function Footer() {
   return (
-    <footer className="bg-white text-center text-sm text-gray-500">
-      <div className="mx-auto max-w-7xl px-4 md:px-16 py-12 grid md:grid-cols-3 gap-6 text-center md:text-left">
+    <footer className="bg-white border-t border-gray-200 text-center text-sm text-gray-500">
+      <Container className="py-12 grid md:grid-cols-3 gap-6 text-center md:text-left">
         <div className="mx-auto md:mx-0">
           <div className="flex items-center mb-2 h-fit justify-center md:justify-start">
             <img src={logoCiUrl} alt="" className="w-6 h-6 mr-2" />
             <img src={logoNameUrl} alt="" className="h-5 w-fit" />
           </div>
 
-          <ul className="flex items-center">
+          <ul className="flex items-center md:-ml-2">
             {OuterLinks.map(({ icon, title, href }) => (
               <li key={title}>
                 <a href={href} className="h-fit rounded-md hover:bg-gray-200" aria-label={title} title={title}>
@@ -61,11 +61,13 @@ function Footer() {
         </div>
 
         <div>
-          <h3 className="font-bold mb-4">서비스</h3>
+          <Heading level={3} className="mb-4">
+            서비스
+          </Heading>
           <ul>
             {HeaderContents.map(({ title, path, end }) => (
               <li key={title} className="mb-1">
-                <NavLink to={path} end={end} className="hover:text-blue-500 hover:underline hover:font-bold">
+                <NavLink to={path} end={end} className="hover:text-primary-500 hover:underline">
                   {title}
                 </NavLink>
               </li>
@@ -75,22 +77,20 @@ function Footer() {
 
         {FooterItems.map((item, index) => (
           <div className="mb-4" key={index}>
-            <h3 className="font-bold mb-4">{item.title}</h3>
+            <Heading level={3} className="mb-4">
+              {item.title}
+            </Heading>
             <ul>
               {item.children.map((child, index) => (
                 <li key={index} className="mb-1">
                   {!child.href ? (
                     <p>{child.title}</p>
                   ) : child.href.startsWith('http') ? (
-                    <a
-                      className="hover:text-blue-500 hover:underline hover:font-bold"
-                      href={child.href}
-                      target="_blank"
-                    >
+                    <a className="hover:text-primary-500 hover:underline" href={child.href} target="_blank">
                       {child.title}
                     </a>
                   ) : (
-                    <Link to={child.href} className="hover:text-blue-500 hover:underline hover:font-bold">
+                    <Link to={child.href} className="hover:text-primary-500 hover:underline">
                       {child.title}
                     </Link>
                   )}
@@ -99,7 +99,7 @@ function Footer() {
             </ul>
           </div>
         ))}
-      </div>
+      </Container>
 
       <p className="pb-12">© 2026 ALLCLL. All rights reserved.</p>
     </footer>

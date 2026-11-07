@@ -1,5 +1,4 @@
 import type { ReactNode, KeyboardEvent } from 'react';
-import RowSlots from '../row/RowSlots';
 import { INTERACTION } from '../../config';
 
 interface ListboxOptionProps {
@@ -7,9 +6,20 @@ interface ListboxOptionProps {
   onSelect?: () => void;
   left: ReactNode;
   right?: ReactNode;
+  id?: string;
+  active?: boolean;
+  focusable?: boolean;
 }
 
-function ListboxOption({ selected = false, onSelect, left, right }: ListboxOptionProps) {
+function ListboxOption({
+  selected = false,
+  onSelect,
+  left,
+  right,
+  id,
+  active = false,
+  focusable = true,
+}: ListboxOptionProps) {
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -17,24 +27,31 @@ function ListboxOption({ selected = false, onSelect, left, right }: ListboxOptio
     }
   };
 
-  const baseClass = `flex px-2 py-2 rounded-sm cursor-pointer text-sm ${INTERACTION.pressable} ${INTERACTION.hoverable}`;
+  const baseClass = `flex px-2 py-2 rounded-md cursor-pointer text-sm ${INTERACTION.pressable} ${INTERACTION.hoverable}`;
 
   return (
     <div
+      id={id}
       role="option"
       aria-selected={selected}
-      tabIndex={0}
+      tabIndex={focusable ? 0 : -1}
       onClick={onSelect}
       onKeyDown={handleKeyDown}
-      className={`${baseClass} ${getSelectedClass(selected)}`}
+      className={`${baseClass} ${getSelectedClass(selected, active)}`}
     >
-      <RowSlots left={<div className="flex items-center">{left}</div>} right={selected ? right : null} />
+      <div className="flex items-center gap-3 w-full">
+        <div className="flex-1 min-w-0 break-keep">{left}</div>
+        {right && <div className={`shrink-0 flex items-center ${selected ? '' : 'invisible'}`}>{right}</div>}
+      </div>
     </div>
   );
 }
 
-function getSelectedClass(selected: boolean) {
-  return selected ? 'bg-blue-50 text-blue-500 font-medium hover:bg-blue-100' : 'hover:bg-gray-50 text-gray-700';
+function getSelectedClass(selected: boolean, active: boolean) {
+  if (selected)
+    return `text-primary-500 font-medium hover:bg-primary-100 ${active ? 'bg-primary-100' : 'bg-primary-50'}`;
+
+  return `hover:bg-gray-50 text-gray-700 ${active ? 'bg-gray-50' : ''}`;
 }
 
 export default ListboxOption;

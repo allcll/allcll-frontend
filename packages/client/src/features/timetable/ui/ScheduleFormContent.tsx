@@ -6,6 +6,7 @@ import { useScheduleState } from '../model/useScheduleState.ts';
 import SelectTime from './SelectTime.tsx';
 
 import { Day, DAYS } from '@/entities/timetable/model/types.ts';
+import { josa } from 'es-hangul';
 
 interface TimeRange {
   startHour: string;
@@ -65,7 +66,7 @@ function ScheduleFormContent() {
           key={id}
           size="medium"
           id={id}
-          placeholder={`${name}을 입력해주세요`}
+          placeholder={`${josa(name, '을/를')} 입력해주세요`}
           value={value}
           label={name}
           onChange={e => setScheduleForm(prev => ({ ...prev, [id]: e.target.value }))}
@@ -73,7 +74,7 @@ function ScheduleFormContent() {
         />
       ))}
 
-      <Flex gap="gap-2" direction="flex-col">
+      <Flex gap="gap-1.5" direction="flex-col">
         <Label>요일</Label>
         <Flex direction="flex-wrap">
           {DAYS.map(day => (
@@ -88,7 +89,7 @@ function ScheduleFormContent() {
       </Flex>
 
       {scheduleForm.timeSlots.map(slot => (
-        <Flex key={slot.dayOfWeeks} direction="flex-col" gap="gap-4">
+        <Flex key={slot.dayOfWeeks} direction="flex-col" gap="gap-1.5">
           <Label>{slot.dayOfWeeks}</Label>
           <SelectTime
             day={slot.dayOfWeeks}

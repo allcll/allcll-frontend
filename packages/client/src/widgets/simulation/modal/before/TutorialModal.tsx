@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import YouTube from 'react-youtube';
-import SejongUI from '@allcll/sejong-ui';
 import { Button, Checkbox, Dialog, Flex, Heading, SupportingText, ChevronDownIcon } from '@allcll/allcll-ui';
 import useTutorialStore from '@/features/simulation/model/useTutorialStore.ts';
 import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
@@ -99,29 +98,27 @@ function TutorialModal() {
         <div className="mt-4 flex flex-col justify-center items-center gap-2">
           <Flex justify="justify-center" align="items-center" className="gap-4">
             <Button variant="text" size="medium" aria-label="이전 튜토리얼" onClick={goToPreviousTutorial}>
-              {currentIndex !== 0 && <ChevronDownIcon className="w-5 h-5 transform rotate-90 text-gray-700" />}
+              {currentIndex !== 0 && <ChevronDownIcon className="size-5! transform rotate-90 text-gray-700" />}
             </Button>
             <Heading level={3}>{currentVideo.title}</Heading>
-            <Button variant="text" size="medium" aria-label="이전 튜토리얼" onClick={goToNextTutorial}>
-              {currentIndex < 3 && <ChevronDownIcon className="w-5 h-5 transform -rotate-90 text-gray-700" />}
+            <Button variant="text" size="medium" aria-label="다음 튜토리얼" onClick={goToNextTutorial}>
+              {currentIndex < 3 && <ChevronDownIcon className="size-5! transform -rotate-90 text-gray-700" />}
             </Button>
           </Flex>
           <SupportingText>
             각 영상을 통해 연습 과목 선택, 연습 시작 방법, 연습 종료 및 결과 분석 방법을 배울 수 있습니다.
           </SupportingText>
-
-          <SejongUI.Modal.ButtonContainer className="mt-4">
-            <Checkbox
-              label="일주일 동안 보지 않기"
-              checked={popupChecked}
-              onChange={() => setPopupChecked(!popupChecked)}
-            />
-            <Button variant="primary" size="medium" onClick={handleClickSkipTutorial}>
-              튜토리얼 건너뛰기
-            </Button>
-          </SejongUI.Modal.ButtonContainer>
         </div>
       </Dialog.Content>
+
+      <Dialog.Footer>
+        <div className="mr-auto self-center whitespace-nowrap">
+          <Checkbox label="일주일간 보지 않기" checked={popupChecked} onChange={() => setPopupChecked(!popupChecked)} />
+        </div>
+        <Button variant="solid" size="medium" className="whitespace-nowrap" onClick={handleClickSkipTutorial}>
+          건너뛰기
+        </Button>
+      </Dialog.Footer>
     </Dialog>
   );
 }

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import useFeedbackStore from '@/features/feedback/model/useFeedbackStore';
 import useFeedbackMutation from '@/features/feedback/api/useFeedbackMutation';
 import type { FeedbackCategory } from '@/features/feedback/api/feedbackApi';
-import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore';
+import { useOverlayStore } from '@/shared/model/useOverlayStore';
 import { toPublicFeedbackCategory } from './feedbackCategory';
 
 interface IUseFeedbackModalControllerProps {
@@ -34,9 +34,9 @@ export function useFeedbackModalController({
   const dontShowAgain = useFeedbackStore(s => s.dontShowAgain);
   const setDontShowAgain = useFeedbackStore(s => s.setDontShowAgain);
   const setIsFeedbackOpen = useFeedbackStore(s => s.setIsFeedbackOpen);
-  const bottomSheetType = useBottomSheetStore(state => state.type);
-  const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
-  const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
+  const overlays = useOverlayStore(state => state.type);
+  const openOverlay = useOverlayStore(state => state.openOverlay);
+  const closeOverlay = useOverlayStore(state => state.closeOverlay);
 
   const { mutate, isPending } = useFeedbackMutation();
 
@@ -57,29 +57,29 @@ export function useFeedbackModalController({
     if (!isMobile) return;
 
     if (isOpen && opensSheetDirectly) {
-      openBottomSheet('feedback');
+      openOverlay('feedback');
       return;
     }
 
     if (!isOpen) {
-      closeBottomSheet('feedback');
+      closeOverlay('feedback');
     }
-  }, [isMobile, isOpen, opensSheetDirectly, openBottomSheet, closeBottomSheet]);
+  }, [isMobile, isOpen, opensSheetDirectly, openOverlay, closeOverlay]);
 
   useEffect(() => {
     if (!isMobile) return;
     if (!isOpen) return;
 
-    if (bottomSheetType.feedback.isOpen) {
+    if (overlays.feedback.isOpen) {
       hasMountedFeedbackSheet.current = true;
       return;
     }
 
-    if (hasMountedFeedbackSheet.current && !bottomSheetType.feedback.isOpen) {
+    if (hasMountedFeedbackSheet.current && !overlays.feedback.isOpen) {
       hasMountedFeedbackSheet.current = false;
       onClose();
     }
-  }, [isMobile, isOpen, bottomSheetType.feedback.isOpen, onClose]);
+  }, [isMobile, isOpen, overlays.feedback.isOpen, onClose]);
 
   const initialize = () => {
     hasMountedFeedbackSheet.current = false;
@@ -92,13 +92,13 @@ export function useFeedbackModalController({
 
   const closeFeedback = () => {
     hasMountedFeedbackSheet.current = false;
-    if (isMobile) closeBottomSheet('feedback');
+    if (isMobile) closeOverlay('feedback');
     onClose();
   };
 
   const openSheet = () => {
     if (!isMobile) return;
-    openBottomSheet('feedback');
+    openOverlay('feedback');
   };
 
   const handleSubmit = () => {
@@ -145,7 +145,7 @@ export function useFeedbackModalController({
     handleDontShowAgain,
     handleClose: closeFeedback,
     openSheet,
-    isSheetOpen: bottomSheetType.feedback.isOpen,
+    isSheetOpen: overlays.feedback.isOpen,
   };
 }
 

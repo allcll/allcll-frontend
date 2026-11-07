@@ -7,7 +7,7 @@ interface ButtonProps extends ComponentPropsWithRef<'button'> {
 }
 
 function Button({ variant = 'primary', size = 'md', className = '', children, ...rest }: ButtonProps) {
-  const baseClass = 'flex flex-row gap-1 cursor-pointer rounded';
+  const baseClass = 'flex flex-row gap-1 rounded';
   const variantClass = getVariantClass(variant);
   const sizeClass = getSizeClass(size);
   const finalClassName = `${baseClass} ${variantClass} ${sizeClass} ${className}`.trim();
@@ -22,7 +22,7 @@ function Button({ variant = 'primary', size = 'md', className = '', children, ..
 function getVariantClass(variant: string) {
   switch (variant) {
     case 'primary':
-      return 'bg-blue-500 text-white hover:bg-blue-600';
+      return 'bg-primary-500 text-white hover:bg-primary-600';
     case 'secondary':
       return 'bg-gray-500 text-white hover:bg-gray-600';
     case 'dark':

@@ -18,6 +18,8 @@ export const Z_INDEX = {
   loading: 12,
   /** 강조되는 흐름 내 콘텐츠: 메인 배너, 활성/hover 된 시간표 셀 */
   elevated: 20,
+  /** 트리거에 앵커된 팝오버 (상단 헤더 아래) */
+  popover: 30,
   /** 메뉴·드로어 뒤를 덮는 전체 화면 딤 배경(backdrop) */
   overlay: 40,
   /** 상단 고정 헤더 */
@@ -26,12 +28,12 @@ export const Z_INDEX = {
   floating: 50,
   /** 앱 자체 중앙 모달 (예: 시뮬레이션 모달) */
   modal: 100,
-  /** 트리거에 앵커된 팝오버 (모달 위, 바텀 시트 아래) */
-  popover: 120,
   /** 바텀 시트 / 전체 화면 상세 모달 */
   bottomSheet: 200,
   /** 디자인 시스템 Dialog 컴포넌트 (최상위 모달, 바텀 시트 위) */
   dialog: 300,
+  /** 트리거에 앵커된 선택 목록 패널 (예: SearchableSelect, Dialog 위) */
+  dropdown: 350,
   /** 토스트 알림 (최상단) */
   toast: 400,
 } as const;

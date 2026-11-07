@@ -6,7 +6,7 @@ const LiveColumn: HeadTitle<SseSubject>[] = [
   { title: '과목명', visible: true, key: 'name' },
   { title: '담당교수', visible: true, key: 'professor' },
   { title: '여석', visible: true, key: 'seat' },
-  { title: '최근갱신', visible: true, key: 'queryTime' },
+  { title: '최근 갱신', visible: true, key: 'queryTime' },
 
   { title: '학과명', visible: false, key: 'manageDeptNm' },
   { title: '수강학년', visible: false, key: 'studentYear' },

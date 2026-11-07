@@ -10,17 +10,17 @@ interface ILoginErrorNoticeProps {
 // 글자는 대비 4.5, 아이콘은 3 을 넘는 단계를 골랐습니다.
 const TONE_STYLE = {
   error: {
-    box: 'bg-secondary-50 border-secondary-200',
-    icon: 'text-secondary-700',
+    box: 'bg-danger-50 border-danger-200',
+    icon: 'text-danger-700',
     // Heading 이 붙이는 text-text-200 이 CSS 에서 뒤에 있어 ! 로 덮습니다.
-    title: '!text-secondary-700',
-    button: 'danger',
+    title: '!text-danger-700',
+    buttonColor: 'danger',
   },
   neutral: {
     box: 'bg-gray-50 border-gray-200',
     icon: 'text-gray-700',
     title: '',
-    button: 'primary',
+    buttonColor: 'primary',
   },
 } as const;
 
@@ -45,10 +45,9 @@ function LoginErrorNotice({ view, descriptionId }: ILoginErrorNoticeProps) {
           {view.description}
         </p>
 
-        {/* Button 에 className 을 넘기면 variant 스타일이 지워져 여백은 바깥에서 줍니다. */}
         {view.action && (
           <div className="mt-2">
-            <Button asChild variant={tone.button} size="small">
+            <Button asChild variant="solid" color={tone.buttonColor} size="small">
               <a
                 href={view.action.href}
                 target="_blank"

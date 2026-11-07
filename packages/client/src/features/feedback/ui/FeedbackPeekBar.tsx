@@ -13,10 +13,10 @@ export default function FeedbackPeekBar({ message, onOpen, onClose }: IFeedbackP
         <Flex justify="justify-between" align="items-center" className="gap-2">
           <SupportingText className="text-sm">{message}</SupportingText>
           <Flex align="items-center" className="gap-1">
-            <Button variant="text" size="small" textColor="gray" onClick={onClose}>
+            <Button variant="text" size="small" color="gray" onClick={onClose}>
               닫기
             </Button>
-            <Button variant="primary" size="small" onClick={onOpen}>
+            <Button variant="solid" size="small" onClick={onOpen}>
               제보하기
             </Button>
           </Flex>

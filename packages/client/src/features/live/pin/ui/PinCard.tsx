@@ -1,8 +1,9 @@
 import AlarmButton from '@/features/live/pin/ui/AlarmButton';
-import { getTimeDiffString } from '@/shared/lib/stringFormats.ts';
+import { getTimeDiffString, joinPresent } from '@/shared/lib/stringFormats.ts';
 import { Subject, Wishes } from '@/shared/model/types.ts';
 import { getSeatColor } from '@/shared/config/colors.ts';
 import { Badge, Card, Flex, Heading } from '@allcll/allcll-ui';
+import { parseCredit } from '@/shared/lib/parser.ts';
 
 interface IPinCard {
   subject: Subject | Wishes;
@@ -17,7 +18,7 @@ function PinCard({ subject, seats, queryTime, disableSeat = false, isLive = fals
   const isDeleted = subject.isDeleted;
   const isEng = subject.curiLangNm === '영어';
 
-  const credit = typeof subject.tmNum === 'string' ? Number(subject.tmNum.split('/')[0]) || 0 : 0;
+  const credit = parseCredit(subject.tmNum);
 
   return (
     <Card variant="elevated">
@@ -28,13 +29,16 @@ function PinCard({ subject, seats, queryTime, disableSeat = false, isLive = fals
 
       <Flex className="text-xs text-gray-500" direction="flex-col">
         <p>{(subject as Wishes).departmentName}</p>
-        <p>
-          {subject.subjectCode}-{subject.classCode} | {subject.professorName}
-        </p>
+        <p>{joinPresent([`${subject.subjectCode}-${subject.classCode}`, subject.professorName])}</p>
       </Flex>
 
       <p className="text-xs text-gray-500 mb-2">
-        {subject.studentYear}학년 {subject.curiTypeCdNm} | {credit}학점 | {subject.lesnTime}
+        {joinPresent([
+          subject.studentYear && `${subject.studentYear}학년`,
+          subject.curiTypeCdNm,
+          credit && `${credit}학점`,
+          subject.lesnTime,
+        ])}
       </p>
 
       {!disableSeat && (

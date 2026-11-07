@@ -1,7 +1,15 @@
-import { IDayTimeItem } from '@/features/filtering/ui/DayTimeFilter.tsx';
-import { FilterOptions } from './filterDomains.ts';
+import { formatMultiSelectedLabel } from '@allcll/common';
+import { Time } from '@/shared/lib/time.ts';
+import { FilterOptions, MIN_HIGH_CREDIT } from './filterDomains.ts';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
-import { Credit, DepartmentType, Grade, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
+import {
+  Credit,
+  DayTimeRanges,
+  DepartmentType,
+  Grade,
+  RangeMinMaxFilter,
+  RemarkType,
+} from '@/features/filtering/model/types.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
 
 export const labelPrefix: Record<keyof Filters, string> = {
@@ -13,6 +21,7 @@ export const labelPrefix: Record<keyof Filters, string> = {
   seatRange: '여석',
   wishRange: '관심 인원',
   time: '시간',
+  dayTimes: '요일별 시간',
   days: '요일',
   categories: '수업 유형',
   note: '비고',
@@ -29,7 +38,8 @@ export type FiltersValueMap = {
   categories: string;
   seatRange: RangeMinMaxFilter | null;
   wishRange: RangeMinMaxFilter | null;
-  time: IDayTimeItem;
+  time: RangeMinMaxFilter | null;
+  dayTimes: DayTimeRanges | null;
   days: Day;
   classroom: string;
   note: RemarkType;
@@ -46,16 +56,7 @@ export function getMultiSelectedLabel<K extends keyof Filters>(
   filterKey: K,
   selectedValues: FilterValueType<K>[],
 ): string {
-  if (selectedValues.length === 0) {
-    return labelPrefix[filterKey];
-  }
-
-  const firstValue = selectedValues[0];
-  if (selectedValues.length === 1) {
-    return getLabelFormatter()[filterKey]?.(firstValue) ?? labelPrefix[filterKey];
-  }
-
-  return `${getLabelFormatter()[filterKey]?.(firstValue) ?? labelPrefix[filterKey]} 외 ${selectedValues.length - 1}개`;
+  return formatMultiSelectedLabel(labelPrefix[filterKey], selectedValues, getLabelFormatter()[filterKey]);
 }
 
 export function getSingleSelectedLabel<K extends keyof Filters>(
@@ -120,11 +121,14 @@ export function getLabelFormatter(departments?: DepartmentType[]): Partial<{
     keywords: value => (typeof value === 'string' ? value : ''),
     department: value => getDepartmentLabel(value),
     grades: value => getLabelWithSuffix(value, labelPrefix.grades),
-    credits: value => getLabelWithSuffix(value, labelPrefix.credits),
+    credits: value =>
+      value === MIN_HIGH_CREDIT
+        ? `${value}${labelPrefix.credits} 이상`
+        : getLabelWithSuffix(value, labelPrefix.credits),
     classroom: getClassRoomLabel,
-    seatRange: getRangeLabel,
-    wishRange: getRangeLabel,
-    time: getTimesLabel,
+    seatRange: value => getRangeLabel(value, '개'),
+    wishRange: value => getRangeLabel(value, '명'),
+    time: getTimeRangeLabel,
     days: getDaysLabel,
     categories: value => value,
     note: value => value,
@@ -144,7 +148,19 @@ const getClassRoomLabel = (value: string) => {
  * @param value
  * @returns
  */
-const getRangeLabel = (value: RangeMinMaxFilter | null) => {
+export function getTimeRangeLabel(range: RangeMinMaxFilter | null) {
+  if (!range) return '';
+
+  const { min, max } = range;
+  const format = (minutes: number) => new Time(minutes).toString();
+
+  if (min !== undefined && max !== undefined) return `${format(min)}~${format(max)}`;
+  if (min !== undefined) return `${format(min)} 이후`;
+  if (max !== undefined) return `${format(max)} 이전`;
+  return '';
+}
+
+const getRangeLabel = (value: RangeMinMaxFilter | null, unit: string) => {
   if (!value) {
     return '';
   }
@@ -152,21 +168,17 @@ const getRangeLabel = (value: RangeMinMaxFilter | null) => {
   const { min, max } = value;
 
   if (min !== undefined && max !== undefined) {
-    return `${min}개 이상 ~ ${max}개 이하`;
+    return min === max ? `${min}${unit}` : `${min}~${max}${unit}`;
   }
 
   if (min !== undefined) {
-    return `${min}개 이상`;
+    return `${min}${unit} 이상`;
   }
   if (max !== undefined) {
-    return `${max}개 이하`;
+    return `${max}${unit} 이하`;
   }
 
   return '';
-};
-
-const getTimesLabel = (value: IDayTimeItem) => {
-  return `${value.day}${labelPrefix.time} ${value.start}~${value.end}`;
 };
 
 const getDaysLabel = (value: Day) => {

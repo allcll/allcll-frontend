@@ -4,7 +4,7 @@ import type { IWishesInfo } from '@/shared/model/types';
 import { InitWishes } from '@/entities/wishes/model/useWishes';
 import SubjectDetail from '@/entities/subjects/ui/SubjectDetail';
 import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes';
-import { Flex, Heading } from '@allcll/allcll-ui';
+import { Flex, Heading, Skeleton } from '@allcll/allcll-ui';
 
 interface IWishesDetailInfoProps {
   wishesInfo: IWishesInfo;
@@ -42,9 +42,9 @@ interface IInlineSkeletonProps {
 function InlineSkeleton({ isPending, count = 1, children }: IInlineSkeletonProps) {
   if (isPending) {
     return (
-      <div className="animate-pulse">
+      <div>
         {Array.from({ length: count }).map((_, i) => (
-          <div key={i} className="h-8 bg-gray-300 rounded w-1/3 mb-1" />
+          <Skeleton key={i} className="h-8 w-1/3 mb-1" />
         ))}
       </div>
     );

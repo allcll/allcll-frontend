@@ -1,5 +1,6 @@
 import { SimulationSubject } from '@/shared/model/types.ts';
 import { Lecture } from '@/entities/subjects/model/useLectures.ts';
+import { parseCredit } from '@/shared/lib/parser.ts';
 
 const TOTAL_SUBJECTS = 5;
 
@@ -119,7 +120,7 @@ export const applyCreditLimit = (subjects: Lecture[]) => {
   const limitedSubjects: Lecture[] = [];
 
   for (const subject of subjects) {
-    const subjectCredit = Number(subject.tm_num.split('/')[0]) || 0;
+    const subjectCredit = parseCredit(subject.tm_num);
     if (totalCredit + subjectCredit > 24) {
       break;
     }

@@ -12,7 +12,7 @@ function SearchBox({ onDelete, ...props }: ISearchBox) {
       leftIcon={
         <IconButton
           variant="plain"
-          icon={<SearchIcon className="w-5 h-5 text-gray-400" />}
+          icon={<SearchIcon className="w-4 h-4 text-gray-400" />}
           className="absolute left-3 top-1/2 -translate-y-1/2"
           onClick={e => {
             e.preventDefault();
@@ -21,17 +21,20 @@ function SearchBox({ onDelete, ...props }: ISearchBox) {
         />
       }
       rightIcon={
-        <IconButton
-          variant="plain"
-          icon={<CloseIcon className="w-5 h-5 text-gray-400" />}
-          aria-label="입력 내용 삭제"
-          className="absolute right-3 top-1/2 -translate-y-1/2"
-          onClick={() => {
-            onDelete();
-            ref.current?.focus();
-          }}
-        />
+        props.value ? (
+          <IconButton
+            variant="plain"
+            icon={<CloseIcon className="w-4 h-4 text-gray-400" />}
+            aria-label="입력 내용 삭제"
+            className="absolute right-3 top-1/2 -translate-y-1/2"
+            onClick={() => {
+              onDelete();
+              ref.current?.focus();
+            }}
+          />
+        ) : undefined
       }
+      ref={ref}
       {...props}
     />
   );

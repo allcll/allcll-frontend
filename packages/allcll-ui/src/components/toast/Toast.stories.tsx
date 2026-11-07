@@ -17,20 +17,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
   args: {
-    toast: {
-      message: '토스트 메시지 입니다.',
-      tag: 'info',
-    },
-    closeToast: () => {},
+    message: '토스트 메시지 입니다.',
+    onClose: () => {},
   },
 };
 
 export const Default: Story = {
   args: {
-    toast: {
-      message: '토스트 메시지 입니다.',
-      tag: 'info',
-    },
-    closeToast: () => {},
+    message: '토스트 메시지 입니다.',
+    onClose: () => {},
   },
 };

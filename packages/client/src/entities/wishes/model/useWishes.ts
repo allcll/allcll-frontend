@@ -38,10 +38,14 @@ const joinSubjects = (wishes?: WishesApiResponse, subject?: Subject[]): Wishes[]
 
   type preWishes = Subject & WishesApiResponse['baskets'][number];
   const data = joinData(subject, baskets, InitSubject, InitWishes) as preWishes[];
+  // 과목 목록에 없는 과목은 관심 수 말고 보여줄 정보가 없어 제외
+  const subjectIds = new Set(subject.map(s => s.subjectId));
 
-  return data.map((pw: preWishes) => {
-    return { ...pw, departmentCode: pw.deptCd, departmentName: pw.manageDeptNm };
-  });
+  return data
+    .filter(pw => subjectIds.has(pw.subjectId))
+    .map((pw: preWishes) => {
+      return { ...pw, departmentCode: pw.deptCd, departmentName: pw.manageDeptNm };
+    });
 };
 
 export default useWishes;

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAdmissionYearDepartments, graduationQueryKeys } from '@/entities/graduation/model/useGraduation';
 import { useUpdateMe, useDeleteMe } from '@/entities/user/model/useAuth';
+import { confirm } from '@allcll/common';
 import { useJolupStore } from '../model/useJolupStore';
 import type { MajorType, UpdateMeRequest, UserResponse } from '@/entities/user/model/types';
 
@@ -37,19 +38,20 @@ export function useEditProfileForm(user: UserResponse, isOpen: boolean, onClose:
   const isDoubleDeptChanged = doubleDeptNm !== user.doubleDeptName;
   const hasChanges = isDeptChanged || isMajorTypeChanged || isDoubleDeptChanged;
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!canSave) return;
     if (!hasChanges) {
       onClose();
       return;
     }
 
-    if (
-      !window.confirm(
-        '학과 정보가 변경되어 졸업 요건 분석을 위해 기이수 성적 파일을 다시 업로드해야 합니다. 계속하시겠습니까?',
-      )
-    )
-      return;
+    const confirmed = await confirm({
+      title: '학과 정보 변경',
+      description:
+        '학과 정보를 변경하면 졸업 요건 분석을 위해 기이수 성적 파일을 다시 업로드해야 합니다. 계속하시겠습니까?',
+      confirmLabel: '계속하기',
+    });
+    if (!confirmed) return;
 
     const isChangingToSingle = majorType === 'SINGLE' && user.majorType !== 'SINGLE';
 
@@ -68,8 +70,14 @@ export function useEditProfileForm(user: UserResponse, isOpen: boolean, onClose:
     });
   };
 
-  const handleDelete = () => {
-    if (!window.confirm('정말로 회원 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) return;
+  const handleDelete = async () => {
+    const confirmed = await confirm({
+      title: '회원 탈퇴',
+      description: '정말로 회원 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.',
+      confirmLabel: '탈퇴하기',
+      danger: true,
+    });
+    if (!confirmed) return;
 
     deleteMeMutation.mutate(undefined, {
       onSuccess: () => {

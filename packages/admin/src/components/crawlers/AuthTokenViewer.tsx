@@ -13,7 +13,7 @@ function AuthTokenViewer() {
 
         <Card.Content>
           <Flex gap="gap-2">
-            <Button onClick={() => refetch()} variant="outlined" size="medium" disabled={isFetching}>
+            <Button onClick={() => refetch()} variant="outlined" color="gray" size="medium" disabled={isFetching}>
               {isFetching ? '조회 중…' : '인증정보 조회'}
             </Button>
           </Flex>

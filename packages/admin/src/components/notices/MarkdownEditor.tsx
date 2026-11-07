@@ -12,10 +12,11 @@ import {
   ListBulletedIcon,
   ListNumberedIcon,
   QuotesIcon,
+  Tabs,
 } from '@allcll/allcll-ui';
 import ToolbarButton from '@/components/notices/ToolbarButton';
 
-type Tab = 'write' | 'preview';
+type EditorTab = 'write' | 'preview';
 
 interface IMarkdownEditorProps {
   content: string;
@@ -24,7 +25,7 @@ interface IMarkdownEditorProps {
 }
 
 function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) {
-  const [tab, setTab] = useState<Tab>('write');
+  const [tab, setTab] = useState<EditorTab>('write');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const warnLength = Math.floor(maxLength * 0.9);
 
@@ -60,42 +61,24 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
 
   const charCount = content.length;
   const charCountClass =
-    charCount > maxLength ? 'text-red-600 font-semibold' : charCount > warnLength ? 'text-amber-600' : 'text-gray-400';
+    charCount > maxLength
+      ? 'text-danger-600 font-semibold'
+      : charCount > warnLength
+        ? 'text-amber-600'
+        : 'text-gray-400';
 
   return (
     <Flex direction="flex-col" gap="gap-1.5">
       <Label>내용</Label>
 
       <div className="flex flex-col border border-gray-300 rounded-lg overflow-hidden">
-        {/* 탭 헤더 */}
-        <div className="flex border-b border-gray-200 bg-gray-50">
-          <button
-            type="button"
-            className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px ${
-              tab === 'write'
-                ? 'border-blue-500 text-blue-500 bg-white'
-                : 'border-transparent text-gray-500 hover:text-blue-500'
-            }`}
-            onClick={() => setTab('write')}
-          >
-            Write
-          </button>
-          <button
-            type="button"
-            className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px ${
-              tab === 'preview'
-                ? 'border-blue-500 text-blue-500 bg-white'
-                : 'border-transparent text-gray-500 hover:text-blue-500'
-            }`}
-            onClick={() => setTab('preview')}
-          >
-            Preview
-          </button>
-        </div>
+        <Tabs value={tab} onValueChange={value => setTab(value as EditorTab)}>
+          <Tabs.List aria-label="편집 모드" className="bg-gray-50">
+            <Tabs.Tab value="write">Write</Tabs.Tab>
+            <Tabs.Tab value="preview">Preview</Tabs.Tab>
+          </Tabs.List>
 
-        {/* Write 탭 */}
-        {tab === 'write' && (
-          <>
+          <Tabs.Panel value="write">
             {/* 툴바 */}
             <div className="flex items-center gap-0.5 px-2 py-1.5 bg-gray-50 border-b border-gray-200">
               <ToolbarButton title="굵게 (Bold)" onClick={() => insertMarkdown('**', '**')}>
@@ -190,14 +173,11 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
                 }
               }}
               placeholder="내용을 입력하세요..."
-              className="w-full px-4 py-3 text-sm text-gray-900 placeholder-gray-400 resize-none focus:outline-none leading-relaxed min-h-[480px]"
+              className="w-full px-4 py-3 text-sm placeholder-gray-400 resize-none focus:outline-none leading-relaxed min-h-[480px]"
             />
-          </>
-        )}
+          </Tabs.Panel>
 
-        {/* Preview 탭 */}
-        {tab === 'preview' && (
-          <div className="min-h-[480px] px-5 py-4">
+          <Tabs.Panel value="preview" className="min-h-[480px] px-5 py-4">
             {content.trim() ? (
               <div className="prose max-w-none">
                 <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{content}</ReactMarkdown>
@@ -205,8 +185,8 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
             ) : (
               <p className="text-sm text-gray-400 italic">미리보기할 내용이 없습니다.</p>
             )}
-          </div>
-        )}
+          </Tabs.Panel>
+        </Tabs>
       </div>
 
       <Flex align="items-center" justify="justify-end" className="text-xs">

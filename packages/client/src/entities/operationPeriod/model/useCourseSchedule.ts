@@ -6,7 +6,7 @@ export interface ISchedulePeriod {
   endDate: string;
 }
 
-/** 기간을 '08/14(금) ~ 08/21(금)' 형태로 표기합니다. */
+/** 기간을 '8월 14일(금) ~ 8월 21일(금)' 형태로 표기합니다. */
 export function formatSchedulePeriod(period: ISchedulePeriod): string {
   return `${formatMonthDayWithDay(period.startDate)} ~ ${formatMonthDayWithDay(period.endDate)}`;
 }

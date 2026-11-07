@@ -8,7 +8,6 @@ import Sentry from '@/app/config/sentry.ts';
 import { createQueryClient } from '@/app/config/queryClient.ts';
 import router from '@/app/routing';
 import './index.css';
-import { PopoverGroup } from '@allcll/allcll-ui';
 
 const queryClient = createQueryClient();
 const UsingMockServer = import.meta.env.VITE_USE_MOCK === 'true';
@@ -43,11 +42,9 @@ function loadApp() {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <PopoverGroup>
-          {/*<DndProvider backend={HTML5Backend}>*/}
+        {/*<DndProvider backend={HTML5Backend}>*/}
 
-          <RouterProvider router={router} />
-        </PopoverGroup>
+        <RouterProvider router={router} />
 
         {/*</DndProvider>*/}
       </QueryClientProvider>

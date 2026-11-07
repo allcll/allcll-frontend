@@ -2,6 +2,10 @@ export function timeSleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+export function formatHourMinute(hours: number, minutes: number) {
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+}
+
 export interface TimeObject {
   hours: number;
   minutes: number;
@@ -46,10 +50,7 @@ export class Time {
 
   toString(): string {
     const { hours, minutes } = this.toObject();
-
-    const h = hours.toString().padStart(2, '0');
-    const m = minutes.toString().padStart(2, '0');
-    return `${h}:${m}`;
+    return formatHourMinute(hours, minutes);
   }
 
   /** referenceTime < compareTime 이면 음수
@@ -76,10 +77,10 @@ export function getTodayKST(): string {
 
 const DAY_NAMES = ['일', '월', '화', '수', '목', '금', '토'];
 
-/** 'YYYY-MM-DD' 또는 'YYYY-MM-DDTHH:mm:ss' 를 '08/14(금)' 형태로 바꿉니다. */
+/** 'YYYY-MM-DD' 또는 'YYYY-MM-DDTHH:mm:ss' 를 '8월 14일(금)' 형태로 바꿉니다. */
 export function formatMonthDayWithDay(dateString: string): string {
   const [year, month, day] = dateString.split('T')[0].split('-').map(Number);
   const dayName = DAY_NAMES[new Date(year, month - 1, day).getDay()];
 
-  return `${String(month).padStart(2, '0')}/${String(day).padStart(2, '0')}(${dayName})`;
+  return `${month}월 ${day}일(${dayName})`;
 }

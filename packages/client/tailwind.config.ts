@@ -20,11 +20,8 @@ const config: Config = {
       zIndex: Object.fromEntries(Object.entries(Z_INDEX).map(([key, value]) => [key, String(value)])),
       colors: {
         primary: colors.primary,
-        secondary: colors.secondary,
+        danger: colors.danger,
         text: colors.text,
-        blue: {
-          500: '#007aff',
-        },
         banner: {
           skysoft: '#F4F9FF',
         },
