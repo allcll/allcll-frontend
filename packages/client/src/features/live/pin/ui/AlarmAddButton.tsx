@@ -6,7 +6,7 @@ function AlarmAddButton() {
 
   return (
     <Flex justify="justify-center" align="items-center">
-      <Button variant="ghost" size="medium" onClick={() => setIsSearchOpen(true)}>
+      <Button variant="pill" color="gray" size="medium" onClick={() => setIsSearchOpen(true)}>
         <AddIcon />
         알림 과목 등록
       </Button>

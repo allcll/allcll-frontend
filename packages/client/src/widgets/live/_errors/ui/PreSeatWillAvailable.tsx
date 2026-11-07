@@ -8,7 +8,7 @@ function PreSeatWillAvailable() {
       description="수강 신청 고생 많으셨습니다. 다음 학기에 만나요."
       icon={NotificationIcon}
     >
-      <Button asChild variant="ghost" size="medium">
+      <Button asChild variant="pill" color="gray" size="medium">
         <a href="https://open.kakao.com/o/g3MztXfh">공지 채팅방 바로가기</a>
       </Button>
     </NoneLayout>

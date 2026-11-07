@@ -1,8 +1,8 @@
-import type { ComponentPropsWithoutRef } from 'react';
+import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { INTERACTION } from '../../config';
 
-export type ButtonVariant = 'solid' | 'outlined' | 'text' | 'ghost' | 'circle';
+export type ButtonVariant = 'solid' | 'outlined' | 'text' | 'pill';
 export type ButtonColor = 'primary' | 'gray' | 'danger';
 export type ButtonSize = 'small' | 'medium' | 'large';
 
@@ -14,23 +14,23 @@ interface IButton extends Omit<ComponentPropsWithoutRef<'button'>, 'color'> {
   asChild?: boolean;
 }
 
-function Button({ variant, color = 'primary', size, children, disabled, asChild, className = '', ...rest }: IButton) {
+const Button = forwardRef<HTMLButtonElement, IButton>(function Button(
+  { variant, color = 'primary', size, children, disabled, asChild, className = '', ...rest },
+  ref,
+) {
   const Comp = asChild ? Slot : 'button';
-  const buttonClass =
-    variant === 'circle'
-      ? ''
-      : `flex flex-row gap-1 items-center justify-center disabled:cursor-not-allowed disabled:opacity-40 ${INTERACTION.hoverable} ${INTERACTION.pressable}`;
+  const buttonClass = `flex flex-row gap-1 items-center justify-center disabled:cursor-not-allowed disabled:opacity-40 ${INTERACTION.hoverable} ${INTERACTION.pressable}`;
 
   const variantClass = getVariantClass(variant, color);
-  const sizeClass = variant === 'circle' ? '' : getSizeClass(size, variant === 'text');
+  const sizeClass = getSizeClass(size, variant === 'text');
   const finalClassName = `${buttonClass} ${variantClass} ${sizeClass} ${className}`.trim();
 
   return (
-    <Comp {...rest} className={finalClassName} disabled={disabled}>
+    <Comp {...rest} ref={ref} className={finalClassName} disabled={disabled}>
       {children}
     </Comp>
   );
-}
+});
 
 export default Button;
 
@@ -44,6 +44,12 @@ const OUTLINED_CLASS: Record<ButtonColor, string> = {
   primary: 'bg-transparent border-primary-500 text-primary-500 not-disabled:hover:bg-primary-50',
   gray: 'bg-white border-gray-300 text-gray-800 not-disabled:hover:bg-gray-50',
   danger: 'bg-transparent border-danger-500 text-danger-500 not-disabled:hover:bg-danger-50',
+};
+
+const PILL_CLASS: Record<ButtonColor, string> = {
+  primary: 'bg-primary-50 border-primary-200 text-primary-600 not-disabled:hover:bg-primary-100',
+  gray: 'bg-gray-50 border-gray-200 text-gray-700 not-disabled:hover:bg-gray-200',
+  danger: 'bg-danger-50 border-danger-200 text-danger-600 not-disabled:hover:bg-danger-100',
 };
 
 const TEXT_CLASS: Record<ButtonColor, string> = {
@@ -60,10 +66,8 @@ function getVariantClass(variant: ButtonVariant, color: ButtonColor) {
       return `border rounded-md ${OUTLINED_CLASS[color]}`;
     case 'text':
       return `bg-transparent ${TEXT_CLASS[color]}`;
-    case 'ghost':
-      return 'bg-gray-50 border border-gray-200 text-gray-700 not-disabled:hover:bg-gray-200 rounded-full';
-    case 'circle':
-      return 'px-2 py-2 bg-primary-500 text-white not-disabled:hover:bg-primary-600 rounded-full shadow-md';
+    case 'pill':
+      return `border rounded-full ${PILL_CLASS[color]}`;
   }
 }
 
