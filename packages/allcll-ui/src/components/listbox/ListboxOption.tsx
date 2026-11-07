@@ -1,7 +1,7 @@
-import type { ReactNode, KeyboardEvent } from 'react';
+import { forwardRef, type ComponentPropsWithoutRef, type KeyboardEvent, type MouseEvent, type ReactNode } from 'react';
 import { INTERACTION } from '../../config';
 
-interface ListboxOptionProps {
+interface ListboxOptionProps extends Omit<ComponentPropsWithoutRef<'div'>, 'id'> {
   selected: boolean;
   onSelect?: () => void;
   left: ReactNode;
@@ -11,19 +11,19 @@ interface ListboxOptionProps {
   focusable?: boolean;
 }
 
-function ListboxOption({
-  selected = false,
-  onSelect,
-  left,
-  right,
-  id,
-  active = false,
-  focusable = true,
-}: ListboxOptionProps) {
+const ListboxOption = forwardRef<HTMLDivElement, ListboxOptionProps>(function ListboxOption(
+  { selected = false, onSelect, left, right, id, active = false, focusable = true, onClick, ...rest },
+  ref,
+) {
+  const handleClick = (e: MouseEvent<HTMLDivElement>) => {
+    onSelect?.();
+    onClick?.(e);
+  };
+
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      onSelect?.();
+      e.currentTarget.click();
     }
   };
 
@@ -31,11 +31,13 @@ function ListboxOption({
 
   return (
     <div
+      {...rest}
+      ref={ref}
       id={id}
       role="option"
       aria-selected={selected}
       tabIndex={focusable ? 0 : -1}
-      onClick={onSelect}
+      onClick={handleClick}
       onKeyDown={handleKeyDown}
       className={`${baseClass} ${getSelectedClass(selected, active)}`}
     >
@@ -45,7 +47,7 @@ function ListboxOption({
       </div>
     </div>
   );
-}
+});
 
 function getSelectedClass(selected: boolean, active: boolean) {
   if (selected)

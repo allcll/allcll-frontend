@@ -16,7 +16,7 @@ export { default as Label } from './src/components/label/Label';
 export { default as Select } from './src/components/select/Select';
 export { default as RangeSlider } from './src/components/range-slider/RangeSlider';
 export { default as SearchableSelect } from './src/components/searchable-select/SearchableSelect';
-export { Popover, usePopoverContext } from './src/components/popover/popover/Popover';
+export { Popover } from './src/components/popover/popover/Popover';
 export { default as RowCenter } from './src/components/row/RowCenter';
 export { default as RowLeft } from './src/components/row/RowLeft';
 export { default as RowMain } from './src/components/row/RowMain';

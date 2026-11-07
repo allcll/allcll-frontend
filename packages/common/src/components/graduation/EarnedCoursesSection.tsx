@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Flex, Grid, Label, Chip, ChevronDownIcon, EmptyState, usePopoverContext } from '@allcll/allcll-ui';
+import { Flex, Grid, Label, Chip, ChevronDownIcon, EmptyState, Popover } from '@allcll/allcll-ui';
 import Filtering from '../filtering/Filtering';
 import type { CategoryType, GraduationCourse } from '../../types/graduation';
 import { CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
@@ -133,22 +133,18 @@ interface CategoryOptionsProps {
 }
 
 function CategoryOptions({ options, selectedCategory, onSelect }: Readonly<CategoryOptionsProps>) {
-  const { close } = usePopoverContext();
-
   return (
     <Flex direction="flex-col" gap="gap-2">
       <Label>이수 구분</Label>
       <Grid columns={{ md: 3 }} gap="gap-2">
         {options.map(option => (
-          <Chip
-            key={option.value}
-            label={option.label}
-            selected={option.value === selectedCategory}
-            onClick={() => {
-              onSelect(option.value);
-              close();
-            }}
-          />
+          <Popover.Close key={option.value} asChild>
+            <Chip
+              label={option.label}
+              selected={option.value === selectedCategory}
+              onClick={() => onSelect(option.value)}
+            />
+          </Popover.Close>
         ))}
       </Grid>
     </Flex>

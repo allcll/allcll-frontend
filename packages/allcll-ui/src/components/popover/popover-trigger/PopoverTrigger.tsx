@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import * as RadixPopover from '@radix-ui/react-popover';
 import Chip from '../../chip/Chip';
-import { usePopoverContext } from '../popover/Popover';
+import { usePopoverContext } from '../popover/PopoverContext';
 
 interface IPopoverTrigger {
   label?: string;

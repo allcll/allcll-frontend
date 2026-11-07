@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import * as RadixPopover from '@radix-ui/react-popover';
-import { usePopoverContext } from '../popover/Popover';
+import { usePopoverContext } from '../popover/PopoverContext';
 import { Z_INDEX, type ZIndexLayer } from '../../../../zIndex';
 
 type PopoverContentProps = Pick<RadixPopover.PopoverContentProps, 'align'> & {

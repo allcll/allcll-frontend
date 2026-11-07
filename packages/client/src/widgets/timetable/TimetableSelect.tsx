@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDeleteTimetable } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import type { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
-import { AddIcon, Button, Checkbox, Flex, Popover, SupportingText, usePopoverContext } from '@allcll/allcll-ui';
+import { AddIcon, Button, Checkbox, Flex, Popover, SupportingText } from '@allcll/allcll-ui';
 import { ConfirmDialog } from '@allcll/common';
 import {
   showTimetableApiErrorToast,
@@ -10,31 +10,18 @@ import {
 } from '@/features/timetable/lib/showTimetableApiErrorToast';
 
 function TimetableActions({ onEdit, onDelete }: { onEdit: () => void; onDelete: () => void }) {
-  const { close } = usePopoverContext();
-
   return (
     <Flex gap="gap-4">
-      <Button
-        variant="text"
-        size="small"
-        onClick={() => {
-          close();
-          onEdit();
-        }}
-      >
-        수정
-      </Button>
-      <Button
-        variant="text"
-        size="small"
-        color="danger"
-        onClick={() => {
-          close();
-          onDelete();
-        }}
-      >
-        삭제
-      </Button>
+      <Popover.Close asChild>
+        <Button variant="text" size="small" onClick={onEdit}>
+          수정
+        </Button>
+      </Popover.Close>
+      <Popover.Close asChild>
+        <Button variant="text" size="small" color="danger" onClick={onDelete}>
+          삭제
+        </Button>
+      </Popover.Close>
     </Flex>
   );
 }
