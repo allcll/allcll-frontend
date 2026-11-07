@@ -22,7 +22,7 @@ const FileDropZone = ({ onFileSelect, selectedFile, onDeleteFile, accept }: File
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      addToast('파일 크기는 1MB를 초과할 수 없습니다.');
+      addToast('파일 크기는 1MB를 초과할 수 없습니다.', 'file-upload-error');
       if (ref.current) {
         ref.current.value = '';
       }

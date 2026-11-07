@@ -13,7 +13,7 @@ export const useUpdateEnglishCertMutation = () => {
       queryClient.setQueryData(graduationQueryKeys.check(), data);
     },
     onError: () => {
-      addToast('영어 인증 결과 변경에 실패했습니다.');
+      addToast('영어 인증 결과 변경에 실패했습니다.', 'english-cert-error');
     },
   });
 };
