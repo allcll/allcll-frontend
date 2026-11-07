@@ -73,7 +73,7 @@ function AlarmOptionContent() {
 
   return (
     <div className="mb-4">
-      <Heading level={3} size="md" id="alarm-type-heading" className="mb-2">
+      <Heading level={4} id="alarm-type-heading" className="mb-2">
         알림 유형
       </Heading>
       <div className="flex flex-col gap-1.5">
@@ -122,7 +122,7 @@ function SubAlarmOption() {
 
   return (
     <div>
-      <Heading level={3} size="md" className="mb-2">
+      <Heading level={4} className="mb-2">
         추가 알림 옵션
       </Heading>
       <div className="flex flex-col gap-2">

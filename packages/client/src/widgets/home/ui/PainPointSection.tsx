@@ -25,9 +25,7 @@ function PainPointSection() {
         ].map(({ icon, title, text }, index) => (
           <div key={'pain-point-' + index} className="flex flex-col gap-4 p-6 rounded-md bg-gray-50 text-left">
             {icon}
-            <Heading level={3} className="font-extrabold">
-              {title}
-            </Heading>
+            <Heading level={3}>{title}</Heading>
             <SupportingText>{text}</SupportingText>
           </div>
         ))}

@@ -89,9 +89,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
     <Card variant="outlined" className="w-full mx-auto p-8">
       <Flex direction="flex-col" gap="gap-8">
         <div className="text-center space-y-2">
-          <Heading level={2} size="xl">
-            기본 정보 입력
-          </Heading>
+          <Heading level={2}>기본 정보 입력</Heading>
           <SupportingText>정확한 졸업 요건 검사를 위해 학적 정보를 입력해주세요.</SupportingText>
         </div>
 

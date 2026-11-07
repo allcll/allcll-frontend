@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, WarningIcon } from '@allcll/allcll-ui';
+import { Button, Flex, WarningIcon } from '@allcll/allcll-ui';
 import type { ILoginErrorView } from '../lib/loginErrors.ts';
 
 interface ILoginErrorNoticeProps {
@@ -12,14 +12,13 @@ const TONE_STYLE = {
   error: {
     box: 'bg-danger-50 border-danger-200',
     icon: 'text-danger-700',
-    // Heading 이 붙이는 text-text-200 이 CSS 에서 뒤에 있어 ! 로 덮습니다.
-    title: '!text-danger-700',
+    title: 'text-danger-700',
     buttonColor: 'danger',
   },
   neutral: {
     box: 'bg-gray-50 border-gray-200',
     icon: 'text-gray-700',
-    title: '',
+    title: 'text-text-200',
     buttonColor: 'primary',
   },
 } as const;
@@ -35,10 +34,7 @@ function LoginErrorNotice({ view, descriptionId }: ILoginErrorNoticeProps) {
       <WarningIcon aria-hidden="true" className={`w-4 h-4 mt-0.5 shrink-0 ${tone.icon}`} />
 
       <Flex direction="flex-col" gap="gap-1" className="min-w-0 flex-1">
-        {/* 카드에 이미 h2 가 있어 문서 개요를 건드리지 않게 p 로 렌더합니다. */}
-        <Heading level={4} as="p" className={`break-keep ${tone.title}`}>
-          {view.title}
-        </Heading>
+        <p className={`text-sm font-semibold break-keep ${tone.title}`}>{view.title}</p>
 
         {/* SupportingText 의 gray-500 은 대비가 4.4 라 gray-600 을 씁니다. */}
         <p id={descriptionId} className="text-sm text-gray-600 leading-relaxed break-keep">

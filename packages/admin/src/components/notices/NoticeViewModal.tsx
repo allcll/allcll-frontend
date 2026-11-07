@@ -18,9 +18,7 @@ function NoticeViewModal({ notice, onClose, onEdit }: INoticeViewModalProps) {
       <Dialog.Content className="sm:py-5">
         <Flex direction="flex-col" gap="gap-4" className="w-160 max-w-full">
           <Flex direction="flex-col" gap="gap-2" className="pb-4 border-b border-gray-100">
-            <Heading level={3} size="lg">
-              {notice.title}
-            </Heading>
+            <Heading level={3}>{notice.title}</Heading>
             <Flex align="items-center" gap="gap-2" className="text-xs text-gray-500">
               <OperationTypeBadge operationType={notice.operationType} />
               <span>작성 {formatDate(notice.createdAt)}</span>

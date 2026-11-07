@@ -74,7 +74,7 @@ function LoginForm({ onSuccess }: ILoginFormProps) {
       {/* 상위가 max-w-4xl 이라 그대로 두면 폼이 860px 까지 늘어납니다. */}
       <Card variant="outlined" className="w-full max-w-lg mx-auto p-8">
         <Flex justify="justify-center" direction="flex-col">
-          <Heading level={2} size="xxl" className="mb-2 text-center">
+          <Heading level={1} className="mb-2 text-center">
             세종대 포털 로그인
           </Heading>
           <SupportingText className="mb-2 text-center">
