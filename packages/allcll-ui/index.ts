@@ -25,6 +25,7 @@ export { default as RowSlots } from './src/components/row/RowSlots';
 export { default as Skeleton } from './src/components/skeleton/Skeleton';
 export { default as Spinner } from './src/components/spinner/Spinner';
 export { default as SegmentedControl } from './src/components/segmented-control/SegmentedControl';
+export { default as Pagination } from './src/components/pagination/Pagination';
 export { default as TabNav } from './src/components/tabs/TabNav';
 export { default as Tabs } from './src/components/tabs/Tabs';
 export { default as TextField } from './src/components/textfield/TextField';

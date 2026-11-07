@@ -42,6 +42,7 @@ export {
   ChevronUp as ChevronUpIcon,
   ChevronsUpDown as ChevronsUpDownIcon,
   ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
   ArrowLeft as ArrowLeftIcon,
   ArrowRight as ArrowRightIcon,
 
