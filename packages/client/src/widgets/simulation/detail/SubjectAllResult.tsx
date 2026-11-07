@@ -27,9 +27,12 @@ function SubjectAllResult({ result }: Readonly<{ result: AggregatedResultRespons
             <Table.Cell>{row.avgIndex.toFixed(2)}</Table.Cell>
             <Table.Cell>{row.avgCompletionTime.toFixed(2)}초</Table.Cell>
             <Table.Cell>
-              <span className="px-1 py-0.5 rounded-full text-xs font-bold text-green-500">{row.successCount}</span>/
-              <span className="px-1 py-0.5 rounded-full text-xs font-bold text-danger-500">{row.failedCount}</span>/
-              <span className="px-1 py-0.5 rounded-full text-xs font-bold text-gray-500">{row.doubledCount}</span>/
+              <span className="px-1 py-0.5 rounded-full text-xs font-bold text-green-500">{row.successCount}</span>
+              <span>/</span>
+              <span className="px-1 py-0.5 rounded-full text-xs font-bold text-danger-500">{row.failedCount}</span>
+              <span>/</span>
+              <span className="px-1 py-0.5 rounded-full text-xs font-bold text-gray-500">{row.doubledCount}</span>
+              <span>/</span>
               <span className="px-1 py-0.5 rounded-full text-xs font-bold">{row.totalCount}</span>
             </Table.Cell>
           </Table.Row>

@@ -84,10 +84,10 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
           </div>
         )}
         <div className="relative z-content text-center">
-          <Heading level={2} size="xxl">
-            수강 신청
+          <Heading level={2} size="xxl" className="flex justify-center gap-1.5">
+            <span>수강 신청</span>
             <span className={isSuccessSimulation ? `text-primary-600` : `text-danger-500`}>
-              {isSuccessSimulation ? ' 성공!' : ' 실패'}
+              {isSuccessSimulation ? '성공!' : '실패'}
             </span>
           </Heading>
           <span className="text-sm text-gray-700 mt-1">수강신청에 {isSuccessSimulation ? ' 성공' : ' 실패'}했어요</span>
