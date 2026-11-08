@@ -86,7 +86,7 @@ function TableHeaderCell({
 
   return (
     <th aria-sort={ariaSort} className={cellClassName} {...rest}>
-      <button type="button" onClick={onSort} className="inline-flex items-center gap-1 font-bold cursor-pointer">
+      <button type="button" onClick={onSort} className="inline-flex items-center gap-1 cursor-pointer">
         {children}
         <SortIcon className={`w-3.5 h-3.5 ${sortDirection ? 'text-gray-500' : 'text-gray-300'}`} />
       </button>
