@@ -35,7 +35,7 @@ function EditProfileModal({ isOpen, onClose, user }: EditProfileModalProps) {
       <Dialog.Content>
         <Flex direction="column" gap={4} className="min-w-64 md:min-w-80">
           <Flex direction="column" gap={1.5}>
-            <Label id="edit-profile-major-type">이수 유형</Label>
+            <Label htmlFor="edit-profile-major-type">이수 유형</Label>
             <Select
               id="edit-profile-major-type"
               className="w-full"

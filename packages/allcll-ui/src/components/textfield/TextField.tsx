@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import { useId, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import Label from '../label/Label';
 import Flex from '../flex/Flex';
 import IconButton from '../icon-button/IconButton';
@@ -26,23 +26,29 @@ function TextField({
   value,
   onClear,
   endAdornment,
+  'aria-describedby': describedBy,
   ...rest
 }: TextFieldProps) {
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
+  const errorId = `${inputId}-error`;
+  const showError = isError && !!errorMessage;
   const paddingRight = onClear && endAdornment ? 'pr-14' : onClear || endAdornment ? 'pr-8' : 'pr-3';
 
   return (
     <Flex direction="column" gap={1.5} className={className}>
       {label && (
-        <Label required={required} id={id}>
+        <Label required={required} htmlFor={inputId}>
           {label}
         </Label>
       )}
 
       <div className="relative w-full ">
         <input
-          id={id}
+          id={inputId}
           type="text"
           aria-invalid={isError}
+          aria-describedby={[describedBy, showError && errorId].filter(Boolean).join(' ') || undefined}
           required={required}
           value={value}
           {...rest}
@@ -64,7 +70,11 @@ function TextField({
         )}
       </div>
 
-      {isError && <span className="text-danger-500 text-xs">{errorMessage}</span>}
+      {showError && (
+        <span id={errorId} className="text-danger-500 text-xs">
+          {errorMessage}
+        </span>
+      )}
     </Flex>
   );
 }

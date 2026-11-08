@@ -166,7 +166,7 @@ function NoticeEditor() {
         </Flex>
 
         <Flex direction="column" gap={1.5}>
-          <Label id="notice-category">카테고리</Label>
+          <Label htmlFor="notice-category">카테고리</Label>
           <Select
             id="notice-category"
             value={category}

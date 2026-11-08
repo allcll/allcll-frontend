@@ -25,6 +25,7 @@ interface SearchableSelectProps {
   id?: string;
   className?: string;
   'aria-label'?: string;
+  'aria-labelledby'?: string;
 }
 
 const MIN_SPACE_BELOW = 200;
@@ -47,6 +48,7 @@ function SearchableSelect({
   id,
   className = '',
   'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledBy,
 }: SearchableSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -56,6 +58,10 @@ function SearchableSelect({
   const triggerRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listboxId = useId();
+  const ownLabelId = `${listboxId}-label`;
+  const valueId = `${listboxId}-value`;
+  // 이름만 주면 버튼 내용(선택값)을 덮어써서, 이름과 선택값을 함께 읽도록 묶음
+  const nameId = ariaLabelledBy ?? (ariaLabel ? ownLabelId : undefined);
 
   const selectedOption = options.find(option => option.value === value);
   const filteredOptions = useMemo(
@@ -132,12 +138,19 @@ function SearchableSelect({
             type="button"
             id={id}
             aria-haspopup="listbox"
-            aria-label={ariaLabel}
+            aria-labelledby={nameId ? `${nameId} ${valueId}` : undefined}
             disabled={disabled}
             onKeyDown={handleTriggerKeyDown}
             className={`w-full h-full text-left truncate pl-3 pr-8 aria-expanded:border-primary-500 ${FIELD_CLASS}`}
           >
-            {selectedOption ? selectedOption.label : <span className="text-gray-400">{placeholder}</span>}
+            {ariaLabel && !ariaLabelledBy && (
+              <span id={ownLabelId} hidden>
+                {ariaLabel}
+              </span>
+            )}
+            <span id={valueId} className={selectedOption ? undefined : 'text-gray-400'}>
+              {selectedOption ? selectedOption.label : placeholder}
+            </span>
           </button>
         </RadixPopover.Trigger>
         <ChevronDownIcon
