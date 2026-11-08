@@ -38,7 +38,7 @@ function PreSeatComponent() {
   const liveOpenDate = schedule && formatMonthDayWithDay(schedule.change.startDate);
 
   return (
-    <Flex direction="flex-col">
+    <Flex direction="column">
       <div>
         <Heading level={2}>전체 학년 여석</Heading>
 
@@ -53,7 +53,7 @@ function PreSeatComponent() {
         </SupportingText>
       </div>
 
-      <Flex direction="flex-col" gap="gap-4">
+      <Flex direction="column" gap={4}>
         <Card>
           <AlarmFilter />
           <TableColorInfo />

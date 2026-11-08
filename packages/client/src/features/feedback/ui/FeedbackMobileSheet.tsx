@@ -24,7 +24,7 @@ export default function FeedbackMobileSheet({
     <BottomSheet title={titles.title} isOpen={isOpen} onClose={onClose}>
       <div>
         {!success ? (
-          <Flex direction="flex-col" gap="gap-6">
+          <Flex direction="column" gap={6}>
             <FeedbackFields
               titles={titles}
               rate={rate}

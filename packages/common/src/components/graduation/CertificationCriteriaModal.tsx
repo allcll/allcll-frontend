@@ -48,7 +48,7 @@ function CertificationCriteriaModal({
   return (
     <Dialog title={title} onClose={onClose} isOpen={isOpen}>
       <Dialog.Content>
-        <Flex direction="flex-col" gap="gap-3" className="min-w-64 md:min-w-96 h-80 overflow-y-auto pr-3">
+        <Flex direction="column" gap={3} className="min-w-64 md:min-w-96 h-80 overflow-y-auto pr-3">
           <ContentComponent data={criteriaData} />
         </Flex>
       </Dialog.Content>

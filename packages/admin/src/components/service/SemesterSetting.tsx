@@ -6,7 +6,7 @@ function SemesterSetting() {
   return (
     <section>
       <Card>
-        <Flex direction="flex-col" gap="gap-4">
+        <Flex direction="column" gap={4}>
           <SectionHeader title="현재 학기" description="날짜 기준으로 자동 판별된 현재 학기입니다." />
           <SemesterContent />
         </Flex>
@@ -27,7 +27,7 @@ function SemesterContent() {
   }
 
   return (
-    <Flex direction="flex-col" gap="gap-1">
+    <Flex direction="column" gap={1}>
       <span className="text-lg font-semibold text-gray-800">{data.semesterValue}</span>
       <SupportingText>
         {data.period.startDate} ~ {data.period.endDate}

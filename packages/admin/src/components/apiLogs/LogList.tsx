@@ -10,7 +10,7 @@ function LogList({ logs }: ILogList) {
   return (
     <div className="min-h-0 overflow-y-auto touch-auto flex flex-col">
       <div className="overflow-y-hidden p-2 rounded-md bg-gray-200 shadow-sm">
-        <Flex direction="flex-col" gap="gap-4">
+        <Flex direction="column" gap={4}>
           {logs.map(log => (
             <LogItem key={log.request_id} log={log} />
           ))}

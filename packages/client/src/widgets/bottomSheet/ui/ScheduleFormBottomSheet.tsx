@@ -22,7 +22,7 @@ function ScheduleFormBottomSheet({ isOpen }: { isOpen: boolean }) {
   return (
     <BottomSheet title={`커스텀 일정 ${title}`} isOpen={isOpen} onClose={() => cancelSchedule()}>
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-        <Flex direction="flex-col">
+        <Flex direction="column">
           <ScheduleFormContent />
         </Flex>
 

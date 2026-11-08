@@ -88,7 +88,7 @@ function TutorialModal() {
   return (
     <Dialog title="올클연습 소개" onClose={handleCloseModal} isOpen={!shouldSkipTutorial}>
       <Dialog.Content>
-        <Flex className="w-full" direction="flex-col">
+        <Flex className="w-full" direction="column">
           <SupportingText>올클연습은 실제 수강신청과 유사한 환경에서 연습할 수 있는 기능입니다.</SupportingText>
           <div className="mx-auto" style={{ width: youTubeSize.width + 'px', height: youTubeSize.height + 'px' }}>
             <YouTube
@@ -108,7 +108,7 @@ function TutorialModal() {
         </Flex>
 
         <div className="mt-4 flex flex-col justify-center items-center gap-2">
-          <Flex justify="justify-center" align="items-center" className="gap-4">
+          <Flex justify="center" align="center" gap={4}>
             <IconButton
               label="이전 튜토리얼"
               icon={<ChevronLeftIcon className="w-5 h-5" />}

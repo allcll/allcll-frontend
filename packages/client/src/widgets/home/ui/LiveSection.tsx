@@ -20,11 +20,11 @@ function LiveSection() {
               { name: '운영체제', prof: '004310 | LEE KANGWON' },
             ].map(({ name, prof }) => (
               <div key={prof} className="bg-gray-50 shadow-sm rounded-lg p-4 w-full">
-                <Flex justify="justify-between" align="items-center" className="mb-2">
+                <Flex justify="between" align="center" className="mb-2">
                   <Heading level={4}>{name}</Heading>
                   <NotificationIcon className="w-4 h-4 text-primary-500" />
                 </Flex>
-                <Flex justify="justify-between">
+                <Flex justify="between">
                   <p className="text-sm text-gray-500">{prof}</p>
                   <SeatBadge seat={0} formatter={value => `여석: ${value}`} />
                 </Flex>

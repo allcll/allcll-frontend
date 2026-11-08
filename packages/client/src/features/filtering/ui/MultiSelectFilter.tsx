@@ -49,7 +49,7 @@ function MultiSelectFilter<K extends keyof Filters>({
 
   return (
     <div className="relative inline-block w-full">
-      <Flex direction="flex-col" gap="gap-2">
+      <Flex direction="column" gap={2}>
         <Label>{labelPrefix[filterKey]}</Label>
 
         {layout === 'grid' ? (
@@ -64,7 +64,7 @@ function MultiSelectFilter<K extends keyof Filters>({
             ))}
           </Grid>
         ) : (
-          <Flex direction="flex-col" gap="gap-2" className="pr-4">
+          <Flex direction="column" gap={2} className="pr-4">
             {visibleOptions.map(option => (
               <ItemComponent
                 key={String(option)}
@@ -79,8 +79,8 @@ function MultiSelectFilter<K extends keyof Filters>({
 
       {(showReset || options.length > MAX_VISIBLE) && (
         <Flex
-          justify="justify-between"
-          align="items-center"
+          justify="between"
+          align="center"
           className={showReset ? 'mt-3 pt-1.5 -mb-1.5 border-t border-gray-100' : 'mt-1'}
         >
           {options.length > MAX_VISIBLE && (

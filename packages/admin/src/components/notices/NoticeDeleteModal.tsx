@@ -13,7 +13,7 @@ function NoticeDeleteModal({ notice, onCancel, onConfirm, isDeleting }: INoticeD
   return (
     <Dialog title="공지사항 삭제" onClose={onCancel}>
       <Dialog.Content>
-        <Flex direction="flex-col" gap="gap-3">
+        <Flex direction="column" gap={3}>
           <div className="bg-gray-50 rounded-lg p-4 flex flex-col gap-1 text-sm">
             <p className="font-medium line-clamp-2">{notice.title}</p>
             <p className="text-gray-500">

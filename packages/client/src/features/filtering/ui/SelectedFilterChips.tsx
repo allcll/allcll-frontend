@@ -42,8 +42,8 @@ function SelectedFilterChips({ items, onDelete }: Readonly<SelectedFilterChipsPr
   const isCollapsed = collapsed !== null && !isExpanded;
 
   return (
-    <Flex direction="flex-col" gap="gap-2">
-      <Flex justify="justify-between" align="items-center">
+    <Flex direction="column" gap={2}>
+      <Flex justify="between" align="center">
         <Label>
           선택된 필터 <span className="text-primary-500">{items.length}</span>
         </Label>

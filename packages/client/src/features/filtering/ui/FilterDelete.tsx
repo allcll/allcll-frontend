@@ -16,7 +16,7 @@ function FilterDelete({ filters, resetFilter }: FilterDelete) {
   return (
     <Chip
       label={
-        <Flex align="items-center" gap="gap-1">
+        <Flex align="center" gap={1}>
           <FilterRemoveIcon className="w-4 h-4" />
           <span>필터 제거</span>
         </Flex>

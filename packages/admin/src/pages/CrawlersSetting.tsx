@@ -25,7 +25,7 @@ function CrawlerSettings() {
       <main className="space-y-5">
         <SetupProgress current={isCredentialRegistered ? SetupStep.CONTROL : SetupStep.TOKEN} />
 
-        <Flex direction="flex-col" gap="gap-4">
+        <Flex direction="column" gap={4}>
           {!mySessionStatus ? (
             <>
               <TokenSetting />

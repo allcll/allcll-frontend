@@ -14,7 +14,7 @@ function GraduationSettingSteps() {
 
   return (
     <PageContainer>
-      <Flex direction="flex-col" gap="gap-4" className="max-w-4xl mx-auto">
+      <Flex direction="column" gap={4} className="max-w-4xl mx-auto">
         <StepIndicator currentStep={step} />
 
         <StepErrorBoundary resetKey={step}>

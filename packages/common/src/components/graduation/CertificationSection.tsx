@@ -42,7 +42,7 @@ function CertificationCard({
       <div className="absolute top-3 right-3">
         <Badge color={badgeColor}>{statusText}</Badge>
       </div>
-      <Flex direction="flex-col" gap="gap-4" className="h-full">
+      <Flex direction="column" gap={4} className="h-full">
         <div className="text-center">
           <span className="text-lg font-bold">{title}</span>
         </div>
@@ -85,7 +85,7 @@ interface IEnglishCertContentProps {
 
 function EnglishCertContent({ isPassed, onEdit }: Readonly<IEnglishCertContentProps>) {
   return (
-    <Flex direction="flex-col" align="items-center" justify="justify-center" gap="gap-1" className="h-full">
+    <Flex direction="column" align="center" justify="center" gap={1} className="h-full">
       {isPassed ? (
         <span className="text-primary-500">인증 완료</span>
       ) : (
@@ -125,7 +125,7 @@ function CertificationSection({
 
   return (
     <section>
-      <Flex align="items-center" gap="gap-3">
+      <Flex align="center" gap={3}>
         <Heading level={2}>졸업인증</Heading>
         <Badge color={certifications.isSatisfied ? 'success' : 'danger'}>
           {passedCount}/{requiredPassCount}
@@ -168,7 +168,7 @@ function CertificationSection({
             overallSatisfied={certifications.isSatisfied}
             onViewStandards={setActiveCriteriaType}
           >
-            <Flex justify="justify-center" align="items-center" className="h-full">
+            <Flex justify="center" align="center" className="h-full">
               {coding.isPassed ? (
                 <span className="text-primary-500">인증 완료</span>
               ) : (

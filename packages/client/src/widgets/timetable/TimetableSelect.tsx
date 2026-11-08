@@ -11,7 +11,7 @@ import {
 
 function TimetableActions({ onEdit, onDelete }: { onEdit: () => void; onDelete: () => void }) {
   return (
-    <Flex gap="gap-4">
+    <Flex gap={4}>
       <Popover.Close asChild>
         <Button variant="text" size="small" onClick={onEdit}>
           수정
@@ -89,10 +89,10 @@ const TimetableSelect = ({ setIsOpenModal, openCreateModal, timetables, currentT
         <Popover.Trigger label={currentTimetable ? currentTimetable.timeTableName : '새 시간표'} />
 
         <Popover.Content>
-          <Flex direction="flex-col" gap="gap-4">
+          <Flex direction="column" gap={4}>
             {timetables.length === 0 && <SupportingText>새로운 시간표를 추가해주세요.</SupportingText>}
             {timetables.map(option => (
-              <Flex gap="gap-4" key={option.timeTableName + option.timeTableId}>
+              <Flex gap={4} key={option.timeTableName + option.timeTableId}>
                 <Checkbox
                   key={option.timeTableId}
                   label={option.timeTableName}

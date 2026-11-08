@@ -32,7 +32,7 @@ function AlarmFilter() {
     .map(cat => cat);
 
   return (
-    <Flex direction="flex-wrap" gap="gap-2">
+    <Flex wrap gap={2}>
       <Label className="sr-only" htmlFor="searchOption">
         검색 옵션
       </Label>
@@ -52,8 +52,8 @@ function AlarmFilter() {
         showWishRange={false}
       />
 
-      <Flex align="items-center" direction="flex-wrap" gap="gap-2">
-        <Flex direction="flex-wrap" gap="gap-2" className="hidden md:flex">
+      <Flex align="center" wrap gap={2}>
+        <Flex wrap gap={2} className="hidden md:flex">
           <DepartmentFilter selectedValue={filters.department ?? ''} setFilter={setFilters} />
           <DayFilter
             options={getDayOptions(subjects ?? [])}

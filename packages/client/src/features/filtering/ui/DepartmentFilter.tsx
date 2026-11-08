@@ -30,7 +30,7 @@ function DepartmentFilter({ setFilter, selectedValue }: IDepartmentFilter) {
 
   return (
     <Filtering label={selectedLabel} selected={!!selectedValue}>
-      <Flex direction="flex-col" className="h-80 w-max min-w-80 max-w-[calc(100vw-2rem)]">
+      <Flex direction="column" className="h-80 w-max min-w-80 max-w-[calc(100vw-2rem)]">
         <Label>학과</Label>
         <SearchBox
           type="text"
@@ -72,7 +72,7 @@ function DepartmentFilter({ setFilter, selectedValue }: IDepartmentFilter) {
           })}
         </Listbox>
 
-        <Flex justify="justify-end" className="shrink-0 mt-1 pt-1.5 -mb-1.5 border-t border-gray-100">
+        <Flex justify="end" className="shrink-0 mt-1 pt-1.5 -mb-1.5 border-t border-gray-100">
           <Button
             variant="text"
             size="small"

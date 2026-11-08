@@ -34,7 +34,7 @@ function ReviewList({ reviews, isLoading, isError, sort, onSort, filterBar }: Re
   const [viewTarget, setViewTarget] = useState<Review | null>(null);
 
   return (
-    <Flex direction="flex-col" gap="gap-2">
+    <Flex direction="column" gap={2}>
       <SectionHeader title="후기 목록" description="서비스별 사용자 후기를 확인합니다." />
 
       {filterBar}

@@ -46,7 +46,7 @@ function DetailFilterModal({ filterStore, onClose }: Readonly<IModalProps>) {
   return (
     <Dialog title="필터" onClose={onClose} isOpen={true}>
       <Dialog.Content>
-        <Flex direction="flex-col" gap="gap-4" className="w-130">
+        <Flex direction="column" gap={4} className="w-130">
           <Card variant="outlined">
             <MultiSelectFilter
               selectedValues={categories}
@@ -80,13 +80,13 @@ function DetailFilterModal({ filterStore, onClose }: Readonly<IModalProps>) {
       </Dialog.Content>
 
       <Dialog.Footer>
-        <Flex direction="flex-col" gap="gap-3" className="w-full">
+        <Flex direction="column" gap={3} className="w-full">
           {/* 칩이 한 줄로 늘어나 모달 폭을 넓히지 않도록 폭 계산에서 빼고 내용 폭에 맞춰 줄바꿈 */}
           <div className="[contain:inline-size]">
             <SelectedFilterChips items={allSelectedFilters} onDelete={handleDeleteFilter} />
           </div>
 
-          <Flex justify="justify-end" align="items-center" gap="gap-2">
+          <Flex justify="end" align="center" gap={2}>
             <Button
               variant="solid"
               color="gray"

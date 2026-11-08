@@ -16,12 +16,12 @@ function WishesDetailInfo({ wishesInfo }: IWishesDetailInfoProps) {
 
   return (
     <>
-      <Flex justify="justify-between" align="items-center">
+      <Flex justify="between" align="center">
         <InlineSkeleton isPending={isPending}>
           <Heading level={1}>{data.subjectName}</Heading>
         </InlineSkeleton>
 
-        <Flex gap="gap-2">
+        <Flex gap={2}>
           <FavoriteButton subject={data} />
           <AlarmButton subject={data} />
         </Flex>

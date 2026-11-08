@@ -41,16 +41,16 @@ function Notices() {
   };
 
   return (
-    <Flex direction="flex-col" gap="gap-5" className="h-full">
-      <Flex align="items-center" justify="justify-between">
+    <Flex direction="column" gap={5} className="h-full">
+      <Flex align="center" justify="between">
         <PageHeader title="공지사항 관리" description="등록된 공지사항을 관리합니다." />
         <Button variant="solid" size="small" onClick={() => navigate('/notices/new')}>
           <AddIcon />새 공지 작성
         </Button>
       </Flex>
 
-      <Flex as="main" direction="flex-col" gap="gap-4">
-        <Flex align="items-center" justify="justify-between" gap="gap-2" className="flex-wrap">
+      <Flex as="main" direction="column" gap={4}>
+        <Flex align="center" justify="between" wrap gap={2}>
           <Filtering
             label={formatMultiSelectedLabel('카테고리', selectedCategories, type => OPERATION_TYPE_LABEL[type])}
             selected={selectedCategories.length > 0}

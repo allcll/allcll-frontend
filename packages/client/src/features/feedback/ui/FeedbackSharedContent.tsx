@@ -46,7 +46,7 @@ export function FeedbackFields({
       {onCategoryChange && <CategoryChips category={category} onChange={onCategoryChange} />}
 
       <Heading level={4}>{titles.radioTitle}</Heading>
-      <Flex justify="justify-center" className="gap-3 mb-3" role="radiogroup" aria-label={titles.radioTitle}>
+      <Flex justify="center" gap={3} className="mb-3" role="radiogroup" aria-label={titles.radioTitle}>
         <RateInputs rate={1} currentRate={rate} label={titles.rateLabels[0]} onClick={() => setRate(1)} />
         <RateInputs rate={2} currentRate={rate} label={titles.rateLabels[1]} onClick={() => setRate(2)} />
         <RateInputs rate={3} currentRate={rate} label={titles.rateLabels[2]} onClick={() => setRate(3)} />
@@ -64,7 +64,7 @@ export function FeedbackFields({
       />
 
       {detail.length > 0 && (
-        <Flex justify="justify-end">
+        <Flex justify="end">
           <span className="text-xs text-gray-400 tabular-nums">
             {detail.length} / {DETAIL_MAX_LENGTH}
           </span>
@@ -104,12 +104,8 @@ export function FeedbackActions({ isPending, canSubmit, onSubmit, onDontShowAgai
 
 export function FeedbackSuccess() {
   return (
-    <Flex direction="flex-col" justify="justify-center" align="items-center" className="py-4">
-      <Flex
-        justify="justify-center"
-        align="items-center"
-        className="w-14 h-14 rounded-full bg-emerald-100 mb-3 animate-pulse"
-      >
+    <Flex direction="column" justify="center" align="center" className="py-4">
+      <Flex justify="center" align="center" className="w-14 h-14 rounded-full bg-emerald-100 mb-3 animate-pulse">
         <CheckmarkIcon className="w-6 h-6 text-emerald-600" />
       </Flex>
       <SupportingText className="text-primary-500">좋은 의견 주셔서 감사합니다</SupportingText>
@@ -128,7 +124,7 @@ function CategoryChips({ category, onChange }: ICategoryChipsProps) {
       <Heading level={4} className="mb-2">
         어떤 서비스에 대한 의견인가요? (선택)
       </Heading>
-      <Flex gap="gap-2" className="flex-wrap mb-4">
+      <Flex wrap gap={2} className="mb-4">
         {SELECTABLE_FEEDBACK_CATEGORIES.map(({ category: value, label }) => (
           <Chip
             key={value}

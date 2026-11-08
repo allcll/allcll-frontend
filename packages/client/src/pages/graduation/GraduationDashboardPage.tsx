@@ -150,7 +150,7 @@ function GraduationDashboardPage() {
   };
 
   const renderCategoryCards = (cats: typeof majorCategories) => (
-    <Flex direction="flex-col" gap="gap-4" className="md:flex-row">
+    <Flex direction="column" gap={4} className="md:flex-row">
       {cats.map(category => (
         <div className="flex-1" key={`${category.majorScope}-${category.categoryType}`}>
           <CategoryProgressCard
@@ -165,7 +165,7 @@ function GraduationDashboardPage() {
   );
 
   const renderMobileCategoryCards = (cats: typeof majorCategories) => (
-    <Flex direction="flex-col" gap="gap-4">
+    <Flex direction="column" gap={4}>
       {cats.map(category => (
         <CategoryProgressCard
           key={`${category.majorScope}-${category.categoryType}`}
@@ -189,7 +189,7 @@ function GraduationDashboardPage() {
             {renderMobileCategoryCards(majorCategories)}
           </section>
         ) : (
-          <Flex direction="flex-col" gap="gap-6">
+          <Flex direction="column" gap={6}>
             {scopeTypes.map(scope => (
               <section key={scope}>
                 <Heading level={2} className="mb-4">
@@ -246,7 +246,7 @@ function GraduationDashboardPage() {
           title="졸업요건 분석"
           description={`${user.name}님의 졸업요건 분석 결과입니다.`}
           actions={
-            <Flex gap="gap-2">
+            <Flex gap={2}>
               <Button variant="text" size="small" onClick={handleEditProfile}>
                 회원 정보 수정
               </Button>
@@ -263,15 +263,15 @@ function GraduationDashboardPage() {
           }
         />
 
-        <Flex direction="flex-col" gap="gap-2">
+        <Flex direction="column" gap={2}>
           <OverallSummaryCard user={user} checkData={graduationData} />
 
           <EarnedCoursesSection courses={courses} />
 
-          <Flex justify="justify-between" align="items-center">
+          <Flex justify="between" align="center">
             <div></div>
 
-            <Flex justify="justify-end" align="items-center" gap="gap-2">
+            <Flex justify="end" align="center" gap={2}>
               {analyzedAt && <span className="text-sm text-gray-400">{formatDateLong(analyzedAt)} 분석</span>}
               <Button variant="solid" size="medium" onClick={handleStartOverGraduationCheck}>
                 다시 검사하기
@@ -285,7 +285,7 @@ function GraduationDashboardPage() {
               <Tabs.Panel value={activeTab}>{renderMobileContent()}</Tabs.Panel>
             </Tabs>
           ) : (
-            <Flex direction="flex-col" gap="gap-4">
+            <Flex direction="column" gap={4}>
               {isSingleMajor ? (
                 <section>
                   <Heading level={2} className="mb-2">

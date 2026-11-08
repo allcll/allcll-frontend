@@ -31,7 +31,7 @@ function ScheduleFilter() {
     .map(cat => cat);
 
   return (
-    <Flex direction="flex-wrap" align="items-center" gap="gap-2" className="w-full">
+    <Flex wrap align="center" gap={2} className="w-full">
       <DepartmentFilter setFilter={setFilters} selectedValue={filters.department} />
 
       <DayFilter

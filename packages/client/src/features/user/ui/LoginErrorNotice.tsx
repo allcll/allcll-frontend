@@ -29,11 +29,11 @@ function LoginErrorNotice({ view, descriptionId }: ILoginErrorNoticeProps) {
 
   // role="alert" 는 LoginForm 의 상시 컨테이너가 들고 있습니다.
   return (
-    <Flex align="items-start" gap="gap-2" className={`rounded-md border p-3 ${tone.box}`}>
+    <Flex align="start" gap={2} className={`rounded-md border p-3 ${tone.box}`}>
       {/* 뜻은 문구가 전달하므로 읽지 않습니다. */}
       <WarningIcon aria-hidden="true" className={`w-4 h-4 mt-0.5 shrink-0 ${tone.icon}`} />
 
-      <Flex direction="flex-col" gap="gap-1" className="min-w-0 flex-1">
+      <Flex direction="column" gap={1} className="min-w-0 flex-1">
         <p className={`text-sm font-semibold break-keep ${tone.title}`}>{view.title}</p>
 
         {/* SupportingText 의 gray-500 은 대비가 4.4 라 gray-600 을 씁니다. */}

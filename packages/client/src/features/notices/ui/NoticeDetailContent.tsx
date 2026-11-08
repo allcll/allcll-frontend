@@ -9,10 +9,10 @@ function NoticeDetailContent({ notice }: Readonly<{ notice: Notice }>) {
   const date = formatDateLong(notice.createdAt);
 
   return (
-    <Flex direction="flex-col" gap="gap-4">
-      <Flex direction="flex-col" gap="gap-2" className="pb-4 border-b border-gray-100">
+    <Flex direction="column" gap={4}>
+      <Flex direction="column" gap={2} className="pb-4 border-b border-gray-100">
         <Heading level={3}>{notice.title}</Heading>
-        <Flex align="items-center" gap="gap-2">
+        <Flex align="center" gap={2}>
           <Badge color="primary" size="small">
             {getNoticeLabel(notice.operationType)}
           </Badge>

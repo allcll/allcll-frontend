@@ -68,7 +68,7 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
         : 'text-gray-400';
 
   return (
-    <Flex direction="flex-col" gap="gap-1.5">
+    <Flex direction="column" gap={1.5}>
       <Label>내용</Label>
 
       <div className="flex flex-col border border-gray-300 rounded-lg overflow-hidden">
@@ -189,7 +189,7 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
         </Tabs>
       </div>
 
-      <Flex align="items-center" justify="justify-end" className="text-xs">
+      <Flex align="center" justify="end" className="text-xs">
         <span className={charCountClass}>
           {charCount.toLocaleString()} / {maxLength.toLocaleString()}자
         </span>

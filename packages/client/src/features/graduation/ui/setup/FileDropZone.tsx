@@ -97,7 +97,7 @@ const FileDropZone = ({ onFileSelect, selectedFile, onDeleteFile, accept }: File
 // 파일이 없을 때 (업로드 유도)
 const EmptyState = () => {
   return (
-    <Flex direction="flex-col" align="items-center" justify="justify-center" gap="gap-3">
+    <Flex direction="column" align="center" justify="center" gap={3}>
       <div className="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center text-gray-400">
         <UploadIcon className="w-7 h-7" />
       </div>
@@ -126,7 +126,7 @@ const SelectedState = ({ file, onDelete }: { file: File; onDelete: (e: React.Mou
         />
       </div>
 
-      <Flex direction="flex-col" align="items-center" justify="justify-center" gap="gap-3">
+      <Flex direction="column" align="center" justify="center" gap={3}>
         <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center text-green-500">
           <DocumentIcon className="w-7 h-7" />
         </div>

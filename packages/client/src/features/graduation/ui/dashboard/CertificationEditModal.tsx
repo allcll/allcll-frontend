@@ -29,8 +29,8 @@ function CertificationEditModal({
   return (
     <Dialog title="영어 인증 결과 수정" onClose={onClose} isOpen={isOpen}>
       <Dialog.Content>
-        <Flex direction="flex-col" gap="gap-4" className="min-w-64 md:min-w-96">
-          <Flex direction="flex-col" gap="gap-3" className="max-h-52 overflow-y-auto pr-1">
+        <Flex direction="column" gap={4} className="min-w-64 md:min-w-96">
+          <Flex direction="column" gap={3} className="max-h-52 overflow-y-auto pr-1">
             {isCriteriaLoading && <LoadingState className="py-8" />}
             {isCriteriaError && (
               <p className="text-sm text-danger-500 text-center py-8">기준 정보를 불러올 수 없습니다.</p>

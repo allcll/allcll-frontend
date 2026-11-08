@@ -49,7 +49,7 @@ function Logs() {
       <PageHeader title="API 요청 로그" description="API 요청 로그를 필터링하여 조회합니다." />
 
       <main className="space-y-5">
-        <Flex align="items-center" gap="gap-2">
+        <Flex align="center" gap={2}>
           <Filtering
             label={formatMultiSelectedLabel('상태', selectedStatusCodes, String)}
             selected={selectedStatusCodes.length > 0}

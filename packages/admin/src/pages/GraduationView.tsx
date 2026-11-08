@@ -39,7 +39,7 @@ function GraduationView() {
 
   if (isPending) {
     return (
-      <Flex justify="justify-center" align="items-center" className="min-h-[50vh]">
+      <Flex justify="center" align="center" className="min-h-[50vh]">
         <SupportingText>졸업 요건 분석 결과를 가져오는 중입니다.</SupportingText>
       </Flex>
     );
@@ -47,7 +47,7 @@ function GraduationView() {
 
   if (isError || !data) {
     return (
-      <Flex direction="flex-col" justify="justify-center" align="items-center" gap="gap-3" className="min-h-[50vh]">
+      <Flex direction="column" justify="center" align="center" gap={3} className="min-h-[50vh]">
         <SupportingText>졸업요건 데이터를 불러올 수 없습니다.</SupportingText>
         <Button variant="outlined" color="gray" size="small" onClick={() => navigate('/reviews')}>
           후기 목록으로 돌아가기
@@ -102,7 +102,7 @@ function GraduationView() {
         <EarnedCoursesSection courses={courses.courses} />
 
         {analyzedAt && (
-          <Flex justify="justify-end">
+          <Flex justify="end">
             <span className="text-sm text-gray-400">{analyzedAt} 분석</span>
           </Flex>
         )}
@@ -112,7 +112,7 @@ function GraduationView() {
             <Heading level={2} className="mb-2">
               전공 이수 현황
             </Heading>
-            <Flex direction="flex-col" gap="gap-4" className="md:flex-row">
+            <Flex direction="column" gap={4} className="md:flex-row">
               {majorCategories.map(category => (
                 <div className="flex-1" key={category.categoryType}>
                   <CategoryProgressCard
@@ -133,7 +133,7 @@ function GraduationView() {
                 <Heading level={2} className="mb-2">
                   {SCOPE_TYPE_LABELS[scope]} 이수 현황
                 </Heading>
-                <Flex direction="flex-col" gap="gap-4" className="md:flex-row">
+                <Flex direction="column" gap={4} className="md:flex-row">
                   {scopeCategories.map(category => (
                     <div className="flex-1" key={`${category.majorScope}-${category.categoryType}`}>
                       <CategoryProgressCard
@@ -154,7 +154,7 @@ function GraduationView() {
           <Heading level={2} className="mb-2">
             교양 이수 현황
           </Heading>
-          <Flex direction="flex-col" gap="gap-4" className="md:flex-row">
+          <Flex direction="column" gap={4} className="md:flex-row">
             {generalCategories.map(category => (
               <div className="flex-1" key={category.categoryType}>
                 <CategoryProgressCard

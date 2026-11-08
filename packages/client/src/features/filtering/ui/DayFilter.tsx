@@ -62,7 +62,7 @@ function DayFilter({ options, days, time, dayTimes, setFilter }: Readonly<IDayFi
   );
 
   const content = (
-    <Flex direction="flex-col" gap="gap-6" className="w-full">
+    <Flex direction="column" gap={6} className="w-full">
       <MultiSelectFilter
         filterKey="days"
         options={options}
@@ -73,8 +73,8 @@ function DayFilter({ options, days, time, dayTimes, setFilter }: Readonly<IDayFi
       />
 
       {showPerDay ? (
-        <Flex direction="flex-col" gap="gap-3">
-          <Flex justify="justify-between" align="items-center">
+        <Flex direction="column" gap={3}>
+          <Flex justify="between" align="center">
             <Label>시간대</Label>
             {modeSwitch}
           </Flex>
@@ -104,7 +104,7 @@ function DayFilter({ options, days, time, dayTimes, setFilter }: Readonly<IDayFi
   return (
     <Filtering label={label} selected={hasValue} className="w-80">
       {content}
-      <Flex justify="justify-end" className="mt-3 pt-1.5 -mb-1.5 border-t border-gray-100">
+      <Flex justify="end" className="mt-3 pt-1.5 -mb-1.5 border-t border-gray-100">
         <Button
           variant="text"
           size="small"

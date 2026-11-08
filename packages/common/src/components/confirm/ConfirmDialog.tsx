@@ -29,7 +29,7 @@ function ConfirmDialog({
         <p className="text-sm text-gray-600 min-w-60">{description}</p>
       </Dialog.Content>
       <Dialog.Footer>
-        <Flex gap="gap-2" justify="justify-end">
+        <Flex gap={2} justify="end">
           {!hideCancel && (
             <Button variant="solid" color="gray" size="medium" onClick={onClose}>
               {cancelLabel}

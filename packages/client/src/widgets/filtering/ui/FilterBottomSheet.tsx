@@ -64,7 +64,7 @@ function FilterBottomSheet({
   return (
     <BottomSheet title="필터" isOpen={isOpen} onClose={onCloseFiltering}>
       <div className="w-full flex flex-col gap-5">
-        <Flex direction="flex-col" justify="justify-center" gap="gap-8" className="w-full">
+        <Flex direction="column" justify="center" gap={8} className="w-full">
           <DepartmentSelect showLabel value={filters.department} onChange={code => setFilter('department', code)} />
 
           {showWishRange && (
@@ -108,7 +108,7 @@ function FilterBottomSheet({
             setFilter={setFilter}
           />
 
-          <Flex direction="flex-col" gap="gap-2">
+          <Flex direction="column" gap={2}>
             <DayFilter
               options={getDayOptions(subjects ?? [])}
               days={filters.days ?? []}

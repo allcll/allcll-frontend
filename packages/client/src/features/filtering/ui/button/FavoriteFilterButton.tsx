@@ -13,7 +13,7 @@ function FavoriteFilterButton({ favoriteOnly, setFilter }: IFavoriteFilterButton
       selected={favoriteOnly}
       onClick={() => setFilter('favoriteOnly', !favoriteOnly)}
       label={
-        <Flex align="items-center" gap="gap-1">
+        <Flex align="center" gap={1}>
           {favoriteOnly ? <StarFilledIcon className="w-4 h-4" /> : <StarIcon className="w-4 h-4" />}
           즐겨찾기
         </Flex>

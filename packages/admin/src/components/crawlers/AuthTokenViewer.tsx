@@ -12,7 +12,7 @@ function AuthTokenViewer() {
         <SectionHeader title="인증정보 조회" description="현재 설정된 인증 정보를 조회합니다." />
 
         <div className="flex flex-col space-y-3 text-gray-600 text-sm">
-          <Flex gap="gap-2">
+          <Flex gap={2}>
             <Button onClick={() => refetch()} variant="outlined" color="gray" size="medium" disabled={isFetching}>
               {isFetching ? '조회 중…' : '인증정보 조회'}
             </Button>

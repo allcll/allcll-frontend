@@ -45,7 +45,7 @@ function DepartmentDoughnut({ wishesInfo }: IDepartmentDoughnutProps) {
 
   return (
     <>
-      <Flex justify="justify-between" align="items-center">
+      <Flex justify="between" align="center">
         <Heading level={2}>관심과목 현황</Heading>
         <Label className="sr-only" htmlFor="doughnut-select">
           필터
@@ -64,11 +64,11 @@ function DepartmentDoughnut({ wishesInfo }: IDepartmentDoughnutProps) {
       </Flex>
 
       {isPending ? (
-        <Flex justify="justify-center" align="items-center" className="h-48">
+        <Flex justify="center" align="center" className="h-48">
           <LoadingState title="관심과목 현황을 불러오는 중입니다." />
         </Flex>
       ) : !totalCount ? (
-        <Flex justify="justify-center" align="items-center" className="h-48">
+        <Flex justify="center" align="center" className="h-48">
           <EmptyState title="관심과목을 담은 사람이 없습니다." />
         </Flex>
       ) : (

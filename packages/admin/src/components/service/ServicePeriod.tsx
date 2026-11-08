@@ -90,11 +90,11 @@ function ServicePeriod() {
     <form onSubmit={submitServicePeriod}>
       <section>
         <Card>
-          <Flex direction="flex-col" gap="gap-4">
+          <Flex direction="column" gap={4}>
             <SectionHeader title="서비스 운영 기간 설정" description="각 서비스의 오픈 시작일과 종료일을 설정합니다." />
 
             {SERVICE_OPERATIONS.map(({ operationType, label }, index) => (
-              <Flex key={operationType} gap="gap-4">
+              <Flex key={operationType} gap={4}>
                 <div>
                   <Label className="block mb-1.5">{label} 시작일</Label>
                   <DatePicker
@@ -129,7 +129,7 @@ function ServicePeriod() {
             </div>
           )}
 
-          <Flex justify="justify-end">
+          <Flex justify="end">
             <Button type="submit" variant="solid" size="medium" disabled={isPending || !semester}>
               {isPending ? '저장 중...' : '전체 저장'}
             </Button>

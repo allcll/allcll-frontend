@@ -28,7 +28,7 @@ function SubjectDetail({ wishes }: ISubjectDetailProps) {
         {joinPresent([`${data.subjectCode}-${data.classCode}`, data.departmentName, data.professorName])}
       </p>
 
-      <Flex gap="gap-2" align="items-center" direction="flex-wrap" className="text-gray-600 text-sm">
+      <Flex gap={2} align="center" wrap className="text-gray-600 text-sm">
         <span>
           {joinPresent([
             data.studentYear && `${data.studentYear}학년`,

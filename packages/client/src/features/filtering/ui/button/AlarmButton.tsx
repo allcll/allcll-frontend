@@ -13,7 +13,7 @@ function AlarmButton({ alarmOnly, setFilter }: IAlarmButton) {
       selected={alarmOnly}
       onClick={() => setFilter('alarmOnly', !alarmOnly)}
       label={
-        <Flex align="items-center" gap="gap-1">
+        <Flex align="center" gap={1}>
           {alarmOnly ? <NotificationFilledIcon className="w-4 h-4" /> : <NotificationIcon className="w-4 h-4" />}
           알림 과목
         </Flex>

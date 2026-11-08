@@ -5,7 +5,7 @@ function AlarmAddButton() {
   const setIsSearchOpen = useAlarmModalStore(state => state.setIsSearchOpen);
 
   return (
-    <Flex justify="justify-center" align="items-center">
+    <Flex justify="center" align="center">
       <Button variant="pill" color="gray" size="medium" onClick={() => setIsSearchOpen(true)}>
         <AddIcon />
         알림 과목 등록

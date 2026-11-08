@@ -21,7 +21,7 @@ function RealtimeCard({ subject, seats, queryTime, disableSeat = false }: Readon
 
   return (
     <Card variant="filled">
-      <Flex justify="justify-between">
+      <Flex justify="between">
         <Heading level={3}>{subject.subjectName}</Heading>
         <IconButton
           variant="plain"
@@ -37,7 +37,7 @@ function RealtimeCard({ subject, seats, queryTime, disableSeat = false }: Readon
         </p>
       </div>
       {!disableSeat && (
-        <Flex justify="justify-between">
+        <Flex justify="between">
           <SeatBadge seats={seats} />
           <QueryTimeComponent queryTime={queryTime} />
         </Flex>

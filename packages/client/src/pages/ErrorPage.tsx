@@ -23,16 +23,10 @@ const ErrorPage = () => {
         <title>ALLCLL | 문제가 발생했습니다</title>
       </Helmet>
 
-      <Flex
-        direction="flex-col"
-        align="items-center"
-        justify="justify-center"
-        gap="gap-6"
-        className="min-h-screen px-4 py-8"
-      >
+      <Flex direction="column" align="center" justify="center" gap={6} className="min-h-screen px-4 py-8">
         <JumpGame />
 
-        <Flex direction="flex-col" align="items-center" gap="gap-2">
+        <Flex direction="column" align="center" gap={2}>
           <Heading level={1}>문제가 발생했습니다</Heading>
           <SupportingText>화면을 다시 불러오면 해결되는 경우가 많습니다.</SupportingText>
 
@@ -40,7 +34,7 @@ const ErrorPage = () => {
             다시 시도
           </Button>
 
-          <Flex gap="gap-4" className="mt-4 text-sm">
+          <Flex gap={4} className="mt-4 text-sm">
             <TextLink asChild>
               <Link to="/">홈으로 돌아가기</Link>
             </TextLink>

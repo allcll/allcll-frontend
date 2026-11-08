@@ -23,9 +23,9 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
 
   if (isMobile && selectedNotice) {
     return (
-      <Flex direction="flex-col" className="h-full">
-        <Flex align="items-center" justify="justify-between" className="px-4 h-14 shrink-0 border-b border-gray-100">
-          <Flex align="items-center" gap="gap-1">
+      <Flex direction="column" className="h-full">
+        <Flex align="center" justify="between" className="px-4 h-14 shrink-0 border-b border-gray-100">
+          <Flex align="center" gap={1}>
             <IconButton
               className="p-2 -ml-2 hover:bg-gray-100 active:bg-gray-100"
               variant="plain"
@@ -52,8 +52,8 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
   }
 
   return (
-    <Flex direction="flex-col" className="h-full">
-      <Flex align="items-center" justify="justify-between" className="px-4 h-14 shrink-0 border-b border-gray-100">
+    <Flex direction="column" className="h-full">
+      <Flex align="center" justify="between" className="px-4 h-14 shrink-0 border-b border-gray-100">
         <Heading level={3}>공지사항</Heading>
         <IconButton
           className="p-2 hover:bg-gray-100 active:bg-gray-100"

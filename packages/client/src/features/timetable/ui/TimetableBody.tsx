@@ -51,7 +51,7 @@ function TimetableBody({ currentSemester }: { currentSemester: string }) {
   return (
     <Card className="px-2 flex flex-col gap-2 relative overflow-hidden">
       <header>
-        <Flex align="items-center" justify="justify-between" gap="gap-2">
+        <Flex align="center" justify="between" gap={2}>
           <TimetableSelect
             timetables={timetables ?? []}
             currentTimetable={currentTimetable}

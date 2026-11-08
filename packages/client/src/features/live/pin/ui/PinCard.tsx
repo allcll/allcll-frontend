@@ -22,12 +22,12 @@ function PinCard({ subject, seats, queryTime, disableSeat = false, isLive = fals
 
   return (
     <Card variant="elevated">
-      <Flex justify="justify-between">
+      <Flex justify="between">
         <Heading level={3}>{subject.subjectName}</Heading>
         <AlarmButton subject={subject} variant="plain" />
       </Flex>
 
-      <Flex className="text-xs text-gray-500" direction="flex-col">
+      <Flex className="text-xs text-gray-500" direction="column">
         <p>{(subject as Wishes).departmentName}</p>
         <p>{joinPresent([`${subject.subjectCode}-${subject.classCode}`, subject.professorName])}</p>
       </Flex>
@@ -42,7 +42,7 @@ function PinCard({ subject, seats, queryTime, disableSeat = false, isLive = fals
       </p>
 
       {!disableSeat && (
-        <Flex gap="gap-2" align="items-baseline" justify="justify-between">
+        <Flex gap={2} align="baseline" justify="between">
           <p className={`text-sm px-2 py-1 rounded-full font-bold ${getSeatColor(seats)}`}>
             여석: {seats < 0 ? '???' : seats}
           </p>

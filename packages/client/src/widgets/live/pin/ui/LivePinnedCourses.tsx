@@ -28,8 +28,8 @@ function PinCoursesHeader({ setIsAlarmSettingOpen }: { setIsAlarmSettingOpen: (o
   const { isError, refetch } = useSseData(SSEType.PINNED);
 
   return (
-    <Flex direction="flex-row" justify="justify-between" align="align-top" className="mb-4">
-      <Flex align="items-center" justify="justify-center" gap="gap-1">
+    <Flex direction="row" justify="between" className="mb-4">
+      <Flex align="center" justify="center" gap={1}>
         <Heading level={3}>여석 과목 알림</Heading>
         <Tooltip>
           <p className="text-sm">
@@ -39,7 +39,7 @@ function PinCoursesHeader({ setIsAlarmSettingOpen }: { setIsAlarmSettingOpen: (o
         </Tooltip>
       </Flex>
 
-      <Flex align="items-center" gap="gap-1">
+      <Flex align="center" gap={1}>
         {isError && (
           <IconButton
             icon={<RenewIcon className="w-5 h-5 text-primary-500" />}

@@ -39,8 +39,8 @@ interface ITimetableChipSelector {
 
 function TimetableChipSelector({ semesterValue, timetables, selectedTimetableId, onSelect }: ITimetableChipSelector) {
   return (
-    <Flex direction="flex-col" gap="gap-1.5">
-      <Flex justify="justify-between" align="items-center">
+    <Flex direction="column" gap={1.5}>
+      <Flex justify="between" align="center">
         <Label>{semesterValue}학기 시간표</Label>
         <Button asChild variant="text" size="small" className="-my-1.5">
           <Link to="/timetable">
@@ -65,7 +65,7 @@ function TimetableChipSelector({ semesterValue, timetables, selectedTimetableId,
 
 function TimetableChipEmpty({ semesterValue }: { semesterValue?: string }) {
   return (
-    <Flex direction="flex-col" gap="gap-4">
+    <Flex direction="column" gap={4}>
       <Label>시간표 선택</Label>
 
       <EmptyState icon={WarningIcon} title={`${semesterValue}학기 시간표가 없어요.`}>

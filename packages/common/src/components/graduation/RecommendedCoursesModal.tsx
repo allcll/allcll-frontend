@@ -12,12 +12,12 @@ interface RecommendedCoursesModalProps {
 
 function CourseList({ courses }: Readonly<{ courses: MissingCourse[] }>) {
   return (
-    <Flex direction="flex-col" gap="gap-2">
+    <Flex direction="column" gap={2}>
       {courses.map((course, index) => (
         <Flex
           key={`${course.curiNo}-${index}`}
-          align="items-center"
-          justify="justify-between"
+          align="center"
+          justify="between"
           className="px-4 py-3 bg-gray-50 rounded-md"
         >
           <span className="text-sm font-medium">{course.curiNm}</span>
@@ -38,13 +38,13 @@ function BalanceAreaContent({
   const { balanceAreaCourses, requiredAreasCnt, excludedArea } = criteriaCategory;
 
   return (
-    <Flex direction="flex-col" gap="gap-4" className="min-w-64 md:min-w-96">
+    <Flex direction="column" gap={4} className="min-w-64 md:min-w-96">
       <p className="text-sm text-gray-600">
         아래 영역 중 <span className="text-primary-500 font-semibold">{requiredAreasCnt}개 영역</span>을 이수해야
         합니다.
         {excludedArea && <span className="text-gray-400"> ({BALANCE_AREA_LABELS[excludedArea]} 영역 제외)</span>}
       </p>
-      <Flex direction="flex-col" gap="gap-4" className="max-h-80 overflow-y-auto">
+      <Flex direction="column" gap={4} className="max-h-80 overflow-y-auto">
         {balanceAreaCourses?.map(area => {
           const isEarned = earnedAreas.includes(area.balanceRequiredArea);
           return (
@@ -72,7 +72,7 @@ function BalanceAreaContent({
 
 function DefaultContent({ categoryLabel, courses }: Readonly<{ categoryLabel: string; courses: MissingCourse[] }>) {
   return courses.length > 0 ? (
-    <Flex direction="flex-col" gap="gap-2" className="min-w-64 md:min-w-96">
+    <Flex direction="column" gap={2} className="min-w-64 md:min-w-96">
       <p className="text-sm text-gray-600">
         아래 과목을 이수하면 <span className="text-primary-500 font-semibold">{categoryLabel}</span> 요건을 충족할 수
         있습니다.

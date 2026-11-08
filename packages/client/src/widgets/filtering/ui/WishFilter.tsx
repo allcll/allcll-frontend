@@ -183,7 +183,7 @@ function WishFilter() {
         <FilteringButton handleOpenFilter={() => setIsFilterOpen(true)} />
         <FilterDelete filters={filters} resetFilter={resetFilter} />
 
-        <Flex direction="flex-wrap" gap="gap-2" className="w-fit md:hidden">
+        <Flex wrap gap={2} className="w-fit md:hidden">
           {allSelectedFilters.map(filter => {
             return (
               <Chip

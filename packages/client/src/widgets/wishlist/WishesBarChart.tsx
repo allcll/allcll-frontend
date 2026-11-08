@@ -31,13 +31,13 @@ function WishesBarChart({ wishesInfo }: IWishesBarChartProps) {
 
   return (
     <>
-      <Flex gap="gap-2" align="items-center" className="mb-4">
+      <Flex gap={2} align="center" className="mb-4">
         <Heading level={2}>관심과목 경쟁률 예상</Heading>
         {isWishesAvailable && <BasketBadge wishCount={data.totalCount ?? -1} formatter={value => `총 ${value}명`} />}
       </Flex>
       <BlurComponents>
         <p className="text-sm text-gray-500">작년 대비 관심도 20% 증가 → 경쟁 치열할 가능성 높음</p>
-        <Flex direction="flex-col" className="mt-4">
+        <Flex direction="column" className="mt-4">
           <Bar data={gradeData} />
         </Flex>
       </BlurComponents>

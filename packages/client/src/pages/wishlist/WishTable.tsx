@@ -33,9 +33,9 @@ function WishTable() {
           }
         />
 
-        <Flex gap="gap-4" direction="flex-col">
+        <Flex gap={4} direction="column">
           <Card>
-            <Flex direction="flex-col" gap="gap-4">
+            <Flex direction="column" gap={4}>
               <GotoLive />
               <WishFilter />
             </Flex>

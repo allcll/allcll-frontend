@@ -31,7 +31,7 @@ function TextField({
   const paddingRight = onClear && endAdornment ? 'pr-14' : onClear || endAdornment ? 'pr-8' : 'pr-3';
 
   return (
-    <Flex direction="flex-col" gap="gap-1.5" className={className}>
+    <Flex direction="column" gap={1.5} className={className}>
       {label && (
         <Label required={required} id={id}>
           {label}

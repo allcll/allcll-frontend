@@ -85,7 +85,7 @@ const TableRow = ({ data, tableHeaders }: TableRowProps) => {
   return (
     <Table.Row className={bgColor}>
       <Table.Cell>
-        <Flex align="items-center" gap="gap-2">
+        <Flex align="center" gap={2}>
           <FavoriteButton subject={data} variant="plain" />
         </Flex>
       </Table.Cell>

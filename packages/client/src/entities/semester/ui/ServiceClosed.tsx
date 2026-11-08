@@ -54,7 +54,7 @@ function ServiceClosed({ data }: IServiceClosed) {
           </TextLink>
         </Card>
 
-        <Flex className="mt-6" justify="justify-center">
+        <Flex className="mt-6" justify="center">
           <Button variant="solid" size="medium" asChild>
             <Link to="/">홈으로 돌아가기</Link>
           </Button>

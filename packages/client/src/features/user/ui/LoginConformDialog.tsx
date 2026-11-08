@@ -21,7 +21,7 @@ function LoginConfirmationDialog({ isOpen, onClose, onConfirm, isPending }: ILog
   return (
     <Dialog isOpen={isOpen} title="로그인 확인" onClose={onClose}>
       <Dialog.Content>
-        <Flex direction="flex-col" align="items-center" gap="gap-4" className="py-4 min-w-[250px] px-6">
+        <Flex direction="column" align="center" gap={4} className="py-4 min-w-[250px] px-6">
           <WarningIcon className="w-12 h-12 mx-auto text-gray-300" />
           <p className="font-semibold text-gray-800 text-lg">학사정보시스템 로그아웃 안내</p>
           <SupportingText className="text-center">
@@ -36,14 +36,14 @@ function LoginConfirmationDialog({ isOpen, onClose, onConfirm, isPending }: ILog
       </Dialog.Content>
 
       <Dialog.Footer>
-        <Flex gap="gap-6" justify="justify-between">
+        <Flex gap={6} justify="between">
           <Checkbox
             label="다시 보지 않기"
             name="doNotShowAgain"
             checked={doNotShowAgain}
             onChange={e => setDoNotShowAgain(e.target.checked)}
           />
-          <Flex gap="gap-2">
+          <Flex gap={2}>
             <Button variant="solid" size="medium" onClick={handleConfirm} disabled={isPending}>
               {isPending ? '로그인 중...' : '계속 로그인'}
             </Button>

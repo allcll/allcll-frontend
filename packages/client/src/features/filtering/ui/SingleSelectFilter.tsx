@@ -38,7 +38,7 @@ function SingleSelectFilterOption<K extends keyof Filters>({
 
   return (
     <div className="relative w-full">
-      <Flex direction="flex-col" gap="gap-2">
+      <Flex direction="column" gap={2}>
         <Label>{labelPrefix[filterKey]}</Label>
         <Grid columns={{ md: 3 }} gap="gap-2">
           {options.map(option => {
@@ -66,7 +66,7 @@ function SingleSelectFilterOption<K extends keyof Filters>({
       </Flex>
 
       {showReset && (
-        <Flex justify="justify-end" className="mt-3 pt-1.5 -mb-1.5 border-t border-gray-100">
+        <Flex justify="end" className="mt-3 pt-1.5 -mb-1.5 border-t border-gray-100">
           <Button
             variant="text"
             size="small"

@@ -104,16 +104,16 @@ function NoticeEditor() {
 
   if (isEditMode && isLoadingNotice) {
     return (
-      <Flex direction="flex-col" gap="gap-5" className="h-full">
+      <Flex direction="column" gap={5} className="h-full">
         <LoadingState className="flex-1" />
       </Flex>
     );
   }
 
   return (
-    <Flex direction="flex-col" gap="gap-5" className="h-full">
-      <Flex align="items-center" justify="justify-between">
-        <Flex align="items-center" gap="gap-2">
+    <Flex direction="column" gap={5} className="h-full">
+      <Flex align="center" justify="between">
+        <Flex align="center" gap={2}>
           <IconButton
             label="뒤로 가기"
             onClick={handleBack}
@@ -139,7 +139,7 @@ function NoticeEditor() {
       )}
 
       <Card className="flex flex-col gap-5 p-5">
-        <Flex direction="flex-col" gap="gap-1">
+        <Flex direction="column" gap={1}>
           <TextField
             id="notice-title"
             label="제목"
@@ -155,7 +155,7 @@ function NoticeEditor() {
               setIsDirty(true);
             }}
           />
-          <Flex justify="justify-end">
+          <Flex justify="end">
             <span
               className={`text-xs ${title.length > MAX_TITLE_LENGTH ? 'text-danger-600 font-semibold' : 'text-gray-400'}`}
             >
@@ -164,7 +164,7 @@ function NoticeEditor() {
           </Flex>
         </Flex>
 
-        <Flex direction="flex-col" gap="gap-1.5">
+        <Flex direction="column" gap={1.5}>
           <Label id="notice-category">카테고리</Label>
           <Select
             id="notice-category"

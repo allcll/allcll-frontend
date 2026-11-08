@@ -23,20 +23,20 @@ function CourseRow({ course }: Readonly<{ course: GraduationCourse }>) {
   const isEarned = course.isEarned;
   return (
     <Flex
-      align="items-center"
-      justify="justify-between"
-      gap="gap-3"
+      align="center"
+      justify="between"
+      gap={3}
       className={`px-3 py-2.5 rounded-md border ${
         isEarned ? 'bg-white border-gray-200' : 'bg-gray-100 border-gray-200'
       }`}
     >
-      <Flex direction="flex-col" gap="gap-0.5" className="min-w-0">
+      <Flex direction="column" gap={0.5} className="min-w-0">
         <span className={`text-sm font-medium truncate ${isEarned ? 'text-gray-800' : 'text-gray-400'}`}>
           {course.curiNm}
         </span>
         <span className="text-xs text-gray-400">{course.curiNo}</span>
       </Flex>
-      <Flex align="items-center" gap="gap-3" className="shrink-0">
+      <Flex align="center" gap={3} className="shrink-0">
         <span className="text-xs text-gray-500 whitespace-nowrap">{CATEGORY_TYPE_LABELS[course.categoryType]}</span>
         <span className="text-xs text-gray-500 whitespace-nowrap">{course.credits}학점</span>
       </Flex>
@@ -82,12 +82,12 @@ function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) 
 
       {isOpen && (
         <div className="border-t border-gray-100 px-4 pb-4">
-          <Flex direction="flex-col" gap="gap-3" className="pt-3">
+          <Flex direction="column" gap={3} className="pt-3">
             {courses.length === 0 ? (
               <EmptyState title="이수 과목 정보가 없습니다." className="py-4" />
             ) : (
               <>
-                <Flex align="items-center" justify="justify-between" gap="gap-3">
+                <Flex align="center" justify="between" gap={3}>
                   <Filtering
                     label={selectedCategory === '전체' ? '전체' : CATEGORY_TYPE_LABELS[selectedCategory]}
                     selected={selectedCategory !== '전체'}
@@ -102,17 +102,17 @@ function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) 
                     <span className="text-primary-500 font-semibold">{earnedCredits}학점</span> · {earnedCount}과목
                   </span>
                 </Flex>
-                <Flex align="items-center" gap="gap-3" className="text-xs text-gray-400">
-                  <Flex align="items-center" gap="gap-1.5">
+                <Flex align="center" gap={3} className="text-xs text-gray-400">
+                  <Flex align="center" gap={1.5}>
                     <span className="w-3 h-3 rounded-sm border border-gray-200 bg-white inline-block shrink-0" />
                     이수 완료
                   </Flex>
-                  <Flex align="items-center" gap="gap-1.5">
+                  <Flex align="center" gap={1.5}>
                     <span className="w-3 h-3 rounded-sm border border-gray-200 bg-gray-100 inline-block shrink-0" />
                     미이수 (F/FA/NP)
                   </Flex>
                 </Flex>
-                <Flex direction="flex-col" gap="gap-1" className="overflow-y-auto max-h-80 pr-1">
+                <Flex direction="column" gap={1} className="overflow-y-auto max-h-80 pr-1">
                   {visibleCourses.map(course => (
                     <CourseRow key={course.id} course={course} />
                   ))}
@@ -134,7 +134,7 @@ interface CategoryOptionsProps {
 
 function CategoryOptions({ options, selectedCategory, onSelect }: Readonly<CategoryOptionsProps>) {
   return (
-    <Flex direction="flex-col" gap="gap-2">
+    <Flex direction="column" gap={2}>
       <Label>이수 구분</Label>
       <Grid columns={{ md: 3 }} gap="gap-2">
         {options.map(option => (

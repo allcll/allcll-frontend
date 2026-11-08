@@ -10,7 +10,7 @@ function ScheduleSlotList({ schedules }: IScheduleSlotList) {
   const scheduleSlots = useEmptyScheduleSlots(schedules);
 
   return (
-    <Flex direction="flex-col" gap="gap-2" className="mt-3">
+    <Flex direction="column" gap={2} className="mt-3">
       {scheduleSlots
         // .filter(schedule => !schedule.selected)
         .map(schedule => (
@@ -35,7 +35,7 @@ function EmptyScheduleSlot({ schedule, selected }: Readonly<{ schedule: GeneralS
         (selected ? 'bg-primary-100 border-primary-500' : 'border-gray-200')
       }
     >
-      <Flex gap="gap-5">
+      <Flex gap={5}>
         <p>{schedule.subjectName}</p>
         <p className="text-stone-400">{schedule.professorName}</p>
       </Flex>

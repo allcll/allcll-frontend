@@ -41,7 +41,7 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
           onClose={() => setIsModalOpen(false)}
         />
       )}
-      <Flex justify="justify-between" align="items-center" className="mb-2">
+      <Flex justify="between" align="center" className="mb-2">
         <Heading level={3}>{title} 실시간</Heading>
 
         <IconButton

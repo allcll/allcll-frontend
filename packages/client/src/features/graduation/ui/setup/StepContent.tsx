@@ -25,7 +25,7 @@ const StepContent = ({ step, nextStep, prevStep, isDepartmentNotFound, setIsDepa
       return <BasicInfoForm nextStep={nextStep} prevStep={prevStep} isDepartmentNotFound={isDepartmentNotFound} />;
     case JolupSteps.FILE_UPLOAD:
       return (
-        <Flex direction="flex-col" gap="gap-6">
+        <Flex direction="column" gap={6}>
           <FileUpload nextStep={nextStep} prevStep={prevStep} file={uploadedFile} onFileSelected={setUploadedFile} />
           <FileUploadGuide />
         </Flex>

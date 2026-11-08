@@ -87,15 +87,15 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
 
   return (
     <Card variant="outlined" className="w-full mx-auto p-8">
-      <Flex direction="flex-col" gap="gap-8">
+      <Flex direction="column" gap={8}>
         <div className="text-center space-y-2">
           <Heading level={2}>기본 정보 입력</Heading>
           <SupportingText>정확한 졸업 요건 검사를 위해 학적 정보를 입력해주세요.</SupportingText>
         </div>
 
-        <Flex direction="flex-col" gap="gap-6">
+        <Flex direction="column" gap={6}>
           {/* 이수 유형 선택 */}
-          <Flex direction="flex-col" gap="gap-1.5">
+          <Flex direction="column" gap={1.5}>
             <Label required>이수 유형</Label>
             <Grid columns={{ base: 2 }} gap="gap-2">
               <Chip
@@ -113,7 +113,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
 
           {/* 주전공 학과 검색 (DEPARTMENT_NOT_FOUND 시) */}
           {isDepartmentNotFound && (
-            <Flex direction="flex-col" gap="gap-1.5">
+            <Flex direction="column" gap={1.5}>
               <SupportingText>
                 <span className="text-primary-500">26학번의 계열 단위</span>는 특정한 졸업요건이 존재하지 않아, 학과를
                 선택해주셔야 합니다.
@@ -134,7 +134,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
 
           {/* 복수전공 학과 검색 (조건부 렌더링) */}
           {majorType === 'DOUBLE' && (
-            <Flex direction="flex-col" gap="gap-1.5">
+            <Flex direction="column" gap={1.5}>
               <Label required>복수전공 학과</Label>
               <SearchableSelect
                 className="w-full"
@@ -150,7 +150,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
           )}
         </Flex>
 
-        <Flex justify="justify-end" className="mt-4 w-full">
+        <Flex justify="end" className="mt-4 w-full">
           <Button onClick={prevStep} variant="solid" color="gray" size="medium">
             이전 단계
           </Button>

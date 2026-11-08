@@ -89,8 +89,8 @@ function Reviews() {
   );
 
   const filterBar = (
-    <Flex align="items-center" justify="justify-between" gap="gap-2" className="flex-wrap">
-      <Flex align="items-center" gap="gap-2">
+    <Flex align="center" justify="between" wrap gap={2}>
+      <Flex align="center" gap={2}>
         <Filtering
           label={formatMultiSelectedLabel('카테고리', selectedOperationTypes, type => OPERATION_TYPE_LABEL[type])}
           selected={selectedOperationTypes.length > 0}

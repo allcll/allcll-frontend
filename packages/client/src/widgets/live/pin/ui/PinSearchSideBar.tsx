@@ -25,7 +25,7 @@ function PinSearchSideBar({ isOpen, onClose }: PinSearchSideBarProps) {
   return (
     <CSSTransition in={isOpen} timeout={100} classNames={transitionClasses} unmountOnExit>
       <Flex
-        direction="flex-col"
+        direction="column"
         className="sticky top-14 self-start h-[calc(100dvh-3.5rem)] w-92 shrink-0 bg-gray-50 shadow-lg z-content"
       >
         <div className="flex justify-between items-center px-4 h-14 shrink-0 bg-white border-b border-gray-100">
@@ -59,8 +59,8 @@ function PinSearch() {
   );
 
   return (
-    <Flex direction="flex-col" className="flex-1 min-h-0 p-2">
-      <Flex direction="flex-col" className="flex-1 min-h-0" gap="gap-2">
+    <Flex direction="column" className="flex-1 min-h-0 p-2">
+      <Flex direction="column" className="flex-1 min-h-0" gap={2}>
         <SearchBox
           placeholder="과목명, 교수명, 학수번호 검색"
           value={searchInput}

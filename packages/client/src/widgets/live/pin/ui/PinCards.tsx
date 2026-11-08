@@ -13,7 +13,7 @@ interface IPinCards {
 
 function PinCards({ subjects, isPending = false, className = '', isLive = false }: Readonly<IPinCards>) {
   return (
-    <Flex direction="flex-col" gap="gap-2" className={className}>
+    <Flex direction="column" gap={2} className={className}>
       <Cards subjects={subjects} isPending={isPending} isLive={isLive} />
     </Flex>
   );

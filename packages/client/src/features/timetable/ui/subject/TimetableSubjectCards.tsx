@@ -64,7 +64,7 @@ function TimetableSubjectCards({ subjects, collapseSheet, isPending = false }: R
   };
 
   return (
-    <Flex direction="flex-col" justify="justify-end" gap="gap-2">
+    <Flex direction="column" justify="end" gap={2}>
       {subjects.slice(0, visibleRows).map(subject => {
         const isActive = selectedSubjectId === subject.subjectId;
 

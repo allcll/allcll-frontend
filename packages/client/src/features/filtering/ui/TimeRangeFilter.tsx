@@ -34,13 +34,13 @@ function TimeRangeFilter({ label, action, value, onChange }: Readonly<ITimeRange
   };
 
   return (
-    <Flex direction="flex-col" gap="gap-3" className="w-full">
-      <Flex justify="justify-between" align="items-center">
+    <Flex direction="column" gap={3} className="w-full">
+      <Flex justify="between" align="center">
         <Label>{label}</Label>
         {action}
       </Flex>
 
-      <Flex direction="flex-col" gap="gap-1">
+      <Flex direction="column" gap={1}>
         <RangeSlider
           min={TIME_RANGE_START}
           max={TIME_RANGE_END}

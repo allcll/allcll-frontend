@@ -84,7 +84,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
                   {formatDate(notice.createdAt)}
                 </Table.Cell>
                 <Table.Cell>
-                  <Flex align="items-center" gap="gap-1">
+                  <Flex align="center" gap={1}>
                     <IconButton
                       icon={<EditIcon className="w-4 h-4" />}
                       label="수정"

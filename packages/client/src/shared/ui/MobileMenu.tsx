@@ -62,7 +62,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
             모바일 메뉴
           </h2>
 
-          <Flex justify="justify-between" align="items-center" gap="gap-0" className="px-4 h-14">
+          <Flex justify="between" align="center" gap={0} className="px-4 h-14">
             <Link
               to="/"
               onClick={e => navigateWithClose('/', e)}
@@ -84,7 +84,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
 
           <hr className="mx-4 border-gray-300" />
 
-          <Flex as="ul" direction="flex-col" gap="gap-1" className="flex-1 p-4">
+          <Flex as="ul" direction="column" gap={1} className="flex-1 p-4">
             {HeaderContents.map(({ title, path, end, beta }) => (
               <li key={path}>
                 <NavLink
@@ -110,7 +110,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
 
           <hr className="mx-4 border-gray-300" />
 
-          <Flex gap="gap-2" className="p-4">
+          <Flex gap={2} className="p-4">
             {ButtonContents.map(({ icon, title, path }) => (
               <a
                 key={path}

@@ -51,9 +51,9 @@ function FAQ() {
       <PageContainer>
         <PageHeader title="자주 묻는 질문" description="ALLCLL을 이용하면서 자주 묻는 질문과 답변을 모았어요." />
 
-        <Flex direction="flex-col" gap="gap-4">
+        <Flex direction="column" gap={4}>
           {faqItemsWithTags.length > 0 && (
-            <Flex direction="flex-wrap" gap="gap-2" className="mb-6">
+            <Flex wrap gap={2} className="mb-6">
               <Chip label="전체" onClick={() => setSelectedTag(null)} selected={selectedTag === null} />
               {faqItemsWithTags.map(tag => (
                 <Chip

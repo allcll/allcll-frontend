@@ -26,7 +26,7 @@ function ScheduleContentPanel() {
 
   return (
     <Card>
-      <Flex direction="flex-col" gap="gap-3" className="w-full bg-white h-screen md:border-t-0">
+      <Flex direction="column" gap={3} className="w-full bg-white h-screen md:border-t-0">
         <SearchBox
           type="text"
           value={filters.keywords}
@@ -42,7 +42,7 @@ function ScheduleContentPanel() {
           커스텀 일정 생성
         </Button>
 
-        <Flex direction="flex-col" className="h-full overflow-hidden overflow-y-auto">
+        <Flex direction="column" className="h-full overflow-hidden overflow-y-auto">
           <TimetableSubjectCards subjects={filteredData} isPending={isPending} />
         </Flex>
       </Flex>

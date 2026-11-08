@@ -76,7 +76,7 @@ function AuthTokenSetting() {
           />
         </Grid>
 
-        <Flex justify="justify-end">
+        <Flex justify="end">
           <Button variant="solid" size="medium" type="submit">
             토큰 설정 요청
           </Button>

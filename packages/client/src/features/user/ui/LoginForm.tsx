@@ -73,7 +73,7 @@ function LoginForm({ onSuccess }: ILoginFormProps) {
     <>
       {/* 상위가 max-w-4xl 이라 그대로 두면 폼이 860px 까지 늘어납니다. */}
       <Card variant="outlined" className="w-full max-w-lg mx-auto p-8">
-        <Flex justify="justify-center" direction="flex-col">
+        <Flex justify="center" direction="column">
           <Heading level={1} className="mb-2 text-center">
             세종대 포털 로그인
           </Heading>
@@ -116,7 +116,7 @@ function LoginForm({ onSuccess }: ILoginFormProps) {
             }
           />
 
-          <Flex direction="flex-col" gap="gap-2">
+          <Flex direction="column" gap={2}>
             <SupportingText className="break-keep">
               ※ <span className="font-semibold text-primary-500">부전공, 전과생, 연계전공, 편입생</span>의 경우 과목
               인정 기준에 따라 일부 결과가 실제 졸업요건과 다르게 표시될 수 있습니다. 결과는{' '}
@@ -126,12 +126,7 @@ function LoginForm({ onSuccess }: ILoginFormProps) {
               <br />※ ALLCLL 로그인 시{' '}
               <span className="font-semibold text-primary-500">학사정보시스템(세종대 포털)에서 로그아웃</span>됩니다.
             </SupportingText>
-            <Flex
-              direction="flex-col"
-              align="items-start"
-              justify="justify-between"
-              className="sm:flex-row sm:items-center"
-            >
+            <Flex direction="column" align="start" justify="between" className="sm:flex-row sm:items-center">
               <Checkbox
                 label="개인정보 수집에 동의합니다."
                 name="agreeToTerms"

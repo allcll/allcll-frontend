@@ -10,7 +10,7 @@ interface PageHeaderProps {
 function PageHeader({ title, description, actions }: PageHeaderProps) {
   return (
     <div className="mb-6">
-      <Flex justify="justify-between" align="items-center">
+      <Flex justify="between" align="center">
         <Heading level={1}>{title}</Heading>
         {actions}
       </Flex>

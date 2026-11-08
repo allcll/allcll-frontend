@@ -14,9 +14,9 @@ function SubjectTable({ subjects, handleRemakeSubjects, isLoadingLectures }: Rea
   const totalCredit = subjects?.reduce((acc, subject) => acc + parseCredit(subject.tm_num), 0);
 
   return (
-    <Flex direction="flex-col" gap="gap-1.5">
-      <Flex direction="flex-row" justify="justify-between" align="items-center">
-        <Flex align="items-center" gap="gap-1">
+    <Flex direction="column" gap={1.5}>
+      <Flex direction="row" justify="between" align="center">
+        <Flex align="center" gap={1}>
           <Label>수강신청 연습 과목 리스트</Label>
 
           {handleRemakeSubjects && (

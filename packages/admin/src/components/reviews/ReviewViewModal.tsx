@@ -14,14 +14,14 @@ function ReviewViewModal({ review, onClose }: Readonly<IReviewViewModalProps>) {
   return (
     <Dialog title="후기 상세" onClose={onClose}>
       <Dialog.Content className="sm:py-5">
-        <Flex direction="flex-col" gap="gap-4" className="w-160 max-w-full">
-          <Flex direction="flex-col" gap="gap-1.5">
-            <Flex align="items-center" gap="gap-2">
+        <Flex direction="column" gap={4} className="w-160 max-w-full">
+          <Flex direction="column" gap={1.5}>
+            <Flex align="center" gap={2}>
               <OperationTypeBadge operationType={review.operationType} />
               <ReviewRate rate={review.rate} />
               <SupportingText className="ml-auto shrink-0">{formatDateTime(review.createdAt)}</SupportingText>
             </Flex>
-            <Flex align="items-center" gap="gap-1" className="min-w-0 text-sm">
+            <Flex align="center" gap={1} className="min-w-0 text-sm">
               <span className="shrink-0 text-gray-400">작성자</span>
               <ReviewAuthor review={review} className="text-gray-700" />
             </Flex>

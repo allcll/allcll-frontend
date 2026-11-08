@@ -60,7 +60,7 @@ function ScheduleFormContent() {
   };
 
   return (
-    <Flex direction="flex-col" gap={isMobile ? 'gap-4' : 'gap-5'}>
+    <Flex direction="column" gap={isMobile ? 4 : 5}>
       {textFields.map(({ id, name, value }) => (
         <TextField
           key={id}
@@ -74,9 +74,9 @@ function ScheduleFormContent() {
         />
       ))}
 
-      <Flex gap="gap-1.5" direction="flex-col">
+      <Flex gap={1.5} direction="column">
         <Label>요일</Label>
-        <Flex direction="flex-wrap">
+        <Flex wrap>
           {DAYS.map(day => (
             <Chip
               key={day}
@@ -89,7 +89,7 @@ function ScheduleFormContent() {
       </Flex>
 
       {scheduleForm.timeSlots.map(slot => (
-        <Flex key={slot.dayOfWeeks} direction="flex-col" gap="gap-1.5">
+        <Flex key={slot.dayOfWeeks} direction="column" gap={1.5}>
           <Label>{slot.dayOfWeeks}</Label>
           <SelectTime
             day={slot.dayOfWeeks}

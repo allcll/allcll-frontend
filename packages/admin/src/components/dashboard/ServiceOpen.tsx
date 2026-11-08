@@ -44,7 +44,7 @@ function ServiceOpenContent() {
 
         return (
           <Card key={operationType}>
-            <Flex align="items-start" justify="justify-between">
+            <Flex align="start" justify="between">
               <span className="text-sm font-medium text-gray-700">
                 {OPERATION_TYPE_LABEL[operationType] ?? operationType}
               </span>

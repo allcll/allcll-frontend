@@ -45,7 +45,7 @@ function DepartmentSelect({
 
   if (showLabel) {
     return (
-      <Flex direction="flex-col" gap="gap-2">
+      <Flex direction="column" gap={2}>
         <Label htmlFor={customId}>학과</Label>
         {select}
       </Flex>

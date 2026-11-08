@@ -34,13 +34,13 @@ function TimetableSubjectCard({ isActive, subject, onClick, forwardedRef }: Read
       onClick={onClick}
       ref={forwardedRef}
     >
-      <Flex direction="flex-col">
-        <Flex justify="justify-between" align="items-center" gap="gap-2 ">
+      <Flex direction="column">
+        <Flex justify="between" align="center" gap={2}>
           <Heading level={3}>{subject.subjectName}</Heading>
           <span className="text-xs sm:text-sm text-gray-500">{subject.professorName}</span>
         </Flex>
 
-        <Flex direction="flex-col" justify="justify-start" align="items-start" gap="gap-2 ">
+        <Flex direction="column" justify="start" align="start" gap={2}>
           {subject.lesnTime && <span className="text-xs sm:text-sm text-gray-500">{subject.lesnTime}</span>}
           {subject.lesnRoom && <span className="text-xs sm:text-sm text-gray-500">{subject.lesnRoom}</span>}
           <span className="text-xs sm:text-sm text-gray-500">
@@ -48,7 +48,7 @@ function TimetableSubjectCard({ isActive, subject, onClick, forwardedRef }: Read
           </span>
         </Flex>
 
-        <Flex justify="justify-between" align="items-center">
+        <Flex justify="between" align="center">
           {credit ? <Badge color="gray">{credit}학점</Badge> : <span />}
           {!isActive && subject.totalCount !== -1 && (
             <BasketBadge wishCount={subject.totalCount ?? -1} formatter={value => `관심: ${value}명`} />

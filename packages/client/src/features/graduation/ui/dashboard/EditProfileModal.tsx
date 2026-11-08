@@ -33,8 +33,8 @@ function EditProfileModal({ isOpen, onClose, user }: EditProfileModalProps) {
   return (
     <Dialog title="회원 정보 수정" onClose={onClose} isOpen={isOpen}>
       <Dialog.Content>
-        <Flex direction="flex-col" gap="gap-4" className="min-w-64 md:min-w-80">
-          <Flex direction="flex-col" gap="gap-1.5">
+        <Flex direction="column" gap={4} className="min-w-64 md:min-w-80">
+          <Flex direction="column" gap={1.5}>
             <Label id="edit-profile-major-type">이수 유형</Label>
             <Select
               id="edit-profile-major-type"
@@ -54,7 +54,7 @@ function EditProfileModal({ isOpen, onClose, user }: EditProfileModalProps) {
             </Select>
           </Flex>
 
-          <Flex direction="flex-col" gap="gap-1.5">
+          <Flex direction="column" gap={1.5}>
             <Label>학과</Label>
             <SearchableSelect
               className="w-full"
@@ -68,7 +68,7 @@ function EditProfileModal({ isOpen, onClose, user }: EditProfileModalProps) {
           </Flex>
 
           {majorType === 'DOUBLE' && (
-            <Flex direction="flex-col" gap="gap-1.5">
+            <Flex direction="column" gap={1.5}>
               <Label>복수전공 학과</Label>
               <SearchableSelect
                 className="w-full"
@@ -86,7 +86,7 @@ function EditProfileModal({ isOpen, onClose, user }: EditProfileModalProps) {
       </Dialog.Content>
 
       <Dialog.Footer>
-        <Flex justify="justify-between" className="w-full">
+        <Flex justify="between" className="w-full">
           <Button variant="text" color="danger" size="medium" onClick={handleDelete} disabled={isDeleting}>
             {isDeleting ? '처리 중...' : '회원 탈퇴'}
           </Button>

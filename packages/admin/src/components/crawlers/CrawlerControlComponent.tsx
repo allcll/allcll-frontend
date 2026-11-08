@@ -111,7 +111,7 @@ function CrawlerControlComponent() {
           description="모든 크롤링을 실행합니다. 학과, 과목데이터: 학번, 연도, 학기 필수, PreSeat, Basket 데이터: 학번 필수"
         />
 
-        <Flex direction="flex-col" gap="gap-4">
+        <Flex direction="column" gap={4}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <ParamSelect
               id="userId"
@@ -199,7 +199,7 @@ interface IParamSelect {
 
 function ParamSelect({ id, label, value, onChange, placeholder, disabled, description, children }: IParamSelect) {
   return (
-    <Flex direction="flex-col" gap="gap-1.5">
+    <Flex direction="column" gap={1.5}>
       <Label htmlFor={id} required>
         {label}
       </Label>

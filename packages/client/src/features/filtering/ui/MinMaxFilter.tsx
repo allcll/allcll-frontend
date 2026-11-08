@@ -42,8 +42,8 @@ function MinMaxFilter<K extends keyof Filters>({ selectedValue, filterKey, setFi
   const rangeLabel = formatRange?.(toRange(low, high)) || '전체';
 
   return (
-    <Flex direction="flex-col" gap="gap-3" className="w-full">
-      <Flex justify="justify-between" align="items-center">
+    <Flex direction="column" gap={3} className="w-full">
+      <Flex justify="between" align="center">
         <Label>범위 설정</Label>
         <span className="text-sm text-gray-600">{rangeLabel}</span>
       </Flex>

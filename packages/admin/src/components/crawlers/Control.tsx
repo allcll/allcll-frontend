@@ -51,7 +51,7 @@ function Control() {
             onToggle={toggleSeat}
           />
           {/* 실행 중 학년 변경은 진행 중인 크롤링에 반영되지 않으므로 비활성화 */}
-          <Flex gap="gap-2" className={`flex-wrap ${isSeatActive ? 'opacity-50 pointer-events-none' : ''}`}>
+          <Flex wrap gap={2} className={isSeatActive ? 'opacity-50 pointer-events-none' : ''}>
             {SEAT_UTILS_OPTIONS.map(({ value, label }) => (
               <Chip
                 key={value}

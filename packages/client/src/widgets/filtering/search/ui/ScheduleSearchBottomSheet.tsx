@@ -64,7 +64,7 @@ function ScheduleSearchBottomSheet({ isOpen, onCloseSearch, onOpenFiltering }: I
         />
       </div>
 
-      <Flex direction="flex-col" gap="gap-3">
+      <Flex direction="column" gap={3}>
         <Button variant="text" size="small" onClick={() => openScheduleModal(initSchedule)}>
           <AddIcon />
           커스텀 일정 생성

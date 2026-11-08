@@ -84,7 +84,7 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
     <Dialog title={`${type === 'edit' ? '시간표 수정' : '시간표 생성'}`} onClose={onClose} isOpen={true}>
       <form onSubmit={handleSubmit}>
         <Dialog.Content>
-          <Flex direction="flex-col" gap="gap-1.5">
+          <Flex direction="column" gap={1.5}>
             <Label>학기 선택</Label>
             <Grid columns={{ base: 2 }} gap="gap-2">
               {SEMESTERS.map(semester => (

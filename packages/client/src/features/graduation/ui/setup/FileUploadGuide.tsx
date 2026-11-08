@@ -4,8 +4,8 @@ import { NavLink } from 'react-router-dom';
 const FileUploadGuide = () => {
   return (
     <Card variant="outlined" className="w-full mx-auto p-8 mt-2">
-      <Flex direction="flex-col" gap="gap-3">
-        <Flex align="items-center" gap="gap-2">
+      <Flex direction="column" gap={3}>
+        <Flex align="center" gap={2}>
           <WarningIcon className="w-5 h-5 text-gray-300" />
 
           <Heading level={3}>기이수 성적 파일 업로드 방법</Heading>
