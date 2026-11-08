@@ -16,12 +16,16 @@ const SIZE_CLASS: Record<IconButtonSize, string> = {
   large: '[&_svg]:size-5',
 };
 
+// 아이콘이 작아도 24px 이상 눌리도록 보이지 않는 영역을 덧댐. 버튼에 relative를 주면 쓰는 쪽의 absolute를 덮어써서 안쪽 span에 둠
+const HIT_AREA_CLASS =
+  "relative after:absolute after:top-1/2 after:left-1/2 after:size-6 after:-translate-x-1/2 after:-translate-y-1/2 after:content-['']";
+
 function IconButton({ icon, variant = 'plain', size, label, className = '', ...rest }: IIconButton) {
   const finalClassName = `flex flex-row items-center justify-center gap-1 ${getVariantClass(variant)} ${SIZE_CLASS[size]} ${className}`;
 
   return (
     <button type="button" aria-label={label} className={finalClassName} {...rest}>
-      {icon && <span>{icon}</span>}
+      {icon && <span className={HIT_AREA_CLASS}>{icon}</span>}
     </button>
   );
 }
