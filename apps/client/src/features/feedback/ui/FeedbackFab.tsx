@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ChatHelpIcon } from '@allcll/allcll-ui';
 import useFeedbackStore from '../model/useFeedbackStore';
@@ -9,6 +9,11 @@ function FeedbackFab() {
   const [isOpen, setIsOpen] = useState(false);
   const { pathname } = useLocation();
   const isFeedbackOpen = useFeedbackStore(s => s.isFeedbackOpen);
+
+  // 레이아웃에 붙어 있어 페이지가 바뀌어도 남으므로, 뒤로가기 등으로 이동하면 닫음
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   return (
     <>
