@@ -1,7 +1,7 @@
 import { CloseIcon, InfoIcon, WarningIcon } from '../../icons';
 import IconButton from '../icon-button/IconButton';
-import RowSlots from '../row/RowSlots';
 import Container from '../container/Container';
+import Flex from '../flex/Flex';
 
 type BannerVariant = 'info' | 'danger';
 
@@ -22,20 +22,17 @@ function Banner({ variant = 'info', children, onClose }: IBanner) {
   return (
     <div className={container}>
       <Container>
-        <RowSlots
-          className="items-center py-3"
-          left={<Icon className={`w-4 h-4 ${iconColor}`} />}
-          center={<span className="block text-xs leading-5">{children}</span>}
-          right={
-            <IconButton
-              label="알림 닫기"
-              variant="plain"
-              icon={<CloseIcon className="text-gray-500 w-4 h-4" />}
-              onClick={onClose}
-              className="rounded-full"
-            />
-          }
-        />
+        <Flex align="center" gap={3} className="py-3">
+          <Icon className={`w-4 h-4 shrink-0 ${iconColor}`} />
+          <span className="flex-1 text-xs leading-5">{children}</span>
+          <IconButton
+            label="알림 닫기"
+            variant="plain"
+            icon={<CloseIcon className="text-gray-500 w-4 h-4" />}
+            onClick={onClose}
+            className="rounded-full shrink-0"
+          />
+        </Flex>
       </Container>
     </div>
   );
