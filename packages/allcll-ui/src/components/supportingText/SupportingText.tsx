@@ -4,7 +4,7 @@ export type SupportingTextProps = ComponentPropsWithoutRef<'p'>;
 
 function SupportingText({ className, children, ...props }: SupportingTextProps) {
   return (
-    <p className={`text-gray-500 text-sm leading-relaxed ${className ?? ''}`} {...props}>
+    <p className={`text-gray-600 text-sm leading-relaxed ${className ?? ''}`} {...props}>
       {children}
     </p>
   );

@@ -1,4 +1,4 @@
-import { Button, Flex, WarningIcon } from '@allcll/allcll-ui';
+import { Button, Flex, WarningIcon, SupportingText } from '@allcll/allcll-ui';
 import type { ILoginErrorView } from '../lib/loginErrors.ts';
 
 interface ILoginErrorNoticeProps {
@@ -36,10 +36,9 @@ function LoginErrorNotice({ view, descriptionId }: ILoginErrorNoticeProps) {
       <Flex direction="column" gap={1} className="min-w-0 flex-1">
         <p className={`text-sm font-semibold break-keep ${tone.title}`}>{view.title}</p>
 
-        {/* SupportingText 의 gray-500 은 대비가 4.4 라 gray-600 을 씁니다. */}
-        <p id={descriptionId} className="text-sm text-gray-600 leading-relaxed break-keep">
+        <SupportingText id={descriptionId} className="break-keep">
           {view.description}
-        </p>
+        </SupportingText>
 
         {view.action && (
           <div className="mt-2">
