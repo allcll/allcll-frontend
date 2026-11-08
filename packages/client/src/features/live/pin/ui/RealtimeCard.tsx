@@ -24,9 +24,10 @@ function RealtimeCard({ subject, seats, queryTime, disableSeat = false }: Readon
       <Flex justify="between">
         <Heading level={3}>{subject.subjectName}</Heading>
         <IconButton
+          size="small"
           variant="plain"
           aria-label="알림 과목 제거"
-          icon={<CloseIcon className="text-gray-400 w-3 h-3" />}
+          icon={<CloseIcon className="text-gray-400" />}
           onClick={handlePin}
         />
       </Flex>

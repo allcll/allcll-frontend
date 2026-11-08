@@ -50,8 +50,9 @@ function TextField({
         />
         {onClear && value && (
           <IconButton
+            size="medium"
             aria-label="입력 내용 지우기"
-            icon={<CloseIcon className="w-4 h-4" />}
+            icon={<CloseIcon />}
             onClick={onClear}
             className=" absolute right-2 top-1/2 transform -translate-y-1/2 "
           />

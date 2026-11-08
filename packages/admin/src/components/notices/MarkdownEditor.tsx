@@ -82,27 +82,27 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
             {/* 툴바 */}
             <div className="flex items-center gap-0.5 px-2 py-1.5 bg-gray-50 border-b border-gray-200">
               <ToolbarButton title="굵게 (Bold)" onClick={() => insertMarkdown('**', '**')}>
-                <TextBoldIcon className="w-4 h-4" />
+                <TextBoldIcon />
               </ToolbarButton>
               <ToolbarButton title="기울임 (Italic)" onClick={() => insertMarkdown('*', '*')}>
-                <TextItalicIcon className="w-4 h-4" />
+                <TextItalicIcon />
               </ToolbarButton>
               <div className="w-px h-4 bg-gray-300 mx-1" />
               <ToolbarButton title="코드 (Code)" onClick={() => insertMarkdown('`', '`')}>
-                <CodeIcon className="w-4 h-4" />
+                <CodeIcon />
               </ToolbarButton>
               <ToolbarButton title="링크 (Link)" onClick={() => insertMarkdown('[', '](url)')}>
-                <LinkIcon className="w-4 h-4" />
+                <LinkIcon />
               </ToolbarButton>
               <div className="w-px h-4 bg-gray-300 mx-1" />
               <ToolbarButton title="인용" onClick={() => insertMarkdown('> ', '', '', true)}>
-                <QuotesIcon className="w-4 h-4" />
+                <QuotesIcon />
               </ToolbarButton>
               <ToolbarButton title="목록" onClick={() => insertMarkdown('- ', '', '', true)}>
-                <ListBulletedIcon className="w-4 h-4" />
+                <ListBulletedIcon />
               </ToolbarButton>
               <ToolbarButton title="번호 목록" onClick={() => insertMarkdown('1. ', '', '', true)}>
-                <ListNumberedIcon className="w-4 h-4" />
+                <ListNumberedIcon />
               </ToolbarButton>
             </div>
             <textarea

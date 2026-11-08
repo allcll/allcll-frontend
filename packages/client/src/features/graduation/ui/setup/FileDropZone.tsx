@@ -119,9 +119,10 @@ const SelectedState = ({ file, onDelete }: { file: File; onDelete: (e: React.Mou
     <>
       <div className="absolute top-2 right-2">
         <IconButton
+          size="large"
           variant="plain"
           onClick={onDelete}
-          icon={<CloseIcon className="w-5 h-5 text-gray-400 hover:text-gray-600" />}
+          icon={<CloseIcon className="text-gray-400 hover:text-gray-600" />}
           label="파일 삭제"
         />
       </div>

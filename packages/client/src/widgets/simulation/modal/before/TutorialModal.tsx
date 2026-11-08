@@ -110,16 +110,18 @@ function TutorialModal() {
         <div className="mt-4 flex flex-col justify-center items-center gap-2">
           <Flex justify="center" align="center" gap={4}>
             <IconButton
+              size="large"
               label="이전 튜토리얼"
-              icon={<ChevronLeftIcon className="w-5 h-5" />}
+              icon={<ChevronLeftIcon />}
               onClick={goToPreviousTutorial}
               disabled={!hasPrevious}
               className={`p-2 ${hasPrevious ? '' : 'invisible'}`}
             />
             <Heading level={3}>{currentVideo.title}</Heading>
             <IconButton
+              size="large"
               label="다음 튜토리얼"
-              icon={<ChevronRightIcon className="w-5 h-5" />}
+              icon={<ChevronRightIcon />}
               onClick={goToNextTutorial}
               disabled={!hasNext}
               className={`p-2 ${hasNext ? '' : 'invisible'}`}

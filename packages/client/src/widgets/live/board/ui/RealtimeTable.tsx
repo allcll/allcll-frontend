@@ -45,10 +45,11 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
         <Heading level={3}>{title} 실시간</Heading>
 
         <IconButton
+          size="medium"
           label="테이블 수정"
           variant="plain"
           aria-label="테이블 수정"
-          icon={<TableSettingsIcon className="w-4 h-4 text-gray-400" />}
+          icon={<TableSettingsIcon className="text-gray-400" />}
           onClick={() => setIsModalOpen(true)}
         />
       </Flex>

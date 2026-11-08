@@ -115,9 +115,10 @@ function NoticeEditor() {
       <Flex align="center" justify="between">
         <Flex align="center" gap={2}>
           <IconButton
+            size="large"
             label="뒤로 가기"
             onClick={handleBack}
-            icon={<ArrowLeftIcon className="w-5 h-5 text-gray-400 group-hover:text-gray-700" />}
+            icon={<ArrowLeftIcon className="text-gray-400 group-hover:text-gray-700" />}
             className="group p-1 hover:bg-gray-100 transition-colors"
           />
           <PageHeader title={isEditMode ? '공지사항 수정' : '새 공지 작성'} />

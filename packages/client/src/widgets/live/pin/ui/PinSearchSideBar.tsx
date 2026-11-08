@@ -31,9 +31,10 @@ function PinSearchSideBar({ isOpen, onClose }: PinSearchSideBarProps) {
         <div className="flex justify-between items-center px-4 h-14 shrink-0 bg-white border-b border-gray-100">
           <Heading level={3}>알림 과목 등록</Heading>
           <IconButton
+            size="medium"
             className="p-2 hover:bg-gray-100 active:bg-gray-100"
             label="알림 과목 등록 닫기"
-            icon={<CloseIcon className="w-4 h-4 text-gray-500" />}
+            icon={<CloseIcon className="text-gray-500" />}
             onClick={onClose}
           />
         </div>

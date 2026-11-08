@@ -86,14 +86,16 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
                 <Table.Cell>
                   <Flex align="center" gap={1}>
                     <IconButton
-                      icon={<EditIcon className="w-4 h-4" />}
+                      size="medium"
+                      icon={<EditIcon />}
                       label="수정"
                       variant="plain"
                       onClick={() => onEdit(notice)}
                       className="p-1.5 text-gray-400 hover:text-primary-500 hover:bg-primary-50 transition-colors"
                     />
                     <IconButton
-                      icon={<TrashCanIcon className="w-4 h-4" />}
+                      size="medium"
+                      icon={<TrashCanIcon />}
                       label="삭제"
                       variant="plain"
                       onClick={() => onDelete(notice)}

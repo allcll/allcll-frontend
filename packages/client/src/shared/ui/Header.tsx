@@ -84,9 +84,10 @@ function Header() {
         <div className="md:hidden flex items-center gap-1">
           <NoticeBell />
           <IconButton
+            size="large"
             className="p-2 hover:bg-gray-100 active:bg-gray-100"
             variant="plain"
-            icon={<MenuIcon className="w-5 h-5 text-gray-500" />}
+            icon={<MenuIcon className="text-gray-500" />}
             label="메뉴 열기"
             onClick={openMenu}
             aria-expanded={isOpen}

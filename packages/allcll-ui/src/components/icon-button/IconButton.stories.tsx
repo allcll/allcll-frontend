@@ -5,6 +5,7 @@ import IconButton from './IconButton';
 import { SettingsAdjustIcon } from '../../icons';
 
 const VARIANTS = ['contain', 'plain'] as const;
+const SIZES = ['small', 'medium', 'large'] as const;
 
 const meta = {
   title: 'Actions/IconButton',
@@ -20,14 +21,16 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     variant: { description: '배경 유무', control: 'radio', options: VARIANTS },
+    size: { description: '아이콘 크기', control: 'radio', options: SIZES },
     label: { description: '스크린 리더가 읽을 이름', control: 'text' },
     icon: { description: '표시할 아이콘', control: false },
     className: { table: { disable: true } },
   },
   args: {
     variant: 'plain',
+    size: 'medium',
     label: '필터',
-    icon: <SettingsAdjustIcon className="w-4 h-4 text-gray-400" />,
+    icon: <SettingsAdjustIcon className="text-gray-400" />,
   },
 } satisfies Meta<typeof IconButton>;
 
@@ -52,6 +55,31 @@ export const Variants: Story = {
         <Fragment key={variant}>
           <span className="text-xs text-gray-500">{variant}</span>
           <IconButton {...args} variant={variant} />
+        </Fragment>
+      ))}
+    </div>
+  ),
+};
+
+export const Sizes: Story = {
+  parameters: {
+    docs: {
+      canvas: { sourceState: 'none' },
+      description: {
+        story:
+          '크기별 모습입니다. 아이콘은 크기를 따로 정하지 않아도 버튼 크기에 맞춰지고, 글자가 없는 만큼 같은 단계의 Button보다 아이콘이 한 단계 큽니다.',
+      },
+    },
+  },
+  argTypes: {
+    size: { control: false },
+  },
+  render: args => (
+    <div className="grid grid-cols-[auto_auto] items-center gap-4">
+      {SIZES.map(size => (
+        <Fragment key={size}>
+          <span className="text-xs text-gray-500">{size}</span>
+          <IconButton {...args} size={size} />
         </Fragment>
       ))}
     </div>

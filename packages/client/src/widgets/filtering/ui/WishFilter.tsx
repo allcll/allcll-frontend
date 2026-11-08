@@ -174,9 +174,10 @@ function WishFilter() {
         <FavoriteFilterButton favoriteOnly={favoriteOnly} setFilter={setFilter} />
 
         <IconButton
+          size="medium"
           variant="contain"
           label="테이블 수정"
-          icon={<TableSettingsIcon className="w-4 h-4" />}
+          icon={<TableSettingsIcon />}
           onClick={() => setIsModalOpen(true)}
         />
 

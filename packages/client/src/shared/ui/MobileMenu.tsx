@@ -74,9 +74,10 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
             </Link>
 
             <IconButton
+              size="large"
               className="p-2 hover:bg-gray-100 active:bg-gray-100"
               variant="plain"
-              icon={<CloseIcon className="w-5 h-5 text-gray-500" />}
+              icon={<CloseIcon className="text-gray-500" />}
               label="메뉴 닫기"
               onClick={onClose}
             />

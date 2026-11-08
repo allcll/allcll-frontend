@@ -26,9 +26,10 @@ function Banner({ variant = 'info', children, onClose }: IBanner) {
           <Icon className={`w-4 h-4 shrink-0 ${iconColor}`} />
           <span className="flex-1 text-xs leading-5">{children}</span>
           <IconButton
+            size="medium"
             label="알림 닫기"
             variant="plain"
-            icon={<CloseIcon className="text-gray-500 w-4 h-4" />}
+            icon={<CloseIcon className="text-gray-500" />}
             onClick={onClose}
             className="rounded-full shrink-0"
           />

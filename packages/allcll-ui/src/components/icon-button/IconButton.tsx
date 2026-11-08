@@ -1,17 +1,23 @@
 import type { ComponentPropsWithoutRef } from 'react';
+
 type ButtonVariant = 'contain' | 'plain';
+export type IconButtonSize = 'small' | 'medium' | 'large';
 
 interface IIconButton extends ComponentPropsWithoutRef<'button'> {
   icon: React.ReactNode;
   label?: string;
   variant?: ButtonVariant;
+  size: IconButtonSize;
 }
 
-function IconButton({ icon, variant = 'plain', label, className = '', ...rest }: IIconButton) {
-  const variantClass = getVariantClass(variant);
-  const buttonClass = 'flex flex-row items-center justify-center gap-1 ';
+const SIZE_CLASS: Record<IconButtonSize, string> = {
+  small: '[&_svg]:size-3',
+  medium: '[&_svg]:size-4',
+  large: '[&_svg]:size-5',
+};
 
-  const finalClassName = `${buttonClass} ${variantClass} ${className}`;
+function IconButton({ icon, variant = 'plain', size, label, className = '', ...rest }: IIconButton) {
+  const finalClassName = `flex flex-row items-center justify-center gap-1 ${getVariantClass(variant)} ${SIZE_CLASS[size]} ${className}`;
 
   return (
     <button type="button" aria-label={label} className={finalClassName} {...rest}>

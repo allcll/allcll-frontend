@@ -35,15 +35,16 @@ function AlarmButton({ subject, variant = 'contain', className, onClick, ...prop
 
   return (
     <IconButton
+      size="medium"
       aria-label={title}
       title={title}
       variant={variant === 'contain' ? 'contain' : 'plain'}
       onClick={handlePin}
       icon={
         isPinned ? (
-          <NotificationFilledIcon className="w-4 h-4 text-primary-500" />
+          <NotificationFilledIcon className="text-primary-500" />
         ) : (
-          <NotificationIcon className="w-4 h-4 text-gray-400" />
+          <NotificationIcon className="text-gray-400" />
         )
       }
       className={className}

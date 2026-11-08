@@ -107,10 +107,11 @@ function LoginForm({ onSuccess }: ILoginFormProps) {
             endAdornment={
               values.password && (
                 <IconButton
+                  size="medium"
                   type="button"
                   onClick={() => setShowPassword(value => !value)}
                   aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
-                  icon={!showPassword ? <EyeClosedIcon className="w-4 h-4" /> : <EyeOpenIcon className="w-4 h-4" />}
+                  icon={!showPassword ? <EyeClosedIcon /> : <EyeOpenIcon />}
                 />
               )
             }

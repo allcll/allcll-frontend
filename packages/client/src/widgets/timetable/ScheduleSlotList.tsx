@@ -41,10 +41,11 @@ function EmptyScheduleSlot({ schedule, selected }: Readonly<{ schedule: GeneralS
       </Flex>
 
       <IconButton
+        size="large"
         aria-label="delete"
         variant="plain"
         label="delete"
-        icon={<CloseIcon className="w-5 h-5 text-gray-500" />}
+        icon={<CloseIcon className="text-gray-500" />}
         onClick={handleDeleteEmptySlot}
       />
     </div>

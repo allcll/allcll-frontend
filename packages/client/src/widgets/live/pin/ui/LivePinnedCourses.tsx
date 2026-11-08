@@ -42,19 +42,22 @@ function PinCoursesHeader({ setIsAlarmSettingOpen }: { setIsAlarmSettingOpen: (o
       <Flex align="center" gap={1}>
         {isError && (
           <IconButton
-            icon={<RenewIcon className="w-5 h-5 text-primary-500" />}
+            size="large"
+            icon={<RenewIcon className="text-primary-500" />}
             aria-label="알림 재연결"
             label="알림 재연결"
             onClick={refetch}
           />
         )}
         <IconButton
-          icon={<SettingsIcon className="w-5 h-5 text-gray-400" />}
+          size="large"
+          icon={<SettingsIcon className="text-gray-400" />}
           aria-label="알림 설정"
           label="알림 설정"
           onClick={() => setIsAlarmSettingOpen(true)}
         />
         <IconButton
+          size="large"
           icon={<AlarmStatusIcon isAlarm={isAlarm} />}
           aria-label={isAlarm ? '알림 끄기' : '알림 켜기'}
           label={isAlarm ? '알림 끄기' : '알림 켜기'}
