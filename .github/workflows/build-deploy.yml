@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       working-directory: ./
-      project-directory: ./packages/client
+      project-directory: ./apps/client
 
     steps:
       - name: Checkout code
@@ -121,7 +121,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       working-directory: ./
-      project-directory: ./packages/admin
+      project-directory: ./apps/admin
 
     steps:
       - name: Checkout code
@@ -209,7 +209,7 @@ jobs:
 #    runs-on: ubuntu-latest
 #    env:
 #      working-directory: ./
-#      project-directory: ./packages/client
+#      project-directory: ./apps/client
 #
 #    steps:
 #      - name: Checkout code

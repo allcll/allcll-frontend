@@ -1,0 +1,2 @@
+# msw 가 설치 때 LF 로 다시 쓰는 워커 파일. 체크아웃도 LF 로 맞춰야 윈도우(autocrlf)에서 가짜 변경이 생기지 않습니다.
+**/public/mockServiceWorker.js text eol=lf

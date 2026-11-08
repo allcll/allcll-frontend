@@ -26,3 +26,6 @@ dist-ssr
 
 # environment
 .env
+
+# AI 코딩 도구 개인 설정
+CLAUDE.local.md
