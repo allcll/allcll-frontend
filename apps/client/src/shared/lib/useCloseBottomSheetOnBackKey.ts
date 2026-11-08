@@ -1,36 +1,87 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+type HistoryState = Record<string, unknown> | null;
+
+// 닫힌 시트의 방문 기록을 바로 지우지 않고 잠시 둠. 그사이 다른 시트가 열리면 그 기록을 이어서 씀
+let pendingRelease: { key: string; timer: ReturnType<typeof setTimeout> } | null = null;
+
+function hasEntry(state: unknown, key: string) {
+  return Boolean((state as HistoryState)?.[key]);
+}
+
+function currentHistoryHas(key: string) {
+  return hasEntry((window.history.state as { usr?: unknown } | null)?.usr, key);
+}
+
 /**
- * 바텀 시트가 열린 상태에서 뒤로가기 액션이 발생하면 페이지를 벗어나는 대신 시트만 닫습니다.
- * popstate 시점에는 이미 이전 페이지로 이동한 뒤기에 시트를 열었던 경로로 되돌립니다.
+ * 시트를 열면 같은 주소로 방문 기록을 하나 추가합니다. 뒤로가기를 누르면 그 기록만 지워지므로 페이지는 그대로 두고 시트를 닫습니다.
+ * X나 바깥을 눌러 닫을 때는 추가한 기록을 함께 지워서, 다음 뒤로가기가 바로 이전 페이지로 가게 합니다.
  */
 function useCloseBottomSheetOnBackKey(isOpen: boolean, onClose: () => void) {
   const navigate = useNavigate();
   const location = useLocation();
+  const key = `sheet${useId()}`;
 
-  const pathRef = useRef(`${location.pathname}${location.search}`);
+  const locationRef = useRef(location);
   const onCloseRef = useRef(onClose);
+  const ownsEntry = useRef(false);
+  const confirmed = useRef(false);
 
   useEffect(() => {
-    pathRef.current = `${location.pathname}${location.search}`;
+    locationRef.current = location;
     onCloseRef.current = onClose;
   });
 
   useEffect(() => {
+    if (hasEntry(location.state, key)) {
+      confirmed.current = true;
+      return;
+    }
+    if (!confirmed.current) return;
+
+    confirmed.current = false;
+    ownsEntry.current = false;
+    onCloseRef.current();
+  }, [location, key]);
+
+  useEffect(() => {
     if (!isOpen) return;
 
-    const openedAt = pathRef.current;
-    const handleBack = () => {
-      navigate(openedAt);
-      onCloseRef.current();
-    };
+    const { pathname, search, hash, state } = locationRef.current;
+    const nextState: Record<string, unknown> = { ...((state as HistoryState) ?? {}) };
 
-    window.addEventListener('popstate', handleBack);
+    if (pendingRelease) {
+      clearTimeout(pendingRelease.timer);
+      const releasedKey = pendingRelease.key;
+      pendingRelease = null;
+
+      if (releasedKey === key) {
+        confirmed.current = currentHistoryHas(key);
+      } else {
+        delete nextState[releasedKey];
+        navigate({ pathname, search, hash }, { replace: true, state: { ...nextState, [key]: true } });
+      }
+    } else {
+      navigate({ pathname, search, hash }, { replace: false, state: { ...nextState, [key]: true } });
+    }
+    ownsEntry.current = true;
+
     return () => {
-      window.removeEventListener('popstate', handleBack);
+      if (!ownsEntry.current) return;
+      ownsEntry.current = false;
+      confirmed.current = false;
+
+      pendingRelease = {
+        key,
+        timer: setTimeout(() => {
+          pendingRelease = null;
+          // 시트가 열린 채 다른 페이지로 이동했으면 그 페이지 기록을 건드리지 않음
+          if (currentHistoryHas(key)) window.history.back();
+        }, 0),
+      };
     };
-  }, [isOpen, navigate]);
+  }, [isOpen, key, navigate]);
 }
 
 export default useCloseBottomSheetOnBackKey;
