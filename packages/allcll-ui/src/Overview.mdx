@@ -27,26 +27,26 @@ export const CATEGORIES = [
     description: '눌러서 동작을 실행하거나 선택을 켜고 끄는 요소',
     items: [
       ['Button', '누르면 동작을 실행하는 버튼'],
+      ['Chip', '필터나 선택 항목을 켜고 끄는 칩'],
       ['IconButton', '아이콘만 있는 버튼'],
       ['TextLink', '문장 안에 들어가는 링크'],
-      ['Chip', '필터나 선택 항목을 켜고 끄는 칩'],
     ],
   },
   {
     name: 'Form',
     description: '값을 입력하거나 고를 때 쓰는 요소',
     items: [
-      ['Input', '라벨 없이 쓰는 기본 입력창'],
-      ['TextField', '라벨과 오류 메시지를 함께 보여주는 입력칸'],
-      ['Textarea', '여러 줄을 입력하는 칸'],
-      ['Select', '공통 스타일을 입힌 기본 선택 상자'],
-      ['SearchableSelect', '검색해서 하나를 고르는 선택 상자'],
       ['Checkbox', '여러 개를 함께 고를 수 있는 체크박스'],
-      ['Toggle', '설정을 즉시 켜고 끄는 스위치'],
-      ['SegmentedControl', '선택지 중 하나를 눌러 바로 고르는 컴포넌트'],
+      ['Input', '라벨 없이 쓰는 기본 입력창'],
       ['Label', '입력 요소 위에 붙는 이름'],
       ['Listbox', '여러 선택지 중 하나를 고르는 목록'],
-      ['RangeSlider', '범위를 고르는 슬라이더', false],
+      ['RangeSlider', '두 손잡이로 범위를 고르는 슬라이더'],
+      ['SearchableSelect', '검색해서 하나를 고르는 선택 상자'],
+      ['SegmentedControl', '선택지 중 하나를 눌러 바로 고르는 컴포넌트'],
+      ['Select', '공통 스타일을 입힌 기본 선택 상자'],
+      ['Textarea', '여러 줄을 입력하는 칸'],
+      ['TextField', '라벨과 오류 메시지를 함께 보여주는 입력칸'],
+      ['Toggle', '설정을 즉시 켜고 끄는 스위치'],
     ],
   },
   {
@@ -54,53 +54,51 @@ export const CATEGORIES = [
     description: '진행 상황이나 결과를 알려주는 요소',
     items: [
       ['Banner', '페이지 위쪽에 놓는 안내 띠'],
-      ['Toast', '동작 결과를 잠깐 알려주는 메시지'],
-      ['Tooltip', '보조 설명을 보여주는 말풍선'],
       ['EmptyState', '목록이 비었거나 결과가 없을 때 보여주는 안내'],
       ['LoadingState', '데이터를 불러오는 동안 보여주는 안내'],
-      ['Spinner', '작은 영역에서 보여주는 회전 아이콘'],
       ['Skeleton', '내용이 들어올 자리를 미리 잡는 회색 상자'],
+      ['Spinner', '작은 영역에서 보여주는 회전 아이콘'],
+      ['Toast', '동작 결과를 잠깐 알려주는 메시지'],
+      ['Tooltip', '보조 설명을 보여주는 말풍선'],
     ],
   },
   {
     name: 'Overlay',
     description: '화면 위에 겹쳐 띄우는 창과 패널',
     items: [
+      ['BottomSheet', '모바일에서 화면 아래에서 올라오는 창'],
       ['Dialog', '확인이나 입력을 받는 창'],
       ['Popover', '버튼 아래에 펼쳐지는 작은 패널'],
-      ['BottomSheet', '화면 아래에서 올라오는 시트', false],
     ],
   },
   {
     name: 'Navigation',
     description: '다른 페이지나 내용으로 옮겨 가는 요소',
     items: [
-      ['Tabs', '같은 화면 안에서 내용을 바꿔 보여주는 탭'],
       ['Pagination', '여러 페이지로 나뉜 목록의 페이지 이동'],
       ['TabNav', '다른 페이지로 이동하는 탭 모양 링크'],
+      ['Tabs', '같은 화면 안에서 내용을 바꿔 보여주는 탭'],
     ],
   },
   {
     name: 'Display',
     description: '내용을 보여주거나 묶는 요소',
     items: [
+      ['Accordion', '제목을 누르면 펼쳐지고 접히는 목록'],
       ['Badge', '상태나 수치를 짧게 보여주는 작은 표시'],
       ['Card', '관련된 내용을 하나로 묶는 상자'],
       ['Heading', '페이지나 구역의 제목'],
       ['SupportingText', '제목이나 입력 요소 아래에 붙는 보조 설명'],
-      ['Table', '표', false],
-      ['Accordion', '펼치고 접는 영역', false],
+      ['Table', '행과 열로 데이터를 보여주는 표'],
     ],
   },
   {
     name: 'Layout',
     description: '화면 배치와 간격을 잡는 요소',
     items: [
-      ['Container', '페이지 최대 폭과 좌우 여백', false],
-      ['Flex', '가로, 세로 정렬 묶음', false],
-      ['Grid', '열 단위 배치', false],
-      ['RowSlots', '왼쪽, 가운데, 오른쪽 칸으로 나눈 한 줄', false],
-      ['RowMain', 'RowLeft, RowCenter, RowRight 칸을 직접 배치하는 줄', false],
+      ['Container', '페이지 내용의 최대 폭과 좌우 여백'],
+      ['Flex', '요소를 가로나 세로로 늘어놓는 묶음'],
+      ['Grid', '요소를 같은 폭의 열로 나누는 배치'],
     ],
   },
 ];
@@ -121,7 +119,7 @@ import { Button, Pagination, CheckmarkIcon } from '@allcll/allcll-ui';
 
 ## 색상 토큰
 
-`primary`, `danger`, `text`는 `colors.ts`에서 정의한 ALLCLL 색상이고, 이외의 색상은 Tailwind 기본 팔레트를 사용합니다.
+`primary`, `danger`, `text`는 `colors.ts`에서 정의한 커스텀 색상이고, 이외의 색상은 Tailwind 기본 팔레트를 사용합니다.
 
 <ColorPalette>
   <ColorItem title="primary" subtitle="주요 동작, 선택 상태" colors={shades(colors.primary)} />

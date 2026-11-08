@@ -42,7 +42,7 @@ interface TableHeadProps extends ComponentPropsWithoutRef<'thead'> {
   sticky?: boolean;
 }
 
-function TableHead({ sticky = false, className = '', children, ...rest }: TableHeadProps) {
+export function TableHead({ sticky = false, className = '', children, ...rest }: TableHeadProps) {
   return (
     <thead className={`${sticky ? 'sticky top-0 z-content' : ''} ${className}`} {...rest}>
       <tr className="bg-gray-50">{children}</tr>
@@ -62,7 +62,7 @@ type TableHeaderCellProps = TableCellProps &
     onSort?: () => void;
   };
 
-function TableHeaderCell({
+export function TableHeaderCell({
   align = 'center',
   sortDirection,
   onSort,
@@ -102,7 +102,11 @@ function TableRow({ className = '', ...rest }: ComponentPropsWithoutRef<'tr'>) {
   return <tr data-table-row className={`h-10 border-t border-gray-200 ${className}`} {...rest} />;
 }
 
-function TableCell({ align = 'center', className = '', ...rest }: TableCellProps & ComponentPropsWithoutRef<'td'>) {
+export function TableCell({
+  align = 'center',
+  className = '',
+  ...rest
+}: TableCellProps & ComponentPropsWithoutRef<'td'>) {
   return <td className={`px-4 py-1.5 ${ALIGN_CLASS[align]} ${className}`} {...rest} />;
 }
 

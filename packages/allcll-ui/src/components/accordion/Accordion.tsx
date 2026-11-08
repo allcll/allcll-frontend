@@ -30,7 +30,7 @@ interface AccordionItemProps {
   id?: string;
 }
 
-function AccordionItem({ value, title, children, id }: AccordionItemProps) {
+export function AccordionItem({ value, title, children, id }: AccordionItemProps) {
   return (
     <RadixAccordion.Item value={value} id={id} className="rounded-md bg-white shadow-sm">
       <RadixAccordion.Header>
