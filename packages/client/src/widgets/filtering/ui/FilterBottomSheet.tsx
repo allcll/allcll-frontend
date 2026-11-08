@@ -20,6 +20,7 @@ import { FilterValueType } from '@/features/filtering/model/types.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam.ts';
 
 interface FilterBottomSheetProps {
+  isOpen: boolean;
   onCloseFiltering: () => void;
   filters: Filters;
   setFilter: (field: keyof Filters, value: Filters[keyof Filters]) => void;
@@ -29,6 +30,7 @@ interface FilterBottomSheetProps {
 }
 
 function FilterBottomSheet({
+  isOpen,
   onCloseFiltering,
   filters,
   setFilter,
@@ -60,7 +62,7 @@ function FilterBottomSheet({
   };
 
   return (
-    <BottomSheet title="필터" onClose={onCloseFiltering}>
+    <BottomSheet title="필터" isOpen={isOpen} onClose={onCloseFiltering}>
       <div className="w-full flex flex-col gap-5">
         <Flex direction="flex-col" justify="justify-center" gap="gap-8" className="w-full">
           <DepartmentSelect showLabel value={filters.department} onChange={code => setFilter('department', code)} />

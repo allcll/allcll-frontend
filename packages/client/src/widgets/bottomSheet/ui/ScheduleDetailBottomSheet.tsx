@@ -8,7 +8,7 @@ import DeleteConfirmationActions from '@/features/timetable/ui/DeleteConfirmatio
 import useDeleteConfirmation from '@/features/timetable/lib/useDeleteConfirmation';
 import { parseCredit } from '@/shared/lib/parser.ts';
 
-function ScheduleInfoBottomSheet() {
+function ScheduleInfoBottomSheet({ isOpen }: { isOpen: boolean }) {
   const semester = useSemesterParam();
 
   const { schedule } = useScheduleModalData();
@@ -26,7 +26,7 @@ function ScheduleInfoBottomSheet() {
   };
 
   return (
-    <BottomSheet title={schedule.subjectName} onClose={handleClose}>
+    <BottomSheet title={schedule.subjectName} isOpen={isOpen} onClose={handleClose}>
       <Flex direction="flex-col" gap="gap-6">
         <Flex direction="flex-col" className="w-full text-sm text-gray-500 gap-2">
           <p className="text-sm text-gray-500">{schedule.professorName ?? '교수 정보 없음'}</p>

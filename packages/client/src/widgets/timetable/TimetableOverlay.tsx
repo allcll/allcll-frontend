@@ -41,19 +41,17 @@ function MobileTimetableOverlay() {
 
   return (
     <>
-      <RenderIf when={overlays.search.isOpen}>
-        <ScheduleSearchBottomSheet onCloseSearch={handleCloseSearch} onOpenFiltering={handleOpenFiltering} />
-      </RenderIf>
+      <ScheduleSearchBottomSheet
+        isOpen={overlays.search.isOpen}
+        onCloseSearch={handleCloseSearch}
+        onOpenFiltering={handleOpenFiltering}
+      />
 
       {/* 과목 검색 시트 위에 쌓이도록 검색 시트 다음에 둠 */}
       <TimetableFilter onClose={handleCloseFilter} />
 
-      <RenderIf when={overlays.edit.isOpen}>
-        <ScheduleFormBottomSheet />
-      </RenderIf>
-      <RenderIf when={overlays.info.isOpen}>
-        <ScheduleInfoBottomSheet />
-      </RenderIf>
+      <ScheduleFormBottomSheet isOpen={overlays.edit.isOpen} />
+      <ScheduleInfoBottomSheet isOpen={overlays.info.isOpen} />
 
       <RenderIf
         when={!overlays.search.isOpen && !overlays.filter.isOpen && !overlays.edit.isOpen && !overlays.info.isOpen}

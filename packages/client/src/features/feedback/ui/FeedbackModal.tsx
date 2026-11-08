@@ -37,11 +37,11 @@ export const FeedbackModal = ({
     selectableCategory,
   });
 
-  if (!isOpen) return null;
-
-  if (isMobile && peekMessage && !controller.isSheetOpen) {
+  if (isOpen && isMobile && peekMessage && !controller.isSheetOpen) {
     return <FeedbackPeekBar message={peekMessage} onOpen={controller.openSheet} onClose={controller.handleClose} />;
   }
+
+  if (!isOpen && !isMobile) return null;
 
   const sharedProps = {
     success: controller.success,
@@ -60,7 +60,11 @@ export const FeedbackModal = ({
     titles,
   };
 
-  return isMobile ? <FeedbackMobileSheet {...sharedProps} /> : <FeedbackDesktopModal {...sharedProps} />;
+  return isMobile ? (
+    <FeedbackMobileSheet isOpen={isOpen} {...sharedProps} />
+  ) : (
+    <FeedbackDesktopModal {...sharedProps} />
+  );
 };
 
 export default FeedbackModal;

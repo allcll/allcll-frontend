@@ -7,7 +7,7 @@ import ScheduleFormContent from '@/features/timetable/ui/ScheduleFormContent';
 import DeleteConfirmationActions from '@/features/timetable/ui/DeleteConfirmationActions';
 import useDeleteConfirmation from '@/features/timetable/lib/useDeleteConfirmation';
 
-function ScheduleFormBottomSheet() {
+function ScheduleFormBottomSheet({ isOpen }: { isOpen: boolean }) {
   const { modalActionType } = useScheduleModalData();
   const { cancelSchedule, deleteSchedule, saveSchedule } = useScheduleModal();
 
@@ -20,7 +20,7 @@ function ScheduleFormBottomSheet() {
   };
 
   return (
-    <BottomSheet title={`커스텀 일정 ${title}`} onClose={() => cancelSchedule()}>
+    <BottomSheet title={`커스텀 일정 ${title}`} isOpen={isOpen} onClose={() => cancelSchedule()}>
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <Flex direction="flex-col">
           <ScheduleFormContent />

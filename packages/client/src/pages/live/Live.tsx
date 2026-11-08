@@ -66,10 +66,10 @@ function LiveMainContent({ isPreSeatAvailable }: { isPreSeatAvailable: boolean }
 }
 
 function SearchOverlay({ isMobile, isOpen, onClose }: { isMobile: boolean; isOpen: boolean; onClose: () => void }) {
-  if (!isOpen) return null;
+  if (!isMobile && !isOpen) return null;
 
   return isMobile ? (
-    <PinSearchBottomSheet onCloseSearch={onClose} />
+    <PinSearchBottomSheet isOpen={isOpen} onCloseSearch={onClose} />
   ) : (
     <PinSearchSideBar isOpen={isOpen} onClose={onClose} />
   );

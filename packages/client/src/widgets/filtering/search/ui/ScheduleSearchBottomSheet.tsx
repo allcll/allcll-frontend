@@ -1,4 +1,4 @@
-import { useDeferredValue, useState } from 'react';
+import { useDeferredValue, useEffect, useState } from 'react';
 import BottomSheet from '../../../../shared/ui/bottomsheet/BottomSheet.tsx';
 import TimetableSubjectCards from '@/features/timetable/ui/subject/TimetableSubjectCards.tsx';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
@@ -13,11 +13,12 @@ import useSearchRank from '@/features/filtering/lib/useSearchRank.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam.ts';
 
 interface ISearchBottomSheet {
+  isOpen: boolean;
   onCloseSearch: () => void;
   onOpenFiltering: () => void;
 }
 
-function ScheduleSearchBottomSheet({ onCloseSearch, onOpenFiltering }: ISearchBottomSheet) {
+function ScheduleSearchBottomSheet({ isOpen, onCloseSearch, onOpenFiltering }: ISearchBottomSheet) {
   const semester = useSemesterParam();
 
   const { openScheduleModal } = useScheduleModal();
@@ -34,13 +35,18 @@ function ScheduleSearchBottomSheet({ onCloseSearch, onOpenFiltering }: ISearchBo
   const previewSnapPoint = `${Math.max(window.innerHeight - 400, 240)}px`;
   const [snapPoint, setSnapPoint] = useState<number | string | null>(1);
 
+  useEffect(() => {
+    if (isOpen) setSnapPoint(1);
+  }, [isOpen]);
+
   return (
     <BottomSheet
       title="과목 검색"
+      isOpen={isOpen}
       onClose={onCloseSearch}
       snapPoints={[previewSnapPoint, 1]}
       activeSnapPoint={snapPoint}
-      setActiveSnapPoint={setSnapPoint}
+      onActiveSnapPointChange={setSnapPoint}
     >
       <div className="sticky -mx-4 px-4 top-0 bg-white z-content flex items-stretch gap-2 pb-3 mb-4 border-b border-gray-100">
         <SearchBox

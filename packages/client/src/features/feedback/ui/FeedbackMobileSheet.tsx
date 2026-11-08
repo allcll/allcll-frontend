@@ -4,6 +4,7 @@ import { Flex } from '@allcll/allcll-ui';
 import type { IFeedbackViewProps } from './FeedbackViewProps';
 
 export default function FeedbackMobileSheet({
+  isOpen,
   success,
   rate,
   setRate,
@@ -18,9 +19,9 @@ export default function FeedbackMobileSheet({
   onDontShowAgain,
   onSubmit,
   titles,
-}: IFeedbackViewProps) {
+}: IFeedbackViewProps & { isOpen: boolean }) {
   return (
-    <BottomSheet title={titles.title} onClose={onClose}>
+    <BottomSheet title={titles.title} isOpen={isOpen} onClose={onClose}>
       <div>
         {!success ? (
           <Flex direction="flex-col" gap="gap-6">

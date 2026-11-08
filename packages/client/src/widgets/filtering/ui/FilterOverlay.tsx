@@ -17,10 +17,11 @@ function FilterOverlay({ isOpen, onClose, filterStore, showWishRange, showSeatRa
   const setFilter = filterStore(state => state.setFilter);
   const resetFilter = filterStore(state => state.resetFilters);
 
-  if (!isOpen) return null;
+  if (!isMobile && !isOpen) return null;
 
   return isMobile ? (
     <FilterBottomSheet
+      isOpen={isOpen}
       onCloseFiltering={onClose}
       filters={filters}
       setFilter={setFilter}

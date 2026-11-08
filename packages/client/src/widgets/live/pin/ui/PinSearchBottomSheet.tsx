@@ -9,10 +9,11 @@ import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 
 interface ISearchBottomSheet {
+  isOpen: boolean;
   onCloseSearch: () => void;
 }
 
-function PinSearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
+function PinSearchBottomSheet({ isOpen, onCloseSearch }: ISearchBottomSheet) {
   const [searchInput, setSearchInput] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
 
@@ -27,9 +28,15 @@ function PinSearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
     }),
   );
 
+  const handleClose = () => {
+    setSearchInput('');
+    setSelectedDepartment('');
+    onCloseSearch();
+  };
+
   return (
     // 검색 결과 수에 따라 시트 높이가 출렁이지 않도록 화면 높이로 고정
-    <BottomSheet title="알림 과목 등록" onClose={onCloseSearch} snapPoints={[1]}>
+    <BottomSheet title="알림 과목 등록" isOpen={isOpen} onClose={handleClose} snapPoints={[1]}>
       <div className="sticky -mx-4 pb-3 px-4 top-0 bg-white z-content flex flex-col gap-2 mb-4 border-b border-gray-100">
         <SearchBox
           placeholder="과목명, 교수명, 학수번호 검색"
