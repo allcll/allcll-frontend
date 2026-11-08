@@ -17,7 +17,8 @@ function TabsRoot({ value, onValueChange, children, className }: TabsProps) {
   );
 }
 
-interface TabsListProps extends ComponentPropsWithoutRef<typeof RadixTabs.List> {
+interface TabsListProps extends Omit<ComponentPropsWithoutRef<typeof RadixTabs.List>, 'asChild'> {
+  /** 탭을 가로로 가득 채울지 여부 */
   fullWidth?: boolean;
 }
 

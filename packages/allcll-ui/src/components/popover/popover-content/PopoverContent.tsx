@@ -4,8 +4,11 @@ import { usePopoverContext } from '../popover/PopoverContext';
 import { Z_INDEX, type ZIndexLayer } from '../../../../zIndex';
 
 type PopoverContentProps = Pick<RadixPopover.PopoverContentProps, 'align'> & {
+  /** 패널 내용 */
   children: React.ReactNode;
+  /** 패널에 줄 클래스 */
   className?: string;
+  /** 패널이 뜨는 층(z-index) */
   layer?: ZIndexLayer;
 };
 

@@ -39,6 +39,7 @@ function TableRoot({ wrapperClassName = '', scrollClassName = '', className = ''
 }
 
 interface TableHeadProps extends ComponentPropsWithoutRef<'thead'> {
+  /** 세로로 스크롤해도 위에 고정할지 여부 */
   sticky?: boolean;
 }
 
@@ -51,6 +52,7 @@ export function TableHead({ sticky = false, className = '', children, ...rest }:
 }
 
 interface TableCellProps {
+  /** 글자 정렬 */
   align?: Align;
 }
 
@@ -58,7 +60,9 @@ type SortDirection = 'asc' | 'desc';
 
 type TableHeaderCellProps = TableCellProps &
   ComponentPropsWithoutRef<'th'> & {
+    /** 정렬 방향, 정렬하지 않으면 null */
     sortDirection?: SortDirection | null;
+    /** 열 제목을 누를 때 호출하는 함수 */
     onSort?: () => void;
   };
 

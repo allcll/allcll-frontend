@@ -2,12 +2,19 @@ import { forwardRef, type ComponentPropsWithoutRef, type KeyboardEvent, type Mou
 import { INTERACTION } from '../../config';
 
 interface ListboxOptionProps extends Omit<ComponentPropsWithoutRef<'div'>, 'id'> {
+  /** 선택 상태 */
   selected: boolean;
+  /** 고를 때 호출하는 함수 */
   onSelect?: () => void;
+  /** 선택지 내용 */
   left: ReactNode;
+  /** 선택됐을 때 오른쪽에 보일 표시 */
   right?: ReactNode;
+  /** 요소 id */
   id?: string;
+  /** 키보드로 가리키고 있는 상태 */
   active?: boolean;
+  /** Tab 키로 이동할 수 있는지 여부 */
   focusable?: boolean;
 }
 

@@ -24,9 +24,13 @@ function AccordionRoot({ value, onValueChange, children, className = '' }: Accor
 }
 
 interface AccordionItemProps {
+  /** 항목을 구분하는 값 */
   value: string;
+  /** 항목 제목 */
   title: ReactNode;
+  /** 펼치면 보일 내용 */
   children: ReactNode;
+  /** 요소 id */
   id?: string;
 }
 

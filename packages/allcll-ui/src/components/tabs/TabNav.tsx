@@ -17,7 +17,9 @@ function TabNavRoot({ fullWidth = false, className = '', ...rest }: TabNavProps)
 }
 
 interface TabNavItemProps extends ComponentPropsWithoutRef<'a'> {
+  /** 지금 페이지인지 여부 */
   selected: boolean;
+  /** 라우터 링크처럼 넘긴 자식 요소를 그대로 탭으로 쓸지 여부 */
   asChild?: boolean;
 }
 

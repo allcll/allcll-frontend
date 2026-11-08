@@ -66,7 +66,9 @@ function BottomSheetMain({
 }
 
 interface BottomSheetFooterProps {
+  /** 버튼 위에 놓을 내용 */
   above?: ReactNode;
+  /** 오른쪽에 늘어놓을 버튼 */
   children: ReactNode;
 }
 
