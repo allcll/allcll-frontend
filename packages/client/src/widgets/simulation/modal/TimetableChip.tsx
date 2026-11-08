@@ -49,7 +49,7 @@ function TimetableChipSelector({ semesterValue, timetables, selectedTimetableId,
         </Button>
       </Flex>
 
-      <Grid columns={{ sm: 2, md: 3 }} gap="gap-2">
+      <Grid columns={{ sm: 2, md: 3 }} gap={2}>
         {timetables.map(t => (
           <Chip
             key={t.timeTableId}

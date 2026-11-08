@@ -136,7 +136,7 @@ function CategoryOptions({ options, selectedCategory, onSelect }: Readonly<Categ
   return (
     <Flex direction="column" gap={2}>
       <Label>이수 구분</Label>
-      <Grid columns={{ md: 3 }} gap="gap-2">
+      <Grid columns={{ md: 3 }} gap={2}>
         {options.map(option => (
           <Popover.Close key={option.value} asChild>
             <Chip

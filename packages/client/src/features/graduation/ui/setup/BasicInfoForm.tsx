@@ -97,7 +97,7 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
           {/* 이수 유형 선택 */}
           <Flex direction="column" gap={1.5}>
             <Label required>이수 유형</Label>
-            <Grid columns={{ base: 2 }} gap="gap-2">
+            <Grid columns={{ base: 2 }} gap={2}>
               <Chip
                 label="단일전공"
                 selected={majorType === 'SINGLE'}

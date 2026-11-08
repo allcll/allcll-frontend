@@ -43,7 +43,7 @@ function Live() {
           <Flex direction="column" gap={6}>
             <LivePinnedCourses />
 
-            <Grid columns={{ base: 1 }} gap="gap-4">
+            <Grid columns={{ base: 1 }} gap={4}>
               <LiveMainContent isPreSeatAvailable={isPreSeatAvailable} />
             </Grid>
           </Flex>

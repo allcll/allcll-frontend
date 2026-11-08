@@ -31,7 +31,7 @@ function WishesDetail() {
           <WishesDetailInfo wishesInfo={wishesInfo} />
 
           {/* Analytics Section */}
-          <Grid columns={{ md: 2, base: 1 }} gap="gap-6" className="mt-6">
+          <Grid columns={{ md: 2, base: 1 }} gap={6} className="mt-6">
             <Card className="p-6">
               <DepartmentDoughnut wishesInfo={wishesInfo} />
             </Card>

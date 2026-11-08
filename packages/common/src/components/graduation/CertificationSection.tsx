@@ -134,7 +134,7 @@ function CertificationSection({
 
       <SupportingText className="mb-6">{policyDescription}</SupportingText>
 
-      <Grid columns={{ base: 1, md: 3 }} gap="gap-4">
+      <Grid columns={{ base: 1, md: 3 }} gap={4}>
         {english.isRequired && (
           <CertificationCard
             title={CERT_NAMES.english}

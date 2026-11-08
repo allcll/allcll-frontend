@@ -53,7 +53,7 @@ function MultiSelectFilter<K extends keyof Filters>({
         <Label>{labelPrefix[filterKey]}</Label>
 
         {layout === 'grid' ? (
-          <Grid columns={{ md: 3 }} gap="gap-2">
+          <Grid columns={{ md: 3 }} gap={2}>
             {visibleOptions.map(option => (
               <ItemComponent
                 key={String(option)}

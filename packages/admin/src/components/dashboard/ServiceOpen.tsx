@@ -38,7 +38,7 @@ function ServiceOpenContent() {
   const now = new Date();
 
   return (
-    <Grid columns={{ base: 2, sm: 4 }} gap="gap-4">
+    <Grid columns={{ base: 2, sm: 4 }} gap={4}>
       {periods.map(({ operationType, startDate, endDate }) => {
         const open = isOpen(now, startDate, endDate);
 

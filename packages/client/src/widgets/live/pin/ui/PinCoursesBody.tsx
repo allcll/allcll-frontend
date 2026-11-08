@@ -38,7 +38,7 @@ function PinCoursesBody() {
   }
 
   return (
-    <Grid columns={{ base: 1, md: 3 }} gap="gap-4">
+    <Grid columns={{ base: 1, md: 3 }} gap={4}>
       {pinnedWishes.map(subject => (
         <RealtimeCard
           key={`${subject.subjectId}_${subject.subjectCode}_${subject.professorName}`}
@@ -56,7 +56,7 @@ export default PinCoursesBody;
 
 function SkeletonBox() {
   return (
-    <Grid columns={{ base: 1, md: 3 }} gap="gap-4">
+    <Grid columns={{ base: 1, md: 3 }} gap={4}>
       {[0, 0, 0].map((_, idx) => (
         <Skeleton key={'skeleton-card-' + idx} className="h-24 rounded-lg" />
       ))}

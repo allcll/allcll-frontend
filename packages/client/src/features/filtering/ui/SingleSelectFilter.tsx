@@ -40,7 +40,7 @@ function SingleSelectFilterOption<K extends keyof Filters>({
     <div className="relative w-full">
       <Flex direction="column" gap={2}>
         <Label>{labelPrefix[filterKey]}</Label>
-        <Grid columns={{ md: 3 }} gap="gap-2">
+        <Grid columns={{ md: 3 }} gap={2}>
           {options.map(option => {
             const label = labelFormatters[filterKey]?.(option) ?? String(option);
             return (

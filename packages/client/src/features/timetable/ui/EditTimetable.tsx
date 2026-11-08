@@ -86,7 +86,7 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
         <Dialog.Content>
           <Flex direction="column" gap={1.5}>
             <Label>학기 선택</Label>
-            <Grid columns={{ base: 2 }} gap="gap-2">
+            <Grid columns={{ base: 2 }} gap={2}>
               {SEMESTERS.map(semester => (
                 <Chip
                   key={semester.semesterCode}
