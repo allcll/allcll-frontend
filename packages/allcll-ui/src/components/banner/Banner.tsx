@@ -8,7 +8,7 @@ type BannerVariant = 'info' | 'danger';
 interface IBanner {
   variant?: BannerVariant;
   children: React.ReactNode;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 const BANNER_STYLE = {
@@ -25,14 +25,16 @@ function Banner({ variant = 'info', children, onClose }: IBanner) {
         <Flex align="center" gap={3} className="py-3">
           <Icon className={`w-4 h-4 shrink-0 ${iconColor}`} />
           <span className="flex-1 text-xs leading-5">{children}</span>
-          <IconButton
-            size="medium"
-            label="알림 닫기"
-            variant="plain"
-            icon={<CloseIcon className="text-gray-500" />}
-            onClick={onClose}
-            className="rounded-full shrink-0"
-          />
+          {onClose && (
+            <IconButton
+              size="medium"
+              label="알림 닫기"
+              variant="plain"
+              icon={<CloseIcon className="text-gray-500" />}
+              onClick={onClose}
+              className="rounded-full shrink-0"
+            />
+          )}
         </Flex>
       </Container>
     </div>
