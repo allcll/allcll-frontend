@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Card, Flex, Heading, IconButton, Tooltip, RenewIcon, SettingsIcon } from '@allcll/allcll-ui';
+import { Card, Flex, Heading, IconButton, Tooltip, SettingsIcon } from '@allcll/allcll-ui';
 
 import AlarmOptionModal from '@/features/notification/ui/AlarmOptionModal.tsx';
 import NotificationInstructionsModal from '@/features/notification/ui/NotificationInstructionsModal.tsx';
-import { SSEType, useSseData } from '@/features/live/common/api/useSSEManager.ts';
 import useNotification from '@/features/notification/lib/useNotification.ts';
 import AlarmStatusIcon from '@/features/live/pin/ui/AlarmStatusIcon.tsx';
+import AlarmIssueNotice from '@/features/live/pin/ui/AlarmIssueNotice.tsx';
 
 import PinCoursesBody from './PinCoursesBody.tsx';
 
@@ -25,46 +25,39 @@ const LivePinnedCourses = () => {
 
 function PinCoursesHeader({ setIsAlarmSettingOpen }: { setIsAlarmSettingOpen: (open: boolean) => void }) {
   const { isAlarm, changeAlarm } = useNotification();
-  const { isError, refetch } = useSseData(SSEType.PINNED);
 
   return (
-    <Flex direction="row" justify="between" className="mb-4">
-      <Flex align="center" justify="center" gap={1}>
-        <Heading level={3}>여석 과목 알림</Heading>
-        <Tooltip>
-          <p className="text-sm">
-            여석이 생기면 알림을 보내드려요 <br />
-            <span className="text-danger-500">* 탭을 닫으면 알림이 울리지 않아요</span>
-          </p>
-        </Tooltip>
-      </Flex>
+    <>
+      <Flex direction="row" justify="between" className="mb-4">
+        <Flex align="center" justify="center" gap={1}>
+          <Heading level={3}>여석 과목 알림</Heading>
+          <Tooltip>
+            <p className="text-sm">
+              여석이 생기면 알림을 보내드려요 <br />
+              <span className="text-danger-500">* 탭을 닫으면 알림이 울리지 않아요</span>
+            </p>
+          </Tooltip>
+        </Flex>
 
-      <Flex align="center" gap={1}>
-        {isError && (
+        <Flex align="center" gap={1}>
           <IconButton
             size="large"
-            icon={<RenewIcon className="text-primary-500" />}
-            aria-label="알림 재연결"
-            label="알림 재연결"
-            onClick={refetch}
+            icon={<SettingsIcon className="text-gray-400" />}
+            aria-label="알림 설정"
+            label="알림 설정"
+            onClick={() => setIsAlarmSettingOpen(true)}
           />
-        )}
-        <IconButton
-          size="large"
-          icon={<SettingsIcon className="text-gray-400" />}
-          aria-label="알림 설정"
-          label="알림 설정"
-          onClick={() => setIsAlarmSettingOpen(true)}
-        />
-        <IconButton
-          size="large"
-          icon={<AlarmStatusIcon isAlarm={isAlarm} />}
-          aria-label={isAlarm ? '알림 끄기' : '알림 켜기'}
-          label={isAlarm ? '알림 끄기' : '알림 켜기'}
-          onClick={changeAlarm}
-        />
+          <IconButton
+            size="large"
+            icon={<AlarmStatusIcon isAlarm={isAlarm} />}
+            aria-label={isAlarm ? '알림 끄기' : '알림 켜기'}
+            label={isAlarm ? '알림 끄기' : '알림 켜기'}
+            onClick={changeAlarm}
+          />
+        </Flex>
       </Flex>
-    </Flex>
+      <AlarmIssueNotice isAlarm={isAlarm} />
+    </>
   );
 }
 

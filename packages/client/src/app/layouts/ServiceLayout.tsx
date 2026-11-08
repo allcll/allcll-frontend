@@ -1,6 +1,7 @@
 import useGlobalEffect from '@/shared/lib/useGlobalEffect.ts';
 import Header from '@/shared/ui/Header.tsx';
 import BannerNotification from '@/features/notification/ui/BannerNotification.tsx';
+import AlarmDisconnectBanner from '@/features/notification/ui/AlarmDisconnectBanner.tsx';
 import { Outlet } from 'react-router-dom';
 import Footer from '@/shared/ui/Footer.tsx';
 import ServiceEnabled from '@/entities/semester/ui/ServiceEnabled.tsx';
@@ -21,6 +22,7 @@ function ServiceLayout({ serviceId }: IServiceLayoutProps) {
       <Header />
       <ServiceEnabled serviceId={serviceId}>
         <BannerNotification />
+        <AlarmDisconnectBanner />
         <main className="flex-1">
           <Outlet />
         </main>

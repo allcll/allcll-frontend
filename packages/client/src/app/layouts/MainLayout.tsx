@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet';
 import { Outlet } from 'react-router-dom';
 import Header from '@/shared/ui/Header.tsx';
 import BannerNotification from '@/features/notification/ui/BannerNotification.tsx';
+import AlarmDisconnectBanner from '@/features/notification/ui/AlarmDisconnectBanner.tsx';
 import Footer from '@/shared/ui/Footer.tsx';
 import useGlobalEffect from '@/shared/lib/useGlobalEffect.ts';
 import FeedbackFab from '@/features/feedback/ui/FeedbackFab';
@@ -20,6 +21,7 @@ function MainLayout() {
       <GlobalConfirmDialog />
       <Header />
       <BannerNotification />
+      <AlarmDisconnectBanner />
       <main>
         <Outlet />
       </main>
