@@ -135,7 +135,7 @@ function useNotification() {
     if (isInitialized) return;
 
     if (useAlarmSettings.getState().isEnabled && AlarmNotification.isGranted()) {
-      setGlobalNotification('알림 기능이 활성화되었습니다. 여석이 생기면 이렇게 알림을 보내드려요');
+      setGlobalNotification('여석 알림이 켜져 있어요.\n여석이 생기면 이렇게 알려드려요');
       setAlwaysReload(true);
     }
 
@@ -150,11 +150,11 @@ function useNotification() {
 
     if (isAlarm) {
       // 끄는 안내에는 소리, 진동, 브라우저 알림이 울리지 않도록 화면 토스트로만 알림
-      useToastNotification.getState().addToast('알림 기능이 비활성화되었습니다', 'alarm-status');
+      useToastNotification.getState().addToast('여석 알림을 껐어요', 'alarm-status');
       return;
     }
 
-    const message = '알림 기능이 활성화되었습니다';
+    const message = '여석 알림을 켰어요';
     setGlobalNotification(message);
     // 고른 방식에 토스트가 없으면 켜진 것을 화면에서 확인할 수 없어 따로 띄움
     if (!isAlarmActivated(AlarmType.TOAST)) {
