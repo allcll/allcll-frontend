@@ -4,7 +4,7 @@ import { INTERACTION } from '../../config';
 
 export type ButtonVariant = 'solid' | 'outlined' | 'text' | 'pill';
 export type ButtonColor = 'primary' | 'gray' | 'danger';
-export type ButtonSize = 'small' | 'medium' | 'large';
+export type ButtonSize = 'xsmall' | 'small' | 'medium' | 'large';
 
 interface IButton extends Omit<ComponentPropsWithoutRef<'button'>, 'color'> {
   variant: ButtonVariant;
@@ -73,6 +73,8 @@ function getVariantClass(variant: ButtonVariant, color: ButtonColor) {
 
 function getSizeClass(size: ButtonSize, isText: boolean) {
   switch (size) {
+    case 'xsmall':
+      return isText ? 'py-1 text-xs [&_svg]:size-3' : 'px-2 py-1 text-xs [&_svg]:size-3';
     case 'small':
       return isText ? 'py-1.5 text-sm [&_svg]:size-3' : 'px-3 py-1.5 text-sm [&_svg]:size-3';
     case 'large':

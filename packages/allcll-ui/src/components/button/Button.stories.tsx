@@ -6,7 +6,7 @@ import { HomeIcon } from '../../icons';
 
 const VARIANTS = ['solid', 'outlined', 'text', 'pill'] as const;
 const COLORS = ['primary', 'gray', 'danger'] as const;
-const SIZES = ['small', 'medium', 'large'] as const;
+const SIZES = ['xsmall', 'small', 'medium', 'large'] as const;
 
 const meta = {
   title: 'Actions/Button',
