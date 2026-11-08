@@ -1,5 +1,4 @@
 import React from 'react';
-import useBackSignal from '@/shared/lib/useBackSignal.ts';
 import BrowserNotification from '../lib/browserNotification';
 import useNotificationInstruction from '../model/useNotificationInstruction';
 import ToastNotification from '../lib/toastNotification';
@@ -35,9 +34,6 @@ function AlarmOptionModal({ isOpen, close }: IAlarmOptionModal) {
     AlarmNotification.requestPermission();
     close();
   };
-
-  // 뒤로가기 버튼 인식 후, 알림 설정 저장 후 모달 닫기
-  useBackSignal({ enabled: isOpen, onClose: onClose });
 
   return !isOpen ? null : (
     <Dialog title="알림 설정" onClose={onClose} isOpen={isOpen}>
