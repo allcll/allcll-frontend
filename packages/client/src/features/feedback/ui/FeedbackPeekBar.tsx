@@ -8,7 +8,7 @@ interface IFeedbackPeekBarProps {
 
 export default function FeedbackPeekBar({ message, onOpen, onClose }: IFeedbackPeekBarProps) {
   return (
-    <div className="fixed bottom-4 left-4 right-4 z-overlay">
+    <div className="fixed bottom-4 left-4 right-4 z-floating">
       <div className="rounded-xl bg-white shadow-md border border-gray-100 px-3 py-2">
         <Flex justify="justify-between" align="items-center" className="gap-2">
           <SupportingText className="text-sm">{message}</SupportingText>
