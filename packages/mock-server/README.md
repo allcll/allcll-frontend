@@ -43,7 +43,7 @@ mock-server/
 
 2. 브라우저용 모킹 서버를 설치합니다.
    ```shell
-   npx msw init /packages/<Project_Name>/public
+   npx msw init apps/<Project_Name>/public
    ```
 3. `모킹 서버를 실행할 수 있도록 설정합니다. (모킹 서버가 정상적으로 시작된 후 js가 실행되어야 합니다)
 

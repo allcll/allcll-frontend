@@ -1,0 +1,109 @@
+import { Link, NavLink } from 'react-router-dom';
+import { HeaderContents } from '@/shared/config/navigation.tsx';
+import { LogoGithubIcon, LogoInstagramIcon, LogoKakaoTalkIcon, Heading, Container } from '@allcll/allcll-ui';
+import logoCiUrl from '@/assets/logo/ci-summer.svg';
+import logoNameUrl from '@/assets/logo/logo-name-summer.svg';
+
+interface IFooterItem {
+  title: string;
+  children: { title: string; href?: string }[];
+}
+
+const FooterItems: IFooterItem[] = [
+  {
+    title: '고객지원',
+    children: [
+      { title: 'ALLCLL 소개', href: '/about' },
+      { title: '자주 묻는 질문', href: '/faq' },
+      { title: '오류 및 제안', href: 'https://forms.gle/bCDTVujEHunnvHe88' },
+      { title: 'allcllclla@google.com' },
+    ],
+  },
+];
+
+const OuterLinks = [
+  {
+    icon: <LogoGithubIcon className="w-8 h-8 m-2 text-gray-400" />,
+    title: '올클 github',
+    href: 'https://github.com/allcll',
+  },
+  {
+    icon: <LogoKakaoTalkIcon className="w-8 h-8 m-2 text-gray-400" />,
+    title: '올클 오픈채팅',
+    href: 'https://open.kakao.com/o/g3MztXfh',
+  },
+  {
+    icon: <LogoInstagramIcon className="w-8 h-8 m-2 text-gray-400" />,
+    title: '올클 instagram',
+    href: 'https://www.instagram.com/sejong_allcll',
+  },
+];
+
+function Footer() {
+  return (
+    <footer className="bg-white border-t border-gray-200 text-center text-sm text-gray-500">
+      <Container className="py-12 grid md:grid-cols-3 gap-6 text-center md:text-left">
+        <div className="mx-auto md:mx-0">
+          <div className="flex items-center mb-2 h-fit justify-center md:justify-start">
+            <img src={logoCiUrl} alt="" className="w-6 h-6 mr-2" />
+            <img src={logoNameUrl} alt="" className="h-5 w-fit" />
+          </div>
+
+          <ul className="flex items-center md:-ml-2">
+            {OuterLinks.map(({ icon, title, href }) => (
+              <li key={title}>
+                <a href={href} className="h-fit rounded-md hover:bg-gray-200" aria-label={title} title={title}>
+                  {icon}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <Heading level={3} className="mb-4">
+            서비스
+          </Heading>
+          <ul>
+            {HeaderContents.map(({ title, path, end }) => (
+              <li key={title} className="mb-1">
+                <NavLink to={path} end={end} className="hover:text-primary-500 hover:underline">
+                  {title}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {FooterItems.map((item, index) => (
+          <div className="mb-4" key={index}>
+            <Heading level={3} className="mb-4">
+              {item.title}
+            </Heading>
+            <ul>
+              {item.children.map((child, index) => (
+                <li key={index} className="mb-1">
+                  {!child.href ? (
+                    <p>{child.title}</p>
+                  ) : child.href.startsWith('http') ? (
+                    <a className="hover:text-primary-500 hover:underline" href={child.href} target="_blank">
+                      {child.title}
+                    </a>
+                  ) : (
+                    <Link to={child.href} className="hover:text-primary-500 hover:underline">
+                      {child.title}
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </Container>
+
+      <p className="pb-12">© 2026 ALLCLL. All rights reserved.</p>
+    </footer>
+  );
+}
+
+export default Footer;

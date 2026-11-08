@@ -1,0 +1,205 @@
+// Todo:  widget/wish로 옮기기
+import { useState } from 'react';
+import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
+import { Filters, initialFilters, useWishSearchStore } from '@/features/filtering/model/useFilterStore.ts';
+import { TableSettingsIcon, IconButton, Flex, Chip } from '@allcll/allcll-ui';
+import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
+import FilterOverlay from '@/features/filtering/ui/FilterOverlay.tsx';
+import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';
+import GenericSingleSelectFilter from '@/features/filtering/ui/GenericSingleSelectFilter.tsx';
+import {
+  FilterDomains,
+  getCategories,
+  getCreditOptions,
+  getDayOptions,
+  getGradeOptions,
+} from '@/features/filtering/lib/filterDomains.ts';
+import FilteringButton from '@/features/filtering/ui/button/FilteringButton.tsx';
+import FavoriteFilterButton from '@/features/filtering/ui/button/FavoriteFilterButton.tsx';
+import DepartmentFilter from '@/features/filtering/ui/DepartmentFilter.tsx';
+import FilterDelete from '@/features/filtering/ui/FilterDelete.tsx';
+import usePreSeatGate from '@/entities/seat/model/usePreSeatGate';
+import useWishesPreSeats from '@/entities/subjectAggregate/model/useWishesPreSeats.ts';
+import { useWishesTableStore } from '@/features/wish/model/useWishTableColumnStore.ts';
+import TableTitleSettingModal from '@/shared/ui/TableTitleSettingModal.tsx';
+import { getAllSelectedLabels } from '@/features/filtering/lib/filterUtils.ts';
+import useDepartments from '@/entities/departments/api/useDepartments.ts';
+import { FilterValueType } from '@/features/filtering/model/types.ts';
+
+export interface WishSearchParams {
+  searchInput: string;
+  selectedDepartment: string;
+  isFavorite: boolean;
+}
+
+function WishFilter() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const filters = useWishSearchStore(state => state.filters);
+  const setFilter = useWishSearchStore(state => state.setFilter);
+  const resetFilter = useWishSearchStore(state => state.resetFilters);
+
+  const { keywords, favoriteOnly } = filters;
+
+  const tableTitles = useWishesTableStore(state => state.tableTitles);
+  const setTableTitles = useWishesTableStore(state => state.setTableTitles);
+
+  const { data: subjects } = useWishesPreSeats([]);
+  const categoryOptions = getCategories(subjects ?? [])
+    .sort((a, b) => a.localeCompare(b))
+    .map(cat => cat);
+  const { data: departments } = useDepartments();
+  const allSelectedFilters = getAllSelectedLabels(filters, departments);
+
+  const hasPreSeats = !!(subjects && subjects[0] && 'seat' in subjects[0]);
+
+  const { isPreSeatAvailable } = usePreSeatGate({ hasSeats: hasPreSeats });
+  const isWishesAvailable = subjects && subjects[0] && 'totalCount' in subjects[0];
+
+  const handleDeleteFilter = (filterKey: keyof Filters, value: FilterValueType<keyof Filters>) => {
+    const currentValue = filters[filterKey];
+
+    if (Array.isArray(currentValue)) {
+      setFilter(
+        filterKey,
+        (currentValue as (typeof value)[]).filter(item => item !== value),
+      );
+    } else {
+      setFilter(filterKey, initialFilters[filterKey]);
+    }
+  };
+
+  return (
+    <div className="flex flex-wrap gap-2">
+      {isModalOpen && (
+        <TableTitleSettingModal
+          initialItems={tableTitles}
+          onChange={setTableTitles}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
+
+      <FilterOverlay
+        isOpen={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+        filterStore={useWishSearchStore}
+        showSeatRange={isPreSeatAvailable}
+      />
+
+      <SearchBox
+        type="text"
+        placeholder="과목명, 교수명, 학수번호 검색"
+        value={keywords}
+        onDelete={() => setFilter('keywords', '')}
+        onChange={event => setFilter('keywords', event.target.value)}
+        className="w-full"
+      />
+
+      <div className="flex items-center flex-wrap gap-2">
+        <div className="hidden md:flex flex-wrap gap-2">
+          <DepartmentFilter setFilter={setFilter} selectedValue={filters.department ?? ''} />
+
+          {isWishesAvailable && (
+            <GenericSingleSelectFilter
+              filterKey="wishRange"
+              options={FilterDomains.wishRange}
+              selectedValue={filters.wishRange ?? null}
+              setFilter={setFilter}
+              ItemComponent={Chip}
+            />
+          )}
+
+          {isPreSeatAvailable && (
+            <GenericSingleSelectFilter
+              filterKey="seatRange"
+              options={FilterDomains.seatRange}
+              selectedValue={filters.seatRange ?? null}
+              setFilter={setFilter}
+              ItemComponent={Chip}
+            />
+          )}
+
+          <DayFilter
+            options={getDayOptions(subjects ?? [])}
+            days={filters.days ?? []}
+            time={filters.time}
+            dayTimes={filters.dayTimes}
+            setFilter={setFilter}
+          />
+
+          <GenericMultiSelectFilter
+            filterKey="credits"
+            options={getCreditOptions(subjects ?? [])}
+            selectedValues={filters.credits ?? []}
+            setFilter={setFilter}
+          />
+
+          <GenericMultiSelectFilter
+            filterKey="grades"
+            options={getGradeOptions(subjects ?? [])}
+            selectedValues={filters.grades ?? []}
+            setFilter={setFilter}
+          />
+
+          {filters.classroom?.length > 0 && (
+            <GenericMultiSelectFilter
+              filterKey="classroom"
+              options={FilterDomains.classRoom}
+              selectedValues={filters.classroom ?? []}
+              setFilter={setFilter}
+              className="min-w-max"
+            />
+          )}
+
+          {filters.note?.length > 0 && (
+            <GenericMultiSelectFilter
+              filterKey="note"
+              options={FilterDomains.remark}
+              selectedValues={filters.note ?? []}
+              setFilter={setFilter}
+            />
+          )}
+
+          {filters.categories?.length > 0 && (
+            <GenericMultiSelectFilter
+              filterKey="categories"
+              options={categoryOptions}
+              selectedValues={(filters.categories as string[]) ?? []}
+              setFilter={setFilter}
+              className="min-w-max"
+            />
+          )}
+        </div>
+        <FavoriteFilterButton favoriteOnly={favoriteOnly} setFilter={setFilter} />
+
+        <IconButton
+          size="medium"
+          variant="contain"
+          label="테이블 수정"
+          icon={<TableSettingsIcon />}
+          onClick={() => setIsModalOpen(true)}
+        />
+
+        <FilteringButton handleOpenFilter={() => setIsFilterOpen(true)} />
+        <FilterDelete filters={filters} resetFilter={resetFilter} />
+
+        <Flex wrap gap={2} className="w-fit md:hidden">
+          {allSelectedFilters.map(filter => {
+            return (
+              <Chip
+                key={`${filter.filterKey}-${filter.values}`}
+                variant="cancel"
+                label={filter.label}
+                selected={true}
+                onClick={() => handleDeleteFilter(filter.filterKey, filter.values)}
+              />
+            );
+          })}
+        </Flex>
+      </div>
+    </div>
+  );
+}
+
+export default WishFilter;
