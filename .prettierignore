@@ -1,2 +1,3 @@
 /public
+apps/*/public
 packages/*/public

@@ -1,0 +1,31 @@
+import { Helmet } from 'react-helmet';
+import { Outlet } from 'react-router-dom';
+import Header from '@/widgets/header/ui/Header.tsx';
+import BannerNotification from '@/features/notification/ui/BannerNotification.tsx';
+import ToastNotification from '@/features/notification/ui/ToastNotification.tsx';
+import Footer from '@/shared/ui/Footer.tsx';
+import useGlobalEffect from '@/app/lib/useGlobalEffect.ts';
+import FeedbackFab from '@/features/feedback/ui/FeedbackFab';
+
+function MainLayout() {
+  useGlobalEffect();
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Helmet>
+        <title>올클(ALLCLL) | 세종대 수강신청 도우미</title>
+      </Helmet>
+
+      <ToastNotification />
+      <Header />
+      <BannerNotification />
+      <main>
+        <Outlet />
+      </main>
+      <Footer />
+      <FeedbackFab />
+    </div>
+  );
+}
+
+export default MainLayout;
