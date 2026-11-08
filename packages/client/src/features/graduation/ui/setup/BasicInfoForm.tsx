@@ -118,8 +118,12 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
                 <span className="text-primary-500">26학번의 계열 단위</span>는 특정한 졸업요건이 존재하지 않아, 학과를
                 선택해주셔야 합니다.
               </SupportingText>
-              <Label required>주전공 학과</Label>
+              <Label htmlFor="basic-info-primary-dept" id="basic-info-primary-dept-label" required>
+                주전공 학과
+              </Label>
               <SearchableSelect
+                id="basic-info-primary-dept"
+                aria-labelledby="basic-info-primary-dept-label"
                 className="w-full"
                 options={departmentOptions}
                 value={primaryDeptCode}
@@ -135,8 +139,12 @@ const BasicInfoForm = ({ nextStep, prevStep, isDepartmentNotFound }: BasicInfoFo
           {/* 복수전공 학과 검색 (조건부 렌더링) */}
           {majorType === 'DOUBLE' && (
             <Flex direction="column" gap={1.5}>
-              <Label required>복수전공 학과</Label>
+              <Label htmlFor="basic-info-double-dept" id="basic-info-double-dept-label" required>
+                복수전공 학과
+              </Label>
               <SearchableSelect
+                id="basic-info-double-dept"
+                aria-labelledby="basic-info-double-dept-label"
                 className="w-full"
                 options={departmentOptions}
                 value={doubleMajorCode}

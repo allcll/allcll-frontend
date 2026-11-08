@@ -55,8 +55,12 @@ function EditProfileModal({ isOpen, onClose, user }: EditProfileModalProps) {
           </Flex>
 
           <Flex direction="column" gap={1.5}>
-            <Label>학과</Label>
+            <Label htmlFor="edit-profile-dept" id="edit-profile-dept-label">
+              학과
+            </Label>
             <SearchableSelect
+              id="edit-profile-dept"
+              aria-labelledby="edit-profile-dept-label"
               className="w-full"
               value={deptNm}
               options={deptOptions}
@@ -69,8 +73,12 @@ function EditProfileModal({ isOpen, onClose, user }: EditProfileModalProps) {
 
           {majorType === 'DOUBLE' && (
             <Flex direction="column" gap={1.5}>
-              <Label>복수전공 학과</Label>
+              <Label htmlFor="edit-profile-double-dept" id="edit-profile-double-dept-label">
+                복수전공 학과
+              </Label>
               <SearchableSelect
+                id="edit-profile-double-dept"
+                aria-labelledby="edit-profile-double-dept-label"
                 className="w-full"
                 value={doubleDeptNm}
                 placeholder="학과를 선택하세요"

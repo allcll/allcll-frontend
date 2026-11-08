@@ -27,11 +27,14 @@ function SelectTime({ timeRange, onChange, day }: Readonly<ISelectTime>) {
     onChange(key, value);
   };
 
+  const namePrefix = day ? `${day}요일 ` : '';
+
   return (
     <div className="w-full">
       <div className="relative w-full flex items-center gap-2 flex-wrap">
         <Select
           name="startHour"
+          aria-label={`${namePrefix}시작 시`}
           value={timeRange.startHour ?? HOURS[8]}
           onChange={e => handleChangeTime('startHour', e.target.value)}
         >
@@ -43,6 +46,7 @@ function SelectTime({ timeRange, onChange, day }: Readonly<ISelectTime>) {
         </Select>
         <Select
           name="startMinute"
+          aria-label={`${namePrefix}시작 분`}
           value={timeRange.startMinute ?? MINUTES[0]}
           onChange={e => handleChangeTime('startMinute', e.target.value)}
         >
@@ -57,6 +61,7 @@ function SelectTime({ timeRange, onChange, day }: Readonly<ISelectTime>) {
 
         <Select
           name="endHour"
+          aria-label={`${namePrefix}끝 시`}
           value={timeRange.endHour ?? HOURS[9]}
           onChange={e => handleChangeTime('endHour', e.target.value)}
         >
@@ -68,6 +73,7 @@ function SelectTime({ timeRange, onChange, day }: Readonly<ISelectTime>) {
         </Select>
         <Select
           name="endMinute"
+          aria-label={`${namePrefix}끝 분`}
           value={timeRange.endMinute ?? MINUTES[0]}
           onChange={e => handleChangeTime('endMinute', e.target.value)}
         >

@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import {
   AllcllFaceIcon,
   CheckmarkIcon,
@@ -41,6 +42,8 @@ export function FeedbackFields({
   onCategoryChange,
   error,
 }: IFeedbackFieldsProps) {
+  const textareaTitleId = useId();
+
   return (
     <>
       {onCategoryChange && <CategoryChips category={category} onChange={onCategoryChange} />}
@@ -52,10 +55,11 @@ export function FeedbackFields({
         <RateInputs rate={3} currentRate={rate} label={titles.rateLabels[2]} onClick={() => setRate(3)} />
       </Flex>
 
-      <Heading level={4} className="mb-2">
+      <Heading level={4} id={textareaTitleId} className="mb-2">
         {titles.textareaTitle}
       </Heading>
       <Textarea
+        aria-labelledby={textareaTitleId}
         placeholder={titles.textareaPlaceholder}
         name="detail"
         maxLength={DETAIL_MAX_LENGTH}

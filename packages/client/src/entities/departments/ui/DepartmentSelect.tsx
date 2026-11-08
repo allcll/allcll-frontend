@@ -29,10 +29,12 @@ function DepartmentSelect({
   ];
 
   const customId = id ?? 'department-filter';
+  const labelId = `${customId}-label`;
 
   const select = (
     <SearchableSelect
       id={customId}
+      aria-labelledby={labelId}
       className={className || 'w-full'}
       options={options}
       value={value}
@@ -46,7 +48,9 @@ function DepartmentSelect({
   if (showLabel) {
     return (
       <Flex direction="column" gap={2}>
-        <Label htmlFor={customId}>학과</Label>
+        <Label htmlFor={customId} id={labelId}>
+          학과
+        </Label>
         {select}
       </Flex>
     );
@@ -54,7 +58,7 @@ function DepartmentSelect({
 
   return (
     <>
-      <Label htmlFor={customId} hidden>
+      <Label htmlFor={customId} id={labelId} hidden>
         학과
       </Label>
       {select}
