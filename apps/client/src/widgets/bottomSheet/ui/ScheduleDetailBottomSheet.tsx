@@ -16,7 +16,7 @@ function ScheduleInfoBottomSheet({ isOpen }: { isOpen: boolean }) {
   const closeOverlay = useOverlayStore(state => state.closeOverlay);
   const { data: subjects } = useSubject(semester);
   const { isDeleteConfirming, requestDeleteConfirmation, cancelDeleteConfirmation, confirmDelete } =
-    useDeleteConfirmation(deleteSchedule);
+    useDeleteConfirmation(deleteSchedule, isOpen);
 
   const findSubjectById = subjects?.find(subject => subject.subjectId === schedule.subjectId);
 

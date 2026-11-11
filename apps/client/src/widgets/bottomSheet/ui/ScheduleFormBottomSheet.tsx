@@ -13,7 +13,7 @@ function ScheduleFormBottomSheet({ isOpen }: { isOpen: boolean }) {
 
   const title = modalActionType === ScheduleMutateType.CREATE ? '생성' : '수정';
   const { isDeleteConfirming, requestDeleteConfirmation, cancelDeleteConfirmation, confirmDelete } =
-    useDeleteConfirmation(deleteSchedule);
+    useDeleteConfirmation(deleteSchedule, isOpen);
 
   const handleSubmit = (e: FormEvent) => {
     saveSchedule(e);
