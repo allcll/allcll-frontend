@@ -44,10 +44,10 @@ function MainBanner() {
           </SupportingText>
 
           <div className="flex flex-col md:flex-row gap-4 mt-4">
-            <Button variant="primary" size="medium" asChild>
+            <Button variant="solid" size="medium" asChild>
               <Link to="/live">전체 학년 여석 확인하기</Link>
             </Button>
-            <Button variant="outlined" size="medium" asChild>
+            <Button variant="outlined" color="gray" size="medium" asChild>
               <Link to="/simulation">수강 신청 연습하기</Link>
             </Button>
           </div>

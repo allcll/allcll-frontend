@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, WarningIcon } from '@allcll/allcll-ui';
+import { Button, Flex, WarningIcon, SupportingText } from '@allcll/allcll-ui';
 import type { ILoginErrorView } from '../lib/loginErrors.ts';
 
 interface ILoginErrorNoticeProps {
@@ -10,17 +10,16 @@ interface ILoginErrorNoticeProps {
 // 글자는 대비 4.5, 아이콘은 3 을 넘는 단계를 골랐습니다.
 const TONE_STYLE = {
   error: {
-    box: 'bg-secondary-50 border-secondary-200',
-    icon: 'text-secondary-700',
-    // Heading 이 붙이는 text-text-200 이 CSS 에서 뒤에 있어 ! 로 덮습니다.
-    title: '!text-secondary-700',
-    button: 'danger',
+    box: 'bg-danger-50 border-danger-200',
+    icon: 'text-danger-700',
+    title: 'text-danger-700',
+    buttonColor: 'danger',
   },
   neutral: {
     box: 'bg-gray-50 border-gray-200',
     icon: 'text-gray-700',
-    title: '',
-    button: 'primary',
+    title: 'text-text-200',
+    buttonColor: 'primary',
   },
 } as const;
 
@@ -30,25 +29,20 @@ function LoginErrorNotice({ view, descriptionId }: ILoginErrorNoticeProps) {
 
   // role="alert" 는 LoginForm 의 상시 컨테이너가 들고 있습니다.
   return (
-    <Flex align="items-start" gap="gap-2" className={`rounded-md border p-3 ${tone.box}`}>
+    <Flex align="start" gap={2} className={`rounded-md border p-3 ${tone.box}`}>
       {/* 뜻은 문구가 전달하므로 읽지 않습니다. */}
       <WarningIcon aria-hidden="true" className={`w-4 h-4 mt-0.5 shrink-0 ${tone.icon}`} />
 
-      <Flex direction="flex-col" gap="gap-1" className="min-w-0 flex-1">
-        {/* 카드에 이미 h2 가 있어 문서 개요를 건드리지 않게 p 로 렌더합니다. */}
-        <Heading level={4} as="p" className={`break-keep ${tone.title}`}>
-          {view.title}
-        </Heading>
+      <Flex direction="column" gap={1} className="min-w-0 flex-1">
+        <p className={`text-sm font-semibold break-keep ${tone.title}`}>{view.title}</p>
 
-        {/* SupportingText 의 gray-500 은 대비가 4.4 라 gray-600 을 씁니다. */}
-        <p id={descriptionId} className="text-sm text-gray-600 leading-relaxed break-keep">
+        <SupportingText id={descriptionId} className="break-keep">
           {view.description}
-        </p>
+        </SupportingText>
 
-        {/* Button 에 className 을 넘기면 variant 스타일이 지워져 여백은 바깥에서 줍니다. */}
         {view.action && (
           <div className="mt-2">
-            <Button asChild variant={tone.button} size="small">
+            <Button asChild variant="solid" color={tone.buttonColor} size="small">
               <a
                 href={view.action.href}
                 target="_blank"

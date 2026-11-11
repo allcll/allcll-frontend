@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Pretendard';
+  src: url('../../../apps/client/public/font/woff2/Pretendard-Regular.subset.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('../../../apps/client/public/font/woff2/Pretendard-SemiBold.subset.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('../../../apps/client/public/font/woff2/Pretendard-Bold.subset.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+body {
+  font-family: 'Pretendard', system-ui, sans-serif;
+}

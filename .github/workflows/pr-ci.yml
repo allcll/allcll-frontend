@@ -78,9 +78,38 @@ jobs:
           name: admin-dist
           path: apps/admin/dist
 
+  build-storybook:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm i --frozen-lockfile
+
+      - name: Build Storybook for Preview
+        run: pnpm -F @allcll/allcll-ui run build-storybook
+
+      - name: Upload Storybook Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-dist
+          path: packages/allcll-ui/storybook-static
+
   deploy-preview:
     if: github.event.action != 'closed'
-    needs: [build-client, build-admin]
+    needs: [build-client, build-admin, build-storybook]
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -96,6 +125,12 @@ jobs:
         with:
           name: admin-dist
           path: admin-dist
+
+      - name: Download Storybook Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: storybook-dist
+          path: storybook-dist
 
       - name: Deploy Client preview to server
         uses: appleboy/scp-action@v1
@@ -119,6 +154,19 @@ jobs:
           target: ${{ secrets.PWD }}/admins/pr-${{ github.event.pull_request.number }}
           strip_components: 1
 
+      - name: Deploy Storybook preview to server
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.DEV_SERVER_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          port: 22
+          source: storybook-dist/*
+          target: ${{ secrets.PWD }}/storybooks/pr-${{ github.event.pull_request.number }}
+          strip_components: 1
+          # 빌드마다 해시가 붙은 파일 이름이 바뀌어 이전 파일이 쌓이므로 지우고 올림
+          rm: true
+
       - name: Reload Nginx
         uses: appleboy/ssh-action@v1
         with:
@@ -140,10 +188,12 @@ jobs:
             const admin_base_url = process.env.ADMIN_PREVIEW_BASE_URL || 'https://dev-admin.allcll.kr';
             const client_preview_url = `${client_base_url}/pr-${pr_number}/`;
             const admin_preview_url = `${admin_base_url}/pr-${pr_number}/`;
+            const storybook_preview_url = `${client_base_url}/storybook/pr-${pr_number}/`;
             const body = [
               '## 🚀 Preview Deployment',
               `- **Client:** ${client_preview_url}`,
               `- **Admin:** ${admin_preview_url}`,
+              `- **Storybook:** ${storybook_preview_url}`,
               '> This preview is automatically updated on each push.',
             ].join('\n');
 
@@ -187,5 +237,6 @@ jobs:
             if [[ "$PR_NUMBER" =~ ^[0-9]+$ ]]; then
               sudo rm -rf "${{ secrets.PWD }}/clients/pr-${PR_NUMBER}"
               sudo rm -rf "${{ secrets.PWD }}/admins/pr-${PR_NUMBER}"
+              sudo rm -rf "${{ secrets.PWD }}/storybooks/pr-${PR_NUMBER}"
               sudo systemctl reload nginx
             fi

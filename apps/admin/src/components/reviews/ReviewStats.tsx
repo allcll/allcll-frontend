@@ -23,11 +23,11 @@ function ReviewStats({ reviews }: ReviewStatsProps) {
   const roundedAvg = Math.round(avg * 10) / 10;
 
   return (
-    <Flex gap="gap-4">
+    <Flex gap={4}>
       <Card className="flex-1">
-        <Flex direction="flex-col" gap="gap-1">
+        <Flex direction="column" gap={1}>
           <SupportingText>전체 후기</SupportingText>
-          <Flex align="items-baseline" gap="gap-1">
+          <Flex align="baseline" gap={1}>
             <Heading level={2}>{total}</Heading>
             <SupportingText>건</SupportingText>
           </Flex>
@@ -35,10 +35,10 @@ function ReviewStats({ reviews }: ReviewStatsProps) {
       </Card>
 
       <Card className="flex-1">
-        <Flex direction="flex-col" gap="gap-1">
+        <Flex direction="column" gap={1}>
           <SupportingText>평균 평점</SupportingText>
           <Heading level={2}>{roundedAvg}</Heading>
-          <Flex gap="gap-1" className="mt-1">
+          <Flex gap={1} className="mt-1">
             {Array.from({ length: MAX_RATE }, (_, i) => (
               <RatingIcon key={i} fill={avg - i} />
             ))}

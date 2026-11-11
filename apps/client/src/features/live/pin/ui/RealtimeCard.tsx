@@ -2,7 +2,7 @@ import { CloseIcon, Badge, Card, Flex, Heading, IconButton } from '@allcll/allcl
 import useTick from '@/features/live/board/lib/useTick.ts';
 import { useRemovePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
 import { getTimeDiffString } from '@/shared/lib/stringFormats.ts';
-import { getSeatVariant } from '@/shared/config/colors.ts';
+import { getSeatBadgeColor } from '@/shared/config/colors.ts';
 import { Subject, Wishes } from '@/shared/model/types.ts';
 
 interface IPinCard {
@@ -21,12 +21,13 @@ function RealtimeCard({ subject, seats, queryTime, disableSeat = false }: Readon
 
   return (
     <Card variant="filled">
-      <Flex justify="justify-between">
+      <Flex justify="between">
         <Heading level={3}>{subject.subjectName}</Heading>
         <IconButton
+          size="small"
           variant="plain"
           aria-label="알림 과목 제거"
-          icon={<CloseIcon className="text-gray-400 w-3 h-3" />}
+          icon={<CloseIcon className="text-gray-400" />}
           onClick={handlePin}
         />
       </Flex>
@@ -37,7 +38,7 @@ function RealtimeCard({ subject, seats, queryTime, disableSeat = false }: Readon
         </p>
       </div>
       {!disableSeat && (
-        <Flex justify="justify-between">
+        <Flex justify="between">
           <SeatBadge seats={seats} />
           <QueryTimeComponent queryTime={queryTime} />
         </Flex>
@@ -56,10 +57,10 @@ function QueryTimeComponent({ queryTime }: Readonly<{ queryTime?: string }>) {
 
 function SeatBadge({ seats }: Readonly<{ seats: number }>) {
   const isValid = seats !== null && seats !== undefined && seats >= 0;
-  const variant = getSeatVariant(seats);
+  const color = getSeatBadgeColor(seats);
   const value = isValid ? seats : '???';
 
-  return <Badge variant={variant}>여석: {value}</Badge>;
+  return <Badge color={color}>여석: {value}</Badge>;
 }
 
 export default RealtimeCard;

@@ -1,4 +1,14 @@
-import { AllcllFaceIcon, CheckmarkIcon, Button, Chip, Flex, Heading, SupportingText } from '@allcll/allcll-ui';
+import { useId } from 'react';
+import {
+  AllcllFaceIcon,
+  CheckmarkIcon,
+  Button,
+  Chip,
+  Flex,
+  Heading,
+  SupportingText,
+  Textarea,
+} from '@allcll/allcll-ui';
 import { DETAIL_MAX_LENGTH } from '@/features/feedback/api/feedbackApi';
 import type { FeedbackCategory } from '@/features/feedback/api/feedbackApi';
 import type { FeedbackTitles } from '../lib/getFeedbackTitle';
@@ -32,22 +42,24 @@ export function FeedbackFields({
   onCategoryChange,
   error,
 }: IFeedbackFieldsProps) {
+  const textareaTitleId = useId();
+
   return (
     <>
       {onCategoryChange && <CategoryChips category={category} onChange={onCategoryChange} />}
 
       <Heading level={4}>{titles.radioTitle}</Heading>
-      <Flex justify="justify-center" className="gap-3 mb-3" role="radiogroup" aria-label={titles.radioTitle}>
+      <Flex justify="center" gap={3} className="mb-3" role="radiogroup" aria-label={titles.radioTitle}>
         <RateInputs rate={1} currentRate={rate} label={titles.rateLabels[0]} onClick={() => setRate(1)} />
         <RateInputs rate={2} currentRate={rate} label={titles.rateLabels[1]} onClick={() => setRate(2)} />
         <RateInputs rate={3} currentRate={rate} label={titles.rateLabels[2]} onClick={() => setRate(3)} />
       </Flex>
 
-      <Heading level={4} className="block text-sm text-gray-600 mb-2">
+      <Heading level={4} id={textareaTitleId} className="mb-2">
         {titles.textareaTitle}
       </Heading>
-      <textarea
-        className="w-full min-h-20 resize-y text-sm border rounded-md border-gray-400 py-2 px-3 focus:outline-none focus:ring-0 focus:border-primary-500"
+      <Textarea
+        aria-labelledby={textareaTitleId}
         placeholder={titles.textareaPlaceholder}
         name="detail"
         maxLength={DETAIL_MAX_LENGTH}
@@ -56,7 +68,7 @@ export function FeedbackFields({
       />
 
       {detail.length > 0 && (
-        <Flex justify="justify-end">
+        <Flex justify="end">
           <span className="text-xs text-gray-400 tabular-nums">
             {detail.length} / {DETAIL_MAX_LENGTH}
           </span>
@@ -64,7 +76,7 @@ export function FeedbackFields({
       )}
 
       {error && (
-        <p className="text-red-600 text-sm mb-3" aria-live="assertive">
+        <p className="text-danger-600 text-sm mb-3" aria-live="assertive">
           {error}
         </p>
       )}
@@ -76,12 +88,19 @@ export function FeedbackActions({ isPending, canSubmit, onSubmit, onDontShowAgai
   return (
     <>
       {onDontShowAgain && (
-        <Button variant="text" textColor="primary" size="medium" onClick={onDontShowAgain} disabled={isPending}>
+        <Button
+          variant="text"
+          color="gray"
+          size="medium"
+          className="mr-auto"
+          onClick={onDontShowAgain}
+          disabled={isPending}
+        >
           다시 보지 않기
         </Button>
       )}
-      <Button variant="primary" size="medium" onClick={onSubmit} disabled={isPending || !canSubmit}>
-        {isPending ? '제출중...' : '제출하기'}
+      <Button variant="solid" size="medium" onClick={onSubmit} disabled={isPending || !canSubmit}>
+        {isPending ? '제출 중...' : '제출하기'}
       </Button>
     </>
   );
@@ -89,12 +108,8 @@ export function FeedbackActions({ isPending, canSubmit, onSubmit, onDontShowAgai
 
 export function FeedbackSuccess() {
   return (
-    <Flex direction="flex-col" justify="justify-center" align="items-center" className="py-4">
-      <Flex
-        justify="justify-center"
-        align="items-center"
-        className="w-14 h-14 rounded-full bg-emerald-100 mb-3 animate-pulse"
-      >
+    <Flex direction="column" justify="center" align="center" className="py-4">
+      <Flex justify="center" align="center" className="w-14 h-14 rounded-full bg-emerald-100 mb-3 animate-pulse">
         <CheckmarkIcon className="w-6 h-6 text-emerald-600" />
       </Flex>
       <SupportingText className="text-primary-500">좋은 의견 주셔서 감사합니다</SupportingText>
@@ -110,10 +125,10 @@ interface ICategoryChipsProps {
 function CategoryChips({ category, onChange }: ICategoryChipsProps) {
   return (
     <>
-      <Heading level={4} className="block text-sm text-gray-600 mb-2">
+      <Heading level={4} className="mb-2">
         어떤 서비스에 대한 의견인가요? (선택)
       </Heading>
-      <Flex gap="gap-2" className="flex-wrap mb-4">
+      <Flex wrap gap={2} className="mb-4">
         {SELECTABLE_FEEDBACK_CATEGORIES.map(({ category: value, label }) => (
           <Chip
             key={value}
@@ -136,9 +151,9 @@ interface IRateButtonProps {
 
 function RateInputs({ rate, currentRate, label, onClick }: IRateButtonProps) {
   const faces = {
-    1: <AllcllFaceIcon mood="sad" className="w-16 h-16" />,
-    2: <AllcllFaceIcon mood="normal" className="w-16 h-16" />,
-    3: <AllcllFaceIcon mood="smile" className="w-16 h-16" />,
+    1: <AllcllFaceIcon mood="sad" className="w-12 h-12" />,
+    2: <AllcllFaceIcon mood="normal" className="w-12 h-12" />,
+    3: <AllcllFaceIcon mood="smile" className="w-12 h-12" />,
   };
 
   return (
@@ -148,7 +163,7 @@ function RateInputs({ rate, currentRate, label, onClick }: IRateButtonProps) {
       aria-checked={currentRate === rate}
       aria-label={label}
       className={`flex flex-col items-center gap-2 p-2 rounded-xl transition-colors duration-200 font-bold
-        ${currentRate === rate ? 'text-primary-500' : 'text-gray-300 hover:text-blue-300'}`}
+        ${currentRate === rate ? 'text-primary-500' : 'text-gray-300 hover:text-primary-300'}`}
       onClick={onClick}
     >
       {faces[rate]}

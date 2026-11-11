@@ -1,4 +1,5 @@
 import React from 'react';
+import { Container } from '@allcll/allcll-ui';
 
 interface SectionProps {
   bgColor?: string;
@@ -11,7 +12,7 @@ function Section({ bgColor, className, children }: Readonly<SectionProps>) {
   const additionalClass = className ? ` ${className}` : '';
   return (
     <section className={additionalStyle}>
-      <div className={`mx-auto max-w-7xl px-4 md:px-8 py-10 ${additionalClass}`}>{children}</div>
+      <Container className={`py-10 ${additionalClass}`}>{children}</Container>
     </section>
   );
 }

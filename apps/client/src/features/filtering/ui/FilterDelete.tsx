@@ -8,7 +8,7 @@ interface FilterDelete {
 }
 
 function FilterDelete({ filters, resetFilter }: FilterDelete) {
-  const Keys = Object.keys(filters) as (keyof Filters)[];
+  const Keys = (Object.keys(filters) as (keyof Filters)[]).filter(key => key !== 'keywords');
   const isFiltered = Keys.some(key => !isFilterEmpty(key, filters[key]));
 
   if (!isFiltered) return null;
@@ -16,9 +16,9 @@ function FilterDelete({ filters, resetFilter }: FilterDelete) {
   return (
     <Chip
       label={
-        <Flex align="items-center" gap="gap-1">
+        <Flex align="center" gap={1}>
+          <FilterRemoveIcon className="w-4 h-4" />
           <span>필터 제거</span>
-          <FilterRemoveIcon className="w-4 h-4 text-blue-500" />
         </Flex>
       }
       selected={true}

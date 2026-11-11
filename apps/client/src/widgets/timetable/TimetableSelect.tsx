@@ -2,39 +2,26 @@ import { useState } from 'react';
 import { useDeleteTimetable } from '@/features/timetable/model/useTimetableMutations.ts';
 import type { TimetableType } from '@/entities/timetable/api/useTimetableSchedules.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
-import { Button, Checkbox, Flex, Popover, SupportingText, usePopoverContext } from '@allcll/allcll-ui';
-import ConfirmDialog from '@/shared/ui/ConfirmDialog.tsx';
+import { AddIcon, Button, Checkbox, Flex, Popover, SupportingText } from '@allcll/allcll-ui';
+import { ConfirmDialog } from '@allcll/common';
 import {
   showTimetableApiErrorToast,
   showTimetableApiSuccessToast,
 } from '@/features/timetable/lib/showTimetableApiErrorToast';
 
 function TimetableActions({ onEdit, onDelete }: { onEdit: () => void; onDelete: () => void }) {
-  const { close } = usePopoverContext();
-
   return (
-    <Flex gap="gap-4">
-      <Button
-        variant="text"
-        size="small"
-        onClick={() => {
-          close();
-          onEdit();
-        }}
-      >
-        수정
-      </Button>
-      <Button
-        variant="text"
-        size="small"
-        textColor="secondary"
-        onClick={() => {
-          close();
-          onDelete();
-        }}
-      >
-        삭제
-      </Button>
+    <Flex gap={4}>
+      <Popover.Close asChild>
+        <Button variant="text" size="small" onClick={onEdit}>
+          수정
+        </Button>
+      </Popover.Close>
+      <Popover.Close asChild>
+        <Button variant="text" size="small" color="danger" onClick={onDelete}>
+          삭제
+        </Button>
+      </Popover.Close>
     </Flex>
   );
 }
@@ -90,7 +77,7 @@ const TimetableSelect = ({ setIsOpenModal, openCreateModal, timetables, currentT
 
   if (!currentTimetable && timetables.length === 0) {
     return (
-      <Button variant="primary" size="medium" onClick={openCreateModal}>
+      <Button variant="solid" size="medium" onClick={openCreateModal}>
         시간표 만들기
       </Button>
     );
@@ -102,10 +89,10 @@ const TimetableSelect = ({ setIsOpenModal, openCreateModal, timetables, currentT
         <Popover.Trigger label={currentTimetable ? currentTimetable.timeTableName : '새 시간표'} />
 
         <Popover.Content>
-          <Flex direction="flex-col" gap="gap-4">
+          <Flex direction="column" gap={4}>
             {timetables.length === 0 && <SupportingText>새로운 시간표를 추가해주세요.</SupportingText>}
             {timetables.map(option => (
-              <Flex gap="gap-4" key={option.timeTableName + option.timeTableId}>
+              <Flex gap={4} key={option.timeTableName + option.timeTableId}>
                 <Checkbox
                   key={option.timeTableId}
                   label={option.timeTableName}
@@ -122,8 +109,9 @@ const TimetableSelect = ({ setIsOpenModal, openCreateModal, timetables, currentT
             ))}
 
             {currentTimetable && (
-              <Button variant="text" size="small" textColor="gray" onClick={openCreateModal}>
-                + 시간표 추가하기
+              <Button variant="text" size="small" color="gray" onClick={openCreateModal}>
+                <AddIcon />
+                시간표 추가하기
               </Button>
             )}
           </Flex>

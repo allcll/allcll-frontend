@@ -2,16 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 
 const PAGE_SIZE = 45;
 
-type UseInfiniteScrollMode = 'ref' | 'selector';
-
-function useInfScroll(
-  data: readonly unknown[],
-  mode: UseInfiniteScrollMode = 'ref',
-  selector: string = '.load-more-trigger',
-) {
+function useInfScroll<T extends HTMLElement = HTMLDivElement>(data: readonly unknown[]) {
   const [visibleRows, setVisibleRows] = useState(PAGE_SIZE);
-  const loadMoreRef = useRef<HTMLDivElement | null>(null);
-  const observerRef = useRef<IntersectionObserver | null>(null);
+  const loadMoreRef = useRef<T | null>(null);
 
   useEffect(() => {
     setVisibleRows(PAGE_SIZE);
@@ -29,27 +22,20 @@ function useInfScroll(
           }
         });
       },
-      { root: null, rootMargin: '0px', threshold: 0.5 },
+      // 끝에 닿은 뒤 불러오면 페이지 길이가 잠깐 짧아져 sticky 요소가 밀려 올라가므로 미리 불러옴
+      { root: null, rootMargin: '0px 0px 800px 0px', threshold: 0.5 },
     );
 
-    observerRef.current = observer;
-
-    if (mode === 'ref' && loadMoreRef.current) {
+    if (loadMoreRef.current) {
       observer.observe(loadMoreRef.current);
-    } else if (mode === 'selector') {
-      const targets = document.querySelectorAll(selector);
-      targets.forEach(target => observer.observe(target));
     }
 
     return () => {
       observer.disconnect();
     };
-  }, [data, mode, selector]);
+  }, [data]);
 
-  return {
-    visibleRows,
-    ...(mode === 'ref' ? { loadMoreRef } : {}),
-  };
+  return { visibleRows, loadMoreRef };
 }
 
 export default useInfScroll;

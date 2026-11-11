@@ -10,11 +10,14 @@ interface IUseBannerNotification {
   closeBanner: () => void;
 }
 
-const useBannerNotification = create<IUseBannerNotification>(set => ({
+const useBannerNotification = create<IUseBannerNotification>((set, get) => ({
   banner: null,
   onClose: undefined,
   setBanner: (banner, onClose) => set({ banner, onClose }),
-  closeBanner: () => set({ banner: null }),
+  closeBanner: () => {
+    get().onClose?.();
+    set({ banner: null, onClose: undefined });
+  },
 }));
 
 export default useBannerNotification;

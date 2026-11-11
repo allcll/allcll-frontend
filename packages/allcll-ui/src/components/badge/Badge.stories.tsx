@@ -1,122 +1,96 @@
+import { Fragment } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import Badge from './Badge';
 
-type BadgeProps = React.ComponentProps<typeof Badge>;
+const COLORS = ['success', 'warning', 'danger', 'primary', 'gray'] as const;
+const VARIANTS = ['filled', 'outlined'] as const;
+const SIZES = ['small', 'medium'] as const;
 
 const meta = {
-  title: 'AllcllUI/Badge',
+  title: 'Display/Badge',
   component: Badge,
   parameters: {
     layout: 'centered',
-  },
-  argTypes: {
-    variant: {
-      control: { type: 'radio' },
-      options: ['success', 'warning', 'danger', 'default', 'primary'],
+    docs: {
+      description: {
+        component: '상태나 수치를 짧게 보여주는 작은 표시입니다. 눌러야 하는 경우에는 Chip을 사용합니다.',
+      },
     },
-    appearance: {
-      control: { type: 'radio' },
-      options: ['filled', 'outline'],
-    },
-    size: {
-      control: { type: 'radio' },
-      options: ['default', 'small'],
-    },
-    children: { control: { type: 'text' } },
-  },
-  args: {
-    variant: 'success',
-    appearance: 'filled',
-    size: 'default',
-    children: '여석 100',
   },
   tags: ['autodocs'],
+  argTypes: {
+    color: { description: '색', control: 'radio', options: COLORS },
+    variant: { description: '모양', control: 'radio', options: VARIANTS },
+    size: { description: '크기', control: 'radio', options: SIZES },
+    children: { description: '표시할 내용', control: 'text' },
+  },
+  args: {
+    color: 'success',
+    variant: 'filled',
+    size: 'medium',
+    children: '여석 100',
+  },
 } satisfies Meta<typeof Badge>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+export const Playground: Story = {};
+
 export const Variants: Story = {
-  render: (args) => (
-    <ul className="flex flex-wrap gap-5">
-      <li className="flex flex-col items-center gap-1">
-        <span className="text-xs text-gray-500">success</span>
-        <Badge {...args} variant="success" />
-      </li>
-      <li className="flex flex-col items-center gap-1">
-        <span className="text-xs text-gray-500">warning</span>
-        <Badge {...args} variant="warning" />
-      </li>
-      <li className="flex flex-col items-center gap-1">
-        <span className="text-xs text-gray-500">danger</span>
-        <Badge {...args} variant="danger" />
-      </li>
-      <li className="flex flex-col items-center gap-1">
-        <span className="text-xs text-gray-500">default</span>
-        <Badge {...args} variant="default" />
-      </li>
-      <li className="flex flex-col items-center gap-1">
-        <span className="text-xs text-gray-500">primary</span>
-        <Badge {...args} variant="primary" />
-      </li>
-    </ul>
-  ),
+  parameters: {
+    docs: {
+      canvas: { sourceState: 'none' },
+      description: { story: '색과 모양 조합입니다.' },
+    },
+  },
   argTypes: {
+    color: { control: false },
     variant: { control: false },
   },
-};
-
-export const Appearances: Story = {
-  render: (args) => (
-    <ul className="flex flex-wrap gap-5">
-      <li className="flex flex-col items-center gap-1">
-        <span className="text-xs text-gray-500">filled</span>
-        <Badge {...args} appearance="filled" />
-      </li>
-      <li className="flex flex-col items-center gap-1">
-        <span className="text-xs text-gray-500">outline</span>
-        <Badge {...args} appearance="outline" />
-      </li>
-    </ul>
+  render: args => (
+    <div className="grid grid-cols-[auto_repeat(5,auto)] items-center gap-4">
+      <span />
+      {COLORS.map(color => (
+        <span key={color} className="text-xs text-gray-500">
+          {color}
+        </span>
+      ))}
+      {VARIANTS.map(variant => (
+        <Fragment key={variant}>
+          <span className="text-xs text-gray-500">{variant}</span>
+          {COLORS.map(color => (
+            <div key={color}>
+              <Badge {...args} color={color} variant={variant} />
+            </div>
+          ))}
+        </Fragment>
+      ))}
+    </div>
   ),
-  argTypes: {
-    appearance: { control: false },
-  },
 };
 
 export const Sizes: Story = {
-  render: (args) => (
-    <ul className="flex flex-wrap items-center gap-5">
-      <li className="flex flex-col items-center gap-1">
-        <span className="text-xs text-gray-500">default</span>
-        <Badge {...args} size="default" />
-      </li>
-      <li className="flex flex-col items-center gap-1">
-        <span className="text-xs text-gray-500">small</span>
-        <Badge {...args} size="small" />
-      </li>
-    </ul>
-  ),
+  parameters: {
+    docs: {
+      canvas: { sourceState: 'none' },
+      description: { story: '크기별 모습입니다.' },
+    },
+  },
   argTypes: {
     size: { control: false },
   },
+  render: args => (
+    <div className="grid grid-cols-[auto_auto] items-center gap-4">
+      {SIZES.map(size => (
+        <Fragment key={size}>
+          <span className="text-xs text-gray-500">{size}</span>
+          <div>
+            <Badge {...args} size={size} />
+          </div>
+        </Fragment>
+      ))}
+    </div>
+  ),
 };
-
-export const Playground: Story = {
-  args: {
-    variant: 'success',
-    children: '여석 100',
-  },
-};
-
-const createBadgeStory = (variant: BadgeProps['variant']): Story => ({
-  args: { variant, children: '여석 100' },
-  argTypes: { variant: { control: false } },
-});
-
-export const Success: Story = createBadgeStory('success');
-export const Warning: Story = createBadgeStory('warning');
-export const Danger: Story = createBadgeStory('danger');
-export const Default: Story = createBadgeStory('default');
-export const Primary: Story = createBadgeStory('primary');

@@ -1,52 +1,25 @@
-import { useRef, useEffect } from 'react';
-import { createPortal } from 'react-dom';
+import { useState } from 'react';
+import { Popover } from '@allcll/allcll-ui';
 import { type Notice } from '@/entities/notices/model/notice';
 import NoticePanel from './NoticePanel';
 
 interface NoticeDropdownProps {
   notices: Notice[];
-  isOpen: boolean;
-  triggerRef: React.RefObject<HTMLButtonElement | null>;
   isRead: (notice: Notice) => boolean;
   onRead: (notice: Notice) => void;
-  onClose: () => void;
+  children: React.ReactNode;
 }
 
-function NoticeDropdown({ notices, isOpen, triggerRef, isRead, onRead, onClose }: Readonly<NoticeDropdownProps>) {
-  const panelRef = useRef<HTMLDivElement>(null);
+function NoticeDropdown({ notices, isRead, onRead, children }: Readonly<NoticeDropdownProps>) {
+  const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleClick = (e: MouseEvent) => {
-      if (
-        panelRef.current &&
-        !panelRef.current.contains(e.target as Node) &&
-        triggerRef.current &&
-        !triggerRef.current.contains(e.target as Node)
-      ) {
-        onClose();
-      }
-    };
-    window.addEventListener('mousedown', handleClick);
-    return () => window.removeEventListener('mousedown', handleClick);
-  }, [isOpen, onClose, triggerRef]);
-
-  if (!isOpen || !triggerRef.current) return null;
-
-  const rect = triggerRef.current.getBoundingClientRect();
-
-  return createPortal(
-    <div
-      ref={panelRef}
-      className="fixed w-120 h-120 bg-white rounded-xl shadow-xl border border-gray-100 flex flex-col z-floating"
-      style={{
-        top: rect.bottom + 8,
-        right: window.innerWidth - rect.right,
-      }}
-    >
-      <NoticePanel notices={notices} isRead={isRead} onRead={onRead} onClose={onClose} />
-    </div>,
-    document.body,
+  return (
+    <Popover isOpen={isOpen} onOpenChange={setIsOpen}>
+      <Popover.Trigger>{children}</Popover.Trigger>
+      <Popover.Content align="end" layer="floating" className="w-120 h-120 flex flex-col overflow-hidden">
+        <NoticePanel notices={notices} isRead={isRead} onRead={onRead} onClose={() => setIsOpen(false)} />
+      </Popover.Content>
+    </Popover>
   );
 }
 

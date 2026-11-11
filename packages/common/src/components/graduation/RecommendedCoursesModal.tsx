@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { Dialog, Flex, Button, CheckmarkOutlineIcon, CircleOutlineIcon } from '@allcll/allcll-ui';
+import { Dialog, Flex, Button, CheckmarkOutlineIcon, CircleOutlineIcon, EmptyState, Heading } from '@allcll/allcll-ui';
 import type { BalanceRequiredArea, CategoryType, CriteriaCategory, MissingCourse } from '../../types/graduation';
 import { BALANCE_AREA_LABELS, CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
 
@@ -13,12 +12,12 @@ interface RecommendedCoursesModalProps {
 
 function CourseList({ courses }: Readonly<{ courses: MissingCourse[] }>) {
   return (
-    <Flex direction="flex-col" gap="gap-2">
+    <Flex direction="column" gap={2}>
       {courses.map((course, index) => (
         <Flex
           key={`${course.curiNo}-${index}`}
-          align="items-center"
-          justify="justify-between"
+          align="center"
+          justify="between"
           className="px-4 py-3 bg-gray-50 rounded-md"
         >
           <span className="text-sm font-medium">{course.curiNm}</span>
@@ -39,18 +38,18 @@ function BalanceAreaContent({
   const { balanceAreaCourses, requiredAreasCnt, excludedArea } = criteriaCategory;
 
   return (
-    <Flex direction="flex-col" gap="gap-4" className="min-w-64 md:min-w-96">
+    <Flex direction="column" gap={4} className="min-w-64 md:min-w-96">
       <p className="text-sm text-gray-600">
         아래 영역 중 <span className="text-primary-500 font-semibold">{requiredAreasCnt}개 영역</span>을 이수해야
         합니다.
         {excludedArea && <span className="text-gray-400"> ({BALANCE_AREA_LABELS[excludedArea]} 영역 제외)</span>}
       </p>
-      <Flex direction="flex-col" gap="gap-4" className="max-h-80 overflow-y-auto">
+      <Flex direction="column" gap={4} className="max-h-80 overflow-y-auto">
         {balanceAreaCourses?.map(area => {
           const isEarned = earnedAreas.includes(area.balanceRequiredArea);
           return (
             <div key={area.balanceRequiredArea}>
-              <h4 className="flex items-center gap-2 text-sm font-semibold mb-2">
+              <Heading level={4} className="flex items-center gap-2 mb-2">
                 {isEarned ? (
                   <CheckmarkOutlineIcon className="w-4 h-4 text-primary-500 shrink-0" />
                 ) : (
@@ -61,7 +60,7 @@ function BalanceAreaContent({
                 </span>
                 {!isEarned && <span className="text-xs text-gray-400">{area.requiredCourses.length}개 과목</span>}
                 {isEarned && <span className="text-xs text-primary-500">이수 완료</span>}
-              </h4>
+              </Heading>
               <CourseList courses={area.requiredCourses} />
             </div>
           );
@@ -73,7 +72,7 @@ function BalanceAreaContent({
 
 function DefaultContent({ categoryLabel, courses }: Readonly<{ categoryLabel: string; courses: MissingCourse[] }>) {
   return courses.length > 0 ? (
-    <Flex direction="flex-col" gap="gap-2" className="min-w-64 md:min-w-96">
+    <Flex direction="column" gap={2} className="min-w-64 md:min-w-96">
       <p className="text-sm text-gray-600">
         아래 과목을 이수하면 <span className="text-primary-500 font-semibold">{categoryLabel}</span> 요건을 충족할 수
         있습니다.
@@ -84,9 +83,7 @@ function DefaultContent({ categoryLabel, courses }: Readonly<{ categoryLabel: st
       </div>
     </Flex>
   ) : (
-    <Flex justify="justify-center" align="items-center" className="min-w-64 md:min-w-96 h-72">
-      <p className="text-sm text-gray-400">추천 정보가 없습니다.</p>
-    </Flex>
+    <EmptyState title="추천 정보가 없습니다." className="min-w-64 md:min-w-96 h-72" />
   );
 }
 
@@ -100,15 +97,6 @@ function RecommendedCoursesModal({
   const categoryLabel = CATEGORY_TYPE_LABELS[categoryType];
   const isBalanceRequired = categoryType === 'BALANCE_REQUIRED' && criteriaCategory?.balanceAreaCourses != null;
 
-  useEffect(() => {
-    if (!isOpen) return;
-    const original = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = original;
-    };
-  }, [isOpen]);
-
   return (
     <Dialog title={`${categoryLabel} 추천 과목`} onClose={onClose} isOpen={isOpen}>
       <Dialog.Content>
@@ -120,7 +108,7 @@ function RecommendedCoursesModal({
       </Dialog.Content>
 
       <Dialog.Footer>
-        <Button variant="primary" size="small" onClick={onClose}>
+        <Button variant="solid" size="small" onClick={onClose}>
           닫기
         </Button>
       </Dialog.Footer>

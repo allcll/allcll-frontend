@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { CloseIcon, DocumentIcon, UploadIcon, IconButton, Flex } from '@allcll/allcll-ui';
-import useToastNotification from '@/features/notification/model/useToastNotification';
+import { useToastNotification } from '@allcll/common';
 
 interface FileDropZoneProps {
   onFileSelect: (file: File) => void;
@@ -22,7 +22,7 @@ const FileDropZone = ({ onFileSelect, selectedFile, onDeleteFile, accept }: File
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      addToast('파일 크기는 1MB를 초과할 수 없습니다.');
+      addToast('파일 크기는 1MB를 초과할 수 없습니다.', 'file-upload-error');
       if (ref.current) {
         ref.current.value = '';
       }
@@ -69,7 +69,7 @@ const FileDropZone = ({ onFileSelect, selectedFile, onDeleteFile, accept }: File
       type="button"
       className={`
         relative w-full border-2 rounded-lg p-10 text-left
-        transition-colors duration-200 cursor-pointer outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+        transition-colors duration-200 outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
         ${selectedFile ? 'border-solid bg-green-50 border-green-400 hover:bg-green-100 hover:border-green-500' : 'border-dashed'}
         ${isDragging ? 'border-primary-500 bg-primary-50' : ''}
         ${!isDragging && !selectedFile ? 'border-gray-300 hover:border-primary-400 hover:bg-gray-50' : ''}
@@ -97,7 +97,7 @@ const FileDropZone = ({ onFileSelect, selectedFile, onDeleteFile, accept }: File
 // 파일이 없을 때 (업로드 유도)
 const EmptyState = () => {
   return (
-    <Flex direction="flex-col" align="items-center" justify="justify-center" gap="gap-3">
+    <Flex direction="column" align="center" justify="center" gap={3}>
       <div className="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center text-gray-400">
         <UploadIcon className="w-7 h-7" />
       </div>
@@ -119,20 +119,21 @@ const SelectedState = ({ file, onDelete }: { file: File; onDelete: (e: React.Mou
     <>
       <div className="absolute top-2 right-2">
         <IconButton
+          size="large"
           variant="plain"
           onClick={onDelete}
-          icon={<CloseIcon className="w-5 h-5 text-gray-400 hover:text-gray-600" />}
+          icon={<CloseIcon className="text-gray-400 hover:text-gray-600" />}
           label="파일 삭제"
         />
       </div>
 
-      <Flex direction="flex-col" align="items-center" justify="justify-center" gap="gap-3">
+      <Flex direction="column" align="center" justify="center" gap={3}>
         <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center text-green-500">
           <DocumentIcon className="w-7 h-7" />
         </div>
 
         <div className="text-center">
-          <p className="text-base font-semibold text-gray-900">{file.name}</p>
+          <p className="text-base font-semibold">{file.name}</p>
           <p className="mt-1 text-sm text-gray-500">'다음 단계' 버튼을 누르면 분석이 시작됩니다</p>
           <p className="mt-0.5 text-xs text-gray-400">파일을 변경하려면 클릭하거나 드래그하세요</p>
         </div>

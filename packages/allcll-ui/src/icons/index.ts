@@ -31,6 +31,8 @@ export {
   Circle as CircleOutlineIcon,
   CircleX as MisuseIcon,
   CircleAlert as WarningIcon,
+  Info as InfoIcon,
+  LoaderCircle as SpinnerIcon,
   TriangleAlert as WarningAltIcon,
   Ban as ErrorIcon,
   Clock as TimeIcon,
@@ -38,7 +40,10 @@ export {
 
   /* 방향 --------------------------------------------------------------- */
   ChevronDown as ChevronDownIcon,
+  ChevronUp as ChevronUpIcon,
+  ChevronsUpDown as ChevronsUpDownIcon,
   ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
   ArrowLeft as ArrowLeftIcon,
   ArrowRight as ArrowRightIcon,
 

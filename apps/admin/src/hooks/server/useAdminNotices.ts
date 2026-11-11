@@ -1,10 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToastNotification } from '@allcll/common';
 import { fetchJsonOnAPI, fetchDeleteJsonOnAPI } from '@/utils/api';
-import { OperationType, OPERATION_TYPE_LABEL, OPERATION_TYPES } from '@/hooks/server/useAdminReviews';
-
-export const CATEGORY_LABELS = OPERATION_TYPE_LABEL;
-export const NOTICE_CATEGORIES = OPERATION_TYPES;
+import type { OperationType } from '@allcll/common';
 
 export interface Notice {
   id: number;

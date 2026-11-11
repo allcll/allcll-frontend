@@ -37,7 +37,5 @@ export const checkSubjectResult = (lectures: Lecture[], currentSubjectId: number
     }
   }
 
-  console.log(elapsedTime, limitTime);
-
   return elapsedTime < limitTime;
 };

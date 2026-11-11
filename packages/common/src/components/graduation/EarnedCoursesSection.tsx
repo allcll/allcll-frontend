@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
-import { Flex, Chip, ListboxOption, ChevronDownIcon, CheckmarkIcon } from '@allcll/allcll-ui';
+import { useState, useEffect } from 'react';
+import { Flex, Grid, Label, Chip, ChevronDownIcon, EmptyState, Popover } from '@allcll/allcll-ui';
+import Filtering from '../filtering/Filtering';
 import type { CategoryType, GraduationCourse } from '../../types/graduation';
 import { CATEGORY_TYPE_LABELS } from '../../lib/graduation/mappers';
 import { COURSE_CATEGORY_ORDER } from '../../lib/graduation/rules';
@@ -22,20 +23,20 @@ function CourseRow({ course }: Readonly<{ course: GraduationCourse }>) {
   const isEarned = course.isEarned;
   return (
     <Flex
-      align="items-center"
-      justify="justify-between"
-      gap="gap-3"
+      align="center"
+      justify="between"
+      gap={3}
       className={`px-3 py-2.5 rounded-md border ${
         isEarned ? 'bg-white border-gray-200' : 'bg-gray-100 border-gray-200'
       }`}
     >
-      <Flex direction="flex-col" gap="gap-0.5" className="min-w-0">
+      <Flex direction="column" gap={0.5} className="min-w-0">
         <span className={`text-sm font-medium truncate ${isEarned ? 'text-gray-800' : 'text-gray-400'}`}>
           {course.curiNm}
         </span>
         <span className="text-xs text-gray-400">{course.curiNo}</span>
       </Flex>
-      <Flex align="items-center" gap="gap-3" className="shrink-0">
+      <Flex align="center" gap={3} className="shrink-0">
         <span className="text-xs text-gray-500 whitespace-nowrap">{CATEGORY_TYPE_LABELS[course.categoryType]}</span>
         <span className="text-xs text-gray-500 whitespace-nowrap">{course.credits}학점</span>
       </Flex>
@@ -46,26 +47,10 @@ function CourseRow({ course }: Readonly<{ course: GraduationCourse }>) {
 function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | '전체'>('전체');
-  const [isSelectOpen, setIsSelectOpen] = useState(false);
-  const selectRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!isOpen) {
-      setSelectedCategory('전체');
-      setIsSelectOpen(false);
-    }
+    if (!isOpen) setSelectedCategory('전체');
   }, [isOpen]);
-
-  useEffect(() => {
-    if (!isSelectOpen) return;
-    const handleClickOutside = (e: MouseEvent) => {
-      if (selectRef.current && !selectRef.current.contains(e.target as Node)) {
-        setIsSelectOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isSelectOpen]);
 
   const categories = getUniqueCategories(courses);
   const visibleCourses = filterCourses(courses, selectedCategory);
@@ -97,56 +82,37 @@ function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) 
 
       {isOpen && (
         <div className="border-t border-gray-100 px-4 pb-4">
-          <Flex direction="flex-col" gap="gap-3" className="pt-3">
+          <Flex direction="column" gap={3} className="pt-3">
             {courses.length === 0 ? (
-              <p className="text-sm text-gray-400 text-center py-4">이수 과목 정보가 없습니다.</p>
+              <EmptyState title="이수 과목 정보가 없습니다." className="py-4" />
             ) : (
               <>
-                <Flex align="items-center" justify="justify-between" gap="gap-3">
-                  <div ref={selectRef} className="relative">
-                    <Chip
-                      label={selectedCategory === '전체' ? '전체' : CATEGORY_TYPE_LABELS[selectedCategory]}
-                      selected={isSelectOpen}
-                      variant="select"
-                      isChipOpen={isSelectOpen}
-                      onClick={() => setIsSelectOpen(prev => !prev)}
+                <Flex align="center" justify="between" gap={3}>
+                  <Filtering
+                    label={selectedCategory === '전체' ? '전체' : CATEGORY_TYPE_LABELS[selectedCategory]}
+                    selected={selectedCategory !== '전체'}
+                  >
+                    <CategoryOptions
+                      options={categoryOptions}
+                      selectedCategory={selectedCategory}
+                      onSelect={setSelectedCategory}
                     />
-                    {isSelectOpen && (
-                      <div className="absolute z-content mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto min-w-30">
-                        {categoryOptions.map(option => (
-                          <ListboxOption
-                            key={option.value}
-                            selected={option.value === selectedCategory}
-                            left={option.label}
-                            right={
-                              option.value === selectedCategory ? (
-                                <CheckmarkIcon className="w-4 h-4 shrink-0 text-blue-500" />
-                              ) : null
-                            }
-                            onSelect={() => {
-                              setSelectedCategory(option.value);
-                              setIsSelectOpen(false);
-                            }}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  </Filtering>
                   <span className="text-xs text-gray-500 shrink-0">
                     <span className="text-primary-500 font-semibold">{earnedCredits}학점</span> · {earnedCount}과목
                   </span>
                 </Flex>
-                <Flex align="items-center" gap="gap-3" className="text-xs text-gray-400">
-                  <Flex align="items-center" gap="gap-1.5">
+                <Flex align="center" gap={3} className="text-xs text-gray-400">
+                  <Flex align="center" gap={1.5}>
                     <span className="w-3 h-3 rounded-sm border border-gray-200 bg-white inline-block shrink-0" />
                     이수 완료
                   </Flex>
-                  <Flex align="items-center" gap="gap-1.5">
+                  <Flex align="center" gap={1.5}>
                     <span className="w-3 h-3 rounded-sm border border-gray-200 bg-gray-100 inline-block shrink-0" />
                     미이수 (F/FA/NP)
                   </Flex>
                 </Flex>
-                <Flex direction="flex-col" gap="gap-1" className="overflow-y-auto max-h-80 pr-1">
+                <Flex direction="column" gap={1} className="overflow-y-auto max-h-80 pr-1">
                   {visibleCourses.map(course => (
                     <CourseRow key={course.id} course={course} />
                   ))}
@@ -157,6 +123,31 @@ function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) 
         </div>
       )}
     </div>
+  );
+}
+
+interface CategoryOptionsProps {
+  options: { value: CategoryType | '전체'; label: string }[];
+  selectedCategory: CategoryType | '전체';
+  onSelect: (category: CategoryType | '전체') => void;
+}
+
+function CategoryOptions({ options, selectedCategory, onSelect }: Readonly<CategoryOptionsProps>) {
+  return (
+    <Flex direction="column" gap={2}>
+      <Label>이수 구분</Label>
+      <Grid columns={{ md: 3 }} gap={2}>
+        {options.map(option => (
+          <Popover.Close key={option.value} asChild>
+            <Chip
+              label={option.label}
+              selected={option.value === selectedCategory}
+              onClick={() => onSelect(option.value)}
+            />
+          </Popover.Close>
+        ))}
+      </Grid>
+    </Flex>
   );
 }
 

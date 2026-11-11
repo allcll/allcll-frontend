@@ -1,31 +1,31 @@
 import type { ComponentPropsWithoutRef } from 'react';
 
-type BreakpointColumns = {
-  base?: number;
-  sm?: number;
-  md?: number;
-  lg?: number;
-  xl?: number;
+const COLUMNS_CLASS = {
+  base: { 1: 'grid-cols-1', 2: 'grid-cols-2', 3: 'grid-cols-3', 4: 'grid-cols-4' },
+  sm: { 1: 'sm:grid-cols-1', 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-3', 4: 'sm:grid-cols-4' },
+  md: { 1: 'md:grid-cols-1', 2: 'md:grid-cols-2', 3: 'md:grid-cols-3', 4: 'md:grid-cols-4' },
+  lg: { 1: 'lg:grid-cols-1', 2: 'lg:grid-cols-2', 3: 'lg:grid-cols-3', 4: 'lg:grid-cols-4' },
+  xl: { 1: 'xl:grid-cols-1', 2: 'xl:grid-cols-2', 3: 'xl:grid-cols-3', 4: 'xl:grid-cols-4' },
 };
 
+const GAP_CLASS = { 0: 'gap-0', 1: 'gap-1', 2: 'gap-2', 3: 'gap-3', 4: 'gap-4', 5: 'gap-5', 6: 'gap-6', 8: 'gap-8' };
+
+type ColumnCount = keyof typeof COLUMNS_CLASS.base;
+type Breakpoint = keyof typeof COLUMNS_CLASS;
+
 interface GridProps extends ComponentPropsWithoutRef<'div'> {
-  columns: BreakpointColumns;
-  gap?: `gap-${number}`;
+  columns: Partial<Record<Breakpoint, ColumnCount>>;
+  gap?: keyof typeof GAP_CLASS;
 }
 
-function Grid({ columns, gap = 'gap-0', className, children, ...rest }: GridProps) {
-  const classes: string[] = ['grid', gap];
+function Grid({ columns, gap = 0, className, children, ...rest }: GridProps) {
+  const { base = 2, ...responsive } = columns;
+  const columnClasses = [
+    COLUMNS_CLASS.base[base],
+    ...(Object.keys(responsive) as Exclude<Breakpoint, 'base'>[]).map(bp => COLUMNS_CLASS[bp][responsive[bp]!]),
+  ];
 
-  const baseCols = columns.base ?? 2;
-  classes.push(`grid-cols-${baseCols}`);
-
-  if (columns.base) classes.push(`grid-cols-${columns.base}`);
-  if (columns.sm) classes.push(`sm:grid-cols-${columns.sm}`);
-  if (columns.md) classes.push(`md:grid-cols-${columns.md}`);
-  if (columns.lg) classes.push(`lg:grid-cols-${columns.lg}`);
-  if (columns.xl) classes.push(`xl:grid-cols-${columns.xl}`);
-
-  const finalClass = classes.join(' ') + (className ? ` ${className}` : '');
+  const finalClass = ['grid', GAP_CLASS[gap], ...columnClasses, className].filter(Boolean).join(' ');
 
   return (
     <div className={finalClass} {...rest}>

@@ -1,115 +1,75 @@
+import { Fragment } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import Card from './Card';
-import Button from '../button/Button';
+import Heading from '../heading/Heading';
+import SupportingText from '../supportingText/SupportingText';
+import Badge from '../badge/Badge';
+
+const VARIANTS = ['elevated', 'outlined', 'filled'] as const;
+
+const SUBJECT_CONTENT = (
+  <div className="flex flex-col gap-1 w-56">
+    <div className="flex items-center justify-between">
+      <Heading level={4}>해석학개론2</Heading>
+      <span className="text-sm text-gray-500">차영준</span>
+    </div>
+    <SupportingText>월수16:30-18:00 | 영301</SupportingText>
+    <SupportingText>2학년 | 수학통계학과</SupportingText>
+    <div className="mt-1">
+      <Badge color="gray" size="small">
+        3학점
+      </Badge>
+    </div>
+  </div>
+);
 
 const meta = {
-  title: 'AllcllUI/Card',
+  title: 'Display/Card',
   component: Card,
   parameters: {
     layout: 'centered',
-  },
-  argTypes: {
-    children: { control: { type: 'text' } },
-    size: {
-      control: { type: 'select' },
-      options: ['small', 'medium', 'large'],
-    },
-    variant: {
-      control: { type: 'select' },
-      options: ['elevated', 'outlined', 'filled'],
+    docs: {
+      description: {
+        component: '관련된 내용을 하나로 묶는 상자입니다.',
+      },
     },
   },
-
-  args: {
-    children: 'Card Content',
-    size: 'medium',
-    variant: 'outlined',
-  },
-
   tags: ['autodocs'],
+  argTypes: {
+    variant: { description: '모양', control: 'radio', options: VARIANTS },
+    children: { description: '카드 내용', control: false },
+    className: { table: { disable: true } },
+  },
+  args: {
+    variant: 'elevated',
+    children: SUBJECT_CONTENT,
+  },
 } satisfies Meta<typeof Card>;
 
 export default meta;
-
 type Story = StoryObj<typeof meta>;
 
-export const Playground: Story = {
-  args: {
-    children: 'Card Content',
-    size: 'medium',
-    variant: 'outlined',
-  },
-  render: args => {
-    return <Card {...args} />;
-  },
-};
+export const Playground: Story = {};
 
-export const Cards: Story = {
-  render: () => (
-    <ul className="flex flex-wrap gap-5">
-      <li>
-        <Card size="small" variant="elevated">
-          Small Elevated Card
-        </Card>
-      </li>
-      <li>
-        <Card size="medium" variant="outlined">
-          Medium Outlined Card
-        </Card>
-      </li>
-      <li>
-        <Card size="large" variant="filled">
-          Large Filled Card
-        </Card>
-      </li>
-    </ul>
-  ),
-  argTypes: {
-    children: {
-      control: false,
-    },
-    size: {
-      control: false,
-    },
-    variant: {
-      control: false,
+export const Variants: Story = {
+  parameters: {
+    docs: {
+      canvas: { sourceState: 'none' },
+      description: { story: '모양별 모습입니다.' },
     },
   },
-};
-
-export const SubjectCard: Story = {
-  render: () => (
-    <ul className="flex flex-wrap gap-5">
-      <li>
-        <Card size="small" variant="elevated">
-          <h3 className="text-lg font-semibold mb-2">알고리즘</h3>
-          <Button size="small" variant="outlined">
-            상세보기
-          </Button>
-        </Card>
-      </li>
-      <li>
-        <Card size="medium" variant="outlined">
-          Medium Outlined Card
-        </Card>
-      </li>
-      <li>
-        <Card size="large" variant="filled">
-          Large Filled Card
-        </Card>
-      </li>
-    </ul>
-  ),
   argTypes: {
-    children: {
-      control: false,
-    },
-    size: {
-      control: false,
-    },
-    variant: {
-      control: false,
-    },
+    variant: { control: false },
   },
+  render: args => (
+    <div className="grid grid-cols-[auto_auto] items-center gap-4 bg-gray-50 p-6">
+      {VARIANTS.map(variant => (
+        <Fragment key={variant}>
+          <span className="text-xs text-gray-500">{variant}</span>
+          <Card {...args} variant={variant} />
+        </Fragment>
+      ))}
+    </div>
+  ),
 };

@@ -13,3 +13,5 @@ export const jsonParse = <T>(data: string): T | null => {
     return null;
   }
 };
+
+export const parseCredit = (tmNum?: string | null) => Number(tmNum?.split('/')[0]) || 0;

@@ -1,7 +1,7 @@
+import { useToastNotification } from '@allcll/common';
 // This hook is used to manage the schedule modal state and actions
-import React, { useTransition } from 'react';
+import React, { useCallback, useTransition } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import useToastNotification from '@/features/notification/model/useToastNotification.ts';
 import {
   CustomSchedule,
   OfficialSchedule,
@@ -14,10 +14,11 @@ import {
   useUpdateSchedule,
 } from '@/features/timetable/model/useTimetableMutations.ts';
 import { ScheduleMutateType, useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
-import { useBottomSheetStore } from '@/shared/model/useBottomSheetStore.ts';
+import { useOverlayStore } from '@/shared/model/useOverlayStore.ts';
 import { ScheduleAdapter, TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam';
 import { showTimetableApiErrorToast, showTimetableApiSuccessToast } from './showTimetableApiErrorToast';
+import { formatHourMinute } from '@/shared/lib/time.ts';
 
 const getInitCustomSchedule = () => new ScheduleAdapter().toUiData();
 let globalPrevTimetable: Timetable | undefined = undefined;
@@ -31,8 +32,8 @@ function useScheduleModal() {
   const currentTimetable = useScheduleState(state => state.currentTimetable);
   const timetableId = currentTimetable?.timeTableId ?? -1;
 
-  const openBottomSheet = useBottomSheetStore(state => state.openBottomSheet);
-  const closeBottomSheet = useBottomSheetStore(state => state.closeBottomSheet);
+  const openOverlay = useOverlayStore(state => state.openOverlay);
+  const closeOverlay = useOverlayStore(state => state.closeOverlay);
   const [, startTransition] = useTransition();
 
   const { mutate: createScheduleData } = useCreateSchedule(timetableId, currentSemester, {
@@ -71,15 +72,14 @@ function useScheduleModal() {
     if (!targetSchedule.scheduleId || targetSchedule.scheduleId <= 0) {
       currentMode = ScheduleMutateType.CREATE;
       if (targetSchedule.scheduleType !== 'official') {
-        openBottomSheet('edit');
+        openOverlay('edit');
       }
     } else if (targetSchedule.scheduleType === 'official') {
       currentMode = ScheduleMutateType.VIEW;
-      console.log(globalPrevTimetable);
-      openBottomSheet('info');
+      openOverlay('info');
     } else {
       currentMode = ScheduleMutateType.EDIT;
-      openBottomSheet('edit');
+      openOverlay('edit');
     }
     changeScheduleData(targetSchedule, currentMode);
   };
@@ -164,7 +164,7 @@ function useScheduleModal() {
     }
 
     // 모달 state 초기화
-    if (close) closeBottomSheet('edit');
+    if (close) closeOverlay('edit');
   };
 
   const deleteSchedule = (e?: React.MouseEvent<HTMLButtonElement>) => {
@@ -186,20 +186,20 @@ function useScheduleModal() {
 
     // 모달 state 초기화
     changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);
-    closeBottomSheet('edit');
-    closeBottomSheet('info');
+    closeOverlay('edit');
+    closeOverlay('info');
   };
 
-  const cancelSchedule = (
-    e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent,
-    close: boolean | undefined = true,
-  ) => {
-    if (e) e.preventDefault();
+  const cancelSchedule = useCallback(
+    (e?: React.MouseEvent | React.KeyboardEvent | KeyboardEvent, close: boolean | undefined = true) => {
+      if (e) e.preventDefault();
 
-    // 모달 state 초기화
-    changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);
-    if (close) closeBottomSheet('edit');
-  };
+      // 모달 state 초기화
+      changeScheduleData({ ...getInitCustomSchedule() }, ScheduleMutateType.NONE);
+      if (close) closeOverlay('edit');
+    },
+    [changeScheduleData, closeOverlay],
+  );
 
   return {
     setOptimisticSchedule,
@@ -256,7 +256,7 @@ function getTimeHM(minTime: number, time: number) {
 
   if (hour > 23) return '23:50';
 
-  return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+  return formatHourMinute(hour, minute);
 }
 
 function getUniqueNegativeId(schedules: (CustomSchedule | OfficialSchedule)[]) {

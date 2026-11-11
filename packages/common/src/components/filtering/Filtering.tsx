@@ -18,7 +18,7 @@ function Filtering({ label, selected, children, className = '' }: Readonly<IFilt
     <Popover>
       <Popover.Trigger selected={selected} label={label} />
       <Popover.Content>
-        <Flex direction="flex-col" gap="gap-4" className={className}>
+        <Flex direction="column" gap={4} className={className}>
           {children}
         </Flex>
       </Popover.Content>

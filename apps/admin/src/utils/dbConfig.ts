@@ -6,7 +6,7 @@ export interface AdminApiLogs {
   method: string;
   request_url: string;
   timestamp: string;
-  request_body: string;
+  request_body: unknown;
   response_body: string;
 }
 

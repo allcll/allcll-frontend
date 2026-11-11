@@ -9,6 +9,7 @@ interface IToolbarButtonProps {
 function ToolbarButton({ onClick, title, children }: IToolbarButtonProps) {
   return (
     <IconButton
+      size="medium"
       icon={children}
       label={title}
       variant="plain"

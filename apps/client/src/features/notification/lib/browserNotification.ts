@@ -1,3 +1,4 @@
+import { useToastNotification } from '@allcll/common';
 import AlarmBanner from '../ui/AlarmBanner.tsx';
 import { AlarmType, isAlarmActivated } from '../model/useAlarmSettings.ts';
 import useNotificationInstruction from '../model/useNotificationInstruction.ts';
@@ -24,7 +25,12 @@ const BrowserNotification: CustomNotification = {
   requestPermission(callback?: (permission: NotificationPermission) => void) {
     const Notify = getNotification();
     if (!Notify) {
-      alert('해당 브라우저는 브라우저 알림을 받을 수 없습니다. 다른 브라우저를 이용해주세요');
+      useToastNotification
+        .getState()
+        .addToast(
+          '해당 브라우저는 브라우저 알림을 받을 수 없습니다. 다른 브라우저를 이용해주세요.',
+          'notification-unsupported',
+        );
       return;
     }
 
@@ -89,19 +95,14 @@ const BrowserNotification: CustomNotification = {
   },
 };
 
-const DAYS = 1000 * 60 * 60 * 24;
 // 맥에서 알림이 보이지 않을 때, 알림 권한을 확인합니다
 function checkSystemNotification(setBanner: ISetBanner) {
   const ALARM_CHECK_TITLE = 'alarm-check';
-  const alarmDate = localStorage.getItem(ALARM_CHECK_TITLE);
-
-  if (alarmDate && Date.now() - Number(alarmDate) < 100 * DAYS) {
-    return;
-  }
+  if (sessionStorage.getItem(ALARM_CHECK_TITLE)) return;
 
   setTimeout(() => {
     setBanner(AlarmBanner(), () => {
-      localStorage.setItem(ALARM_CHECK_TITLE, Date.now().toString());
+      sessionStorage.setItem(ALARM_CHECK_TITLE, 'closed');
     });
   }, 5000);
 }

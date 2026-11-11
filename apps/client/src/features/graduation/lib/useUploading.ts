@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { graduationQueryKeys, useGraduationCheck } from '@/entities/graduation/model/useGraduation';
 import { useGraduationCheckMutation } from './useGraduationCheckMutation';
-import useToastNotification from '@/features/notification/model/useToastNotification';
+import { useToastNotification } from '@allcll/common';
 
 type Phase = 'uploading' | 'fetching' | 'done';
 
@@ -44,14 +44,14 @@ function useUploading(nextStep: () => void, prevStep: () => void, file: File | n
   // 에러 처리: fetching phase에서만 동작 (캐시된 이전 에러 무시)
   useEffect(() => {
     if (isError && phase === 'fetching') {
-      addToast('졸업 요건 검사 결과를 불러오는데 실패했습니다.', 'fetching-graduation-result-error');
+      addToast('졸업 요건 검사 결과를 불러오는 데 실패했습니다.', 'fetching-graduation-result-error');
       prevStep();
     }
   }, [isError, phase, addToast, prevStep]);
 
   const message = {
-    uploading: '파일을 업로드하는 중입니다...',
-    fetching: '업로드된 파일을 분석하고 있습니다...',
+    uploading: '파일을 업로드하는 중입니다.',
+    fetching: '업로드된 파일을 분석하고 있습니다.',
     done: '분석이 완료되었습니다. 검사 결과를 가져옵니다.',
   }[phase];
 

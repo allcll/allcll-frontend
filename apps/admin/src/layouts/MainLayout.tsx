@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Header from '@/components/Header';
 import SideNavBar from '@/components/SideNavBar';
+import { GlobalConfirmDialog, ToastNotification } from '@allcll/common';
 
 function MainLayout() {
   // session 입력하는 기능
@@ -26,11 +27,14 @@ function MainLayout() {
         <SideNavBar />
         <div className="flex-1 flex flex-col min-h-0">
           <Header />
-          <div className="flex-1 overflow-auto p-6 space-y-6">
+          <div className="flex-1 overflow-auto [scrollbar-gutter:stable] p-6 space-y-6">
             <Outlet />
           </div>
         </div>
       </div>
+
+      <ToastNotification />
+      <GlobalConfirmDialog />
     </>
   );
 }

@@ -22,9 +22,16 @@ function UpdateData() {
     <Card>
       <SectionHeader title="데이터 업데이트" description="백엔드 서버로 보내는 요청(크롤링X)" />
 
-      <Grid columns={{ md: 4, sm: 2 }} gap="gap-3">
+      <Grid columns={{ md: 4, sm: 2 }} gap={3}>
         {dataSources.map(({ label, refetch, isFetching }) => (
-          <Button key={label} onClick={() => refetch()} variant="outlined" size="medium" disabled={isFetching}>
+          <Button
+            key={label}
+            onClick={() => refetch()}
+            variant="outlined"
+            color="gray"
+            size="medium"
+            disabled={isFetching}
+          >
             {isFetching ? `${label} 불러오는 중...` : `${label} 업데이트`}
           </Button>
         ))}

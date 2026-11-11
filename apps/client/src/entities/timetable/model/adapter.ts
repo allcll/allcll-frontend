@@ -8,6 +8,7 @@ import { ROW_HEIGHT } from '@/entities/timetable/model/layout.ts';
 import { Subject } from '@/shared/model/types.ts';
 
 import { Day } from '@/entities/timetable/model/types.ts';
+import { formatHourMinute } from '@/shared/lib/time.ts';
 
 interface ApiUiAdapter<T, U> {
   data: U; // Initial data
@@ -190,12 +191,10 @@ export class TimeslotAdapter {
   }
 
   toApiData(): TimeSlot[] {
-    const pad = (num: number) => num.toString().padStart(2, '0');
-
     return this.data.map(d => ({
       dayOfWeeks: d.dayOfWeeks,
-      startTime: `${pad(d.startHour)}:${pad(d.startMinute)}`,
-      endTime: `${pad(d.endHour)}:${pad(d.endMinute)}`,
+      startTime: formatHourMinute(d.startHour, d.startMinute),
+      endTime: formatHourMinute(d.endHour, d.endMinute),
     }));
   }
 
@@ -239,7 +238,7 @@ export function moveTimeSlot(timeSlots: TimeSlot, diffDay: number, diffTime: num
 
   return {
     dayOfWeeks: newDayOfWeeks as Day,
-    startTime: `${newStartHour.toString().padStart(2, '0')}:${newStartMinute.toString().padStart(2, '0')}`,
-    endTime: `${newEndHour.toString().padStart(2, '0')}:${newEndMinute.toString().padStart(2, '0')}`,
+    startTime: formatHourMinute(newStartHour, newStartMinute),
+    endTime: formatHourMinute(newEndHour, newEndMinute),
   };
 }

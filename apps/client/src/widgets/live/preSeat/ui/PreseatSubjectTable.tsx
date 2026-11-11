@@ -1,4 +1,4 @@
-import { NotificationFilledIcon, NotificationIcon } from '@allcll/allcll-ui';
+import { NotificationFilledIcon, NotificationIcon, Table } from '@allcll/allcll-ui';
 import SkeletonRows from '@/shared/ui/SkeletonRows';
 import { useAddPinned, usePinned, useRemovePinned } from '@/entities/subjects/model/capabilities/usePinned.ts';
 import useInfScroll from '@/shared/lib/useInfScroll.ts';
@@ -22,25 +22,21 @@ interface ISubjectTable {
 
 function PreseatSubjectTable({ titles, subjects, isPending = false }: Readonly<ISubjectTable>) {
   return (
-    <table className="w-full bg-white rounded-lg relative text-sm">
-      <thead>
-        <tr className="bg-gray-50 text-nowrap">
-          {titles.map(({ title }) => (
-            <th key={title} className="px-4 py-2">
-              {title}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
+    <Table>
+      <Table.Head>
+        {titles.map(({ title }) => (
+          <Table.HeaderCell key={title}>{title}</Table.HeaderCell>
+        ))}
+      </Table.Head>
+      <Table.Body>
         <TableBody titles={titles} subjects={subjects} isPending={isPending} />
-      </tbody>
-    </table>
+      </Table.Body>
+    </Table>
   );
 }
 
 function TableBody({ titles, subjects, isPending = false }: Readonly<ISubjectTable>) {
-  const { visibleRows } = useInfScroll(subjects ?? [], 'selector');
+  const { visibleRows, loadMoreRef } = useInfScroll<HTMLTableRowElement>(subjects ?? []);
   const filteredSubjects = (subjects ?? []).filter(subject => !subject.isDeleted);
 
   const data = filteredSubjects ? filteredSubjects.slice(0, visibleRows) : [];
@@ -64,7 +60,7 @@ function TableBody({ titles, subjects, isPending = false }: Readonly<ISubjectTab
       {data.map((subject: WishesWithSeat) => (
         <TableRow key={`${subject.subjectCode} ${subject.subjectId} ${subject.professorName}`} subject={subject} />
       ))}
-      <tr className="load-more-trigger" />
+      <tr ref={loadMoreRef} />
     </>
   );
 }
@@ -98,28 +94,24 @@ function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
   };
 
   return (
-    <tr className={`border-t border-gray-200 text-black ${bgColor}`}>
-      <td className="px-4 py-2 text-center">
-        <button
-          className="cursor-pointer"
-          aria-label={isPinned ? '알림 과목 해제' : '알림 과목 등록'}
-          onClick={handlePin}
-        >
+    <Table.Row className={bgColor}>
+      <Table.Cell>
+        <button aria-label={isPinned ? '알림 과목 해제' : '알림 과목 등록'} onClick={handlePin}>
           {isPinned ? (
-            <NotificationFilledIcon className="w-4 h-4 text-blue-500" />
+            <NotificationFilledIcon className="w-4 h-4 text-primary-500" />
           ) : (
             <NotificationIcon className="w-4 h-4 text-gray-400" />
           )}
         </button>
-      </td>
-      <td className="px-2 py-2 text-center">
+      </Table.Cell>
+      <Table.Cell>
         {subject.subjectCode}-{subject.classCode}
-      </td>
-      <td className="px-2 py-2 text-center">{subject.departmentName}</td>
-      <td className="px-2 py-2 text-center">{subject.subjectName}</td>
-      <td className="px-2 py-2 text-center">{subject.professorName}</td>
+      </Table.Cell>
+      <Table.Cell>{subject.departmentName}</Table.Cell>
+      <Table.Cell>{subject.subjectName}</Table.Cell>
+      <Table.Cell>{subject.professorName}</Table.Cell>
       {subject.seat !== undefined ? (
-        <td className="px-2 py-2 text-center">
+        <Table.Cell>
           {subject.seat >= 0 ? (
             <span className={`px-3 py-1 rounded-full text-xs font-bold ${getSeatColor(subject.seat)}`}>
               {subject.seat}
@@ -127,9 +119,9 @@ function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
           ) : (
             <span className="px-3 py-1 rounded-full text-xs font-bold bg-gray-300">-</span>
           )}
-        </td>
+        </Table.Cell>
       ) : null}
-    </tr>
+    </Table.Row>
   );
 }
 
