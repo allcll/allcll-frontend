@@ -5,11 +5,11 @@ export interface LabelProps extends ComponentPropsWithoutRef<'label'> {
   className?: string;
 }
 
-const Label = ({ id, required, children, className = '', ...rest }: LabelProps) => {
-  const baseClass = `text-sm sm:text-base text-text-200 after:ml-0.5 ${required ? 'after:content-["*"] after:text-red-500' : ''}`;
+const Label = ({ required, children, className = '', ...rest }: LabelProps) => {
+  const baseClass = `text-sm text-gray-700 after:ml-0.5 ${required ? 'after:content-["*"] after:text-danger-500' : ''}`;
 
   return (
-    <label htmlFor={id} className={`${baseClass} ${className}`} {...rest}>
+    <label className={`${baseClass} ${className}`} {...rest}>
       {children}
     </label>
   );

@@ -1,45 +1,30 @@
-import React, { createContext, useContext, useId, useRef } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
+import * as RadixPopover from '@radix-ui/react-popover';
 import PopoverTrigger from '../popover-trigger/PopoverTrigger';
 import PopoverContent from '../popover-content/PopoverContent';
-import { usePopoverGroup } from './PopoverGroup';
+import { PopoverContext } from './PopoverContext';
 
-/**
- * - PopoverGroup의 openId를 받아 이 Popover의 isOpen을 계산합니다.
- * - usePopoverGroup은 PopoverRoot에서만 사용합니다.
- * - Trigger / Content는 상태를 직접 제어하지 않습니다.
- */
-export const usePopoverContext = () => {
-  const context = useContext(PopoverContext);
-  if (!context) throw new Error('Popover Component가 PopoverContext.Provider로 감싸져 있지 않습니다.');
-
-  return context;
-};
-
-interface PopoverContextValue {
-  id: string;
-  isOpen: boolean;
-  open: () => void;
-  close: () => void;
-  toggle: () => void;
-  triggerRef: React.RefObject<HTMLButtonElement | null>;
+interface PopoverProps {
+  children: ReactNode;
+  isOpen?: boolean;
+  onOpenChange?: (isOpen: boolean) => void;
 }
 
-const PopoverContext = createContext<PopoverContextValue | null>(null);
-
-export const PopoverRoot = ({ children }: { children: React.ReactNode }) => {
-  const id = useId();
-  const { openId, setOpenId } = usePopoverGroup();
+export const PopoverRoot = ({ children, isOpen: controlledOpen, onOpenChange }: PopoverProps) => {
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(false);
+  const isOpen = controlledOpen ?? uncontrolledOpen;
 
-  const isOpen = openId === id;
-
-  const open = () => setOpenId(id);
-  const close = () => setOpenId(null);
-  const toggle = () => setOpenId(isOpen ? null : id);
+  const setOpen = (nextOpen: boolean) => {
+    if (controlledOpen === undefined) setUncontrolledOpen(nextOpen);
+    onOpenChange?.(nextOpen);
+  };
 
   return (
-    <PopoverContext.Provider value={{ id, isOpen: openId === id, open, close, toggle, triggerRef }}>
-      {children}
+    <PopoverContext.Provider value={{ isOpen, triggerRef }}>
+      <RadixPopover.Root open={isOpen} onOpenChange={setOpen}>
+        {children}
+      </RadixPopover.Root>
     </PopoverContext.Provider>
   );
 };
@@ -47,4 +32,5 @@ export const PopoverRoot = ({ children }: { children: React.ReactNode }) => {
 export const Popover = Object.assign(PopoverRoot, {
   Trigger: PopoverTrigger,
   Content: PopoverContent,
+  Close: RadixPopover.Close,
 });

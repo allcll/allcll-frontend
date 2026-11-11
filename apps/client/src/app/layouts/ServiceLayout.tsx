@@ -1,11 +1,12 @@
 import useGlobalEffect from '@/app/lib/useGlobalEffect.ts';
-import ToastNotification from '@/features/notification/ui/ToastNotification.tsx';
 import Header from '@/widgets/header/ui/Header.tsx';
 import BannerNotification from '@/features/notification/ui/BannerNotification.tsx';
+import AlarmDisconnectBanner from '@/features/notification/ui/AlarmDisconnectBanner.tsx';
 import { Outlet } from 'react-router-dom';
 import Footer from '@/shared/ui/Footer.tsx';
 import ServiceEnabled from '@/entities/semester/ui/ServiceEnabled.tsx';
 import FeedbackFab from '@/features/feedback/ui/FeedbackFab';
+import { GlobalConfirmDialog, ToastNotification } from '@allcll/common';
 
 interface IServiceLayoutProps {
   serviceId: string;
@@ -17,9 +18,11 @@ function ServiceLayout({ serviceId }: IServiceLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col">
       <ToastNotification />
+      <GlobalConfirmDialog />
       <Header />
       <ServiceEnabled serviceId={serviceId}>
         <BannerNotification />
+        <AlarmDisconnectBanner />
         <main className="flex-1">
           <Outlet />
         </main>

@@ -1,19 +1,21 @@
 import { InputHTMLAttributes } from 'react';
+import { Input } from '@allcll/allcll-ui';
+import { formatHourMinute } from '@/shared/lib/time.ts';
 
 interface IInputTime extends InputHTMLAttributes<HTMLInputElement> {
   value?: string;
 }
 
-function InputTime({ className, onChange, ...props }: IInputTime) {
+function InputTime({ className = '', onChange, ...props }: IInputTime) {
   return (
-    <input
+    <Input
       type="time"
-      className={'px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:outline-blue-500 ' + className}
+      fullWidth={false}
+      className={className}
       placeholder="HH:MM"
       step={10 * 60} // 10 minutes step
       onChange={e => {
         e.target.value = reconcileTime(e.target.value);
-        console.log('Time changed:', e.target.value);
         if (onChange) onChange(e);
       }}
       {...props}
@@ -29,9 +31,7 @@ function reconcileTime(value: string) {
 
   const min = (Math.round(minutes / 10) % 6) * 10;
 
-  const normalizedHours = String(hours).padStart(2, '0');
-  const normalizedMinutes = String(min).padStart(2, '0');
-  return `${normalizedHours}:${normalizedMinutes}`;
+  return formatHourMinute(hours, min);
 }
 
 export default InputTime;

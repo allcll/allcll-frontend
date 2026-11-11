@@ -1,4 +1,4 @@
-import { useEffect, type ComponentType } from 'react';
+import type { ComponentType } from 'react';
 import { Dialog, Flex, Button } from '@allcll/allcll-ui';
 import type { CertificationType, GraduationCertificationCriteria } from '../../types/graduation';
 import ClassicCriteriaContent from './ClassicCriteriaContent';
@@ -42,27 +42,18 @@ function CertificationCriteriaModal({
   criteriaType,
   criteriaData,
 }: Readonly<CertificationCriteriaModalProps>) {
-  useEffect(() => {
-    if (!isOpen) return;
-    const original = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = original;
-    };
-  }, [isOpen]);
-
   const title = CRITERIA_TYPE_TITLES[criteriaType];
   const ContentComponent = criteriaContentRegistry[criteriaType];
 
   return (
     <Dialog title={title} onClose={onClose} isOpen={isOpen}>
       <Dialog.Content>
-        <Flex direction="flex-col" gap="gap-3" className="min-w-64 md:min-w-96 h-80 overflow-y-auto pr-3">
+        <Flex direction="column" gap={3} className="min-w-64 md:min-w-96 h-80 overflow-y-auto pr-3">
           <ContentComponent data={criteriaData} />
         </Flex>
       </Dialog.Content>
       <Dialog.Footer>
-        <Button variant="primary" size="small" onClick={onClose}>
+        <Button variant="solid" size="small" onClick={onClose}>
           닫기
         </Button>
       </Dialog.Footer>

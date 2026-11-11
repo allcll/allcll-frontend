@@ -4,7 +4,7 @@ export function TargetTypeBadge({ targetType }: Readonly<{ targetType: string }>
   const isMajor = targetType !== 'NON_MAJOR';
   return (
     <div>
-      <Badge variant={isMajor ? 'success' : 'default'}>{isMajor ? '전공자' : '비전공자'}</Badge>
+      <Badge color={isMajor ? 'success' : 'gray'}>{isMajor ? '전공자' : '비전공자'}</Badge>
     </div>
   );
 }

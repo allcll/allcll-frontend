@@ -9,12 +9,12 @@ interface IStatusCard {
 function StatusCard({ title, status, description }: IStatusCard) {
   return (
     <Card>
-      <Flex direction="flex-col" align="items-start" justify="justify-between">
+      <Flex direction="column" align="start" justify="between">
         <Heading level={5}>{title}</Heading>
 
         {description && <p className="text-sm text-gray-500">{description}</p>}
 
-        <Badge variant={status === 'ON' ? 'success' : 'danger'}>{status}</Badge>
+        <Badge color={status === 'ON' ? 'success' : 'danger'}>{status}</Badge>
       </Flex>
     </Card>
   );

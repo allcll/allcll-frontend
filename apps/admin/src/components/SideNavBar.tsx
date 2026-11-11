@@ -22,19 +22,14 @@ const Menus = [
     link: '/crawlers',
   },
   {
-    title: '졸업요건 설정',
-    icon: <GraduationCapIcon className="w-5 h-5" />,
-    link: '/graduation',
-  },
-  {
     title: '서비스 설정',
     icon: <SettingsIcon className="w-5 h-5" />,
     link: '/service',
   },
   {
-    title: '로그 설정',
-    icon: <ScrollTextIcon className="w-5 h-5" />,
-    link: '/logs',
+    title: '공지사항 관리',
+    icon: <MegaphoneIcon className="w-5 h-5" />,
+    link: '/notices',
   },
   {
     title: '사용자 후기',
@@ -42,9 +37,14 @@ const Menus = [
     link: '/reviews',
   },
   {
-    title: '공지사항',
-    icon: <MegaphoneIcon className="w-5 h-5" />,
-    link: '/notices',
+    title: '졸업요건 설정',
+    icon: <GraduationCapIcon className="w-5 h-5" />,
+    link: '/graduation',
+  },
+  {
+    title: 'API 요청 로그',
+    icon: <ScrollTextIcon className="w-5 h-5" />,
+    link: '/logs',
   },
 ];
 
@@ -62,8 +62,8 @@ function SideNavBar() {
                 to={menu.link}
                 className={({ isActive }) =>
                   isActive
-                    ? 'flex items-center gap-4 px-4 py-3 text-blue-500 font-semibold bg-blue-50'
-                    : 'flex items-center gap-4 px-4 py-3 text-gray-500'
+                    ? 'flex items-center gap-4 px-4 py-3 text-primary-500 font-semibold bg-primary-50'
+                    : 'flex items-center gap-4 px-4 py-3 text-gray-500 hover:text-gray-700 hover:bg-gray-50'
                 }
               >
                 <span className="w-6">{menu.icon}</span>

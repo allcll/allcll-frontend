@@ -90,13 +90,13 @@ function ServicePeriod() {
     <form onSubmit={submitServicePeriod}>
       <section>
         <Card>
-          <Flex direction="flex-col" gap="gap-4">
+          <Flex direction="column" gap={4}>
             <SectionHeader title="서비스 운영 기간 설정" description="각 서비스의 오픈 시작일과 종료일을 설정합니다." />
 
             {SERVICE_OPERATIONS.map(({ operationType, label }, index) => (
-              <Flex key={operationType} gap="gap-4">
+              <Flex key={operationType} gap={4}>
                 <div>
-                  <Label className="block text-sm font-medium mb-1">{label} 시작일</Label>
+                  <Label className="block mb-1.5">{label} 시작일</Label>
                   <DatePicker
                     selected={periods[index].startDate ? fromDateString(periods[index].startDate) : null}
                     onChange={date => updateDate(index, 'startDate', date)}
@@ -106,7 +106,7 @@ function ServicePeriod() {
                   />
                 </div>
                 <div>
-                  <Label className="block text-sm font-medium mb-1">{label} 종료일</Label>
+                  <Label className="block mb-1.5">{label} 종료일</Label>
                   <DatePicker
                     selected={periods[index].endDate ? fromDateString(periods[index].endDate) : null}
                     onChange={date => updateDate(index, 'endDate', date)}
@@ -120,17 +120,17 @@ function ServicePeriod() {
           </Flex>
 
           {errors.length > 0 && (
-            <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+            <div className="bg-danger-50 border border-danger-200 rounded-lg px-4 py-3">
               {errors.map(error => (
-                <p key={error} className="text-sm text-red-700">
+                <p key={error} className="text-sm text-danger-700">
                   {error}
                 </p>
               ))}
             </div>
           )}
 
-          <Flex justify="justify-end">
-            <Button type="submit" variant="primary" size="medium" disabled={isPending || !semester}>
+          <Flex justify="end">
+            <Button type="submit" variant="solid" size="medium" disabled={isPending || !semester}>
               {isPending ? '저장 중...' : '전체 저장'}
             </Button>
           </Flex>

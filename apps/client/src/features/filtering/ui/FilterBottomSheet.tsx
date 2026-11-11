@@ -1,11 +1,17 @@
-import BottomSheet from '@/features/timetable/ui/BottomSheet.tsx';
-import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader.tsx';
+import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet.tsx';
 import { Filters, initialFilters } from '@/features/filtering/model/useFilterStore.ts';
 import DepartmentSelect from '@/entities/departments/ui/DepartmentSelect.tsx';
 import GenericMultiSelectFilter from '@/features/filtering/ui/GenericMultiSelectFilter.tsx';
 import GenericSingleSelectFilter from '@/features/filtering/ui/GenericSingleSelectFilter.tsx';
-import { FilterDomains, getCategories } from '@/features/filtering/lib/filterDomains.ts';
+import {
+  FilterDomains,
+  getCategories,
+  getCreditOptions,
+  getDayOptions,
+  getGradeOptions,
+} from '@/features/filtering/lib/filterDomains.ts';
 import DayFilter from '@/features/filtering/ui/DayFilter.tsx';
+import SelectedFilterChips from '@/features/filtering/ui/SelectedFilterChips.tsx';
 import useSubject from '@/entities/subjects/model/useSubject.ts';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { Button, Chip, Flex } from '@allcll/allcll-ui';
@@ -14,13 +20,24 @@ import { FilterValueType } from '@/features/filtering/model/types.ts';
 import { useSemesterParam } from '@/entities/semester/model/useSemesterParam.ts';
 
 interface FilterBottomSheetProps {
+  isOpen: boolean;
   onCloseFiltering: () => void;
   filters: Filters;
   setFilter: (field: keyof Filters, value: Filters[keyof Filters]) => void;
   resetFilter: () => void;
+  showWishRange?: boolean;
+  showSeatRange?: boolean;
 }
 
-function FilterBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }: FilterBottomSheetProps) {
+function FilterBottomSheet({
+  isOpen,
+  onCloseFiltering,
+  filters,
+  setFilter,
+  resetFilter,
+  showWishRange = true,
+  showSeatRange = true,
+}: FilterBottomSheetProps) {
   const handleClickSave = () => {
     onCloseFiltering();
   };
@@ -45,68 +62,61 @@ function FilterBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }
   };
 
   return (
-    <BottomSheet>
-      <BottomSheetHeader
-        headerType="close"
-        title="필터링"
-        onClose={() => {
-          onCloseFiltering();
-        }}
-      />
+    <BottomSheet title="필터" isOpen={isOpen} onClose={onCloseFiltering}>
+      <div className="w-full flex flex-col gap-5">
+        <Flex direction="column" justify="center" gap={8} className="w-full">
+          <DepartmentSelect showLabel value={filters.department} onChange={code => setFilter('department', code)} />
 
-      <div className="w-full flex px-4 flex-col h-[85vh] gap-5 overflow-y-auto overscroll-contain">
-        <Flex direction="flex-wrap" gap="gap-2">
-          {allSelectedFilters.map(filter => (
-            <Chip
-              key={`${filter.filterKey}-${filter.values}`}
-              variant="cancel"
-              label={filter.label}
-              selected={true}
-              onClick={() => handleDeleteFilter(filter.filterKey, filter.values)}
+          {showWishRange && (
+            <GenericSingleSelectFilter
+              filterKey="wishRange"
+              options={FilterDomains.wishRange}
+              selectedValue={filters.wishRange ?? null}
+              setFilter={setFilter}
+              ItemComponent={Chip}
             />
-          ))}
-        </Flex>
+          )}
 
-        <Flex direction="flex-col" justify="justify-center" gap="gap-8" className="w-full">
-          <DepartmentSelect
-            className="cursor-pointer border-gray-100 rounded-sm py-1 text-sm"
-            value={filters.department}
-            onChange={e => setFilter('department', e.target.value)}
-          />
-
-          <GenericSingleSelectFilter
-            filterKey="wishRange"
-            options={FilterDomains.wishRange}
-            selectedValue={filters.wishRange ?? null}
-            setFilter={setFilter}
-            ItemComponent={Chip}
-          />
-
-          <GenericSingleSelectFilter
-            filterKey="seatRange"
-            options={FilterDomains.seatRange}
-            selectedValue={filters.seatRange ?? null}
-            setFilter={setFilter}
-            ItemComponent={Chip}
-          />
-
-          <Flex direction="flex-col" gap="gap-2">
-            <DayFilter times={filters.time} setFilter={setFilter} />
-          </Flex>
+          {showSeatRange && (
+            <GenericSingleSelectFilter
+              filterKey="seatRange"
+              options={FilterDomains.seatRange}
+              selectedValue={filters.seatRange ?? null}
+              setFilter={setFilter}
+              ItemComponent={Chip}
+            />
+          )}
 
           <GenericMultiSelectFilter
             filterKey="credits"
-            options={FilterDomains.credits}
+            options={getCreditOptions(subjects ?? [])}
             selectedValues={filters.credits ?? []}
             setFilter={setFilter}
           />
 
           <GenericMultiSelectFilter
             filterKey="grades"
-            options={FilterDomains.grades}
+            options={getGradeOptions(subjects ?? [])}
             selectedValues={filters.grades ?? []}
             setFilter={setFilter}
           />
+
+          <GenericMultiSelectFilter
+            filterKey="categories"
+            options={categoryOptions}
+            selectedValues={(filters.categories as string[]) ?? []}
+            setFilter={setFilter}
+          />
+
+          <Flex direction="column" gap={2}>
+            <DayFilter
+              options={getDayOptions(subjects ?? [])}
+              days={filters.days ?? []}
+              time={filters.time}
+              dayTimes={filters.dayTimes}
+              setFilter={setFilter}
+            />
+          </Flex>
 
           <GenericMultiSelectFilter
             filterKey="classroom"
@@ -122,21 +132,20 @@ function FilterBottomSheet({ onCloseFiltering, filters, setFilter, resetFilter }
             setFilter={setFilter}
           />
 
-          <GenericMultiSelectFilter
-            filterKey="categories"
-            options={categoryOptions}
-            selectedValues={(filters.categories as string[]) ?? []}
-            setFilter={setFilter}
-          />
-
-          <div className="sticky bottom-0 py-3 bg-white flex justify-end items-center gap-2 border-gray-200">
-            <Button variant="outlined" size="medium" onClick={resetFilter} disabled={allSelectedFilters.length === 0}>
+          <BottomSheet.Footer above={<SelectedFilterChips items={allSelectedFilters} onDelete={handleDeleteFilter} />}>
+            <Button
+              variant="solid"
+              color="gray"
+              size="medium"
+              onClick={resetFilter}
+              disabled={allSelectedFilters.length === 0}
+            >
               필터 초기화
             </Button>
-            <Button type="submit" variant="primary" size="medium" onClick={handleClickSave}>
-              저장
+            <Button type="submit" variant="solid" size="medium" onClick={handleClickSave}>
+              완료
             </Button>
-          </div>
+          </BottomSheet.Footer>
         </Flex>
       </div>
     </BottomSheet>

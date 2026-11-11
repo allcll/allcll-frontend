@@ -24,7 +24,7 @@ interface StatusIconProps {
 
 function StatusIcon({ passed, label }: Readonly<StatusIconProps>) {
   return (
-    <Flex direction="flex-col" align="items-center" gap="gap-2" className="md:flex-row">
+    <Flex direction="column" align="center" gap={2} className="md:flex-row">
       <div className={passed ? 'text-primary-500' : 'text-gray-400'}>
         {passed ? <CheckmarkOutlineIcon className="w-8 h-8" /> : <MisuseIcon className="w-8 h-8" />}
       </div>
@@ -42,11 +42,11 @@ function OverallSummaryCard({ user, checkData }: Readonly<OverallSummaryCardProp
 
   return (
     <Card variant="outlined" className="p-6 md:p-10">
-      <Flex direction="flex-col" gap="gap-4" className="md:flex-row md:justify-between md:items-center">
-        <Flex direction="flex-col" gap="gap-3" className="md:flex-1">
-          <Flex align="items-center" gap="gap-3">
+      <Flex direction="column" gap={4} className="md:flex-row md:justify-between md:items-center">
+        <Flex direction="column" gap={3} className="md:flex-1">
+          <Flex align="center" gap={3}>
             <SupportingText>전체 진행률</SupportingText>
-            <Badge variant={checkData.isGraduatable ? 'success' : 'warning'}>
+            <Badge color={checkData.isGraduatable ? 'success' : 'warning'}>
               {checkData.isGraduatable ? '졸업 가능' : '진행 중'}
             </Badge>
           </Flex>
@@ -70,23 +70,23 @@ function OverallSummaryCard({ user, checkData }: Readonly<OverallSummaryCardProp
             )}
           </div>
 
-          <Flex direction="flex-col" gap="gap-1" className="text-sm text-gray-600 md:mt-2">
-            <Flex gap="gap-2">
+          <Flex direction="column" gap={1} className="text-sm text-gray-600 md:mt-2">
+            <Flex gap={2}>
               <span className="text-gray-500 w-16 shrink-0">이름</span>
               <span>{user.name}</span>
             </Flex>
-            <Flex gap="gap-2">
+            <Flex gap={2}>
               <span className="text-gray-500 w-16 shrink-0">학번</span>
               <span>{user.studentId}</span>
             </Flex>
-            <Flex gap="gap-2">
+            <Flex gap={2}>
               <span className="text-gray-500 w-16 shrink-0">학과</span>
               <span>
                 {user.deptName} ({user.collegeName})
               </span>
             </Flex>
             {user.doubleDeptName && (
-              <Flex gap="gap-2">
+              <Flex gap={2}>
                 <span className="text-gray-500 w-16 shrink-0">복수전공</span>
                 <span>
                   {user.doubleDeptName} ({user.doubleCollegeName})
@@ -96,14 +96,14 @@ function OverallSummaryCard({ user, checkData }: Readonly<OverallSummaryCardProp
           </Flex>
         </Flex>
 
-        <Flex direction="flex-col" className="md:flex-row md:items-center md:gap-24">
-          <Flex justify="justify-between" className="md:flex-col md:gap-6 py-4 px-5 md:p-0">
+        <Flex direction="column" className="md:flex-row md:items-center md:gap-24">
+          <Flex justify="between" className="md:flex-col md:gap-6 py-4 px-5 md:p-0">
             <StatusIcon passed={majorPassed} label="전공" />
             <StatusIcon passed={generalPassed} label="교양" />
             <StatusIcon passed={certificationPassed} label="졸업인증" />
           </Flex>
 
-          <Flex justify="justify-center" className="py-4 md:py-0">
+          <Flex justify="center" className="py-4 md:py-0">
             <ProgressDoughnut earned={summary.totalMyCredits} required={summary.requiredTotalCredits} size="large" />
           </Flex>
         </Flex>

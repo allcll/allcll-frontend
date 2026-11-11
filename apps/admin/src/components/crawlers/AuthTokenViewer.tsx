@@ -11,9 +11,9 @@ function AuthTokenViewer() {
       <Card>
         <SectionHeader title="인증정보 조회" description="현재 설정된 인증 정보를 조회합니다." />
 
-        <Card.Content>
-          <Flex gap="gap-2">
-            <Button onClick={() => refetch()} variant="outlined" size="medium" disabled={isFetching}>
+        <div className="flex flex-col space-y-3 text-gray-600 text-sm">
+          <Flex gap={2}>
+            <Button onClick={() => refetch()} variant="outlined" color="gray" size="medium" disabled={isFetching}>
               {isFetching ? '조회 중…' : '인증정보 조회'}
             </Button>
           </Flex>
@@ -25,7 +25,7 @@ function AuthTokenViewer() {
               </p>
             ))}
           </div>
-        </Card.Content>
+        </div>
       </Card>
     </section>
   );

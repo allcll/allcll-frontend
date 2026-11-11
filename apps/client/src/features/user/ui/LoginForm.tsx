@@ -1,3 +1,4 @@
+import { useToastNotification } from '@allcll/common';
 import {
   Button,
   Card,
@@ -7,6 +8,7 @@ import {
   IconButton,
   SupportingText,
   TextField,
+  TextLink,
   ViewIcon as EyeOpenIcon,
   ViewOffIcon as EyeClosedIcon,
 } from '@allcll/allcll-ui';
@@ -14,7 +16,6 @@ import { useId, useState } from 'react';
 import useLoginForm from '../lib/useLoginForm';
 import useLoginConfirm from '../lib/useLoginConfirm';
 import { useLogin } from '@/entities/user/model/useAuth';
-import useToastNotification from '@/features/notification/model/useToastNotification';
 import LoginConfirmationDialog from './LoginConformDialog';
 import LoginErrorNotice from './LoginErrorNotice';
 import { type ILoginErrorView, toLoginErrorView } from '../lib/loginErrors.ts';
@@ -44,7 +45,7 @@ function LoginForm({ onSuccess }: ILoginFormProps) {
   const handleLoginSuccess = () => {
     setErrorView(null);
     onSuccess?.();
-    addToast('로그인에 성공하셨습니다.', 'login-success');
+    addToast('로그인되었습니다.', 'login-success');
   };
 
   const handleLoginError = (error: Error) => {
@@ -72,8 +73,8 @@ function LoginForm({ onSuccess }: ILoginFormProps) {
     <>
       {/* 상위가 max-w-4xl 이라 그대로 두면 폼이 860px 까지 늘어납니다. */}
       <Card variant="outlined" className="w-full max-w-lg mx-auto p-8">
-        <Flex justify="justify-center" direction="flex-col">
-          <Heading level={2} size="xxl" className="mb-2 text-center">
+        <Flex justify="center" direction="column">
+          <Heading level={1} className="mb-2 text-center">
             세종대 포털 로그인
           </Heading>
           <SupportingText className="mb-2 text-center">
@@ -95,29 +96,28 @@ function LoginForm({ onSuccess }: ILoginFormProps) {
             autoComplete="username"
             {...getTextFieldProps('studentId')}
           />
-          <div className="relative">
-            <TextField
-              label="비밀번호"
-              size="medium"
-              required
-              type={showPassword ? 'text' : 'password'}
-              placeholder="세종대 포털 비밀번호를 입력하세요."
-              autoComplete="current-password"
-              {...getTextFieldProps('password')}
-            />
+          <TextField
+            label="비밀번호"
+            size="medium"
+            required
+            type={showPassword ? 'text' : 'password'}
+            placeholder="세종대 포털 비밀번호를 입력하세요."
+            autoComplete="current-password"
+            {...getTextFieldProps('password')}
+            endAdornment={
+              values.password && (
+                <IconButton
+                  size="medium"
+                  type="button"
+                  onClick={() => setShowPassword(value => !value)}
+                  aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+                  icon={!showPassword ? <EyeClosedIcon /> : <EyeOpenIcon />}
+                />
+              )
+            }
+          />
 
-            {values.password && (
-              <IconButton
-                type="button"
-                onClick={() => setShowPassword(value => !value)}
-                aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
-                icon={!showPassword ? <EyeClosedIcon className="w-4 h-4" /> : <EyeOpenIcon className="w-4 h-4" />}
-                className="absolute right-8 top-11"
-              />
-            )}
-          </div>
-
-          <Flex direction="flex-col" gap="gap-2">
+          <Flex direction="column" gap={2}>
             <SupportingText className="break-keep">
               ※ <span className="font-semibold text-primary-500">부전공, 전과생, 연계전공, 편입생</span>의 경우 과목
               인정 기준에 따라 일부 결과가 실제 졸업요건과 다르게 표시될 수 있습니다. 결과는{' '}
@@ -127,12 +127,7 @@ function LoginForm({ onSuccess }: ILoginFormProps) {
               <br />※ ALLCLL 로그인 시{' '}
               <span className="font-semibold text-primary-500">학사정보시스템(세종대 포털)에서 로그아웃</span>됩니다.
             </SupportingText>
-            <Flex
-              direction="flex-col"
-              align="items-start"
-              justify="justify-between"
-              className="sm:flex-row sm:items-center"
-            >
+            <Flex direction="column" align="start" justify="between" className="sm:flex-row sm:items-center">
               <Checkbox
                 label="개인정보 수집에 동의합니다."
                 name="agreeToTerms"
@@ -141,15 +136,13 @@ function LoginForm({ onSuccess }: ILoginFormProps) {
                 onBlur={() => onBlur('agreeToTerms')}
               />
 
-              <Button asChild variant="text" textColor="gray" size="small">
-                <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">
-                  자세히 보기
-                </a>
-              </Button>
+              <TextLink href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="py-1.5 text-sm">
+                자세히 보기
+              </TextLink>
             </Flex>
           </Flex>
 
-          <Button type="submit" variant="primary" size="medium" disabled={!isValid || isPending}>
+          <Button type="submit" variant="solid" size="medium" disabled={!isValid || isPending}>
             {isPending ? '로그인 중...' : '로그인'}
           </Button>
 

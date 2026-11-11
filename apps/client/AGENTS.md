@@ -56,10 +56,10 @@ ESLint가 검사하는 규칙은 하나입니다. 아래 레이어에서 위 레
 
 ## 헷갈리기 쉬운 것
 
-- **토스트**: client는 `@/features/notification/model/useToastNotification`을 씁니다. `@allcll/common`에 있는 같은 이름의 훅은 admin이 쓰는 것이고 동작이 다릅니다.
+- **토스트**: client와 admin 모두 `@allcll/common`의 `useToastNotification`을 씁니다. `addToast`에 태그를 넘기면 3초 뒤 저절로 닫히고, 태그가 없으면 X를 누를 때까지 남습니다.
 - **UI와 아이콘**: 새로 만들기 전에 `@allcll/allcll-ui`에 있는지 봅니다. 아이콘도 여기서 가져오고 `lucide-react`를 직접 쓰지 않습니다.
 - **수강신청 연습 화면**: 세종대 수강신청 시스템 모양을 흉내 내는 `src/widgets/simulation/modal/`, `src/widgets/simulation/table/`, `src/widgets/simulation/SimulationSearchForm.tsx`는 `@allcll/sejong-ui`를 씁니다. 이 파일들도 버튼과 다이얼로그는 `@allcll/allcll-ui`와 섞어 쓰니, 같은 폴더의 기존 코드를 따릅니다.
-- **바텀시트**: `src/features/timetable/ui/BottomSheet.tsx` 하나뿐이고, 닫힐 때 시간표에서 편집 중인 일정도 함께 비웁니다. 시간표와 상관없는 화면에서 쓸 때는 이 동작을 알고 씁니다.
+- **바텀시트**: `src/shared/ui/bottomsheet/BottomSheet.tsx`를 씁니다. `@allcll/allcll-ui`의 BottomSheet에 뒤로가기로 닫기와 닫히는 동안 마지막 내용 유지를 더한 래퍼입니다. 조건부 렌더링으로 감싸지 말고 `isOpen`으로 열고 닫아야 닫힘 애니메이션이 보입니다.
 
 ## 고친 뒤 확인
 

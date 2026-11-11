@@ -25,7 +25,7 @@ function getTextBgColor(color: string) {
     case 'green':
       return 'bg-green-100 text-green-500';
     case 'red':
-      return 'bg-red-100 text-red-500';
+      return 'bg-danger-100 text-danger-500';
     case 'orange':
       return 'bg-orange-100 text-orange-500';
     case 'yellow':

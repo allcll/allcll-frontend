@@ -5,6 +5,8 @@ import { DepartmentType } from '@/features/filtering/model/types.ts';
 
 export type DepartmentCategory = '전체' | '전공' | '교양';
 
+export const ALL_DEPARTMENT: DepartmentType = { departmentName: '전체 학과', departmentCode: '' };
+
 interface useFilteringDepartmentProps {
   category: DepartmentCategory;
   setCategory: (category: DepartmentCategory) => void;
@@ -20,24 +22,22 @@ export function useFilteringDepartment({
   searchKeywords,
   setSearchKeywords,
 }: Partial<useFilteringDepartmentProps> = {}) {
-  const departmentsList = useMemo<DepartmentType[]>(
-    () => {
-      const dprts = [{ departmentName: '전체학과', departmentCode: '' }, ...(departments ?? [])];
+  const departmentsList = useMemo<DepartmentType[]>(() => {
+    // 학과명 끝 단어 기준으로 정렬 (ex: 컴퓨터공학과, 소프트웨어학과)
+    const sorted = [...(departments ?? [])].sort((a, b) => {
+      const aLast = a.departmentName.split(' ').slice(-1)[0];
+      const bLast = b.departmentName.split(' ').slice(-1)[0];
 
-      // 학과명 끝 단어 기준으로 정렬 (ex: 컴퓨터공학과, 소프트웨어학과)
-      return dprts.sort((a, b) => {
-        const aLast = a.departmentName.split(' ').slice(-1)[0];
-        const bLast = b.departmentName.split(' ').slice(-1)[0];
+      return aLast.localeCompare(bLast);
+    });
 
-        return aLast.localeCompare(bLast);
-      });
-    },
-    [departments],
-  );
+    return [ALL_DEPARTMENT, ...sorted];
+  }, [departments]);
 
   const filteredDepartments = useMemo(() => {
     return departmentsList
       .filter(department => {
+        if (department === ALL_DEPARTMENT) return true;
         if (category === '교양') return department.departmentCode === '9005';
         if (category === '전공') return department.departmentCode !== '9005';
         return true;

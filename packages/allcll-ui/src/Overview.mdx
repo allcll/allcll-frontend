@@ -1,0 +1,183 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs/blocks';
+import { colors } from '../colors';
+import { Z_INDEX } from '../zIndex';
+
+<Meta title="Overview" />
+
+export const Z_INDEX_USAGE = {
+  content: 'sticky 표 헤더, 사이드바처럼 본문 위로 살짝 띄우는 요소',
+  loading: '영역 위를 덮는 로딩 표시',
+  elevated: '메인 배너, 강조된 시간표 칸',
+  popover: '버튼 아래에 펼쳐지는 Popover',
+  header: '상단 고정 헤더',
+  overlay: '메뉴, 드로어 뒤를 덮는 어두운 배경',
+  floating: '드롭다운 패널, 드로어, 떠 있는 버튼',
+  modal: '앱 자체 중앙 모달',
+  bottomSheet: '바텀 시트, 전체 화면 상세 창',
+  dialog: 'Dialog',
+  dropdown: 'Dialog 위에서도 보여야 하는 선택 목록',
+  toast: 'Toast',
+};
+
+export const shades = palette => Object.fromEntries(Object.entries(palette).filter(([key]) => key !== 'DEFAULT'));
+
+export const CATEGORIES = [
+  {
+    name: 'Actions',
+    description: '눌러서 동작을 실행하거나 선택을 켜고 끄는 요소',
+    items: [
+      ['Button', '누르면 동작을 실행하는 버튼'],
+      ['Chip', '필터나 선택 항목을 켜고 끄는 칩'],
+      ['IconButton', '아이콘만 있는 버튼'],
+      ['TextLink', '문장 안에 들어가는 링크'],
+    ],
+  },
+  {
+    name: 'Form',
+    description: '값을 입력하거나 고를 때 쓰는 요소',
+    items: [
+      ['Checkbox', '여러 개를 함께 고를 수 있는 체크박스'],
+      ['Input', '라벨 없이 쓰는 기본 입력창'],
+      ['Label', '입력 요소 위에 붙는 이름'],
+      ['Listbox', '여러 선택지 중 하나를 고르는 목록'],
+      ['RangeSlider', '두 손잡이로 범위를 고르는 슬라이더'],
+      ['SearchableSelect', '검색해서 하나를 고르는 선택 상자'],
+      ['SegmentedControl', '선택지 중 하나를 눌러 바로 고르는 컴포넌트'],
+      ['Select', '공통 스타일을 입힌 기본 선택 상자'],
+      ['Textarea', '여러 줄을 입력하는 칸'],
+      ['TextField', '라벨과 오류 메시지를 함께 보여주는 입력칸'],
+      ['Toggle', '설정을 즉시 켜고 끄는 스위치'],
+    ],
+  },
+  {
+    name: 'Feedback',
+    description: '진행 상황이나 결과를 알려주는 요소',
+    items: [
+      ['Banner', '페이지 위쪽에 놓는 안내 띠'],
+      ['EmptyState', '목록이 비었거나 결과가 없을 때 보여주는 안내'],
+      ['LoadingState', '데이터를 불러오는 동안 보여주는 안내'],
+      ['Skeleton', '내용이 들어올 자리를 미리 잡는 회색 상자'],
+      ['Spinner', '작은 영역에서 보여주는 회전 아이콘'],
+      ['Toast', '동작 결과를 잠깐 알려주는 메시지'],
+      ['Tooltip', '보조 설명을 보여주는 말풍선'],
+    ],
+  },
+  {
+    name: 'Overlay',
+    description: '화면 위에 겹쳐 띄우는 창과 패널',
+    items: [
+      ['BottomSheet', '모바일에서 화면 아래에서 올라오는 창'],
+      ['Dialog', '확인이나 입력을 받는 창'],
+      ['Popover', '버튼 아래에 펼쳐지는 작은 패널'],
+    ],
+  },
+  {
+    name: 'Navigation',
+    description: '다른 페이지나 내용으로 옮겨 가는 요소',
+    items: [
+      ['Pagination', '여러 페이지로 나뉜 목록의 페이지 이동'],
+      ['TabNav', '다른 페이지로 이동하는 탭 모양 링크'],
+      ['Tabs', '같은 화면 안에서 내용을 바꿔 보여주는 탭'],
+    ],
+  },
+  {
+    name: 'Display',
+    description: '내용을 보여주거나 묶는 요소',
+    items: [
+      ['Accordion', '제목을 누르면 펼쳐지고 접히는 목록'],
+      ['Badge', '상태나 수치를 짧게 보여주는 작은 표시'],
+      ['Card', '관련된 내용을 하나로 묶는 상자'],
+      ['Heading', '페이지나 구역의 제목'],
+      ['SupportingText', '제목이나 입력 요소 아래에 붙는 보조 설명'],
+      ['Table', '행과 열로 데이터를 보여주는 표'],
+    ],
+  },
+  {
+    name: 'Layout',
+    description: '화면 배치와 간격을 잡는 요소',
+    items: [
+      ['Container', '페이지 내용의 최대 폭과 좌우 여백'],
+      ['Flex', '요소를 가로나 세로로 늘어놓는 묶음'],
+      ['Grid', '요소를 같은 폭의 열로 나누는 배치'],
+    ],
+  },
+];
+
+export const docsHref = (category, name) =>
+  `./?path=/docs/${category.toLowerCase()}-${name.toLowerCase()}--docs`;
+
+# ALLCLL UI
+
+ALLCLL 서비스에 사용하는 디자인 시스템입니다. 화면에서 반복되는 요소는 이곳의 컴포넌트를 먼저 찾아 사용하고, 없으면 이곳에 추가해 서비스 전반이 같은 모양을 유지하도록 합니다.
+
+```tsx
+import { Button, Pagination, CheckmarkIcon } from '@allcll/allcll-ui';
+```
+
+- 스타일은 Tailwind CSS 4를 사용하고, 색상과 z-index는 패키지 루트의 `colors.ts`, `zIndex.ts`에서 관리합니다.
+- 아이콘은 lucide-react를 서비스에 맞는 이름으로 다시 내보내어 사용합니다(`src/icons`).
+
+## 색상 토큰
+
+`primary`, `danger`, `text`는 `colors.ts`에서 정의한 커스텀 색상이고, 이외의 색상은 Tailwind 기본 팔레트를 사용합니다.
+
+<ColorPalette>
+  <ColorItem title="primary" subtitle="주요 동작, 선택 상태" colors={shades(colors.primary)} />
+  <ColorItem title="danger" subtitle="오류, 삭제" colors={colors.danger} />
+  <ColorItem title="text" subtitle="제목, 진한 본문" colors={colors.text} />
+</ColorPalette>
+
+## 컴포넌트
+
+화면에서 맡는 역할에 따라 나눈 컴포넌트 목록입니다.
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 16 }}>
+  {CATEGORIES.map(category => (
+    <section
+      key={category.name}
+      style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: '12px 16px' }}
+    >
+      <h3 style={{ margin: 0, fontSize: 14 }}>{category.name}</h3>
+      <p style={{ margin: '2px 0 8px', fontSize: 12, color: '#6b7280' }}>{category.description}</p>
+      <ul style={{ margin: 0, paddingLeft: 0, listStyle: 'none' }}>
+        {category.items.map(([name, description, hasDocs = true]) => (
+          <li key={name} style={{ margin: '6px 0', fontSize: 13, lineHeight: 1.5 }}>
+            {hasDocs ? (
+              <a href={docsHref(category.name, name)} target="_top" style={{ fontSize: 13 }}>
+                {name}
+              </a>
+            ) : (
+              <span style={{ color: '#9ca3af', fontSize: 13 }}>{name}</span>
+            )}
+            <span style={{ color: '#6b7280', fontSize: 13 }}> {description}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</div>
+
+## z-index 단계
+
+겹침 순서는 `zIndex.ts`의 단계로만 정합니다. Tailwind 클래스는 `z-content`, `z-modal`처럼 쓰고, `z-[123]` 같은 임의 값은 사용하지 않습니다. 새 단계가 필요하면 `zIndex.ts`에 먼저 추가합니다.
+
+<table>
+  <thead>
+    <tr>
+      <th>단계</th>
+      <th>값</th>
+      <th>용도</th>
+    </tr>
+  </thead>
+  <tbody>
+    {Object.entries(Z_INDEX).map(([layer, value]) => (
+      <tr key={layer}>
+        <td>
+          <code>{layer}</code>
+        </td>
+        <td>{value}</td>
+        <td>{Z_INDEX_USAGE[layer]}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>

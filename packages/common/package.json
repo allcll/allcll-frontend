@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@allcll/allcll-ui": "workspace:^",
+    "@radix-ui/react-dismissable-layer": "^1.2.1",
     "chart.js": "^4.5.0",
     "react-chartjs-2": "^5.3.0",
     "react-transition-group": "^4.4.5",

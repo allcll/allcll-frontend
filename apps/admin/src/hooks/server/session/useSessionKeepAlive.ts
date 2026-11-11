@@ -27,8 +27,6 @@ const startSessionKeepAlive = async (userId: string) => {
     method: 'POST',
   });
 
-  console.log(response);
-
   if (!response.ok) {
     throw new Error(await response.text());
   }

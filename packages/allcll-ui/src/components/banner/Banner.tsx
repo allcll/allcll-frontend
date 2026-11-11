@@ -1,46 +1,44 @@
-import { CloseIcon, WarningIcon } from '../../icons';
+import { CloseIcon, InfoIcon, WarningIcon } from '../../icons';
 import IconButton from '../icon-button/IconButton';
-import RowSlots from '../row/RowSlots';
+import Container from '../container/Container';
+import Flex from '../flex/Flex';
 
-type BannerVariant = 'warning' | 'info';
+type BannerVariant = 'info' | 'danger';
 
 interface IBanner {
   variant?: BannerVariant;
   children: React.ReactNode;
-  deleteBanner: () => void;
+  onClose?: () => void;
 }
 
-function Banner({ variant = 'info', children, deleteBanner }: IBanner) {
-  const bannerColorClass = getBannerColor(variant);
+const BANNER_STYLE = {
+  info: { container: 'bg-primary-100 border-b border-primary-200', icon: InfoIcon, iconColor: 'text-primary-500' },
+  danger: { container: 'bg-danger-100 border-b border-danger-200', icon: WarningIcon, iconColor: 'text-danger-500' },
+} satisfies Record<BannerVariant, object>;
+
+function Banner({ variant = 'info', children, onClose }: IBanner) {
+  const { container, icon: Icon, iconColor } = BANNER_STYLE[variant];
 
   return (
-    <RowSlots
-      withPadding
-      className={`${bannerColorClass} items-center`}
-      left={<WarningIcon className="text-gray-500 w-4 h-4" />}
-      center={<span className="block text-xs leading-5">{children}</span>}
-      right={
-        <IconButton
-          label="알림 닫기"
-          variant="plain"
-          icon={<CloseIcon className="text-gray-500 w-5 h-5" />}
-          onClick={deleteBanner}
-          className="rounded-full"
-        />
-      }
-    />
+    <div className={container}>
+      <Container>
+        <Flex align="center" gap={3} className="py-3">
+          <Icon className={`w-4 h-4 shrink-0 ${iconColor}`} />
+          <span className="flex-1 text-xs leading-5">{children}</span>
+          {onClose && (
+            <IconButton
+              size="medium"
+              label="알림 닫기"
+              variant="plain"
+              icon={<CloseIcon className="text-gray-500" />}
+              onClick={onClose}
+              className="rounded-full shrink-0"
+            />
+          )}
+        </Flex>
+      </Container>
+    </div>
   );
 }
 
 export default Banner;
-
-function getBannerColor(variant: BannerVariant) {
-  switch (variant) {
-    case 'warning':
-      return 'bg-secondary-100';
-    case 'info':
-      return 'bg-blue-100';
-    default:
-      return 'bg-gray-100';
-  }
-}

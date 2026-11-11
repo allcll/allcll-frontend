@@ -1,4 +1,5 @@
-import {Day} from '@/entities/timetable/model/types.ts';
+import { Day } from '@/entities/timetable/model/types.ts';
+import { Select } from '@allcll/allcll-ui';
 
 interface TimeRange {
   startHour: string;
@@ -26,60 +27,62 @@ function SelectTime({ timeRange, onChange, day }: Readonly<ISelectTime>) {
     onChange(key, value);
   };
 
+  const namePrefix = day ? `${day}요일 ` : '';
+
   return (
-    <div className=" w-full h-3 flex gap-2 flex-col justify-center">
-      <div className="relative w-full flex gap-2 flex-wrap">
-        <select
+    <div className="w-full">
+      <div className="relative w-full flex items-center gap-2 flex-wrap">
+        <Select
           name="startHour"
+          aria-label={`${namePrefix}시작 시`}
           value={timeRange.startHour ?? HOURS[8]}
           onChange={e => handleChangeTime('startHour', e.target.value)}
-          className="bg-gray-100 px-3 py-2 rounded-md text-xs text-gray-600 w-fit"
         >
           {HOURS.map(hour => (
             <option key={hour} value={hour}>
               {hour}
             </option>
           ))}
-        </select>
-        <select
+        </Select>
+        <Select
           name="startMinute"
+          aria-label={`${namePrefix}시작 분`}
           value={timeRange.startMinute ?? MINUTES[0]}
           onChange={e => handleChangeTime('startMinute', e.target.value)}
-          className="bg-gray-100 px-3 py-2 rounded-md text-xs text-gray-600 w-fit"
         >
           {MINUTES.map(minute => (
             <option key={minute} value={minute}>
               {minute}
             </option>
           ))}
-        </select>
+        </Select>
 
         <span className="text-gray-400 text-sm mx-1">~</span>
 
-        <select
+        <Select
           name="endHour"
+          aria-label={`${namePrefix}끝 시`}
           value={timeRange.endHour ?? HOURS[9]}
           onChange={e => handleChangeTime('endHour', e.target.value)}
-          className="bg-gray-100 px-3 py-2 rounded-md text-xs text-gray-600 w-fit"
         >
           {HOURS.map(hour => (
             <option key={hour} value={hour}>
               {hour}
             </option>
           ))}
-        </select>
-        <select
+        </Select>
+        <Select
           name="endMinute"
+          aria-label={`${namePrefix}끝 분`}
           value={timeRange.endMinute ?? MINUTES[0]}
           onChange={e => handleChangeTime('endMinute', e.target.value)}
-          className="bg-gray-100 px-3 py-2 rounded-md text-xs text-gray-600 w-fit"
         >
           {MINUTES.map(minute => (
             <option key={minute} value={minute}>
               {minute}
             </option>
           ))}
-        </select>
+        </Select>
       </div>
     </div>
   );

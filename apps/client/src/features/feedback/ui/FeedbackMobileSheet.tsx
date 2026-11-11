@@ -1,24 +1,10 @@
-import { useEffect } from 'react';
-import BottomSheet from '@/features/timetable/ui/BottomSheet.tsx';
-import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader';
+import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet';
 import { FeedbackActions, FeedbackFields, FeedbackSuccess } from './FeedbackSharedContent';
 import { Flex } from '@allcll/allcll-ui';
 import type { IFeedbackViewProps } from './FeedbackViewProps';
 
-const SHEET_HEIGHT = 380;
-const SHEET_HEIGHT_WITH_CATEGORY = 500;
-
-export default function FeedbackMobileSheet(props: IFeedbackViewProps) {
-  return (
-    <BottomSheet>{({ collapseToMin }) => <FeedbackContainer {...props} collapseToMin={collapseToMin} />}</BottomSheet>
-  );
-}
-
-interface IFeedbackContainerProps extends IFeedbackViewProps {
-  collapseToMin: (height?: number) => void;
-}
-
-function FeedbackContainer({
+export default function FeedbackMobileSheet({
+  isOpen,
   success,
   rate,
   setRate,
@@ -32,42 +18,36 @@ function FeedbackContainer({
   onClose,
   onDontShowAgain,
   onSubmit,
-  collapseToMin,
   titles,
-}: IFeedbackContainerProps) {
-  const sheetHeight = onCategoryChange ? SHEET_HEIGHT_WITH_CATEGORY : SHEET_HEIGHT;
-
-  useEffect(() => {
-    collapseToMin(sheetHeight);
-  }, [collapseToMin, sheetHeight]);
-
-  return !success ? (
-    <>
-      <BottomSheetHeader headerType="close" title={titles.title} onClose={onClose} />
-      <div className="px-4 pb-4">
-        <FeedbackFields
-          titles={titles}
-          rate={rate}
-          setRate={setRate}
-          detail={detail}
-          setDetail={setDetail}
-          category={category}
-          onCategoryChange={onCategoryChange}
-          error={error}
-        />
-        <Flex justify="justify-end" className="gap-2 pt-3">
-          <FeedbackActions
-            isPending={isPending}
-            canSubmit={canSubmit}
-            onDontShowAgain={onDontShowAgain}
-            onSubmit={onSubmit}
-          />
-        </Flex>
+}: IFeedbackViewProps & { isOpen: boolean }) {
+  return (
+    <BottomSheet title={titles.title} isOpen={isOpen} onClose={onClose}>
+      <div>
+        {!success ? (
+          <Flex direction="column" gap={6}>
+            <FeedbackFields
+              titles={titles}
+              rate={rate}
+              setRate={setRate}
+              detail={detail}
+              setDetail={setDetail}
+              category={category}
+              onCategoryChange={onCategoryChange}
+              error={error}
+            />
+            <BottomSheet.Footer>
+              <FeedbackActions
+                isPending={isPending}
+                canSubmit={canSubmit}
+                onDontShowAgain={onDontShowAgain}
+                onSubmit={onSubmit}
+              />
+            </BottomSheet.Footer>
+          </Flex>
+        ) : (
+          <FeedbackSuccess />
+        )}
       </div>
-    </>
-  ) : (
-    <div className="px-4 pb-4">
-      <FeedbackSuccess />
-    </div>
+    </BottomSheet>
   );
 }

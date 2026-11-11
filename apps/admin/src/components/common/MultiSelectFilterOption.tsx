@@ -1,4 +1,4 @@
-import { Label, ResetIcon } from '@allcll/allcll-ui';
+import { Button, Label } from '@allcll/allcll-ui';
 
 export interface OptionType<VALUE extends string | number> {
   value: VALUE;
@@ -30,29 +30,8 @@ function MultiSelectFilterOption<VALUE extends string | number>({
   className,
   ItemComponent,
 }: Readonly<IMultiSelectFilter<VALUE>>) {
-  const isAllSelected = selectedValues.includes(0 as VALUE);
-
-  const checkSelected = (value: VALUE) => {
-    if (isAllSelected) return true;
-    return selectedValues.includes(value);
-  };
-
   const handleChangeCheckbox = (optionValue: VALUE) => {
-    const isCurrentlyAll = selectedValues.includes(0 as VALUE);
-
-    if (optionValue === (0 as VALUE)) {
-      if (isCurrentlyAll) {
-        setFilter([]);
-        return;
-      } else {
-        const allValues = options.map(option => option.value);
-        setFilter(allValues);
-        return;
-      }
-    }
-
     const checked = selectedValues.includes(optionValue);
-    console.log('checked', checked);
 
     const newValues = checked
       ? selectedValues.filter(selected => selected !== optionValue)
@@ -67,34 +46,29 @@ function MultiSelectFilterOption<VALUE extends string | number>({
 
   return (
     <div className="relative inline-block">
-      <Label>{labelPrefix ?? ''}</Label>
-      <div
-        className={`
-          gap-y-2 
-          ${options.length > 6 ? 'sm:grid grid-cols-2 gap-x-4' : 'sm:flex flex-col'}
-          ${className}
-          grid grid-cols-2 gap-x-4
-        `}
-      >
+      <Label className="block mb-2">{labelPrefix ?? ''}</Label>
+      <div className={`grid gap-x-4 gap-y-2 ${options.length >= 4 ? 'grid-cols-2' : 'grid-cols-1'} ${className}`}>
         {options.map(option => (
           <ItemComponent
             key={String(option.value)}
             label={option.label}
-            selected={checkSelected(option.value)}
+            selected={selectedValues.includes(option.value)}
             onClick={() => handleChangeCheckbox(option.value)}
             value={option.value}
           />
         ))}
       </div>
 
-      <div className="flex justify-end w-full mt-2">
-        <button
+      <div className="flex justify-end w-full mt-3 pt-1.5 -mb-1.5 border-t border-gray-100">
+        <Button
+          variant="text"
+          size="small"
+          color="gray"
+          disabled={selectedValues.length === 0}
           onClick={() => handleClickReset()}
-          className="text-blue-500 cursor-pointer sm:text-sm text-xs px-1 py-0.5"
         >
-          <ResetIcon className="inline w-4 h-4 mr-1 mb-0.5 text-blue-500" />
-          필터 초기화
-        </button>
+          초기화
+        </Button>
       </div>
     </div>
   );

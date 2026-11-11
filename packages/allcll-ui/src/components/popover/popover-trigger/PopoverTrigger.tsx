@@ -1,32 +1,30 @@
+import type { ReactNode } from 'react';
+import * as RadixPopover from '@radix-ui/react-popover';
 import Chip from '../../chip/Chip';
-import { usePopoverContext } from '../popover/Popover';
+import { usePopoverContext } from '../popover/PopoverContext';
 
 interface IPopoverTrigger {
-  label: string;
+  /** 선택 칩에 보일 문구 */
+  label?: string;
+  /** 선택 상태 */
   selected?: boolean;
+  /** 칩 대신 쓸 트리거 요소 */
+  children?: ReactNode;
 }
 
-function PopoverTrigger({ label, selected }: IPopoverTrigger) {
-  const { isOpen, triggerRef, open, close } = usePopoverContext();
-
-  const handleClick = () => {
-    if (isOpen) {
-      close();
-    } else {
-      open();
-    }
-  };
+function PopoverTrigger({ label = '', selected, children }: IPopoverTrigger) {
+  const { isOpen, triggerRef } = usePopoverContext();
 
   return (
-    <Chip
-      type="button"
-      label={label}
-      isChipOpen={isOpen}
-      variant="select"
-      selected={selected ?? false}
-      onClick={handleClick}
-      containerRef={triggerRef}
-    />
+    <RadixPopover.Anchor asChild>
+      <span className="inline-flex">
+        <RadixPopover.Trigger asChild ref={triggerRef}>
+          {children ?? (
+            <Chip type="button" label={label} isOpen={isOpen} variant="select" selected={selected ?? false} />
+          )}
+        </RadixPopover.Trigger>
+      </span>
+    </RadixPopover.Anchor>
   );
 }
 

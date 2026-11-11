@@ -7,10 +7,15 @@ import useFavorites from '@/features/filtering/model/useFavorites.ts';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { TimeslotAdapter } from '@/entities/timetable/model/adapter.ts';
 import { Time } from '@/shared/lib/time.ts';
-import { IDayTimeItem } from '@/features/filtering/ui/DayTimeFilter.tsx';
 import { isFilterEmpty } from '@/features/filtering/lib/filterUtils.ts';
-import { Grade, RangeFilter, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
+import { DayTimeRanges, Grade, RangeFilter, RangeMinMaxFilter, RemarkType } from '@/features/filtering/model/types.ts';
 import { Day } from '@/entities/timetable/model/types.ts';
+import { hasLessonOn, MIN_HIGH_CREDIT } from '@/features/filtering/lib/filterDomains.ts';
+import { parseCredit } from '@/shared/lib/parser.ts';
+
+type FilteringFunctions = {
+  [K in keyof Filters]: (subject: Subject, value: NonNullable<Filters[K]>) => boolean;
+};
 
 /** 활성화 된 필터만 실행하는 함수를 반환 (최적화) */
 export function useFilterFunctions(filters: Filters) {
@@ -23,10 +28,10 @@ export function useFilterFunctions(filters: Filters) {
 
   return <T extends Subject>(subject: T, filters: Filters) => {
     return active.every(key => {
-      const func = filteringFunctions[key];
+      const func = filteringFunctions[key] as (subject: Subject, value: Filters[keyof Filters]) => boolean;
       if (!func) return true;
 
-      return func(subject, filters[key]!);
+      return func(subject, filters[key]);
     });
   };
 }
@@ -35,7 +40,7 @@ function getFilteringFunctions(
   filters: Filters,
   pinnedSubjects: { subjectId: number }[] | undefined,
   pickedFavorites: (id: number) => boolean,
-): Record<keyof Filters, Function> {
+): FilteringFunctions {
   const matchesPinned = (id: number) => pinnedSubjects?.some(({ subjectId }) => subjectId === id) ?? true;
 
   const cleanedKeyword = getNormalizedKeyword(filters.keywords);
@@ -49,7 +54,8 @@ function getFilteringFunctions(
     categories: filterCategories,
     seatRange: filterSeatRange,
     wishRange: filterWishRange,
-    time: filterSchedule,
+    time: (subject: Subject, range: RangeMinMaxFilter) => filterTimeRange(subject, range, filters.days),
+    dayTimes: (subject: Subject, dayTimes: DayTimeRanges) => filterDayTimes(subject, dayTimes, filters.days),
     days: filterDays,
     classroom: filterClassroom,
     note: filterRemark,
@@ -70,21 +76,10 @@ function filterMinmax(value: number, range: RangeMinMaxFilter | null) {
 function filterMatches<T>(value: T, matchList: T[]) {
   return !matchList.length || matchList.includes(value);
 }
-
-
 export function filterDays(subject: Wishes | Subject, selectedDays: Day[]) {
-  if (!subject.lesnTime || !selectedDays || selectedDays.length === 0) {
-    return true;
-  }
+  if (!selectedDays || selectedDays.length === 0) return true;
 
-  const timeMatchResult = RegExp(/^([가-힣]+)/).exec(subject.lesnTime);
-
-  if (!timeMatchResult) {
-    return true;
-  }
-
-  const lessonDays = timeMatchResult[1].split('');
-  return selectedDays.some(selectedDay => lessonDays.includes(selectedDay));
+  return selectedDays.some(day => hasLessonOn(subject.lesnTime, day));
 }
 
 function filterGrades(subject: Wishes | Subject, selectedGrades: (Grade | '전체')[]) {
@@ -102,10 +97,10 @@ function filterGrades(subject: Wishes | Subject, selectedGrades: (Grade | '전�
 }
 
 function filterCredits(subject: Wishes | Subject, selectedCredits: number[]) {
-  const credit = Number(subject.tmNum.split('/')[0]);
-  if (!credit || Number.isNaN(credit)) return true;
+  const credit = parseCredit(subject.tmNum);
+  if (!credit) return true;
 
-  return filterMatches(credit, selectedCredits);
+  return filterMatches(credit >= MIN_HIGH_CREDIT ? MIN_HIGH_CREDIT : credit, selectedCredits);
 }
 
 function filterSeatRange<T extends Subject>(subject: T, seatRange: RangeFilter | RangeMinMaxFilter | null) {
@@ -168,40 +163,31 @@ function filterRemark(subject: Wishes | Subject, selectedNotes: RemarkType[]) {
   });
 }
 
-function filterSchedule(subject: Wishes | Subject, selectedTime: IDayTimeItem[]) {
-  if (!selectedTime || selectedTime.length === 0 || !subject.lesnTime) {
-    return true;
-  }
+function filterTimeRange(subject: Wishes | Subject, range: RangeMinMaxFilter, selectedDays: Day[]) {
+  if (!subject.lesnTime) return false;
 
-  const time = new TimeslotAdapter(subject.lesnTime).toApiData();
-  const schedule = time.map(t => ({
-    day: t.dayOfWeeks,
-    start: new Time(t.startTime),
-    end: new Time(t.endTime),
-  }));
+  const slots = new TimeslotAdapter(subject.lesnTime)
+    .toApiData()
+    .filter(slot => !selectedDays.length || selectedDays.includes(slot.dayOfWeeks));
 
-  return selectedTime.some(item => {
-    if (item.day === '') return true;
+  return slots.every(slot => isSlotInRange(slot, range));
+}
 
-    const matchedSchedule = schedule.filter(t => t.day === item.day);
-    if (item.type === 'all' || !matchedSchedule.length) return !!matchedSchedule.length;
+function filterDayTimes(subject: Wishes | Subject, dayTimes: DayTimeRanges, selectedDays: Day[]) {
+  if (!selectedDays.length) return true;
+  if (!subject.lesnTime) return false;
 
-    if (item.type === 'before' && item.start) {
-      const threshold = new Time(item.start);
-      return matchedSchedule.some(s => s.end.compare(threshold) <= 0);
-    }
-
-    if (item.type === 'after' && item.start) {
-      const threshold = new Time(item.start);
-      return matchedSchedule.some(s => threshold.compare(s.start) <= 0);
-    }
-
-    if (item.type === 'between' && item.start && item.end) {
-      const startTime = new Time(item.start);
-      const endTime = new Time(item.end);
-      return matchedSchedule.some(s => startTime.compare(s.start) <= 0 && s.end.compare(endTime) <= 0);
-    }
+  const slots = new TimeslotAdapter(subject.lesnTime).toApiData();
+  return selectedDays.some(day => {
+    const range = dayTimes[day];
+    return slots.some(slot => slot.dayOfWeeks === day && (!range || isSlotInRange(slot, range)));
   });
+}
+
+function isSlotInRange(slot: { startTime: string; endTime: string }, range: RangeMinMaxFilter) {
+  const start = new Time(slot.startTime).time;
+  const end = new Time(slot.endTime).time;
+  return (range.min === undefined || range.min <= start) && (range.max === undefined || end <= range.max);
 }
 
 function filterCategories(subject: Wishes | Subject, selectedCategories: string[]) {

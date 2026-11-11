@@ -16,11 +16,9 @@ function FileUpload({ nextStep, file, onFileSelected }: FileUploadProps) {
 
   return (
     <Card variant="outlined" className="w-full mx-auto p-8">
-      <Flex direction="flex-col" gap="gap-6" align="items-center">
-        <Flex direction="flex-col" gap="gap-2" align="items-center">
-          <Heading level={2} size="xxl">
-            파일 업로드
-          </Heading>
+      <Flex direction="column" gap={6} align="center">
+        <Flex direction="column" gap={2} align="center">
+          <Heading level={1}>파일 업로드</Heading>
           <SupportingText>졸업 요건을 확인하기 위해 성적표 파일을 업로드해주세요.</SupportingText>
           <p className="text-xs text-gray-400">※ 업로드한 엑셀 파일은 서버에 별도로 저장되지 않습니다.</p>
         </Flex>
@@ -32,11 +30,11 @@ function FileUpload({ nextStep, file, onFileSelected }: FileUploadProps) {
           accept=".xlsx"
         />
 
-        <Flex justify="justify-end" gap="gap-3" className="w-full mt-2">
-          <Button variant="secondary" size="medium" onClick={() => onFileSelected(null)}>
+        <Flex justify="end" gap={3} className="w-full mt-2">
+          <Button variant="solid" color="gray" size="medium" onClick={() => onFileSelected(null)}>
             취소
           </Button>
-          <Button variant="primary" size="medium" onClick={handleNextStep} disabled={!file}>
+          <Button variant="solid" size="medium" onClick={handleNextStep} disabled={!file}>
             다음 단계
           </Button>
         </Flex>

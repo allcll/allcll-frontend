@@ -97,6 +97,52 @@ jobs:
             core.summary.addRaw(body).write();
 
 
+  storybook-dev-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install NPM packages
+        run: |
+          npm install -g pnpm
+          pnpm i --frozen-lockfile
+
+      - name: Build Storybook
+        run: |
+          pnpm -F @allcll/allcll-ui run build-storybook
+          mv packages/allcll-ui/storybook-static storybook-dist
+
+      - name: Deploy Storybook to server
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.DEV_SERVER_HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.DEV_SERVER_SSH_KEY }}
+          port: 22
+          source: storybook-dist/*
+          target: ${{ secrets.PWD }}/storybooks/develop
+          strip_components: 1
+          # 빌드마다 해시가 붙은 파일 이름이 바뀌어 이전 파일이 쌓이므로 지우고 올림
+          rm: true
+
+      - name: Deployment Report (Storybook)
+        if: always()
+        uses: actions/github-script@v7
+        env:
+          JOB_STATUS: ${{ job.status }}
+        with:
+          script: |
+            const status = process.env.JOB_STATUS;
+            const getStatusEmoji = (s) => s === 'success' ? '✅' : '❌';
+            const body = `### 📚 Storybook Development Deployment\n- **Status:** ${getStatusEmoji(status)} ${status}\n- **URL:** [https://dev.allcll.kr/storybook/](https://dev.allcll.kr/storybook/)\n- **Commit:** ${context.sha.substring(0, 7)}`;
+            core.summary.addRaw(body).write();
+
   client-test:
     runs-on: ubuntu-latest
     needs: client-dev-deploy

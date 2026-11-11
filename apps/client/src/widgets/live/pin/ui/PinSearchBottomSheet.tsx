@@ -1,6 +1,5 @@
 import { useDeferredValue, useState } from 'react';
-import BottomSheet from '@/features/timetable/ui/BottomSheet.tsx';
-import BottomSheetHeader from '@/shared/ui/bottomsheet/BottomSheetHeader.tsx';
+import BottomSheet from '@/shared/ui/bottomsheet/BottomSheet.tsx';
 import useWishes from '@/entities/wishes/model/useWishes.ts';
 import { initialFilters } from '@/features/filtering/model/useFilterStore.ts';
 import PinCards from './PinCards';
@@ -10,10 +9,11 @@ import useFilteringSubjects from '@/features/filtering/lib/useFilteringSubjects.
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
 
 interface ISearchBottomSheet {
+  isOpen: boolean;
   onCloseSearch: () => void;
 }
 
-function PinSearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
+function PinSearchBottomSheet({ isOpen, onCloseSearch }: ISearchBottomSheet) {
   const [searchInput, setSearchInput] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('');
 
@@ -28,40 +28,33 @@ function PinSearchBottomSheet({ onCloseSearch }: ISearchBottomSheet) {
     }),
   );
 
+  const handleClose = () => {
+    setSearchInput('');
+    setSelectedDepartment('');
+    onCloseSearch();
+  };
+
   return (
-    <BottomSheet>
-      {({ expandToMax }) => (
-        <>
-          <BottomSheetHeader
-            title="알림과목검색"
-            headerType="close"
-            onClose={() => onCloseSearch()}
-            onClick={expandToMax}
-          />
+    // 검색 결과 수에 따라 시트 높이가 출렁이지 않도록 화면 높이로 고정
+    <BottomSheet title="알림 과목 등록" isOpen={isOpen} onClose={handleClose} snapPoints={[1]}>
+      <div className="sticky -mx-4 pb-3 px-4 top-0 bg-white z-content flex flex-col gap-2 mb-4 border-b border-gray-100">
+        <SearchBox
+          placeholder="과목명, 교수명, 학수번호 검색"
+          value={searchInput}
+          onChange={e => setSearchInput(e.target.value)}
+          onDelete={() => setSearchInput('')}
+          className="w-full"
+        />
+        <DepartmentSelect
+          className="flex-auto"
+          value={selectedDepartment}
+          onChange={code => setSelectedDepartment(code)}
+        />
+      </div>
 
-          <div className="sticky py-3 px-2 top-0 bg-white z-content flex flex-col gap-2 mb-4 flex-auto">
-            <SearchBox
-              placeholder="과목명 교수명 검색"
-              onChange={e => setSearchInput(e.target.value)}
-              onDelete={() => setSearchInput('')}
-              className="w-full"
-            />
-            <DepartmentSelect
-              className="flex-auto"
-              value={selectedDepartment}
-              onChange={e => setSelectedDepartment(e.target.value)}
-            />
-          </div>
-
-          <div className="max-h-[70vh] min-h-0 px-2 overflow-y-auto touch-auto flex flex-col">
-            <PinCards
-              className="flex flex-full overflow-auto max-h-screen"
-              subjects={filteredData}
-              isPending={isPending}
-            />
-          </div>
-        </>
-      )}
+      <div className="flex flex-col">
+        <PinCards subjects={filteredData} isPending={isPending} />
+      </div>
     </BottomSheet>
   );
 }

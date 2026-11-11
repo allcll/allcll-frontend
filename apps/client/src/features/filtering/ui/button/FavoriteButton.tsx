@@ -22,16 +22,11 @@ function FavoriteButton({ subject, variant = 'contain', className, onClick, ...p
 
   return (
     <IconButton
+      size="medium"
       variant={variant}
       onClick={handleFavorite}
       label={title}
-      icon={
-        isFavorite ? (
-          <StarFilledIcon className="w-4 h-4 text-yellow-400" />
-        ) : (
-          <StarIcon className="w-4 h-4 text-gray-400" />
-        )
-      }
+      icon={isFavorite ? <StarFilledIcon className="text-yellow-400" /> : <StarIcon className="text-gray-400" />}
       aria-label={title}
       className={className}
       {...props}

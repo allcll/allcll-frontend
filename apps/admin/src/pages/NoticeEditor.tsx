@@ -1,11 +1,22 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Card, Button, TextField, Label, Flex, ArrowLeftIcon, SaveIcon } from '@allcll/allcll-ui';
+import {
+  Card,
+  Button,
+  IconButton,
+  TextField,
+  Label,
+  Flex,
+  Select,
+  ArrowLeftIcon,
+  SaveIcon,
+  LoadingState,
+} from '@allcll/allcll-ui';
 import PageHeader from '@/components/common/PageHeader';
 import MarkdownEditor from '@/components/notices/MarkdownEditor';
 import UnsavedModal from '@/components/notices/UnsavedModal';
-import { useAdminNotice, useSaveNotice, CATEGORY_LABELS, NOTICE_CATEGORIES } from '@/hooks/server/useAdminNotices';
-import type { OperationType } from '@/hooks/server/useAdminReviews';
+import { OPERATION_TYPE_LABEL, OPERATION_TYPES, type OperationType } from '@allcll/common';
+import { useAdminNotice, useSaveNotice } from '@/hooks/server/useAdminNotices';
 
 const MAX_LENGTH = 1000;
 const MAX_TITLE_LENGTH = 250;
@@ -93,37 +104,35 @@ function NoticeEditor() {
 
   if (isEditMode && isLoadingNotice) {
     return (
-      <Flex direction="flex-col" gap="gap-5" className="h-full">
-        <Flex align="items-center" justify="justify-center" className="flex-1 text-gray-400">
-          불러오는 중...
-        </Flex>
+      <Flex direction="column" gap={5} className="h-full">
+        <LoadingState className="flex-1" />
       </Flex>
     );
   }
 
   return (
-    <Flex direction="flex-col" gap="gap-5" className="h-full">
-      <Flex align="items-center" justify="justify-between">
-        <Flex align="items-center" gap="gap-2">
-          <button
-            type="button"
+    <Flex direction="column" gap={5} className="h-full">
+      <Flex align="center" justify="between">
+        <Flex align="center" gap={2}>
+          <IconButton
+            size="large"
+            label="뒤로 가기"
             onClick={handleBack}
-            className="p-1 rounded-md text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
-          >
-            <ArrowLeftIcon className="w-5 h-5" />
-          </button>
+            icon={<ArrowLeftIcon className="text-gray-400 group-hover:text-gray-700" />}
+            className="group p-1 hover:bg-gray-100 transition-colors"
+          />
           <PageHeader title={isEditMode ? '공지사항 수정' : '새 공지 작성'} />
         </Flex>
-        <Button variant="primary" size="small" onClick={handleSave} disabled={isSaving || isOverLimit}>
-          <SaveIcon className="w-4 h-4 mr-1" />
+        <Button variant="solid" size="small" onClick={handleSave} disabled={isSaving || isOverLimit}>
+          <SaveIcon />
           {isSaving ? '저장 중...' : '저장하기'}
         </Button>
       </Flex>
 
       {errors.length > 0 && (
-        <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+        <div className="bg-danger-50 border border-danger-200 rounded-lg px-4 py-3">
           {errors.map((e, i) => (
-            <p key={i} className="text-sm text-red-700">
+            <p key={i} className="text-sm text-danger-700">
               {e}
             </p>
           ))}
@@ -131,7 +140,7 @@ function NoticeEditor() {
       )}
 
       <Card className="flex flex-col gap-5 p-5">
-        <Flex direction="flex-col" gap="gap-1">
+        <Flex direction="column" gap={1}>
           <TextField
             id="notice-title"
             label="제목"
@@ -147,32 +156,32 @@ function NoticeEditor() {
               setIsDirty(true);
             }}
           />
-          <Flex justify="justify-end">
+          <Flex justify="end">
             <span
-              className={`text-xs ${title.length > MAX_TITLE_LENGTH ? 'text-red-600 font-semibold' : 'text-gray-400'}`}
+              className={`text-xs ${title.length > MAX_TITLE_LENGTH ? 'text-danger-600 font-semibold' : 'text-gray-400'}`}
             >
               {title.length} / {MAX_TITLE_LENGTH}자
             </span>
           </Flex>
         </Flex>
 
-        <Flex direction="flex-col" gap="gap-1.5">
-          <Label id="notice-category">카테고리</Label>
-          <select
+        <Flex direction="column" gap={1.5}>
+          <Label htmlFor="notice-category">카테고리</Label>
+          <Select
             id="notice-category"
             value={category}
             onChange={e => {
               setCategory(e.target.value as OperationType);
               setIsDirty(true);
             }}
-            className="w-48 p-2 rounded-md bg-white border border-gray-400 text-sm text-gray-900"
+            className="w-48"
           >
-            {NOTICE_CATEGORIES.map(cat => (
+            {OPERATION_TYPES.map(cat => (
               <option key={cat} value={cat}>
-                {CATEGORY_LABELS[cat]}
+                {OPERATION_TYPE_LABEL[cat]}
               </option>
             ))}
-          </select>
+          </Select>
         </Flex>
 
         <MarkdownEditor

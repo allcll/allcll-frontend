@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useCreateTimetable, useUpdateTimetable } from '@/features/timetable/model/useTimetableMutations.ts';
 import { useScheduleState } from '@/features/timetable/model/useScheduleState.ts';
-import useToastNotification from '@/features/notification/model/useToastNotification.ts';
-import { Button, Chip, Dialog, Grid, Label, TextField } from '@allcll/allcll-ui';
+import { Button, Chip, Dialog, Flex, Grid, Label, TextField } from '@allcll/allcll-ui';
 import { SEMESTERS } from '@/entities/semester/api/semester.ts';
 import useServiceSemester from '@/entities/semester/model/useServiceSemester';
 import { showTimetableApiErrorToast, showTimetableApiSuccessToast } from '../lib/showTimetableApiErrorToast';
+import { useToastNotification } from '@allcll/common';
 
 interface IEditTimetable {
   onClose: () => void;
@@ -71,17 +71,6 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
     }
   };
 
-  const onKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') onClose();
-  };
-
-  useEffect(() => {
-    window.addEventListener('keydown', onKeyDown);
-    return () => {
-      window.removeEventListener('keydown', onKeyDown);
-    };
-  }, []);
-
   const handleTimetableSemester = (semesterCode: string) => {
     if (type === 'edit') {
       addToast('학기는 수정할 수 없습니다.', 'semester-edit-warning');
@@ -95,17 +84,19 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
     <Dialog title={`${type === 'edit' ? '시간표 수정' : '시간표 생성'}`} onClose={onClose} isOpen={true}>
       <form onSubmit={handleSubmit}>
         <Dialog.Content>
-          <Label>학기 선택</Label>
-          <Grid columns={{ base: 2 }} gap="gap-2">
-            {SEMESTERS.map(semester => (
-              <Chip
-                key={semester.semesterCode}
-                label={semester.semesterValue}
-                selected={semester.semesterCode === selectedSemester}
-                onClick={() => handleTimetableSemester(semester.semesterCode)}
-              />
-            ))}
-          </Grid>
+          <Flex direction="column" gap={1.5}>
+            <Label>학기 선택</Label>
+            <Grid columns={{ base: 2 }} gap={2}>
+              {SEMESTERS.map(semester => (
+                <Chip
+                  key={semester.semesterCode}
+                  label={semester.semesterValue}
+                  selected={semester.semesterCode === selectedSemester}
+                  onClick={() => handleTimetableSemester(semester.semesterCode)}
+                />
+              ))}
+            </Grid>
+          </Flex>
 
           <TextField
             key="timetableName"
@@ -119,7 +110,7 @@ function EditTimetable({ onClose, type }: Readonly<IEditTimetable>) {
         </Dialog.Content>
 
         <Dialog.Footer>
-          <Button type="submit" variant="primary" size="medium">
+          <Button type="submit" variant="solid" size="medium">
             저장
           </Button>
         </Dialog.Footer>

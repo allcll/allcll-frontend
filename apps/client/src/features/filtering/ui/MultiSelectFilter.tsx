@@ -1,7 +1,6 @@
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { getLabelFormatter, labelPrefix } from '@/features/filtering/lib/getFilteringFormatter.ts';
-import { Button, Flex, Grid, Label } from '@allcll/allcll-ui';
-import useMobile from '@/shared/lib/useMobile.ts';
+import { Button, ChevronDownIcon, Flex, Grid, Label } from '@allcll/allcll-ui';
 import { useState } from 'react';
 import { FilterItemProps, FilterValueType } from '@/features/filtering/model/types.ts';
 
@@ -13,6 +12,7 @@ interface IMultiSelectFilter<K extends keyof Filters> {
   setFilter: (field: K, value: FilterValueType<K>[] | null) => void;
   options: FilterValueType<K>[];
   ItemComponent: React.ComponentType<FilterItemProps>;
+  showReset?: boolean;
 }
 
 type ItemWithLayout = React.ComponentType<FilterItemProps> & {
@@ -25,11 +25,11 @@ function MultiSelectFilter<K extends keyof Filters>({
   setFilter,
   options,
   ItemComponent,
+  showReset = true,
 }: Readonly<IMultiSelectFilter<K>>) {
   const labelFormatters = getLabelFormatter();
   const layout = (ItemComponent as ItemWithLayout).layout ?? 'grid';
 
-  const isMobile = useMobile();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleChangeCheckbox = (optionValue: FilterValueType<K>) => {
@@ -49,11 +49,11 @@ function MultiSelectFilter<K extends keyof Filters>({
 
   return (
     <div className="relative inline-block w-full">
-      <Flex direction="flex-col" gap="gap-2">
+      <Flex direction="column" gap={2}>
         <Label>{labelPrefix[filterKey]}</Label>
 
         {layout === 'grid' ? (
-          <Grid columns={{ md: 3 }} gap="gap-2">
+          <Grid columns={{ md: 3 }} gap={2}>
             {visibleOptions.map(option => (
               <ItemComponent
                 key={String(option)}
@@ -64,7 +64,7 @@ function MultiSelectFilter<K extends keyof Filters>({
             ))}
           </Grid>
         ) : (
-          <Flex direction="flex-col" gap="gap-2" className="pr-4">
+          <Flex direction="column" gap={2} className="pr-4">
             {visibleOptions.map(option => (
               <ItemComponent
                 key={String(option)}
@@ -77,23 +77,31 @@ function MultiSelectFilter<K extends keyof Filters>({
         )}
       </Flex>
 
-      {options.length > MAX_VISIBLE && (
-        <Button variant="text" size="small" textColor="gray" onClick={() => setIsExpanded(prev => !prev)}>
-          {isExpanded ? '- 간략히' : '+ 더보기'}
-        </Button>
-      )}
+      {(showReset || options.length > MAX_VISIBLE) && (
+        <Flex
+          justify="between"
+          align="center"
+          className={showReset ? 'mt-3 pt-1.5 -mb-1.5 border-t border-gray-100' : 'mt-1'}
+        >
+          {options.length > MAX_VISIBLE && (
+            <Button variant="text" size="small" color="gray" onClick={() => setIsExpanded(prev => !prev)}>
+              <ChevronDownIcon className={`w-4 h-4 ${isExpanded ? 'rotate-180' : ''}`} />
+              {isExpanded ? '간략히' : '더보기'}
+            </Button>
+          )}
 
-      {!isMobile && (
-        <Flex justify="justify-end">
-          <Button
-            variant="text"
-            size="small"
-            textColor="gray"
-            disabled={selectedValues == null || selectedValues.length === 0}
-            onClick={() => handleClickReset()}
-          >
-            초기화
-          </Button>
+          {showReset && (
+            <Button
+              variant="text"
+              size="small"
+              color="gray"
+              className="ml-auto"
+              disabled={selectedValues == null || selectedValues.length === 0}
+              onClick={() => handleClickReset()}
+            >
+              초기화
+            </Button>
+          )}
         </Flex>
       )}
     </div>

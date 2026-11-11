@@ -12,7 +12,6 @@ interface GenericSingleSelectFilterProps<K extends keyof Filters> {
   selectedValue: FilterValueType<K> | null;
   setFilter: (field: K, value: FilterValueType<K> | null) => void;
   className?: string;
-  isMinMax?: boolean;
 }
 
 function GenericSingleSelectFilter<K extends keyof Filters>({
@@ -22,7 +21,6 @@ function GenericSingleSelectFilter<K extends keyof Filters>({
   selectedValue,
   setFilter,
   className,
-  isMinMax,
 }: GenericSingleSelectFilterProps<K>) {
   const isMobile = useMobile();
 
@@ -35,7 +33,7 @@ function GenericSingleSelectFilter<K extends keyof Filters>({
       setFilter={(filterKey, value) => setFilter(filterKey, value)}
       options={options}
       ItemComponent={ItemComponent}
-      isMinMax={isMinMax}
+      showReset={!isMobile}
     />
   );
 
@@ -43,7 +41,7 @@ function GenericSingleSelectFilter<K extends keyof Filters>({
     SingleSelectContent
   ) : (
     <Filtering label={selectedSingleChipLabel} selected={!!selectedValue} className={className}>
-      {SingleSelectContent}
+      <div className="min-w-88">{SingleSelectContent}</div>
     </Filtering>
   );
 }

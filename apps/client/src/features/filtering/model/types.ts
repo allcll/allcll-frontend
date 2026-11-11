@@ -1,5 +1,6 @@
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import { FilterDomainsType } from '@/features/filtering/lib/filterDomains.ts';
+import { Day } from '@/entities/timetable/model/types.ts';
 
 export interface DepartmentType {
   departmentCode: string;
@@ -16,10 +17,12 @@ export interface RangeMinMaxFilter {
   max?: number;
 }
 
+export type DayTimeRanges = Partial<Record<Day, RangeMinMaxFilter>>;
+
 export type RemarkType = '외국인대상' | 'SHP대상' | '기타';
-export type Grade = 1 | 2 | 3 | 4;
+export type Grade = 1 | 2 | 3 | 4 | 5;
 export type Curitype = '교필' | '교선' | '전필' | '전선' | '전기' | '공필' | '균필' | '기필' | '교직' | 'ROTC';
-export type Credit = 1 | 2 | 3;
+export type Credit = 1 | 2 | 3 | 4;
 
 export interface FilterItemProps {
   label: string;

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { Flex, Banner, Button, Heading, SupportingText } from '@allcll/allcll-ui';
+import { Flex, Banner, Button, Heading, LoadingState, Tabs, TextLink } from '@allcll/allcll-ui';
 import {
   CategoryEarnedCoursesModal,
   CategoryProgressCard,
@@ -20,6 +20,8 @@ import {
   type CategoryType,
   type CriteriaCategory,
   type ScopeType,
+  confirm,
+  formatDateLong,
 } from '@allcll/common';
 import useMobile from '@/shared/lib/useMobile';
 import {
@@ -34,20 +36,12 @@ import { useGraduationDashboard } from '@/features/graduation/model/useGraduatio
 import { useGraduationConfetti } from '@/features/graduation/lib/useGraduationConfetti';
 import useFeedbackTrigger from '@/features/feedback/lib/FeedbackTrigger';
 import FeedbackModal from '@/features/feedback/ui/FeedbackModal';
-import MobileTabs, { useMobileTabs } from '@/features/graduation/ui/dashboard/MobileTabs';
+import MobileTabs, { type TabType, useMobileTabs } from '@/features/graduation/ui/dashboard/MobileTabs';
 import EditProfileModal from '@/features/graduation/ui/dashboard/EditProfileModal';
 import CertificationEditModal from '@/features/graduation/ui/dashboard/CertificationEditModal';
 import { useUpdateEnglishCertMutation } from '@/features/graduation/lib/useUpdateEnglishCertMutation';
-import LoadingWithMessage from '@/shared/ui/Loading';
-
-//TODO: API 연동 시간 측정 후, spinner로 변경 혹은 네트워크 지연 시간에 따른 스피너 타입 결정 훅 구현
-function LoadingState() {
-  return (
-    <Flex justify="justify-center" align="items-center" className="min-h-[50vh]">
-      <LoadingWithMessage message="졸업 요건 분석결과를 가져오는 중입니다." />
-    </Flex>
-  );
-}
+import PageContainer from '@/shared/ui/PageContainer';
+import PageHeader from '@/shared/ui/PageHeader';
 
 function GraduationDashboardPage() {
   const isMobile = useMobile();
@@ -88,8 +82,13 @@ function GraduationDashboardPage() {
 
   useGraduationConfetti(graduationData?.isGraduatable ?? false);
 
-  const handleStartOverGraduationCheck = () => {
-    if (!window.confirm('졸업 요건을 다시 검사하시겠습니까?')) return;
+  const handleStartOverGraduationCheck = async () => {
+    const confirmed = await confirm({
+      title: '졸업 요건 다시 검사',
+      description: '졸업 요건을 다시 검사하시겠습니까?',
+      confirmLabel: '다시 검사하기',
+    });
+    if (!confirmed) return;
     navigate('/graduation?retry=true&skipInfo=true');
   };
 
@@ -130,7 +129,7 @@ function GraduationDashboardPage() {
         <Helmet>
           <title>ALLCLL | 졸업요건 분석</title>
         </Helmet>
-        <LoadingState />
+        <LoadingState title="졸업 요건 분석 결과를 가져오는 중입니다." className="min-h-[50vh]" />
       </>
     );
   }
@@ -151,7 +150,7 @@ function GraduationDashboardPage() {
   };
 
   const renderCategoryCards = (cats: typeof majorCategories) => (
-    <Flex direction="flex-col" gap="gap-4" className="md:flex-row">
+    <Flex direction="column" gap={4} className="md:flex-row">
       {cats.map(category => (
         <div className="flex-1" key={`${category.majorScope}-${category.categoryType}`}>
           <CategoryProgressCard
@@ -166,7 +165,7 @@ function GraduationDashboardPage() {
   );
 
   const renderMobileCategoryCards = (cats: typeof majorCategories) => (
-    <Flex direction="flex-col" gap="gap-4">
+    <Flex direction="column" gap={4}>
       {cats.map(category => (
         <CategoryProgressCard
           key={`${category.majorScope}-${category.categoryType}`}
@@ -190,7 +189,7 @@ function GraduationDashboardPage() {
             {renderMobileCategoryCards(majorCategories)}
           </section>
         ) : (
-          <Flex direction="flex-col" gap="gap-6">
+          <Flex direction="column" gap={6}>
             {scopeTypes.map(scope => (
               <section key={scope}>
                 <Heading level={2} className="mb-4">
@@ -233,69 +232,60 @@ function GraduationDashboardPage() {
       </Helmet>
 
       {showBanner && (
-        <Banner deleteBanner={handleDeleteBanner}>
+        <Banner onClose={handleDeleteBanner}>
           본 서비스는 베타 버전으로, 분석 결과는 공식적인 효력을 갖지 않습니다. 오류 또는 개선 사항이 있으시면
           알려주시면 서비스 개선에 도움이 됩니다.{' '}
-          <button className="text-blue-700 font-semibold underline" onClick={() => openFeedback('manual')}>
-            오류 제보
-          </button>
+          <TextLink asChild>
+            <button onClick={() => openFeedback('manual')}>오류 제보</button>
+          </TextLink>
         </Banner>
       )}
 
-      <div className="max-w-5xl mx-auto mt-2 px-4">
-        <Flex justify="justify-between" align="items-center">
-          <Heading level={1}>졸업요건 분석</Heading>
-          <Flex gap="gap-2">
-            <Button variant="text" size="small" onClick={handleEditProfile}>
-              회원 정보 수정
-            </Button>
-            <LogoutButton
-              size="small"
-              onSuccess={() => {
-                // 스텝이 남아 있으면 뒤따르는 401 이 세션 만료로 안내됩니다.
-                useJolupStore.getState().reset();
-                queryClient.removeQueries({ queryKey: graduationQueryKeys.all });
-                navigate('/graduation');
-              }}
-            />
-          </Flex>
-        </Flex>
-        <SupportingText>{user.name}님의 졸업요건 분석 결과입니다.</SupportingText>
+      <PageContainer>
+        <PageHeader
+          title="졸업요건 분석"
+          description={`${user.name}님의 졸업요건 분석 결과입니다.`}
+          actions={
+            <Flex gap={2}>
+              <Button variant="text" size="small" onClick={handleEditProfile}>
+                회원 정보 수정
+              </Button>
+              <LogoutButton
+                size="small"
+                onSuccess={() => {
+                  // 스텝이 남아 있으면 뒤따르는 401 이 세션 만료로 안내됩니다.
+                  useJolupStore.getState().reset();
+                  queryClient.removeQueries({ queryKey: graduationQueryKeys.all });
+                  navigate('/graduation');
+                }}
+              />
+            </Flex>
+          }
+        />
 
-        <Flex direction="flex-col" gap="gap-2" className="mb-4 mt-2">
+        <Flex direction="column" gap={2}>
           <OverallSummaryCard user={user} checkData={graduationData} />
 
           <EarnedCoursesSection courses={courses} />
 
-          <Flex justify="justify-between" align="items-center">
+          <Flex justify="between" align="center">
             <div></div>
 
-            <Flex justify="justify-end" align="items-center" gap="gap-2">
-              {analyzedAt && (
-                <span className="text-sm text-gray-400">
-                  {new Date(analyzedAt).toLocaleDateString('ko-KR', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })}{' '}
-                  분석
-                </span>
-              )}
-              <div className="bg-white rounded-md">
-                <Button variant="outlined" size="medium" onClick={handleStartOverGraduationCheck}>
-                  다시 검사하기
-                </Button>
-              </div>
+            <Flex justify="end" align="center" gap={2}>
+              {analyzedAt && <span className="text-sm text-gray-400">{formatDateLong(analyzedAt)} 분석</span>}
+              <Button variant="solid" size="medium" onClick={handleStartOverGraduationCheck}>
+                다시 검사하기
+              </Button>
             </Flex>
           </Flex>
 
           {isMobile ? (
-            <>
-              <MobileTabs activeTab={activeTab} onTabChange={setActiveTab} />
-              {renderMobileContent()}
-            </>
+            <Tabs value={activeTab} onValueChange={value => setActiveTab(value as TabType)}>
+              <MobileTabs />
+              <Tabs.Panel value={activeTab}>{renderMobileContent()}</Tabs.Panel>
+            </Tabs>
           ) : (
-            <Flex direction="flex-col" gap="gap-4">
+            <Flex direction="column" gap={4}>
               {isSingleMajor ? (
                 <section>
                   <Heading level={2} className="mb-2">
@@ -333,7 +323,7 @@ function GraduationDashboardPage() {
             </Flex>
           )}
         </Flex>
-      </div>
+      </PageContainer>
 
       {selectedCategory && (
         <RecommendedCoursesModal

@@ -1,4 +1,4 @@
-import { useId, type ComponentPropsWithRef, type KeyboardEvent } from 'react';
+import type { ComponentPropsWithRef, KeyboardEvent } from 'react';
 import { CheckmarkIcon } from '../../icons';
 
 interface ICheckbox extends ComponentPropsWithRef<'input'> {
@@ -6,10 +6,7 @@ interface ICheckbox extends ComponentPropsWithRef<'input'> {
 }
 
 function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
-  const reactId = useId();
-  const inputId = label ? `checkbox-${label}` : `checkbox-${reactId}`;
-
-  const inputClass = `w-5 h-5 rounded-sm border flex-shrink-0 appearance-none flex items-center justify-center
+  const inputClass = `w-4 h-4 rounded-sm border flex-shrink-0 appearance-none flex items-center justify-center
     ${getCheckboxClass(!!rest.checked)}`;
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -22,26 +19,15 @@ function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
   };
 
   return (
-    <label
-      htmlFor={inputId}
-      className="flex flex-row items-center gap-3 text-sm md:text-base cursor-pointer select-none"
-    >
-      <div className="relative w-5 h-5">
-        <input
-          id={inputId}
-          type="checkbox"
-          aria-checked={rest.checked}
-          aria-label={label ? undefined : 'toggle checkbox'}
-          className={inputClass}
-          onKeyDown={handleKeyDown}
-          {...rest}
-        />
+    <label className="flex flex-row items-center gap-1.5 text-sm cursor-pointer select-none has-disabled:cursor-not-allowed has-disabled:opacity-40">
+      <div className="relative w-4 h-4">
+        <input type="checkbox" {...rest} className={inputClass} onKeyDown={handleKeyDown} />
         {rest.checked && (
-          <CheckmarkIcon className="text-blue-500 w-4 h-4 absolute inset-0 m-auto pointer-events-none" />
+          <CheckmarkIcon className="text-primary-500 w-3 h-3 absolute inset-0 m-auto pointer-events-none" />
         )}
       </div>
 
-      {label && <span className={`${rest.checked ? 'text-blue-500' : 'text-gray-600'}`}>{label}</span>}
+      {label && <span className={`${rest.checked ? 'text-primary-500' : 'text-gray-600'}`}>{label}</span>}
     </label>
   );
 }
@@ -51,8 +37,8 @@ Checkbox.layout = 'flex' as const;
 function getCheckboxClass(checked: boolean) {
   return checked
     ? `
-      bg-blue-50
-      border-blue-500
+      bg-primary-50
+      border-primary-500
     `
     : `
       bg-white

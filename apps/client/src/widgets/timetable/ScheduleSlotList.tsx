@@ -11,7 +11,7 @@ function ScheduleSlotList({ schedules }: IScheduleSlotList) {
   const scheduleSlots = useEmptyScheduleSlots(schedules);
 
   return (
-    <Flex direction="flex-col" gap="gap-2" className="mt-3">
+    <Flex direction="column" gap={2} className="mt-3">
       {scheduleSlots
         // .filter(schedule => !schedule.selected)
         .map(schedule => (
@@ -33,19 +33,20 @@ function EmptyScheduleSlot({ schedule, selected }: Readonly<{ schedule: GeneralS
       key={schedule.scheduleId}
       className={
         'h-10 w-full p-4 flex justify-between items-center rounded border ' +
-        (selected ? 'bg-blue-100 border-blue-500' : 'border-gray-200')
+        (selected ? 'bg-primary-100 border-primary-500' : 'border-gray-200')
       }
     >
-      <Flex gap="gap-5">
+      <Flex gap={5}>
         <p>{schedule.subjectName}</p>
         <p className="text-stone-400">{schedule.professorName}</p>
       </Flex>
 
       <IconButton
+        size="large"
         aria-label="delete"
         variant="plain"
         label="delete"
-        icon={<CloseIcon className="w-5 h-5 text-gray-500" />}
+        icon={<CloseIcon className="text-gray-500" />}
         onClick={handleDeleteEmptySlot}
       />
     </div>

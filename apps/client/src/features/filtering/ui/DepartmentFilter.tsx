@@ -2,11 +2,11 @@ import { useState } from 'react';
 import useDepartments from '@/entities/departments/api/useDepartments.ts';
 import { Filters } from '@/features/filtering/model/useFilterStore.ts';
 import SearchBox from '@/features/filtering/ui/SearchBox.tsx';
-import { Button, Flex, Label, ListboxOption, CheckmarkIcon } from '@allcll/allcll-ui';
-import { useFilteringDepartment } from '../lib/useFilteringDepartment';
-import { ZeroContent } from '@/shared/ui/ZeroContent';
+import { matchOptionKeyword } from '@/shared/lib/search.ts';
+import { Button, Flex, Label, Listbox, ListboxOption, CheckmarkIcon, EmptyState, SearchIcon } from '@allcll/allcll-ui';
 import { Filtering } from '@allcll/common';
-import { DepartmentType } from '@/features/filtering/model/types.ts';
+
+const ALL_DEPARTMENT_LABEL = '전체 학과';
 
 interface IDepartmentFilter {
   setFilter: (key: keyof Filters, value: string | null) => void;
@@ -16,120 +16,76 @@ interface IDepartmentFilter {
 function DepartmentFilter({ setFilter, selectedValue }: IDepartmentFilter) {
   const { data: departments } = useDepartments();
   const [searchKeywords, setSearchKeywords] = useState('');
-  const [category, setCategory] = useState<'전체' | '전공' | '교양'>('전공');
 
-  const { departmentsList, filteredDepartments } = useFilteringDepartment({
-    category,
-    setCategory,
-    searchKeywords,
-    setSearchKeywords,
-    departments,
-  });
+  const options = [
+    { value: '', label: ALL_DEPARTMENT_LABEL },
+    ...(departments ?? []).map(({ departmentCode, departmentName }) => ({
+      value: departmentCode,
+      label: departmentName,
+    })),
+  ];
+  const isMatched = (option: (typeof options)[number]) => !searchKeywords || matchOptionKeyword(option, searchKeywords);
+  const hasMatch = options.some(isMatched);
+  const selectedLabel = options.find(option => option.value === selectedValue)?.label ?? ALL_DEPARTMENT_LABEL;
 
   return (
-    <Filtering label={pickCollegeOrMajor(selectedValue, departmentsList)} selected={!!selectedValue}>
-      <Flex direction="flex-col" className="h-80 w-80 overflow-y-auto">
+    <Filtering label={selectedLabel} selected={!!selectedValue}>
+      <Flex direction="column" className="h-80 w-max min-w-80 max-w-[calc(100vw-2rem)]">
         <Label>학과</Label>
-        <Flex className="shrink-0 bg-white" gap="gap-2">
-          <select
-            value={category}
-            className="border border-gray-300 rounded-md text-sm text-gray-700 bg-white"
-            onChange={e => {
-              const value = e.target.value as '전체' | '전공' | '교양';
-              setCategory(value);
-              setFilter('department', '');
-            }}
-          >
-            <option value="전공">전공</option>
-            <option value="교양">교양</option>
-          </select>
-          <SearchBox
-            type="text"
-            placeholder="학과 검색"
-            onDelete={() => {
-              setSearchKeywords('');
-            }}
-            value={searchKeywords}
-            onChange={e => {
-              setSearchKeywords(e.target.value);
-            }}
-            className="w-full"
-          />
-        </Flex>
+        <SearchBox
+          type="text"
+          placeholder="학과 검색"
+          value={searchKeywords}
+          onDelete={() => setSearchKeywords('')}
+          onChange={e => setSearchKeywords(e.target.value)}
+          className="w-full shrink-0"
+        />
 
-        <div className="overflow-y-auto flex-1 py-2 ">
-          {(category === '전공' || category === '교양') && (
-            <SelectSubject departments={filteredDepartments} setFilter={setFilter} selectedValue={selectedValue} />
+        <Listbox bordered className="flex-1">
+          {!hasMatch && (
+            <EmptyState
+              icon={SearchIcon}
+              title="검색 결과가 없습니다."
+              description="다른 학과 이름으로 검색해주세요."
+              className="h-full"
+            />
           )}
-        </div>
-      </Flex>
+          {/* 검색해도 팝오버 폭이 바뀌지 않도록 걸러진 학과도 높이만 없애 두어 전체 목록의 가장 긴 이름에 폭을 맞춤 */}
+          {options.map(option => {
+            const matched = isMatched(option);
 
-      <Flex justify="justify-end" className="w-full pt-1">
-        <Button
-          variant="text"
-          size="small"
-          textColor="gray"
-          disabled={!selectedValue}
-          onClick={() => setFilter('department', '')}
-        >
-          초기화
-        </Button>
+            return (
+              <div
+                key={option.value}
+                aria-hidden={!matched || undefined}
+                className={matched ? '' : 'h-0 overflow-hidden invisible'}
+              >
+                <ListboxOption
+                  selected={option.value === selectedValue}
+                  focusable={matched}
+                  left={option.label}
+                  right={<CheckmarkIcon className="w-4 h-4 shrink-0 text-primary-500" />}
+                  onSelect={() => setFilter('department', option.value)}
+                />
+              </div>
+            );
+          })}
+        </Listbox>
+
+        <Flex justify="end" className="shrink-0 mt-1 pt-1.5 -mb-1.5 border-t border-gray-100">
+          <Button
+            variant="text"
+            size="small"
+            color="gray"
+            disabled={!selectedValue}
+            onClick={() => setFilter('department', '')}
+          >
+            초기화
+          </Button>
+        </Flex>
       </Flex>
     </Filtering>
   );
 }
 
 export default DepartmentFilter;
-
-interface ISelectSubject {
-  departments: DepartmentType[];
-  setFilter: (key: keyof Filters, value: string | null) => void;
-  selectedValue: string;
-}
-
-function SelectSubject({ departments, setFilter, selectedValue }: ISelectSubject) {
-  if (!departments) {
-    return <ZeroContent title="학과 리스트들이 없습니다." />;
-  }
-
-  const handleChangeDepartment = (department: string) => {
-    setFilter('department', department || '');
-  };
-
-  if (departments.length === 0) {
-    return <ZeroContent title="검색 결과가 없습니다." description="다른 학과 이름으로 검색해주세요." />;
-  }
-
-  return (
-    <>
-      {departments.map(department => {
-        const isSelected = pickCollegeOrMajor(selectedValue, departments) === department.departmentName;
-        const departmentName = department.departmentName
-          ? department.departmentName.split(' ').slice(-1)[0]
-          : '학과 정보 없음';
-
-        return (
-          <ListboxOption
-            key={department.departmentCode}
-            selected={isSelected}
-            left={departmentName}
-            right={isSelected ? <CheckmarkIcon className="w-4 h-4 shrink-0 text-blue-500" /> : null}
-            onSelect={() => handleChangeDepartment(department.departmentCode)}
-          />
-        );
-      })}
-    </>
-  );
-}
-
-function pickCollegeOrMajor(selectedDepartment: string, departmentsList: DepartmentType[]) {
-  const selectedDepartmentName = departmentsList?.find(
-    department => department.departmentCode === selectedDepartment,
-  )?.departmentName;
-
-  if (!selectedDepartmentName) {
-    return '학과가 없습니다.';
-  }
-
-  return selectedDepartmentName;
-}

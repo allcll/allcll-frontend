@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { QueryClient } from '@tanstack/react-query';
+import { useToastNotification } from '@allcll/common';
 import useSSECondition from '@/features/live/board/model/useSSECondition.ts';
 import useAlarmSettings, {
   AlarmType,
@@ -133,8 +134,8 @@ function useNotification() {
   useEffect(() => {
     if (isInitialized) return;
 
-    if (AlarmNotification.isGranted()) {
-      setGlobalNotification('알림 기능이 활성화되었습니다. 여석이 생기면 이렇게 알림을 보내드려요');
+    if (useAlarmSettings.getState().isEnabled && AlarmNotification.isGranted()) {
+      setGlobalNotification('여석 알림이 켜져 있어요.\n여석이 생기면 이렇게 알려드려요');
       setAlwaysReload(true);
     }
 
@@ -142,19 +143,23 @@ function useNotification() {
   }, []);
 
   const changeAlarm = () => {
-    // 알림 기능 활성화 할 때
-    if (!isAlarm) {
-      const alarmType = useAlarmSettings.getState().alarmType;
-      if (alarmType === AlarmType.NONE) {
-        if (!confirm('알림 기능을 활성화 하시겠습니까?')) return;
-        useAlarmSettings.getState().resetSettings();
-      }
-      AlarmNotification.requestPermission();
+    if (!isAlarm) AlarmNotification.requestPermission();
+
+    setAlwaysReload(!isAlarm);
+    useAlarmSettings.getState().saveSettings({ isEnabled: !isAlarm });
+
+    if (isAlarm) {
+      // 끄는 안내에는 소리, 진동, 브라우저 알림이 울리지 않도록 화면 토스트로만 알림
+      useToastNotification.getState().addToast('여석 알림을 껐어요', 'alarm-status');
+      return;
     }
 
-    const message = !isAlarm ? '알림 기능이 활성화되었습니다' : '알림 기능이 비활성화되었습니다';
-    setAlwaysReload(!isAlarm);
+    const message = '여석 알림을 켰어요';
     setGlobalNotification(message);
+    // 고른 방식에 토스트가 없으면 켜진 것을 화면에서 확인할 수 없어 따로 띄움
+    if (!isAlarmActivated(AlarmType.TOAST)) {
+      useToastNotification.getState().addToast(message, 'alarm-status');
+    }
   };
 
   return { isAlarm, changeAlarm };

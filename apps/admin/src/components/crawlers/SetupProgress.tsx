@@ -4,7 +4,7 @@ import { Step, Line } from '@allcll/common';
 
 function SetupProgress({ current }: { current: number }) {
   return (
-    <Flex align="items-center">
+    <Flex align="center">
       <Step
         number={SetupStep.TOKEN}
         finish={current > SetupStep.TOKEN}

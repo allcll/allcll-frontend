@@ -1,4 +1,4 @@
-import { getWishesVariant } from '@/shared/config/colors';
+import { getWishesBadgeColor } from '@/shared/config/colors';
 import { Badge } from '@allcll/allcll-ui';
 
 interface BasketBadgeProps {
@@ -8,10 +8,10 @@ interface BasketBadgeProps {
 
 function BasketBadge({ wishCount, formatter = value => value }: Readonly<BasketBadgeProps>) {
   const isValid = wishCount !== null && wishCount !== undefined && wishCount >= 0;
-  const variant = getWishesVariant(wishCount);
+  const color = getWishesBadgeColor(wishCount);
   const value = isValid ? wishCount : '-';
 
-  return <Badge variant={variant}>{formatter(value)}</Badge>;
+  return <Badge color={color}>{formatter(value)}</Badge>;
 }
 
 export default BasketBadge;

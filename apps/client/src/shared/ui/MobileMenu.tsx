@@ -62,11 +62,11 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
             모바일 메뉴
           </h2>
 
-          <Flex justify="justify-between" align="items-center" gap="gap-0" className="p-4">
+          <Flex justify="between" align="center" gap={0} className="px-4 h-14">
             <Link
               to="/"
               onClick={e => navigateWithClose('/', e)}
-              className="flex items-center gap-2"
+              className="flex items-center gap-1"
               aria-label="메인 페이지"
             >
               <img src={logoCiUrl} alt="" className="w-6 h-6" />
@@ -74,9 +74,10 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
             </Link>
 
             <IconButton
+              size="large"
               className="p-2 hover:bg-gray-100 active:bg-gray-100"
               variant="plain"
-              icon={<CloseIcon className="w-6 h-6 text-gray-700" />}
+              icon={<CloseIcon className="text-gray-500" />}
               label="메뉴 닫기"
               onClick={onClose}
             />
@@ -84,7 +85,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
 
           <hr className="mx-4 border-gray-300" />
 
-          <Flex as="ul" direction="flex-col" gap="gap-1" className="flex-1 p-4">
+          <Flex as="ul" direction="column" gap={1} className="flex-1 p-4">
             {HeaderContents.map(({ title, path, end, beta }) => (
               <li key={path}>
                 <NavLink
@@ -93,13 +94,13 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
                   onClick={e => navigateWithClose(path, e)}
                   className={({ isActive }) =>
                     `flex items-center gap-1.5 py-3 px-4 rounded-lg text-base font-medium transition-colors ${
-                      isActive ? 'bg-blue-50 text-blue-500' : 'text-gray-700 active:bg-gray-100'
+                      isActive ? 'bg-primary-50 text-primary-500' : 'text-gray-700 active:bg-gray-100'
                     }`
                   }
                 >
                   {title}
                   {beta && (
-                    <Badge variant="beta" appearance="outline" size="small">
+                    <Badge color="danger" variant="outlined" size="small">
                       Beta
                     </Badge>
                   )}
@@ -110,7 +111,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
 
           <hr className="mx-4 border-gray-300" />
 
-          <Flex gap="gap-2" className="p-4">
+          <Flex gap={2} className="p-4">
             {ButtonContents.map(({ icon, title, path }) => (
               <a
                 key={path}

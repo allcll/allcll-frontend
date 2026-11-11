@@ -1,3 +1,4 @@
+import { Heading } from '@allcll/allcll-ui';
 import { Helmet } from 'react-helmet';
 import AllResult from '@/widgets/simulation/AllResult.tsx';
 import SimulationList from '@/widgets/simulation/SimulationList.tsx';
@@ -6,12 +7,14 @@ function Dashboard() {
   return (
     <>
       <Helmet>
-        <title>ALLCLL | 올클연습 - 결과 분석</title>
+        <title>ALLCLL | 올클연습 - 수강신청 결과</title>
         <meta name="description" content="수강연습 결과를 분석하고, 부족한 부분을 알려 드려요." />
       </Helmet>
 
-      <section className="max-w-7xl mx-auto">
-        <h1 className="text-2xl font-bold mb-2">수강신청 결과</h1>
+      <section>
+        <Heading level={1} className="mb-2">
+          수강신청 결과
+        </Heading>
         <p className="text-gray-500 mb-4">수강연습 결과를 분석 후, 부족한 부분을 알려 드려요.</p>
 
         <div className="bg-white p-3 rounded-md text-sm shadow-md shadow-gray-300">
@@ -19,7 +22,7 @@ function Dashboard() {
         </div>
       </section>
 
-      <section className="max-w-3xl mx-auto mt-12">
+      <section className="mt-12">
         <SimulationList />
       </section>
     </>

@@ -2,15 +2,21 @@ export { default as Step } from './src/components/step/Step';
 export { default as Line } from './src/components/step/Line';
 export { default as Filtering } from './src/components/filtering/Filtering';
 export { default as CheckboxAdapter } from './src/components/checkbox/CheckboxAdapter';
-export { default as Toggle } from './src/components/Toggle';
 export { default as ToastNotification } from './src/components/toast/ToastNotification';
 export { default as useToastNotification } from './src/store/useToastNotification';
 export type { IToastMessage } from './src/store/useToastNotification';
+export { default as ConfirmDialog } from './src/components/confirm/ConfirmDialog';
+export { default as GlobalConfirmDialog } from './src/components/confirm/GlobalConfirmDialog';
+export { confirm, alert, settleConfirm } from './src/store/useConfirm';
+export type { ConfirmOptions, AlertOptions } from './src/store/useConfirm';
 
 export * from './src/types/graduation';
 export * from './src/lib/graduation/mappers';
 export * from './src/lib/graduation/rules';
 export * from './src/lib/semester/config';
+export * from './src/lib/date';
+export * from './src/lib/operationType';
+export * from './src/lib/filterLabel';
 
 export { default as ProgressDoughnut } from './src/components/graduation/ProgressDoughnut';
 export { default as OverallSummaryCard } from './src/components/graduation/OverallSummaryCard';

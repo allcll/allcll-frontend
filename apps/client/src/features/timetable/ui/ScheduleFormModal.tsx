@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import ScheduleFormContent from './ScheduleFormContent.tsx';
 import useScheduleModal, { useScheduleModalData } from '@/features/timetable/lib/useScheduleModal.ts';
 import { ScheduleMutateType } from '@/features/timetable/model/useScheduleState.ts';
@@ -15,17 +14,6 @@ function ScheduleFormModal() {
   const buttonSize = isMobile ? 'small' : 'medium';
   const { isDeleteConfirming, requestDeleteConfirmation, cancelDeleteConfirmation, confirmDelete } =
     useDeleteConfirmation(deleteSchedule);
-
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') cancelSchedule(e);
-    };
-
-    document.addEventListener('keydown', onKeyDown);
-    return () => {
-      document.removeEventListener('keydown', onKeyDown);
-    };
-  }, [cancelSchedule]);
 
   const handleSubmit = (e: React.FormEvent) => {
     saveSchedule(e);
@@ -49,12 +37,19 @@ function ScheduleFormModal() {
           ) : (
             <>
               {(modalActionType === ScheduleMutateType.EDIT || modalActionType === ScheduleMutateType.VIEW) && (
-                <Button type="button" variant="secondary" size={buttonSize} onClick={requestDeleteConfirmation}>
+                <Button
+                  type="button"
+                  variant="text"
+                  color="danger"
+                  size={buttonSize}
+                  className="mr-auto"
+                  onClick={requestDeleteConfirmation}
+                >
                   삭제
                 </Button>
               )}
 
-              <Button type="submit" variant="primary" size={buttonSize}>
+              <Button type="submit" variant="solid" size={buttonSize}>
                 저장
               </Button>
             </>

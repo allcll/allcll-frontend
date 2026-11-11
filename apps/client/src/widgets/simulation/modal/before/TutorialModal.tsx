@@ -1,7 +1,16 @@
 import { useState } from 'react';
 import YouTube from 'react-youtube';
-import SejongUI from '@allcll/sejong-ui';
-import { Button, Checkbox, Dialog, Flex, Heading, SupportingText, ChevronDownIcon } from '@allcll/allcll-ui';
+import {
+  Button,
+  Checkbox,
+  Dialog,
+  Flex,
+  Heading,
+  IconButton,
+  SupportingText,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from '@allcll/allcll-ui';
 import useTutorialStore from '@/features/simulation/model/useTutorialStore.ts';
 import { useSimulationModalStore } from '@/features/simulation/model/useSimulationModal.ts';
 import useMobile from '@/shared/lib/useMobile.ts';
@@ -63,6 +72,8 @@ function TutorialModal() {
   };
 
   const currentVideo = tutorialVideos[currentIndex];
+  const hasPrevious = currentIndex > 0;
+  const hasNext = currentIndex < tutorialVideos.length - 1;
 
   const handleCloseModal = () => {
     closeModal();
@@ -77,7 +88,7 @@ function TutorialModal() {
   return (
     <Dialog title="올클연습 소개" onClose={handleCloseModal} isOpen={!shouldSkipTutorial}>
       <Dialog.Content>
-        <Flex className="w-full" direction="flex-col">
+        <Flex className="w-full" direction="column">
           <SupportingText>올클연습은 실제 수강신청과 유사한 환경에서 연습할 수 있는 기능입니다.</SupportingText>
           <div className="mx-auto" style={{ width: youTubeSize.width + 'px', height: youTubeSize.height + 'px' }}>
             <YouTube
@@ -97,31 +108,39 @@ function TutorialModal() {
         </Flex>
 
         <div className="mt-4 flex flex-col justify-center items-center gap-2">
-          <Flex justify="justify-center" align="items-center" className="gap-4">
-            <Button variant="text" size="medium" aria-label="이전 튜토리얼" onClick={goToPreviousTutorial}>
-              {currentIndex !== 0 && <ChevronDownIcon className="w-5 h-5 transform rotate-90 text-gray-700" />}
-            </Button>
+          <Flex justify="center" align="center" gap={4}>
+            <IconButton
+              size="large"
+              label="이전 튜토리얼"
+              icon={<ChevronLeftIcon />}
+              onClick={goToPreviousTutorial}
+              disabled={!hasPrevious}
+              className={`p-2 ${hasPrevious ? '' : 'invisible'}`}
+            />
             <Heading level={3}>{currentVideo.title}</Heading>
-            <Button variant="text" size="medium" aria-label="이전 튜토리얼" onClick={goToNextTutorial}>
-              {currentIndex < 3 && <ChevronDownIcon className="w-5 h-5 transform -rotate-90 text-gray-700" />}
-            </Button>
+            <IconButton
+              size="large"
+              label="다음 튜토리얼"
+              icon={<ChevronRightIcon />}
+              onClick={goToNextTutorial}
+              disabled={!hasNext}
+              className={`p-2 ${hasNext ? '' : 'invisible'}`}
+            />
           </Flex>
           <SupportingText>
             각 영상을 통해 연습 과목 선택, 연습 시작 방법, 연습 종료 및 결과 분석 방법을 배울 수 있습니다.
           </SupportingText>
-
-          <SejongUI.Modal.ButtonContainer className="mt-4">
-            <Checkbox
-              label="일주일 동안 보지 않기"
-              checked={popupChecked}
-              onChange={() => setPopupChecked(!popupChecked)}
-            />
-            <Button variant="primary" size="medium" onClick={handleClickSkipTutorial}>
-              튜토리얼 건너뛰기
-            </Button>
-          </SejongUI.Modal.ButtonContainer>
         </div>
       </Dialog.Content>
+
+      <Dialog.Footer>
+        <div className="mr-auto self-center whitespace-nowrap">
+          <Checkbox label="일주일간 보지 않기" checked={popupChecked} onChange={() => setPopupChecked(!popupChecked)} />
+        </div>
+        <Button variant="solid" size="medium" className="whitespace-nowrap" onClick={handleClickSkipTutorial}>
+          건너뛰기
+        </Button>
+      </Dialog.Footer>
     </Dialog>
   );
 }

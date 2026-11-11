@@ -36,6 +36,7 @@ function GenericMultiSelectFilter<K extends keyof Filters>({
       setFilter={(field, value) => setFilter(field, value)}
       options={options}
       ItemComponent={ItemComponent ? ItemComponent : Generalcomponent}
+      showReset={!isMobile}
     />
   );
 

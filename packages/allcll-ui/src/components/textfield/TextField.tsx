@@ -1,8 +1,9 @@
-import type { ComponentPropsWithoutRef } from 'react';
+import { useId, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import Label from '../label/Label';
 import Flex from '../flex/Flex';
 import IconButton from '../icon-button/IconButton';
 import { CloseIcon } from '../../icons';
+import { FIELD_BOX_CLASS, FIELD_TEXT_CLASS } from '../../config';
 
 interface TextFieldProps extends Omit<ComponentPropsWithoutRef<'input'>, 'size'> {
   label?: string;
@@ -11,6 +12,7 @@ interface TextFieldProps extends Omit<ComponentPropsWithoutRef<'input'>, 'size'>
   size: 'small' | 'medium' | 'large';
   className?: string;
   onClear?: () => void;
+  endAdornment?: ReactNode;
 }
 
 function TextField({
@@ -23,37 +25,56 @@ function TextField({
   className = '',
   value,
   onClear,
+  endAdornment,
+  'aria-describedby': describedBy,
   ...rest
 }: TextFieldProps) {
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
+  const errorId = `${inputId}-error`;
+  const showError = isError && !!errorMessage;
+  const paddingRight = onClear && endAdornment ? 'pr-14' : onClear || endAdornment ? 'pr-8' : 'pr-3';
+
   return (
-    <Flex direction="flex-col" gap="gap-2" className={className}>
+    <Flex direction="column" gap={1.5} className={className}>
       {label && (
-        <Label required={required} id={id}>
+        <Label required={required} htmlFor={inputId}>
           {label}
         </Label>
       )}
 
       <div className="relative w-full ">
         <input
-          id={id}
+          id={inputId}
           type="text"
           aria-invalid={isError}
+          aria-describedby={[describedBy, showError && errorId].filter(Boolean).join(' ') || undefined}
           required={required}
           value={value}
           {...rest}
-          className={`rounded-md w-full bg-white border border-gray-300 py-2 px-3 focus:outline-none focus:ring-0 focus:border-primary-500 ${onClear ? 'pr-8' : ''} ${getSizeClass(size)}`}
+          className={`w-full pl-3 ${paddingRight} ${FIELD_BOX_CLASS} aria-invalid:border-danger-500 aria-invalid:focus:border-danger-500 ${getSizeClass(size)}`}
         />
         {onClear && value && (
           <IconButton
+            size="medium"
             aria-label="입력 내용 지우기"
-            icon={<CloseIcon className="w-4 h-4" />}
+            icon={<CloseIcon />}
             onClick={onClear}
             className=" absolute right-2 top-1/2 transform -translate-y-1/2 "
           />
         )}
+        {endAdornment && (
+          <div className={`absolute ${onClear ? 'right-8' : 'right-2'} top-1/2 -translate-y-1/2 flex`}>
+            {endAdornment}
+          </div>
+        )}
       </div>
 
-      {isError && <span className="text-secondary-500 text-xs">{errorMessage}</span>}
+      {showError && (
+        <span id={errorId} className="text-danger-500 text-xs">
+          {errorMessage}
+        </span>
+      )}
     </Flex>
   );
 }
@@ -63,12 +84,11 @@ export default TextField;
 function getSizeClass(size: string) {
   switch (size) {
     case 'small':
-      return 'text-sm py-1';
-    case 'medium':
-      return 'text-base py-1';
+      return 'text-sm';
     case 'large':
-      return 'text-lg py-1';
+      return 'text-lg';
+    case 'medium':
     default:
-      return '';
+      return FIELD_TEXT_CLASS;
   }
 }

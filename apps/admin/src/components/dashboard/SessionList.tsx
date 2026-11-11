@@ -1,6 +1,6 @@
 import { useCheckAdminSession } from '@/hooks/server/session/useAdminSession';
-import { formatTime } from '@/utils/formatTime';
-import { Badge, Card } from '@allcll/allcll-ui';
+import { formatDateTime } from '@/utils/formatTime';
+import { Badge, Card, LoadingState, Table } from '@allcll/allcll-ui';
 import SectionHeader from '../common/SectionHeader';
 
 function SessionList() {
@@ -11,20 +11,18 @@ function SessionList() {
       <SectionHeader title="세션 목록" description="현재 활성화된 인증 세션 목록을 확인합니다." />
 
       <Card>
-        <table className="min-w-full border-collapse">
-          <thead>
-            <tr className="bg-gray-50 text-sm text-gray-500">
-              <th className="px-3 py-2 text-center font-medium">학번</th>
-              <th className="px-3 py-2 text-center font-medium">시작 시간</th>
-              <th className="px-3 py-2 text-center font-medium">인증 세션 활성 여부</th>
-            </tr>
-          </thead>
+        <Table>
+          <Table.Head>
+            <Table.HeaderCell>학번</Table.HeaderCell>
+            <Table.HeaderCell>시작 시간</Table.HeaderCell>
+            <Table.HeaderCell>인증 세션 활성 여부</Table.HeaderCell>
+          </Table.Head>
 
-          <tbody>
+          <Table.Body>
             {isLoading && (
               <tr>
-                <td colSpan={3} className="py-6 text-center text-gray-400 text-sm">
-                  불러오는 중...
+                <td colSpan={3} className="py-6">
+                  <LoadingState />
                 </td>
               </tr>
             )}
@@ -46,19 +44,16 @@ function SessionList() {
             )}
 
             {sessionStatus?.map((data, idx) => (
-              <tr
-                key={data?.userId ?? idx}
-                className="text-sm text-gray-700 border-b border-gray-500 hover:bg-gray-50 transition"
-              >
-                <td className="px-3 py-2 text-center">{data?.userId}</td>
-                <td className="px-3 py-2 text-center">{formatTime(data?.startTime ?? '')}</td>
-                <td className="px-3 py-2 text-center">
-                  <Badge variant={data?.isActive ? 'success' : 'danger'}>{data?.isActive ? 'ON' : 'OFF'}</Badge>
-                </td>
-              </tr>
+              <Table.Row key={data?.userId ?? idx} className="hover:bg-gray-50 transition">
+                <Table.Cell>{data?.userId}</Table.Cell>
+                <Table.Cell>{formatDateTime(data?.startTime ?? '')}</Table.Cell>
+                <Table.Cell>
+                  <Badge color={data?.isActive ? 'success' : 'danger'}>{data?.isActive ? 'ON' : 'OFF'}</Badge>
+                </Table.Cell>
+              </Table.Row>
             ))}
-          </tbody>
-        </table>
+          </Table.Body>
+        </Table>
       </Card>
     </section>
   );

@@ -1,21 +1,17 @@
-import type { ComponentPropsWithoutRef, ElementType } from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
 
 type HeadingLevel = 1 | 2 | 3 | 4 | 5;
-type HeadingSize = 'xxl' | 'xl' | 'lg' | 'md' | 'sm' | 'xs';
 
 interface HeadingProps extends ComponentPropsWithoutRef<'h1'> {
   level: HeadingLevel;
-  size?: HeadingSize;
-  as?: ElementType;
   className?: string;
 }
 
-function Heading({ level = 1, size, as, className, children, ...props }: HeadingProps) {
-  const Tag = (as ?? `h${level}`) as ElementType;
-  const appliedSize = size ?? levelToSize(level);
+function Heading({ level = 1, className, children, ...props }: HeadingProps) {
+  const Tag = `h${level}` as const;
 
   return (
-    <Tag className={`${className ?? ''} ${getSizeClass(appliedSize)} text-text-200`} {...props}>
+    <Tag className={`${className ?? ''} ${LEVEL_CLASS[level]} text-text-200`} {...props}>
       {children}
     </Tag>
   );
@@ -23,23 +19,10 @@ function Heading({ level = 1, size, as, className, children, ...props }: Heading
 
 export default Heading;
 
-function levelToSize(level: HeadingLevel): HeadingSize {
-  return {
-    1: 'xxl',
-    2: 'xl',
-    3: 'lg',
-    4: 'md',
-    5: 'sm',
-  }[level] as HeadingSize;
-}
-
-function getSizeClass(size: HeadingSize) {
-  return {
-    xxl: 'text-lg font-semibold md:text-xl',
-    xl: 'text-base md:text-lg font-semibold',
-    lg: 'text-base font-semibold',
-    md: 'text-sm font-semibold',
-    sm: 'text-xs font-semibold',
-    xs: 'text-[11px] font-semibold',
-  }[size];
-}
+const LEVEL_CLASS: Record<HeadingLevel, string> = {
+  1: 'text-lg font-semibold md:text-xl',
+  2: 'text-base md:text-lg font-semibold',
+  3: 'text-base font-semibold',
+  4: 'text-sm font-semibold',
+  5: 'text-xs font-semibold',
+};
