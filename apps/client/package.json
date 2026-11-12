@@ -38,13 +38,13 @@
   },
   "devDependencies": {
     "@allcll/mock-server": "workspace:^",
-    "@tailwindcss/typography": "^0.5.16",
-    "@tanstack/query-core": "^5.83.0",
+    "@tailwindcss/typography": "^0.5.20",
+    "@tanstack/query-core": "^5.107.1",
     "@types/canvas-confetti": "^1.9.0",
     "@types/dom-to-image": "^2.6.7",
     "@types/file-saver": "^2.0.7",
     "@types/react-helmet": "^6.1.11",
     "@types/react-transition-group": "^4.4.12",
-    "rollup-plugin-visualizer": "^6.0.3"
+    "rollup-plugin-visualizer": "^6.0.11"
   }
 }

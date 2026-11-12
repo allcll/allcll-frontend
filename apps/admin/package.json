@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@allcll/mock-server": "workspace:^",
-    "@types/node": "20",
+    "@types/node": "^20.19.43",
     "@types/react-datepicker": "^7.0.0",
     "@types/react-helmet": "^6.1.11",
     "@vitejs/plugin-basic-ssl": "^2.3.0"
