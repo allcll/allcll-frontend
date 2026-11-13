@@ -9,6 +9,8 @@ export { default as ConfirmDialog } from './src/components/confirm/ConfirmDialog
 export { default as GlobalConfirmDialog } from './src/components/confirm/GlobalConfirmDialog';
 export { confirm, alert, settleConfirm } from './src/store/useConfirm';
 export type { ConfirmOptions, AlertOptions } from './src/store/useConfirm';
+export { useThemeStore, useApplyTheme } from './src/store/useThemeStore';
+export type { ThemePreference } from './src/store/useThemeStore';
 
 export * from './src/types/graduation';
 export * from './src/lib/graduation/mappers';

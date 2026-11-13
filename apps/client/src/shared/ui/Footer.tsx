@@ -3,6 +3,7 @@ import { HeaderContents } from '@/shared/config/navigation.tsx';
 import { LogoGithubIcon, LogoInstagramIcon, LogoKakaoTalkIcon, Heading, Container } from '@allcll/allcll-ui';
 import logoCiUrl from '@/assets/logo/ci-summer.svg';
 import logoNameUrl from '@/assets/logo/logo-name-summer.svg';
+import ThemeOptions from './ThemeOptions';
 
 interface IFooterItem {
   title: string;
@@ -101,7 +102,10 @@ function Footer() {
         ))}
       </Container>
 
-      <p className="pb-12">© 2026 ALLCLL. All rights reserved.</p>
+      <Container className="pb-24 flex flex-col-reverse items-center gap-3 md:flex-row md:justify-between">
+        <p>© 2026 ALLCLL. All rights reserved.</p>
+        <ThemeOptions />
+      </Container>
     </footer>
   );
 }

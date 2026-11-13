@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
-import { settleConfirm } from '@allcll/common';
+import { settleConfirm, useApplyTheme } from '@allcll/common';
 import useSSEManager from '@/features/live/common/api/useSSEManager';
 
 interface IHistory {
@@ -36,6 +36,8 @@ function useGlobalEffect() {
 
   // SSEManager.ts
   useSSEManager();
+
+  useApplyTheme();
 }
 
 export default useGlobalEffect;
