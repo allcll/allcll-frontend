@@ -21,6 +21,7 @@ ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, ChartTool
 
 const options = {
   responsive: true,
+  layout: { padding: { left: 8, right: 8 } },
   scales: {
     r: {
       angleLines: { display: true },
@@ -32,6 +33,7 @@ const options = {
       pointLabels: {
         font: {
           size: 14,
+          family: 'Pretendard',
         },
         color: '#4B5563', // text-gray-700
       },
@@ -99,24 +101,24 @@ function RadarChart({ result }: Readonly<IRadarChart>) {
   return (
     <>
       {/* 레이더 차트 */}
-      <div className="h-90">
+      <div className="md:h-90">
         <RadarChartJS data={datasets} className="mx-auto" options={options} />
       </div>
 
       {/* 능력 설명 박스 */}
-      <div className="absolute bottom-6 right-6 bg-white shadow-lg rounded-lg px-4 py-3 text-xs text-gray-800">
+      <div className="mt-2 md:mt-0 md:absolute md:bottom-6 md:right-6 bg-white shadow-lg rounded-lg px-4 py-3 text-xs text-gray-800">
         <div className="font-bold text-sm mb-1">내 능력</div>
         <ul className="space-y-1">
-          <li className="flex justify-between">
-            <span>• 신청 버튼 클릭 속도&nbsp;</span> <span>{searchBtnSpeed.toFixed(2)} sec</span>
+          <li className="flex justify-between gap-3">
+            <span>• 신청 버튼 클릭 속도</span> <span>{searchBtnSpeed.toFixed(2)} sec</span>
           </li>
-          <li className="flex justify-between">
+          <li className="flex justify-between gap-3">
             <span>• 총 소요 시간</span> <span>{totalSpeed.toFixed(2)} sec</span>
           </li>
-          <li className="flex justify-between">
+          <li className="flex justify-between gap-3">
             <span>• 정확도</span> <span>{accuracy.toFixed(2)} %</span>
           </li>
-          <li className="flex justify-between">
+          <li className="flex justify-between gap-3">
             <span>• 매크로 방지 코드 인증 속도</span> <span>{captchaSpeed.toFixed(2)} sec</span>
           </li>
         </ul>
