@@ -13,9 +13,7 @@
   "description": "",
   "devDependencies": {
     "@playwright/test": "^1.65.0",
-    "@types/node": "^24.19.2"
-  },
-  "dependencies": {
+    "@types/node": "^24.19.2",
     "dotenv": "^16.6.1"
   }
 }

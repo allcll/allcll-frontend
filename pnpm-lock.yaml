@@ -90,24 +90,27 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.107.1
         version: 5.107.1(@types/react@19.2.14)(react@18.3.1)
-      '@vitejs/plugin-basic-ssl':
-        specifier: ^2.3.0
-        version: 2.3.0(vite@7.3.8(@types/node@24.19.2)(jiti@2.7.0)(lightningcss@1.33.0)(yaml@2.8.2))
       dexie:
         specifier: ^4.4.7
         version: 4.4.7
-      dotenv:
-        specifier: ^16.6.1
-        version: 16.6.1
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
       react-datepicker:
         specifier: ^8.10.0
         version: 8.10.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
       react-helmet:
         specifier: ^6.1.0
         version: 6.1.0(react@18.3.1)
       react-markdown:
         specifier: ^10.1.0
         version: 10.1.0(@types/react@19.2.14)(react@18.3.1)
+      react-router-dom:
+        specifier: ^7.18.5
+        version: 7.18.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       remark-breaks:
         specifier: ^4.0.0
         version: 4.0.0
@@ -124,6 +127,12 @@ importers:
       '@types/react-helmet':
         specifier: ^6.1.11
         version: 6.1.11
+      '@vitejs/plugin-basic-ssl':
+        specifier: ^2.3.0
+        version: 2.3.0(vite@7.3.8(@types/node@24.19.2)(jiti@2.7.0)(lightningcss@1.33.0)(yaml@2.8.2))
+      dotenv:
+        specifier: ^16.6.1
+        version: 16.6.1
 
   apps/client:
     dependencies:
@@ -142,18 +151,12 @@ importers:
       '@sentry/react':
         specifier: ^8.55.2
         version: 8.55.2(react@18.3.1)
-      '@sentry/vite-plugin':
-        specifier: ^3.6.1
-        version: 3.6.1
       '@supabase/supabase-js':
         specifier: ^2.119.0
         version: 2.119.0
       '@tanstack/react-query':
         specifier: ^5.107.1
         version: 5.107.1(@types/react@19.2.14)(react@18.3.1)
-      '@vitejs/plugin-basic-ssl':
-        specifier: ^2.3.0
-        version: 2.3.0(vite@7.3.8(@types/node@24.19.2)(jiti@2.7.0)(lightningcss@1.33.0)(yaml@2.8.2))
       canvas-confetti:
         specifier: ^1.9.4
         version: 1.9.4
@@ -175,9 +178,15 @@ importers:
       file-saver:
         specifier: ^2.0.5
         version: 2.0.5
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
       react-chartjs-2:
         specifier: ^5.3.1
         version: 5.3.1(chart.js@4.6.1)(react@18.3.1)
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
       react-ga4:
         specifier: ^2.1.0
         version: 2.1.0
@@ -187,6 +196,9 @@ importers:
       react-markdown:
         specifier: ^10.1.0
         version: 10.1.0(@types/react@19.2.14)(react@18.3.1)
+      react-router-dom:
+        specifier: ^7.18.5
+        version: 7.18.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-transition-group:
         specifier: ^4.4.5
         version: 4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -206,6 +218,9 @@ importers:
       '@allcll/mock-server':
         specifier: workspace:^
         version: link:../../packages/mock-server
+      '@sentry/vite-plugin':
+        specifier: ^3.6.1
+        version: 3.6.1
       '@tailwindcss/typography':
         specifier: ^0.5.20
         version: 0.5.20(tailwindcss@4.3.5)
@@ -227,6 +242,9 @@ importers:
       '@types/react-transition-group':
         specifier: ^4.4.12
         version: 4.4.12(@types/react@19.2.14)
+      '@vitejs/plugin-basic-ssl':
+        specifier: ^2.3.0
+        version: 2.3.0(vite@7.3.8(@types/node@24.19.2)(jiti@2.7.0)(lightningcss@1.33.0)(yaml@2.8.2))
       rollup-plugin-visualizer:
         specifier: ^6.0.11
         version: 6.0.11(rollup@4.68.2)
@@ -254,6 +272,12 @@ importers:
       lucide-react:
         specifier: ^1.72.0
         version: 1.72.0(@types/react@19.2.14)(react@18.3.1)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
       vaul:
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@18.3.7(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -315,9 +339,15 @@ importers:
       chart.js:
         specifier: ^4.6.1
         version: 4.6.1
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
       react-chartjs-2:
         specifier: ^5.3.1
         version: 5.3.1(chart.js@4.6.1)(react@18.3.1)
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
       react-transition-group:
         specifier: ^4.4.5
         version: 4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -330,10 +360,6 @@ importers:
         version: 4.4.12(@types/react@19.2.14)
 
   packages/e2e:
-    dependencies:
-      dotenv:
-        specifier: ^16.6.1
-        version: 16.6.1
     devDependencies:
       '@playwright/test':
         specifier: ^1.65.0
@@ -341,6 +367,9 @@ importers:
       '@types/node':
         specifier: ^24.19.2
         version: 24.19.2
+      dotenv:
+        specifier: ^16.6.1
+        version: 16.6.1
 
   packages/mock-server:
     devDependencies:
@@ -353,6 +382,12 @@ importers:
       '@allcll/allcll-ui':
         specifier: workspace:^
         version: link:../allcll-ui
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-router-dom:
+        specifier: ^7.18.5
+        version: 7.18.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@chromatic-com/storybook':
         specifier: 4.1.4

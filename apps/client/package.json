@@ -15,10 +15,8 @@
     "@allcll/sejong-ui": "workspace:^",
     "@microsoft/clarity": "^1.0.2",
     "@sentry/react": "^8.55.2",
-    "@sentry/vite-plugin": "^3.6.1",
     "@supabase/supabase-js": "^2.119.0",
     "@tanstack/react-query": "^5.107.1",
-    "@vitejs/plugin-basic-ssl": "^2.3.0",
     "canvas-confetti": "^1.9.4",
     "chart.js": "^4.6.1",
     "dexie": "^4.4.7",
@@ -26,10 +24,13 @@
     "dom-to-image": "^2.6.0",
     "es-hangul": "^2.4.0",
     "file-saver": "^2.0.5",
+    "react": "^18.3.1",
     "react-chartjs-2": "^5.3.1",
+    "react-dom": "^18.3.1",
     "react-ga4": "^2.1.0",
     "react-helmet": "^6.1.0",
     "react-markdown": "^10.1.0",
+    "react-router-dom": "^7.18.5",
     "react-transition-group": "^4.4.5",
     "react-youtube": "^10.1.0",
     "remark-breaks": "^4.0.0",
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@allcll/mock-server": "workspace:^",
+    "@sentry/vite-plugin": "^3.6.1",
     "@tailwindcss/typography": "^0.5.20",
     "@tanstack/query-core": "^5.107.1",
     "@types/canvas-confetti": "^1.9.0",
@@ -45,6 +47,7 @@
     "@types/file-saver": "^2.0.7",
     "@types/react-helmet": "^6.1.11",
     "@types/react-transition-group": "^4.4.12",
+    "@vitejs/plugin-basic-ssl": "^2.3.0",
     "rollup-plugin-visualizer": "^6.0.11"
   }
 }
