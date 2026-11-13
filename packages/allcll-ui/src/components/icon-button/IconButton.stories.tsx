@@ -30,7 +30,7 @@ const meta = {
     variant: 'plain',
     size: 'medium',
     label: '필터',
-    icon: <SettingsAdjustIcon className="text-gray-400" />,
+    icon: <SettingsAdjustIcon className="text-fg-subtle" />,
   },
 } satisfies Meta<typeof IconButton>;
 
@@ -53,7 +53,7 @@ export const Variants: Story = {
     <div className="grid grid-cols-[auto_auto] items-center gap-4">
       {VARIANTS.map(variant => (
         <Fragment key={variant}>
-          <span className="text-xs text-gray-500">{variant}</span>
+          <span className="text-xs text-fg-muted">{variant}</span>
           <IconButton {...args} variant={variant} />
         </Fragment>
       ))}
@@ -78,7 +78,7 @@ export const Sizes: Story = {
     <div className="grid grid-cols-[auto_auto] items-center gap-4">
       {SIZES.map(size => (
         <Fragment key={size}>
-          <span className="text-xs text-gray-500">{size}</span>
+          <span className="text-xs text-fg-muted">{size}</span>
           <IconButton {...args} size={size} />
         </Fragment>
       ))}

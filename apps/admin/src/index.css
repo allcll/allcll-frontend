@@ -16,9 +16,9 @@
 
 body {
   margin: 0;
-  @apply text-text-200;
+  @apply text-fg;
 }
 
 :root {
-  background-color: #f9fafb;
+  background-color: var(--color-background);
 }

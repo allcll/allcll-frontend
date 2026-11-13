@@ -10,13 +10,13 @@ function NoticeDetailContent({ notice }: Readonly<{ notice: Notice }>) {
 
   return (
     <Flex direction="column" gap={4}>
-      <Flex direction="column" gap={2} className="pb-4 border-b border-gray-100">
+      <Flex direction="column" gap={2} className="pb-4 border-b border-line-subtle">
         <Heading level={3}>{notice.title}</Heading>
         <Flex align="center" gap={2}>
           <Badge color="primary" size="small">
             {getNoticeLabel(notice.operationType)}
           </Badge>
-          <span className="text-xs text-gray-400">{date}</span>
+          <span className="text-xs text-fg-subtle">{date}</span>
         </Flex>
       </Flex>
       <div className="prose prose-sm max-w-none">

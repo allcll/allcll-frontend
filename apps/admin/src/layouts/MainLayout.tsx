@@ -23,7 +23,7 @@ function MainLayout() {
         <title>ALLCLL Admin</title>
       </Helmet>
 
-      <div className="flex h-screen bg-gray-50">
+      <div className="flex h-screen bg-background">
         <SideNavBar />
         <div className="flex-1 flex flex-col min-h-0">
           <Header />

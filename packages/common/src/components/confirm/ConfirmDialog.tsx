@@ -26,7 +26,7 @@ function ConfirmDialog({
   return (
     <Dialog isOpen={isOpen} title={title} onClose={onClose}>
       <Dialog.Content>
-        <p className="text-sm text-gray-600 min-w-60">{description}</p>
+        <p className="text-sm text-fg-muted min-w-60">{description}</p>
       </Dialog.Content>
       <Dialog.Footer>
         <Flex gap={2} justify="end">

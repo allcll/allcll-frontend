@@ -58,9 +58,9 @@ const ListboxOption = forwardRef<HTMLDivElement, ListboxOptionProps>(function Li
 
 function getSelectedClass(selected: boolean, active: boolean) {
   if (selected)
-    return `text-primary-500 font-medium hover:bg-primary-100 ${active ? 'bg-primary-100' : 'bg-primary-50'}`;
+    return `text-primary-500 font-medium hover:bg-primary-muted ${active ? 'bg-primary-muted' : 'bg-primary-subtle'}`;
 
-  return `hover:bg-gray-50 text-gray-700 ${active ? 'bg-gray-50' : ''}`;
+  return `hover:bg-surface-subtle text-fg-secondary ${active ? 'bg-surface-subtle' : ''}`;
 }
 
 export default ListboxOption;

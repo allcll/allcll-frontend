@@ -19,14 +19,14 @@ const markdownComponents = {
   ),
   a: (props: JSX.IntrinsicElements['a']) => <TextLink {...props}>{props.children}</TextLink>,
   p: (props: JSX.IntrinsicElements['p']) => (
-    <p {...props} className="mb-5 md:text-md text-sm text-gray-700 leading-loose tracking-normal">
+    <p {...props} className="mb-5 md:text-md text-sm text-fg-secondary leading-loose tracking-normal">
       {props.children}
     </p>
   ),
   ul: (props: JSX.IntrinsicElements['ul']) => (
     <ul
       {...props}
-      className="list-disc list-inside space-y-3 mb-6 ml-2 md:text-md text-sm text-gray-700 tracking-normal"
+      className="list-disc list-inside space-y-3 mb-6 ml-2 md:text-md text-sm text-fg-secondary tracking-normal"
     >
       {props.children}
     </ul>
@@ -34,7 +34,7 @@ const markdownComponents = {
   ol: (props: JSX.IntrinsicElements['ol']) => (
     <ol
       {...props}
-      className="list-decimal list-inside space-y-3 mb-6 ml-2 md:text-md text-sm text-gray-700 tracking-normal"
+      className="list-decimal list-inside space-y-3 mb-6 ml-2 md:text-md text-sm text-fg-secondary tracking-normal"
     >
       {props.children}
     </ol>
@@ -43,13 +43,13 @@ const markdownComponents = {
   blockquote: (props: JSX.IntrinsicElements['blockquote']) => (
     <blockquote
       {...props}
-      className="bg-gray-50 border-l-4 border-gray-300 rounded md:text-md text-sm text-gray-600 tracking-normal"
+      className="bg-surface-subtle border-l-4 border-line-strong rounded md:text-md text-sm text-fg-muted tracking-normal"
     >
       <div className="px-4 py-2 italic">{props.children}</div>
     </blockquote>
   ),
-  strong: (props: JSX.IntrinsicElements['strong']) => <strong {...props} className="font-semibold text-gray-800" />,
-  hr: () => <hr className="my-8 border-gray-200" />,
+  strong: (props: JSX.IntrinsicElements['strong']) => <strong {...props} className="font-semibold text-fg" />,
+  hr: () => <hr className="my-8 border-line" />,
   table: (props: JSX.IntrinsicElements['table']) => (
     <div className="overflow-x-auto mb-6">
       <table {...props} className="w-full border-collapse md:text-md text-sm">
@@ -58,18 +58,18 @@ const markdownComponents = {
     </div>
   ),
   thead: (props: JSX.IntrinsicElements['thead']) => (
-    <thead {...props} className="bg-gray-50">
+    <thead {...props} className="bg-surface-subtle">
       {props.children}
     </thead>
   ),
   tbody: (props: JSX.IntrinsicElements['tbody']) => <tbody {...props}>{props.children}</tbody>,
   th: (props: JSX.IntrinsicElements['th']) => (
-    <th {...props} className="border border-gray-200 px-3 py-2 text-left font-semibold text-gray-800 tracking-normal">
+    <th {...props} className="border border-line px-3 py-2 text-left font-semibold text-fg tracking-normal">
       {props.children}
     </th>
   ),
   td: (props: JSX.IntrinsicElements['td']) => (
-    <td {...props} className="border border-gray-200 px-3 py-2 tracking-normal">
+    <td {...props} className="border border-line px-3 py-2 tracking-normal">
       {props.children}
     </td>
   ),

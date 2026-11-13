@@ -8,7 +8,7 @@ interface SectionProps {
 }
 
 function Section({ bgColor, className, children }: Readonly<SectionProps>) {
-  const additionalStyle = bgColor ?? 'even:bg-white ';
+  const additionalStyle = bgColor ?? 'even:bg-surface ';
   const additionalClass = className ? ` ${className}` : '';
   return (
     <section className={additionalStyle}>

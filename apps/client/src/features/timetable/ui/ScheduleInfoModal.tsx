@@ -22,16 +22,16 @@ function ScheduleInfoModal() {
   return (
     <Dialog title={schedule.subjectName} onClose={() => closeOverlay('info')} isOpen={true}>
       <Dialog.Content>
-        <Flex direction="column" gap={1} className="w-80 text-sm text-gray-500">
+        <Flex direction="column" gap={1} className="w-80 text-sm text-fg-muted">
           <p>{schedule.professorName ?? '교수 정보 없음'}</p>
 
           <Flex align="center" gap={2}>
-            <TimeIcon className="w-4 h-4 text-gray-400" />
+            <TimeIcon className="w-4 h-4 text-fg-subtle" />
             <p>{findSubjectById?.lesnTime}</p>
           </Flex>
 
           <Flex align="center" gap={2}>
-            <HomeIcon className="w-4 h-4 text-gray-400" />
+            <HomeIcon className="w-4 h-4 text-fg-subtle" />
             <p>{findSubjectById?.lesnRoom ?? '장소 정보 없음'}</p>
           </Flex>
           <p>

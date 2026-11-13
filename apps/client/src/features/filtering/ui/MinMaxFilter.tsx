@@ -45,7 +45,7 @@ function MinMaxFilter<K extends keyof Filters>({ selectedValue, filterKey, setFi
     <Flex direction="column" gap={3} className="w-full">
       <Flex justify="between" align="center">
         <Label>범위 설정</Label>
-        <span className="text-sm text-gray-600">{rangeLabel}</span>
+        <span className="text-sm text-fg-muted">{rangeLabel}</span>
       </Flex>
 
       <RangeSlider

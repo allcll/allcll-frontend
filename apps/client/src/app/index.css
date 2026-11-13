@@ -114,22 +114,22 @@
 
 body {
   margin: 0;
-  @apply text-text-200;
+  @apply text-fg;
 }
 
 :root {
-  background-color: #f9fafb;
+  background-color: var(--color-background);
 }
 
 .seat-change-enter {
   background-color: transparent;
 }
 .seat-change-enter-active {
-  background-color: #eff6ff;
+  background-color: var(--color-primary-subtle);
   transition: background-color 500ms ease-in-out;
 }
 .seat-change-exit {
-  background-color: #eff6ff;
+  background-color: var(--color-primary-subtle);
 }
 .seat-change-exit-active {
   background-color: transparent;

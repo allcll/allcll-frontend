@@ -69,14 +69,14 @@ export function FeedbackFields({
 
       {detail.length > 0 && (
         <Flex justify="end">
-          <span className="text-xs text-gray-400 tabular-nums">
+          <span className="text-xs text-fg-subtle tabular-nums">
             {detail.length} / {DETAIL_MAX_LENGTH}
           </span>
         </Flex>
       )}
 
       {error && (
-        <p className="text-danger-600 text-sm mb-3" aria-live="assertive">
+        <p className="text-danger-600 dark:text-danger-400 text-sm mb-3" aria-live="assertive">
           {error}
         </p>
       )}
@@ -109,8 +109,8 @@ export function FeedbackActions({ isPending, canSubmit, onSubmit, onDontShowAgai
 export function FeedbackSuccess() {
   return (
     <Flex direction="column" justify="center" align="center" className="py-4">
-      <Flex justify="center" align="center" className="w-14 h-14 rounded-full bg-emerald-100 mb-3 animate-pulse">
-        <CheckmarkIcon className="w-6 h-6 text-emerald-600" />
+      <Flex justify="center" align="center" className="w-14 h-14 rounded-full bg-success-muted mb-3 animate-pulse">
+        <CheckmarkIcon className="w-6 h-6 text-green-500" />
       </Flex>
       <SupportingText className="text-primary-500">좋은 의견 주셔서 감사합니다</SupportingText>
     </Flex>
@@ -163,7 +163,7 @@ function RateInputs({ rate, currentRate, label, onClick }: IRateButtonProps) {
       aria-checked={currentRate === rate}
       aria-label={label}
       className={`flex flex-col items-center gap-2 p-2 rounded-xl transition-colors duration-200 font-bold
-        ${currentRate === rate ? 'text-primary-500' : 'text-gray-300 hover:text-primary-300'}`}
+        ${currentRate === rate ? 'text-primary-500' : 'text-fg-disabled hover:text-primary-300'}`}
       onClick={onClick}
     >
       {faces[rate]}

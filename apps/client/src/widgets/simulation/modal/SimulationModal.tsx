@@ -238,10 +238,10 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
               <WarningIcon className="w-12 h-12 text-[#C4C4C4]" />
             )}
           </div>
-          <p className="text-gray-700 text-sm mb-4">{modalData.topMessage}</p>
+          <p className="text-fg-secondary text-sm mb-4">{modalData.topMessage}</p>
 
           {modalData.description && (
-            <p className="text-sm text-gray-700 whitespace-pre-line text-center">
+            <p className="text-sm text-fg-secondary whitespace-pre-line text-center">
               {modalData.description}{' '}
               {modalData.status === APPLY_STATUS.PROGRESS && (
                 <span>{lectures?.find(lecture => lecture.subjectId === currentSubjectId)?.subjectName}</span>
@@ -250,7 +250,7 @@ function SimulationModal({ reloadSimulationStatus }: Readonly<ISimulationModal>)
           )}
         </div>
 
-        <SejongUI.Modal.ButtonContainer className="px-6 py-2 bg-gray-100">
+        <SejongUI.Modal.ButtonContainer className="px-6 py-2 bg-surface-muted">
           {(modalData.status === APPLY_STATUS.PROGRESS || modalData.status === APPLY_STATUS.SUCCESS) && (
             <SejongUI.Modal.Button variant="cancel" onClick={handleClickCancel}>
               취소

@@ -48,7 +48,7 @@ const meta = {
     return (
       <div className="flex flex-col gap-2 w-80">
         <RangeSlider {...args} value={value} onValueChange={setValue} onValueCommit={setCommitted} />
-        <span className="text-right text-xs text-gray-500">
+        <span className="text-right text-xs text-fg-muted">
           {`${formatTime(value[0])} ~ ${formatTime(value[1])} (확정: ${formatTime(committed[0])} ~ ${formatTime(committed[1])})`}
         </span>
       </div>

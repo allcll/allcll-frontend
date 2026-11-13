@@ -10,7 +10,7 @@ function SimulationList() {
       <Heading level={2} className="mb-2">
         연습 기록
       </Heading>
-      <p className="text-gray-500 mb-4">수강 연습 결과를 상세히 분석해보세요.</p>
+      <p className="text-fg-muted mb-4">수강 연습 결과를 상세히 분석해보세요.</p>
 
       <SimulationBoard />
     </>
@@ -37,7 +37,7 @@ function SimulationBoard() {
 
   if (!searchedLogs.length) {
     return (
-      <div className="bg-white rounded-md shadow-md shadow-gray-300">
+      <div className="bg-surface rounded-md shadow-md shadow-gray-300">
         <EmptyState
           icon={CursorIcon}
           title="연습 기록이 없습니다"
@@ -52,7 +52,7 @@ function SimulationBoard() {
     <Link
       key={'simulation-log-' + log.simulation_run_id}
       to={`/simulation/logs/${log.simulation_run_id}`}
-      className="flex items-center justify-between bg-white p-3 rounded-md text-sm shadow-md shadow-gray-300 mb-2 hover:bg-gray-100"
+      className="flex items-center justify-between bg-surface p-3 rounded-md text-sm shadow-md shadow-gray-300 mb-2 hover:bg-surface-muted"
     >
       <div className="flex items-center gap-2">
         <p className="hidden">id</p>

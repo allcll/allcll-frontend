@@ -17,8 +17,8 @@ function Toggle({ className = '', onCheckedChange, ...props }: ToggleProps) {
         {...props}
       />
 
-      <span className="w-12 h-6 rounded-full transition-colors duration-150 bg-gray-300 peer-checked:bg-primary-500 peer-disabled:bg-gray-200 peer-focus-visible:ring-2 peer-focus-visible:ring-primary-300 peer-focus-visible:ring-offset-2" />
-      <span className="absolute top-1 left-1 w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-150 peer-checked:translate-x-6" />
+      <span className="w-12 h-6 rounded-full transition-colors duration-150 bg-line-strong peer-checked:bg-primary-500 peer-disabled:bg-surface-strong peer-focus-visible:ring-2 peer-focus-visible:ring-primary-300 peer-focus-visible:ring-offset-2" />
+      <span className="absolute top-1 left-1 w-4 h-4 bg-surface rounded-full shadow-md transition-transform duration-150 peer-checked:translate-x-6" />
     </label>
   );
 }

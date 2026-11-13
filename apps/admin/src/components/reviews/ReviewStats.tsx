@@ -5,7 +5,7 @@ function RatingIcon({ fill }: { fill: number }) {
   const clampedFill = Math.min(1, Math.max(0, fill));
   return (
     <div className="relative inline-flex h-5 w-5">
-      <AllcllFaceIcon mood="smile" className="h-5 w-5 text-gray-300 absolute inset-0" />
+      <AllcllFaceIcon mood="smile" className="h-5 w-5 text-fg-disabled absolute inset-0" />
       <div className="absolute left-0 right-0 bottom-0 overflow-hidden" style={{ height: `${clampedFill * 100}%` }}>
         <AllcllFaceIcon mood="smile" className="h-5 w-5 text-primary-500 absolute bottom-0 left-0" />
       </div>

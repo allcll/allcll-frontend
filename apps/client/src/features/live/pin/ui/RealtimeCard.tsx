@@ -27,11 +27,11 @@ function RealtimeCard({ subject, seats, queryTime, disableSeat = false }: Readon
           size="small"
           variant="plain"
           aria-label="알림 과목 제거"
-          icon={<CloseIcon className="text-gray-400" />}
+          icon={<CloseIcon className="text-fg-subtle" />}
           onClick={handlePin}
         />
       </Flex>
-      <div className="mb-2 text-xs text-gray-500">
+      <div className="mb-2 text-xs text-fg-muted">
         <p>{(subject as Wishes).departmentName}</p>
         <p>
           {subject.subjectCode}-{subject.classCode} | {subject.professorName}
@@ -52,7 +52,7 @@ function QueryTimeComponent({ queryTime }: Readonly<{ queryTime?: string }>) {
 
   const queryTimeText = getTimeDiffString(queryTime);
 
-  return <p className="text-xs text-gray-500">{queryTime ? `${queryTimeText} 기준` : queryTimeText}</p>;
+  return <p className="text-xs text-fg-muted">{queryTime ? `${queryTimeText} 기준` : queryTimeText}</p>;
 }
 
 function SeatBadge({ seats }: Readonly<{ seats: number }>) {

@@ -81,7 +81,7 @@ function MultiSelectFilter<K extends keyof Filters>({
         <Flex
           justify="between"
           align="center"
-          className={showReset ? 'mt-3 pt-1.5 -mb-1.5 border-t border-gray-100' : 'mt-1'}
+          className={showReset ? 'mt-3 pt-1.5 -mb-1.5 border-t border-line-subtle' : 'mt-1'}
         >
           {options.length > MAX_VISIBLE && (
             <Button variant="text" size="small" color="gray" onClick={() => setIsExpanded(prev => !prev)}>

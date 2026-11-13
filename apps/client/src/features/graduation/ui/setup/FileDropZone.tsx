@@ -70,9 +70,9 @@ const FileDropZone = ({ onFileSelect, selectedFile, onDeleteFile, accept }: File
       className={`
         relative w-full border-2 rounded-lg p-10 text-left
         transition-colors duration-200 outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
-        ${selectedFile ? 'border-solid bg-green-50 border-green-400 hover:bg-green-100 hover:border-green-500' : 'border-dashed'}
-        ${isDragging ? 'border-primary-500 bg-primary-50' : ''}
-        ${!isDragging && !selectedFile ? 'border-gray-300 hover:border-primary-400 hover:bg-gray-50' : ''}
+        ${selectedFile ? 'border-solid bg-success-subtle border-green-400 hover:bg-success-muted hover:border-green-500' : 'border-dashed'}
+        ${isDragging ? 'border-primary-500 bg-primary-subtle' : ''}
+        ${!isDragging && !selectedFile ? 'border-line-strong hover:border-primary-400 hover:bg-surface-subtle' : ''}
       `}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -98,16 +98,16 @@ const FileDropZone = ({ onFileSelect, selectedFile, onDeleteFile, accept }: File
 const EmptyState = () => {
   return (
     <Flex direction="column" align="center" justify="center" gap={3}>
-      <div className="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center text-gray-400">
+      <div className="w-14 h-14 bg-surface-muted rounded-full flex items-center justify-center text-fg-subtle">
         <UploadIcon className="w-7 h-7" />
       </div>
 
       <div className="text-center">
-        <p className="text-base font-medium text-gray-700">
+        <p className="text-base font-medium text-fg-secondary">
           성적표 파일을 여기에 <span className="text-primary-500 font-semibold">드래그</span>하거나{' '}
           <span className="text-primary-500 font-semibold">클릭</span>하여 선택하세요
         </p>
-        <p className="mt-1 text-sm text-gray-400">XLSX 파일만 가능 (최대 1MB)</p>
+        <p className="mt-1 text-sm text-fg-subtle">XLSX 파일만 가능 (최대 1MB)</p>
       </div>
     </Flex>
   );
@@ -122,20 +122,20 @@ const SelectedState = ({ file, onDelete }: { file: File; onDelete: (e: React.Mou
           size="large"
           variant="plain"
           onClick={onDelete}
-          icon={<CloseIcon className="text-gray-400 hover:text-gray-600" />}
+          icon={<CloseIcon className="text-fg-subtle hover:text-fg-muted" />}
           label="파일 삭제"
         />
       </div>
 
       <Flex direction="column" align="center" justify="center" gap={3}>
-        <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center text-green-500">
+        <div className="w-14 h-14 bg-success-muted rounded-full flex items-center justify-center text-green-500">
           <DocumentIcon className="w-7 h-7" />
         </div>
 
         <div className="text-center">
           <p className="text-base font-semibold">{file.name}</p>
-          <p className="mt-1 text-sm text-gray-500">'다음 단계' 버튼을 누르면 분석이 시작됩니다</p>
-          <p className="mt-0.5 text-xs text-gray-400">파일을 변경하려면 클릭하거나 드래그하세요</p>
+          <p className="mt-1 text-sm text-fg-muted">'다음 단계' 버튼을 누르면 분석이 시작됩니다</p>
+          <p className="mt-0.5 text-xs text-fg-subtle">파일을 변경하려면 클릭하거나 드래그하세요</p>
         </div>
       </Flex>
     </>

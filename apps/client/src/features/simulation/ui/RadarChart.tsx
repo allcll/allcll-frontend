@@ -106,7 +106,7 @@ function RadarChart({ result }: Readonly<IRadarChart>) {
       </div>
 
       {/* 능력 설명 박스 */}
-      <div className="mt-2 md:mt-0 md:absolute md:bottom-6 md:right-6 bg-white shadow-lg rounded-lg px-4 py-3 text-xs text-gray-800">
+      <div className="mt-2 md:mt-0 md:absolute md:bottom-6 md:right-6 bg-surface shadow-lg rounded-lg px-4 py-3 text-xs text-fg">
         <div className="font-bold text-sm mb-1">내 능력</div>
         <ul className="space-y-1">
           <li className="flex justify-between gap-3">

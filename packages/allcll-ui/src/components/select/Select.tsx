@@ -14,7 +14,7 @@ function Select({ className = '', children, ...rest }: SelectProps) {
       </select>
       <ChevronDownIcon
         aria-hidden="true"
-        className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none text-gray-400"
+        className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none text-fg-subtle"
       />
     </div>
   );

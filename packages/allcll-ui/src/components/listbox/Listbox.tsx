@@ -6,13 +6,13 @@ interface ListboxProps extends ComponentPropsWithoutRef<'div'> {
 }
 
 function Listbox({ bordered = false, className = '', children, ...rest }: ListboxProps) {
-  const borderClass = bordered ? 'rounded-md border border-gray-200' : '';
+  const borderClass = bordered ? 'rounded-md border border-line' : '';
 
   return (
     <div
       role="listbox"
       {...rest}
-      className={`min-h-0 overflow-y-auto p-1 [scrollbar-width:thin] [scrollbar-color:var(--color-gray-300)_transparent] ${borderClass} ${className}`}
+      className={`min-h-0 overflow-y-auto p-1 [scrollbar-width:thin] [scrollbar-color:var(--color-line-strong)_transparent] ${borderClass} ${className}`}
     >
       {children}
     </div>

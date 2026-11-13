@@ -24,24 +24,24 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
   if (isMobile && selectedNotice) {
     return (
       <Flex direction="column" className="h-full">
-        <Flex align="center" justify="between" className="px-4 h-14 shrink-0 border-b border-gray-100">
+        <Flex align="center" justify="between" className="px-4 h-14 shrink-0 border-b border-line-subtle">
           <Flex align="center" gap={1}>
             <IconButton
               size="large"
-              className="p-2 -ml-2 hover:bg-gray-100 active:bg-gray-100"
+              className="p-2 -ml-2 hover:bg-surface-muted active:bg-surface-muted"
               variant="plain"
               label="공지 목록으로"
-              icon={<ChevronLeftIcon className="text-gray-500" />}
+              icon={<ChevronLeftIcon className="text-fg-muted" />}
               onClick={() => setSelectedNotice(null)}
             />
             <Heading level={3}>공지사항</Heading>
           </Flex>
           <IconButton
             size="large"
-            className="p-2 hover:bg-gray-100 active:bg-gray-100"
+            className="p-2 hover:bg-surface-muted active:bg-surface-muted"
             variant="plain"
             label="닫기"
-            icon={<CloseIcon className="text-gray-500" />}
+            icon={<CloseIcon className="text-fg-muted" />}
             onClick={onClose}
           />
         </Flex>
@@ -55,19 +55,19 @@ function NoticePanel({ notices, isMobile = false, isRead, onRead, onClose }: Rea
 
   return (
     <Flex direction="column" className="h-full">
-      <Flex align="center" justify="between" className="px-4 h-14 shrink-0 border-b border-gray-100">
+      <Flex align="center" justify="between" className="px-4 h-14 shrink-0 border-b border-line-subtle">
         <Heading level={3}>공지사항</Heading>
         <IconButton
           size={isMobile ? 'large' : 'medium'}
-          className="p-2 hover:bg-gray-100 active:bg-gray-100"
+          className="p-2 hover:bg-surface-muted active:bg-surface-muted"
           variant="plain"
           label="닫기"
-          icon={<CloseIcon className="text-gray-500" />}
+          icon={<CloseIcon className="text-fg-muted" />}
           onClick={onClose}
         />
       </Flex>
 
-      <div className="flex-1 overflow-y-auto divide-y divide-gray-100">
+      <div className="flex-1 overflow-y-auto divide-y divide-line-subtle">
         {notices.length === 0 ? (
           <EmptyState title="등록된 공지사항이 없습니다." className="h-32" />
         ) : (

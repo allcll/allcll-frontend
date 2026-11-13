@@ -29,7 +29,7 @@ export function TimetableHeaderActions({
     <Flex>
       <IconButton
         size="large"
-        icon={<DownloadIcon className="text-gray-400" />}
+        icon={<DownloadIcon className="text-fg-subtle" />}
         variant="plain"
         label="시간표 이미지 저장"
         onClick={handleSaveImage}

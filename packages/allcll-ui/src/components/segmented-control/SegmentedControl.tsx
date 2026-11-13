@@ -45,7 +45,7 @@ function SegmentedControl<T extends string>({
   };
 
   return (
-    <div role="radiogroup" className={`flex p-0.5 rounded-md bg-gray-100 ${className}`} {...rest}>
+    <div role="radiogroup" className={`flex p-0.5 rounded-md bg-surface-muted ${className}`} {...rest}>
       {options.map((option, index) => {
         const checked = option.value === value;
         // 선택된 항목이 없으면 첫 활성 항목으로 들어올 수 있게 함
@@ -64,8 +64,8 @@ function SegmentedControl<T extends string>({
             disabled={option.disabled}
             onClick={() => !checked && onValueChange(option.value)}
             onKeyDown={e => handleKeyDown(e, index)}
-            className={`px-2 py-0.5 rounded text-xs transition-colors disabled:text-gray-300 disabled:cursor-not-allowed ${
-              checked ? 'bg-white text-gray-900 font-medium shadow-sm' : 'text-gray-500 hover:text-gray-700'
+            className={`px-2 py-0.5 rounded text-xs transition-colors disabled:text-fg-disabled disabled:cursor-not-allowed ${
+              checked ? 'bg-surface text-fg font-medium shadow-sm' : 'text-fg-muted hover:text-fg-secondary'
             }`}
           >
             {option.label}

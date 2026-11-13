@@ -14,7 +14,7 @@ function SearchBox({ onDelete, ...props }: ISearchBox) {
           size="medium"
           variant="plain"
           label="검색창으로 이동"
-          icon={<SearchIcon className="text-gray-400" />}
+          icon={<SearchIcon className="text-fg-subtle" />}
           onClick={e => {
             e.preventDefault();
             ref.current?.focus();
@@ -26,7 +26,7 @@ function SearchBox({ onDelete, ...props }: ISearchBox) {
           <IconButton
             size="medium"
             variant="plain"
-            icon={<CloseIcon className="text-gray-400" />}
+            icon={<CloseIcon className="text-fg-subtle" />}
             label="입력 내용 삭제"
             onClick={() => {
               onDelete();

@@ -6,7 +6,7 @@ function FeedbacksSection() {
     <Section className="text-center">
       <Heading level={2}>올클을 써보신 분들의 한마디!</Heading>
       <div className="overflow-hidden mt-6 relative">
-        <div className="absolute top-0 left-0 w-12 h-full bg-gradient-to-r from-gray-50 to-transparent z-content"></div>
+        <div className="absolute top-0 left-0 w-12 h-full bg-gradient-to-r from-surface-subtle to-transparent z-content"></div>
         <div className="animate-marquee flex gap-6 flex-nowrap w-fit">
           {UserFeedbacks.map((feedback, index) => (
             <UserFeedbackCard key={'feedback-left-' + index} {...feedback} />
@@ -15,7 +15,7 @@ function FeedbacksSection() {
             <UserFeedbackCard key={'feedback-right-' + index} {...feedback} />
           ))}
         </div>
-        <div className="absolute top-0 right-0 w-12 h-full bg-gradient-to-l from-gray-50 to-transparent z-content"></div>
+        <div className="absolute top-0 right-0 w-12 h-full bg-gradient-to-l from-surface-subtle to-transparent z-content"></div>
       </div>
     </Section>
   );
@@ -43,15 +43,15 @@ const UserFeedbacks: IUserFeedback[] = [
 
 function UserFeedbackCard({ name, department, review }: Readonly<IUserFeedback>) {
   return (
-    <div className="w-screen md:w-xs flex flex-col gap-4 p-6 rounded-md bg-white text-left text-sm">
+    <div className="w-screen md:w-xs flex flex-col gap-4 p-6 rounded-md bg-surface text-left text-sm">
       <div className="flex gap-4 items-center">
         <UserAvatarIcon className="w-6 h-6 text-primary-500" />
         <div>
           <p className="font-bold">{name}</p>
-          <p className="text-xs text-gray-500">{department}</p>
+          <p className="text-xs text-fg-muted">{department}</p>
         </div>
       </div>
-      <p className="text-gray-950">"{review}"</p>
+      <p className="text-fg">"{review}"</p>
     </div>
   );
 }

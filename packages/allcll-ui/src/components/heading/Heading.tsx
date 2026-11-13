@@ -11,7 +11,7 @@ function Heading({ level = 1, className, children, ...props }: HeadingProps) {
   const Tag = `h${level}` as const;
 
   return (
-    <Tag className={`${className ?? ''} ${LEVEL_CLASS[level]} text-text-200`} {...props}>
+    <Tag className={`${className ?? ''} ${LEVEL_CLASS[level]} text-fg`} {...props}>
       {children}
     </Tag>
   );

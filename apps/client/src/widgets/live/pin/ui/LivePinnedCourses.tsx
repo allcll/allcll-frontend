@@ -42,7 +42,7 @@ function PinCoursesHeader({ setIsAlarmSettingOpen }: { setIsAlarmSettingOpen: (o
         <Flex align="center" gap={1}>
           <IconButton
             size="large"
-            icon={<SettingsIcon className="text-gray-400" />}
+            icon={<SettingsIcon className="text-fg-subtle" />}
             aria-label="알림 설정"
             label="알림 설정"
             onClick={() => setIsAlarmSettingOpen(true)}

@@ -23,7 +23,7 @@ function getPageItems(page: number, totalPages: number): (number | typeof ELLIPS
 const BUTTON_CLASS = `flex items-center justify-center min-w-8 h-8 px-2 rounded-md text-sm ${INTERACTION.pressable}`;
 
 function Pagination({ page, totalPages, onPageChange, className = '' }: Readonly<PaginationProps>) {
-  const arrowClass = `${BUTTON_CLASS} text-gray-500 hover:bg-gray-100 disabled:text-gray-300 disabled:hover:bg-transparent disabled:cursor-not-allowed`;
+  const arrowClass = `${BUTTON_CLASS} text-fg-muted hover:bg-surface-muted disabled:text-fg-disabled disabled:hover:bg-transparent disabled:cursor-not-allowed`;
 
   return (
     <nav aria-label="페이지 이동" className={`flex items-center justify-center gap-1 ${className}`}>
@@ -39,7 +39,7 @@ function Pagination({ page, totalPages, onPageChange, className = '' }: Readonly
 
       {getPageItems(page, totalPages).map((item, index) =>
         item === ELLIPSIS ? (
-          <span key={`${ELLIPSIS}-${index}`} className="min-w-8 text-center text-sm text-gray-400">
+          <span key={`${ELLIPSIS}-${index}`} className="min-w-8 text-center text-sm text-fg-subtle">
             …
           </span>
         ) : (
@@ -49,7 +49,9 @@ function Pagination({ page, totalPages, onPageChange, className = '' }: Readonly
             aria-current={item === page ? 'page' : undefined}
             onClick={() => item !== page && onPageChange(item)}
             className={`${BUTTON_CLASS} ${
-              item === page ? 'bg-primary-50 text-primary-500 font-semibold' : 'text-gray-600 hover:bg-gray-100'
+              item === page
+                ? 'bg-primary-subtle text-primary-500 font-semibold'
+                : 'text-fg-secondary hover:bg-surface-muted'
             }`}
           >
             {item}

@@ -27,12 +27,12 @@ function PinCard({ subject, seats, queryTime, disableSeat = false, isLive = fals
         <AlarmButton subject={subject} variant="plain" />
       </Flex>
 
-      <Flex className="text-xs text-gray-500" direction="column">
+      <Flex className="text-xs text-fg-muted" direction="column">
         <p>{(subject as Wishes).departmentName}</p>
         <p>{joinPresent([`${subject.subjectCode}-${subject.classCode}`, subject.professorName])}</p>
       </Flex>
 
-      <p className="text-xs text-gray-500 mb-2">
+      <p className="text-xs text-fg-muted mb-2">
         {joinPresent([
           subject.studentYear && `${subject.studentYear}학년`,
           subject.curiTypeCdNm,

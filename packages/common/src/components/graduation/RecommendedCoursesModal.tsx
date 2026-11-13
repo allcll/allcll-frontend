@@ -18,10 +18,10 @@ function CourseList({ courses }: Readonly<{ courses: MissingCourse[] }>) {
           key={`${course.curiNo}-${index}`}
           align="center"
           justify="between"
-          className="px-4 py-3 bg-gray-50 rounded-md"
+          className="px-4 py-3 bg-surface-subtle rounded-md"
         >
           <span className="text-sm font-medium">{course.curiNm}</span>
-          <span className="text-xs text-gray-400 ml-4 shrink-0">{course.curiNo}</span>
+          <span className="text-xs text-fg-subtle ml-4 shrink-0">{course.curiNo}</span>
         </Flex>
       ))}
     </Flex>
@@ -39,10 +39,10 @@ function BalanceAreaContent({
 
   return (
     <Flex direction="column" gap={4} className="min-w-64 md:min-w-96">
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-muted">
         아래 영역 중 <span className="text-primary-500 font-semibold">{requiredAreasCnt}개 영역</span>을 이수해야
         합니다.
-        {excludedArea && <span className="text-gray-400"> ({BALANCE_AREA_LABELS[excludedArea]} 영역 제외)</span>}
+        {excludedArea && <span className="text-fg-subtle"> ({BALANCE_AREA_LABELS[excludedArea]} 영역 제외)</span>}
       </p>
       <Flex direction="column" gap={4} className="max-h-80 overflow-y-auto">
         {balanceAreaCourses?.map(area => {
@@ -53,12 +53,12 @@ function BalanceAreaContent({
                 {isEarned ? (
                   <CheckmarkOutlineIcon className="w-4 h-4 text-primary-500 shrink-0" />
                 ) : (
-                  <CircleOutlineIcon className="w-4 h-4 text-gray-300 shrink-0" />
+                  <CircleOutlineIcon className="w-4 h-4 text-fg-disabled shrink-0" />
                 )}
-                <span className={isEarned ? 'text-primary-600' : 'text-gray-700'}>
+                <span className={isEarned ? 'text-primary-600 dark:text-primary-400' : 'text-fg-secondary'}>
                   {BALANCE_AREA_LABELS[area.balanceRequiredArea]}
                 </span>
-                {!isEarned && <span className="text-xs text-gray-400">{area.requiredCourses.length}개 과목</span>}
+                {!isEarned && <span className="text-xs text-fg-subtle">{area.requiredCourses.length}개 과목</span>}
                 {isEarned && <span className="text-xs text-primary-500">이수 완료</span>}
               </Heading>
               <CourseList courses={area.requiredCourses} />
@@ -73,11 +73,11 @@ function BalanceAreaContent({
 function DefaultContent({ categoryLabel, courses }: Readonly<{ categoryLabel: string; courses: MissingCourse[] }>) {
   return courses.length > 0 ? (
     <Flex direction="column" gap={2} className="min-w-64 md:min-w-96">
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-muted">
         아래 과목을 이수하면 <span className="text-primary-500 font-semibold">{categoryLabel}</span> 요건을 충족할 수
         있습니다.
       </p>
-      <span className="text-xs text-gray-400">{courses.length}개 과목</span>
+      <span className="text-xs text-fg-subtle">{courses.length}개 과목</span>
       <div className="h-72 overflow-y-auto">
         <CourseList courses={courses} />
       </div>

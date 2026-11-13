@@ -36,7 +36,7 @@ function PopoverContent({
         align={align}
         sideOffset={8}
         collisionPadding={8}
-        className={`rounded-lg bg-white shadow-lg border border-gray-200 outline-none ${className}`}
+        className={`rounded-lg bg-surface shadow-lg border border-line outline-none ${className}`}
         style={{ zIndex: Z_INDEX[layer], minWidth }}
         {...rest}
       >

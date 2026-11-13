@@ -28,16 +28,16 @@ function ScheduleInfoBottomSheet({ isOpen }: { isOpen: boolean }) {
   return (
     <BottomSheet title={schedule.subjectName} isOpen={isOpen} onClose={handleClose}>
       <Flex direction="column" gap={6}>
-        <Flex direction="column" className="w-full text-sm text-gray-500">
-          <p className="text-sm text-gray-500">{schedule.professorName ?? '교수 정보 없음'}</p>
+        <Flex direction="column" className="w-full text-sm text-fg-muted">
+          <p className="text-sm text-fg-muted">{schedule.professorName ?? '교수 정보 없음'}</p>
 
           <Flex align="center">
-            <TimeIcon className="w-4 h-4 text-gray-400" />
+            <TimeIcon className="w-4 h-4 text-fg-subtle" />
             <span>{findSubjectById?.lesnTime}</span>
           </Flex>
 
           <Flex align="center">
-            <HomeIcon className="w-4 h-4 text-gray-400" />
+            <HomeIcon className="w-4 h-4 text-fg-subtle" />
             <span>{findSubjectById?.lesnRoom ?? '장소 정보 없음'}</span>
           </Flex>
 

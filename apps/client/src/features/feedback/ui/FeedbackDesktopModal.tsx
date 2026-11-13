@@ -20,7 +20,7 @@ export default function FeedbackDesktopModal({
 }: IFeedbackViewProps) {
   return (
     <div className={`fixed bottom-6 right-6 z-floating ${SCROLLBAR_GAP_CLASS}`}>
-      <div className="w-80 bg-white rounded-lg border border-gray-200 shadow-lg">
+      <div className="w-80 bg-surface rounded-lg border border-line shadow-lg">
         {!success ? (
           <>
             <Dialog.Header onClose={onClose}>

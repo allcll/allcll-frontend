@@ -6,7 +6,7 @@ export interface LabelProps extends ComponentPropsWithoutRef<'label'> {
 }
 
 const Label = ({ required, children, className = '', ...rest }: LabelProps) => {
-  const baseClass = `text-sm text-gray-700 after:ml-0.5 ${required ? 'after:content-["*"] after:text-danger-500' : ''}`;
+  const baseClass = `text-sm text-fg-secondary after:ml-0.5 ${required ? 'after:content-["*"] after:text-danger-500' : ''}`;
 
   return (
     <label className={`${baseClass} ${className}`} {...rest}>

@@ -44,11 +44,11 @@ function WishesSection() {
           ].map((course, index) => (
             <div
               key={'recommend-course-' + index}
-              className="mt-4 flex justify-between p-2 rounded-md border border-gray-200"
+              className="mt-4 flex justify-between p-2 rounded-md border border-line"
             >
               <div>
                 <Heading level={4}>{course.name}</Heading>
-                <p className="text-sm text-gray-500">{course.dept}</p>
+                <p className="text-sm text-fg-muted">{course.dept}</p>
               </div>
               <span>
                 <BasketBadge wishCount={course.status} formatter={value => `관심: ${value}명`} />

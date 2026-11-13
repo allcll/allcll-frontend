@@ -51,7 +51,7 @@ function TimeRangeFilter({ label, action, value, onChange }: Readonly<ITimeRange
           thumbLabels={[`${label} 시작 시각`, `${label} 끝 시각`]}
           className="px-1"
         />
-        <span className="min-h-4 text-right text-xs text-gray-500">{getTimeRangeLabel(toRange(low, high))}</span>
+        <span className="min-h-4 text-right text-xs text-fg-muted">{getTimeRangeLabel(toRange(low, high))}</span>
       </Flex>
     </Flex>
   );

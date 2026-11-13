@@ -121,11 +121,11 @@ function CaptchaInput() {
           </div>
         </div>
 
-        <p className="text-sm text-gray-800 mt-10">
+        <p className="text-sm text-fg mt-10">
           ※ 코드가 표시되지 않는 경우 잠시 기다리거나 매크로 방지 코드 입력 창을 닫고 새로 열어 주세요.
         </p>
 
-        <SejongUI.Modal.ButtonContainer className="px-6 py-2 bg-gray-100">
+        <SejongUI.Modal.ButtonContainer className="px-6 py-2 bg-surface-muted">
           <SejongUI.Modal.Button variant="cancel" onClick={handleConfirmCaptcha}>
             코드입력
           </SejongUI.Modal.Button>

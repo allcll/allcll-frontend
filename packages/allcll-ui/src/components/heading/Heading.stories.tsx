@@ -47,7 +47,7 @@ export const Levels: Story = {
     <div className="grid grid-cols-[auto_auto] items-center gap-x-6 gap-y-4">
       {LEVELS.map(level => (
         <Fragment key={level}>
-          <span className="text-xs text-gray-500">level {level}</span>
+          <span className="text-xs text-fg-muted">level {level}</span>
           <Heading level={level}>{children}</Heading>
         </Fragment>
       ))}

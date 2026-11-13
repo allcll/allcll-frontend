@@ -35,7 +35,7 @@ export const ExampleInSentence: Story = {
     docs: { description: { story: '문장 안에서 쓰는 모습입니다.' } },
   },
   render: args => (
-    <p className="text-sm text-gray-700">
+    <p className="text-sm text-fg-secondary">
       문제가 계속되면 <TextLink {...args} />로 알려주세요.
     </p>
   ),

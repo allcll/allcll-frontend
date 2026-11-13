@@ -62,39 +62,39 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
   const charCount = content.length;
   const charCountClass =
     charCount > maxLength
-      ? 'text-danger-600 font-semibold'
+      ? 'text-danger-600 dark:text-danger-400 font-semibold'
       : charCount > warnLength
         ? 'text-amber-600'
-        : 'text-gray-400';
+        : 'text-fg-subtle';
 
   return (
     <Flex direction="column" gap={1.5}>
       <Label>내용</Label>
 
-      <div className="flex flex-col border border-gray-300 rounded-lg overflow-hidden">
+      <div className="flex flex-col border border-line-strong rounded-lg overflow-hidden">
         <Tabs value={tab} onValueChange={value => setTab(value as EditorTab)}>
-          <Tabs.List aria-label="편집 모드" className="bg-gray-50">
+          <Tabs.List aria-label="편집 모드" className="bg-surface-subtle">
             <Tabs.Tab value="write">Write</Tabs.Tab>
             <Tabs.Tab value="preview">Preview</Tabs.Tab>
           </Tabs.List>
 
           <Tabs.Panel value="write">
             {/* 툴바 */}
-            <div className="flex items-center gap-0.5 px-2 py-1.5 bg-gray-50 border-b border-gray-200">
+            <div className="flex items-center gap-0.5 px-2 py-1.5 bg-surface-subtle border-b border-line">
               <ToolbarButton title="굵게 (Bold)" onClick={() => insertMarkdown('**', '**')}>
                 <TextBoldIcon />
               </ToolbarButton>
               <ToolbarButton title="기울임 (Italic)" onClick={() => insertMarkdown('*', '*')}>
                 <TextItalicIcon />
               </ToolbarButton>
-              <div className="w-px h-4 bg-gray-300 mx-1" />
+              <div className="w-px h-4 bg-line-strong mx-1" />
               <ToolbarButton title="코드 (Code)" onClick={() => insertMarkdown('`', '`')}>
                 <CodeIcon />
               </ToolbarButton>
               <ToolbarButton title="링크 (Link)" onClick={() => insertMarkdown('[', '](url)')}>
                 <LinkIcon />
               </ToolbarButton>
-              <div className="w-px h-4 bg-gray-300 mx-1" />
+              <div className="w-px h-4 bg-line-strong mx-1" />
               <ToolbarButton title="인용" onClick={() => insertMarkdown('> ', '', '', true)}>
                 <QuotesIcon />
               </ToolbarButton>
@@ -183,7 +183,7 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
                 <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{content}</ReactMarkdown>
               </div>
             ) : (
-              <p className="text-sm text-gray-400 italic">미리보기할 내용이 없습니다.</p>
+              <p className="text-sm text-fg-subtle italic">미리보기할 내용이 없습니다.</p>
             )}
           </Tabs.Panel>
         </Tabs>

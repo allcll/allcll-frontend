@@ -36,7 +36,7 @@ function WishesBarChart({ wishesInfo }: IWishesBarChartProps) {
         {isWishesAvailable && <BasketBadge wishCount={data.totalCount ?? -1} formatter={value => `총 ${value}명`} />}
       </Flex>
       <BlurComponents>
-        <p className="text-sm text-gray-500">작년 대비 관심도 20% 증가 → 경쟁 치열할 가능성 높음</p>
+        <p className="text-sm text-fg-muted">작년 대비 관심도 20% 증가 → 경쟁 치열할 가능성 높음</p>
         <Flex direction="column" className="mt-4">
           <Bar data={gradeData} />
         </Flex>

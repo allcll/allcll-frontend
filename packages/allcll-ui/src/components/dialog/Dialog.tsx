@@ -38,7 +38,7 @@ function DialogMain({ children, isOpen = true, title, size = 'medium', onClose }
               e.preventDefault();
               contentRef.current?.focus();
             }}
-            className={`flex flex-col justify-center bg-white min-w-80 max-h-[90vh] rounded-lg outline-none ${SIZE_CLASS[size]}`}
+            className={`flex flex-col justify-center bg-surface min-w-80 max-h-[90vh] rounded-lg outline-none ${SIZE_CLASS[size]}`}
           >
             <DialogHeader onClose={onClose}>
               <RadixDialog.Title className="font-semibold">{title}</RadixDialog.Title>

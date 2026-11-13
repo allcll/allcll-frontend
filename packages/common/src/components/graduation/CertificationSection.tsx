@@ -64,7 +64,7 @@ function ClassicReadingTable({ domains }: Readonly<{ domains: ClassicDomain[] }>
         <tbody>
           {domains.map(domain => (
             <tr key={domain.domainType}>
-              <td className="py-1 text-gray-600">{CLASSIC_DOMAIN_LABELS[domain.domainType]}</td>
+              <td className="py-1 text-fg-muted">{CLASSIC_DOMAIN_LABELS[domain.domainType]}</td>
               <td className="py-1 text-right">
                 <span className={domain.satisfied ? 'text-primary-500' : ''}>
                   {domain.myCount}/{domain.requiredCount}권
@@ -89,7 +89,7 @@ function EnglishCertContent({ isPassed, onEdit }: Readonly<IEnglishCertContentPr
       {isPassed ? (
         <span className="text-primary-500">인증 완료</span>
       ) : (
-        <span className="text-gray-500">이수 내역 없음</span>
+        <span className="text-fg-muted">이수 내역 없음</span>
       )}
       {onEdit && (
         <Button variant="text" color="gray" size="small" onClick={onEdit}>
@@ -172,7 +172,7 @@ function CertificationSection({
               {coding.isPassed ? (
                 <span className="text-primary-500">인증 완료</span>
               ) : (
-                <span className="text-gray-500">이수 내역 없음</span>
+                <span className="text-fg-muted">이수 내역 없음</span>
               )}
             </Flex>
           </CertificationCard>

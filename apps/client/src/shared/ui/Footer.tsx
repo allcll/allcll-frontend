@@ -23,17 +23,17 @@ const FooterItems: IFooterItem[] = [
 
 const OuterLinks = [
   {
-    icon: <LogoGithubIcon className="w-8 h-8 m-2 text-gray-400" />,
+    icon: <LogoGithubIcon className="w-8 h-8 m-2 text-fg-subtle" />,
     title: '올클 github',
     href: 'https://github.com/allcll',
   },
   {
-    icon: <LogoKakaoTalkIcon className="w-8 h-8 m-2 text-gray-400" />,
+    icon: <LogoKakaoTalkIcon className="w-8 h-8 m-2 text-fg-subtle" />,
     title: '올클 오픈채팅',
     href: 'https://open.kakao.com/o/g3MztXfh',
   },
   {
-    icon: <LogoInstagramIcon className="w-8 h-8 m-2 text-gray-400" />,
+    icon: <LogoInstagramIcon className="w-8 h-8 m-2 text-fg-subtle" />,
     title: '올클 instagram',
     href: 'https://www.instagram.com/sejong_allcll',
   },
@@ -41,7 +41,7 @@ const OuterLinks = [
 
 function Footer() {
   return (
-    <footer className="bg-white border-t border-gray-200 text-center text-sm text-gray-500">
+    <footer className="bg-surface border-t border-line text-center text-sm text-fg-muted">
       <Container className="py-12 grid md:grid-cols-3 gap-6 text-center md:text-left">
         <div className="mx-auto md:mx-0">
           <div className="flex items-center mb-2 h-fit justify-center md:justify-start">
@@ -52,7 +52,7 @@ function Footer() {
           <ul className="flex items-center md:-ml-2">
             {OuterLinks.map(({ icon, title, href }) => (
               <li key={title}>
-                <a href={href} className="h-fit rounded-md hover:bg-gray-200" aria-label={title} title={title}>
+                <a href={href} className="h-fit rounded-md hover:bg-surface-strong" aria-label={title} title={title}>
                   {icon}
                 </a>
               </li>

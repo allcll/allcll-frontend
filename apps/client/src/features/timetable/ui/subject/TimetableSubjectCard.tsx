@@ -16,7 +16,9 @@ interface ISubjectCard {
 }
 
 function TimetableSubjectCard({ isActive, subject, onClick, forwardedRef }: Readonly<ISubjectCard>) {
-  const color = isActive ? 'text-primary-500 bg-primary-50' : 'text-gray-700 bg-white hover:bg-gray-50';
+  const color = isActive
+    ? 'text-primary-500 bg-primary-subtle'
+    : 'text-fg-secondary bg-surface hover:bg-surface-subtle';
   const { saveSchedule } = useScheduleModal();
   const { selectTargetOnly } = useSearchLogging();
   const credit = parseCredit(subject.tmNum);
@@ -30,20 +32,20 @@ function TimetableSubjectCard({ isActive, subject, onClick, forwardedRef }: Read
   return (
     <button
       type="button"
-      className={`border border-gray-200 rounded-lg p-3 sm:p-4 gap-2 sm:gap-3 ${color} w-full text-left`}
+      className={`border border-line rounded-lg p-3 sm:p-4 gap-2 sm:gap-3 ${color} w-full text-left`}
       onClick={onClick}
       ref={forwardedRef}
     >
       <Flex direction="column">
         <Flex justify="between" align="center" gap={2}>
           <Heading level={3}>{subject.subjectName}</Heading>
-          <span className="text-xs sm:text-sm text-gray-500">{subject.professorName}</span>
+          <span className="text-xs sm:text-sm text-fg-muted">{subject.professorName}</span>
         </Flex>
 
         <Flex direction="column" justify="start" align="start" gap={2}>
-          {subject.lesnTime && <span className="text-xs sm:text-sm text-gray-500">{subject.lesnTime}</span>}
-          {subject.lesnRoom && <span className="text-xs sm:text-sm text-gray-500">{subject.lesnRoom}</span>}
-          <span className="text-xs sm:text-sm text-gray-500">
+          {subject.lesnTime && <span className="text-xs sm:text-sm text-fg-muted">{subject.lesnTime}</span>}
+          {subject.lesnRoom && <span className="text-xs sm:text-sm text-fg-muted">{subject.lesnRoom}</span>}
+          <span className="text-xs sm:text-sm text-fg-muted">
             {joinPresent([subject.studentYear && `${subject.studentYear}학년`, subject.manageDeptNm])}
           </span>
         </Flex>
