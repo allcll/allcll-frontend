@@ -15,3 +15,6 @@ export const FIELD_TEXT_CLASS = 'text-sm max-sm:pointer-coarse:text-base';
 
 /** 입력 필드 공통 스타일 (박스 + 기본 글자 크기) */
 export const FIELD_CLASS = `${FIELD_BOX_CLASS} ${FIELD_TEXT_CLASS}`;
+
+// 모달이 스크롤을 잠가도 오른쪽 fixed 요소가 움직이지 않게 하는 react-remove-scroll-bar 클래스
+export const SCROLLBAR_GAP_CLASS = 'width-before-scroll-bar';

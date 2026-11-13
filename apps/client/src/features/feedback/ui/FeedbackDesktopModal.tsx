@@ -1,4 +1,4 @@
-import { Dialog, Heading } from '@allcll/allcll-ui';
+import { Dialog, Heading, SCROLLBAR_GAP_CLASS } from '@allcll/allcll-ui';
 import { FeedbackActions, FeedbackFields, FeedbackSuccess } from './FeedbackSharedContent';
 import type { IFeedbackViewProps } from './FeedbackViewProps';
 
@@ -19,7 +19,7 @@ export default function FeedbackDesktopModal({
   titles,
 }: IFeedbackViewProps) {
   return (
-    <div className="fixed bottom-6 right-6 z-floating">
+    <div className={`fixed bottom-6 right-6 z-floating ${SCROLLBAR_GAP_CLASS}`}>
       <div className="w-80 bg-white rounded-lg border border-gray-200 shadow-lg">
         {!success ? (
           <>

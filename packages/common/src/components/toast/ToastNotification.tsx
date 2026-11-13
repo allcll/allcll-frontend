@@ -1,7 +1,7 @@
 import { createPortal } from 'react-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { Branch as DismissableLayerBranch } from '@radix-ui/react-dismissable-layer';
-import { Toast } from '@allcll/allcll-ui';
+import { SCROLLBAR_GAP_CLASS, Toast } from '@allcll/allcll-ui';
 import useToastNotification from '../../store/useToastNotification';
 
 const TOAST_TRANSITION = {
@@ -19,7 +19,7 @@ function ToastNotification() {
     <DismissableLayerBranch
       role="status"
       aria-live="polite"
-      className="fixed top-2 right-2 z-toast max-w-screen pointer-events-auto"
+      className={`fixed top-2 right-2 z-toast max-w-screen pointer-events-auto ${SCROLLBAR_GAP_CLASS}`}
     >
       <TransitionGroup className="flex gap-2 flex-col-reverse">
         {messages.slice(-3).map(message => (
