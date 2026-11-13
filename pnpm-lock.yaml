@@ -90,6 +90,9 @@ importers:
       '@allcll/common':
         specifier: workspace:^
         version: link:../../packages/common
+      '@tailwindcss/typography':
+        specifier: ^0.5.16
+        version: 0.5.19(tailwindcss@4.1.18)
       '@tanstack/react-query':
         specifier: ^5.83.0
         version: 5.90.21(react@18.3.1)

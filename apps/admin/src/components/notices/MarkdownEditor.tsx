@@ -179,7 +179,7 @@ function MarkdownEditor({ content, maxLength, onChange }: IMarkdownEditorProps) 
 
           <Tabs.Panel value="preview" className="min-h-[480px] px-5 py-4">
             {content.trim() ? (
-              <div className="prose max-w-none">
+              <div className="prose prose-sm max-w-none">
                 <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{content}</ReactMarkdown>
               </div>
             ) : (

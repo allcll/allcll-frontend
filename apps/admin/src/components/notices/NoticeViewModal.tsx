@@ -27,7 +27,7 @@ function NoticeViewModal({ notice, onClose, onEdit }: INoticeViewModalProps) {
               )}
             </Flex>
           </Flex>
-          <div className="prose max-w-none">
+          <div className="prose prose-sm max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{notice.content}</ReactMarkdown>
           </div>
         </Flex>
