@@ -123,7 +123,7 @@ function TimelineDot({
       >
         {eventTitle}
         <br />
-        {duration.toFixed(2)} sec
+        {duration.toFixed(2)}초
       </div>
     </div>
   );

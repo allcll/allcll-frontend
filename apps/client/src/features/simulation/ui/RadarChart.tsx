@@ -110,16 +110,16 @@ function RadarChart({ result }: Readonly<IRadarChart>) {
         <div className="font-bold text-sm mb-1">내 능력</div>
         <ul className="space-y-1">
           <li className="flex justify-between gap-3">
-            <span>• 신청 버튼 클릭 속도</span> <span>{searchBtnSpeed.toFixed(2)} sec</span>
+            <span>• 신청 버튼 클릭 속도</span> <span>{searchBtnSpeed.toFixed(2)}초</span>
           </li>
           <li className="flex justify-between gap-3">
-            <span>• 총 소요 시간</span> <span>{totalSpeed.toFixed(2)} sec</span>
+            <span>• 총 소요 시간</span> <span>{totalSpeed.toFixed(2)}초</span>
           </li>
           <li className="flex justify-between gap-3">
-            <span>• 정확도</span> <span>{accuracy.toFixed(2)} %</span>
+            <span>• 정확도</span> <span>{accuracy.toFixed(2)}%</span>
           </li>
           <li className="flex justify-between gap-3">
-            <span>• 매크로 방지 코드 인증 속도</span> <span>{captchaSpeed.toFixed(2)} sec</span>
+            <span>• 매크로 방지 코드 인증 속도</span> <span>{captchaSpeed.toFixed(2)}초</span>
           </li>
         </ul>
       </div>
