@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import Section from '@/widgets/home/ui/Section.tsx';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js/auto';
@@ -5,6 +6,7 @@ import { DoughnutColors } from '@/features/wish/lib/doughnut';
 import SectionHeader from '@/widgets/home/ui/SectionHeader.tsx';
 import BasketBadge from '@/entities/wishes/ui/BasketBadge.tsx';
 import { Card, Heading } from '@allcll/allcll-ui';
+import { useChartColors } from '@allcll/common';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -19,6 +21,9 @@ const doughnut = {
 };
 
 function WishesSection() {
+  const chartRef = useRef<HTMLDivElement>(null);
+  const chartColors = useChartColors(chartRef);
+
   return (
     <Section>
       <SectionHeader title="관심과목 분석" href="/wishes" />
@@ -29,8 +34,14 @@ function WishesSection() {
           <Heading level={3}>학과별 관심도</Heading>
 
           <div className="flex justify-center mt-4">
-            <div className="w-full max-w-xs">
-              <Doughnut data={doughnut} />
+            <div ref={chartRef} className="w-full max-w-xs">
+              <Doughnut
+                data={doughnut}
+                options={{
+                  borderColor: chartColors.surface,
+                  plugins: { legend: { labels: { color: chartColors.text } } },
+                }}
+              />
             </div>
           </div>
         </Card>

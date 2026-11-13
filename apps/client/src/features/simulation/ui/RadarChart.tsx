@@ -8,7 +8,9 @@ import {
   Tooltip as ChartTooltip,
   Legend,
 } from 'chart.js/auto';
+import { useRef } from 'react';
 import { Radar as RadarChartJS } from 'react-chartjs-2';
+import { type ChartColors, useChartColors } from '@allcll/common';
 import { ExtendedResultResponse } from '@/features/simulation/lib/extendedResult.ts';
 import {
   getSearchBtnSpeedRank,
@@ -19,36 +21,38 @@ import {
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, ChartTooltip, Legend);
 
-const options = {
-  responsive: true,
-  layout: { padding: { left: 8, right: 8 } },
-  scales: {
-    r: {
-      angleLines: { display: true },
-      suggestedMin: 0,
-      suggestedMax: 100,
-      ticks: {
-        display: false,
-      },
-      pointLabels: {
-        font: {
-          size: 14,
-          family: 'Pretendard',
+function getOptions(colors: ChartColors) {
+  return {
+    responsive: true,
+    layout: { padding: { left: 8, right: 8 } },
+    scales: {
+      r: {
+        angleLines: { display: true, color: colors.grid },
+        suggestedMin: 0,
+        suggestedMax: 100,
+        ticks: {
+          display: false,
         },
-        color: '#4B5563', // text-gray-700
-      },
-      grid: {
-        color: '#E5E7EB', // border-gray-300
+        pointLabels: {
+          font: {
+            size: 14,
+            family: 'Pretendard',
+          },
+          color: colors.text,
+        },
+        grid: {
+          color: colors.grid,
+        },
       },
     },
-  },
-  plugins: {
-    legend: { display: false },
-    tooltip: {
-      enabled: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        enabled: true,
+      },
     },
-  },
-};
+  };
+}
 
 function getDataset(result: IRadarChart['result']) {
   const { user_ability } = result;
@@ -97,12 +101,14 @@ interface IRadarChart {
 function RadarChart({ result }: Readonly<IRadarChart>) {
   const datasets = getDataset(result);
   const { searchBtnSpeed, totalSpeed, accuracy, captchaSpeed } = result.user_ability;
+  const chartRef = useRef<HTMLDivElement>(null);
+  const colors = useChartColors(chartRef);
 
   return (
     <>
       {/* 레이더 차트 */}
-      <div className="md:h-90">
-        <RadarChartJS data={datasets} className="mx-auto" options={options} />
+      <div ref={chartRef} className="md:h-90">
+        <RadarChartJS data={datasets} className="mx-auto" options={getOptions(colors)} />
       </div>
 
       {/* 능력 설명 박스 */}
