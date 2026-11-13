@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @config "../tailwind.config.ts";
+@import '../theme.css';
 
 @layer base {
   button:not(:disabled),

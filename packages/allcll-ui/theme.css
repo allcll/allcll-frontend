@@ -1,0 +1,97 @@
+/* .light 영역은 다크 모드에서도 라이트 모드로 유지 */
+@custom-variant dark (&:where(.dark, .dark *):not(:where(.light, .light *)));
+
+:root,
+.light {
+  color-scheme: light;
+
+  --allcll-background: var(--color-gray-50);
+  --allcll-surface: var(--color-white);
+  --allcll-surface-subtle: var(--color-gray-50);
+  --allcll-surface-muted: var(--color-gray-100);
+  --allcll-surface-strong: var(--color-gray-200);
+
+  --allcll-fg: #202123;
+  --allcll-fg-secondary: var(--color-gray-700);
+  --allcll-fg-muted: var(--color-gray-500);
+  --allcll-fg-subtle: var(--color-gray-400);
+  --allcll-fg-disabled: var(--color-gray-300);
+
+  --allcll-line-subtle: var(--color-gray-100);
+  --allcll-line: var(--color-gray-200);
+  --allcll-line-strong: var(--color-gray-300);
+
+  --allcll-primary-subtle: #eff6ff;
+  --allcll-primary-muted: #dbeafe;
+  --allcll-danger-subtle: #fef2f2;
+  --allcll-danger-muted: #fee2e2;
+  --allcll-success-subtle: var(--color-green-50);
+  --allcll-success-muted: var(--color-green-100);
+  --allcll-warning-subtle: var(--color-yellow-50);
+  --allcll-warning-muted: var(--color-yellow-100);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --allcll-background: #111318;
+  --allcll-surface: #181b21;
+  --allcll-surface-subtle: #20232a;
+  --allcll-surface-muted: #282c34;
+  --allcll-surface-strong: #30353e;
+
+  --allcll-fg: #f6f8fb;
+  --allcll-fg-secondary: #c5c9cf;
+  --allcll-fg-muted: #828893;
+  --allcll-fg-subtle: #767d88;
+  --allcll-fg-disabled: #50565f;
+
+  --allcll-line-subtle: #282c34;
+  --allcll-line: #30353e;
+  --allcll-line-strong: #393e48;
+
+  --allcll-primary-subtle: color-mix(in oklab, #3b82f6 15%, transparent);
+  --allcll-primary-muted: color-mix(in oklab, #3b82f6 25%, transparent);
+  --allcll-danger-subtle: color-mix(in oklab, #ef4444 15%, transparent);
+  --allcll-danger-muted: color-mix(in oklab, #ef4444 25%, transparent);
+  --allcll-success-subtle: color-mix(in oklab, var(--color-green-500) 15%, transparent);
+  --allcll-success-muted: color-mix(in oklab, var(--color-green-500) 25%, transparent);
+  --allcll-warning-subtle: color-mix(in oklab, var(--color-yellow-500) 15%, transparent);
+  --allcll-warning-muted: color-mix(in oklab, var(--color-yellow-500) 25%, transparent);
+}
+
+@theme inline {
+  --color-background: var(--allcll-background);
+  --color-surface: var(--allcll-surface);
+  --color-surface-subtle: var(--allcll-surface-subtle);
+  --color-surface-muted: var(--allcll-surface-muted);
+  --color-surface-strong: var(--allcll-surface-strong);
+
+  --color-fg: var(--allcll-fg);
+  --color-fg-secondary: var(--allcll-fg-secondary);
+  --color-fg-muted: var(--allcll-fg-muted);
+  --color-fg-subtle: var(--allcll-fg-subtle);
+  --color-fg-disabled: var(--allcll-fg-disabled);
+
+  --color-line-subtle: var(--allcll-line-subtle);
+  --color-line: var(--allcll-line);
+  --color-line-strong: var(--allcll-line-strong);
+
+  --color-primary-subtle: var(--allcll-primary-subtle);
+  --color-primary-muted: var(--allcll-primary-muted);
+  --color-danger-subtle: var(--allcll-danger-subtle);
+  --color-danger-muted: var(--allcll-danger-muted);
+  --color-success-subtle: var(--allcll-success-subtle);
+  --color-success-muted: var(--allcll-success-muted);
+  --color-warning-subtle: var(--allcll-warning-subtle);
+  --color-warning-muted: var(--allcll-warning-muted);
+}
+
+/* 다크 모드 배경에 묻히지 않게 기존 그림자보다 진하게 설정 */
+@layer components {
+  :where(.dark .shadow-xs, .dark .shadow-sm, .dark .shadow-md, .dark .shadow-lg, .dark .shadow-xl):not(
+    :where(.light *)
+  ) {
+    --tw-shadow-color: rgb(0 0 0 / 0.6);
+  }
+}
