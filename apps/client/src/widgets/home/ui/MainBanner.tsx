@@ -21,7 +21,7 @@ function MainBanner() {
         <div className="max-w-xl">
           <div className="flex flex-row gap-2 items-center">
             <Image src="/calendar.png" alt="" className="w-10 h-10" />
-            <span className="italic text-xs text-stone-500 ">
+            <span className="italic text-xs text-fg-muted">
               {data?.semesterValue ?? CURRENT_SEMESTER.semesterValue}학기 {BANNER_PERIOD_LABEL} <br />
               {registrationPeriod}
             </span>

@@ -38,7 +38,7 @@ function EmptyScheduleSlot({ schedule, selected }: Readonly<{ schedule: GeneralS
     >
       <Flex gap={5}>
         <p>{schedule.subjectName}</p>
-        <p className="text-stone-400">{schedule.professorName}</p>
+        <p className="text-fg-subtle">{schedule.professorName}</p>
       </Flex>
 
       <IconButton
