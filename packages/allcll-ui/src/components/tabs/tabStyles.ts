@@ -1,5 +1,5 @@
 export const TAB_LIST_CLASS =
-  'flex overflow-x-auto [scrollbar-width:none] [contain:inline-size] shadow-[inset_0_-1px_0_var(--color-line)] text-sm';
+  'flex overflow-x-auto [scrollbar-width:none] [contain:inline-size] shadow-[inset_0_-1px_0_var(--allcll-line)] text-sm';
 
 export const TAB_FULL_WIDTH_CLASS = '*:flex-1 *:text-center';
 

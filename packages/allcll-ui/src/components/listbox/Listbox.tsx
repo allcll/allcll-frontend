@@ -12,7 +12,7 @@ function Listbox({ bordered = false, className = '', children, ...rest }: Listbo
     <div
       role="listbox"
       {...rest}
-      className={`min-h-0 overflow-y-auto p-1 [scrollbar-width:thin] [scrollbar-color:var(--color-line-strong)_transparent] ${borderClass} ${className}`}
+      className={`min-h-0 overflow-y-auto p-1 [scrollbar-width:thin] [scrollbar-color:var(--allcll-line-strong)_transparent] ${borderClass} ${className}`}
     >
       {children}
     </div>

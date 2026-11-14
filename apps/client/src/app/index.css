@@ -118,18 +118,18 @@ body {
 }
 
 :root {
-  background-color: var(--color-background);
+  background-color: var(--allcll-background);
 }
 
 .seat-change-enter {
   background-color: transparent;
 }
 .seat-change-enter-active {
-  background-color: var(--color-primary-subtle);
+  background-color: var(--allcll-primary-subtle);
   transition: background-color 500ms ease-in-out;
 }
 .seat-change-exit {
-  background-color: var(--color-primary-subtle);
+  background-color: var(--allcll-primary-subtle);
 }
 .seat-change-exit-active {
   background-color: transparent;

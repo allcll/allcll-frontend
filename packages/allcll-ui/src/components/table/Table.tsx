@@ -21,7 +21,7 @@ function TableRoot({ wrapperClassName = '', scrollClassName = '', className = ''
     <div className={`relative border border-line rounded-md overflow-hidden ${wrapperClassName}`}>
       <div ref={scrollRef} className={`overflow-x-auto ${scrollClassName}`}>
         <table
-          className={`w-full text-sm whitespace-nowrap has-[[data-table-row]]:shadow-[0_1px_0_var(--color-line)] ${className}`}
+          className={`w-full text-sm whitespace-nowrap has-[[data-table-row]]:shadow-[0_1px_0_var(--allcll-line)] ${className}`}
           {...rest}
         >
           {children}
