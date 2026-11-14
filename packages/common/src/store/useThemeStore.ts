@@ -46,7 +46,7 @@ function getSystemTheme(): ResolvedTheme {
 }
 
 function useResolvedTheme(): ResolvedTheme {
-  const preference = useThemeStore(s => s.preference);
+  const preference = useThemeStore(state => state.preference);
   const systemTheme = useSyncExternalStore(subscribeSystemTheme, getSystemTheme);
   return preference === 'system' ? systemTheme : preference;
 }

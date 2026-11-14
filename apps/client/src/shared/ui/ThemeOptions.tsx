@@ -8,8 +8,8 @@ const THEME_OPTIONS: { value: ThemePreference; label: string }[] = [
 ];
 
 function ThemeOptions() {
-  const preference = useThemeStore(s => s.preference);
-  const setPreference = useThemeStore(s => s.setPreference);
+  const preference = useThemeStore(state => state.preference);
+  const setPreference = useThemeStore(state => state.setPreference);
 
   return (
     <Select
