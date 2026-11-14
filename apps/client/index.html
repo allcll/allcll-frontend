@@ -16,7 +16,9 @@
         if (theme === 'dark' || (theme !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)) {
           document.documentElement.classList.add('dark');
         }
-      } catch (e) {}
+      } catch (e) {
+        /* ignore */
+      }
     </script>
 
     <title>올클(ALLCLL) | 세종대 수강신청 도우미</title>
