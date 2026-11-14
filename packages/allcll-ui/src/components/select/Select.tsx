@@ -20,7 +20,7 @@ const ICON_CLASS: Record<SelectVariant, string> = {
   plain: 'right-0.5 w-3.5 h-3.5',
 };
 
-function Select({ variant = 'outlined', className = '', children, ...rest }: SelectProps) {
+function Select({ variant = 'outlined', className = '', children, ...rest }: Readonly<SelectProps>) {
   return (
     <div className={`relative inline-block ${className}`}>
       <select {...rest} className={`w-full h-full appearance-none ${SELECT_CLASS[variant]}`}>
