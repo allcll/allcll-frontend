@@ -16,12 +16,12 @@
 
 /* 겹친 일정이 비치지 않게 불투명 색 사용 */
 .dark {
-  --allcll-schedule-rose: color-mix(in oklab, var(--color-rose-500) 15%, var(--allcll-surface));
-  --allcll-schedule-amber: color-mix(in oklab, var(--color-amber-500) 15%, var(--allcll-surface));
-  --allcll-schedule-green: color-mix(in oklab, var(--color-green-500) 15%, var(--allcll-surface));
-  --allcll-schedule-emerald: color-mix(in oklab, var(--color-emerald-500) 15%, var(--allcll-surface));
-  --allcll-schedule-blue: color-mix(in oklab, var(--color-blue-500) 15%, var(--allcll-surface));
-  --allcll-schedule-violet: color-mix(in oklab, var(--color-violet-500) 15%, var(--allcll-surface));
+  --allcll-schedule-rose: color-mix(in srgb, var(--color-rose-500) 15%, var(--allcll-surface));
+  --allcll-schedule-amber: color-mix(in srgb, var(--color-amber-500) 15%, var(--allcll-surface));
+  --allcll-schedule-green: color-mix(in srgb, var(--color-green-500) 15%, var(--allcll-surface));
+  --allcll-schedule-emerald: color-mix(in srgb, var(--color-emerald-500) 15%, var(--allcll-surface));
+  --allcll-schedule-blue: color-mix(in srgb, var(--color-blue-500) 15%, var(--allcll-surface));
+  --allcll-schedule-violet: color-mix(in srgb, var(--color-violet-500) 15%, var(--allcll-surface));
 }
 
 @theme inline {
