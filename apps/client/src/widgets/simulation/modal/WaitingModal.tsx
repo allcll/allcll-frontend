@@ -117,11 +117,11 @@ function WaitingModal() {
     <SejongUI.Modal noBorder>
       <div className="bg-surface p-6 text-center space-y-6 max-w-md">
         <h2 className="text-lg md:text-xl font-semibold text-fg">
-          서비스 <span className="text-primary-600 dark:text-primary-400 font-bold">접속대기 중</span>입니다.
+          서비스 <span className="text-primary-600 font-bold">접속대기 중</span>입니다.
         </h2>
 
         <div className="text-sm md:text-base text-fg-muted">
-          예상대기시간: <span className="text-primary-600 dark:text-primary-400 font-bold text-xl">{waitTime}</span>초
+          예상대기시간: <span className="text-primary-600 font-bold text-xl">{waitTime}</span>초
         </div>
 
         <div className="w-full h-2 bg-surface-strong rounded-full overflow-hidden">
@@ -132,12 +132,8 @@ function WaitingModal() {
         </div>
 
         <div className="text-fg-secondary text-sm md:text-base leading-relaxed">
-          고객님 앞에{' '}
-          <span className="text-green-600 dark:text-green-400 font-bold text-xl">
-            {aheadPeople < 0 ? 0 : aheadPeople}
-          </span>
-          명, 뒤에 <span className="text-green-600 dark:text-green-400 font-bold text-xl">{behindPeople}</span>명의
-          대기자가 있습니다. <br />
+          고객님 앞에 <span className="text-green-600 font-bold text-xl">{aheadPeople < 0 ? 0 : aheadPeople}</span>명,
+          뒤에 <span className="text-green-600 font-bold text-xl">{behindPeople}</span>명의 대기자가 있습니다. <br />
           현재 접속 사용자가 많아 대기 중이며, 잠시만 기다리시면 서비스로 자동 접속 됩니다.
         </div>
 
