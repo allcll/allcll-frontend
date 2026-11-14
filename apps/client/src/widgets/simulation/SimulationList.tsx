@@ -37,7 +37,7 @@ function SimulationBoard() {
 
   if (!searchedLogs.length) {
     return (
-      <div className="bg-surface rounded-md shadow-md shadow-gray-300">
+      <div className="bg-surface rounded-md shadow-md">
         <EmptyState
           icon={CursorIcon}
           title="연습 기록이 없습니다"
@@ -52,7 +52,7 @@ function SimulationBoard() {
     <Link
       key={'simulation-log-' + log.simulation_run_id}
       to={`/simulation/logs/${log.simulation_run_id}`}
-      className="flex items-center justify-between bg-surface p-3 rounded-md text-sm shadow-md shadow-gray-300 mb-2 hover:bg-surface-muted"
+      className="flex items-center justify-between bg-surface p-3 rounded-md text-sm shadow-md mb-2 hover:bg-surface-muted"
     >
       <div className="flex items-center gap-2">
         <p className="hidden">id</p>
