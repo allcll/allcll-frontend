@@ -4,6 +4,35 @@
 @config "../../tailwind.config.ts";
 @plugin '@tailwindcss/typography';
 
+:root,
+.light {
+  --allcll-schedule-rose: var(--color-rose-50);
+  --allcll-schedule-amber: var(--color-amber-50);
+  --allcll-schedule-green: var(--color-green-50);
+  --allcll-schedule-emerald: var(--color-emerald-50);
+  --allcll-schedule-blue: var(--color-blue-50);
+  --allcll-schedule-violet: var(--color-violet-50);
+}
+
+/* 겹친 일정이 비치지 않게 불투명 색 사용 */
+.dark {
+  --allcll-schedule-rose: color-mix(in oklab, var(--color-rose-500) 15%, var(--allcll-surface));
+  --allcll-schedule-amber: color-mix(in oklab, var(--color-amber-500) 15%, var(--allcll-surface));
+  --allcll-schedule-green: color-mix(in oklab, var(--color-green-500) 15%, var(--allcll-surface));
+  --allcll-schedule-emerald: color-mix(in oklab, var(--color-emerald-500) 15%, var(--allcll-surface));
+  --allcll-schedule-blue: color-mix(in oklab, var(--color-blue-500) 15%, var(--allcll-surface));
+  --allcll-schedule-violet: color-mix(in oklab, var(--color-violet-500) 15%, var(--allcll-surface));
+}
+
+@theme inline {
+  --color-schedule-rose: var(--allcll-schedule-rose);
+  --color-schedule-amber: var(--allcll-schedule-amber);
+  --color-schedule-green: var(--allcll-schedule-green);
+  --color-schedule-emerald: var(--allcll-schedule-emerald);
+  --color-schedule-blue: var(--allcll-schedule-blue);
+  --color-schedule-violet: var(--allcll-schedule-violet);
+}
+
 @layer base {
   button:not(:disabled),
   [role='button']:not([aria-disabled='true']),

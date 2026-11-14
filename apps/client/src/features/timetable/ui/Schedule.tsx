@@ -109,17 +109,17 @@ interface Colors {
 export function getColors(color: ScheduleSlot['color']): Colors {
   switch (color) {
     case 'rose':
-      return { text: 'text-rose-500', bgLight: 'bg-rose-50 dark:bg-rose-500/15', bg: 'bg-rose-500' };
+      return { text: 'text-rose-500', bgLight: 'bg-schedule-rose', bg: 'bg-rose-500' };
     case 'amber':
-      return { text: 'text-amber-500', bgLight: 'bg-amber-50 dark:bg-amber-500/15', bg: 'bg-amber-500' };
+      return { text: 'text-amber-500', bgLight: 'bg-schedule-amber', bg: 'bg-amber-500' };
     case 'green':
-      return { text: 'text-green-500', bgLight: 'bg-success-subtle', bg: 'bg-green-500' };
+      return { text: 'text-green-500', bgLight: 'bg-schedule-green', bg: 'bg-green-500' };
     case 'emerald':
-      return { text: 'text-emerald-500', bgLight: 'bg-emerald-50 dark:bg-emerald-500/15', bg: 'bg-emerald-500' };
+      return { text: 'text-emerald-500', bgLight: 'bg-schedule-emerald', bg: 'bg-emerald-500' };
     case 'blue':
-      return { text: 'text-blue-500', bgLight: 'bg-blue-50 dark:bg-blue-500/15', bg: 'bg-blue-500' };
+      return { text: 'text-blue-500', bgLight: 'bg-schedule-blue', bg: 'bg-blue-500' };
     case 'violet':
-      return { text: 'text-violet-500', bgLight: 'bg-violet-50 dark:bg-violet-500/15', bg: 'bg-violet-500' };
+      return { text: 'text-violet-500', bgLight: 'bg-schedule-violet', bg: 'bg-violet-500' };
     default:
       return { text: 'text-fg-muted', bgLight: 'bg-surface-subtle', bg: 'bg-fg-muted' };
   }
