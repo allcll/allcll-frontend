@@ -13,7 +13,7 @@ function Tooltip({ children, layer = 'popover' }: ITooltip) {
     <RadixPopover.Root>
       <RadixPopover.Trigger
         aria-label="도움말"
-        className="flex rounded-md text-gray-400 transition-colors hover:text-gray-600 data-[state=open]:text-gray-600"
+        className="flex rounded-md text-fg-subtle transition-colors hover:text-fg-muted data-[state=open]:text-fg-muted"
       >
         <HelpIcon className="w-4 h-4" />
       </RadixPopover.Trigger>

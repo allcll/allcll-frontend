@@ -24,7 +24,7 @@ function JoluphajaSection() {
         href="/graduation"
       />
 
-      <p className="mt-3 text-sm text-gray-400">
+      <p className="mt-3 text-sm text-fg-subtle">
         현재 베타 서비스입니다. 직접 사용해보시고 의견을 남겨주시면 더 좋은 서비스로 발전하는 데 큰 도움이 됩니다!
       </p>
 
@@ -41,8 +41,8 @@ function JoluphajaSection() {
               <span className="hidden sm:block">
                 <ProgressDoughnut earned={earned} required={required} size="medium" />
               </span>
-              <span className="text-xs text-gray-600 font-medium mt-1">{label}</span>
-              <span className="text-xs text-gray-400">
+              <span className="text-xs text-fg-muted font-medium mt-1">{label}</span>
+              <span className="text-xs text-fg-subtle">
                 {earned}/{required}학점
               </span>
             </div>

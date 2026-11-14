@@ -8,7 +8,9 @@ import {
   Tooltip as ChartTooltip,
   Legend,
 } from 'chart.js/auto';
+import { useRef } from 'react';
 import { Radar as RadarChartJS } from 'react-chartjs-2';
+import { type ChartColors, useChartColors } from '@allcll/common';
 import { ExtendedResultResponse } from '@/features/simulation/lib/extendedResult.ts';
 import {
   getSearchBtnSpeedRank,
@@ -19,34 +21,38 @@ import {
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, ChartTooltip, Legend);
 
-const options = {
-  responsive: true,
-  scales: {
-    r: {
-      angleLines: { display: true },
-      suggestedMin: 0,
-      suggestedMax: 100,
-      ticks: {
-        display: false,
-      },
-      pointLabels: {
-        font: {
-          size: 14,
+function getOptions(colors: ChartColors) {
+  return {
+    responsive: true,
+    layout: { padding: { left: 8, right: 8 } },
+    scales: {
+      r: {
+        angleLines: { display: true, color: colors.grid },
+        suggestedMin: 0,
+        suggestedMax: 100,
+        ticks: {
+          display: false,
         },
-        color: '#4B5563', // text-gray-700
-      },
-      grid: {
-        color: '#E5E7EB', // border-gray-300
+        pointLabels: {
+          font: {
+            size: 14,
+            family: 'Pretendard',
+          },
+          color: colors.text,
+        },
+        grid: {
+          color: colors.grid,
+        },
       },
     },
-  },
-  plugins: {
-    legend: { display: false },
-    tooltip: {
-      enabled: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        enabled: true,
+      },
     },
-  },
-};
+  };
+}
 
 function getDataset(result: IRadarChart['result']) {
   const { user_ability } = result;
@@ -95,29 +101,31 @@ interface IRadarChart {
 function RadarChart({ result }: Readonly<IRadarChart>) {
   const datasets = getDataset(result);
   const { searchBtnSpeed, totalSpeed, accuracy, captchaSpeed } = result.user_ability;
+  const chartRef = useRef<HTMLDivElement>(null);
+  const colors = useChartColors(chartRef);
 
   return (
     <>
       {/* 레이더 차트 */}
-      <div className="h-90">
-        <RadarChartJS data={datasets} className="mx-auto" options={options} />
+      <div ref={chartRef} className="md:h-90">
+        <RadarChartJS data={datasets} className="mx-auto" options={getOptions(colors)} />
       </div>
 
       {/* 능력 설명 박스 */}
-      <div className="absolute bottom-6 right-6 bg-white shadow-lg rounded-lg px-4 py-3 text-xs text-gray-800">
+      <div className="mt-2 md:mt-0 md:absolute md:bottom-6 md:right-6 bg-surface shadow-lg rounded-lg px-4 py-3 text-xs text-fg">
         <div className="font-bold text-sm mb-1">내 능력</div>
         <ul className="space-y-1">
-          <li className="flex justify-between">
-            <span>• 신청 버튼 클릭 속도&nbsp;</span> <span>{searchBtnSpeed.toFixed(2)} sec</span>
+          <li className="flex justify-between gap-3">
+            <span>• 신청 버튼 클릭 속도</span> <span>{searchBtnSpeed.toFixed(2)}초</span>
           </li>
-          <li className="flex justify-between">
-            <span>• 총 소요 시간</span> <span>{totalSpeed.toFixed(2)} sec</span>
+          <li className="flex justify-between gap-3">
+            <span>• 총 소요 시간</span> <span>{totalSpeed.toFixed(2)}초</span>
           </li>
-          <li className="flex justify-between">
-            <span>• 정확도</span> <span>{accuracy.toFixed(2)} %</span>
+          <li className="flex justify-between gap-3">
+            <span>• 정확도</span> <span>{accuracy.toFixed(2)}%</span>
           </li>
-          <li className="flex justify-between">
-            <span>• 매크로 방지 코드 인증 속도</span> <span>{captchaSpeed.toFixed(2)} sec</span>
+          <li className="flex justify-between gap-3">
+            <span>• 매크로 방지 코드 인증 속도</span> <span>{captchaSpeed.toFixed(2)}초</span>
           </li>
         </ul>
       </div>

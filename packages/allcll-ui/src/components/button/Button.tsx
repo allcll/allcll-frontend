@@ -36,26 +36,28 @@ export default Button;
 
 const SOLID_CLASS: Record<ButtonColor, string> = {
   primary: 'bg-primary-500 text-white not-disabled:hover:bg-primary-600',
-  gray: 'bg-gray-100 not-disabled:hover:bg-gray-300',
+  gray: 'bg-surface-muted not-disabled:hover:bg-line-strong',
   danger: 'bg-danger-500 text-white not-disabled:hover:bg-danger-600',
 };
 
 const OUTLINED_CLASS: Record<ButtonColor, string> = {
-  primary: 'bg-transparent border-primary-500 text-primary-500 not-disabled:hover:bg-primary-50',
-  gray: 'bg-white border-gray-300 text-gray-800 not-disabled:hover:bg-gray-50',
-  danger: 'bg-transparent border-danger-500 text-danger-500 not-disabled:hover:bg-danger-50',
+  primary: 'bg-transparent border-primary-500 text-primary-500 not-disabled:hover:bg-primary-subtle',
+  gray: 'bg-surface border-line-strong text-fg not-disabled:hover:bg-surface-subtle',
+  danger: 'bg-transparent border-danger-500 text-danger-500 not-disabled:hover:bg-danger-subtle',
 };
 
 const PILL_CLASS: Record<ButtonColor, string> = {
-  primary: 'bg-primary-50 border-primary-200 text-primary-600 not-disabled:hover:bg-primary-100',
-  gray: 'bg-gray-50 border-gray-200 text-gray-700 not-disabled:hover:bg-gray-200',
-  danger: 'bg-danger-50 border-danger-200 text-danger-600 not-disabled:hover:bg-danger-100',
+  primary:
+    'bg-primary-subtle border-primary-200 dark:border-primary-500/40 text-primary-600 dark:text-primary-400 not-disabled:hover:bg-primary-muted',
+  gray: 'bg-surface-subtle border-line text-fg-secondary not-disabled:hover:bg-surface-strong',
+  danger:
+    'bg-danger-subtle border-danger-200 dark:border-danger-500/40 text-danger-600 dark:text-danger-400 not-disabled:hover:bg-danger-muted',
 };
 
 const TEXT_CLASS: Record<ButtonColor, string> = {
-  primary: 'text-primary-500 not-disabled:hover:text-primary-700',
-  gray: 'text-gray-800 not-disabled:hover:text-primary-500',
-  danger: 'text-danger-500 not-disabled:hover:text-danger-700',
+  primary: 'text-primary-500 not-disabled:hover:text-primary-700 dark:not-disabled:hover:text-primary-400',
+  gray: 'text-fg not-disabled:hover:text-primary-500',
+  danger: 'text-danger-500 not-disabled:hover:text-danger-700 dark:not-disabled:hover:text-danger-400',
 };
 
 function getVariantClass(variant: ButtonVariant, color: ButtonColor) {

@@ -59,7 +59,7 @@ function MultiSelectFilterOption<VALUE extends string | number>({
         ))}
       </div>
 
-      <div className="flex justify-end w-full mt-3 pt-1.5 -mb-1.5 border-t border-gray-100">
+      <div className="flex justify-end w-full mt-3 pt-1.5 -mb-1.5 border-t border-line-subtle">
         <Button
           variant="text"
           size="small"

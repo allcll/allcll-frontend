@@ -17,17 +17,17 @@ function NoticeViewModal({ notice, onClose, onEdit }: INoticeViewModalProps) {
     <Dialog title="공지사항" onClose={onClose}>
       <Dialog.Content className="sm:py-5">
         <Flex direction="column" gap={4} className="w-160 max-w-full">
-          <Flex direction="column" gap={2} className="pb-4 border-b border-gray-100">
+          <Flex direction="column" gap={2} className="pb-4 border-b border-line-subtle">
             <Heading level={3}>{notice.title}</Heading>
-            <Flex align="center" gap={2} className="text-xs text-gray-500">
+            <Flex align="center" gap={2} className="text-xs text-fg-muted">
               <OperationTypeBadge operationType={notice.operationType} />
               <span>작성 {formatDate(notice.createdAt)}</span>
               {formatDate(notice.updatedAt) !== formatDate(notice.createdAt) && (
-                <span className="text-gray-400">· 수정 {formatDate(notice.updatedAt)}</span>
+                <span className="text-fg-subtle">· 수정 {formatDate(notice.updatedAt)}</span>
               )}
             </Flex>
           </Flex>
-          <div className="prose max-w-none">
+          <div className="prose prose-sm max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{notice.content}</ReactMarkdown>
           </div>
         </Flex>

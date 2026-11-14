@@ -36,8 +36,10 @@ function Timeline({ result }: Readonly<{ result: ExtendedResultResponse }>) {
         {/* timeline grid */}
         <div className="absolute top-0 flex h-full" style={{ left: `${HEADER_WIDTH}px` }}>
           {timelineTicks.map(tick => (
-            <div key={tick} className="border-r border-gray-200 relative" style={{ width: `${TICK_WIDTH}px` }}>
-              <span className="absolute text-xs text-gray-400 bg-white bottom-0 right-0 translate-x-1/2">{tick}</span>
+            <div key={tick} className="border-r border-line relative" style={{ width: `${TICK_WIDTH}px` }}>
+              <span className="absolute text-xs text-fg-subtle bg-surface bottom-0 right-0 translate-x-1/2">
+                {tick}
+              </span>
             </div>
           ))}
         </div>
@@ -51,7 +53,7 @@ function Timeline({ result }: Readonly<{ result: ExtendedResultResponse }>) {
           >
             {/* subject info */}
             <div
-              className="py-2 text-sm md:sticky left-0 right-0 z-content bg-white"
+              className="py-2 text-sm md:sticky left-0 right-0 z-content bg-surface"
               style={{ width: `${HEADER_WIDTH}px` }}
             >
               <div className={`font-semibold ${getTextColor600(subject.color)}`}>{subject.name}</div>
@@ -67,8 +69,8 @@ function Timeline({ result }: Readonly<{ result: ExtendedResultResponse }>) {
       </div>
 
       {/* 그라데이션 */}
-      <div className="pointer-events-none absolute inset-y-4 left-0 md:left-[200px] w-3 bg-gradient-to-r from-white to-transparent" />
-      <div className="pointer-events-none absolute inset-y-4 right-0 w-3 bg-gradient-to-l from-white to-transparent" />
+      <div className="pointer-events-none absolute inset-y-4 left-0 md:left-[200px] w-3 bg-gradient-to-r from-surface to-transparent" />
+      <div className="pointer-events-none absolute inset-y-4 right-0 w-3 bg-gradient-to-l from-surface to-transparent" />
     </div>
   );
 }
@@ -114,7 +116,7 @@ function TimelineDot({
   return (
     <div className="absolute top-1.5" style={{ left: `${left}px` }}>
       <div
-        className={`w-3 h-3 peer bg-white border-2 rounded-full hover:shadow cursor-pointer ${getColorBorderText(color)}`}
+        className={`w-3 h-3 peer bg-surface border-2 rounded-full hover:shadow cursor-pointer ${getColorBorderText(color)}`}
       />
 
       {/* Tooltip wrapper */}
@@ -123,7 +125,7 @@ function TimelineDot({
       >
         {eventTitle}
         <br />
-        {duration.toFixed(2)} sec
+        {duration.toFixed(2)}초
       </div>
     </div>
   );
@@ -134,15 +136,15 @@ function TimelineDot({
 function getColorClass(color: string) {
   switch (color) {
     case 'green':
-      return 'bg-green-100 border-green-500 text-green-700';
+      return 'bg-success-muted border-green-500 text-green-700 dark:text-green-400';
     case 'red':
-      return 'bg-danger-100 border-danger-500 text-danger-700';
+      return 'bg-danger-muted border-danger-500 text-danger-700 dark:text-danger-400';
     case 'orange':
-      return 'bg-orange-100 border-orange-500 text-orange-700';
+      return 'bg-orange-100 dark:bg-orange-500/25 border-orange-500 text-orange-700 dark:text-orange-400';
     case 'yellow':
-      return 'bg-yellow-100 border-yellow-500 text-yellow-700';
+      return 'bg-warning-muted border-yellow-500 text-yellow-700 dark:text-yellow-400';
     default:
-      return 'bg-gray-100 border-gray-500 text-gray-700';
+      return 'bg-surface-muted border-fg-muted text-fg-secondary';
   }
 }
 
@@ -157,7 +159,7 @@ function getColorBorderText(color: string) {
     case 'yellow':
       return 'border-yellow-500 text-yellow-500 shadow-yellow-500';
     default:
-      return 'border-gray-500 text-gray-500 shadow-gray-500';
+      return 'border-fg-muted text-fg-muted shadow-gray-500';
   }
 }
 
@@ -172,22 +174,22 @@ function getTextColor500(color: string) {
     case 'yellow':
       return 'text-yellow-500';
     default:
-      return 'text-gray-500';
+      return 'text-fg-muted';
   }
 }
 
 function getTextColor600(color: string) {
   switch (color) {
     case 'green':
-      return 'text-green-600';
+      return 'text-green-600 dark:text-green-400';
     case 'red':
-      return 'text-danger-600';
+      return 'text-danger-600 dark:text-danger-400';
     case 'orange':
-      return 'text-orange-600';
+      return 'text-orange-600 dark:text-orange-400';
     case 'yellow':
-      return 'text-yellow-600';
+      return 'text-yellow-600 dark:text-yellow-400';
     default:
-      return 'text-gray-600';
+      return 'text-fg-muted';
   }
 }
 

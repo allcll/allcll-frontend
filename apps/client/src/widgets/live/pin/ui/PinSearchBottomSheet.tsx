@@ -37,7 +37,7 @@ function PinSearchBottomSheet({ isOpen, onCloseSearch }: ISearchBottomSheet) {
   return (
     // 검색 결과 수에 따라 시트 높이가 출렁이지 않도록 화면 높이로 고정
     <BottomSheet title="알림 과목 등록" isOpen={isOpen} onClose={handleClose} snapPoints={[1]}>
-      <div className="sticky -mx-4 pb-3 px-4 top-0 bg-white z-content flex flex-col gap-2 mb-4 border-b border-gray-100">
+      <div className="sticky -mx-4 pb-3 px-4 top-0 bg-surface z-content flex flex-col gap-2 mb-4 border-b border-line-subtle">
         <SearchBox
           placeholder="과목명, 교수명, 학수번호 검색"
           value={searchInput}

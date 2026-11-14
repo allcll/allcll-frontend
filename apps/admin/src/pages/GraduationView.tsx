@@ -103,7 +103,7 @@ function GraduationView() {
 
         {analyzedAt && (
           <Flex justify="end">
-            <span className="text-sm text-gray-400">{analyzedAt} 분석</span>
+            <span className="text-sm text-fg-subtle">{analyzedAt} 분석</span>
           </Flex>
         )}
 

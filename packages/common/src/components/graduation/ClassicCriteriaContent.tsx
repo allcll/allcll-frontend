@@ -5,7 +5,7 @@ import { CriteriaTable } from './CertificationCriteriaParts';
 function ClassicCriteriaContent({ data }: Readonly<{ data: ClassicCertCriteria }>) {
   return (
     <>
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-muted">
         총 <span className="font-semibold text-primary-500">{data.totalRequiredCount}권</span>을 읽어야 합니다. 각
         영역별 최소 권수는 아래와 같습니다.
       </p>
@@ -18,8 +18,8 @@ function ClassicCriteriaContent({ data }: Readonly<{ data: ClassicCertCriteria }
           { key: 'science', label: '과학 사상', value: `${data.requiredCountScience}권` },
         ]}
       />
-      <Flex justify="between" align="center" className="bg-gray-50 rounded-md px-3 py-2">
-        <span className="text-sm text-gray-600 font-medium">합계</span>
+      <Flex justify="between" align="center" className="bg-surface-subtle rounded-md px-3 py-2">
+        <span className="text-sm text-fg-muted font-medium">합계</span>
         <span className="text-sm font-bold text-primary-500">{data.totalRequiredCount}권</span>
       </Flex>
     </>

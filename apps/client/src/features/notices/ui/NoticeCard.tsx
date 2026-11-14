@@ -15,7 +15,7 @@ function NoticeCard({ notice, isRead, onClick }: Readonly<NoticeCardProps>) {
     <button
       type="button"
       onClick={() => onClick(notice)}
-      className="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors"
+      className="w-full text-left px-4 py-3 hover:bg-surface-subtle transition-colors"
     >
       <Flex align="start" gap={3}>
         <span className={`mt-1.5 w-2 h-2 rounded-full shrink-0 ${isRead ? 'bg-transparent' : 'bg-primary-500'}`} />
@@ -24,7 +24,7 @@ function NoticeCard({ notice, isRead, onClick }: Readonly<NoticeCardProps>) {
             <Badge color="primary" size="small">
               {getNoticeLabel(notice.operationType)}
             </Badge>
-            <span className="text-xs text-gray-400">{date}</span>
+            <span className="text-xs text-fg-subtle">{date}</span>
           </Flex>
           <p className="text-sm font-medium truncate">{notice.title}</p>
         </Flex>

@@ -18,10 +18,10 @@ function TableRoot({ wrapperClassName = '', scrollClassName = '', className = ''
   const overflow = useHorizontalOverflow(scrollRef);
 
   return (
-    <div className={`relative border border-gray-200 rounded-md overflow-hidden ${wrapperClassName}`}>
+    <div className={`relative border border-line rounded-md overflow-hidden ${wrapperClassName}`}>
       <div ref={scrollRef} className={`overflow-x-auto ${scrollClassName}`}>
         <table
-          className={`w-full text-sm whitespace-nowrap has-[[data-table-row]]:shadow-[0_1px_0_var(--color-gray-200)] ${className}`}
+          className={`w-full text-sm whitespace-nowrap has-[[data-table-row]]:shadow-[0_1px_0_var(--color-line)] ${className}`}
           {...rest}
         >
           {children}
@@ -46,7 +46,7 @@ interface TableHeadProps extends ComponentPropsWithoutRef<'thead'> {
 export function TableHead({ sticky = false, className = '', children, ...rest }: TableHeadProps) {
   return (
     <thead className={`${sticky ? 'sticky top-0 z-content' : ''} ${className}`} {...rest}>
-      <tr className="bg-gray-50">{children}</tr>
+      <tr className="bg-surface-subtle">{children}</tr>
     </thead>
   );
 }
@@ -92,7 +92,7 @@ export function TableHeaderCell({
     <th aria-sort={ariaSort} className={cellClassName} {...rest}>
       <button type="button" onClick={onSort} className="inline-flex items-center gap-1 cursor-pointer">
         {children}
-        <SortIcon className={`w-3.5 h-3.5 ${sortDirection ? 'text-gray-500' : 'text-gray-300'}`} />
+        <SortIcon className={`w-3.5 h-3.5 ${sortDirection ? 'text-fg-muted' : 'text-fg-disabled'}`} />
       </button>
     </th>
   );
@@ -103,7 +103,7 @@ function TableBody(props: ComponentPropsWithoutRef<'tbody'>) {
 }
 
 function TableRow({ className = '', ...rest }: ComponentPropsWithoutRef<'tr'>) {
-  return <tr data-table-row className={`h-10 border-t border-gray-200 ${className}`} {...rest} />;
+  return <tr data-table-row className={`h-10 border-t border-line ${className}`} {...rest} />;
 }
 
 export function TableCell({

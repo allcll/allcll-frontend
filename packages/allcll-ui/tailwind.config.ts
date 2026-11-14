@@ -13,7 +13,6 @@ const config: Config = {
       colors: {
         primary: colors.primary,
         danger: colors.danger,
-        text: colors.text,
       },
     },
   },

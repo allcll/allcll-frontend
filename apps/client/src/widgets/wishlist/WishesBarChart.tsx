@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { ArcElement, BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Tooltip } from 'chart.js/auto';
 import type { IWishesInfo } from '@/shared/model/types';
@@ -6,6 +7,7 @@ import { InitWishes } from '@/entities/wishes/model/useWishes';
 import BlurComponents from '@/shared/ui/BlurComponents';
 import BasketBadge from '@/entities/wishes/ui/BasketBadge';
 import { Flex, Heading } from '@allcll/allcll-ui';
+import { useChartColors } from '@allcll/common';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -28,6 +30,8 @@ function WishesBarChart({ wishesInfo }: IWishesBarChartProps) {
   const { data: wishes } = useDetailWishes(wishesInfo);
   const data = wishes ?? InitWishes;
   const isWishesAvailable = wishes && 'totalCount' in wishes;
+  const chartRef = useRef<HTMLDivElement>(null);
+  const chartColors = useChartColors(chartRef);
 
   return (
     <>
@@ -36,9 +40,18 @@ function WishesBarChart({ wishesInfo }: IWishesBarChartProps) {
         {isWishesAvailable && <BasketBadge wishCount={data.totalCount ?? -1} formatter={value => `총 ${value}명`} />}
       </Flex>
       <BlurComponents>
-        <p className="text-sm text-gray-500">작년 대비 관심도 20% 증가 → 경쟁 치열할 가능성 높음</p>
-        <Flex direction="column" className="mt-4">
-          <Bar data={gradeData} />
+        <p className="text-sm text-fg-muted">작년 대비 관심도 20% 증가 → 경쟁 치열할 가능성 높음</p>
+        <Flex ref={chartRef} direction="column" className="mt-4">
+          <Bar
+            data={gradeData}
+            options={{
+              color: chartColors.text,
+              scales: {
+                x: { ticks: { color: chartColors.text }, grid: { color: chartColors.grid } },
+                y: { ticks: { color: chartColors.text }, grid: { color: chartColors.grid } },
+              },
+            }}
+          />
         </Flex>
       </BlurComponents>
     </>

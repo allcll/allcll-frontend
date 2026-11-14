@@ -27,18 +27,18 @@ function CourseRow({ course }: Readonly<{ course: GraduationCourse }>) {
       justify="between"
       gap={3}
       className={`px-3 py-2.5 rounded-md border ${
-        isEarned ? 'bg-white border-gray-200' : 'bg-gray-100 border-gray-200'
+        isEarned ? 'bg-surface border-line' : 'bg-surface-muted border-line'
       }`}
     >
       <Flex direction="column" gap={0.5} className="min-w-0">
-        <span className={`text-sm font-medium truncate ${isEarned ? 'text-gray-800' : 'text-gray-400'}`}>
+        <span className={`text-sm font-medium truncate ${isEarned ? 'text-fg' : 'text-fg-subtle'}`}>
           {course.curiNm}
         </span>
-        <span className="text-xs text-gray-400">{course.curiNo}</span>
+        <span className="text-xs text-fg-subtle">{course.curiNo}</span>
       </Flex>
       <Flex align="center" gap={3} className="shrink-0">
-        <span className="text-xs text-gray-500 whitespace-nowrap">{CATEGORY_TYPE_LABELS[course.categoryType]}</span>
-        <span className="text-xs text-gray-500 whitespace-nowrap">{course.credits}학점</span>
+        <span className="text-xs text-fg-muted whitespace-nowrap">{CATEGORY_TYPE_LABELS[course.categoryType]}</span>
+        <span className="text-xs text-fg-muted whitespace-nowrap">{course.credits}학점</span>
       </Flex>
     </Flex>
   );
@@ -64,24 +64,24 @@ function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) 
   ];
 
   return (
-    <div className="border border-gray-200 rounded-lg bg-white">
+    <div className="border border-line rounded-lg bg-surface">
       <button
         type="button"
         onClick={() => setIsOpen(prev => !prev)}
         aria-expanded={isOpen}
-        className={`w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors ${
+        className={`w-full flex items-center justify-between px-4 py-3 hover:bg-surface-subtle transition-colors ${
           isOpen ? 'rounded-t-lg' : 'rounded-lg'
         }`}
       >
-        <span className="text-sm font-medium text-gray-700">내 이수 과목</span>
+        <span className="text-sm font-medium text-fg-secondary">내 이수 과목</span>
         <ChevronDownIcon
-          className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-4 h-4 text-fg-subtle transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
           aria-hidden="true"
         />
       </button>
 
       {isOpen && (
-        <div className="border-t border-gray-100 px-4 pb-4">
+        <div className="border-t border-line-subtle px-4 pb-4">
           <Flex direction="column" gap={3} className="pt-3">
             {courses.length === 0 ? (
               <EmptyState title="이수 과목 정보가 없습니다." className="py-4" />
@@ -98,17 +98,17 @@ function EarnedCoursesSection({ courses }: Readonly<EarnedCoursesSectionProps>) 
                       onSelect={setSelectedCategory}
                     />
                   </Filtering>
-                  <span className="text-xs text-gray-500 shrink-0">
+                  <span className="text-xs text-fg-muted shrink-0">
                     <span className="text-primary-500 font-semibold">{earnedCredits}학점</span> · {earnedCount}과목
                   </span>
                 </Flex>
-                <Flex align="center" gap={3} className="text-xs text-gray-400">
+                <Flex align="center" gap={3} className="text-xs text-fg-subtle">
                   <Flex align="center" gap={1.5}>
-                    <span className="w-3 h-3 rounded-sm border border-gray-200 bg-white inline-block shrink-0" />
+                    <span className="w-3 h-3 rounded-sm border border-line bg-surface inline-block shrink-0" />
                     이수 완료
                   </Flex>
                   <Flex align="center" gap={1.5}>
-                    <span className="w-3 h-3 rounded-sm border border-gray-200 bg-gray-100 inline-block shrink-0" />
+                    <span className="w-3 h-3 rounded-sm border border-line bg-surface-muted inline-block shrink-0" />
                     미이수 (F/FA/NP)
                   </Flex>
                 </Flex>

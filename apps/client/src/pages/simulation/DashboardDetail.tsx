@@ -32,7 +32,7 @@ function DashboardDetail() {
       {/* Top Grid: 능력분석 + 수강 신청자 리스트 */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* 사용자 능력 분석 */}
-        <div className="relative bg-white p-6 rounded-2xl shadow-sm">
+        <div className="relative bg-surface p-6 rounded-2xl shadow-sm">
           <Heading level={2} className="mb-4">
             사용자 능력 분석
           </Heading>
@@ -44,7 +44,7 @@ function DashboardDetail() {
         </div>
 
         {/* 과목별 수강 신청 담은 사람 */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm">
+        <div className="bg-surface p-6 rounded-2xl shadow-sm">
           <Heading level={2} className="mb-4">
             과목별 분석
           </Heading>
@@ -57,13 +57,13 @@ function DashboardDetail() {
       </section>
 
       {/* Timeline */}
-      <section className="bg-white p-6 rounded-2xl shadow-sm">
+      <section className="bg-surface p-6 rounded-2xl shadow-sm">
         <div className="flex items-start justify-between mb-4">
           <Heading level={2} className="mb-4">
             내 모의 수강 신청별 TimeLine
           </Heading>
 
-          {/*<label className="flex items-center text-sm gap-1 text-gray-500">*/}
+          {/*<label className="flex items-center text-sm gap-1 text-fg-muted">*/}
           {/*  <input type="checkbox" className="accent-gray-400" />*/}
           {/*  전체 사용자 평균 보기*/}
           {/*</label>*/}

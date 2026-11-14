@@ -14,13 +14,13 @@ function NoticeDeleteModal({ notice, onCancel, onConfirm, isDeleting }: INoticeD
     <Dialog title="공지사항 삭제" onClose={onCancel}>
       <Dialog.Content>
         <Flex direction="column" gap={3}>
-          <div className="bg-gray-50 rounded-lg p-4 flex flex-col gap-1 text-sm">
+          <div className="bg-surface-subtle rounded-lg p-4 flex flex-col gap-1 text-sm">
             <p className="font-medium line-clamp-2">{notice.title}</p>
-            <p className="text-gray-500">
+            <p className="text-fg-muted">
               {OPERATION_TYPE_LABEL[notice.operationType]} · {formatDate(notice.createdAt)}
             </p>
           </div>
-          <p className="text-sm text-gray-600">이 공지사항을 삭제하시겠습니까? 삭제 후 복구할 수 없습니다.</p>
+          <p className="text-sm text-fg-muted">이 공지사항을 삭제하시겠습니까? 삭제 후 복구할 수 없습니다.</p>
         </Flex>
       </Dialog.Content>
       <Dialog.Footer>

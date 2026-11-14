@@ -11,12 +11,12 @@ export const HeaderContents = [
 
 export const ButtonContents = [
   {
-    icon: <HeadsetIcon className="w-4 h-4 text-gray-500" />,
+    icon: <HeadsetIcon className="w-4 h-4 text-fg-muted" />,
     title: '오류 및 제안',
     path: 'https://forms.gle/bCDTVujEHunnvHe88',
   },
   {
-    icon: <ChatHelpIcon className="w-4 h-4 text-gray-500" />,
+    icon: <ChatHelpIcon className="w-4 h-4 text-fg-muted" />,
     title: '공지 채팅방',
     path: 'https://open.kakao.com/o/g3MztXfh',
   },

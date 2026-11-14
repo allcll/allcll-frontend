@@ -58,9 +58,9 @@ function WireSchedule({ title, professor, location, ...attrs }: Readonly<ISchedu
       style={{ ...attrs.style }}
       {...rest}
     >
-      <div className={`flex-auto p-2 bg-violet-50  rounded-md animate-pulse`}>
+      <div className={`flex-auto p-2 bg-violet-50 dark:bg-violet-500/15  rounded-md animate-pulse`}>
         <h3 className={`text-violet-500 font-semibold  text-[10px] sm:text-sm`}>{title}</h3>
-        <p className=" sm:text-xs text-[8px]  text-gray-500">
+        <p className=" sm:text-xs text-[8px]  text-fg-muted">
           {professor} {location}
         </p>
       </div>

@@ -27,12 +27,12 @@ function AlarmIssueNotice({ isAlarm }: Readonly<{ isAlarm: boolean }>) {
   if (issues.length === 0) return null;
 
   return (
-    <ul className="mb-4 rounded-md border border-danger-200 bg-danger-50 px-3 divide-y divide-danger-200">
+    <ul className="mb-4 rounded-md border border-danger-200 dark:border-danger-500/40 bg-danger-subtle px-3 divide-y divide-danger-200">
       {issues.map(({ message, showGuide }) => (
         <li key={message}>
           <Flex align="center" gap={2} className="min-h-9 py-1">
-            <WarningIcon aria-hidden="true" className="w-4 h-4 shrink-0 text-danger-700" />
-            <span className="flex-1 text-xs leading-5 text-danger-700 break-keep">{message}</span>
+            <WarningIcon aria-hidden="true" className="w-4 h-4 shrink-0 text-danger-700 dark:text-danger-400" />
+            <span className="flex-1 text-xs leading-5 text-danger-700 dark:text-danger-400 break-keep">{message}</span>
             {showGuide && (
               <Button variant="outlined" color="gray" size="xsmall" className="shrink-0" onClick={openGuide}>
                 설정 방법

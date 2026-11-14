@@ -25,10 +25,10 @@ interface StatusIconProps {
 function StatusIcon({ passed, label }: Readonly<StatusIconProps>) {
   return (
     <Flex direction="column" align="center" gap={2} className="md:flex-row">
-      <div className={passed ? 'text-primary-500' : 'text-gray-400'}>
+      <div className={passed ? 'text-primary-500' : 'text-fg-subtle'}>
         {passed ? <CheckmarkOutlineIcon className="w-8 h-8" /> : <MisuseIcon className="w-8 h-8" />}
       </div>
-      <span className="text-xs md:text-sm text-gray-600">{label}</span>
+      <span className="text-xs md:text-sm text-fg-muted">{label}</span>
     </Flex>
   );
 }
@@ -65,29 +65,29 @@ function OverallSummaryCard({ user, checkData }: Readonly<OverallSummaryCardProp
                   </span>{' '}
                   이수 완료
                 </p>
-                <p className="text-sm text-gray-600 mt-1">졸업까지 {summary.remainingCredits}학점 남았습니다.</p>
+                <p className="text-sm text-fg-muted mt-1">졸업까지 {summary.remainingCredits}학점 남았습니다.</p>
               </>
             )}
           </div>
 
-          <Flex direction="column" gap={1} className="text-sm text-gray-600 md:mt-2">
+          <Flex direction="column" gap={1} className="text-sm text-fg-muted md:mt-2">
             <Flex gap={2}>
-              <span className="text-gray-500 w-16 shrink-0">이름</span>
+              <span className="text-fg-muted w-16 shrink-0">이름</span>
               <span>{user.name}</span>
             </Flex>
             <Flex gap={2}>
-              <span className="text-gray-500 w-16 shrink-0">학번</span>
+              <span className="text-fg-muted w-16 shrink-0">학번</span>
               <span>{user.studentId}</span>
             </Flex>
             <Flex gap={2}>
-              <span className="text-gray-500 w-16 shrink-0">학과</span>
+              <span className="text-fg-muted w-16 shrink-0">학과</span>
               <span>
                 {user.deptName} ({user.collegeName})
               </span>
             </Flex>
             {user.doubleDeptName && (
               <Flex gap={2}>
-                <span className="text-gray-500 w-16 shrink-0">복수전공</span>
+                <span className="text-fg-muted w-16 shrink-0">복수전공</span>
                 <span>
                   {user.doubleDeptName} ({user.doubleCollegeName})
                 </span>

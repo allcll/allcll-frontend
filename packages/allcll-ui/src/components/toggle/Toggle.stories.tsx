@@ -56,7 +56,7 @@ export const States: Story = {
     <div className="grid grid-cols-[auto_auto] items-center gap-4">
       {STATES.map(state => (
         <Fragment key={state.label}>
-          <span className="text-xs text-gray-500">{state.label}</span>
+          <span className="text-xs text-fg-muted">{state.label}</span>
           <Toggle {...args} checked={state.checked} disabled={state.disabled} onCheckedChange={() => {}} />
         </Fragment>
       ))}

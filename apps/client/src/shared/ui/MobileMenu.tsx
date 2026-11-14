@@ -56,7 +56,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
           aria-modal="true"
           aria-labelledby="mobile-menu-title"
           tabIndex={-1}
-          className="fixed top-0 right-0 h-full w-full bg-white shadow-lg z-floating md:hidden flex flex-col"
+          className="fixed top-0 right-0 h-full w-full bg-surface shadow-lg z-floating md:hidden flex flex-col"
         >
           <h2 id="mobile-menu-title" className="sr-only">
             모바일 메뉴
@@ -75,15 +75,15 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
 
             <IconButton
               size="large"
-              className="p-2 hover:bg-gray-100 active:bg-gray-100"
+              className="p-2 hover:bg-surface-muted active:bg-surface-muted"
               variant="plain"
-              icon={<CloseIcon className="text-gray-500" />}
+              icon={<CloseIcon className="text-fg-muted" />}
               label="메뉴 닫기"
               onClick={onClose}
             />
           </Flex>
 
-          <hr className="mx-4 border-gray-300" />
+          <hr className="mx-4 border-line-strong" />
 
           <Flex as="ul" direction="column" gap={1} className="flex-1 p-4">
             {HeaderContents.map(({ title, path, end, beta }) => (
@@ -94,7 +94,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
                   onClick={e => navigateWithClose(path, e)}
                   className={({ isActive }) =>
                     `flex items-center gap-1.5 py-3 px-4 rounded-lg text-base font-medium transition-colors ${
-                      isActive ? 'bg-primary-50 text-primary-500' : 'text-gray-700 active:bg-gray-100'
+                      isActive ? 'bg-primary-subtle text-primary-500' : 'text-fg-secondary active:bg-surface-muted'
                     }`
                   }
                 >
@@ -109,7 +109,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
             ))}
           </Flex>
 
-          <hr className="mx-4 border-gray-300" />
+          <hr className="mx-4 border-line-strong" />
 
           <Flex gap={2} className="p-4">
             {ButtonContents.map(({ icon, title, path }) => (
@@ -118,7 +118,7 @@ function MobileMenu({ isOpen, onClose }: Readonly<MobileMenuProps>) {
                 href={path}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-1 items-center justify-center gap-2 py-3 px-4 rounded-lg border border-gray-200 text-gray-600 active:bg-gray-100 transition-colors"
+                className="flex flex-1 items-center justify-center gap-2 py-3 px-4 rounded-lg border border-line text-fg-secondary active:bg-surface-muted transition-colors"
               >
                 {icon}
                 <span className="text-sm">{title}</span>

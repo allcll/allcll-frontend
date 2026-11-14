@@ -61,7 +61,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
           {!isLoading &&
             !isError &&
             notices.map(notice => (
-              <Table.Row key={notice.id} className="hover:bg-gray-50 transition-colors">
+              <Table.Row key={notice.id} className="hover:bg-surface-subtle transition-colors">
                 <Table.Cell align="left">
                   <OperationTypeBadge operationType={notice.operationType} />
                 </Table.Cell>
@@ -80,7 +80,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
                 >
                   {notice.title}
                 </Table.Cell>
-                <Table.Cell align="left" className="text-gray-500">
+                <Table.Cell align="left" className="text-fg-muted">
                   {formatDate(notice.createdAt)}
                 </Table.Cell>
                 <Table.Cell>
@@ -91,7 +91,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
                       label="수정"
                       variant="plain"
                       onClick={() => onEdit(notice)}
-                      className="p-1.5 text-gray-400 hover:text-primary-500 hover:bg-primary-50 transition-colors"
+                      className="p-1.5 text-fg-subtle hover:text-primary-500 hover:bg-primary-subtle transition-colors"
                     />
                     <IconButton
                       size="medium"
@@ -99,7 +99,7 @@ function NoticeTable({ notices, isLoading, isError, onView, onEdit, onDelete }: 
                       label="삭제"
                       variant="plain"
                       onClick={() => onDelete(notice)}
-                      className="p-1.5 text-gray-400 hover:text-danger-500 hover:bg-danger-50 transition-colors"
+                      className="p-1.5 text-fg-subtle hover:text-danger-500 hover:bg-danger-subtle transition-colors"
                     />
                   </Flex>
                 </Table.Cell>

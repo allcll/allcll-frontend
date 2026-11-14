@@ -40,9 +40,9 @@ function CertificationEditModal({
             )}
           </Flex>
 
-          <div className="border-t border-gray-200" />
+          <div className="border-t border-line" />
 
-          <p className="text-sm font-medium text-gray-800">{prompt}</p>
+          <p className="text-sm font-medium text-fg">{prompt}</p>
         </Flex>
       </Dialog.Content>
 

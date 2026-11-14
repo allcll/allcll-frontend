@@ -12,7 +12,7 @@ const SUBJECT_CONTENT = (
   <div className="flex flex-col gap-1 w-56">
     <div className="flex items-center justify-between">
       <Heading level={4}>해석학개론2</Heading>
-      <span className="text-sm text-gray-500">차영준</span>
+      <span className="text-sm text-fg-muted">차영준</span>
     </div>
     <SupportingText>월수16:30-18:00 | 영301</SupportingText>
     <SupportingText>2학년 | 수학통계학과</SupportingText>
@@ -63,10 +63,10 @@ export const Variants: Story = {
     variant: { control: false },
   },
   render: args => (
-    <div className="grid grid-cols-[auto_auto] items-center gap-4 bg-gray-50 p-6">
+    <div className="grid grid-cols-[auto_auto] items-center gap-4 bg-surface-subtle p-6">
       {VARIANTS.map(variant => (
         <Fragment key={variant}>
-          <span className="text-xs text-gray-500">{variant}</span>
+          <span className="text-xs text-fg-muted">{variant}</span>
           <Card {...args} variant={variant} />
         </Fragment>
       ))}

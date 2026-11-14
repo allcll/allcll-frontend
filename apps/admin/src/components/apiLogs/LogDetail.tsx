@@ -5,8 +5,8 @@ interface DetailRowProps {
 
 export function DetailRow({ label, children }: DetailRowProps) {
   return (
-    <p className="text-sm text-gray-500 break-all">
-      <span className="font-semibold text-gray-700">{label}: </span>
+    <p className="text-sm text-fg-muted break-all">
+      <span className="font-semibold text-fg-secondary">{label}: </span>
       {children}
     </p>
   );

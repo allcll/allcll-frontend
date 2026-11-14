@@ -11,7 +11,11 @@ function AlarmDisconnectBanner() {
   return (
     <Banner variant="danger">
       실시간 여석 연결이 끊겨 알림을 받을 수 없어요. &nbsp;
-      <button type="button" onClick={reconnect} className="text-danger-500 underline hover:text-danger-600">
+      <button
+        type="button"
+        onClick={reconnect}
+        className="text-danger-500 underline hover:text-danger-600 dark:hover:text-danger-400"
+      >
         다시 연결
       </button>
     </Banner>

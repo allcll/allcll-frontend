@@ -12,6 +12,7 @@
   "dependencies": {
     "@allcll/allcll-ui": "workspace:^",
     "@allcll/common": "workspace:^",
+    "@tailwindcss/typography": "^0.5.16",
     "@tanstack/react-query": "^5.83.0",
     "@vitejs/plugin-basic-ssl": "^2.1.0",
     "dexie": "^4.0.11",

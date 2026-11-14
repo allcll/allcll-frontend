@@ -9,7 +9,7 @@ import JouluphajaSection from '@/widgets/home/ui/JoluphajaSection';
 
 function Landing() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-surface-subtle">
       <MainBanner />
 
       {/* 서비스 소개 */}

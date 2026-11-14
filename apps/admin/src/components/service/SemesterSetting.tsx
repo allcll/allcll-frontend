@@ -28,7 +28,7 @@ function SemesterContent() {
 
   return (
     <Flex direction="column" gap={1}>
-      <span className="text-lg font-semibold text-gray-800">{data.semesterValue}</span>
+      <span className="text-lg font-semibold text-fg">{data.semesterValue}</span>
       <SupportingText>
         {data.period.startDate} ~ {data.period.endDate}
       </SupportingText>

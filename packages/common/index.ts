@@ -9,6 +9,8 @@ export { default as ConfirmDialog } from './src/components/confirm/ConfirmDialog
 export { default as GlobalConfirmDialog } from './src/components/confirm/GlobalConfirmDialog';
 export { confirm, alert, settleConfirm } from './src/store/useConfirm';
 export type { ConfirmOptions, AlertOptions } from './src/store/useConfirm';
+export { useThemeStore, useApplyTheme } from './src/store/useThemeStore';
+export type { ThemePreference } from './src/store/useThemeStore';
 
 export * from './src/types/graduation';
 export * from './src/lib/graduation/mappers';
@@ -17,6 +19,7 @@ export * from './src/lib/semester/config';
 export * from './src/lib/date';
 export * from './src/lib/operationType';
 export * from './src/lib/filterLabel';
+export * from './src/lib/chartColors';
 
 export { default as ProgressDoughnut } from './src/components/graduation/ProgressDoughnut';
 export { default as OverallSummaryCard } from './src/components/graduation/OverallSummaryCard';

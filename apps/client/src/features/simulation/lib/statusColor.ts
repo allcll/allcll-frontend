@@ -23,14 +23,14 @@ export function getStatusColorCode(status: APPLY_STATUS) {
 function getTextBgColor(color: string) {
   switch (color) {
     case 'green':
-      return 'bg-green-100 text-green-500';
+      return 'bg-success-muted text-green-500';
     case 'red':
-      return 'bg-danger-100 text-danger-500';
+      return 'bg-danger-muted text-danger-500';
     case 'orange':
-      return 'bg-orange-100 text-orange-500';
+      return 'bg-orange-100 dark:bg-orange-500/25 text-orange-500';
     case 'yellow':
-      return 'bg-yellow-100 text-yellow-500';
+      return 'bg-warning-muted text-yellow-500';
     default:
-      return 'bg-gray-100 text-gray-500';
+      return 'bg-surface-muted text-fg-muted';
   }
 }

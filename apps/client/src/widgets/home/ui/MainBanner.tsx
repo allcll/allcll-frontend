@@ -16,12 +16,12 @@ function MainBanner() {
     <div className="relative overflow-hidden">
       <Section
         className="relative z-elevated flex flex-col md:flex-row items-center justify-between !py-5"
-        bgColor="bg-banner-skysoft"
+        bgColor="bg-banner-skysoft dark:bg-primary-subtle"
       >
         <div className="max-w-xl">
           <div className="flex flex-row gap-2 items-center">
             <Image src="/calendar.png" alt="" className="w-10 h-10" />
-            <span className="italic text-xs text-stone-500 ">
+            <span className="italic text-xs text-fg-muted">
               {data?.semesterValue ?? CURRENT_SEMESTER.semesterValue}학기 {BANNER_PERIOD_LABEL} <br />
               {registrationPeriod}
             </span>

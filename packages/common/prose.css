@@ -1,0 +1,125 @@
+.prose {
+  --tw-prose-body: var(--color-fg);
+  --tw-prose-headings: var(--color-fg);
+  --tw-prose-bold: var(--color-fg);
+  --tw-prose-counters: var(--color-fg-muted);
+  --tw-prose-bullets: var(--color-fg-disabled);
+  --tw-prose-hr: var(--color-line);
+  --tw-prose-quotes: var(--color-fg-muted);
+  --tw-prose-quote-borders: var(--color-line);
+  --tw-prose-captions: var(--color-fg-muted);
+  --tw-prose-th-borders: var(--color-line-strong);
+  --tw-prose-td-borders: var(--color-line);
+  color: var(--color-fg);
+  line-height: 1.75;
+}
+
+.prose h1,
+.prose h2 {
+  border-bottom: 1px solid var(--color-line);
+  padding-bottom: 0.3em;
+  color: var(--color-fg);
+  font-weight: 600;
+}
+
+.prose h1 {
+  font-size: 1.5rem;
+  margin: 1rem 0 0.5rem;
+}
+.prose h2 {
+  font-size: 1.25rem;
+  margin: 1rem 0 0.5rem;
+}
+.prose h3 {
+  font-size: 1.125rem;
+  color: var(--color-fg);
+  font-weight: 600;
+  margin: 0.75rem 0 0.5rem;
+}
+
+.prose p {
+  margin: 0.75rem 0;
+}
+
+.prose code {
+  background: var(--color-primary-subtle);
+  @apply text-primary-500;
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-family: ui-monospace, monospace;
+  font-size: 0.875em;
+}
+
+.prose code::before,
+.prose code::after {
+  content: '';
+}
+
+.prose pre {
+  background: var(--color-surface-muted);
+  border-left: 3px solid #3b82f6;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.prose pre code {
+  background: none;
+  @apply text-primary-500;
+  padding: 0;
+  font-size: inherit;
+}
+
+.prose blockquote {
+  border-left: 4px solid #3b82f6;
+  padding-left: 1em;
+  color: var(--color-fg-muted);
+  font-style: italic;
+  margin: 0.75rem 0;
+}
+
+.prose a {
+  @apply text-primary-500;
+  text-decoration: underline;
+}
+
+.prose ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin: 0.5rem 0;
+}
+
+.prose ul ul {
+  list-style-type: circle;
+}
+.prose ul ul ul {
+  list-style-type: square;
+}
+
+.prose ol {
+  list-style-type: decimal;
+  padding-left: 1.5em;
+  margin: 0.5rem 0;
+}
+
+.prose li {
+  margin: 0.25rem 0;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+}
+
+.prose th,
+.prose td {
+  border: 1px solid var(--color-line);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.prose th {
+  background: var(--color-surface-subtle);
+  font-weight: 600;
+}

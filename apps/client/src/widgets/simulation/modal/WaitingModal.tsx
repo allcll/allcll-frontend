@@ -115,37 +115,37 @@ function WaitingModal() {
 
   return (
     <SejongUI.Modal noBorder>
-      <div className="bg-white p-6 text-center space-y-6 max-w-md">
-        <h2 className="text-lg md:text-xl font-semibold text-gray-800">
+      <div className="bg-surface p-6 text-center space-y-6 max-w-md">
+        <h2 className="text-lg md:text-xl font-semibold text-fg">
           서비스 <span className="text-primary-600 font-bold">접속대기 중</span>입니다.
         </h2>
 
-        <div className="text-sm md:text-base text-gray-600">
+        <div className="text-sm md:text-base text-fg-muted">
           예상대기시간: <span className="text-primary-600 font-bold text-xl">{waitTime}</span>초
         </div>
 
-        <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+        <div className="w-full h-2 bg-surface-strong rounded-full overflow-hidden">
           <div
             className="h-full bg-primary-500 transition-all duration-300"
             style={{ width: `${(timer / (waitTime + timer)) * 100}%` }}
           />
         </div>
 
-        <div className="text-gray-700 text-sm md:text-base leading-relaxed">
+        <div className="text-fg-secondary text-sm md:text-base leading-relaxed">
           고객님 앞에 <span className="text-green-600 font-bold text-xl">{aheadPeople < 0 ? 0 : aheadPeople}</span>명,
           뒤에 <span className="text-green-600 font-bold text-xl">{behindPeople}</span>명의 대기자가 있습니다. <br />
           현재 접속 사용자가 많아 대기 중이며, 잠시만 기다리시면 서비스로 자동 접속 됩니다.
         </div>
 
         <button
-          className="inline-flex items-center justify-center border-2 border-gray-400 text-gray-800 px-2 py-1 hover:bg-gray-100"
+          className="inline-flex items-center justify-center border-2 border-fg-subtle text-fg px-2 py-1 hover:bg-surface-muted"
           onClick={handleClickStopButton}
         >
           <CloseIcon className="w-4 h-4 mr-1" />
           중지
         </button>
 
-        <p className="text-xs md:text-sm text-gray-500">재 접속하시면 대기시간이 더 길어집니다.</p>
+        <p className="text-xs md:text-sm text-fg-muted">재 접속하시면 대기시간이 더 길어집니다.</p>
       </div>
     </SejongUI.Modal>
   );

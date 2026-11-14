@@ -37,7 +37,7 @@ function Control() {
     <Card>
       <SectionHeader title="크롤러 제어" description="크롤러의 주요 기능을 제어합니다." />
 
-      <div className="flex flex-col space-y-3 text-gray-600 text-sm">
+      <div className="flex flex-col space-y-3 text-fg-muted text-sm">
         <ControlRow
           label="인증정보 갱신"
           checked={isActiveSession?.some(session => session.isActive) ?? false}
