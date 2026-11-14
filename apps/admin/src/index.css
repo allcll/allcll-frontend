@@ -1,7 +1,7 @@
 @import 'tailwindcss';
-@config "../tailwind.config.ts";
 @import '@allcll/allcll-ui/theme.css';
 @import '@allcll/common/prose.css';
+@config "../tailwind.config.ts";
 @plugin '@tailwindcss/typography';
 
 @layer base {
