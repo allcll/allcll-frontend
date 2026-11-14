@@ -22,9 +22,6 @@
     "prepare": "husky"
   },
   "packageManager": "pnpm@9.15.4",
-  "dependencies": {
-    "tailwindcss": "^4.3.5"
-  },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
     "@tailwindcss/vite": "^4.3.5",
@@ -40,6 +37,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "prettier": "^3.10.0",
+    "tailwindcss": "^4.3.5",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.72.2",
     "vite": "^7.3.8",
