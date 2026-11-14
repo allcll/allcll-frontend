@@ -27,7 +27,7 @@ function AlarmIssueNotice({ isAlarm }: Readonly<{ isAlarm: boolean }>) {
   if (issues.length === 0) return null;
 
   return (
-    <ul className="mb-4 rounded-md border border-danger-200 dark:border-danger-500/40 bg-danger-subtle px-3 divide-y divide-danger-200">
+    <ul className="mb-4 rounded-md border border-danger-200 dark:border-danger-500/40 bg-danger-subtle px-3 divide-y divide-danger-200 dark:divide-danger-500/40">
       {issues.map(({ message, showGuide }) => (
         <li key={message}>
           <Flex align="center" gap={2} className="min-h-9 py-1">
