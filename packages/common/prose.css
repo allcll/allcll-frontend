@@ -57,7 +57,8 @@
 
 .prose pre {
   background: var(--color-surface-muted);
-  border-left: 3px solid #3b82f6;
+  border-left: 3px solid;
+  @apply border-l-primary-500;
   border-radius: 0.5rem;
   padding: 1rem;
   overflow-x: auto;
@@ -71,7 +72,8 @@
 }
 
 .prose blockquote {
-  border-left: 4px solid #3b82f6;
+  border-left: 4px solid;
+  @apply border-l-primary-500;
   padding-left: 1em;
   color: var(--color-fg-muted);
   font-style: italic;
