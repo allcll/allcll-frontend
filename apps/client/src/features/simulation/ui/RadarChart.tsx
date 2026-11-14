@@ -10,7 +10,7 @@ import {
 } from 'chart.js/auto';
 import { useRef } from 'react';
 import { Radar as RadarChartJS } from 'react-chartjs-2';
-import { type ChartColors, useChartColors } from '@allcll/common';
+import { type IChartColors, useChartColors } from '@allcll/common';
 import { ExtendedResultResponse } from '@/features/simulation/lib/extendedResult.ts';
 import {
   getSearchBtnSpeedRank,
@@ -21,7 +21,7 @@ import {
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, ChartTooltip, Legend);
 
-function getOptions(colors: ChartColors) {
+function getOptions(colors: IChartColors) {
   return {
     responsive: true,
     layout: { padding: { left: 8, right: 8 } },

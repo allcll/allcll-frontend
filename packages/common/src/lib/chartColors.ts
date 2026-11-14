@@ -1,6 +1,6 @@
 import { type RefObject, useCallback, useSyncExternalStore } from 'react';
 
-export interface ChartColors {
+export interface IChartColors {
   text: string;
   grid: string;
   track: string;
@@ -8,14 +8,14 @@ export interface ChartColors {
 }
 
 // FIXME: Chart.js가 oklch를 못 읽어 theme.css 값을 hex로 복사, theme.css 변경 시 함께 수정 필요
-const LIGHT_CHART_COLORS: ChartColors = {
+const LIGHT_CHART_COLORS: IChartColors = {
   text: '#6a7282',
   grid: '#e5e7eb',
   track: '#e5e7eb',
   surface: '#ffffff',
 };
 
-const DARK_CHART_COLORS: ChartColors = {
+const DARK_CHART_COLORS: IChartColors = {
   text: '#828893',
   grid: '#30353e',
   track: '#30353e',
@@ -28,7 +28,7 @@ function subscribeRootClass(onChange: () => void) {
   return () => observer.disconnect();
 }
 
-export function useChartColors(containerRef: RefObject<HTMLElement | null>): ChartColors {
+export function useChartColors(containerRef: RefObject<HTMLElement | null>): IChartColors {
   const getIsDark = useCallback(
     () => document.documentElement.classList.contains('dark') && !containerRef.current?.closest('.light'),
     [containerRef],

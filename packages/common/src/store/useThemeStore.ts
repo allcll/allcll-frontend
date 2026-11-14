@@ -8,7 +8,7 @@ export type ResolvedTheme = 'light' | 'dark';
 const STORAGE_KEY = 'allcll-theme';
 const DARK_QUERY = '(prefers-color-scheme: dark)';
 
-interface ThemeStore {
+interface IThemeStore {
   preference: ThemePreference;
   setPreference: (preference: ThemePreference) => void;
 }
@@ -22,7 +22,7 @@ function readPreference(): ThemePreference {
   }
 }
 
-export const useThemeStore = create<ThemeStore>()(set => ({
+export const useThemeStore = create<IThemeStore>()(set => ({
   preference: readPreference(),
   setPreference: preference => {
     try {
