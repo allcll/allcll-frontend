@@ -2,6 +2,8 @@ import { Fragment } from 'react';
 import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs/blocks';
 import { colors } from '../colors';
 import { Z_INDEX } from '../zIndex';
+import { useThemeMode } from '../.storybook/useThemeMode';
+import { InfoIcon } from './icons';
 
 <Meta title="Overview" />
 
@@ -87,7 +89,12 @@ export const RoleStrip = ({ tokens, text, dark }) => (
   </div>
 );
 
-export const RoleColorPalette = () => (
+export const getModeRows = mode => (mode === 'compare' ? [['라이트', false], ['다크', true]] : [[null, mode === 'dark']]);
+
+export const RoleColorPalette = () => {
+  const rows = getModeRows(useThemeMode());
+  const hasLabel = rows.length > 1;
+  return (
   <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr', rowGap: 24, columnGap: 24, margin: '16px 0' }}>
     {ROLE_COLORS.map(({ group, utility, description, text, tokens }) => (
       <Fragment key={group}>
@@ -97,12 +104,14 @@ export const RoleColorPalette = () => (
           </div>
           <div style={{ fontSize: 12, color: '#6b7280' }}>{description}</div>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '32px 1fr', alignItems: 'center', gap: 4 }}>
-          <span style={{ fontSize: 11, color: '#6b7280' }}>Light</span>
-          <RoleStrip tokens={tokens} text={text} />
-          <span style={{ fontSize: 11, color: '#6b7280' }}>Dark</span>
-          <RoleStrip tokens={tokens} text={text} dark />
-          <span />
+        <div style={{ display: 'grid', gridTemplateColumns: hasLabel ? '40px 1fr' : '1fr', alignItems: 'center', gap: 4 }}>
+          {rows.map(([label, dark]) => (
+            <Fragment key={String(dark)}>
+              {hasLabel && <span style={{ fontSize: 11, color: '#6b7280' }}>{label}</span>}
+              <RoleStrip tokens={tokens} text={text} dark={dark} />
+            </Fragment>
+          ))}
+          {hasLabel && <span />}
           <div style={{ display: 'flex', gap: 4, padding: '0 4px' }}>
             {tokens.map(name => (
               <div
@@ -116,6 +125,29 @@ export const RoleColorPalette = () => (
         </div>
       </Fragment>
     ))}
+  </div>
+  );
+};
+
+export const ThemeModeNotice = () => (
+  <div
+    style={{
+      display: 'flex',
+      gap: 12,
+      margin: '16px 0',
+      padding: '14px 16px',
+      borderRadius: 8,
+      background: 'var(--allcll-primary-subtle)',
+      border: `1px solid ${colors.primary[200]}`,
+    }}
+  >
+    <InfoIcon style={{ width: 18, height: 18, flexShrink: 0, marginTop: 2, color: colors.primary[500] }} />
+    <div style={{ fontSize: 14, lineHeight: 1.6 }}>
+      <div style={{ fontSize: 14, fontWeight: 700 }}>색상 모드</div>
+      <div style={{ fontSize: 14 }}>
+        상단 툴바의 색상 모드에서 라이트, 다크, 라이트 / 다크 중 하나를 선택하면 이 페이지와 컴포넌트 문서가 해당 모드로 표시됩니다. 라이트 / 다크는 두 모드를 나란히 표시합니다.
+      </div>
+    </div>
   </div>
 );
 
@@ -214,6 +246,8 @@ import { Button, Pagination, CheckmarkIcon } from '@allcll/allcll-ui';
 
 - 스타일은 Tailwind CSS 4를 사용합니다. 색상은 패키지 루트의 `theme.css`, `colors.ts`에서, z-index는 `zIndex.ts`에서 관리합니다.
 - 아이콘은 lucide-react를 서비스에 맞는 이름으로 다시 내보내어 사용합니다(`src/icons`).
+
+<ThemeModeNotice />
 
 ## 색상 토큰
 
