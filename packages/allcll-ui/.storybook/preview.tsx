@@ -3,6 +3,7 @@ import { Controls, Description, Primary, Stories, Subtitle, Title } from '@story
 import { create } from 'storybook/theming';
 import '../src/index.css';
 import './fonts.css';
+import './docs.css';
 import DocsDarkStory from './DocsDarkStory';
 import ThemePanel from './ThemePanel';
 import type { ThemeMode } from './useThemeMode';
