@@ -12,7 +12,8 @@ const meta = {
   component: BottomSheet,
   subcomponents: { 'BottomSheet.Footer': BottomSheetFooter },
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
+    themePanelHeight: 480,
     docs: {
       description: {
         component:

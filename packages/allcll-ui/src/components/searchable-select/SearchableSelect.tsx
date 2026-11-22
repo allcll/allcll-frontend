@@ -6,6 +6,7 @@ import Listbox from '../listbox/Listbox';
 import ListboxOption from '../listbox/ListboxOption';
 import { Z_INDEX } from '../../../zIndex';
 import { FIELD_CLASS } from '../../config';
+import { usePortalContainer } from '../../config/portalContainer';
 
 export interface SearchableSelectOption {
   value: string;
@@ -129,6 +130,8 @@ function SearchableSelect({
     }
   };
 
+  const portalContainer = usePortalContainer();
+
   return (
     <RadixPopover.Root open={isOpen} onOpenChange={nextOpen => (nextOpen ? open() : close())} modal>
       <div className={`relative inline-block ${className}`}>
@@ -159,7 +162,7 @@ function SearchableSelect({
         />
       </div>
 
-      <RadixPopover.Portal>
+      <RadixPopover.Portal container={portalContainer}>
         <RadixPopover.Content
           side={side}
           align="start"

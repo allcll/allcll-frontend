@@ -2,6 +2,7 @@ import React from 'react';
 import * as RadixPopover from '@radix-ui/react-popover';
 import { HelpIcon } from '../../icons';
 import { Z_INDEX, type ZIndexLayer } from '../../../zIndex';
+import { usePortalContainer } from '../../config/portalContainer';
 
 interface ITooltip {
   children: React.ReactNode;
@@ -9,6 +10,8 @@ interface ITooltip {
 }
 
 function Tooltip({ children, layer = 'popover' }: ITooltip) {
+  const portalContainer = usePortalContainer();
+
   return (
     <RadixPopover.Root>
       <RadixPopover.Trigger
@@ -18,7 +21,7 @@ function Tooltip({ children, layer = 'popover' }: ITooltip) {
         <HelpIcon className="w-4 h-4" />
       </RadixPopover.Trigger>
 
-      <RadixPopover.Portal>
+      <RadixPopover.Portal container={portalContainer}>
         <RadixPopover.Content
           side="top"
           sideOffset={8}

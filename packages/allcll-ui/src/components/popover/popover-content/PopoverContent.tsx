@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import * as RadixPopover from '@radix-ui/react-popover';
 import { usePopoverContext } from '../popover/PopoverContext';
 import { Z_INDEX, type ZIndexLayer } from '../../../../zIndex';
+import { usePortalContainer } from '../../../config/portalContainer';
 
 type PopoverContentProps = Pick<RadixPopover.PopoverContentProps, 'align'> & {
   /** 패널 내용 */
@@ -24,8 +25,10 @@ function PopoverContent({
   const [minWidth] = useState(() => triggerRef.current?.getBoundingClientRect().width);
   const contentRef = useRef<HTMLDivElement>(null);
 
+  const portalContainer = usePortalContainer();
+
   return (
-    <RadixPopover.Portal>
+    <RadixPopover.Portal container={portalContainer}>
       <RadixPopover.Content
         ref={contentRef}
         // 첫 선택지에 포커스 테두리가 생겨 선택된 것처럼 보이지 않도록 상자 자체에 포커스

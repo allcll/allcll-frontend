@@ -11,7 +11,8 @@ const meta = {
   title: 'Overlay/Dialog',
   component: Dialog,
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
+    themePanelHeight: 480,
     docs: {
       description: {
         component:

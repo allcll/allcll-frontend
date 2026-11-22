@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Drawer } from 'vaul';
 import { CloseIcon } from '../../icons';
 import { Z_INDEX } from '../../../zIndex';
+import { usePortalContainer } from '../../config/portalContainer';
 
 type SnapPoint = number | string;
 
@@ -24,6 +25,8 @@ function BottomSheetMain({
   onActiveSnapPointChange,
   children,
 }: BottomSheetProps) {
+  const portalContainer = usePortalContainer();
+
   return (
     <Drawer.Root
       open={isOpen}
@@ -32,7 +35,7 @@ function BottomSheetMain({
       activeSnapPoint={activeSnapPoint}
       setActiveSnapPoint={onActiveSnapPointChange}
     >
-      <Drawer.Portal>
+      <Drawer.Portal container={portalContainer}>
         <Drawer.Overlay className="fixed inset-0 bg-black/30" style={{ zIndex: Z_INDEX.bottomSheet }} />
         <Drawer.Content
           aria-describedby={undefined}
