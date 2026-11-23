@@ -41,9 +41,11 @@ export const ExampleWithIcons: Story = {
     docs: { description: { story: '검색 아이콘과 지우기 버튼을 넣은 모습입니다.' } },
   },
   args: {
-    leftIcon: <IconButton size="medium" label="검색" variant="plain" icon={<SearchIcon className="text-gray-400" />} />,
+    leftIcon: (
+      <IconButton size="medium" label="검색" variant="plain" icon={<SearchIcon className="text-fg-subtle" />} />
+    ),
     rightIcon: (
-      <IconButton size="medium" label="지우기" variant="plain" icon={<CloseIcon className="text-gray-400" />} />
+      <IconButton size="medium" label="지우기" variant="plain" icon={<CloseIcon className="text-fg-subtle" />} />
     ),
   },
 };

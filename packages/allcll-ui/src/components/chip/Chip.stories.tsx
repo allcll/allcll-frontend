@@ -57,11 +57,11 @@ export const Variants: Story = {
   render: args => (
     <div className="grid grid-cols-[auto_auto_auto] items-center gap-4">
       <span />
-      <span className="text-xs text-gray-500">선택 안 됨</span>
-      <span className="text-xs text-gray-500">선택됨</span>
+      <span className="text-xs text-fg-muted">선택 안 됨</span>
+      <span className="text-xs text-fg-muted">선택됨</span>
       {VARIANTS.map(variant => (
         <Fragment key={variant}>
-          <span className="text-xs text-gray-500">{variant}</span>
+          <span className="text-xs text-fg-muted">{variant}</span>
           <div>
             <Chip {...args} variant={variant} selected={false} />
           </div>

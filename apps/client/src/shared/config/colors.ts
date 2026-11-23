@@ -1,15 +1,15 @@
 export function getSeatColor(seats: number) {
-  if (seats > 5) return 'text-green-500 bg-green-100';
-  if (seats > 0) return 'text-yellow-500 bg-yellow-100';
-  if (seats == 0) return 'text-danger-500 bg-danger-100';
+  if (seats > 5) return 'text-green-500 bg-success-muted';
+  if (seats > 0) return 'text-yellow-500 bg-warning-muted';
+  if (seats == 0) return 'text-danger-500 bg-danger-muted';
 
-  return 'text-gray-500 bg-gray-100';
+  return 'text-fg-muted bg-surface-muted';
 }
 
 export function getSelectedColor(selected: boolean) {
   return selected
-    ? 'bg-primary-100 text-primary-500 focus:outline-primary-500'
-    : 'bg-gray-100 text-gray-700 focus:outline-gray-400';
+    ? 'bg-primary-muted text-primary-500 focus:outline-primary-500'
+    : 'bg-surface-muted text-fg-secondary focus:outline-fg-subtle';
 }
 
 export function getSeatBadgeColor(seats: number | undefined | null) {

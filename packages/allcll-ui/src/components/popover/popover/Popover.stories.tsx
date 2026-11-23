@@ -39,7 +39,7 @@ export const Playground: Story = {
     <Popover>
       <Popover.Trigger label="학년" />
       <Popover.Content>
-        <div className="text-sm text-gray-700">필터 선택지가 들어가는 자리입니다.</div>
+        <div className="text-sm text-fg-secondary">필터 선택지가 들어가는 자리입니다.</div>
       </Popover.Content>
     </Popover>
   ),

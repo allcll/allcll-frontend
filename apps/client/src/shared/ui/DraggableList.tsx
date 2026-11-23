@@ -212,7 +212,7 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
 
   return (
     <>
-      <ul ref={containerRef} className="bg-white divide-y divide-gray-100 relative">
+      <ul ref={containerRef} className="bg-surface divide-y divide-line-subtle relative">
         {items.map((it, i) => (
           <li
             key={it.title}
@@ -228,7 +228,7 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
             }}
           >
             <button
-              className="p-1 text-gray-500 hover:text-gray-700 cursor-grab"
+              className="p-1 text-fg-muted hover:text-fg-secondary cursor-grab"
               onPointerDown={e => startDrag(e, i)}
               aria-label={`Drag ${it.title}`}
               title="드래그 시작"
@@ -238,7 +238,7 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
             <div className="flex items-center justify-between flex-auto">
               <span className="font-medium">{it.title}</span>
               <button
-                className="p-1 text-gray-500 hover:text-gray-700"
+                className="p-1 text-fg-muted hover:text-fg-secondary"
                 aria-label={it.visible ? '숨기기' : '보이기'}
                 title={it.visible ? '숨기기' : '보이기'}
                 onClick={() => onVisibleChange(i)}
@@ -251,15 +251,15 @@ export default function DraggableList<T extends Item>({ initialItems, onChange }
       </ul>
 
       {draggingStyle && draggedItemInfo && (
-        <div style={draggingStyle} className="bg-primary-50 rounded-md shadow-lg w-full max-w-lg m-auto px-2">
+        <div style={draggingStyle} className="bg-primary-subtle rounded-md shadow-lg w-full max-w-lg m-auto px-2">
           <div className="flex items-center gap-2">
-            <span className="p-1 text-gray-700">⠿</span>
+            <span className="p-1 text-fg-secondary">⠿</span>
             <span className="font-medium">{draggedItemInfo.item.title}</span>
           </div>
         </div>
       )}
 
-      <div className="mt-4 text-sm text-gray-500">Tip: 항목을 선택한 뒤 ↑/↓ 로 키보드 이동도 가능합니다.</div>
+      <div className="mt-4 text-sm text-fg-muted">Tip: 항목을 선택한 뒤 ↑/↓ 로 키보드 이동도 가능합니다.</div>
     </>
   );
 }

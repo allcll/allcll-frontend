@@ -14,7 +14,7 @@ function ServiceClosed({ data }: IServiceClosed) {
   const registrationPeriod = schedule && formatSchedulePeriod(schedule.registration);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen min-w-[250px] bg-gray-100 px-4">
+    <div className="flex flex-col items-center justify-center min-h-screen min-w-[250px] bg-surface-muted px-4">
       <main className="text-center">
         <Heading level={1}>{isSemesterExpired ? '수강신청 고생 많으셨습니다.' : '서비스 준비 중입니다.'}</Heading>
         <SupportingText>
@@ -41,7 +41,7 @@ function ServiceClosed({ data }: IServiceClosed) {
             </>
           )}
 
-          <hr className="my-4 border-gray-200" />
+          <hr className="my-4 border-line" />
 
           <Heading level={3}>문의</Heading>
 

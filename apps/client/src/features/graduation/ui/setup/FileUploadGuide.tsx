@@ -6,12 +6,12 @@ const FileUploadGuide = () => {
     <Card variant="outlined" className="w-full mx-auto p-8 mt-2">
       <Flex direction="column" gap={3}>
         <Flex align="center" gap={2}>
-          <WarningIcon className="w-5 h-5 text-gray-300" />
+          <WarningIcon className="w-5 h-5 text-fg-disabled" />
 
           <Heading level={3}>기이수 성적 파일 업로드 방법</Heading>
         </Flex>
 
-        <ul className="list-disc list-inside space-y-1 ml-1 text-gray-600">
+        <ul className="list-disc list-inside space-y-1 ml-1 text-fg-muted">
           <li className="text-sm">
             <span className="text-xs sm:text-sm">
               <TextLink asChild>
@@ -38,7 +38,7 @@ const FileUploadGuide = () => {
           </li>
         </ul>
 
-        <div className="space-y-1 ml-1 text-gray-600 text-xs sm:text-sm">
+        <div className="space-y-1 ml-1 text-fg-muted text-xs sm:text-sm">
           <p>
             ※ 다운로드한 파일은 <span className="text-primary-500 font-semibold">수정 없이 그대로</span> 업로드해
             주세요.

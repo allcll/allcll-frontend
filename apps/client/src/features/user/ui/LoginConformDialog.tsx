@@ -22,8 +22,8 @@ function LoginConfirmationDialog({ isOpen, onClose, onConfirm, isPending }: ILog
     <Dialog isOpen={isOpen} title="로그인 확인" onClose={onClose}>
       <Dialog.Content>
         <Flex direction="column" align="center" gap={4} className="py-4 min-w-[250px] px-6">
-          <WarningIcon className="w-12 h-12 mx-auto text-gray-300" />
-          <p className="font-semibold text-gray-800 text-lg">학사정보시스템 로그아웃 안내</p>
+          <WarningIcon className="w-12 h-12 mx-auto text-fg-disabled" />
+          <p className="font-semibold text-fg text-lg">학사정보시스템 로그아웃 안내</p>
           <SupportingText className="text-center">
             ALLCLL 로그인 시 <span className="text-danger-500 font-semibold">학사정보시스템에서 로그아웃</span>
             됩니다.

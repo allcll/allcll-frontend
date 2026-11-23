@@ -69,10 +69,10 @@ function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
   const isEng = subject.curiLangNm === '영어';
   const isDeleted = subject.isDeleted;
   const bgColor = isDeleted
-    ? 'bg-gray-100 hover:bg-gray-200'
+    ? 'bg-surface-muted hover:bg-surface-strong'
     : isEng
-      ? 'bg-green-50 hover:bg-green-100'
-      : 'bg-white hover:bg-gray-100';
+      ? 'bg-success-subtle hover:bg-success-muted'
+      : 'bg-surface hover:bg-surface-muted';
 
   const { data: pinnedSubjects } = usePinned();
   const { mutate: deletePin } = useRemovePinned();
@@ -100,7 +100,7 @@ function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
           {isPinned ? (
             <NotificationFilledIcon className="w-4 h-4 text-primary-500" />
           ) : (
-            <NotificationIcon className="w-4 h-4 text-gray-400" />
+            <NotificationIcon className="w-4 h-4 text-fg-subtle" />
           )}
         </button>
       </Table.Cell>
@@ -117,7 +117,7 @@ function TableRow({ subject }: Readonly<{ subject: WishesWithSeat }>) {
               {subject.seat}
             </span>
           ) : (
-            <span className="px-3 py-1 rounded-full text-xs font-bold bg-gray-300">-</span>
+            <span className="px-3 py-1 rounded-full text-xs font-bold bg-line-strong">-</span>
           )}
         </Table.Cell>
       ) : null}

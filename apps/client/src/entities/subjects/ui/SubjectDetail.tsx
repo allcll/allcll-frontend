@@ -24,11 +24,11 @@ function SubjectDetail({ wishes }: ISubjectDetailProps) {
 
   return (
     <>
-      <p className="text-gray-600">
+      <p className="text-fg-muted">
         {joinPresent([`${data.subjectCode}-${data.classCode}`, data.departmentName, data.professorName])}
       </p>
 
-      <Flex gap={2} align="center" wrap className="text-gray-600 text-sm">
+      <Flex gap={2} align="center" wrap className="text-fg-muted text-sm">
         <span>
           {joinPresent([
             data.studentYear && `${data.studentYear}학년`,
@@ -43,7 +43,7 @@ function SubjectDetail({ wishes }: ISubjectDetailProps) {
         {isEng && <Badge color="success">영어</Badge>}
         {isDeleted && <Badge color="danger">폐강</Badge>}
       </Flex>
-      <p className="text-sm text-gray-500">{data.remark}</p>
+      <p className="text-sm text-fg-muted">{data.remark}</p>
     </>
   );
 }

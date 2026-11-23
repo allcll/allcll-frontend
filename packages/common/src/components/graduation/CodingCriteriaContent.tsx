@@ -10,7 +10,7 @@ function CodingCriteriaContent({ data }: Readonly<{ data: CodingCertCriteria | n
   return (
     <>
       <TargetTypeBadge targetType={data.codingTargetType} />
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-muted">
         아래 기준 중 <span className="font-semibold text-primary-500">1가지</span>를 충족하면 인증됩니다.
       </p>
       <InfoCard label="TOSC (SW역량테스트)" value={`Level ${data.toscMinLevel} 이상`} />

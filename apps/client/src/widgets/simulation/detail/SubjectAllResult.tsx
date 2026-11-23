@@ -31,7 +31,7 @@ function SubjectAllResult({ result }: Readonly<{ result: AggregatedResultRespons
               <span>/</span>
               <span className="px-1 py-0.5 rounded-full text-xs font-bold text-danger-500">{row.failedCount}</span>
               <span>/</span>
-              <span className="px-1 py-0.5 rounded-full text-xs font-bold text-gray-500">{row.doubledCount}</span>
+              <span className="px-1 py-0.5 rounded-full text-xs font-bold text-fg-muted">{row.doubledCount}</span>
               <span>/</span>
               <span className="px-1 py-0.5 rounded-full text-xs font-bold">{row.totalCount}</span>
             </Table.Cell>

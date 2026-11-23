@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js/auto';
 import {
@@ -14,6 +14,7 @@ import useDetailWishes from '@/entities/subjectAggregate/model/useDetailWishes';
 import useDetailRegisters from '@/entities/wishes/model/useDetailRegisters';
 import { InitWishes } from '@/entities/wishes/model/useWishes';
 import { Flex, Heading, Label, Select, EmptyState, LoadingState } from '@allcll/allcll-ui';
+import { useChartColors } from '@allcll/common';
 
 ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
@@ -42,6 +43,8 @@ function DepartmentDoughnut({ wishesInfo }: IDepartmentDoughnutProps) {
   const { data: departmentData } = useDepartments();
   const departmentDict = useDepartmentDict(departmentData);
   const { doughnutData, totalCount } = useDoughnutData(data, departmentDict, majorName, selectedFilter);
+  const chartRef = useRef<HTMLDivElement>(null);
+  const chartColors = useChartColors(chartRef);
 
   return (
     <>
@@ -72,8 +75,14 @@ function DepartmentDoughnut({ wishesInfo }: IDepartmentDoughnutProps) {
           <EmptyState title="관심과목을 담은 사람이 없습니다." />
         </Flex>
       ) : (
-        <div className="mx-auto w-full max-w-72">
-          <Doughnut data={doughnutData} />
+        <div ref={chartRef} className="mx-auto w-full max-w-72">
+          <Doughnut
+            data={doughnutData}
+            options={{
+              borderColor: chartColors.surface,
+              plugins: { legend: { labels: { color: chartColors.text } } },
+            }}
+          />
         </div>
       )}
     </>

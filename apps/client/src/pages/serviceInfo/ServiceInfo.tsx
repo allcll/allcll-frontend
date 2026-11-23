@@ -11,7 +11,7 @@ function ServiceInfo() {
         <title>ALLCLL | 소개</title>
       </Helmet>
 
-      <Flex justify="center" align="center" direction="column" className="h-screen bg-primary-100">
+      <Flex justify="center" align="center" direction="column" className="h-screen bg-primary-muted">
         <iframe
           src="https://resilient-may-c73.notion.site/ebd/1f2acf7c316280939afed2657259c817"
           // allowFullScreen

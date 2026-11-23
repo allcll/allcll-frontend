@@ -26,7 +26,7 @@ function TimetableComponent({ schedules }: ITimetableComponentProps) {
 
   return (
     <>
-      <div className="bg-white" ref={containerRef}>
+      <div className="bg-surface" ref={containerRef}>
         <TimetableGrid>
           <WeekTable schedules={schedules} />
         </TimetableGrid>

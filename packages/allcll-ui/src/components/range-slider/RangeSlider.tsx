@@ -53,14 +53,14 @@ function RangeSlider({
       data-vaul-no-drag
       className={`relative flex items-center w-full h-5 touch-none select-none ${className}`}
     >
-      <RadixSlider.Track className="relative grow h-1.5 rounded-full bg-gray-200">
+      <RadixSlider.Track className="relative grow h-1.5 rounded-full bg-surface-strong">
         <RadixSlider.Range className="absolute h-full rounded-full bg-primary-500" />
       </RadixSlider.Track>
       {thumbLabels.map(label => (
         <RadixSlider.Thumb
           key={label}
           aria-label={label}
-          className="block w-5 h-5 rounded-full bg-white border-2 border-primary-500 shadow-sm cursor-grab outline-none focus-visible:ring-2 focus-visible:ring-primary-300 active:cursor-grabbing"
+          className="block w-5 h-5 rounded-full bg-surface border-2 border-primary-500 shadow-sm cursor-grab outline-none focus-visible:ring-2 focus-visible:ring-primary-300 active:cursor-grabbing"
         />
       ))}
     </RadixSlider.Root>

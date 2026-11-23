@@ -36,14 +36,14 @@ const ChipBase = forwardRef<HTMLButtonElement, Readonly<IChip>>(function Chip(
       {variant === 'select' && (
         <ChevronDownIcon
           aria-hidden="true"
-          className={`w-5 h-5 pointer-events-none transition-transform duration-200 ${selected ? 'text-primary-500' : 'text-gray-400'} ${isOpen ? 'rotate-180' : 'rotate-0'}`}
+          className={`w-5 h-5 pointer-events-none transition-transform duration-200 ${selected ? 'text-primary-500' : 'text-fg-subtle'} ${isOpen ? 'rotate-180' : 'rotate-0'}`}
         />
       )}
 
       {variant === 'cancel' && (
         <CloseIcon
           aria-hidden="true"
-          className={`pointer-events-none w-4 h-4 ${selected ? 'text-primary-500' : 'text-gray-400'}`}
+          className={`pointer-events-none w-4 h-4 ${selected ? 'text-primary-500' : 'text-fg-subtle'}`}
         />
       )}
     </button>
@@ -58,9 +58,9 @@ export default Chip;
 function getColorClass(selected: boolean, variant: ChipVariantType) {
   if (selected) {
     return `
-      bg-primary-100
+      bg-primary-muted
       text-primary-500
-      hover:bg-primary-200
+      hover:bg-primary-200 dark:hover:bg-primary-500/35
       focus:outline-primary-500
     `;
   }
@@ -68,18 +68,18 @@ function getColorClass(selected: boolean, variant: ChipVariantType) {
   if (variant === 'outlined') {
     return `
       bg-transparent
-      text-gray-700
-      ring-1 ring-inset ring-gray-200
-      hover:bg-gray-100
-      focus:outline-gray-400
+      text-fg-secondary
+      ring-1 ring-inset ring-line
+      hover:bg-surface-muted
+      focus:outline-fg-subtle
     `;
   }
 
   return `
-    bg-gray-100
-    text-gray-700
-    hover:bg-gray-200
-    focus:outline-gray-400
+    bg-surface-muted
+    text-fg-secondary
+    hover:bg-surface-strong
+    focus:outline-fg-subtle
   `;
 }
 

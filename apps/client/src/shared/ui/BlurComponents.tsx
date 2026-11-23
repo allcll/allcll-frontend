@@ -10,7 +10,7 @@ function BlurComponents({ children }: BlurProps) {
       <div style={{ filter: 'blur(4px)' }}>{children}</div>
 
       <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
-        <p className="text-xl font-bold text-gray-700">추후 제공 예정</p>
+        <p className="text-xl font-bold text-fg-secondary">추후 제공 예정</p>
       </div>
     </div>
   );

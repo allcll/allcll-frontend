@@ -22,13 +22,15 @@ function ReviewViewModal({ review, onClose }: Readonly<IReviewViewModalProps>) {
               <SupportingText className="ml-auto shrink-0">{formatDateTime(review.createdAt)}</SupportingText>
             </Flex>
             <Flex align="center" gap={1} className="min-w-0 text-sm">
-              <span className="shrink-0 text-gray-400">작성자</span>
-              <ReviewAuthor review={review} className="text-gray-700" />
+              <span className="shrink-0 text-fg-subtle">작성자</span>
+              <ReviewAuthor review={review} className="text-fg-secondary" />
             </Flex>
           </Flex>
-          <div className="rounded-md bg-gray-50 p-4">
+          <div className="rounded-md bg-surface-subtle p-4">
             {review.detail ? (
-              <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap break-words">{review.detail}</p>
+              <p className="text-sm text-fg-secondary leading-relaxed whitespace-pre-wrap break-words">
+                {review.detail}
+              </p>
             ) : (
               <SupportingText>작성한 내용이 없습니다.</SupportingText>
             )}

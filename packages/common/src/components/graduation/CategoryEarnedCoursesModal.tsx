@@ -12,14 +12,14 @@ interface CategoryEarnedCoursesModalProps {
 
 function CourseRow({ course }: Readonly<{ course: GraduationCourse }>) {
   return (
-    <Flex align="center" justify="between" gap={3} className="px-3 py-2.5 rounded-md border bg-white border-gray-200">
+    <Flex align="center" justify="between" gap={3} className="px-3 py-2.5 rounded-md border bg-surface border-line">
       <Flex direction="column" gap={0.5} className="min-w-0">
-        <span className="text-sm font-medium truncate text-gray-800">{course.curiNm}</span>
-        <span className="text-xs text-gray-400">{course.curiNo}</span>
+        <span className="text-sm font-medium truncate text-fg">{course.curiNm}</span>
+        <span className="text-xs text-fg-subtle">{course.curiNo}</span>
       </Flex>
       <Flex align="center" gap={3} className="shrink-0">
-        <span className="text-xs text-gray-500 whitespace-nowrap">{course.selectedArea}</span>
-        <span className="text-xs text-gray-500 whitespace-nowrap">{course.credits}학점</span>
+        <span className="text-xs text-fg-muted whitespace-nowrap">{course.selectedArea}</span>
+        <span className="text-xs text-fg-muted whitespace-nowrap">{course.credits}학점</span>
       </Flex>
     </Flex>
   );
@@ -46,7 +46,7 @@ function CategoryEarnedCoursesModal({
           ) : (
             <>
               <Flex justify="end">
-                <span className="text-xs text-gray-500 shrink-0">
+                <span className="text-xs text-fg-muted shrink-0">
                   <span className="text-primary-500 font-semibold">{earnedCredits}학점</span> · {earnedCount}과목
                 </span>
               </Flex>

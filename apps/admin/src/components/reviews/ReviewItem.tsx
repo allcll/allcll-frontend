@@ -13,7 +13,7 @@ interface IReviewItemProps {
 function ReviewItem({ review, onView }: Readonly<IReviewItemProps>) {
   return (
     <Table.Row
-      className="bg-white hover:bg-gray-50 transition-colors cursor-pointer"
+      className="bg-surface hover:bg-surface-subtle transition-colors cursor-pointer"
       tabIndex={0}
       onClick={() => onView(review)}
       onKeyDown={e => {
@@ -24,7 +24,7 @@ function ReviewItem({ review, onView }: Readonly<IReviewItemProps>) {
       }}
     >
       <Table.Cell align="left" className="w-28">
-        <ReviewAuthor review={review} className="text-sm text-gray-500" />
+        <ReviewAuthor review={review} className="text-sm text-fg-muted" />
       </Table.Cell>
       <Table.Cell align="left" className="w-32">
         <OperationTypeBadge operationType={review.operationType} />
@@ -32,7 +32,7 @@ function ReviewItem({ review, onView }: Readonly<IReviewItemProps>) {
       <Table.Cell align="left" className="w-24">
         <ReviewRate rate={review.rate} />
       </Table.Cell>
-      <Table.Cell align="left" className={`truncate ${review.detail ? 'text-gray-700' : 'text-gray-400'}`}>
+      <Table.Cell align="left" className={`truncate ${review.detail ? 'text-fg-secondary' : 'text-fg-subtle'}`}>
         {review.detail || '내용 없음'}
       </Table.Cell>
       <Table.Cell align="left" className="w-36">

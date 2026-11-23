@@ -14,7 +14,7 @@ function ToolbarButton({ onClick, title, children }: IToolbarButtonProps) {
       label={title}
       variant="plain"
       onClick={onClick}
-      className="p-1.5 text-gray-500 hover:text-gray-800 hover:bg-gray-200 transition-colors"
+      className="p-1.5 text-fg-muted hover:text-fg hover:bg-surface-strong transition-colors"
     />
   );
 }

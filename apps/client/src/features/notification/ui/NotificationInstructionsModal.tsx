@@ -42,13 +42,13 @@ function NotificationInstructionsModal() {
 
   return (
     <Dialog title="알림 설정 방법" onClose={onClose} isOpen={isOpen}>
-      <Dialog.Content className="text-sm text-gray-700 w-lg max-w-full">
+      <Dialog.Content className="text-sm text-fg-secondary w-lg max-w-full">
         {page === 0 && <BrowserPermissionGuide />}
         {page === 1 && <SystemPermissionGuide />}
       </Dialog.Content>
 
       <Dialog.Footer>
-        <span className="mr-auto self-center text-xs text-gray-500">
+        <span className="mr-auto self-center text-xs text-fg-muted">
           {page + 1} / {lastPage + 1}
         </span>
         {page > 0 && (
@@ -142,7 +142,7 @@ function SystemPermissionGuide() {
 // --- Helper Components ---
 
 const GuidePanel = ({ value, children }: { value: string; children: React.ReactNode }) => (
-  <Tabs.Panel value={value} className="p-2 bg-gray-50 rounded-md h-64 overflow-y-auto">
+  <Tabs.Panel value={value} className="p-2 bg-surface-subtle rounded-md h-64 overflow-y-auto">
     {children}
   </Tabs.Panel>
 );
@@ -150,7 +150,7 @@ const GuidePanel = ({ value, children }: { value: string; children: React.ReactN
 const GuideStep = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <div className="space-y-1">
     <Heading level={4}>{title}</Heading>
-    <div className="pl-2 space-y-1 text-gray-600">{children}</div>
+    <div className="pl-2 space-y-1 text-fg-muted">{children}</div>
   </div>
 );
 

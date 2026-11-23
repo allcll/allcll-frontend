@@ -48,7 +48,7 @@ function ScheduleSearchBottomSheet({ isOpen, onCloseSearch, onOpenFiltering }: I
       activeSnapPoint={snapPoint}
       onActiveSnapPointChange={setSnapPoint}
     >
-      <div className="sticky -mx-4 px-4 top-0 bg-white z-content flex items-stretch gap-2 pb-3 mb-4 border-b border-gray-100">
+      <div className="sticky -mx-4 px-4 top-0 bg-surface z-content flex items-stretch gap-2 pb-3 mb-4 border-b border-line-subtle">
         <SearchBox
           type="text"
           placeholder="과목명, 교수명, 학수번호 검색"

@@ -47,7 +47,7 @@ export const Sizes: Story = {
     <div className="grid grid-cols-[auto_auto] items-center gap-4">
       {SIZES.map(size => (
         <Fragment key={size}>
-          <span className="text-xs text-gray-500">{size}</span>
+          <span className="text-xs text-fg-muted">{size}</span>
           <Spinner {...args} size={size} />
         </Fragment>
       ))}

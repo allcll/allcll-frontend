@@ -36,17 +36,17 @@ interface AccordionItemProps {
 
 export function AccordionItem({ value, title, children, id }: AccordionItemProps) {
   return (
-    <RadixAccordion.Item value={value} id={id} className="rounded-md bg-white shadow-sm">
+    <RadixAccordion.Item value={value} id={id} className="rounded-md bg-surface shadow-sm">
       <RadixAccordion.Header>
-        <RadixAccordion.Trigger className="group flex items-center justify-between gap-3 w-full p-4 rounded-md text-left font-semibold hover:bg-gray-50 data-[state=open]:text-primary-500">
+        <RadixAccordion.Trigger className="group flex items-center justify-between gap-3 w-full p-4 rounded-md text-left font-semibold hover:bg-surface-subtle data-[state=open]:text-primary-500">
           {title}
           <ChevronDownIcon
             aria-hidden="true"
-            className="w-4 h-4 shrink-0 text-gray-400 transition-transform duration-150 group-data-[state=open]:rotate-180"
+            className="w-4 h-4 shrink-0 text-fg-subtle transition-transform duration-150 group-data-[state=open]:rotate-180"
           />
         </RadixAccordion.Trigger>
       </RadixAccordion.Header>
-      <RadixAccordion.Content className="p-4 border-t border-gray-200 text-sm">{children}</RadixAccordion.Content>
+      <RadixAccordion.Content className="p-4 border-t border-line text-sm">{children}</RadixAccordion.Content>
     </RadixAccordion.Item>
   );
 }

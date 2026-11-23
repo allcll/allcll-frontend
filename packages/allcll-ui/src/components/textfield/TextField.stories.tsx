@@ -63,7 +63,7 @@ export const States: Story = {
     <div className="grid grid-cols-[auto_18rem] items-center gap-4">
       {STATES.map((state, index) => (
         <Fragment key={state.label}>
-          <span className="text-xs text-gray-500">{state.label}</span>
+          <span className="text-xs text-fg-muted">{state.label}</span>
           <TextField {...args} {...state.props} id={`${args.id}-${index}`} />
         </Fragment>
       ))}

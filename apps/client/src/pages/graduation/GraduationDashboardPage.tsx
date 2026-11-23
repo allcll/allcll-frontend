@@ -272,7 +272,7 @@ function GraduationDashboardPage() {
             <div></div>
 
             <Flex justify="end" align="center" gap={2}>
-              {analyzedAt && <span className="text-sm text-gray-400">{formatDateLong(analyzedAt)} 분석</span>}
+              {analyzedAt && <span className="text-sm text-fg-subtle">{formatDateLong(analyzedAt)} 분석</span>}
               <Button variant="solid" size="medium" onClick={handleStartOverGraduationCheck}>
                 다시 검사하기
               </Button>

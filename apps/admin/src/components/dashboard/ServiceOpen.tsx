@@ -45,7 +45,7 @@ function ServiceOpenContent() {
         return (
           <Card key={operationType}>
             <Flex align="start" justify="between">
-              <span className="text-sm font-medium text-gray-700">
+              <span className="text-sm font-medium text-fg-secondary">
                 {OPERATION_TYPE_LABEL[operationType] ?? operationType}
               </span>
               <Badge color={open ? 'success' : 'danger'}>{open ? 'OPEN' : 'CLOSED'}</Badge>

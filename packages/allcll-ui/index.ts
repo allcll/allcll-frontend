@@ -36,5 +36,6 @@ export { default as Flex } from './src/components/flex/Flex';
 export { default as Grid } from './src/components/grid/Grid';
 export { default as Listbox } from './src/components/listbox/Listbox';
 export { default as ListboxOption } from './src/components/listbox/ListboxOption';
+export { SCROLLBAR_GAP_CLASS } from './src/config';
 export * from './colors';
 export * from './src/icons';

@@ -37,7 +37,7 @@ function NoticeMobileView({ notices, isOpen, isRead, onRead, onClose }: Readonly
           role="dialog"
           aria-modal="true"
           aria-label="공지사항"
-          className="fixed top-0 right-0 h-full w-full bg-white shadow-lg z-floating md:hidden flex flex-col"
+          className="fixed top-0 right-0 h-full w-full bg-surface shadow-lg z-floating md:hidden flex flex-col"
         >
           <NoticePanel notices={notices} isMobile isRead={isRead} onRead={onRead} onClose={onClose} />
         </div>

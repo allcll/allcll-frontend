@@ -45,7 +45,7 @@ function JumpGame() {
       className="relative w-full max-w-md overflow-hidden select-none"
       style={{ height: STAGE_HEIGHT }}
     >
-      <div className="absolute inset-0 bg-gray-50" />
+      <div className="absolute inset-0 bg-background" />
 
       {isPlaying &&
         clouds.map(cloud => (
@@ -62,7 +62,7 @@ function JumpGame() {
 
       <div
         ref={groundTextureRef}
-        className="absolute bottom-0 left-0 right-0 border-t-2 border-gray-600"
+        className="absolute bottom-0 left-0 right-0 border-t-2 border-fg-muted"
         style={{
           height: GROUND_OFFSET,
           backgroundImage: GROUND_PATTERN_URL,

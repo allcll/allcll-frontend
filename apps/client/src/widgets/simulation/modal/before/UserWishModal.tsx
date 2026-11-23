@@ -199,7 +199,7 @@ function UserWishModal({ timetables, setIsModalOpen }: Readonly<UserWishModalIPr
       </Dialog.Content>
 
       <Dialog.Footer>
-        <div className="mr-auto self-center flex items-center gap-1 text-sm text-gray-500">
+        <div className="mr-auto self-center flex items-center gap-1 text-sm text-fg-muted">
           수강신청 팁
           <Tooltip layer="dropdown">
             <GameTips />

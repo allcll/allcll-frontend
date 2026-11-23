@@ -8,14 +8,14 @@ export const PALETTE = {
   mono: {
     /** 캐릭터는 색을 따로 정하지 않고, 흑백 필터를 걷어내 CI 본래 색으로 돌아옵니다. */
     characterFilter: 'grayscale(1) contrast(1.5)',
-    cloud: 'text-gray-300',
-    obstacle: 'text-gray-600',
-    tower: 'text-gray-600',
+    cloud: 'text-fg-disabled',
+    obstacle: 'text-fg-muted',
+    tower: 'text-fg-muted',
   },
   color: {
     characterFilter: 'none',
     cloud: 'text-primary-200',
-    obstacle: 'text-green-600',
+    obstacle: 'text-green-600 dark:text-green-400',
     tower: 'text-stone-500',
   },
 } as const;

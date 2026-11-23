@@ -26,15 +26,15 @@ function PinSearchSideBar({ isOpen, onClose }: PinSearchSideBarProps) {
     <CSSTransition in={isOpen} timeout={100} classNames={transitionClasses} unmountOnExit>
       <Flex
         direction="column"
-        className="sticky top-14 self-start h-[calc(100dvh-3.5rem)] w-92 shrink-0 bg-gray-50 shadow-lg z-content"
+        className="sticky top-14 self-start h-[calc(100dvh-3.5rem)] w-92 shrink-0 bg-surface-subtle shadow-lg z-content"
       >
-        <div className="flex justify-between items-center px-4 h-14 shrink-0 bg-white border-b border-gray-100">
+        <div className="flex justify-between items-center px-4 h-14 shrink-0 bg-surface border-b border-line-subtle">
           <Heading level={3}>알림 과목 등록</Heading>
           <IconButton
             size="medium"
-            className="p-2 hover:bg-gray-100 active:bg-gray-100"
+            className="p-2 hover:bg-surface-muted active:bg-surface-muted"
             label="알림 과목 등록 닫기"
-            icon={<CloseIcon className="text-gray-500" />}
+            icon={<CloseIcon className="text-fg-muted" />}
             onClick={onClose}
           />
         </div>

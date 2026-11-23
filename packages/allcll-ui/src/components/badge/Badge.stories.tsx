@@ -53,13 +53,13 @@ export const Variants: Story = {
     <div className="grid grid-cols-[auto_repeat(5,auto)] items-center gap-4">
       <span />
       {COLORS.map(color => (
-        <span key={color} className="text-xs text-gray-500">
+        <span key={color} className="text-xs text-fg-muted">
           {color}
         </span>
       ))}
       {VARIANTS.map(variant => (
         <Fragment key={variant}>
-          <span className="text-xs text-gray-500">{variant}</span>
+          <span className="text-xs text-fg-muted">{variant}</span>
           {COLORS.map(color => (
             <div key={color}>
               <Badge {...args} color={color} variant={variant} />
@@ -85,7 +85,7 @@ export const Sizes: Story = {
     <div className="grid grid-cols-[auto_auto] items-center gap-4">
       {SIZES.map(size => (
         <Fragment key={size}>
-          <span className="text-xs text-gray-500">{size}</span>
+          <span className="text-xs text-fg-muted">{size}</span>
           <div>
             <Badge {...args} size={size} />
           </div>

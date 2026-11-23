@@ -3,7 +3,7 @@ interface SkeletonProps {
 }
 
 function Skeleton({ className = '' }: SkeletonProps) {
-  return <div aria-hidden="true" className={`animate-pulse rounded-md bg-gray-200 ${className}`} />;
+  return <div aria-hidden="true" className={`animate-pulse rounded-md bg-surface-strong ${className}`} />;
 }
 
 export default Skeleton;

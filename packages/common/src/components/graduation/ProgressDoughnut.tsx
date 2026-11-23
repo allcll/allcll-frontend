@@ -1,6 +1,8 @@
+import { useRef } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js/auto';
 import { colors } from '@allcll/allcll-ui';
+import { useChartColors } from '../../lib/chartColors';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -20,6 +22,8 @@ function ProgressDoughnut({
   const percentage = required === 0 ? 100 : Math.min(100, Math.round((earned / required) * 100));
   const remaining = Math.max(0, required - earned);
   const earnedForChart = Math.min(earned, required);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const chartColors = useChartColors(containerRef);
 
   const sizeMap = {
     small: 'w-20 h-20',
@@ -38,7 +42,7 @@ function ProgressDoughnut({
     datasets: [
       {
         data: [earnedForChart, remaining],
-        backgroundColor: [colors.primary[500], '#e5e7eb'],
+        backgroundColor: [colors.primary[500], chartColors.track],
         borderWidth: 0,
       },
     ],
@@ -55,7 +59,7 @@ function ProgressDoughnut({
   };
 
   return (
-    <div className={`relative ${sizeMap[size]}`}>
+    <div ref={containerRef} className={`relative ${sizeMap[size]}`}>
       <Doughnut data={data} options={options} />
       {showPercentage && (
         <div className="absolute inset-0 flex items-center justify-center">

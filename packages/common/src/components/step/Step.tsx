@@ -12,13 +12,13 @@ function Step({ number, finish, active, label }: StepProps) {
     <div className="flex flex-col md:flex-row items-center gap-0.5 md:gap-2 shrink-0">
       <div
         className={`w-8 h-8 flex items-center justify-center rounded-full border
-          ${active ? 'bg-primary-500 border-primary-500 text-white' : 'bg-white border-gray-300 text-gray-400'}
+          ${active ? 'bg-primary-500 border-primary-500 text-white' : 'bg-surface border-line-strong text-fg-subtle'}
         `}
       >
         {finish ? <CheckmarkIcon className="w-4 h-4" /> : <span className="text-xs">{number}</span>}
       </div>
 
-      <span className="text-xs md:text-sm text-gray-600 whitespace-nowrap">{label}</span>
+      <span className="text-xs md:text-sm text-fg-muted whitespace-nowrap">{label}</span>
     </div>
   );
 }

@@ -151,7 +151,10 @@ function CaptchaInput({
       </div>
 
       <div className="flex justify-end p-4">
-        <button onClick={handleConfirmCaptcha} className="px-4 py-2 bg-white hover:bg-primary-50 rounded-xs border">
+        <button
+          onClick={handleConfirmCaptcha}
+          className="px-4 py-2 bg-surface hover:bg-primary-subtle rounded-xs border"
+        >
           코드입력
         </button>
       </div>

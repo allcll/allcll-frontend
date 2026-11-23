@@ -26,7 +26,7 @@ function ScheduleContentPanel() {
 
   return (
     <Card>
-      <Flex direction="column" gap={3} className="w-full bg-white h-screen md:border-t-0">
+      <Flex direction="column" gap={3} className="w-full bg-surface h-screen md:border-t-0">
         <SearchBox
           type="text"
           value={filters.keywords}

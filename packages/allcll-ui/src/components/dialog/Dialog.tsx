@@ -4,6 +4,7 @@ import DialogHeader from './DialogHeader';
 import DialogContent from './DialogContent';
 import DialogFooter from './DialogFooter';
 import { Z_INDEX } from '../../../zIndex';
+import { usePortalContainer } from '../../config/portalContainer';
 
 export type DialogSize = 'medium' | 'large';
 
@@ -23,9 +24,11 @@ interface IDialogMain {
 function DialogMain({ children, isOpen = true, title, size = 'medium', onClose }: IDialogMain) {
   const contentRef = useRef<HTMLDivElement>(null);
 
+  const portalContainer = usePortalContainer();
+
   return (
     <RadixDialog.Root open={isOpen} onOpenChange={open => !open && onClose()}>
-      <RadixDialog.Portal>
+      <RadixDialog.Portal container={portalContainer}>
         <RadixDialog.Overlay
           className="fixed inset-0 flex items-center justify-center bg-black/30"
           style={{ zIndex: Z_INDEX.dialog }}
@@ -38,7 +41,7 @@ function DialogMain({ children, isOpen = true, title, size = 'medium', onClose }
               e.preventDefault();
               contentRef.current?.focus();
             }}
-            className={`flex flex-col justify-center bg-white min-w-80 max-h-[90vh] rounded-lg outline-none ${SIZE_CLASS[size]}`}
+            className={`flex flex-col justify-center bg-surface min-w-80 max-h-[90vh] rounded-lg outline-none ${SIZE_CLASS[size]}`}
           >
             <DialogHeader onClose={onClose}>
               <RadixDialog.Title className="font-semibold">{title}</RadixDialog.Title>

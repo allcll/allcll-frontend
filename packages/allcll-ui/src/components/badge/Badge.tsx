@@ -21,15 +21,15 @@ export default Badge;
 function getFilledClass(color: BadgeColor) {
   switch (color) {
     case 'success':
-      return 'bg-green-100 text-green-700';
+      return 'bg-success-muted text-green-700 dark:text-green-400';
     case 'warning':
-      return 'bg-yellow-100 text-yellow-700';
+      return 'bg-warning-muted text-yellow-700 dark:text-yellow-400';
     case 'danger':
-      return 'bg-danger-100 text-danger-700';
+      return 'bg-danger-muted text-danger-700 dark:text-danger-400';
     case 'primary':
-      return 'bg-primary-100 text-primary-700';
+      return 'bg-primary-muted text-primary-700 dark:text-primary-400';
     case 'gray':
-      return 'bg-gray-100 text-gray-700';
+      return 'bg-surface-muted text-fg-secondary';
     default:
       return '';
   }
@@ -38,15 +38,15 @@ function getFilledClass(color: BadgeColor) {
 function getOutlinedClass(color: BadgeColor) {
   switch (color) {
     case 'success':
-      return 'border border-green-600 text-green-600';
+      return 'border border-green-600 text-green-600 dark:text-green-400';
     case 'warning':
-      return 'border border-yellow-600 text-yellow-600';
+      return 'border border-yellow-600 text-yellow-600 dark:text-yellow-400';
     case 'danger':
-      return 'border border-danger-600 text-danger-600';
+      return 'border border-danger-600 text-danger-600 dark:text-danger-400';
     case 'primary':
-      return 'border border-primary-600 text-primary-600';
+      return 'border border-primary-600 text-primary-600 dark:text-primary-400';
     case 'gray':
-      return 'border border-gray-600 text-gray-600';
+      return 'border border-fg-muted text-fg-muted';
     default:
       return '';
   }

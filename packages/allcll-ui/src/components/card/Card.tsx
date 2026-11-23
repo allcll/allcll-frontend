@@ -7,9 +7,9 @@ interface ICard {
 }
 
 const VARIANT_CLASS: Record<CardVariant, string> = {
-  elevated: 'bg-white shadow-md',
-  outlined: 'bg-white border border-gray-200',
-  filled: 'bg-gray-50 shadow-sm border border-gray-200',
+  elevated: 'bg-surface shadow-md',
+  outlined: 'bg-surface border border-line',
+  filled: 'bg-surface-subtle shadow-sm border border-line',
 };
 
 function Card({ children, variant = 'elevated', className = '' }: ICard) {

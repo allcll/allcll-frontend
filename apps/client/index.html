@@ -9,6 +9,18 @@
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- useThemeStore.ts와 같은 키 유지 -->
+    <script>
+      try {
+        var theme = localStorage.getItem('allcll-theme');
+        if (theme === 'dark' || (theme !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) {
+        /* ignore */
+      }
+    </script>
+
     <title>올클(ALLCLL) | 세종대 수강신청 도우미</title>
     <meta name="description" content="세종대 학생을 위한 수강신청 도우미 올클(ALLCLL). 시간표 관리, 과목 분석, 수강신청 연습, 실시간 여석 알림, 졸업요건 검사까지 한 번에 지원합니다." />
     <meta name="keywords" content="세종대 수강 신청 여석 관심과목 연습" />

@@ -18,7 +18,7 @@ function EnglishCriteriaContent({ data }: Readonly<{ data: EnglishCertCriteria |
   return (
     <>
       <TargetTypeBadge targetType={data.englishTargetType} />
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-fg-muted">
         아래 시험 중 <span className="font-semibold text-primary-500">1가지</span> 기준을 충족하면 인증됩니다.
       </p>
       <CriteriaTable

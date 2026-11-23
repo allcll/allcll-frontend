@@ -12,7 +12,8 @@ const meta = {
   component: BottomSheet,
   subcomponents: { 'BottomSheet.Footer': BottomSheetFooter },
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
+    themePanelHeight: 480,
     docs: {
       description: {
         component:
@@ -48,22 +49,35 @@ const meta = {
           시트 열기
         </Button>
         <BottomSheet {...args} isOpen={isOpen} onClose={() => setIsOpen(false)}>
-          <div className="flex flex-col gap-2">
-            <Label>학년</Label>
-            <div className="flex flex-wrap gap-2">
-              {GRADES.map(grade => (
-                <Chip key={grade} label={grade} selected={grades.includes(grade)} onClick={() => toggleGrade(grade)} />
-              ))}
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-2">
+              <Label>학년</Label>
+              <div className="flex flex-wrap gap-2">
+                {GRADES.map(grade => (
+                  <Chip
+                    key={grade}
+                    label={grade}
+                    selected={grades.includes(grade)}
+                    onClick={() => toggleGrade(grade)}
+                  />
+                ))}
+              </div>
             </div>
+            <BottomSheet.Footer>
+              <Button
+                variant="solid"
+                color="gray"
+                size="medium"
+                disabled={!grades.length}
+                onClick={() => setGrades([])}
+              >
+                필터 초기화
+              </Button>
+              <Button variant="solid" size="medium" onClick={() => setIsOpen(false)}>
+                완료
+              </Button>
+            </BottomSheet.Footer>
           </div>
-          <BottomSheet.Footer>
-            <Button variant="solid" color="gray" size="medium" disabled={!grades.length} onClick={() => setGrades([])}>
-              필터 초기화
-            </Button>
-            <Button variant="solid" size="medium" onClick={() => setIsOpen(false)}>
-              완료
-            </Button>
-          </BottomSheet.Footer>
         </BottomSheet>
       </>
     );

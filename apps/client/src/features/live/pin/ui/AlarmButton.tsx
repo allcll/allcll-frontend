@@ -44,7 +44,7 @@ function AlarmButton({ subject, variant = 'contain', className, onClick, ...prop
         isPinned ? (
           <NotificationFilledIcon className="text-primary-500" />
         ) : (
-          <NotificationIcon className="text-gray-400" />
+          <NotificationIcon className="text-fg-subtle" />
         )
       }
       className={className}

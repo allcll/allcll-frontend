@@ -81,7 +81,7 @@ function AlarmOptionContent() {
           onChange={onChange}
         >
           {AlarmTypeNames.map(type => (
-            <option className="disabled:text-gray-500" key={type.value} value={type.value} disabled={type.disabled()}>
+            <option className="disabled:text-fg-muted" key={type.value} value={type.value} disabled={type.disabled()}>
               {type.title}
             </option>
           ))}
@@ -91,9 +91,9 @@ function AlarmOptionContent() {
           <p className="text-xs text-danger-500">브라우저 알림을 허용해주세요.</p>
         )}
         {alarmType === AlarmType.TOAST && (
-          <p className="text-xs text-gray-500">토스트 알림은 탭이 열려 있을 때에만 작동해요.</p>
+          <p className="text-xs text-fg-muted">토스트 알림은 탭이 열려 있을 때에만 작동해요.</p>
         )}
-        {!canBrowserNotify && <p className="text-xs text-gray-500">이 브라우저는 브라우저 알림을 지원하지 않아요.</p>}
+        {!canBrowserNotify && <p className="text-xs text-fg-muted">이 브라우저는 브라우저 알림을 지원하지 않아요.</p>}
       </div>
     </div>
   );
@@ -135,7 +135,7 @@ function SubAlarmOption() {
         </div>
 
         <div className="my-1 flex items-center justify-between">
-          <label htmlFor="select-vibrate" className={`text-sm ${isVibrateDisabled ? 'text-gray-300' : ''}`}>
+          <label htmlFor="select-vibrate" className={`text-sm ${isVibrateDisabled ? 'text-fg-disabled' : ''}`}>
             진동
           </label>
           <Toggle
@@ -146,7 +146,7 @@ function SubAlarmOption() {
             disabled={isVibrateDisabled}
           />
         </div>
-        {!canVibrate && <p className="text-xs text-gray-500">이 기기는 진동 기능을 지원하지 않아요.</p>}
+        {!canVibrate && <p className="text-xs text-fg-muted">이 기기는 진동 기능을 지원하지 않아요.</p>}
       </div>
     </div>
   );

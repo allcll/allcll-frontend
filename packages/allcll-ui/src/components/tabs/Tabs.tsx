@@ -32,7 +32,7 @@ function Tab({ className = '', ...rest }: ComponentPropsWithoutRef<typeof RadixT
   return (
     <RadixTabs.Trigger
       {...rest}
-      className={`${TAB_ITEM_CLASS} data-[state=active]:border-primary-500 data-[state=active]:text-primary-500 data-[state=inactive]:border-transparent data-[state=inactive]:text-gray-500 data-[state=inactive]:hover:text-gray-700 ${className}`}
+      className={`${TAB_ITEM_CLASS} data-[state=active]:border-primary-500 data-[state=active]:text-primary-500 data-[state=inactive]:border-transparent data-[state=inactive]:text-fg-muted data-[state=inactive]:hover:text-fg-secondary ${className}`}
     />
   );
 }

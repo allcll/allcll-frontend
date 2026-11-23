@@ -24,19 +24,19 @@ function BalanceInfo({ category }: Readonly<{ category: CategoryProgress }>) {
   return (
     <Flex direction="column" gap={1} className="text-sm">
       <Flex justify="end" align="center" gap={6}>
-        <span className="text-gray-500">이수 영역</span>
+        <span className="text-fg-muted">이수 영역</span>
         <span>
           <span className="text-primary-500 text-xl font-semibold">{category.earnedAreasCnt ?? 0}</span>
-          <span className="text-gray-400 mx-1">/</span>
-          <span className="text-lg font-semibold text-gray-600">{category.requiredAreasCnt ?? 0}</span>
+          <span className="text-fg-subtle mx-1">/</span>
+          <span className="text-lg font-semibold text-fg-muted">{category.requiredAreasCnt ?? 0}</span>
         </span>
       </Flex>
       <Flex justify="end" align="center" gap={6}>
-        <span className="text-gray-500">이수 학점</span>
+        <span className="text-fg-muted">이수 학점</span>
         <span>
           <span className="text-primary-500 text-xl font-semibold">{category.earnedCredits}</span>
-          <span className="text-gray-400 mx-1">/</span>
-          <span className="text-lg font-semibold text-gray-600">{category.requiredCredits}</span>
+          <span className="text-fg-subtle mx-1">/</span>
+          <span className="text-lg font-semibold text-fg-muted">{category.requiredCredits}</span>
         </span>
       </Flex>
     </Flex>
@@ -47,11 +47,11 @@ function CreditInfo({ category }: Readonly<{ category: CategoryProgress }>) {
   return (
     <Flex direction="column" gap={1} className="text-sm">
       <Flex justify="end" align="center" gap={6}>
-        <span className="text-gray-500">필요 학점</span>
-        <span className="text-lg font-semibold text-gray-600">{category.requiredCredits}</span>
+        <span className="text-fg-muted">필요 학점</span>
+        <span className="text-lg font-semibold text-fg-muted">{category.requiredCredits}</span>
       </Flex>
       <Flex justify="end" align="center" gap={6}>
-        <span className="text-gray-500">이수 학점</span>
+        <span className="text-fg-muted">이수 학점</span>
         <span className="text-primary-500 text-xl font-semibold">{category.earnedCredits}</span>
       </Flex>
     </Flex>

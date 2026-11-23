@@ -19,7 +19,7 @@ function SimulationLayout() {
       <Header />
       <ServiceEnabled serviceId="simulation">
         {/*<BannerNotification />*/}
-        <div className="w-full bg-white text-sm text-gray-800 font-sans">
+        <div className="light w-full bg-surface text-sm text-fg font-sans">
           <div className="flex">
             <SejongUI.AsideMenu menus={ASIDE_MENU} />
 

@@ -23,7 +23,7 @@ function PainPointSection() {
             text: '수강신청 버튼만 수백 번, 그래도 원하는 강의는 잡지 못했습니다',
           },
         ].map(({ icon, title, text }, index) => (
-          <div key={'pain-point-' + index} className="flex flex-col gap-4 p-6 rounded-md bg-gray-50 text-left">
+          <div key={'pain-point-' + index} className="flex flex-col gap-4 p-6 rounded-md bg-surface-subtle text-left">
             {icon}
             <Heading level={3}>{title}</Heading>
             <SupportingText>{text}</SupportingText>

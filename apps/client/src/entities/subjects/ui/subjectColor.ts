@@ -7,12 +7,12 @@ export function getSubjectColorClass(data: Subject, hover = true) {
   const isDeleted = data.isDeleted;
 
   if (isDeleted) {
-    return hover ? 'bg-gray-100 hover:bg-gray-200' : 'bg-gray-100';
+    return hover ? 'bg-surface-muted hover:bg-surface-strong' : 'bg-surface-muted';
   }
 
   if (isEng) {
-    return hover ? 'bg-green-50 hover:bg-green-100' : 'bg-green-50';
+    return hover ? 'bg-success-subtle hover:bg-success-muted' : 'bg-success-subtle';
   }
 
-  return hover ? 'bg-white hover:bg-gray-100' : 'bg-white';
+  return hover ? 'bg-surface hover:bg-surface-muted' : 'bg-surface';
 }

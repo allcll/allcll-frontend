@@ -12,8 +12,16 @@ interface IBanner {
 }
 
 const BANNER_STYLE = {
-  info: { container: 'bg-primary-100 border-b border-primary-200', icon: InfoIcon, iconColor: 'text-primary-500' },
-  danger: { container: 'bg-danger-100 border-b border-danger-200', icon: WarningIcon, iconColor: 'text-danger-500' },
+  info: {
+    container: 'bg-primary-muted border-b border-primary-200 dark:border-primary-500/40',
+    icon: InfoIcon,
+    iconColor: 'text-primary-500',
+  },
+  danger: {
+    container: 'bg-danger-muted border-b border-danger-200 dark:border-danger-500/40',
+    icon: WarningIcon,
+    iconColor: 'text-danger-500',
+  },
 } satisfies Record<BannerVariant, object>;
 
 function Banner({ variant = 'info', children, onClose }: IBanner) {
@@ -30,7 +38,7 @@ function Banner({ variant = 'info', children, onClose }: IBanner) {
               size="medium"
               label="알림 닫기"
               variant="plain"
-              icon={<CloseIcon className="text-gray-500" />}
+              icon={<CloseIcon className="text-fg-muted" />}
               onClick={onClose}
               className="rounded-full shrink-0"
             />

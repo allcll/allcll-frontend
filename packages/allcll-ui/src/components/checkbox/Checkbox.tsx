@@ -27,7 +27,7 @@ function Checkbox({ label, ...rest }: Readonly<ICheckbox>) {
         )}
       </div>
 
-      {label && <span className={`${rest.checked ? 'text-primary-500' : 'text-gray-600'}`}>{label}</span>}
+      {label && <span className={`${rest.checked ? 'text-primary-500' : 'text-fg-secondary'}`}>{label}</span>}
     </label>
   );
 }
@@ -37,13 +37,13 @@ Checkbox.layout = 'flex' as const;
 function getCheckboxClass(checked: boolean) {
   return checked
     ? `
-      bg-primary-50
+      bg-primary-subtle
       border-primary-500
     `
     : `
-      bg-white
-      border-gray-400
-      hover:bg-gray-50
+      bg-surface
+      border-fg-subtle
+      hover:bg-surface-subtle
     `;
 }
 

@@ -35,9 +35,9 @@ export default IconButton;
 function getVariantClass(variant: string) {
   switch (variant) {
     case 'contain':
-      return 'p-2.5 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-200 transition-colors duration-300 ease-out';
+      return 'p-2.5 rounded-lg bg-surface-muted text-fg-muted hover:bg-surface-strong transition-colors duration-300 ease-out';
     case 'plain':
-      return 'rounded-md bg-transparent text-gray-700';
+      return 'rounded-md bg-transparent text-fg-secondary';
     default:
       return '';
   }

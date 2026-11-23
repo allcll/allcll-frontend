@@ -49,7 +49,7 @@ const RealtimeTable = ({ title = '교양과목' }: Readonly<IRealtimeTable>) => 
           label="테이블 수정"
           variant="plain"
           aria-label="테이블 수정"
-          icon={<TableSettingsIcon className="text-gray-400" />}
+          icon={<TableSettingsIcon className="text-fg-subtle" />}
           onClick={() => setIsModalOpen(true)}
         />
       </Flex>
@@ -143,7 +143,7 @@ function SubjectRow({ subject, HeadTitles }: Readonly<{ subject: SseSubject; Hea
 
   const isDeleted = subject.isDeleted;
   const isEng = subject.curiLangNm === '영어';
-  const bgColor = seatChanged ? 'bg-primary-50' : isDeleted ? 'bg-gray-100' : isEng ? 'bg-green-50' : '';
+  const bgColor = seatChanged ? 'bg-primary-subtle' : isDeleted ? 'bg-surface-muted' : isEng ? 'bg-success-subtle' : '';
   const crawledAt = new Date(subject.queryTime ?? 0).getTime();
 
   useEffect(() => {
@@ -186,7 +186,7 @@ function QueryTimeTd({ queryTime }: Readonly<{ queryTime?: string }>) {
 
   return (
     <Table.Cell className="w-18 text-xs">
-      <span className="text-gray-500">{getTimeDiffString(queryTime)}</span>
+      <span className="text-fg-muted">{getTimeDiffString(queryTime)}</span>
     </Table.Cell>
   );
 }

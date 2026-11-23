@@ -6,6 +6,7 @@ import Listbox from '../listbox/Listbox';
 import ListboxOption from '../listbox/ListboxOption';
 import { Z_INDEX } from '../../../zIndex';
 import { FIELD_CLASS } from '../../config';
+import { usePortalContainer } from '../../config/portalContainer';
 
 export interface SearchableSelectOption {
   value: string;
@@ -129,6 +130,8 @@ function SearchableSelect({
     }
   };
 
+  const portalContainer = usePortalContainer();
+
   return (
     <RadixPopover.Root open={isOpen} onOpenChange={nextOpen => (nextOpen ? open() : close())} modal>
       <div className={`relative inline-block ${className}`}>
@@ -148,18 +151,18 @@ function SearchableSelect({
                 {ariaLabel}
               </span>
             )}
-            <span id={valueId} className={selectedOption ? undefined : 'text-gray-400'}>
+            <span id={valueId} className={selectedOption ? undefined : 'text-fg-subtle'}>
               {selectedOption ? selectedOption.label : placeholder}
             </span>
           </button>
         </RadixPopover.Trigger>
         <ChevronDownIcon
           aria-hidden="true"
-          className={`absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          className={`absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none text-fg-subtle transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
         />
       </div>
 
-      <RadixPopover.Portal>
+      <RadixPopover.Portal container={portalContainer}>
         <RadixPopover.Content
           side={side}
           align="start"
@@ -170,11 +173,11 @@ function SearchableSelect({
             e.preventDefault();
             inputRef.current?.focus({ preventScroll: true });
           }}
-          className="flex flex-col w-(--radix-popover-trigger-width) max-h-[min(320px,var(--radix-popover-content-available-height))] bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden outline-none"
+          className="flex flex-col w-(--radix-popover-trigger-width) max-h-[min(320px,var(--radix-popover-content-available-height))] bg-surface border border-line rounded-lg shadow-lg overflow-hidden outline-none"
           style={{ zIndex: Z_INDEX.dropdown }}
         >
-          <div className="flex items-center gap-2 px-3 py-2 border-b border-gray-100 shrink-0">
-            <SearchIcon aria-hidden="true" className="w-4 h-4 text-gray-400 shrink-0" />
+          <div className="flex items-center gap-2 px-3 py-2 border-b border-line-subtle shrink-0">
+            <SearchIcon aria-hidden="true" className="w-4 h-4 text-fg-subtle shrink-0" />
             <input
               ref={inputRef}
               type="text"
@@ -190,7 +193,7 @@ function SearchableSelect({
               }}
               onKeyDown={handleInputKeyDown}
               placeholder={searchPlaceholder}
-              className="w-full text-sm max-sm:pointer-coarse:text-base outline-none bg-transparent placeholder:text-gray-400"
+              className="w-full text-sm max-sm:pointer-coarse:text-base outline-none bg-transparent placeholder:text-fg-subtle"
             />
           </div>
 

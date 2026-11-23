@@ -26,7 +26,7 @@ function FavoriteButton({ subject, variant = 'contain', className, onClick, ...p
       variant={variant}
       onClick={handleFavorite}
       label={title}
-      icon={isFavorite ? <StarFilledIcon className="text-yellow-400" /> : <StarIcon className="text-gray-400" />}
+      icon={isFavorite ? <StarFilledIcon className="text-yellow-400" /> : <StarIcon className="text-fg-subtle" />}
       aria-label={title}
       className={className}
       {...props}

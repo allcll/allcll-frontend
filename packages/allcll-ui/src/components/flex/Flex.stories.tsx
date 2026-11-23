@@ -46,7 +46,7 @@ const meta = {
     gap: 2,
   },
   render: args => (
-    <div className="w-80 rounded-md border border-dashed border-gray-300 p-2">
+    <div className="w-80 rounded-md border border-dashed border-line-strong p-2">
       <Flex {...args}>
         {ITEMS.map(item => (
           <Chip key={item} label={item} selected={false} />

@@ -11,7 +11,7 @@ interface DeleteConfirmationActionsProps {
 function DeleteConfirmationActions({ message, size, onCancel, onConfirm }: DeleteConfirmationActionsProps) {
   return (
     <>
-      <span className="self-center text-sm text-gray-600">{message}</span>
+      <span className="self-center text-sm text-fg-muted">{message}</span>
       <Button type="button" variant="solid" color="gray" size={size} onClick={onCancel}>
         취소
       </Button>

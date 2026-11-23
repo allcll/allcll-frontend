@@ -84,13 +84,15 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
           </div>
         )}
         <div className="relative z-content text-center">
-          <p className="flex justify-center gap-1.5 text-lg md:text-xl font-semibold text-text-200">
+          <p className="flex justify-center gap-1.5 text-lg md:text-xl font-semibold text-fg">
             <span>수강 신청</span>
-            <span className={isSuccessSimulation ? `text-primary-600` : `text-danger-500`}>
+            <span className={isSuccessSimulation ? `text-primary-600 dark:text-primary-400` : `text-danger-500`}>
               {isSuccessSimulation ? '성공!' : '실패'}
             </span>
           </p>
-          <span className="text-sm text-gray-700 mt-1">수강신청에 {isSuccessSimulation ? ' 성공' : ' 실패'}했어요</span>
+          <span className="text-sm text-fg-secondary mt-1">
+            수강신청에 {isSuccessSimulation ? ' 성공' : ' 실패'}했어요
+          </span>
 
           <div className="flex flex-col justify-center items-center">
             <div className="m-2 flex justify-center">
@@ -103,16 +105,16 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
 
             <div className="flex flex-row justify-center gap-6 mt-6">
               <div className="flex flex-col items-center">
-                <p className="text-sm text-gray-800 mb-1">점수</p>
+                <p className="text-sm text-fg mb-1">점수</p>
                 <p className="text-xl text-primary-500 font-bold whitespace-nowrap">
                   {score.toFixed(1)}
-                  <span className="text-gray-600">점</span>
+                  <span className="text-fg-muted">점</span>
                 </p>
               </div>
 
               <div className="flex flex-col items-center">
-                <p className="text-sm text-gray-800 mb-1">소요 시간</p>
-                <p className="text-xl text-gray-600 font-bold whitespace-nowrap">
+                <p className="text-sm text-fg mb-1">소요 시간</p>
+                <p className="text-xl text-fg-muted font-bold whitespace-nowrap">
                   {(total_elapsed / 1000).toFixed(0)}초
                 </p>
               </div>
@@ -120,32 +122,32 @@ function SimulationResultModal({ simulationId }: Readonly<{ simulationId: number
 
             <div className="flex flex-row justify-center gap-6 mt-6">
               <div className="flex flex-col items-center">
-                <p className="text-sm text-gray-800 mb-1">평균 매크로 방지 입력 속도</p>
+                <p className="text-sm text-fg mb-1">평균 매크로 방지 입력 속도</p>
                 <p className="text-xl text-primary-500 font-bold whitespace-nowrap">
                   {modifiedResult?.user_ability.captchaSpeed.toFixed(2)}
-                  <span className="text-gray-600">초</span>
+                  <span className="text-fg-muted">초</span>
                 </p>
               </div>
 
               <div className="flex flex-col items-center">
-                <p className="text-sm text-gray-800 mb-1">평균 신청 버튼 클릭 속도</p>
+                <p className="text-sm text-fg mb-1">평균 신청 버튼 클릭 속도</p>
                 <p className="text-xl text-primary-500 font-bold whitespace-nowrap">
                   {speed <= 0 ? 0 : speed.toFixed(2)}
-                  <span className="text-gray-600">초</span>
+                  <span className="text-fg-muted">초</span>
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="text-left text-sm text-gray-800 mt-4 mb-1">정확도</div>
+          <div className="text-left text-sm text-fg mt-4 mb-1">정확도</div>
           <div className="flex items-center gap-2">
-            <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+            <div className="w-full h-3 bg-surface-strong rounded-full overflow-hidden">
               <div
                 className="h-3 bg-indigo-400 rounded-full transition-all duration-300"
                 style={{ width: `${accuracy}%` }}
               />
             </div>
-            <p className="text-xl text-gray-600 font-bold whitespace-nowrap">{accuracy}%</p>
+            <p className="text-xl text-fg-muted font-bold whitespace-nowrap">{accuracy}%</p>
           </div>
 
           <div className="flex justify-center gap-3 mt-6">

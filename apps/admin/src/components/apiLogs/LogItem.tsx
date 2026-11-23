@@ -8,7 +8,7 @@ function LogItem({ log }: { log: AdminApiLogs }) {
       <Flex direction="column" gap={3}>
         <Flex>
           <Badge color={log.statusCode === 200 ? 'success' : 'danger'}>{log.statusCode}</Badge>
-          <p className="text-sm text-gray-800">{log.request_url}</p>
+          <p className="text-sm text-fg">{log.request_url}</p>
         </Flex>
         <DetailRow label="메서드">
           <span className="text-md text-primary-500">{log.method}</span>

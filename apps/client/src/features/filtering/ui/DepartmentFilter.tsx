@@ -72,7 +72,7 @@ function DepartmentFilter({ setFilter, selectedValue }: IDepartmentFilter) {
           })}
         </Listbox>
 
-        <Flex justify="end" className="shrink-0 mt-1 pt-1.5 -mb-1.5 border-t border-gray-100">
+        <Flex justify="end" className="shrink-0 mt-1 pt-1.5 -mb-1.5 border-t border-line-subtle">
           <Button
             variant="text"
             size="small"

@@ -102,7 +102,7 @@ function ServicePeriod() {
                     onChange={date => updateDate(index, 'startDate', date)}
                     dateFormat="yyyy-MM-dd"
                     placeholderText="시작일 선택"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                    className="w-full px-3 py-2 border border-line-strong rounded-md text-sm"
                   />
                 </div>
                 <div>
@@ -112,7 +112,7 @@ function ServicePeriod() {
                     onChange={date => updateDate(index, 'endDate', date)}
                     dateFormat="yyyy-MM-dd"
                     placeholderText="종료일 선택"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                    className="w-full px-3 py-2 border border-line-strong rounded-md text-sm"
                   />
                 </div>
               </Flex>
@@ -120,9 +120,9 @@ function ServicePeriod() {
           </Flex>
 
           {errors.length > 0 && (
-            <div className="bg-danger-50 border border-danger-200 rounded-lg px-4 py-3">
+            <div className="bg-danger-subtle border border-danger-200 dark:border-danger-500/40 rounded-lg px-4 py-3">
               {errors.map(error => (
-                <p key={error} className="text-sm text-danger-700">
+                <p key={error} className="text-sm text-danger-700 dark:text-danger-400">
                   {error}
                 </p>
               ))}

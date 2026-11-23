@@ -104,7 +104,7 @@ function DayFilter({ options, days, time, dayTimes, setFilter }: Readonly<IDayFi
   return (
     <Filtering label={label} selected={hasValue} className="w-80">
       {content}
-      <Flex justify="end" className="mt-3 pt-1.5 -mb-1.5 border-t border-gray-100">
+      <Flex justify="end" className="mt-3 pt-1.5 -mb-1.5 border-t border-line-subtle">
         <Button
           variant="text"
           size="small"

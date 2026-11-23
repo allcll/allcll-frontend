@@ -10,15 +10,15 @@ interface ILoginErrorNoticeProps {
 // 글자는 대비 4.5, 아이콘은 3 을 넘는 단계를 골랐습니다.
 const TONE_STYLE = {
   error: {
-    box: 'bg-danger-50 border-danger-200',
-    icon: 'text-danger-700',
-    title: 'text-danger-700',
+    box: 'bg-danger-subtle border-danger-200 dark:border-danger-500/40',
+    icon: 'text-danger-700 dark:text-danger-400',
+    title: 'text-danger-700 dark:text-danger-400',
     buttonColor: 'danger',
   },
   neutral: {
-    box: 'bg-gray-50 border-gray-200',
-    icon: 'text-gray-700',
-    title: 'text-text-200',
+    box: 'bg-surface-subtle border-line',
+    icon: 'text-fg-secondary',
+    title: 'text-fg',
     buttonColor: 'primary',
   },
 } as const;

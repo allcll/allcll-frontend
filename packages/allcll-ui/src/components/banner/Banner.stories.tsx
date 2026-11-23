@@ -49,7 +49,7 @@ export const Variants: Story = {
     <div className="grid grid-cols-[auto_auto] items-center gap-4">
       {VARIANTS.map(variant => (
         <Fragment key={variant}>
-          <span className="text-xs text-gray-500">{variant}</span>
+          <span className="text-xs text-fg-muted">{variant}</span>
           <Banner {...args} variant={variant} />
         </Fragment>
       ))}

@@ -30,7 +30,7 @@ interface IGameResultOverlayProps {
  */
 function GameResultOverlay({ message, onRestart }: Readonly<IGameResultOverlayProps>) {
   return (
-    <div className="absolute inset-x-0 top-2 flex flex-col items-center gap-2 pointer-events-none text-gray-600">
+    <div className="absolute inset-x-0 top-2 flex flex-col items-center gap-2 pointer-events-none text-fg-muted">
       <p className="font-mono text-xs font-semibold tracking-[0.4em]">{message}</p>
       <button
         type="button"

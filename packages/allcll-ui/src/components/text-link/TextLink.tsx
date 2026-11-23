@@ -8,7 +8,12 @@ interface TextLinkProps extends ComponentPropsWithoutRef<'a'> {
 function TextLink({ asChild = false, className = '', ...props }: TextLinkProps) {
   const Comp = asChild ? Slot : 'a';
 
-  return <Comp {...props} className={`text-primary-500 underline hover:text-primary-600 ${className}`} />;
+  return (
+    <Comp
+      {...props}
+      className={`text-primary-500 underline hover:text-primary-600 dark:hover:text-primary-400 ${className}`}
+    />
+  );
 }
 
 export default TextLink;

@@ -37,14 +37,14 @@ function SessionList() {
 
             {!isLoading && !error && sessionStatus?.length === 0 && (
               <tr>
-                <td colSpan={3} className="py-6 text-center text-gray-400 text-sm">
+                <td colSpan={3} className="py-6 text-center text-fg-subtle text-sm">
                   현재 실행 중인 세션이 없습니다.
                 </td>
               </tr>
             )}
 
             {sessionStatus?.map((data, idx) => (
-              <Table.Row key={data?.userId ?? idx} className="hover:bg-gray-50 transition">
+              <Table.Row key={data?.userId ?? idx} className="hover:bg-surface-subtle transition">
                 <Table.Cell>{data?.userId}</Table.Cell>
                 <Table.Cell>{formatDateTime(data?.startTime ?? '')}</Table.Cell>
                 <Table.Cell>

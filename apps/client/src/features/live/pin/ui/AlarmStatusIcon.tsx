@@ -4,7 +4,7 @@ function AlarmStatusIcon({ isAlarm }: Readonly<{ isAlarm: boolean }>) {
   return isAlarm ? (
     <NotificationFilledIcon className="text-primary-500" />
   ) : (
-    <NotificationOffIcon className="text-gray-400" />
+    <NotificationOffIcon className="text-fg-subtle" />
   );
 }
 

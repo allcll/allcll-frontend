@@ -48,7 +48,7 @@ const meta = {
     useEffect(() => setOpenId(args.value), [args.value]);
 
     return (
-      <div className="w-[480px] bg-gray-50 p-4">
+      <div className="w-[480px] bg-surface-subtle p-4">
         <Accordion value={openId} onValueChange={setOpenId}>
           {FAQ_ITEMS.map(item => (
             <Accordion.Item key={item.id} value={item.id} title={item.question}>

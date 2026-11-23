@@ -12,7 +12,7 @@ function CustomerService() {
         <meta name="description" content="서비스 이용 중 발생한 오류를 제보하거나, 건의사항을 남겨주세요." />
       </Helmet>
 
-      <Flex justify="center" align="center" direction="column" className="h-screen w-full pt-4 bg-primary-100">
+      <Flex justify="center" align="center" direction="column" className="h-screen w-full pt-4 bg-primary-muted">
         <iframe
           src="https://docs.google.com/forms/d/e/1FAIpQLSdk7MxNYVyzPyJLecQdJU5wGSgdE7rUWtRfcrPBY2ioKbtW2Q/viewform?embedded=true"
           width="640"

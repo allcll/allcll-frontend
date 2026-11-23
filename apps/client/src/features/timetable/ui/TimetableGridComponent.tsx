@@ -21,18 +21,18 @@ function TimetableGridComponent({ rowHeight = ROW_HEIGHT, colNames, rowNames, ch
     : { headerWidth: 60, headerHeight: 40 };
 
   return (
-    <div className="relative w-full bg-white">
+    <div className="relative w-full bg-surface">
       {/*header*/}
-      <div className="flex bg-gray-50 rounded-t-md" style={{ height: `${headerHeight}px` }}>
+      <div className="flex bg-surface-subtle rounded-t-md" style={{ height: `${headerHeight}px` }}>
         <div
-          className="flex items-center justify-center font-semibold text-gray-700"
+          className="flex items-center justify-center font-semibold text-fg-secondary"
           style={{ width: `${headerWidth}px` }}
         />
 
         {colNames.map((name, i) => (
           <div
             key={'timetable-grid-header-' + i}
-            className="flex flex-auto items-center justify-center font-semibold text-gray-400 text-[10px] md:text-sm"
+            className="flex flex-auto items-center justify-center font-semibold text-fg-subtle text-[10px] md:text-sm"
           >
             {name}
           </div>
@@ -42,15 +42,15 @@ function TimetableGridComponent({ rowHeight = ROW_HEIGHT, colNames, rowNames, ch
       {/*col lines*/}
       <div className="flex absolute inset-0" style={{ top: `${headerHeight}px`, left: `${headerWidth}px` }}>
         {colNames.map((_, i) => (
-          <div key={'timetable-grid-col-' + i} className="flex-auto border-l border-gray-200 h-full" />
+          <div key={'timetable-grid-col-' + i} className="flex-auto border-l border-line h-full" />
         ))}
       </div>
 
       {/*row lines*/}
       {rowNames.map((rowName, i) => (
-        <div key={'timetable-grid-row-' + i} className="border-b border-gray-200" style={{ height: `${rowHeight}px` }}>
+        <div key={'timetable-grid-row-' + i} className="border-b border-line" style={{ height: `${rowHeight}px` }}>
           <span
-            className={`flex items-center justify-center h-full text-gray-400 w-[20px] md:w-[60px] text-[10px] md:text-sm`}
+            className={`flex items-center justify-center h-full text-fg-subtle w-[20px] md:w-[60px] text-[10px] md:text-sm`}
           >
             {rowName}
           </span>

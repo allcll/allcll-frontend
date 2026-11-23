@@ -52,7 +52,7 @@ function Cards({ subjects, isPending = false, isLive = false }: Readonly<IPinCar
           subject={subject}
           seats={'seat' in subject ? (subject.seat ?? -1) : -1}
           disableSeat={!('seat' in subject)}
-          className="bg-white"
+          className="bg-surface"
           isLive={isLive}
         />
       ))}

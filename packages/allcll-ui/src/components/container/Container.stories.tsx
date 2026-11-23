@@ -22,9 +22,9 @@ const meta = {
     children: null,
   },
   render: args => (
-    <div className="bg-gray-100 py-6">
+    <div className="bg-surface-muted py-6">
       <Container {...args}>
-        <div className="rounded-md bg-white p-4 text-sm text-gray-600">
+        <div className="rounded-md bg-surface p-4 text-sm text-fg-muted">
           회색 배경이 화면 전체 폭이고, 흰 상자가 Container 안쪽 폭입니다. 창 크기를 바꾸면 좌우 여백이 달라집니다.
         </div>
       </Container>

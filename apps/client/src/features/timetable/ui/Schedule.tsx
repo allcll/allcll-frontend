@@ -91,7 +91,7 @@ function Schedule({
         className={'flex-auto sm:p-2 p-[1px] ' + (isSelected ? 'animate-pulse' : '') + (dragging ? 'opacity-50' : '')}
       >
         <h3 className={`${text} font-semibold text-[9px] sm:text-sm`}>{title}</h3>
-        <p className="sm:text-xs text-[7px] text-gray-500">
+        <p className="sm:text-xs text-[7px] text-fg-muted">
           {professor} {location}
         </p>
       </div>
@@ -109,19 +109,19 @@ interface Colors {
 export function getColors(color: ScheduleSlot['color']): Colors {
   switch (color) {
     case 'rose':
-      return { text: 'text-rose-500', bgLight: 'bg-rose-50', bg: 'bg-rose-500' };
+      return { text: 'text-rose-500', bgLight: 'bg-schedule-rose', bg: 'bg-rose-500' };
     case 'amber':
-      return { text: 'text-amber-500', bgLight: 'bg-amber-50', bg: 'bg-amber-500' };
+      return { text: 'text-amber-500', bgLight: 'bg-schedule-amber', bg: 'bg-amber-500' };
     case 'green':
-      return { text: 'text-green-500', bgLight: 'bg-green-50', bg: 'bg-green-500' };
+      return { text: 'text-green-500', bgLight: 'bg-schedule-green', bg: 'bg-green-500' };
     case 'emerald':
-      return { text: 'text-emerald-500', bgLight: 'bg-emerald-50', bg: 'bg-emerald-500' };
+      return { text: 'text-emerald-500', bgLight: 'bg-schedule-emerald', bg: 'bg-emerald-500' };
     case 'blue':
-      return { text: 'text-blue-500', bgLight: 'bg-blue-50', bg: 'bg-blue-500' };
+      return { text: 'text-blue-500', bgLight: 'bg-schedule-blue', bg: 'bg-blue-500' };
     case 'violet':
-      return { text: 'text-violet-500', bgLight: 'bg-violet-50', bg: 'bg-violet-500' };
+      return { text: 'text-violet-500', bgLight: 'bg-schedule-violet', bg: 'bg-violet-500' };
     default:
-      return { text: 'text-gray-500', bgLight: 'bg-gray-50', bg: 'bg-gray-500' };
+      return { text: 'text-fg-muted', bgLight: 'bg-surface-subtle', bg: 'bg-fg-muted' };
   }
 }
 

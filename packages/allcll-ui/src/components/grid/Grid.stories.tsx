@@ -29,7 +29,7 @@ const meta = {
   render: args => (
     <Grid {...args}>
       {ITEMS.map(item => (
-        <div key={item} className="rounded-md bg-gray-100 px-4 py-3 text-sm text-gray-700">
+        <div key={item} className="rounded-md bg-surface-muted px-4 py-3 text-sm text-fg-secondary">
           {item}
         </div>
       ))}

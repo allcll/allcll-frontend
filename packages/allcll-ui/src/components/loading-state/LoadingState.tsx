@@ -22,8 +22,8 @@ function LoadingState({
         aria-hidden="true"
         className="mb-1 w-10 h-10 text-primary-500 animate-[spin_1.5s_linear_infinite]"
       />
-      <p className="text-sm font-medium text-gray-600">{title}</p>
-      {description && <p className="text-xs text-gray-400">{description}</p>}
+      <p className="text-sm font-medium text-fg-muted">{title}</p>
+      {description && <p className="text-xs text-fg-subtle">{description}</p>}
     </div>
   );
 }

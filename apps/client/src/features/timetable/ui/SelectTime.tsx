@@ -57,7 +57,7 @@ function SelectTime({ timeRange, onChange, day }: Readonly<ISelectTime>) {
           ))}
         </Select>
 
-        <span className="text-gray-400 text-sm mx-1">~</span>
+        <span className="text-fg-subtle text-sm mx-1">~</span>
 
         <Select
           name="endHour"

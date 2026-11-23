@@ -33,12 +33,12 @@ function EmptyScheduleSlot({ schedule, selected }: Readonly<{ schedule: GeneralS
       key={schedule.scheduleId}
       className={
         'h-10 w-full p-4 flex justify-between items-center rounded border ' +
-        (selected ? 'bg-primary-100 border-primary-500' : 'border-gray-200')
+        (selected ? 'bg-primary-muted border-primary-500' : 'border-line')
       }
     >
       <Flex gap={5}>
         <p>{schedule.subjectName}</p>
-        <p className="text-stone-400">{schedule.professorName}</p>
+        <p className="text-fg-subtle">{schedule.professorName}</p>
       </Flex>
 
       <IconButton
@@ -46,7 +46,7 @@ function EmptyScheduleSlot({ schedule, selected }: Readonly<{ schedule: GeneralS
         aria-label="delete"
         variant="plain"
         label="delete"
-        icon={<CloseIcon className="text-gray-500" />}
+        icon={<CloseIcon className="text-fg-muted" />}
         onClick={handleDeleteEmptySlot}
       />
     </div>

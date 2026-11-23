@@ -14,7 +14,7 @@ function Header() {
   const closeMenu = useCallback(() => setIsOpen(false), []);
 
   return (
-    <header className="bg-white shadow-sm z-header sticky top-0">
+    <header className="bg-surface shadow-sm z-header sticky top-0">
       <Container className="flex items-center justify-between">
         <div className="flex items-center space-x-4 py-4">
           <Link to="/" className="flex items-center gap-1 space-x-2" aria-label="메인 페이지">
@@ -30,7 +30,7 @@ function Header() {
                   to={path}
                   end={end}
                   className={({ isActive }) =>
-                    `inline-flex items-center gap-1 whitespace-nowrap ${isActive ? 'text-primary-500' : 'text-gray-500 hover:text-gray-700'}`
+                    `inline-flex items-center gap-1 whitespace-nowrap ${isActive ? 'text-primary-500' : 'text-fg-muted hover:text-fg-secondary'}`
                   }
                 >
                   {title}
@@ -53,7 +53,7 @@ function Header() {
               target="_blank"
               aria-label={title}
               title={title}
-              className="p-2 rounded-md hover:bg-gray-100"
+              className="p-2 rounded-md hover:bg-surface-muted"
             >
               {icon}
             </a>
@@ -64,9 +64,9 @@ function Header() {
           <NoticeBell />
           <IconButton
             size="large"
-            className="p-2 hover:bg-gray-100 active:bg-gray-100"
+            className="p-2 hover:bg-surface-muted active:bg-surface-muted"
             variant="plain"
-            icon={<MenuIcon className="text-gray-500" />}
+            icon={<MenuIcon className="text-fg-muted" />}
             label="메뉴 열기"
             onClick={openMenu}
             aria-expanded={isOpen}

@@ -118,8 +118,8 @@ function NoticeEditor() {
             size="large"
             label="뒤로 가기"
             onClick={handleBack}
-            icon={<ArrowLeftIcon className="text-gray-400 group-hover:text-gray-700" />}
-            className="group p-1 hover:bg-gray-100 transition-colors"
+            icon={<ArrowLeftIcon className="text-fg-subtle group-hover:text-fg-secondary" />}
+            className="group p-1 hover:bg-surface-muted transition-colors"
           />
           <PageHeader title={isEditMode ? '공지사항 수정' : '새 공지 작성'} />
         </Flex>
@@ -130,9 +130,9 @@ function NoticeEditor() {
       </Flex>
 
       {errors.length > 0 && (
-        <div className="bg-danger-50 border border-danger-200 rounded-lg px-4 py-3">
+        <div className="bg-danger-subtle border border-danger-200 dark:border-danger-500/40 rounded-lg px-4 py-3">
           {errors.map((e, i) => (
-            <p key={i} className="text-sm text-danger-700">
+            <p key={i} className="text-sm text-danger-700 dark:text-danger-400">
               {e}
             </p>
           ))}
@@ -158,7 +158,7 @@ function NoticeEditor() {
           />
           <Flex justify="end">
             <span
-              className={`text-xs ${title.length > MAX_TITLE_LENGTH ? 'text-danger-600 font-semibold' : 'text-gray-400'}`}
+              className={`text-xs ${title.length > MAX_TITLE_LENGTH ? 'text-danger-600 dark:text-danger-400 font-semibold' : 'text-fg-subtle'}`}
             >
               {title.length} / {MAX_TITLE_LENGTH}자
             </span>
