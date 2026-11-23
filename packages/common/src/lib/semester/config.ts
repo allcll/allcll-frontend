@@ -17,6 +17,10 @@ export interface ISemesterInfo {
  */
 export const SEMESTERS: ISemesterInfo[] = [
   {
+    semesterCode: 'WINTER_26',
+    semesterValue: '2026-겨울',
+  },
+  {
     semesterCode: 'FALL_26',
     semesterValue: '2026-2',
   },
@@ -52,4 +56,4 @@ export const CURRENT_SEMESTER = SEMESTERS[0];
 export const BANNER_PERIOD_LABEL = '수강신청 기간';
 
 // admin 크롤러 — 이 시각 이전에는 계절 여석 크롤링, 이후에는 일반 여석 크롤링 토글을 표시
-export const CRAWLER_SEASON_DATE = '2026-06-05T00:00:00+09:00';
+export const CRAWLER_SEASON_DATE = '2026-12-04T00:00:00+09:00';
