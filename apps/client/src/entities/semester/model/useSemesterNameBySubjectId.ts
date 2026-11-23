@@ -8,6 +8,7 @@ const SEMESTER_RANGES = [
   { code: 'WINTER_25', startId: 5185, endId: 5253 },
   { code: 'SPRING_26', startId: 5254, endId: 8222 },
   { code: 'SUMMER_26', startId: 8223, endId: 8310 },
+  { code: 'FALL_26', startId: 8311, endId: 11349 },
 ];
 
 export function useSemesterNameBySubjectId(subjectId: number) {
