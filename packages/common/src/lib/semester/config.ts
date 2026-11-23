@@ -17,6 +17,10 @@ export interface ISemesterInfo {
  */
 export const SEMESTERS: ISemesterInfo[] = [
   {
+    semesterCode: 'WINTER_26',
+    semesterValue: '2026-겨울',
+  },
+  {
     semesterCode: 'FALL_26',
     semesterValue: '2026-2',
   },
