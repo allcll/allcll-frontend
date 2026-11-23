@@ -12,21 +12,22 @@
   "dependencies": {
     "@allcll/allcll-ui": "workspace:^",
     "@allcll/common": "workspace:^",
-    "@tanstack/react-query": "^5.83.0",
-    "@vitejs/plugin-basic-ssl": "^2.1.0",
-    "dexie": "^4.0.11",
-    "dotenv": "^16.6.1",
-    "react-datepicker": "^8.4.0",
+    "@tanstack/react-query": "^5.107.1",
+    "dexie": "^4.4.7",
+    "react": "^18.3.1",
+    "react-datepicker": "^8.10.0",
+    "react-dom": "^18.3.1",
     "react-helmet": "^6.1.0",
     "react-markdown": "^10.1.0",
+    "react-router-dom": "^7.18.5",
     "remark-breaks": "^4.0.0",
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@allcll/mock-server": "workspace:^",
-    "@types/node": "20",
-    "@types/react-datepicker": "^7.0.0",
+    "@types/node": "^24.19.2",
     "@types/react-helmet": "^6.1.11",
-    "@vitejs/plugin-basic-ssl": "^2.1.0"
+    "@vitejs/plugin-basic-ssl": "^2.3.0",
+    "dotenv": "^16.6.1"
   }
 }

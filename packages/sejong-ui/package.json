@@ -16,21 +16,26 @@
     "build-storybook": "storybook build"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "4.1.2",
-    "@storybook/addon-a11y": "10.1.10",
-    "@storybook/addon-docs": "10.1.10",
-    "@storybook/addon-vitest": "10.1.10",
-    "@storybook/react-vite": "10.1.10",
-    "@tailwindcss/vite": "^4.1.18",
+    "@chromatic-com/storybook": "4.1.4",
+    "@storybook/addon-a11y": "10.6.7",
+    "@storybook/addon-docs": "10.6.7",
+    "@storybook/addon-vitest": "10.6.7",
+    "@storybook/react-vite": "10.6.7",
+    "@tailwindcss/vite": "^4.3.5",
     "@vitejs/plugin-react": "^4.7.0",
-    "@vitest/browser-playwright": "^4.0.4",
-    "@vitest/coverage-v8": "^4.0.4",
-    "eslint-plugin-storybook": "10.1.10",
-    "playwright": "^1.56.1",
-    "storybook": "10.1.10",
-    "tailwindcss": "^4.1.11",
-    "vite": "^7.1.11",
+    "@vitest/browser-playwright": "^4.1.12",
+    "@vitest/coverage-v8": "^4.1.12",
+    "playwright": "^1.65.0",
+    "react": "^18.3.1",
+    "react-router-dom": "^7.18.5",
+    "storybook": "10.6.7",
+    "tailwindcss": "^4.3.5",
+    "vite": "^7.3.8",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^4.0.4"
+    "vitest": "^4.1.12"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-router-dom": "^7.18.5"
   }
 }

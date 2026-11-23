@@ -9,6 +9,6 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "msw": "^2.10.5"
+    "msw": "^2.15.0"
   }
 }
